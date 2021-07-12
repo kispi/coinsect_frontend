@@ -15,7 +15,6 @@ import { onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppHeader from './components/app/app-header/AppHeader'
 import AppAddons from '@/components/app/addons/AppAddons'
-import helpers from './helpers'
 
 export default {
   components: {
@@ -34,6 +33,7 @@ export default {
     }
 
     onMounted(() => {
+      store.dispatch('loadConfig')
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })
     })

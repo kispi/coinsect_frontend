@@ -128,7 +128,6 @@ const app = {
 
       // 모든 api의 호출 전에 실행
       $http.get('config').then(config => commit('setConfig', config))
-      loadAuthNotRequired()
       await loadAuthRequired()
     },
   },

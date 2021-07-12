@@ -23,7 +23,7 @@ axios.interceptors.response.use(
   }
 )
 
-axios.defaults.baseURL = `${process.env.VUE_APP_API_DOMAIN}/api/v1`
+axios.defaults.baseURL = `${process.env.VUE_APP_API_DOMAIN}`
 
 const setRequestHeader = header => {
   if (header.token) axios.defaults.headers['Authorization'] = `Bearer ${header.token}`
