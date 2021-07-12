@@ -1,0 +1,91 @@
+.form-control {
+  margin: 16px 0;
+
+  &.required label {
+    position: relative;
+
+    &::after {
+      position: absolute;
+      top: -4px;
+      margin-left: 4px;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--danger);
+      content: '*';
+    }
+  }
+
+  label {
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: initial;
+  }
+}
+
+.input-wrapper,
+.textarea-wrapper {
+  border: 1px solid var(--gray-border);
+
+  &.focus,
+  &.active {
+    border: 1px solid var(--brand-primary);
+  }
+
+  input,
+  textarea {
+    padding: 0;
+    border: 0;
+
+    &:focus,
+    &:active {
+      border: 0;
+    }
+  }
+}
+
+textarea {
+  resize: none;
+  font-family: proxima-nova, sans-serif;
+  border-radius: 4px;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+input,
+textarea {
+  border: 1px solid var(--gray-border);
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.35s ease;
+
+  &::placeholder {
+    font-weight: 500;
+  }
+
+  &:focus,
+  &:active {
+    border: 1px solid var(--brand-primary);
+  }
+
+  &:read-only {
+    border: none;
+    padding: 16px 0;
+  }
+
+  &:not([type=radio]):not([type=checkbox]) {
+    width: 100%;
+  }
+}
+
+input,
+textarea,
+select {
+  &.required-but-empty.tried {
+    border: 1px solid var(--danger);
+  }
+}
+
+.validation-error {
+  font-size: 12px;
+  color: var(--danger);
+}

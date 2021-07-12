@@ -1,0 +1,85 @@
+@import 'views';
+@import 'variables'; // Should be imported in advance to anothers
+@import 'animation';
+@import 'base';
+@import 'button';
+@import 'components';
+@import 'font-awesome';
+@import 'form';
+@import 'flex';
+@import 'generics';
+@import 'icons';
+@import 'statuses';
+@import 'text';
+
+.no-touch {
+  pointer-events: none;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.img-cover {
+  background-repeat: no-repeat;
+  background-size: cover !important;
+  background-position: center;
+}
+
+.img-contain {
+  background-repeat: no-repeat;
+  background-size: contain !important;
+  background-position: center;
+}
+
+.no-scrollbar {
+  &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      background-color: rgba(0, 0, 0, 0);
+  }
+          
+  &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+u {
+  text-decoration: underline;
+}
+
+.f-italic {
+  font-style: italic;
+}
+
+@media (max-width: 991px) {
+  .over-992 {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .under-992 {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .over-768 {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .under-768 {
+    display: none !important;
+  }
+}

@@ -1,0 +1,25 @@
+$fontPath: '/font-awesome';
+
+@mixin fontFace($name, $file, $weight: normal, $className) {
+  @font-face {
+    font-family: '#{$name}';
+    src: url('#{$fontPath}/#{$file}.woff2') format('woff2');
+    font-weight: $weight;
+    font-style: normal;
+  }
+
+  #{$className} {
+    font-family: $name;
+    font-weight: $weight;
+  }
+}
+
+@include fontFace('Font Awesome 5 Brands', 'fa-brands-400', 400, '.fab');
+@include fontFace('Font Awesome 5 Pro', 'fa-light-300', 300, '.fal');
+@include fontFace('Font Awesome 5 Pro', 'fa-regular-400', 400, '.far');
+@include fontFace('Font Awesome 5 Pro', 'fa-solid-900', 900, '.fa');
+
+.fas {
+  font-family: 'Font Awesome 5 Pro';
+  font-weight: 900;
+}

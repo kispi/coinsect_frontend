@@ -1,0 +1,96 @@
+// normalize
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+*, *:active, *:hover {
+  outline: none !important;
+}
+
+:hover {
+  transition: all 0.35s ease;
+}
+
+*:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+ul,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  list-style-type: none;
+
+  &.disc {
+    list-style-type: disc;
+  }
+
+  &.decimal {
+    list-style-type: decimal;
+  }
+
+  &.circle {
+    list-style-type: circle;
+  }
+
+  &.square {
+    list-style-type: square;
+  }
+}
+
+video {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  margin: 0;
+}
+
+body {
+  font-size: 15px;
+  margin: 0;
+  color: var(--gray-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  word-break: break-word;
+  font-family: proxima-nova, sans-serif;
+}
+
+:link,
+:visited {
+  color: inherit;
+}
+
+input,
+textarea,
+button,
+select {
+  font-family: proxima-nova, sans-serif;
+}
+
+html,
+body {
+  position: fixed;
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
