@@ -8,7 +8,6 @@
       <i class="item-icon" v-if="selectedItem.icon" :class="selectedItem.icon"/>
       <div class="key" v-html="$translate(selectedItem.key)"/>
       <div class="chevrons">
-        <i class="fa fa-chevron-up"/>
         <i class="fa fa-chevron-down"/>
       </div>
     </div>
@@ -92,9 +91,6 @@ export default {
   }
 
   .chevrons {
-    display: flex;
-    flex-direction: column;
-
     i {
       font-size: 10px;
     }

@@ -2,7 +2,10 @@ import helpers from '@/helpers'
 
 const andSoOn = [{
   path: '/',
-  component: () => import(/* webpackChunkName: 'view-main' */ '@/components/views/ViewMain'),
+  component: () => import(/* webpackChunkName: 'view-home' */ '@/components/views/ViewHome'),
+}, {
+  path: '/login',
+  component: () => import(/* webpackChunkName: 'view-login' */ '@/components/views/ViewLogin'),
 }]
 
 const routesNoAuth = [

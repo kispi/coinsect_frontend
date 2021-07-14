@@ -15,5 +15,9 @@ export default {
 <style lang="scss" scoped>
 .app-logo {
   color: var(--brand-primary);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>

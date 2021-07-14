@@ -39,20 +39,20 @@ const template = {
 
     return symbols[$store.getters.me.currency]
   },
-  prettyPrice: price => {
+  prettyPrice: (price, nofrag) => {
     if (typeof price !== 'number') return 0
 
     return price.toLocaleString(
       undefined, {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
+        maximumFractionDigits: !nofrag ? 1 : 0,
+        minimumFractionDigits: !nofrag ? 1 : 0,
     })
   },
-  // pricify(5827145.2862) => '$ 5,827,145.28'
-  pricify: function(price, currency) {
+  // pricify(5827145.2862) => '$5,827,145.28'
+  pricify: function(price, currency, nofrag) {
     if (typeof price !== 'number') return
 
-    return `${this.currency(currency)} ${this.prettyPrice(price)}`
+    return `${this.currency(currency)}${this.prettyPrice(price, nofrag)}`
   },
   withLeadingZero: (value, numDigits) => {
     if (typeof value !== 'number' || !numDigits) return

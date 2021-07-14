@@ -17,6 +17,7 @@ import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 // common components
 import InputInsta from '@/components/common/InputInsta'
 import InputPhone from '@/components/common/InputPhone'
+import PriceComparisons from '@/components/common/PriceComparisons'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import SelectCountry from '@/components/common/SelectCountry'
 
@@ -41,6 +42,7 @@ const useGlobalComponents = app => {
     // common components
     .component('InputInsta', InputInsta)
     .component('InputPhone', InputPhone)
+    .component('PriceComparisons', PriceComparisons)
     .component('ModalHeader', ModalHeader)
     .component('SelectCountry', SelectCountry)
 }

@@ -2,5 +2,45 @@
   "COINSECT": {
     "en": "Coinsect",
     "kr": "코인충"
+  },
+  "LOGIN": {
+    "en": "Login",
+    "kr": "로그인"
+  },
+  "BTC_DOMINANCE": {
+    "en": "BTC Dominance",
+    "kr": "도미(BTC)"
+  },
+  "TOTAL_MARKET_CAP": {
+    "en": "Total Marketcap",
+    "kr": "전체시가총액"
+  },
+  "VOL_24": {
+    "en": "24h Volume",
+    "kr": "24시간 거래량"
+  },
+  "HOME": {
+    "en": "Home",
+    "kr": "홈"
+  },
+  "COMMUNITY": {
+    "en": "Community",
+    "kr": "커뮤니티"
+  },
+  "LONG_SHORT": {
+    "en": "Long/Short",
+    "kr": "롱/숏"
+  },
+  "MARKETCAPS": {
+    "en": "Marketcaps",
+    "kr": "시가총액"
+  },
+  "NEWS": {
+    "en": "News",
+    "kr": "뉴스"
+  },
+  "ABOUT": {
+    "en": "About",
+    "kr": "소개"
   }
 }

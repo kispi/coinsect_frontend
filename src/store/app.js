@@ -1,5 +1,3 @@
-import helpers from '@/helpers'
-import axios from '@/modules/axios'
 import * as $http from 'axios'
 
 const app = {
@@ -117,6 +115,7 @@ const app = {
 
       commit('setIsMobile')
       commit('setScrollTop', 0)
+      dispatch('loadDefaultLocale')
 
       try {
         await dispatch('loadAuthToken')

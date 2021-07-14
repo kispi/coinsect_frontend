@@ -3,7 +3,7 @@
     <div class="something-went-wrong">
       페이지를 찾을 수 없습니다 ㅜ.ㅜ
     </div>
-    <button @click="onClickBack" class="btn btn-primary">GO BACK</button>
+    <button @click="onClickBack" class="btn btn-primary m-a m-t-16">GO BACK</button>
   </div>
 </template>
 

@@ -143,7 +143,7 @@ export default {
     .page-number,
     .dots {
       margin: 1px;
-      font-size: 15px;
+      font-size: 14px;
       width: 32px;
       height: 32px;
       display: flex;
