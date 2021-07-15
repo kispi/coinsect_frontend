@@ -8,7 +8,7 @@
     "kr": "로그인"
   },
   "BTC_DOMINANCE": {
-    "en": "BTC Dominance",
+    "en": "Dominance(BTC)",
     "kr": "도미(BTC)"
   },
   "TOTAL_MARKET_CAP": {
@@ -31,6 +31,10 @@
     "en": "Long/Short",
     "kr": "롱/숏"
   },
+  "CIRCULATING_SUPPLY": {
+    "en": "Circulating Supply",
+    "kr": "유통 공급량"
+  },
   "MARKETCAPS": {
     "en": "Marketcaps",
     "kr": "시가총액"
@@ -50,5 +54,13 @@
   "PRICE": {
     "en": "Price",
     "kr": "가격"
+  },
+  "SOURCE": {
+    "en": "Source",
+    "kr": "출처"
+  },
+  "CURRENCY": {
+    "en": "Currency",
+    "kr": "통화"
   }
 }

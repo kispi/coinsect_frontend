@@ -26,16 +26,16 @@ export default {
 
       return [{
         key: 'USD/KRW',
-        value: plugins.$helpers.template.prettyPrice(o.usdKrw),
+        value: plugins.$helpers.template.prettyPrice({ price: o.usdKrw }),
       }, {
         key: 'BTC_DOMINANCE',
         value: `${o.dominance.btc}%`,
       }, {
         key: 'TOTAL_MARKET_CAP',
-        value: plugins.$helpers.template.pricify(o.totalMarketCap, 'usd'),
+        value: plugins.$helpers.template.pricify({ price: o.totalMarketCap, currency: 'usd' }),
       }, {
         key: 'VOL_24',
-        value: plugins.$helpers.template.pricify(o.vol24, 'usd'),
+        value: plugins.$helpers.template.pricify({ price: o.vol24, currency: 'usd' }),
       }]
     })
 

@@ -10,6 +10,7 @@ const marketInfo = {
     },
   }),
   getters: {
+    usdKrw: state => state.indices.usdKrw,
     indices: state => state.indices,
     marketcaps: state => state.marketcaps,
   },
@@ -33,12 +34,15 @@ const marketInfo = {
       if (helpers.canSkipApiCall(`loadMarketcaps_${source}`)) return
 
       try {
+        commit('setLoading', { marketcaps: true })
         commit('setMarketcaps', {
           data: await marketInfoService.marketcaps(source),
           source,
         })
       } catch (e) {
         return Promise.reject(e)
+      } finally {
+        commit('setLoading', { marketcaps: false })
       }
     }
   },

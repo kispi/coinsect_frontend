@@ -7,7 +7,7 @@
         <tr>
           <th>{{ $translate('COIN') }}</th>
           <th>{{ $translate('VOL_24') }}</th>
-          <th>{{ $translate('PRICE') }}</th>
+          <th v-if="!$store.getters.isMobile">{{ $translate('PRICE') }}</th>
           <th>{{ $translate('MARKETCAPS') }}</th>
         </tr>
       </thead>
@@ -23,18 +23,18 @@
             v-html="item.symbol"
           />
           <div
-            class="full-name"
+            class="full-name lines-1"
             v-html="item[$store.getters.translation.locale === 'en' ? 'englishName' : 'koreanName']"
           />
         </td>
         <td class="vol-24">
-          {{ $helpers.template.pricify(item.accTradePrice24h, 'krw') }}
+          {{ $helpers.template.koreanizedNumber({ price: applyCurrency(item.accTradePrice24h, true), useBigPicture: $store.getters.isMobile }) }}
         </td>
-        <td class="price">
-          {{ $helpers.template.pricify(item.price, 'krw') }}
+        <td v-if="!$store.getters.isMobile" class="price">
+          {{ currency === 'usd' ? applyCurrency(item.price) : $helpers.template.prettyPrice({ price: item.price }) }}
         </td>
         <td class="marketcaps">
-          {{ $helpers.template.pricify(item.marketCap, 'krw') }}
+          {{ $helpers.template.koreanizedNumber({ price: applyCurrency(item.marketCap, true), useBigPicture: $store.getters.isMobile }) }}
         </td>
       </tr>
     </table>
@@ -46,12 +46,40 @@ import { onMounted } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  setup() {
+  props: {
+    currency: String,
+  },
+  setup(props) {
     const store = useStore()
 
-    onMounted(() => {
+    const applyCurrency = (price, noFrac) => {
+      if (props.currency === 'usd') {
+        const converted = price / store.getters.usdKrw
+        if (noFrac) return Math.round(converted)
+
+        let numFracs = 2
+        if (converted < 1) numFracs = 4
+        if (converted < 0.0001) numFracs = 8
+
+        return converted.toLocaleString(
+          undefined, {
+            maximumFractionDigits: numFracs,
+            minimumFractionDigits: numFracs,
+          })
+      }
+
+      return price
+    }
+
+    const callApi = () => {
       store.dispatch('loadMarketcaps', 'upbit')
-    })
+    }
+
+    onMounted(callApi)
+
+    return {
+      applyCurrency,
+    }
   },
 }
 </script>
@@ -64,16 +92,27 @@ export default {
     
     td,
     th {
+      min-width: 0;
       padding: 8px;
+
+      &:not(:first-child) {
+        text-align: right;
+      }
+
+      @media (max-width: 767px) {
+        font-size: 12px;
+      }
     }
 
     .ticker {
       display: flex;
       align-items: center;
-      white-space: nowrap;
 
       .rank {
-        width: 32px;
+        min-width: 24px;
+        text-align: center;
+        margin-right: 4px;
+        font-weight: 700;
       }
 
       img,
@@ -85,16 +124,34 @@ export default {
         width: 16px;
       }
 
+      .symbol {
+        white-space: nowrap;
+        font-weight: 700;
+      }
+
       .full-name {
         color: var(--gray-light);
       }
     }
 
+    @media (max-width: 479px) {
+      .ticker {
+        max-width: 160px;
+      }
+
+      .vol-24,
+      .marketcaps {
+        letter-spacing: -0.8px;
+      }
+    }
+
     tr {
-      border-bottom: 1px solid var(--gray-border);
+      &:nth-child(even) {
+        background: var(--almost-white);
+      }
 
       &:hover {
-        background: var(--almost-white);
+        background: var(--brand-primary-bg-lv1);
       }
     }
   }

@@ -1,13 +1,26 @@
 <template>
-  <div class="view-marketcaps default-page-padding">
-    <div class="source">
-      출처
-      <AppDropdown
-        :dropdownItems="sources"
-        @select-dropdown-item="setSource"
-      />
+  <div class="view-marketcaps">
+    <div class="settings default-page-padding">
+      <div class="source">
+        {{ $translate('SOURCE') }}
+        <AppDropdown
+          :dropdownItems="sources"
+          @select-dropdown-item="setSource"
+        />
+      </div>
+      <div class="currency">
+        {{ $translate('CURRENCY') }}
+        <AppDropdown
+          :dropdownItems="currencies"
+          @select-dropdown-item="o => currency = o.key"
+        />
+      </div>
     </div>
-    <component :is="componentIs"/>
+    <AppLoading :loading="$store.getters.loading.marketcaps"/>
+    <component
+      :is="componentIs"
+      :currency="currency"
+    />
   </div>
 </template>
 
@@ -28,13 +41,19 @@ export default {
 
     const sources = ref(['upbit', 'coinmarketcap'].map(key => ({ key })))
 
-    const componentIs = computed(() => `Marketcaps${plugins.$helpers.template.case.toCapital(source.value)}`)
+    const setSource = item => source.value = item.key
 
-    const setSource = dropdownItem => source.value = dropdownItem.key
+    const currency = ref('krw')
+
+    const currencies = ref(['krw', 'usd'].map(key => ({ key })))
+
+    const componentIs = computed(() => `Marketcaps${plugins.$helpers.template.case.toCapital(source.value)}`)
 
     return {
       sources,
       componentIs,
+      currency,
+      currencies,
       setSource,
     }
   },
@@ -43,9 +62,22 @@ export default {
 
 <style lang="scss" scoped>
 .view-marketcaps {
-  .source {
+  max-width: 1200px;
+  margin: auto;
+
+  .settings {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+
+    .source,
+    .currency {
+      display: flex;
+      align-items: center;
+
+      .app-dropdown {
+        text-transform: uppercase;
+      }
+    }
   }
 }
 </style>

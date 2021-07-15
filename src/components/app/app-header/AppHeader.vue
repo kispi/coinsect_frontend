@@ -80,7 +80,7 @@ export default {
   transition: all 0.2s ease;
 
   .width-limiter {
-    max-width: 992px;
+    max-width: 1200px;
     margin: auto;
   }
 
@@ -114,7 +114,7 @@ export default {
       white-space: nowrap;
 
       &.selected {
-        font-weight: 900;
+        font-weight: 700;
         color: var(--brand-primary);
       }
     }

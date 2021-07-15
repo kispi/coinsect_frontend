@@ -39,26 +39,48 @@ const template = {
 
     return symbols[$store.getters.me.currency]
   },
-  prettyPrice: (price, useFrag) => {
+  prettyPrice: ({ price, numFrac }) => {
     if (typeof price !== 'number') return 0
 
     return price.toLocaleString(
       undefined, {
-        maximumFractionDigits: useFrag ? 1 : 0,
-        minimumFractionDigits: useFrag ? 1 : 0,
+        maximumFractionDigits: numFrac || 0,
+        minimumFractionDigits: numFrac || 0,
     })
   },
   // pricify(5827145.2862) => '$5,827,145.28'
-  pricify: function(price, currency, useFrag) {
+  pricify: function({ price, currency, numFrac }) {
     if (typeof price !== 'number') return
 
-    return `${this.currency(currency)}${this.prettyPrice(price, useFrag)}`
+    return `${this.currency(currency)}${this.prettyPrice({ price, numFrac })}`
   },
   withLeadingZero: (value, numDigits) => {
     if (typeof value !== 'number' || !numDigits) return
 
     const numDigitsOfGivenValue = value.toString().length
     return `${'0'.repeat(numDigits - numDigitsOfGivenValue)}${value}`
+  },
+  koreanizedNumber: ({ price, numFrac, useBigPicture }) => {
+    if (!price) return
+
+    const units = [
+      { key: '조', val: Math.pow(10, 12) },
+      { key: '억', val: Math.pow(10, 8) },
+      { key: '만', val: Math.pow(10, 4) },
+      { key: '', val: Math.pow(10, 0) },
+    ]
+
+    const result = []
+    let current = price
+    units.forEach(unit => {
+      const numbers = Math.floor(current / unit.val)
+      if (numbers >= 1) {
+        current -= numbers * unit.val
+        result.push(`${template.prettyPrice({ price: numbers, numFrac })}${unit.key}`)
+      }
+    })
+
+    return result.slice(0, useBigPicture ? 2 : 3).join(' ')
   },
   imageAlt: {
     default: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
