@@ -32,10 +32,10 @@ export default {
         value: `${o.dominance.btc}%`,
       }, {
         key: 'TOTAL_MARKET_CAP',
-        value: plugins.$helpers.template.pricify(o.totalMarketCap, 'usd', true),
+        value: plugins.$helpers.template.pricify(o.totalMarketCap, 'usd'),
       }, {
         key: 'VOL_24',
-        value: plugins.$helpers.template.pricify(o.vol24, 'usd', true),
+        value: plugins.$helpers.template.pricify(o.vol24, 'usd'),
       }]
     })
 
@@ -63,6 +63,7 @@ export default {
     }
 
     .key {
+      white-space: nowrap;
       font-size: 12px;
       color: var(--color-key);
       flex: 0 0 auto;

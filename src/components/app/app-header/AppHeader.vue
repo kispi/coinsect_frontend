@@ -48,7 +48,7 @@ export default {
       title: 'LONG_SHORT',
       path: '/long_short'
     }, {
-      title: 'MARKETCAP',
+      title: 'MARKETCAPS',
       path: '/marketcaps',
     }, {
       title: 'NEWS',
@@ -111,6 +111,7 @@ export default {
 
     .menu-item {
       padding: 12px 8px;
+      white-space: nowrap;
 
       &.selected {
         font-weight: 900;

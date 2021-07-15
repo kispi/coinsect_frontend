@@ -42,5 +42,13 @@
   "ABOUT": {
     "en": "About",
     "kr": "소개"
+  },
+  "COIN": {
+    "en": "Coin",
+    "kr": "코인"
+  },
+  "PRICE": {
+    "en": "Price",
+    "kr": "가격"
   }
 }

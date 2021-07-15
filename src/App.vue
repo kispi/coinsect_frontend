@@ -56,7 +56,6 @@ export default {
 
 .app-body {
   overflow-x: hidden;
-  min-height: calc(100vh - var(--app-header-height));
   display: flex;
   flex-direction: column;
 
