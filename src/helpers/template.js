@@ -1,4 +1,3 @@
-import { useRouter } from 'vue-router'
 import $store from '@/store'
 
 // Vue 2시절 filter로 사용하던, 템플릿에 주로 사용하는 기능들을 이곳에 모으기로 한다.
@@ -60,8 +59,8 @@ const template = {
     const numDigitsOfGivenValue = value.toString().length
     return `${'0'.repeat(numDigits - numDigitsOfGivenValue)}${value}`
   },
-  koreanizedNumber: ({ price, numFrac, useBigPicture }) => {
-    if (!price) return
+  koreanizedNumber: ({ number, numFrac, useBigPicture }) => {
+    if (!number) return
 
     const units = [
       { key: '조', val: Math.pow(10, 12) },
@@ -71,7 +70,7 @@ const template = {
     ]
 
     const result = []
-    let current = price
+    let current = number
     units.forEach(unit => {
       const numbers = Math.floor(current / unit.val)
       if (numbers >= 1) {

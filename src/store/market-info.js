@@ -10,7 +10,7 @@ const marketInfo = {
     },
   }),
   getters: {
-    usdKrw: state => state.indices.usdKrw,
+    usdKrw: state => state.indices.upbitForex.basePrice,
     indices: state => state.indices,
     marketcaps: state => state.marketcaps,
   },

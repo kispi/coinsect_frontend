@@ -1,17 +1,15 @@
 <template>
   <div class="app-header">
-    <div class="top width-limiter">
-      <BannerMarketIndices/>
-    </div>
+    <BannerMarketIndices class="width-limiter"/>
     <div class="logo-and-settings">
-      <div class="width-limiter flex-row flex-between flex-fill">
+      <div class="width-limiter flex-row flex-between items-center flex-fill">
         <AppLogo/>
         <div class="settings">
           <AppDropdown
             @select-dropdown-item="item => $store.commit('setLocale', item.key)"
             :dropdownItems="supportedLocales"
           />
-          <RouterLink :to="'/login'" v-html="$translate('LOGIN')"/>
+          <RouterLink :to="'/login'" v-html="$translate('LOGIN')" class="m-l-8"/>
         </div>
       </div>
     </div>
@@ -83,8 +81,15 @@ export default {
     max-width: 1200px;
     margin: auto;
   }
+  
+  .banner-market-indices {
+    padding: 8px 0;
 
-  .top,
+    @media (max-width: 767px) {
+      padding: 8px;
+    }
+  }
+
   .logo-and-settings {
     padding: 8px;
   }
@@ -108,14 +113,17 @@ export default {
 
   .menu-items {
     display: flex;
+    overflow-x: auto;
 
     .menu-item {
       padding: 12px 8px;
       white-space: nowrap;
+      border-bottom: 2px solid transparent;
 
       &.selected {
-        font-weight: 700;
         color: var(--brand-primary);
+        border-bottom: 2px solid var(--brand-primary);
+        // transition: none;
       }
     }
   }

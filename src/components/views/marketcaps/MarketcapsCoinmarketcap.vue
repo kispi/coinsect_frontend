@@ -28,20 +28,20 @@
           />
           <div
             class="full-name lines-1"
-            v-html="item[$store.getters.translation.locale === 'en' ? 'englishName' : 'koreanName']"
+            v-html="item.name"
           />
         </td>
         <td class="vol-24">
-          {{ $helpers.template.koreanizedNumber({ price: applyCurrency(item.quote.USD.volume_24h, true), useBigPicture: $store.getters.isMobile }) }}
+          {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.volume_24h, true), useBigPicture: $store.getters.isMobile }) }}
         </td>
         <td v-if="!$store.getters.isMobile" class="price">
-          {{ currency === 'usd' ? applyCurrency(item.quote.USD.price) : $helpers.template.koreanizedNumber({ price: item.quote.USD.price * $store.getters.usdKrw })}}
+          {{ currency === 'usd' ? applyCurrency(item.quote.USD.price) : (Math.floor(item.quote.USD.price * $store.getters.usdKrw)).toLocaleString() }}
         </td>
         <td v-if="!$store.getters.isMobile" class="circulating">
           {{ item.circulating_supply.toLocaleString() }}
         </td>
         <td class="marketcaps">
-          {{ $helpers.template.koreanizedNumber({ price: applyCurrency(item.quote.USD.market_cap, true), useBigPicture: $store.getters.isMobile }) }}
+          {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.market_cap, true), useBigPicture: $store.getters.isMobile }) }}
         </td>
       </tr>
     </table>

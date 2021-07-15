@@ -28,13 +28,13 @@
           />
         </td>
         <td class="vol-24">
-          {{ $helpers.template.koreanizedNumber({ price: applyCurrency(item.accTradePrice24h, true), useBigPicture: $store.getters.isMobile }) }}
+          {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.accTradePrice24h, true), useBigPicture: $store.getters.isMobile }) }}
         </td>
         <td v-if="!$store.getters.isMobile" class="price">
           {{ currency === 'usd' ? applyCurrency(item.price) : $helpers.template.prettyPrice({ price: item.price }) }}
         </td>
         <td class="marketcaps">
-          {{ $helpers.template.koreanizedNumber({ price: applyCurrency(item.marketCap, true), useBigPicture: $store.getters.isMobile }) }}
+          {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.marketCap, true), useBigPicture: $store.getters.isMobile }) }}
         </td>
       </tr>
     </table>
