@@ -1,18 +1,20 @@
 <template>
-  <div class="real-time-prices default-page-padding">
+  <div
+    v-if="$store.getters.realTimeTickers[baseExchange]"
+    class="real-time-prices default-page-padding">
     <div class="settings">
       <BaseAndTarget
         @change-base-exchange="e => baseExchange = e"
         @change-target-exchange="e => targetExchange = e"
       />
       <div class="total-and-search">
-        <div>총 {{ tickers[baseExchange].length }} 암호자산</div>
+        <div>총 {{ $store.getters.realTimeTickers[baseExchange].length }} 암호자산</div>
         <div class="input-wrapper">
           <i class="fal fa-search"/>
           <input
             v-model="keyword"
             @keydown="onKeydown"
-            placeholder="EX:) BIT, CASH, GRS, 토큰"
+            placeholder="EX:) BIT, CASH, ADA, 토큰"
           >
         </div>
       </div>
@@ -52,6 +54,7 @@ import { onMounted, ref, computed, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import RealTimePriceRow from './RealTimePriceRow'
 import BaseAndTarget from './BaseAndTarget'
+import useWebsocket from '@/hooks/websocket'
 
 export default {
   components: {
@@ -61,13 +64,11 @@ export default {
   setup() {
     const store = useStore()
 
-    const dec = new TextDecoder('utf-8')
-
-    const websockets = computed(() => store.getters.websockets)
-
     const baseExchange = ref('upbit')
 
     const targetExchange = ref('binance')
+
+    const { subscribe } = useWebsocket()
 
     const sort = ref({
       column: 'acc_trade_price_24h', // 'acc_trade_price_24h', 'signed_change_rate', '$$symbol', 'trade_price'
@@ -77,11 +78,14 @@ export default {
     const setSort = column => {
       if (sort.value.column === column) {
         sort.value.direction = sort.value.direction === 'desc' ? 'asc' : 'desc'
-        return
+      } else {
+        sort.value.column = column
+        sort.value.direction = 'desc'
       }
 
-      sort.value.column = column
-      sort.value.direction = 'desc'
+      window.localStorage.setItem('settings', JSON.stringify({
+        sort: sort.value,
+      }))
     }
 
     const keyword = ref('')
@@ -92,13 +96,8 @@ export default {
       })
     }
 
-    const tickers = ref({
-      upbit: [],
-      bithumb: [],
-    })
-
     const displayedList = computed(() => {
-      return tickers.value[baseExchange.value].filter(t => {
+      return store.getters.realTimeTickers[baseExchange.value].filter(t => {
         if (!keyword.value || !t.$$name) return t
 
         const lowered = keyword.value.toLowerCase()
@@ -115,38 +114,19 @@ export default {
       })
     })
 
-    const subscribe = exchange => {
-      websockets.value[exchange].onopen = () => {
-        websockets.value[exchange].send(JSON.stringify([{
-          ticket: 'coinsect-test',
-        }, {
-          type: 'ticker',
-          codes: store.getters.markets[exchange].map(o => o.market),
-        }]))
-      }
-
-      websockets.value[exchange].onmessage = event => {
-        try {
-          const json = JSON.parse(dec.decode(new Uint8Array(event.data)))          
-          if (!json.code.startsWith('KRW-')) return
-
-          const idx = tickers.value[exchange].findIndex(o => o.code === json.code)
-          json.$$symbol = json.code.split('KRW-')[1]
-          json.$$name = store.getters.symbols[json.$$symbol]
-          if (idx >= 0) tickers.value[exchange][idx] = json
-          else  tickers.value[exchange].push(json)
-        } catch (e) {
-          console.error(e)
-        }
-      }
-
-      websockets.value[exchange].onerror = event => console.error(event)
+    const useStoredSettings = () => {
+      try {
+        const settings = JSON.parse(window.localStorage.getItem('settings') || '{}')
+        if (settings.sort) sort.value = settings.sort
+      } catch (e) {}
     }
 
     onMounted(() => {
+      useStoredSettings()
+
       store.dispatch('loadMarkets', baseExchange.value).then(() => {
         store.commit('setWebsocket', baseExchange.value)
-        subscribe('upbit')
+        subscribe(baseExchange.value)
       })
     })
 
@@ -156,7 +136,6 @@ export default {
 
     return {
       keyword,
-      tickers,
       sort,
       setSort,
       displayedList,

@@ -13,6 +13,10 @@ const marketInfo = {
       upbit: null,
       bithumb: null,
     },
+    realTimeTickers: {
+      upbit: null,
+      bithumb: null,
+    },
     symbols: {},
     websockets: {
       upbit: null,
@@ -24,6 +28,7 @@ const marketInfo = {
     indices: state => state.indices,
     marketcaps: state => state.marketcaps,
     markets: state => state.markets,
+    realTimeTickers: state => state.realTimeTickers,
     symbols: state => state.symbols,
     websockets: state => state.websockets,
   },

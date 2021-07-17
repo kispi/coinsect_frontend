@@ -117,7 +117,11 @@ export default {
       &.selected {
         color: var(--brand-primary);
         border-bottom: 2px solid var(--brand-primary);
-        // transition: none;
+        font-weight: 700;
+      }
+
+      &:hover {
+        font-weight: 700;
       }
     }
   }
