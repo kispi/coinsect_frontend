@@ -3,9 +3,7 @@
   <div
     class="app-body"
     :class="{'no-scrollbar': $router.currentRoute.value.path === '/'}">
-    <div class="router-view-container">
-      <RouterView/>
-    </div>
+    <RouterView/>
   </div>
   <AppAddons/>
 </template>
@@ -56,11 +54,5 @@ export default {
 
 .app-body {
   overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-
-  .router-view-container {
-    flex: 1 1 auto;
-  }
 }
 </style>
