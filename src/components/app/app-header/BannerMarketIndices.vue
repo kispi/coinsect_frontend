@@ -1,5 +1,7 @@
 <template>
-  <div class="banner-market-indices">
+  <div
+    v-if="$store.getters.indices"
+    class="banner-market-indices">
     <AdaptiveLayout
       :key="index.key"
       v-for="index in indices"
@@ -8,7 +10,7 @@
       <div class="value" v-html="index.value"/>
       <div
         class="changes"
-        :class="index.changes > 0 ? 'c-success' : 'c-danger'"
+        :class="index.changes > 0 ? 'c-price-up-upbit' : 'c-price-down-upbit'"
         v-html="`${index.changes > 0 ? '+' : ''}${index.changes}%`"
       />
     </AdaptiveLayout>
@@ -74,8 +76,8 @@ export default {
 
 <style lang="scss">
 .banner-market-indices {
-  transition: all 0.2s ease;
   display: flex;
+  padding: 8px;
 
   .adaptive-layout {
     align-items: center;

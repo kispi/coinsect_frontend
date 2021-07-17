@@ -11,32 +11,34 @@
           <th>{{ $translate('MARKETCAPS') }}</th>
         </tr>
       </thead>
-      <tr
-        class="marketcap"
-        :key="idx"
-        v-for="(item, idx) in $store.getters.marketcaps.upbit">
-        <td class="ticker">
-          <div class="rank">{{ idx + 1 }}</div>
-          <img :src="`https://static.upbit.com/logos/${item.symbol}.png`">
-          <div
-            class="symbol"
-            v-html="item.symbol"
-          />
-          <div
-            class="full-name lines-1"
-            v-html="item[$store.getters.translation.locale === 'en' ? 'englishName' : 'koreanName']"
-          />
-        </td>
-        <td class="vol-24">
-          {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.accTradePrice24h, true), useBigPicture: $store.getters.isMobile }) }}
-        </td>
-        <td v-if="!$store.getters.isMobile" class="price">
-          {{ currency === 'usd' ? applyCurrency(item.price) : $helpers.template.prettyPrice({ price: item.price }) }}
-        </td>
-        <td class="marketcaps">
-          {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.marketCap, true), useBigPicture: $store.getters.isMobile }) }}
-        </td>
-      </tr>
+      <tbody>
+        <tr
+          class="marketcap"
+          :key="idx"
+          v-for="(item, idx) in $store.getters.marketcaps.upbit">
+          <td class="ticker">
+            <div class="rank">{{ idx + 1 }}</div>
+            <img :src="`https://static.upbit.com/logos/${item.symbol}.png`">
+            <div
+              class="symbol"
+              v-html="item.symbol"
+            />
+            <div
+              class="full-name lines-1"
+              v-html="item[$store.getters.translation.locale === 'en' ? 'englishName' : 'koreanName']"
+            />
+          </td>
+          <td class="vol-24">
+            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.accTradePrice24h, true), useBigPicture: $store.getters.isMobile }) }}
+          </td>
+          <td v-if="!$store.getters.isMobile" class="price">
+            {{ currency === 'usd' ? applyCurrency(item.price) : $helpers.template.prettyPrice({ price: item.price }) }}
+          </td>
+          <td class="marketcaps">
+            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.marketCap, true), useBigPicture: $store.getters.isMobile }) }}
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -92,7 +94,6 @@ export default {
     
     td,
     th {
-      min-width: 0;
       padding: 8px;
 
       &:not(:first-child) {
@@ -146,7 +147,7 @@ export default {
     }
 
     tr {
-      &:nth-child(even) {
+      &:nth-child(odd) {
         background: var(--almost-white);
       }
 

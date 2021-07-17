@@ -12,38 +12,40 @@
           <th>{{ $translate('MARKETCAPS') }}</th>
         </tr>
       </thead>
-      <tr
-        class="marketcap"
-        :key="idx"
-        v-for="(item, idx) in $store.getters.marketcaps.coinmarketcap">
-        <td class="ticker">
-          <div class="rank">{{ idx + 1 }}</div>
-          <img
-            :src="`https://cryprice.com/cryptocurrency-icons-master/svg/color/${(item.symbol || '').toLowerCase()}.svg`"
-            @error="e => e.target.src = 'https://cryprice.com/cryptocurrency-icons-master/svg/color/generic.svg'"
-          >
-          <div
-            class="symbol"
-            v-html="item.symbol"
-          />
-          <div
-            class="full-name lines-1"
-            v-html="item.name"
-          />
-        </td>
-        <td class="vol-24">
-          {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.volume_24h, true), useBigPicture: $store.getters.isMobile }) }}
-        </td>
-        <td v-if="!$store.getters.isMobile" class="price">
-          {{ currency === 'usd' ? applyCurrency(item.quote.USD.price) : (Math.floor(item.quote.USD.price * $store.getters.usdKrw)).toLocaleString() }}
-        </td>
-        <td v-if="!$store.getters.isMobile" class="circulating">
-          {{ item.circulating_supply.toLocaleString() }}
-        </td>
-        <td class="marketcaps">
-          {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.market_cap, true), useBigPicture: $store.getters.isMobile }) }}
-        </td>
-      </tr>
+      <tbody>
+        <tr
+          class="marketcap"
+          :key="idx"
+          v-for="(item, idx) in $store.getters.marketcaps.coinmarketcap">
+          <td class="ticker">
+            <div class="rank">{{ idx + 1 }}</div>
+            <img
+              :src="`https://cryprice.com/cryptocurrency-icons-master/svg/color/${(item.symbol || '').toLowerCase()}.svg`"
+              @error="e => e.target.src = 'https://cryprice.com/cryptocurrency-icons-master/svg/color/generic.svg'"
+            >
+            <div
+              class="symbol"
+              v-html="item.symbol"
+            />
+            <div
+              class="full-name lines-1"
+              v-html="item.name"
+            />
+          </td>
+          <td class="vol-24">
+            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.volume_24h, true), useBigPicture: $store.getters.isMobile }) }}
+          </td>
+          <td v-if="!$store.getters.isMobile" class="price">
+            {{ currency === 'usd' ? applyCurrency(item.quote.USD.price) : (Math.floor(item.quote.USD.price * $store.getters.usdKrw)).toLocaleString() }}
+          </td>
+          <td v-if="!$store.getters.isMobile" class="circulating">
+            {{ item.circulating_supply.toLocaleString() }}
+          </td>
+          <td class="marketcaps">
+            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.market_cap, true), useBigPicture: $store.getters.isMobile }) }}
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -99,7 +101,6 @@ export default {
     
     td,
     th {
-      min-width: 0;
       padding: 8px;
 
       &:not(:first-child) {
@@ -153,7 +154,7 @@ export default {
     }
 
     tr {
-      &:nth-child(even) {
+      &:nth-child(odd) {
         background: var(--almost-white);
       }
 

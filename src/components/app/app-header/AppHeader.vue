@@ -1,7 +1,9 @@
 <template>
   <div class="app-header">
     <BannerMarketIndices class="width-limiter"/>
-    <div class="logo-and-settings">
+    <div
+      class="logo-and-settings"
+      :class="{'border-top': $store.getters.indices}">
       <div class="width-limiter flex-row flex-between items-center flex-fill">
         <AppLogo/>
         <div class="settings">
@@ -81,25 +83,17 @@ export default {
     max-width: 1200px;
     margin: auto;
   }
-  
-  .banner-market-indices {
-    padding: 8px 0;
-
-    @media (max-width: 767px) {
-      padding: 8px;
-    }
-  }
-
-  .logo-and-settings {
-    padding: 8px;
-  }
 
   .logo-and-settings {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-top: 1px solid var(--gray-border);
+    padding: 8px;
+
+    &.border-top {
+      border-top: 1px solid var(--gray-border);
+    }
   }
 
   .settings {

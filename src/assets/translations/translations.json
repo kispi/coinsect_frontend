@@ -19,6 +19,26 @@
     "en": "24h Volume",
     "kr": "24시간 거래량"
   },
+  "CHANGES_24": {
+    "en": "Changes(24h)",
+    "kr": "전일대비"
+  },
+  "KIMP": {
+    "en": "Korean Premium",
+    "kr": "김프"
+  },
+  "CURRENT_PRICE": {
+    "en": "Mark Price",
+    "kr": "현재가격"
+  },
+  "BASE_EXCHANGE": {
+    "en": "Base Exchange",
+    "kr": "기준 거래소"
+  },
+  "TARGET_EXCHANGE": {
+    "en": "Target Exchange",
+    "kr": "대상 거래소"
+  },
   "HOME": {
     "en": "Home",
     "kr": "홈"

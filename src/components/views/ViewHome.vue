@@ -1,12 +1,15 @@
 <template>
   <div class="view-home">
-    <PriceComparisons/>
+    <RealTimePrices/>
   </div>
 </template>
 
 <script>
+import RealTimePrices from './real-time-prices/RealTimePrices'
 export default {
-
+  components: {
+    RealTimePrices,
+  },
 }
 </script>
 
