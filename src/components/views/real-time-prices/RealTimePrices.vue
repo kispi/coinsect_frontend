@@ -205,39 +205,6 @@ export default {
   table {
     width: 100%;
 
-    th {
-      cursor: pointer;
-      white-space: nowrap;
-
-      .sort-icons {
-        position: relative;
-        margin-left: 4px;
-        padding-right: 8px;
-
-        @media (max-width: 767px) {
-          padding-right: 4px;
-        }
-
-        i {
-          color: var(--gray-light);
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-        }
-      }
-
-      &.desc,
-      &.asc {
-        font-weight: 700;
-        color: var(--text-dark);
-      }
-
-      &.desc .fa-sort-down,
-      &.asc .fa-sort-up {
-        color: var(--gray-dark);
-      }
-    }
-
     th,
     td {
       padding: 4px;

@@ -2,6 +2,30 @@ import helpers from '@/helpers'
 import marketInfoService from '@/services/market-info'
 import * as $http from 'axios'
 
+const transformIntoCustomRow = ({ original, source }) => {
+  const result = []
+  if (source === 'coinmarketcap') {
+    original.forEach(row => {
+      result.push({
+        $$symbol: row.symbol,
+        $$name: row.name,
+        $$volume24H: row.quote.USD.volume_24h,
+        $$price: row.quote.USD.price,
+        $$circulatingSupply: row.circulating_supply,
+        $$marketCap: row.quote.USD.market_cap,
+      })
+    })
+  }
+
+  if (source === 'upbit') {
+    original.forEach(row => {
+      result.push(row)
+    })
+  }
+
+  return result
+}
+
 const marketInfo = {
   state: () => ({
     indices: null,
@@ -73,7 +97,7 @@ const marketInfo = {
       try {
         commit('setLoading', { marketcaps: true })
         commit('setMarketcaps', {
-          data: await marketInfoService.marketcaps(source),
+          data: transformIntoCustomRow({ original: await marketInfoService.marketcaps(source), source }),
           source,
         })
       } catch (e) {

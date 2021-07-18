@@ -40,7 +40,13 @@ export default {
 
     const source = ref('upbit')
 
-    const sources = ref(['upbit', 'coinmarketcap'].map(key => ({ key })))
+    const sources = ref([{
+      key: 'upbit',
+      img: require('@/assets/images/upbit.svg'),
+     }, {
+      key: 'coinmarketcap',
+      img: require('@/assets/images/coinmarketcap.jpg'),
+    }])
 
     const setSource = item => source.value = item.key
 
@@ -88,6 +94,10 @@ export default {
       td,
       th {
         padding: 8px;
+
+        &:first-child {
+          text-align: left;
+        }
 
         &:not(:first-child) {
           text-align: right;

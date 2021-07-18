@@ -5,17 +5,29 @@
     <table class="list">
       <thead>
         <tr>
-          <th>{{ $translate('COIN') }}</th>
-          <th>{{ $translate('VOL_24') }}</th>
-          <th v-if="!$store.getters.isMobile">{{ $translate('PRICE') }}</th>
-          <th>{{ $translate('MARKETCAPS') }}</th>
+          <th
+            @click="setSort(th.column)"
+            :class="sort.column === th.column ? sort.direction : ''"
+            :key="th.title"
+            v-for="th in [
+              { column: 'symbol', title: 'COIN' },
+              { column: 'accTradePrice24h', title: 'VOL_24' },
+              { column: 'price', title: 'PRICE', $$hide: $store.getters.isMobile },
+              { column: 'marketCap', title: 'MARKETCAPS' },
+            ].filter(o => !o.$$hide)">
+            {{ $translate(th.title) }}
+            <span class="sort-icons">
+              <i class="fas fa-sort-up"/>
+              <i class="fas fa-sort-down"/>
+            </span>
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr
           class="marketcap"
           :key="idx"
-          v-for="(item, idx) in $store.getters.marketcaps.upbit">
+          v-for="(item, idx) in displayedList">
           <td class="ticker">
             <div class="rank">{{ idx + 1 }}</div>
             <img :src="`https://static.upbit.com/logos/${item.symbol}.png`">
@@ -44,7 +56,7 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -53,6 +65,28 @@ export default {
   },
   setup(props) {
     const store = useStore()
+
+    const sort = ref({
+      column: 'marketCap', // 'symbol', 'accTradePrice24h', 'price', 'marketCap'
+      direction: 'desc',
+    })
+
+    const setSort = column => {
+      if (sort.value.column === column) {
+        sort.value.direction = sort.value.direction === 'desc' ? 'asc' : 'desc'
+      } else {
+        sort.value.column = column
+        sort.value.direction = 'desc'
+      }
+    }
+
+    const displayedList = computed(() => store.getters.marketcaps.upbit.sort((a, b) => {
+      const former = sort.value.direction === 'asc' ? a : b
+      const latter = sort.value.direction === 'asc' ? b : a
+      if (sort.value.column === 'symbol') return former.symbol > latter.symbol ? 1 : -1
+
+      return former[sort.value.column] - latter[sort.value.column]
+    }))
 
     const applyCurrency = (price, noFrac) => {
       if (props.currency === 'usd') {
@@ -80,6 +114,9 @@ export default {
     onMounted(callApi)
 
     return {
+      sort,
+      displayedList,
+      setSort,
       applyCurrency,
     }
   },
