@@ -59,7 +59,7 @@ const template = {
     const numDigitsOfGivenValue = value.toString().length
     return `${'0'.repeat(numDigits - numDigitsOfGivenValue)}${value}`
   },
-  koreanizedNumber: ({ number, numFrac, useBigPicture }) => {
+  koreanizedNumber: ({ number, numFrac, numUnits = 3 }) => {
     if (!number) return
 
     const units = [
@@ -79,7 +79,7 @@ const template = {
       }
     })
 
-    return result.slice(0, useBigPicture ? 2 : 3).join(' ')
+    return result.slice(0, numUnits).join(' ')
   },
   imageAlt: {
     default: '코인충 - 대한민국 No.1 암호자산 커뮤니티',

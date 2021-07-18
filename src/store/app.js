@@ -23,7 +23,7 @@ const app = {
     theme: 'dark',
     settings: {
       sort: {
-        column: 'acc_trade_price_24h', // 'acc_trade_price_24h', 'signed_change_rate', '$$symbol', 'trade_price'
+        column: '$$vol24H', // '$$symbol', '$$tradePriceBase', '$$premiumRate', '$$changeRate24H', '$$changeRate52WH', '$$changeRate52WL', $$vol24H'
         direction: 'desc',
       },
       documentTitleTicker: 'BTC',

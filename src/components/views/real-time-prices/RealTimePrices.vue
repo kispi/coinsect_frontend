@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="$store.getters.realTimeTickers[baseExchange]"
+    v-if="$store.getters.realTimeTickers"
     class="real-time-prices default-page-padding">
     <div class="settings">
       <BaseAndTarget
@@ -8,7 +8,7 @@
         @change-target-exchange="e => targetExchange = e"
       />
       <div class="total-and-search">
-        <div>총 {{ $store.getters.realTimeTickers[baseExchange].length }} 암호자산</div>
+        <div>총 {{ displayedList.length }} 암호자산</div>
         <div class="input-wrapper">
           <i class="fal fa-search"/>
           <input
@@ -28,11 +28,12 @@
             :key="th.title"
             v-for="th in [
               { column: '$$symbol', title: 'COIN' },
-              { column: 'trade_price', title: 'CURRENT_PRICE' },
-              { column: 'signed_change_rate', title: 'CHANGE_RATE_24' },
+              { column: '$$tradePriceBase', title: 'CURRENT_PRICE' },
+              { column: '$$premiumRate', title: 'PREMIUM' },
+              { column: '$$changeRate24H', title: 'CHANGE_RATE_24' },
               { column: '$$changeRate52WH', title: 'CHANGE_RATE_52W_HIGHEST', $$hide: $store.getters.isMobile },
               { column: '$$changeRate52WL', title: 'CHANGE_RATE_52W_LOWEST', $$hide: $store.getters.isMobile },
-              { column: 'acc_trade_price_24h', title: 'VOL_24' },
+              { column: '$$vol24H', title: 'VOL_24' },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
             <span class="sort-icons">
@@ -59,7 +60,7 @@ import { onMounted, ref, computed, onUnmounted, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import RealTimePriceRow from './RealTimePriceRow'
 import BaseAndTarget from './BaseAndTarget'
-import useWebsocket from '@/hooks/websocket'
+import websocket from '@/hooks/websockets/websocket'
 
 export default {
   components: {
@@ -71,18 +72,21 @@ export default {
 
     const store = useStore()
 
+    const hooks = {
+      upbit: websocket.useUpbit(),
+      binance: websocket.useBinance()
+    }
+
     const baseExchange = ref('upbit')
 
     const targetExchange = ref('binance')
 
     const setDocumentTitleTicker = ticker => {
       settings.value.documentTitleTicker = ticker.$$symbol
-      document.title = `${plugins.$helpers.template.prettyPrice({ price: ticker.trade_price, numFrac: ticker.trade_price >= 100 ? 0 : 2 })} ${ticker.$$symbol}`
-      plugins.$toast.success(plugins.$translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, ticker.$$symbol))
       store.commit('setSettings', settings.value)
+      hooks.upbit.setDocumentTitle(ticker)
+      plugins.$toast.success(plugins.$translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, ticker.$$symbol))
     }
-
-    const { subscribe } = useWebsocket()
 
     const settings = ref(store.getters.settings)
 
@@ -106,7 +110,9 @@ export default {
     }
 
     const displayedList = computed(() => {
-      return store.getters.realTimeTickers[baseExchange.value].filter(t => {
+      const arr = Object.values(store.getters.realTimeTickers)
+
+      return arr.filter(t => {
         if (!keyword.value || !t.$$name) return t
 
         const lowered = keyword.value.toLowerCase()
@@ -137,7 +143,10 @@ export default {
 
       store.dispatch('loadMarkets', baseExchange.value).then(() => {
         store.commit('setWebsocket', baseExchange.value)
-        subscribe[baseExchange.value]()
+        hooks.upbit.subscribe()
+
+        store.commit('setWebsocket', targetExchange.value)
+        hooks.binance.subscribe()
       })
     })
 
@@ -225,7 +234,7 @@ export default {
 
       &.desc .fa-sort-down,
       &.asc .fa-sort-up {
-        color: var(--text-base);
+        color: var(--gray-dark);
       }
     }
 

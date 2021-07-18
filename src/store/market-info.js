@@ -13,10 +13,7 @@ const marketInfo = {
       upbit: null,
       bithumb: null,
     },
-    realTimeTickers: {
-      upbit: null,
-      bithumb: null,
-    },
+    realTimeTickers: {},
     symbols: {},
     websockets: {
       upbit: null,
@@ -24,7 +21,7 @@ const marketInfo = {
     },
   }),
   getters: {
-    usdKrw: state => state.indices.upbitForex.basePrice,
+    usdKrw: state => state.indices ? state.indices.upbitForex.basePrice : 0,
     indices: state => state.indices,
     marketcaps: state => state.marketcaps,
     markets: state => state.markets,
@@ -43,6 +40,11 @@ const marketInfo = {
       if (market === 'upbit' && !state.websockets.upbit) {
         state.websockets.upbit = new WebSocket('wss://api.upbit.com/websocket/v1')
         state.websockets.upbit.binaryType = 'arraybuffer'
+        return
+      }
+
+      if (market === 'binance' && !state.websockets.binance) {
+        state.websockets.binance = new WebSocket('wss://stream.binance.com:9443/ws')
         return
       }
     },
@@ -88,16 +90,16 @@ const marketInfo = {
       try {
         const data = await $http.get(endpoint)
         const symbols = {}
-        data.forEach(o => {
-          if (!o.market.startsWith('KRW-')) return
-
+        const markets = data.filter(o => o.market.startsWith('KRW-'))
+        markets.forEach(o => {
           const symbol = o.market.split('KRW-')[1]
+          o.$$symbol = symbol
           symbols[symbol] = { en: o.english_name, kr: o.korean_name }
         })
 
         commit('setMarkets', {
           exchange,
-          markets: data,
+          markets,
           symbols,
         })
       } catch (e) {

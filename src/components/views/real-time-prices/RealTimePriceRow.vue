@@ -13,31 +13,48 @@
       </div>
       <div v-html="ticker.$$symbol" class="symbol f-300"/>
     </td>
-    <td class="ticker-current-price f-700" :class="priceColor(ticker.$$changeRate24H)">
-      <div>{{ autoFrac(ticker.trade_price) }}</div>
-      <!-- <div>COMING SOON</div> -->
+    <td>
+      <div
+        class="ticker-current-price-base"
+        :class="priceColor(ticker.$$changeRate24H)"
+        v-html="autoFrac(ticker.$$tradePriceBase)"
+      />
+      <div
+        class="ticker-current-price-target"
+        v-html="autoFrac(ticker.$$tradePriceTarget)"
+      />
     </td>
-    <!-- <td class="ticker-kimp"></td> -->
+    <td class="ticker-premium">
+      <div :class="ticker.$$premiumRate ? '' : 'o-0'">
+        <div
+          :class="priceColor(ticker.$$premiumRate)"
+          v-html="`${ticker.$$premiumRate}%`"
+        />
+        <div
+          v-html="autoFrac(ticker.$$premiumPrice)"
+        />
+      </div>
+    </td>
     <td class="ticker-changes-24h" :class="priceColor(ticker.$$changeRate24H)">
       <div v-html="`${$helpers.template.prettyPrice({ price: ticker.$$changeRate24H, numFrac: 2 })}%`"/>
-      <div v-html="autoFrac(ticker.signed_change_price)"/>
+      <div v-html="autoFrac(ticker.$$changePrice24H)"/>
     </td>
     <td v-if="!$store.getters.isMobile" class="ticker-changes-52w-high">
       <div
         :class="priceColor(ticker.$$changeRate52WH)"
         v-html="`${$helpers.template.prettyPrice({ price: ticker.$$changeRate52WH, numFrac: 2 })}%`"
       />
-      <div v-html="autoFrac(ticker.highest_52_week_price)"/>
+      <div v-html="autoFrac(ticker.$$highest52WeekPrice)"/>
     </td>
     <td v-if="!$store.getters.isMobile" class="ticker-changes-52w-high">
       <div
         :class="priceColor(ticker.$$changeRate52WL)"
         v-html="`${$helpers.template.prettyPrice({ price: ticker.$$changeRate52WL, numFrac: 2 })}%`"
       />
-      <div v-html="autoFrac(ticker.lowest_52_week_price)"/>
+      <div v-html="autoFrac(ticker.$$lowest52WeekPrice)"/>
     </td>
     <td class="ticker-vol-24h">
-      <div v-html="$helpers.template.koreanizedNumber({ number: ticker.acc_trade_price_24h, useBigPicture: true })"/>
+      <div v-html="$helpers.template.koreanizedNumber({ number: ticker.$$vol24H, numUnits: 1 })"/>
     </td>
   </tr>
 </template>
@@ -48,7 +65,7 @@ import helpers from '@/helpers'
 export default {
   props: ['ticker'],
   setup() {
-    const autoFrac = price => helpers.template.prettyPrice({ price, numFrac: price >= 100 ? 0 : 2 })
+    const autoFrac = price => helpers.template.prettyPrice({ price, numFrac: Math.abs(price) >= 100 ? 0 : 2 })
 
     const priceColor = rate => {
       if (rate > 0) return 'c-price-up-upbit'
@@ -84,6 +101,10 @@ export default {
 
       @media (max-width: 767px) {
         max-width: 80px;
+      }
+
+      @media (max-width: 479px) {
+        max-width: 48px;
       }
     }
   }

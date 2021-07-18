@@ -7,13 +7,13 @@
         @select-dropdown-item="o => $emit('change-base-exchange', o.key)"
       />
     </div>
-    <!-- <div class="target-exchange">
+    <div class="target-exchange">
       {{ $translate('TARGET_EXCHANGE') }}
       <AppDropdown
         :dropdownItems="targets"
         @select-dropdown-item="o => $emit('change-target-exchange', o.key)"
       />
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
   setup() {
     const bases = ref(['upbit'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) })))
 
-    const targets = ref(['binance'].map(key => ({ key })))
+    const targets = ref(['binance'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) })))
 
     return {
       bases,

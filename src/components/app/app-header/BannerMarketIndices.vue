@@ -48,7 +48,7 @@ export default {
           `${Math.round(o.coincodex.total_market_cap / Math.pow(10, 12) * 10000) / 10000}T` :
           plugins.$helpers.template.koreanizedNumber({
             number: o.coincodex.total_market_cap * usdKrw,
-            useBigPicture: true,
+            numUnits: 2,
           }),
         changes: o.coincodex.total_market_cap_24h_change_percent,
       }, {
@@ -57,7 +57,7 @@ export default {
           `${Math.round(o.coincodex.total_volume / Math.pow(10, 12) * 10000) / 10000}T` :
           plugins.$helpers.template.koreanizedNumber({
             number: o.coincodex.total_volume * usdKrw,
-            useBigPicture: true,
+            numUnits: 2,
           }),
         changes: o.coincodex.total_volume_24h_change_percent,
       }]

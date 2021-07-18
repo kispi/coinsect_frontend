@@ -33,7 +33,7 @@
             />
           </td>
           <td class="vol-24">
-            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.volume_24h, true), useBigPicture: $store.getters.isMobile }) }}
+            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.volume_24h, true) }) }}
           </td>
           <td v-if="!$store.getters.isMobile" class="price">
             {{ currency === 'usd' ? applyCurrency(item.quote.USD.price) : (Math.floor(item.quote.USD.price * $store.getters.usdKrw)).toLocaleString() }}
@@ -42,7 +42,7 @@
             {{ item.circulating_supply.toLocaleString() }}
           </td>
           <td class="marketcaps">
-            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.market_cap, true), useBigPicture: $store.getters.isMobile }) }}
+            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.quote.USD.market_cap, true) }) }}
           </td>
         </tr>
       </tbody>

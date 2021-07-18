@@ -1,5 +1,6 @@
 import $store from '@/store'
 import animate from './animate'
+import dataSetter from './data-setter'
 import dayjs from 'dayjs'
 import dom from './dom'
 import meta from './meta'
@@ -40,6 +41,7 @@ const helpers = {
   dom,
   meta,
   animate,
+  dataSetter,
   status,
   canSkipApiCall,
   case: template.case,

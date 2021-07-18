@@ -31,9 +31,9 @@
     "en": "Change (52WL)",
     "kr": "저가대비(52주)"
   },
-  "KIMP": {
-    "en": "Korean Premium",
-    "kr": "김프"
+  "PREMIUM": {
+    "en": "Premium",
+    "kr": "프리미엄"
   },
   "CURRENT_PRICE": {
     "en": "Current Price",
