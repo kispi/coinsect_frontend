@@ -7,12 +7,13 @@
 
   --white:            #ffffff;
   --black:            #000000;
+  --black-dark:       #111111;
   --black-light:      #222222;
   --gray-dark:        #444444;
-  --gray-border:      #e0e0e0;
+  --gray:             #e0e0e0;
   --gray-light:       #aaaaaa;
   --almost-white:     #fafafa;
-  --success:          #4caf50;
+  --success:          var(--brand-primary);
   --danger:           #c4506b;
   --price-up-upbit:   #d60000;
   --price-same-upbit: #2b2b2b;
@@ -24,12 +25,16 @@
 }
 
 #app {
-  color:         var(--text-base);
-  --text-dark:   var(--black-light);
-  --text-base:   var(--gray-dark);
+  color:                 var(--text-base);
+  --text-dark:           var(--black-light);
+  --text-base:           var(--gray-dark);
+  --border-base:         var(--gray);
+  --background-base:     var(--white);
 
   &.dark {
-    --text-dark: var(--white);
-    --text-base: var(--gray-light);
+    --text-dark:         var(--white);
+    --text-base:         var(--gray-light);
+    --border-base:       var(--black-light);
+    --background-base:   var(--black-dark);
   }
 }

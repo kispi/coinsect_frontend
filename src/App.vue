@@ -54,7 +54,7 @@ export default {
   flex-direction: column;
 
   &.dark {
-    background: rgba(0, 0, 0, 0.92);
+    background: var(--background-base);
   }
 }
 

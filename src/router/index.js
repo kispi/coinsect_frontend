@@ -24,9 +24,7 @@ const router = createRouter({
 })
 
 router.afterEach(() => {
-  if (!window.ReactNativeWebView) return
-
-  window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'HISTORY' }))
+  document.title = '코인충 - 대한민국 No.1 암호자산 커뮤니티'
 })
 
 // 'from' referrer를 달고 이동하고 싶은 경우라면 router.push 대신 이 함수를 사용

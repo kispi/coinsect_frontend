@@ -1,9 +1,15 @@
 <template>
-  <tr class="real-time-price-row">
+  <tr
+    @click="$emit('click-ticker', ticker)"
+    class="real-time-price-row">
     <td class="ticker-symbol">
       <div class="flex-row items-center">
         <img :src="`https://static.upbit.com/logos/${ticker.$$symbol}.png`" class="flex-wrap m-r-4">
-        <div v-html="ticker.$$name[$store.getters.translation.locale]" class="name c-text-dark lines-1"/>
+        <div
+          v-html="ticker.$$name[$store.getters.translation.locale]"
+          class="name lines-1"
+          :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'c-brand-primary' : 'c-text-dark'"
+        />
       </div>
       <div v-html="ticker.$$symbol" class="symbol f-300"/>
     </td>
@@ -60,6 +66,8 @@ export default {
 
 <style lang="scss" scoped>
 .real-time-price-row {
+  cursor: pointer;
+
   .ticker-symbol {
     img {
       width: 16px;

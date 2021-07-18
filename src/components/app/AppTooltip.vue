@@ -63,6 +63,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$triangle-size: 8px;
 .app-tooltip {
   color: var(--white);
   background: rgba(0, 0, 0, 0.8);
@@ -73,7 +74,6 @@ export default {
   font-size: 12px;
   line-height: 18px;
 
-  $triangle-size: 8px;
   .triangle {
     width: 0;
     height: 0;
@@ -84,6 +84,16 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     bottom: -$triangle-size;
+  }
+}
+
+#app.dark {
+  .app-tooltip {
+    background: var(--black-light);
+
+    .triangle {
+      border-top: $triangle-size solid var(--black-light);
+    }
   }
 }
 </style>

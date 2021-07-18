@@ -1,3 +1,4 @@
+import helpers from '@/helpers'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
@@ -30,6 +31,10 @@ const useWebsocket = () => {
           json.$$changeRate24H = Math.round(json.signed_change_rate * 10000) / 100
           json.$$changeRate52WH = Math.round((json.trade_price - json.highest_52_week_price) / json.highest_52_week_price * 10000) / 100
           json.$$changeRate52WL = Math.round((json.trade_price - json.lowest_52_week_price) / json.lowest_52_week_price * 10000) / 100
+          if (store.getters.settings.documentTitleTicker === json.$$symbol) {
+            const priceString = helpers.template.prettyPrice({ price: json.trade_price, numFrac: json.trade_price >= 100 ? 0 : 2 })
+            document.title = `${priceString} ${json.$$symbol}`
+          }
           if (idx >= 0) store.getters.realTimeTickers.upbit[idx] = json
           else store.getters.realTimeTickers.upbit = (store.getters.realTimeTickers.upbit || []).concat([json])
         } catch (e) {

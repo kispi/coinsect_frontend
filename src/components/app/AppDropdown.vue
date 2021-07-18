@@ -99,8 +99,8 @@ export default {
   }
 
   ul {
-    background: var(--white);
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+    background: var(--background-base);
+    border: 1px solid var(--gray-light);
     padding: 8px 0;
     border-radius: 4px;
 
@@ -113,7 +113,7 @@ export default {
       user-select: none;
 
       &:hover {
-        background: var(--brand-primary-bg-lv2);
+        background: var(--brand-primary-bg-lv1);
       }
 
       &:active,

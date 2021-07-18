@@ -12,9 +12,16 @@
             :dropdownItems="supportedLocales"
           />
           <i  
+            ref="refIconToggleDarkMode"
             @click="toggleTheme"
-            class="fal cursor-pointer"
-            :class="$store.getters.theme === 'dark' ? 'fa-sun' : 'fa-moon'"
+            class="fa-moon cursor-pointer m-l-12 m-r-12"
+            :class="$store.getters.theme === 'dark' ? 'fa' : 'fal'"
+            @mouseover="$tooltip.show({
+              id: 'tooltipDarkMode',
+              text: 'TOOLTIP_DARK_MODE',
+              showAbove: refIconToggleDarkMode,
+            })"
+            @mouseleave="$tooltip.hide('tooltipDarkMode')"
           />
           <RouterLink :to="'/login'" v-html="$translate('LOGIN')" class="m-l-8"/>
         </div>
@@ -34,7 +41,7 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import BannerMarketIndices from './BannerMarketIndices'
 import helpers from '@/helpers'
@@ -42,6 +49,8 @@ import helpers from '@/helpers'
 export default {
   components: { BannerMarketIndices },
   setup() {
+    const refIconToggleDarkMode = ref(null)
+
     const store = useStore()
 
     const toggleTheme = () => {
@@ -78,6 +87,7 @@ export default {
     )
 
     return {
+      refIconToggleDarkMode,
       menuItems,
       supportedLocales,
       toggleTheme,
@@ -89,7 +99,7 @@ export default {
 <style lang="scss">
 // Don't scope
 .app-header {
-  box-shadow: 0 -1px var(--gray-border) inset;
+  box-shadow: 0 -1px var(--border-base) inset;
   transition: all 0.2s ease;
 
   .width-limiter {
@@ -105,7 +115,7 @@ export default {
     padding: 8px;
 
     &.border-top {
-      border-top: 1px solid var(--gray-border);
+      border-top: 1px solid var(--border-base);
     }
   }
 
@@ -116,6 +126,10 @@ export default {
 
     .app-dropdown {
       text-transform: uppercase;
+    }
+
+    .fa-moon {
+      color: green;
     }
   }
 

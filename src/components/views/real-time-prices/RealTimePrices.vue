@@ -21,27 +21,30 @@
     </div>
     <table>
       <thead>
-        <th
-          @click="setSort(th.column)"
-          :class="sort.column === th.column ? sort.direction : ''"
-          :key="th.title"
-          v-for="th in [
-            { column: '$$symbol', title: 'COIN' },
-            { column: 'trade_price', title: 'CURRENT_PRICE' },
-            { column: 'signed_change_rate', title: 'CHANGE_RATE_24' },
-            { column: '$$changeRate52WH', title: 'CHANGE_RATE_52W_HIGHEST', $$hide: $store.getters.isMobile },
-            { column: '$$changeRate52WL', title: 'CHANGE_RATE_52W_LOWEST', $$hide: $store.getters.isMobile },
-            { column: 'acc_trade_price_24h', title: 'VOL_24' },
-          ].filter(o => !o.$$hide)">
-          {{ $translate(th.title) }}
-          <span class="sort-icons">
-            <i class="fas fa-sort-up"/>
-            <i class="fas fa-sort-down"/>
-          </span>
-        </th>
+        <tr>
+          <th
+            @click="setSort(th.column)"
+            :class="settings.sort.column === th.column ? settings.sort.direction : ''"
+            :key="th.title"
+            v-for="th in [
+              { column: '$$symbol', title: 'COIN' },
+              { column: 'trade_price', title: 'CURRENT_PRICE' },
+              { column: 'signed_change_rate', title: 'CHANGE_RATE_24' },
+              { column: '$$changeRate52WH', title: 'CHANGE_RATE_52W_HIGHEST', $$hide: $store.getters.isMobile },
+              { column: '$$changeRate52WL', title: 'CHANGE_RATE_52W_LOWEST', $$hide: $store.getters.isMobile },
+              { column: 'acc_trade_price_24h', title: 'VOL_24' },
+            ].filter(o => !o.$$hide)">
+            {{ $translate(th.title) }}
+            <span class="sort-icons">
+              <i class="fas fa-sort-up"/>
+              <i class="fas fa-sort-down"/>
+            </span>
+          </th>
+        </tr>
       </thead>
       <tbody>
         <RealTimePriceRow
+          @click-ticker="setDocumentTitleTicker"
           :ticker="ticker"
           :key="idx"
           v-for="(ticker, idx) in displayedList"
@@ -52,12 +55,11 @@
 </template>
 
 <script>
-import { onMounted, ref, computed, onUnmounted } from 'vue'
+import { onMounted, ref, computed, onUnmounted, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import RealTimePriceRow from './RealTimePriceRow'
 import BaseAndTarget from './BaseAndTarget'
 import useWebsocket from '@/hooks/websocket'
-import helpers from '@/helpers'
 
 export default {
   components: {
@@ -65,30 +67,34 @@ export default {
     BaseAndTarget,
   },
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
     const baseExchange = ref('upbit')
 
     const targetExchange = ref('binance')
 
+    const setDocumentTitleTicker = ticker => {
+      settings.value.documentTitleTicker = ticker.$$symbol
+      document.title = `${plugins.$helpers.template.prettyPrice({ price: ticker.trade_price, numFrac: ticker.trade_price >= 100 ? 0 : 2 })} ${ticker.$$symbol}`
+      plugins.$toast.success(plugins.$translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, ticker.$$symbol))
+      store.commit('setSettings', settings.value)
+    }
+
     const { subscribe } = useWebsocket()
 
-    const sort = ref({
-      column: 'acc_trade_price_24h', // 'acc_trade_price_24h', 'signed_change_rate', '$$symbol', 'trade_price'
-      direction: 'desc',
-    })
+    const settings = ref(store.getters.settings)
 
     const setSort = column => {
-      if (sort.value.column === column) {
-        sort.value.direction = sort.value.direction === 'desc' ? 'asc' : 'desc'
+      if (settings.value.sort.column === column) {
+        settings.value.sort.direction = settings.value.sort.direction === 'desc' ? 'asc' : 'desc'
       } else {
-        sort.value.column = column
-        sort.value.direction = 'desc'
+        settings.value.sort.column = column
+        settings.value.sort.direction = 'desc'
       }
 
-      helpers.localStorage.setMeta('settings', {
-        sort: sort.value,
-      })
+      store.commit('setSettings', settings.value)
     }
 
     const keyword = ref('')
@@ -109,23 +115,25 @@ export default {
           t.$$name.kr.includes(lowered) ||
           t.$$symbol.toLowerCase().includes(lowered)
       }).sort((a, b) => {
-        const former = sort.value.direction === 'asc' ? a : b
-        const latter = sort.value.direction === 'asc' ? b : a
-        if (sort.value.column === '$$symbol') return former.$$symbol > latter.$$symbol ? 1 : -1
+        const former = settings.value.sort.direction === 'asc' ? a : b
+        const latter = settings.value.sort.direction === 'asc' ? b : a
+        if (settings.value.sort.column === '$$symbol') return former.$$symbol > latter.$$symbol ? 1 : -1
 
-        return former[sort.value.column] - latter[sort.value.column]
+        return former[settings.value.sort.column] - latter[settings.value.sort.column]
       })
     })
 
-    const useStoredSettings = () => {
+    const loadSettings = () => {
       try {
-        const settings = helpers.localStorage.getMeta('settings')
-        if (settings.sort) sort.value = settings.sort
+        const stored = plugins.$helpers.localStorage.getMeta('settings')
+        if (stored.sort) settings.value.sort = stored.sort
+        if (stored.documentTitleTicker) settings.value.documentTitleTicker = stored.documentTitleTicker
+        store.commit('setSettings', settings.value)
       } catch (e) {}
     }
 
     onMounted(() => {
-      useStoredSettings()
+      loadSettings()
 
       store.dispatch('loadMarkets', baseExchange.value).then(() => {
         store.commit('setWebsocket', baseExchange.value)
@@ -139,8 +147,9 @@ export default {
 
     return {
       keyword,
-      sort,
+      settings,
       setSort,
+      setDocumentTitleTicker,
       displayedList,
       baseExchange,
       targetExchange,
@@ -180,12 +189,11 @@ export default {
 
     .base-and-target {
       padding-bottom: 8px;
-      border-bottom: 1px solid var(--gray-border);
+      border-bottom: 1px solid var(--border-base);
     }
   }
 
   table {
-    border-collapse: collapse;
     width: 100%;
 
     th {

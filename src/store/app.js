@@ -1,3 +1,4 @@
+import helpers from '@/helpers'
 import * as $http from 'axios'
 
 const app = {
@@ -20,6 +21,13 @@ const app = {
     isMobile: null,
     config: null,
     theme: 'dark',
+    settings: {
+      sort: {
+        column: 'acc_trade_price_24h', // 'acc_trade_price_24h', 'signed_change_rate', '$$symbol', 'trade_price'
+        direction: 'desc',
+      },
+      documentTitleTicker: 'BTC',
+    },
     windowInnerWidth: null,
     windowInnerHeight: null,
     lastApiCall: {},
@@ -35,6 +43,7 @@ const app = {
     isMobile: state => state.isMobile,
     config: state => state.config,
     theme: state => state.theme,
+    settings: state => state.settings,
     windowInnerWidth: state => state.windowInnerWidth,
     windowInnerHeight: state => state.windowInnerHeight,
     lastApiCall: state => state.lastApiCall,
@@ -69,6 +78,10 @@ const app = {
       const app = document.getElementById('app')
       app.classList.remove(theme === 'dark' ? 'light' : 'dark')
       app.classList.add(theme === 'dark' ? 'dark' : 'light')
+    },
+    setSettings(state, settings) {
+      state.settings = settings
+      helpers.localStorage.setMeta('settings', settings)
     },
     setIsMobile(state) {
       state.windowInnerWidth = window.innerWidth

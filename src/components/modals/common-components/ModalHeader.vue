@@ -24,7 +24,7 @@ export default {
 <style lang="scss" scoped>
 .modal-header {
   position: relative;
-  border-bottom: 1px solid var(--gray-border);
+  border-bottom: 1px solid var(--border-base);
   padding: 16px 0;
   user-select: none;
 

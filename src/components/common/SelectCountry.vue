@@ -200,7 +200,7 @@ export default {
   }
 
   .selected-country-value {
-    border: 1px solid var(--gray-border);
+    border: 1px solid var(--border-base);
     border-radius: 4px;
     display: flex;
     align-items: center;
