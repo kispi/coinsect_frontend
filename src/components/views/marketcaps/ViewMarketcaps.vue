@@ -18,6 +18,7 @@
     </div>
     <AppLoading :loading="$store.getters.loading.marketcaps"/>
     <component
+      class="marketcaps-common"
       :is="componentIs"
       :currency="currency"
     />
@@ -60,7 +61,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .view-marketcaps {
   max-width: 1200px;
   margin: auto;
@@ -76,6 +77,73 @@ export default {
 
       .app-dropdown {
         text-transform: uppercase;
+      }
+    }
+  }
+
+  .marketcaps-common {
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      
+      td,
+      th {
+        padding: 8px;
+
+        &:not(:first-child) {
+          text-align: right;
+        }
+
+        @media (max-width: 767px) {
+          font-size: 12px;
+        }
+      }
+
+      .ticker {
+        display: flex;
+        align-items: center;
+
+        .rank {
+          min-width: 24px;
+          text-align: center;
+          margin-right: 4px;
+          font-weight: 700;
+        }
+
+        img,
+        .symbol {
+          margin-right: 8px;
+        }
+
+        img {
+          width: 16px;
+        }
+
+        .symbol {
+          white-space: nowrap;
+          font-weight: 700;
+        }
+
+        .full-name {
+          color: var(--gray-light);
+        }
+      }
+
+      @media (max-width: 479px) {
+        .ticker {
+          max-width: 160px;
+        }
+
+        .vol-24,
+        .marketcaps {
+          letter-spacing: -0.8px;
+        }
+      }
+
+      tr {
+        &:hover {
+          background: var(--brand-primary-bg-lv1);
+        }
       }
     }
   }

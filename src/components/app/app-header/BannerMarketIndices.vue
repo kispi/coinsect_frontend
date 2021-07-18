@@ -89,12 +89,12 @@ export default {
 
     .key {
       white-space: nowrap;
-      color: var(--color-key);
+      color: var(--text-base);
       flex: 0 0 auto;
     }
 
     .value {
-      color: var(--color-value);
+      color: var(--text-dark);
       font-weight: 500;
       flex: 0 0 auto;
     }

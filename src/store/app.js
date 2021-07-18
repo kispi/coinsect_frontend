@@ -19,6 +19,7 @@ const app = {
     },
     isMobile: null,
     config: null,
+    theme: 'dark',
     windowInnerWidth: null,
     windowInnerHeight: null,
     lastApiCall: {},
@@ -33,6 +34,7 @@ const app = {
     loading: state => state.loading,
     isMobile: state => state.isMobile,
     config: state => state.config,
+    theme: state => state.theme,
     windowInnerWidth: state => state.windowInnerWidth,
     windowInnerHeight: state => state.windowInnerHeight,
     lastApiCall: state => state.lastApiCall,
@@ -60,6 +62,13 @@ const app = {
     },
     setConfig(state, config) {
       state.config = config
+    },
+    setTheme(state, theme) {
+      state.theme = theme
+
+      const app = document.getElementById('app')
+      app.classList.remove(theme === 'dark' ? 'light' : 'dark')
+      app.classList.add(theme === 'dark' ? 'dark' : 'light')
     },
     setIsMobile(state) {
       state.windowInnerWidth = window.innerWidth

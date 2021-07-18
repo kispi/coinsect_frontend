@@ -2,7 +2,7 @@
   <AppHeader/>
   <div
     class="app-body"
-    :class="{'no-scrollbar': $router.currentRoute.value.path === '/'}">
+    :class="['no-scrollbar']">
     <RouterView/>
   </div>
   <AppAddons/>
@@ -13,6 +13,7 @@ import { onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppHeader from './components/app/app-header/AppHeader'
 import AppAddons from '@/components/app/addons/AppAddons'
+import helpers from './helpers'
 
 export default {
   components: {
@@ -31,6 +32,7 @@ export default {
     }
 
     onMounted(() => {
+      store.commit('setTheme', helpers.localStorage.getMeta('theme') || 'dark')
       store.dispatch('loadConfig')
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })
@@ -50,6 +52,10 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  &.dark {
+    background: rgba(0, 0, 0, 0.92);
+  }
 }
 
 .app-body {

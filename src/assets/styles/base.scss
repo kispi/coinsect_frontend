@@ -60,7 +60,6 @@ button {
 body {
   font-size: 14px;
   margin: 0;
-  color: var(--gray-dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   word-break: break-word;
@@ -69,7 +68,7 @@ body {
 
 :link,
 :visited {
-  color: inherit;
+  color: var(--text-base);
 }
 
 input,

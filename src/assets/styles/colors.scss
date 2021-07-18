@@ -18,6 +18,18 @@
   --price-same-upbit: #2b2b2b;
   --price-down-upbit: #0051c7;
   --danger-light:     rgba(247, 73, 113, 1);
-  --color-key:        var(--gray-dark);
-  --color-value:      var(--black-light);
+
+  --text-dark:        var(--black-light);
+  --text-base:        var(--gray-dark);
+}
+
+#app {
+  color:         var(--text-base);
+  --text-dark:   var(--black-light);
+  --text-base:   var(--gray-dark);
+
+  &.dark {
+    --text-dark: var(--white);
+    --text-base: var(--gray-light);
+  }
 }

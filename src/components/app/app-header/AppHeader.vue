@@ -11,6 +11,11 @@
             @select-dropdown-item="item => $store.commit('setLocale', item.key)"
             :dropdownItems="supportedLocales"
           />
+          <i  
+            @click="toggleTheme"
+            class="fal cursor-pointer"
+            :class="$store.getters.theme === 'dark' ? 'fa-sun' : 'fa-moon'"
+          />
           <RouterLink :to="'/login'" v-html="$translate('LOGIN')" class="m-l-8"/>
         </div>
       </div>
@@ -29,14 +34,21 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import BannerMarketIndices from './BannerMarketIndices'
+import helpers from '@/helpers'
 
 export default {
   components: { BannerMarketIndices },
   setup() {
     const store = useStore()
+
+    const toggleTheme = () => {
+      const nextTheme = store.getters.theme === 'dark' ? 'light' : 'dark'
+      store.commit('setTheme', nextTheme)
+      helpers.localStorage.setMeta('theme', nextTheme)
+    }
 
     const menuItems = [{
       title: 'HOME',
@@ -68,6 +80,7 @@ export default {
     return {
       menuItems,
       supportedLocales,
+      toggleTheme,
     }
   },
 }
@@ -99,6 +112,7 @@ export default {
   .settings {
     display: flex;
     align-items: center;
+    color: var(--text-dark);
 
     .app-dropdown {
       text-transform: uppercase;

@@ -3,7 +3,7 @@
     <td class="ticker-symbol">
       <div class="flex-row items-center">
         <img :src="`https://static.upbit.com/logos/${ticker.$$symbol}.png`" class="flex-wrap m-r-4">
-        <div v-html="ticker.$$name[$store.getters.translation.locale]" class="name c-black-light lines-1"/>
+        <div v-html="ticker.$$name[$store.getters.translation.locale]" class="name c-text-dark lines-1"/>
       </div>
       <div v-html="ticker.$$symbol" class="symbol f-300"/>
     </td>
@@ -72,16 +72,12 @@ export default {
     }
 
     .name {
-      font-weight: 700;
+      font-weight: 500;
 
       @media (max-width: 767px) {
         max-width: 80px;
       }
     }
-  }
-
-  &:nth-child(odd) {
-    background: var(--almost-white);
   }
 
   &:hover {

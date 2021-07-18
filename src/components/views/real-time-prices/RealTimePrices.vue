@@ -57,6 +57,7 @@ import { useStore } from 'vuex'
 import RealTimePriceRow from './RealTimePriceRow'
 import BaseAndTarget from './BaseAndTarget'
 import useWebsocket from '@/hooks/websocket'
+import helpers from '@/helpers'
 
 export default {
   components: {
@@ -85,9 +86,9 @@ export default {
         sort.value.direction = 'desc'
       }
 
-      window.localStorage.setItem('settings', JSON.stringify({
+      helpers.localStorage.setMeta('settings', {
         sort: sort.value,
-      }))
+      })
     }
 
     const keyword = ref('')
@@ -118,7 +119,7 @@ export default {
 
     const useStoredSettings = () => {
       try {
-        const settings = JSON.parse(window.localStorage.getItem('settings') || '{}')
+        const settings = helpers.localStorage.getMeta('settings')
         if (settings.sort) sort.value = settings.sort
       } catch (e) {}
     }
@@ -211,12 +212,12 @@ export default {
       &.desc,
       &.asc {
         font-weight: 700;
-        color: var(--black-light);
+        color: var(--text-dark);
       }
 
       &.desc .fa-sort-down,
       &.asc .fa-sort-up {
-        color: var(--gray-dark);
+        color: var(--text-base);
       }
     }
 
