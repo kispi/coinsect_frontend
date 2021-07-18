@@ -28,7 +28,7 @@
       <div :class="ticker.$$premiumRate ? '' : 'o-0'">
         <div
           :class="priceColor(ticker.$$premiumRate)"
-          v-html="`${ticker.$$premiumRate}%`"
+          v-html="`${$helpers.template.prettyPrice({ price: ticker.$$premiumRate, numFrac: 2 })}%`"
         />
         <div
           v-html="autoFrac(ticker.$$premiumPrice)"
