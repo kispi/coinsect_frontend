@@ -19,9 +19,17 @@
     "en": "24h Volume",
     "kr": "24시간 거래량"
   },
-  "CHANGES_24": {
-    "en": "Changes(24h)",
+  "CHANGE_RATE_24": {
+    "en": "Change (24H)",
     "kr": "전일대비"
+  },
+  "CHANGE_RATE_52W_HIGHEST": {
+    "en": "Change (52WH)",
+    "kr": "고가대비(52주)"
+  },
+  "CHANGE_RATE_52W_LOWEST": {
+    "en": "Change (52WL)",
+    "kr": "저가대비(52주)"
   },
   "KIMP": {
     "en": "Korean Premium",

@@ -2,19 +2,33 @@
   <tr class="real-time-price-row">
     <td class="ticker-symbol">
       <div class="flex-row items-center">
-        <img :src="`https://static.upbit.com/logos/${symbol}.png`" class="flex-wrap m-r-4">
+        <img :src="`https://static.upbit.com/logos/${ticker.$$symbol}.png`" class="flex-wrap m-r-4">
         <div v-html="ticker.$$name[$store.getters.translation.locale]" class="name c-black-light lines-1"/>
       </div>
-      <div v-html="symbol" class="symbol f-300"/>
+      <div v-html="ticker.$$symbol" class="symbol f-300"/>
     </td>
-    <td class="ticker-current-price f-700" :class="priceColor">
-      <div>{{ ticker.trade_price.toLocaleString() }}</div>
+    <td class="ticker-current-price f-700" :class="priceColor(ticker.$$changeRate24H)">
+      <div>{{ autoFrac(ticker.trade_price) }}</div>
       <!-- <div>COMING SOON</div> -->
     </td>
     <!-- <td class="ticker-kimp"></td> -->
-    <td class="ticker-changes-24h" :class="priceColor">
-      <div v-html="`${$helpers.template.prettyPrice({ price: changeRate, numFrac: 2 })}%`"/>
-      <div v-html="ticker.signed_change_price.toLocaleString()"/>
+    <td class="ticker-changes-24h" :class="priceColor(ticker.$$changeRate24H)">
+      <div v-html="`${$helpers.template.prettyPrice({ price: ticker.$$changeRate24H, numFrac: 2 })}%`"/>
+      <div v-html="autoFrac(ticker.signed_change_price)"/>
+    </td>
+    <td v-if="!$store.getters.isMobile" class="ticker-changes-52w-high">
+      <div
+        :class="priceColor(ticker.$$changeRate52WH)"
+        v-html="`${$helpers.template.prettyPrice({ price: ticker.$$changeRate52WH, numFrac: 2 })}%`"
+      />
+      <div v-html="autoFrac(ticker.highest_52_week_price)"/>
+    </td>
+    <td v-if="!$store.getters.isMobile" class="ticker-changes-52w-high">
+      <div
+        :class="priceColor(ticker.$$changeRate52WL)"
+        v-html="`${$helpers.template.prettyPrice({ price: ticker.$$changeRate52WL, numFrac: 2 })}%`"
+      />
+      <div v-html="autoFrac(ticker.lowest_52_week_price)"/>
     </td>
     <td class="ticker-vol-24h">
       <div v-html="$helpers.template.koreanizedNumber({ number: ticker.acc_trade_price_24h, useBigPicture: true })"/>
@@ -23,24 +37,21 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import helpers from '@/helpers'
 
 export default {
   props: ['ticker'],
-  setup(props) {
-    const symbol = computed(() => props.ticker.code.split('KRW-')[1])
+  setup() {
+    const autoFrac = price => helpers.template.prettyPrice({ price, numFrac: price >= 100 ? 0 : 2 })
 
-    const changeRate = computed(() => Math.round(props.ticker.signed_change_rate * 10000) / 100)
-
-    const priceColor = computed(() => {
-      if (changeRate.value > 0) return 'c-price-up-upbit'
-      if (changeRate.value === 0) return 'c-price-same-upbit'
-      if (changeRate.value < 0) return 'c-price-down-upbit'
-    })
+    const priceColor = rate => {
+      if (rate > 0) return 'c-price-up-upbit'
+      if (rate === 0) return 'c-price-same-upbit'
+      if (rate < 0) return 'c-price-down-upbit'
+    }
 
     return {
-      symbol,
-      changeRate,
+      autoFrac,
       priceColor,
     }
   },
@@ -61,8 +72,11 @@ export default {
     }
 
     .name {
-      max-width: 80px;
       font-weight: 700;
+
+      @media (max-width: 767px) {
+        max-width: 80px;
+      }
     }
   }
 

@@ -22,7 +22,7 @@ import { ref } from 'vue'
 
 export default {
   setup() {
-    const bases = ref(['upbit'].map(key => ({ key })))
+    const bases = ref(['upbit'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) })))
 
     const targets = ref(['binance'].map(key => ({ key })))
 

@@ -6,6 +6,7 @@
       v-if="selectedItem"
       class="clickable-area">
       <i class="item-icon" v-if="selectedItem.icon" :class="selectedItem.icon"/>
+      <img class="item-image" v-if="selectedItem.img" :src="selectedItem.img"/>
       <div class="key" v-html="$translate(selectedItem.key)"/>
       <div class="chevrons">
         <i class="fa fa-chevron-down"/>
@@ -21,6 +22,7 @@
           v-for="item in dropdownItems"
           :class="{'selected': (selectedItem || {}).key === item.key}">
           <i class="item-icon" v-if="item.icon" :class="item.icon"/>
+          <img class="item-image" v-if="item.img" :src="item.img"/>
           <div class="key" v-html="$translate(item.key)"/>
         </li>
       </ul>
@@ -79,14 +81,14 @@ export default {
     }
   }
 
-  .item-icon {
+  .item-icon,
+  .item-image {
     font-size: 14px;
-    width: 14px;
-    margin-right: 4px;
+    width: 16px;
   }
 
   .key {
-    margin: 0 8px;
+    margin: 0 4px;
     font-weight: 500;
   }
 

@@ -28,9 +28,11 @@
           v-for="th in [
             { column: '$$symbol', title: 'COIN' },
             { column: 'trade_price', title: 'CURRENT_PRICE' },
-            { column: 'signed_change_rate', title: 'CHANGES_24' },
+            { column: 'signed_change_rate', title: 'CHANGE_RATE_24' },
+            { column: '$$changeRate52WH', title: 'CHANGE_RATE_52W_HIGHEST', $$hide: $store.getters.isMobile },
+            { column: '$$changeRate52WL', title: 'CHANGE_RATE_52W_LOWEST', $$hide: $store.getters.isMobile },
             { column: 'acc_trade_price_24h', title: 'VOL_24' },
-          ]">
+          ].filter(o => !o.$$hide)">
           {{ $translate(th.title) }}
           <span class="sort-icons">
             <i class="fas fa-sort-up"/>
@@ -126,7 +128,7 @@ export default {
 
       store.dispatch('loadMarkets', baseExchange.value).then(() => {
         store.commit('setWebsocket', baseExchange.value)
-        subscribe(baseExchange.value)
+        subscribe[baseExchange.value]()
       })
     })
 
@@ -187,10 +189,16 @@ export default {
 
     th {
       cursor: pointer;
+      white-space: nowrap;
 
       .sort-icons {
         position: relative;
         margin-left: 4px;
+        padding-right: 8px;
+
+        @media (max-width: 767px) {
+          padding-right: 4px;
+        }
 
         i {
           color: var(--gray-light);
