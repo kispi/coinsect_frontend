@@ -28,13 +28,17 @@
   color:                 var(--text-base);
   --text-dark:           var(--black-light);
   --text-base:           var(--gray-dark);
+  --text-light:          var(--gray-light);
   --border-base:         var(--gray);
   --background-base:     var(--white);
+  --background-weak:     rgba(0, 0, 0, 0.1);
 
   &.dark {
     --text-dark:         var(--white);
     --text-base:         var(--gray-light);
+    --text-light:        var(--gray-dark);
     --border-base:       var(--black-light);
     --background-base:   var(--black-dark);
+    --background-weak:   rgba(255, 255, 255, 0.1);
   }
 }

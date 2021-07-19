@@ -20,6 +20,7 @@ const app = {
     },
     isMobile: null,
     config: null,
+    chatFolded: null,
     theme: 'dark',
     settings: {
       sort: {
@@ -42,6 +43,7 @@ const app = {
     loading: state => state.loading,
     isMobile: state => state.isMobile,
     config: state => state.config,
+    chatFolded: state => state.chatFolded,
     theme: state => state.theme,
     settings: state => state.settings,
     windowInnerWidth: state => state.windowInnerWidth,
@@ -68,6 +70,9 @@ const app = {
       }
 
       Object.keys(payload).forEach(key => state.toast[key] = payload[key])
+    },
+    setChatFolded(state, chatFolded) {
+      state.chatFolded = chatFolded
     },
     setConfig(state, config) {
       state.config = config

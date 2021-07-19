@@ -1,5 +1,5 @@
 <template>
-  <div class="app-addons"></div>
+  <AppChat/>
   <AppToast/>
   <AppTooltips/>
   <AppModal
@@ -10,16 +10,17 @@
 </template>
 
 <script>
-import addons from '@/hooks/addons'
+import AppChat from '@/components/app/chat/AppChat'
 import AppModal from '@/components/app/AppModal'
 import AppTooltips from '@/components/app/AppTooltips'
 import AppToast from '@/components/app/AppToast'
 
 export default {
   components: {
+    AppChat,
     AppModal,
     AppTooltips,
     AppToast,
-  }
+  },
 }
 </script>
