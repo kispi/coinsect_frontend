@@ -6,7 +6,7 @@
         :gap="$store.getters.isMobile ? 0 : 8"
         class="f-12">
         <div class="c-text-base text-nowrap" v-html="$translate('ACTIVE_USERS')"/>
-        <div class="c-text-dark flex-wrap" v-html="($store.getters.numActiveUsers || 0).toLocaleString()"/>
+        <div class="c-text-stress flex-wrap" v-html="($store.getters.numActiveUsers || 0).toLocaleString()"/>
       </AdaptiveLayout>
     </div>
     <div
@@ -137,7 +137,7 @@ export default {
   .settings {
     display: flex;
     align-items: center;
-    color: var(--text-dark);
+    color: var(--text-stress);
 
     .app-dropdown {
       text-transform: uppercase;

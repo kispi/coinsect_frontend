@@ -62,7 +62,21 @@ export default {
 
     const refAppChatBody = ref(null)
 
-    const nickname = ref('kispi') 
+    const nickname = ref('') 
+
+    const recommendNickname = () => {
+      const nicknameRecommendations = [
+        '가즈아', '흑우', '블랙카우', '손절장인', '익항올', '이말올', '이럴거면왜올림', '이럴거면왜내림', '대폰지', '결국폰지사기',
+        '오늘도물타기', '물린뒤전망조사', '강제장투', '야미털기', '건전한조정', '코린이', '버거타임', '세력', '타노스빔', '우지한의', '떡락충', '침팬치',
+        '메로나', '장대양봉', '스크류바', '장대음봉', '투더문', '기도매매', '우상향', '존버의신', '행복회로불탐', '리또속', '워뇨띠꿈나무', '했제충',
+        '무지성롱', '어제청산당함', '청산당할예정', '데드캣', '단타의신', '그새팔았음', '뚝100불남음', '다시는안칠게요', '귀하의포지션이', '방금음전',
+        '올해10만불',
+      ]
+
+      const randIdx = Math.floor(Math.random() * nicknameRecommendations.length)
+      const randNo = Math.floor(Math.random() * 100 + 1)
+      nickname.value = `${nicknameRecommendations[randIdx]}${randNo}`.slice(0, 8)
+    }
 
     const messages = ref([])
 
@@ -113,7 +127,7 @@ export default {
     const connect = () => {
       const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
 
-      connection.value = new WebSocket(`${endpoint}/chat`)
+      connection.value = new WebSocket(`${endpoint}/chat?token=test`)
 
       connection.value.onopen = () => {
         sendWebsocketMessage({
@@ -143,7 +157,10 @@ export default {
       }
     }
 
-    onMounted(connect)
+    onMounted(() => {
+      recommendNickname()
+      connect()
+    })
 
     return {
       refAppChatBody,
@@ -167,11 +184,9 @@ export default {
 
   .app-chat-container {
     border-radius: 8px;
-    border: 1px solid var(--border-base);
-    box-shadow: 0 2px 8px var(--border-base);
     display: flex;
     flex-direction: column;
-    background: var(--background-base);
+    background: var(--border-base);
   }
 
   .app-chat-header {
@@ -195,7 +210,7 @@ export default {
         color: var(--text-light);
 
         &:hover {
-          color: var(--text-dark);
+          color: var(--text-stress);
         }
       }
     }
@@ -204,9 +219,7 @@ export default {
   .app-chat-body {
     height: 240px;
     overflow-y: auto;
-    padding: 0 var(--app-chat-padding);
-    border-top: 1px solid var(--border-base);
-    border-bottom: 1px solid var(--border-base);
+    padding: var(--app-chat-padding);
   }
 
   .app-chat-input {
@@ -215,6 +228,7 @@ export default {
     padding: calc(var(--app-chat-padding) / 2) var(--app-chat-padding);
 
     input {
+      color: var(--text-stress);
       background: rgba(255, 255, 255, 0.1);
     }
 
@@ -255,6 +269,32 @@ export default {
 
     @media (min-width: 768px) {
       width: 320px;
+    }
+  }
+}
+
+#app {
+  &.light {
+    .app-chat-container {
+      background: var(--white);
+      border: 1px solid var(--gray-light);
+
+      .app-chat-body {
+        border-top: 1px solid var(--border-base);
+        border-bottom: 1px solid var(--border-base);
+      }
+    }
+  }
+
+  &.dark {
+    .app-chat-container {
+      background: var(--black-light);
+      border: 1px solid var(--gray);
+
+      .app-chat-body {
+        border-top: 1px solid var(--gray-dark);
+        border-bottom: 1px solid var(--gray-dark);
+      }
     }
   }
 }

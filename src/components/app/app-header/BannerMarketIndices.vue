@@ -33,6 +33,7 @@ export default {
 
       const loc = store.getters.translation.locale
       const usdKrw = store.getters.usdKrw
+      const numUnits = store.getters.windowInnerWidth >= 992 ? 2 : 1
 
       return [{
         key: 'USD/KRW',
@@ -48,7 +49,7 @@ export default {
           `${Math.round(o.coincodex.total_market_cap / Math.pow(10, 12) * 10000) / 10000}T` :
           plugins.$helpers.template.koreanizedNumber({
             number: o.coincodex.total_market_cap * usdKrw,
-            numUnits: 2,
+            numUnits,
           }),
         changes: o.coincodex.total_market_cap_24h_change_percent,
       }, {
@@ -57,7 +58,7 @@ export default {
           `${Math.round(o.coincodex.total_volume / Math.pow(10, 12) * 10000) / 10000}T` :
           plugins.$helpers.template.koreanizedNumber({
             number: o.coincodex.total_volume * usdKrw,
-            numUnits: 2,
+            numUnits,
           }),
         changes: o.coincodex.total_volume_24h_change_percent,
       }]
@@ -82,6 +83,7 @@ export default {
   display: flex;
 
   .adaptive-layout {
+    white-space: nowrap;
     align-items: center;
     font-size: 12px;
 
@@ -90,13 +92,12 @@ export default {
     }
 
     .key {
-      white-space: nowrap;
       color: var(--text-base);
       flex: 0 0 auto;
     }
 
     .value {
-      color: var(--text-dark);
+      color: var(--text-stress);
       font-weight: 500;
       flex: 0 0 auto;
     }

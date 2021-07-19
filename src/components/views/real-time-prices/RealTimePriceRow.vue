@@ -8,7 +8,7 @@
         <div
           v-html="ticker.$$name[$store.getters.translation.locale]"
           class="name lines-1"
-          :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'c-brand-primary' : 'c-text-dark'"
+          :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'c-brand-primary' : 'c-text-stress'"
         />
       </div>
       <div v-html="ticker.$$symbol" class="symbol f-300"/>

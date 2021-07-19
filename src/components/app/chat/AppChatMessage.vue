@@ -45,10 +45,11 @@ export default {
     margin: 4px 0;
 
     .text {
-      background: var(--background-weak);
+      background: var(--background-light);
       padding: 4px;
       border-radius: 4px;
       max-width: 80%;
+      color: var(--text-stress);
     }
 
     .timestamp {
