@@ -19,6 +19,10 @@
     "en": "24h Volume",
     "kr": "24시간 거래량"
   },
+  "ACTIVE_USERS": {
+    "en": "Active Users",
+    "kr": "접속자수"
+  },
   "CHANGE_RATE_24": {
     "en": "Change (24H)",
     "kr": "전일대비"

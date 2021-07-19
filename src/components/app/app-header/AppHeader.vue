@@ -1,6 +1,14 @@
 <template>
   <div class="app-header">
-    <BannerMarketIndices class="width-limiter"/>
+    <div class="top width-limiter">
+      <BannerMarketIndices/>
+      <AdaptiveLayout
+        :gap="$store.getters.isMobile ? 0 : 8"
+        class="f-12">
+        <div class="c-text-base text-nowrap" v-html="$translate('ACTIVE_USERS')"/>
+        <div class="c-text-dark flex-wrap" v-html="($store.getters.numActiveUsers || 0).toLocaleString()"/>
+      </AdaptiveLayout>
+    </div>
     <div
       class="logo-and-settings"
       :class="{'border-top': $store.getters.indices}">
@@ -101,6 +109,13 @@ export default {
 .app-header {
   box-shadow: 0 -1px var(--border-base) inset;
   transition: all 0.2s ease;
+
+  .top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 8px;
+  }
 
   .width-limiter {
     max-width: 1200px;

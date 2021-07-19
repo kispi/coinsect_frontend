@@ -20,6 +20,7 @@ const app = {
     },
     isMobile: null,
     config: null,
+    numActiveUsers: null,
     chatFolded: null,
     theme: 'dark',
     settings: {
@@ -43,6 +44,7 @@ const app = {
     loading: state => state.loading,
     isMobile: state => state.isMobile,
     config: state => state.config,
+    numActiveUsers: state => state.numActiveUsers,
     chatFolded: state => state.chatFolded,
     theme: state => state.theme,
     settings: state => state.settings,
@@ -76,6 +78,9 @@ const app = {
     },
     setConfig(state, config) {
       state.config = config
+    },
+    setNumActiveUsers(state, numActiveUsers) {
+      state.numActiveUsers = numActiveUsers
     },
     setTheme(state, theme) {
       state.theme = theme

@@ -32,7 +32,7 @@
           @keydown="onKeydown"
         />
         <button
-          @click="sendMessage(text, true)"
+          @click="sendTextMessage(text, true)"
           class="btn"
           :disabled="!text">
           SEND
@@ -50,12 +50,15 @@
 
 <script>
 import { ref, getCurrentInstance, onMounted, nextTick } from 'vue'
+import { useStore } from 'vuex'
 import AppChatMessage from './AppChatMessage'
 
 export default {
   components: { AppChatMessage },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const store = useStore()
 
     const refAppChatBody = ref(null)
 
@@ -65,38 +68,82 @@ export default {
 
     const text = ref('')
 
+    const connection = ref(null)
+
+    const token = ref(null)
+
     const onKeydown = e => {
       if (e.isComposing) return
 
-      if (e.key === 'Enter') sendMessage(text.value, true)
+      if (e.key === 'Enter') sendTextMessage(text.value, true)
     }
 
-    const sendMessage = (incomingText, isMine) => {
+    const addMessage = message => {
       messages.value.push({
-        nickname: nickname.value,
-        type: 'normal',
-        text: incomingText,
-        isMine: isMine || Math.random() >= 0.5,
-        timestamp: plugins.$helpers.dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        nickname: message.u.n,
+        isMine: message.isMine,
+        text: message.x,
+        timestamp: message.ts,
+        type: message.t,
       })
 
-      text.value = ''
-
       if (refAppChatBody.value) nextTick(() => refAppChatBody.value.scrollTop = refAppChatBody.value.scrollHeight)
+    }
+
+    const sendWebsocketMessage = ({ k, v }) => {
+      if (connection.value.readyState !== 1) return
+
+      connection.value.send(JSON.stringify({ k, v }))
+    }
+
+    const sendTextMessage = incomingText => {
+      sendWebsocketMessage({
+        k: 'text',
+        v: {
+          x: incomingText,
+        },
+      })
+      text.value = ''
     }
 
     const openModalChangeNickname = () => {
 
     }
 
-    onMounted(() => {
-      sendMessage('테스트 메시지1')
-      sendMessage('숏일까 롱일까?')
-      sendMessage('매우 매우 매우 매우 매우 매우 매우 매우 매우 매우 매우 매우 매우 매우 매우 긴 메시지')
-      sendMessage('모르겠다 ㄹㅇ')
-      sendMessage('채팅서버를 준비하면 실제 채팅이 가능하지만 일단 UI부터 만들었다')
-      sendMessage('ㅋㅋㅋㅋㅋ')
-    })
+    const connect = () => {
+      const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
+
+      connection.value = new WebSocket(`${endpoint}/chat`)
+
+      connection.value.onopen = () => {
+        sendWebsocketMessage({
+          k: 'set_nickname',
+          v: {
+            u: {
+              n: nickname.value,
+            },
+          },
+        })
+      }
+
+      connection.value.onmessage = event => {
+        try {
+          const json = JSON.parse(event.data)
+          if (json.k === 'auth') token.value = json.v.u.t
+          if (json.k === 'text') addMessage(json.v)
+          if (json.v && json.v.l) store.commit('setNumActiveUsers', json.v.l)
+        } catch (e) {
+          console.error(e)
+        }
+      }
+
+      connection.value.onclose = () => {
+        plugins.$toast.error('서버와의 연결이 끊겨 재접속합니다')
+        setTimeout(connect, 1000)
+      }
+    }
+
+    onMounted(connect)
 
     return {
       refAppChatBody,
@@ -105,7 +152,7 @@ export default {
       messages,
       onKeydown,
       openModalChangeNickname,
-      sendMessage,
+      sendTextMessage,
     }
   },
 }

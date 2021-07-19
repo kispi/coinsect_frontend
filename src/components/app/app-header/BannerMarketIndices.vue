@@ -63,9 +63,12 @@ export default {
       }]
     })
 
-    onMounted(() => {
+    const loadIndices = () => {
       store.dispatch('loadIndices')
-    })
+      setTimeout(loadIndices, 60 * 1000)
+    }
+
+    onMounted(loadIndices)
 
     return {
       indices,
@@ -77,7 +80,6 @@ export default {
 <style lang="scss">
 .banner-market-indices {
   display: flex;
-  padding: 8px;
 
   .adaptive-layout {
     align-items: center;
