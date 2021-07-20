@@ -8,7 +8,7 @@ const promptConfirm = require('prompt-confirm')
 const s3 = new AWS.S3()
 const bucket = {
   dev: '',
-  prod: '',
+  prod: 'coinsect.io',
 }
 
 const exec = async arg => await aExec(arg)
@@ -139,7 +139,7 @@ if (!arg || ['all', 'prod', 'dev'].indexOf(arg) === -1) {
 }
 
 const TMI = arg === 'all' ? ' (This executes multiple deploys concurrently.)' : ''
-confirm = new promptConfirm(`deploy ${arg}?` + TMI)
+new promptConfirm(`deploy ${arg}?` + TMI)
   .ask(yes => {
     if (yes) {
       if (arg === 'dev' || arg === 'all') deploy('dev')
