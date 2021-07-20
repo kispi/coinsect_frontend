@@ -28,6 +28,7 @@
       </div>
       <div class="app-chat-input">
         <input
+          ref="refInput"
           v-model="text"
           @keydown="onKeydown"
         />
@@ -61,6 +62,8 @@ export default {
     const store = useStore()
 
     const refAppChatBody = ref(null)
+
+    const refInput = ref(null)
 
     const nickname = ref('') 
 
@@ -118,6 +121,8 @@ export default {
         },
       })
       text.value = ''
+
+      if (refInput.value) nextTick(() => refInput.value.focus())
     }
 
     const openModalChangeNickname = () => {
@@ -163,6 +168,7 @@ export default {
     })
 
     return {
+      refInput,
       refAppChatBody,
       nickname,
       text,
