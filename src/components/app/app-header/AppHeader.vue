@@ -31,7 +31,7 @@
             })"
             @mouseleave="$tooltip.hide('tooltipDarkMode')"
           />
-          <RouterLink :to="'/login'" v-html="$translate('LOGIN')" class="m-l-8"/>
+          <!-- <RouterLink :to="'/login'" v-html="$translate('LOGIN')" class="m-l-8"/> -->
         </div>
       </div>
     </div>
@@ -70,21 +70,21 @@ export default {
     const menuItems = [{
       title: 'HOME',
       path: '/',
-    }, {
-      title: 'COMMUNITY',
-      path: '/boards',
-    }, {
-      title: 'LONG_SHORT',
-      path: '/long_short'
+    // }, {
+    //   title: 'COMMUNITY',
+    //   path: '/boards',
+    // }, {
+    //   title: 'LONG_SHORT',
+    //   path: '/long_short'
     }, {
       title: 'MARKETCAPS',
       path: '/marketcaps',
-    }, {
-      title: 'NEWS',
-      path: '/news',
-    }, {
-      title: 'ABOUT',
-      path: '/about',
+    // }, {
+    //   title: 'NEWS',
+    //   path: '/news',
+    // }, {
+    //   title: 'ABOUT',
+    //   path: '/about',
     }]
 
     const supportedLocales = ref(['kr', 'en'].map(key => ({ key })))

@@ -44,6 +44,7 @@ export default {
     ModalBasic: defineAsyncComponent(() => import('@/components/modals/ModalBasic')),
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
+    ModalChatProfile: defineAsyncComponent(() => import('@/components/modals/ModalChatProfile')),
   },
   setup(props) {
     const show = ref(false)
@@ -258,6 +259,12 @@ export default {
     .modal-base-style {
       position: initial;
     }
+  }
+}
+
+#app.dark {
+  .modal-base-style {
+    background: var(--gray-dark);
   }
 }
 </style>

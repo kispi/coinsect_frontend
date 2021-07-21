@@ -11,7 +11,7 @@
         ref="refCurrentImage"
         @click="$emit('close')"
         class="image">
-        <AppImg :src="$helpers.withCdn(images[currentIndex])"/>
+        <AppImg :src="images[currentIndex]"/>
       </div>
       <div class="flex-wrap center">
         <i

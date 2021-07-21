@@ -2,5 +2,9 @@
   "TOOLTIP_DARK_MODE": {
     "en": "Toggle Dark/Basic Theme",
     "kr": "다크/기본 테마를 토글합니다"
+  },
+  "TOOLTIP_PROFILE_IMAGE": {
+    "en": "Profile image shown to another people",
+    "kr": "다른 사람들에게 보여지는 프로필 이미지입니다"
   }
 }

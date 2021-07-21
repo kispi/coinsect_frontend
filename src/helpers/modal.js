@@ -15,7 +15,7 @@ const modal = {
     options.title = options.title || 'ARE_YOU_SURE'
     options.body = helpers.translate(options.body ? `<div class="text-center m-t-16 p-12">${options.body}</div>` : '')
     options.buttons = options.buttons || [
-      { text: 'GO_BACK', class: 'btn-default' },
+      { text: 'CANCEL', class: 'btn-default' },
       { text: 'CONFIRM', class: options.class ? `btn-${options.class}` : 'btn-primary' },
     ]
     return options

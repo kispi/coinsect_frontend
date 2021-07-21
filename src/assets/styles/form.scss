@@ -90,3 +90,12 @@ select {
   font-size: 12px;
   color: var(--danger);
 }
+
+#app.dark {
+  input,
+  textarea,
+  select {
+    color: var(--text-stress);
+    background: rgba(255, 255, 255, 0.1);
+  }
+}

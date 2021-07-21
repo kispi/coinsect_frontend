@@ -107,6 +107,8 @@ const marketInfo = {
       }
     },
     async loadMarkets({ commit }, exchange) {
+      if (helpers.canSkipApiCall(`loadMarkets_${exchange}`)) return
+
       let endpoint
       if (exchange === 'upbit') endpoint = 'https://api.upbit.com/v1/market/all'
       if (exchange === 'bithumb') endpoint = 'https://api.bithumb.com/public/ticker/all_krw'
@@ -114,16 +116,15 @@ const marketInfo = {
       try {
         const data = await $http.get(endpoint)
         const symbols = {}
-        const markets = data.filter(o => o.market.startsWith('KRW-'))
-        markets.forEach(o => {
-          const symbol = o.market.split('KRW-')[1]
+        data.forEach(o => {
+          const symbol = o.market.split('-')[1]
           o.$$symbol = symbol
           symbols[symbol] = { en: o.english_name, kr: o.korean_name }
         })
 
         commit('setMarkets', {
           exchange,
-          markets,
+          markets: data.filter(o => o.market.startsWith('KRW-')),
           symbols,
         })
       } catch (e) {

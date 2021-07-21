@@ -3,10 +3,10 @@
     class="app-chat-message"
     :class="{'mine': message.isMine}">
     <div class="profile">
-      <img src="@/assets/images/upbit.svg">
+      <img :src="message.profile.image">
     </div>
-    <div class="right">
-      <div class="nickname" v-html="message.nickname"/>
+    <div class="content">
+      <div class="nickname" v-html="message.profile.nickname"/>
       <div class="text-and-timestamp">
         <div class="text" v-html="message.text"/>
         <div
@@ -37,6 +37,10 @@ export default {
     img {
       width: 24px;
     }
+  }
+
+  .content {
+    width: 100%;
   }
 
   .text-and-timestamp {

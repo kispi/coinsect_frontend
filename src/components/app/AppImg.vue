@@ -2,10 +2,11 @@
   <img
     class="app-img"
     :class="fit"
-    :src="$helpers.withCdn(imageSource)"
+    :src="imageSource"
     :alt="alt"
     @load="e => $emit('load', e)"
-    @error="error = true">
+    @error="error = true"
+  >
 </template>
 
 <script>
@@ -15,7 +16,7 @@
  * 사용법:)
  * <AppImg :src="소스"/>
  */
-import { ref, computed, getCurrentInstance } from 'vue'
+import { ref, computed } from 'vue'
 
 export default {
   props: {
@@ -32,11 +33,9 @@ export default {
     },
   },
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
     const error = ref(props.src ? null : true)
 
-    const fallbackImage = plugins.$helpers.withCdn('no_image.svg', 'images/small')
+    const fallbackImage = ''
 
     const imageSource = computed(() => error.value ? fallbackImage : props.src)
 

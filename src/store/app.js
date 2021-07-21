@@ -136,12 +136,10 @@ const app = {
       commit('setToast', null)
     },
     // 앱 뜰 때 필요한 정보들 쭉 콜함
-    async loadConfig({ commit, getters, dispatch }) {
-      const loadAuthRequired = async () => {
-        if (!getters.header) return
-
+    async loadConfig({ commit, dispatch }) {
+      const loadAuthNotRequired = async () => {
         try {
-          await dispatch('loadMe')
+          await dispatch('loadMarkets', 'upbit')
         } catch (e) {}
       }
 
@@ -153,13 +151,9 @@ const app = {
         await dispatch('loadAuthToken')
       } catch (e) {}
 
-      if (window.ReactNativeWebView) {
-        window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'PUSH_TOKEN', token: (getters.header || {}).token || '' }))
-      }
-
       // 모든 api의 호출 전에 실행
       $http.get('config').then(config => commit('setConfig', config))
-      await loadAuthRequired()
+      loadAuthNotRequired()
     },
   },
 }

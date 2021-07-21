@@ -7,6 +7,14 @@
     "en": "Login",
     "kr": "로그인"
   },
+  "CANCEL": {
+    "en": "Cancel",
+    "kr": "취소"
+  },
+  "CONFIRM": {
+    "en": "Confirm",
+    "kr": "확인"
+  },
   "BTC_DOMINANCE": {
     "en": "Dominance(BTC)",
     "kr": "도미(BTC)"
@@ -94,5 +102,13 @@
   "CURRENCY": {
     "en": "Currency",
     "kr": "통화"
+  },
+  "PROFILE_IMAGE": {
+    "en": "Profile Image",
+    "kr": "프로필 이미지"
+  },
+  "NICKNAME": {
+    "en": "Nickname",
+    "kr": "닉네임"
   }
 }
