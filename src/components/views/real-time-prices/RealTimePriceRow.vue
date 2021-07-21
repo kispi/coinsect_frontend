@@ -15,8 +15,8 @@
     </td>
     <td>
       <div
-        class="ticker-current-price-base"
-        :class="priceColor(ticker.$$changeRate24H)"
+        class="ticker-current-price-base f-700"
+        :class="priceColor(ticker.$$changeRate1D)"
         v-html="autoFrac(ticker.$$tradePriceBase)"
       />
       <div
@@ -35,8 +35,8 @@
         />
       </div>
     </td>
-    <td class="ticker-changes-24h" :class="priceColor(ticker.$$changeRate24H)">
-      <div v-html="`${$helpers.template.prettyPrice({ price: ticker.$$changeRate24H, numFrac: 2 })}%`"/>
+    <td class="ticker-changes-24h" :class="priceColor(ticker.$$changeRate1D)">
+      <div v-html="`${$helpers.template.prettyPrice({ price: ticker.$$changeRate1D, numFrac: 2 })}%`"/>
       <div v-html="autoFrac(ticker.$$changePrice24H)"/>
     </td>
     <td v-if="!$store.getters.isMobile" class="ticker-changes-52w-high">
@@ -110,7 +110,7 @@ export default {
   }
 
   &:hover {
-    background: var(--brand-primary-bg-lv1);
+    background: var(--brand-primary-hover);
   }
 }
 </style>

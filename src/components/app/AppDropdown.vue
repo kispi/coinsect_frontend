@@ -113,7 +113,7 @@ export default {
       user-select: none;
 
       &:hover {
-        background: var(--brand-primary-bg-lv1);
+        background: var(--brand-primary-hover);
       }
 
       &:active,

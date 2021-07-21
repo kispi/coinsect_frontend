@@ -28,9 +28,9 @@
             :key="th.title"
             v-for="th in [
               { column: '$$symbol', title: 'COIN' },
-              { column: '$$tradePriceBase', title: 'CURRENT_PRICE' },
+              { column: '$$tradePriceBase', title: 'PRICE' },
               { column: '$$premiumRate', title: 'PREMIUM' },
-              { column: '$$changeRate24H', title: 'CHANGE_RATE_24' },
+              { column: '$$changeRate1D', title: 'CHANGE_RATE_1D' },
               { column: '$$changeRate52WH', title: 'CHANGE_RATE_52W_HIGHEST', $$hide: $store.getters.isMobile },
               { column: '$$changeRate52WL', title: 'CHANGE_RATE_52W_LOWEST', $$hide: $store.getters.isMobile },
               { column: '$$vol24H', title: 'VOL_24' },
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { onMounted, ref, computed, onUnmounted, getCurrentInstance } from 'vue'
+import { onMounted, ref, computed, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import RealTimePriceRow from './RealTimePriceRow'
 import BaseAndTarget from './BaseAndTarget'
@@ -148,10 +148,6 @@ export default {
         hooks.upbit.subscribe()
         hooks.binance.subscribe()
       })
-    })
-
-    onUnmounted(() => {
-      store.commit('disconnectWebsocket', baseExchange.value)
     })
 
     return {

@@ -108,10 +108,9 @@ export default {
   }
 
   .action {
-    font-weight: 600;
     padding-left: 16px;
     margin-left: 16px;
-    border-left: 1px solid var(--brand-primary-bg-lv1);
+    border-left: 1px solid var(--brand-primary);
   }
 }
 </style>

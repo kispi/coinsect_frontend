@@ -14,7 +14,7 @@ const useUpbit = () => {
       $$highest52WeekPrice: json.highest_52_week_price,
       $$lowest52WeekPrice: json.lowest_52_week_price,
       $$changePrice24H: json.signed_change_price,
-      $$changeRate24H: Math.round(json.signed_change_rate * 10000) / 100,
+      $$changeRate1D: Math.round(json.signed_change_rate * 10000) / 100,
       $$changeRate52WH: Math.round((json.trade_price - json.highest_52_week_price) / json.highest_52_week_price * 10000) / 100,
       $$changeRate52WL: Math.round((json.trade_price - json.lowest_52_week_price) / json.lowest_52_week_price * 10000) / 100,
       $$vol24H: json.acc_trade_price_24h,

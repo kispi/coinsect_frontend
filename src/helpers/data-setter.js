@@ -8,7 +8,7 @@ export default {
     $$highest52WeekPrice,
     $$lowest52WeekPrice,
     $$changePrice24H,
-    $$changeRate24H,
+    $$changeRate1D,
     $$changeRate52WH,
     $$changeRate52WL,
     $$vol24H,
@@ -22,7 +22,7 @@ export default {
     if ($$highest52WeekPrice) o.$$highest52WeekPrice = $$highest52WeekPrice
     if ($$lowest52WeekPrice) o.$$lowest52WeekPrice = $$lowest52WeekPrice
     if ($$changePrice24H) o.$$changePrice24H = $$changePrice24H
-    if ($$changeRate24H) o.$$changeRate24H = $$changeRate24H
+    if ($$changeRate1D) o.$$changeRate1D = $$changeRate1D
     if ($$changeRate52WH) o.$$changeRate52WH = $$changeRate52WH
     if ($$changeRate52WL) o.$$changeRate52WL = $$changeRate52WL
     if ($$vol24H) o.$$vol24H = $$vol24H

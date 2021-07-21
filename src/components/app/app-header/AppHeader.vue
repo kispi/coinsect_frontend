@@ -144,7 +144,7 @@ export default {
     }
 
     .fa-moon {
-      color: green;
+      color: var(--bybit-long);
     }
   }
 
@@ -164,7 +164,7 @@ export default {
       }
 
       &:hover {
-        font-weight: 700;
+        background: var(--brand-primary-hover);
       }
     }
   }

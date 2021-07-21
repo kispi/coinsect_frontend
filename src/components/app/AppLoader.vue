@@ -53,27 +53,27 @@
 
     &:nth-child(1) .app-loader-dot {
       animation: lds-ellipsis2 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
-      background: rgba(126, 113, 221, 0.34);
+      background: rgba(36, 175, 100, 0.34);
     }
 
     &:nth-child(2) .app-loader-dot {
       animation-delay: -0.5s;
-      background: rgba(126, 113, 221, 0.66);
+      background: rgba(36, 175, 100, 0.66);
     }
 
     &:nth-child(3) .app-loader-dot {
       animation-delay: -0.25s;
-      background: rgba(126, 113, 221, 0.78);
+      background: rgba(36, 175, 100, 0.78);
     }
 
     &:nth-child(4) .app-loader-dot {
       animation-delay: 0s;
-      background: var(--brand-primary);
+      background: rgba(36, 175, 100, 1);
     }
 
     &:nth-child(5) .app-loader-dot {
       animation: lds-ellipsis3 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
-      background: rgba(126, 113, 221, 0.34);
+      background: rgba(36, 175, 100, 0.34);
     }
   }
 

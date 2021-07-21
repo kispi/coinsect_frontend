@@ -5,22 +5,15 @@
       class="app-chat-container">
       <div class="app-chat-header">
         <div
+          @click="openModalChangeProfile"
+          class="profile">
+          <AppImg :src="profile.image"/>
+          <div class="nickname" v-html="profile.nickname"/>
+        </div>
+        <i
           @click="toggleChatFolded"
-          class="cursor-pointer f-700">
-          <span class="c-brand-primary">COINSECT</span>ALK<i class="fa fa-chevron-down m-l-8"/>
-        </div>
-        <div class="functions">
-          <div
-            @click="openModalChangeProfile"
-            class="profile">
-            <AppImg :src="profile.image"/>
-            <div class="nickname" v-html="profile.nickname"/>
-            <i
-              @click="messages = []"
-              class="fa fa-trash-alt cursor-pointer"
-            />
-          </div>
-        </div>
+          class="fa fa-chevron-down"
+        />
       </div>
       <div
         ref="refAppChatBody"
@@ -33,17 +26,18 @@
         />
       </div>
       <div class="app-chat-input">
-        <input
-          ref="refInput"
-          v-model="text"
-          @keydown="onKeydown"
-        />
-        <button
-          @click="sendTextMessage(text, true)"
-          class="btn"
-          :disabled="!text">
-          <i class="fa fa-paper-plane"/>
-        </button>
+        <div class="input-wrapper">
+          <input
+            ref="refInput"
+            v-model="text"
+            @keydown="onKeydown"
+          />
+          <i
+            v-if="text"
+            @click="sendTextMessage(text, true)"
+            class="fa fa-paper-plane"
+          />
+        </div>
       </div>
     </div>
     <div
@@ -67,8 +61,6 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
-
-    const refIconProfileImage = ref(null)
 
     const refInput = ref(null)
 
@@ -140,7 +132,6 @@ export default {
     )
 
     return {
-      refIconProfileImage,
       refInput,
       refAppChatBody,
       connected,
@@ -164,6 +155,16 @@ export default {
   right: 24px;
   transition: none;
 
+  .fa-paper-plane,
+  .fa-chevron-down {
+    color: var(--text-stress);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--brand-primary);
+    }
+  }
+
   .app-chat-container {
     border-radius: 8px 8px 0 0;
     display: flex;
@@ -183,31 +184,25 @@ export default {
     align-items: center;
     padding: var(--app-chat-padding);
 
-    .functions {
-      .profile {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-      }
+    .profile {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
 
-      .app-img {
-        width: 24px;
-        height: 24px;
-        margin-right: 8px;
-      }
+    .app-img {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
 
-      .nickname {
-        color: var(--brand-primary);
-        margin-right: 16px;
-        font-weight: 700;
-      }
+    .nickname {
+      color: var(--text-stress);
+      margin-right: 16px;
+      font-weight: 700;
 
-      .fa-trash-alt {
-        color: var(--text-light);
-
-        &:hover {
-          color: var(--text-stress);
-        }
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
@@ -219,20 +214,19 @@ export default {
   }
 
   .app-chat-input {
-    display: flex;
-    align-items: center;
     padding: calc(var(--app-chat-padding) / 2) var(--app-chat-padding);
 
-    .btn {
-      background: none;
-      flex: 0 0 auto;
+    .input-wrapper {
+      border-radius: 24px;
+      background: var(--background-light);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
 
-      &:not(:disabled) {
-        color: var(--brand-primary);
-      }
-
-      &:disabled {
-        color: var(--gray-light);
+      .fa-paper-plane {
+        font-size: 16px;
+        cursor: pointer;
       }
     }
   }

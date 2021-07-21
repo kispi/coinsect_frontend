@@ -5,7 +5,6 @@ import dayjs from 'dayjs'
 import dom from './dom'
 import meta from './meta'
 import modal from './modal'
-import status from './status'
 import template from './template'
 import toast from './toast'
 import tooltip from './tooltip'
@@ -42,7 +41,6 @@ const helpers = {
   meta,
   animate,
   dataSetter,
-  status,
   canSkipApiCall,
   case: template.case,
   translate,

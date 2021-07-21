@@ -24,9 +24,6 @@ npm run build
 - vue 파일의 root element는 반드시 파일명에 대한 dash case로 클래스명을 준다.<br>
 (예: ImportFeeSalesTax.vue => import-fee-sales-tax)
 - 각 vue 파일 하단의 `<style>`태그를 최대한 활용하기로 하며 (단, 다른 곳에 영향을 주지 않기 위해 scoped로 사용하거나, 자식에게 공통으로 상속하고 싶은게 있을 경우라면 scoped를 빼더라도 템플릿 루트 엘리먼트의 클래스명으로 감싸는 등으로 최대한 격리), 별도의 scss 파일로 빼서 관리하고 싶다면 @/assets/styles/ 안의 적절한 위치를 찾아 최대한 컴포넌트의 위치와 일치하게 작성한다.<br>
-(예:<br>
-@/components/views/shipping/ImportFeeSalesTax.vue의 스타일은<br>
-@/assets/styles/views/shipping/import-fee-sales-tax.scss)
 - [BEM은 사용하지 않는다.](https://medium.com/@jescalan/bem-is-terrible-f421495d093a)
 - eslint & prettier: [AirBNB](https://github.com/airbnb/javascript) + no-semicolon (노세미는 제 취향인데 무조건 찍는 쪽으로 하자고 해도 됩니다)
 - [defineAsyncComponent를 잘 활용하자. (code-split)](https://blog.logrocket.com/how-async-components-can-optimize-performance-in-vue-apps/)

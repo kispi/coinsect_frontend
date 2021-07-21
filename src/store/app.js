@@ -25,7 +25,7 @@ const app = {
     theme: 'dark',
     settings: {
       sort: {
-        column: '$$vol24H', // '$$symbol', '$$tradePriceBase', '$$premiumRate', '$$changeRate24H', '$$changeRate52WH', '$$changeRate52WL', $$vol24H'
+        column: '$$vol24H', // '$$symbol', '$$tradePriceBase', '$$premiumRate', '$$changeRate1D', '$$changeRate52WH', '$$changeRate52WL', $$vol24H'
         direction: 'desc',
       },
       documentTitleTicker: 'BTC',

@@ -24,32 +24,28 @@
     "kr": "전체시가총액"
   },
   "VOL_24": {
-    "en": "24h Volume",
-    "kr": "24시간 거래량"
+    "en": "Volume(24H)",
+    "kr": "거래량(24시간)"
   },
   "ACTIVE_USERS": {
     "en": "Active Users",
     "kr": "접속자수"
   },
-  "CHANGE_RATE_24": {
-    "en": "Change (24H)",
+  "CHANGE_RATE_1D": {
+    "en": "Change(1D)",
     "kr": "전일대비"
   },
   "CHANGE_RATE_52W_HIGHEST": {
-    "en": "Change (52WH)",
+    "en": "Change(52WH)",
     "kr": "고가대비(52주)"
   },
   "CHANGE_RATE_52W_LOWEST": {
-    "en": "Change (52WL)",
+    "en": "Change(52WL)",
     "kr": "저가대비(52주)"
   },
   "PREMIUM": {
     "en": "Premium",
     "kr": "프리미엄"
-  },
-  "CURRENT_PRICE": {
-    "en": "Current Price",
-    "kr": "현재가격"
   },
   "BASE_EXCHANGE": {
     "en": "Base Exchange",
