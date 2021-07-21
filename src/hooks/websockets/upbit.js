@@ -25,7 +25,7 @@ const useUpbit = () => {
     if (store.getters.settings.documentTitleTicker !== ticker.$$symbol) return
 
     const priceString = helpers.template.prettyPrice({ price: ticker.$$tradePriceBase, numFrac: ticker.$$tradePriceBase >= 100 ? 0 : 2 })
-    document.title = `${ticker.$$premiumRate ? `${ticker.$$premiumRate}% / ` : ''}${priceString} ${ticker.$$symbol}`
+    document.title = `${ticker.$$premiumRate ? `${helpers.template.prettyPrice({ price: ticker.$$premiumRate, numFrac: 2 })}% / ` : ''}${priceString} ${ticker.$$symbol}`
   }
 
   const subscribe = () => {
