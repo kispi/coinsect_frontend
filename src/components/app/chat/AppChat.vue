@@ -11,17 +11,9 @@
         </div>
         <div class="functions">
           <div
-            @click="openModalChangeProfile" 
+            @click="openModalChangeProfile"
             class="profile">
-            <img
-              ref="refIconProfileImage"
-              :src="profile.image"
-              @mouseover="$tooltip.show({
-                id: 'tooltipProfileImage',
-                text: 'TOOLTIP_PROFILE_IMAGE',
-                showAbove: refIconProfileImage,
-              })"
-              @mouseleave="$tooltip.hide('tooltipProfileImage')">
+            <AppImg :src="profile.image"/>
             <div class="nickname" v-html="profile.nickname"/>
             <i
               @click="messages = []"
@@ -49,7 +41,7 @@
           @click="sendTextMessage(text, true)"
           class="btn"
           :disabled="!text">
-          SEND
+          <i class="fa fa-paper-plane"/>
         </button>
       </div>
     </div>
@@ -114,6 +106,8 @@ export default {
     }
 
     const sendTextMessage = incomingText => {
+      if (!incomingText) return
+
       sendWebsocketMessage({
         type: 'text',
         text: incomingText,
@@ -168,11 +162,16 @@ export default {
   transition: none;
 
   .app-chat-container {
-    border-radius: 8px;
+    border-radius: 8px 8px 0 0;
     display: flex;
     flex-direction: column;
+    margin: auto;
     background: var(--border-base);
     height: 400px;
+
+    @media (max-width: 479px) {
+      width: calc(100% - 32px);
+    }
   }
 
   .app-chat-header {
@@ -188,7 +187,7 @@ export default {
         cursor: pointer;
       }
 
-      img {
+      .app-img {
         width: 24px;
         height: 24px;
         margin-right: 8px;
@@ -250,13 +249,13 @@ export default {
   }
 
   &:not(.folded) {
-    @media (max-width: 767px) {
+    @media (max-width: 479px) {
       right: 0;
       bottom: 0;
       left: 0;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 480px) {
       width: 320px;
     }
   }

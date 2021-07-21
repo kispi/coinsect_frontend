@@ -22,6 +22,8 @@
       <input
         ref="refInputNickname"
         placeholder="EX:) 흑우"
+        maxlength="12"
+        @keydown.enter="$emit('close', profile)"
         v-model="profile.nickname"
       >
     </div>
@@ -94,9 +96,21 @@ export default {
       background: var(--white);
       padding: 16px;
       margin-bottom: 16px;
+      max-height: 240px;
+      overflow-y: auto;
+      border-radius: 4px;
 
       .app-img {
+        width: 100%;
         cursor: pointer;
+
+        &.selected {
+          border: 2px solid var(--danger);
+        }
+      }
+
+      @media (max-width: 767px) {
+        grid-template-columns: repeat(12, 1fr);
       }
     }
   }

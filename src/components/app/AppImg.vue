@@ -16,7 +16,7 @@
  * 사용법:)
  * <AppImg :src="소스"/>
  */
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 export default {
   props: {
@@ -33,9 +33,9 @@ export default {
     },
   },
   setup(props) {
-    const error = ref(props.src ? null : true)
+    const error = ref(null)
 
-    const fallbackImage = ''
+    const fallbackImage = require('@/assets/images/no-image.png')
 
     const imageSource = computed(() => error.value ? fallbackImage : props.src)
 

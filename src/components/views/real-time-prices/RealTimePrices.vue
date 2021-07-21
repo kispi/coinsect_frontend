@@ -112,6 +112,9 @@ export default {
     const displayedList = computed(() => {
       const arr = Object.values(store.getters.realTimeTickers)
 
+      // realTimeTicker가 모든 원화 마켓 길이만큼 채워지기 전에는 필터를 적용하지 않는다 (성능)
+      if (arr.length < (store.getters.markets.upbit || []).filter(o => o.market.startsWith('KRW')).length) return []
+
       return arr.filter(t => {
         if (!keyword.value || !t.$$name) return t
 
