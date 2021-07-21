@@ -1,6 +1,6 @@
 <template>
   <div class="app-header">
-    <div class="top width-limiter">
+    <div class="top">
       <BannerMarketIndices/>
       <AdaptiveLayout
         :gap="$store.getters.isMobile ? 0 : 8"
@@ -12,7 +12,7 @@
     <div
       class="logo-and-settings"
       :class="{'border-top': $store.getters.indices}">
-      <div class="width-limiter flex-row flex-between items-center flex-fill">
+      <div class="flex-row flex-between items-center flex-fill">
         <AppLogo/>
         <div class="settings">
           <AppDropdown
@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="menu-items width-limiter">
+    <div class="menu-items">
       <RouterLink
         class="menu-item"
         :class="{'selected': menuItem.path === $route.path}"
@@ -107,19 +107,21 @@ export default {
 <style lang="scss">
 // Don't scope
 .app-header {
-  box-shadow: 0 -1px var(--border-base) inset;
   transition: all 0.2s ease;
+  width: 100%;
+  max-width: 992px;
+  margin: auto;
+  padding: var(--app-default-page-padding);
+  padding-bottom: 0;
 
   .top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 8px;
-  }
 
-  .width-limiter {
-    max-width: 992px;
-    margin: auto;
+    .banner-market-indices {
+      padding-bottom: var(--app-default-page-padding);
+    }
   }
 
   .logo-and-settings {
@@ -127,7 +129,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px;
+    padding-top: 8px;
 
     &.border-top {
       border-top: 1px solid var(--border-base);
@@ -151,6 +153,7 @@ export default {
   .menu-items {
     display: flex;
     overflow-x: auto;
+    box-shadow: 0 -1px var(--border-base) inset;
 
     .menu-item {
       padding: 12px 8px;
@@ -164,7 +167,7 @@ export default {
       }
 
       &:hover {
-        background: var(--brand-primary-hover);
+        color: var(--brand-primary-hover);
       }
     }
   }

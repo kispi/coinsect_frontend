@@ -73,7 +73,7 @@ export default {
   .clickable-area {
     display: flex;
     align-items: center;
-    padding: 8px;
+    padding: 8px 0;
     cursor: pointer;
 
     & > * {
@@ -113,7 +113,7 @@ export default {
       user-select: none;
 
       &:hover {
-        background: var(--brand-primary-hover);
+        background: var(--brand-primary-hover-bg);
       }
 
       &:active,

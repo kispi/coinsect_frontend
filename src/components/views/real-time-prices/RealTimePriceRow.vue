@@ -110,7 +110,7 @@ export default {
   }
 
   &:hover {
-    background: var(--brand-primary-hover);
+    background: var(--brand-primary-hover-bg);
   }
 }
 </style>

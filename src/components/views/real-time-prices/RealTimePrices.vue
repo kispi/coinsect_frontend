@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="$store.getters.realTimeTickers"
-    class="real-time-prices default-page-padding">
+    class="real-time-prices">
     <div class="settings">
       <BaseAndTarget
         @change-base-exchange="e => baseExchange = e"
@@ -166,9 +166,6 @@ export default {
 
 <style lang="scss">
 .real-time-prices {
-  max-width: 992px;
-  margin: auto;
-
   @media (max-width: 767px) {
     font-size: 12px;
   }
@@ -185,6 +182,7 @@ export default {
         display: flex;
         align-items: center;
         padding: 8px 12px;
+        background: var(--background-light);
 
         .fa-search {
           margin-right: 8px;
@@ -193,7 +191,8 @@ export default {
     }
 
     .base-and-target {
-      padding-bottom: 8px;
+      padding: 8px 0;
+      border-top: 1px solid var(--border-base);
       border-bottom: 1px solid var(--border-base);
     }
   }

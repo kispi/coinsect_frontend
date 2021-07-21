@@ -1,5 +1,6 @@
 <template>
   <div class="view-home">
+    <TradingView/>
     <RealTimePrices/>
   </div>
 </template>
@@ -15,6 +16,8 @@ export default {
 
 <style lang="scss" scoped>
 .view-home {
-  
+  max-width: 992px;
+  margin: auto;
+  padding: var(--app-default-page-padding);
 }
 </style>

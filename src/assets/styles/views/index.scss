@@ -1,7 +1,0 @@
-.default-page-padding {
-  padding: var(--app-default-page-padding-desktop);
-
-  @media (max-width: 767px) {
-    padding: var(--app-default-page-padding-mobile);
-  }
-}

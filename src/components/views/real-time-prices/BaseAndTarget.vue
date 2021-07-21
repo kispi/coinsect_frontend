@@ -3,6 +3,7 @@
     <div class="base-exchange">
       {{ $translate('BASE_EXCHANGE') }}
       <AppDropdown
+        class="m-l-8"
         :dropdownItems="bases"
         @select-dropdown-item="o => $emit('change-base-exchange', o.key)"
       />
@@ -10,6 +11,7 @@
     <div class="target-exchange">
       {{ $translate('TARGET_EXCHANGE') }}
       <AppDropdown
+        class="m-l-8"
         :dropdownItems="targets"
         @select-dropdown-item="o => $emit('change-target-exchange', o.key)"
       />

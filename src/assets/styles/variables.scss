@@ -2,6 +2,9 @@
 
 :root {
   --app-header-height: 56px;
-  --app-default-page-padding-mobile: 8px;
-  --app-default-page-padding-desktop: 12px;
+  --app-default-page-padding: 12px;
+
+  @media (max-width: 767px) {
+    --app-default-page-padding: 8px;
+  }
 }

@@ -37,7 +37,7 @@ export default {
 
       return [{
         key: 'USD/KRW',
-        value: plugins.$helpers.template.prettyPrice({ price: usdKrw }),
+        value: plugins.$helpers.template.prettyPrice({ price: usdKrw, numFrac: 1 }),
         changes: Math.round(o.upbitForex.signedChangeRate * 10000) / 100,
       }, {
         key: 'BTC_DOMINANCE',

@@ -1,9 +1,10 @@
 <template>
   <div class="view-marketcaps">
-    <div class="settings default-page-padding">
+    <div class="settings">
       <div class="source">
         {{ $translate('SOURCE') }}
         <AppDropdown
+          class="m-l-8"
           :dropdownItems="sources"
           @select-dropdown-item="setSource"
         />
@@ -11,6 +12,7 @@
       <div class="currency">
         {{ $translate('CURRENCY') }}
         <AppDropdown
+          class="m-l-8"
           :dropdownItems="currencies"
           @select-dropdown-item="o => currency = o.key"
         />
@@ -71,6 +73,7 @@ export default {
 .view-marketcaps {
   max-width: 992px;
   margin: auto;
+  padding: var(--app-default-page-padding);
 
   .settings {
     display: flex;
@@ -93,7 +96,7 @@ export default {
       
       td,
       th {
-        padding: 8px;
+        padding: 8px 0;
 
         &:first-child {
           text-align: left;
