@@ -25,6 +25,8 @@ const useChatHandler = () => {
 
   const connection = ref(null)
 
+  const connected = ref(null)
+
   const token = ref(null)
 
   const recommendNickname = () => {
@@ -78,7 +80,6 @@ const useChatHandler = () => {
         break
       case 'auth':
         token.value = message.user.token
-
         setLocalAccount()
         break
     }
@@ -100,8 +101,12 @@ const useChatHandler = () => {
       }
     }
 
+    connection.value.onopen = () => {
+      connected.value = true
+    }
+
     connection.value.onclose = () => {
-      plugins.$toast.error('서버와의 연결이 끊겨 재접속합니다')
+      connected.value = false
       setTimeout(connect, 1000)
     }
   }
@@ -135,6 +140,7 @@ const useChatHandler = () => {
 
   return {
     refAppChatBody,
+    connected,
     profile,
     messages,
     setLocalAccount,

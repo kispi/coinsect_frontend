@@ -5,15 +5,21 @@ const useBinance = () => {
   const store = useStore()
 
   const subscribe = () => {
-    store.getters.websockets.binance.onopen = () => {
-      store.getters.websockets.binance.send(JSON.stringify({
+    const connection = new WebSocket('wss://stream.binance.com:9443/ws')
+
+    connection.onopen = () => {
+      connection.send(JSON.stringify({
         method: 'SUBSCRIBE',
         params: store.getters.markets.upbit.map(o => `${(o.$$symbol || '').toLowerCase()}usdt@miniTicker`),
         id: 1,
       }))
     }
 
-    store.getters.websockets.binance.onmessage = event => {
+    connection.onclose = () => {
+      setTimeout(subscribe, 1000)
+    }
+
+    connection.onmessage = event => {
       try {
         const json = JSON.parse(event.data)
         if (!json.s) return

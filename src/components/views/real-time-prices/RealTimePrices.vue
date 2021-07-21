@@ -145,10 +145,7 @@ export default {
       loadSettings()
 
       store.dispatch('loadMarkets', baseExchange.value).then(() => {
-        store.commit('setWebsocket', baseExchange.value)
         hooks.upbit.subscribe()
-
-        store.commit('setWebsocket', targetExchange.value)
         hooks.binance.subscribe()
       })
     })
@@ -173,7 +170,7 @@ export default {
 
 <style lang="scss">
 .real-time-prices {
-  max-width: 1200px;
+  max-width: 992px;
   margin: auto;
 
   @media (max-width: 767px) {

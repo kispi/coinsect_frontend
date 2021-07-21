@@ -29,8 +29,11 @@ const useUpbit = () => {
   }
 
   const subscribe = () => {
-    store.getters.websockets.upbit.onopen = () => {
-      store.getters.websockets.upbit.send(JSON.stringify([{
+    const connection = new WebSocket('wss://api.upbit.com/websocket/v1')
+    connection.binaryType = 'arraybuffer'
+
+    connection.onopen = () => {
+      connection.send(JSON.stringify([{
         ticket: 'coinsect-upbit',
       }, {
         type: 'ticker',
@@ -38,7 +41,11 @@ const useUpbit = () => {
       }]))
     }
 
-    store.getters.websockets.upbit.onmessage = event => {
+    connection.onclose = () => {
+      setTimeout(subscribe, 1000)
+    }
+
+    connection.onmessage = event => {
       try {
         const json = JSON.parse(dec.decode(new Uint8Array(event.data)))
         const symbol = json.code.split('KRW-')[1]

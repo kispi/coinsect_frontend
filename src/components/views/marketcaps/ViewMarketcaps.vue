@@ -69,7 +69,7 @@ export default {
 
 <style lang="scss">
 .view-marketcaps {
-  max-width: 1200px;
+  max-width: 992px;
   margin: auto;
 
   .settings {

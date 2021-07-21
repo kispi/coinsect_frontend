@@ -25,6 +25,7 @@
       <div
         ref="refAppChatBody"
         class="app-chat-body no-scrollbar">
+        <AppLoading :loading="!connected"/>
         <AppChatMessage
           :message="message"
           :key="message.id"
@@ -76,6 +77,7 @@ export default {
     const {
       refAppChatBody,
       init,
+      connected,
       setLocalAccount,
       profile,
       messages,
@@ -141,6 +143,7 @@ export default {
       refIconProfileImage,
       refInput,
       refAppChatBody,
+      connected,
       profile,
       text,
       messages,

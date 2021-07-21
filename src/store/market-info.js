@@ -39,10 +39,6 @@ const marketInfo = {
     },
     realTimeTickers: {},
     symbols: {},
-    websockets: {
-      upbit: null,
-      bithumb: null,
-    },
   }),
   getters: {
     usdKrw: state => state.indices ? state.indices.upbitForex.basePrice : 0,
@@ -51,7 +47,6 @@ const marketInfo = {
     markets: state => state.markets,
     realTimeTickers: state => state.realTimeTickers,
     symbols: state => state.symbols,
-    websockets: state => state.websockets,
   },
   mutations: {
     setIndices(state, indices) {
@@ -59,24 +54,6 @@ const marketInfo = {
     },
     setMarketcaps(state, { data, source }) {
       state.marketcaps[source] = data
-    },
-    setWebsocket(state, market) {
-      if (market === 'upbit' && !state.websockets.upbit) {
-        state.websockets.upbit = new WebSocket('wss://api.upbit.com/websocket/v1')
-        state.websockets.upbit.binaryType = 'arraybuffer'
-        return
-      }
-
-      if (market === 'binance' && !state.websockets.binance) {
-        state.websockets.binance = new WebSocket('wss://stream.binance.com:9443/ws')
-        return
-      }
-    },
-    disconnectWebsocket(state, market) {
-      if (!state.websockets[market]) return
-
-      state.websockets[market].close()
-      state.websockets[market] = null
     },
     setMarkets(state, { exchange, markets, symbols }) {
       state.markets[exchange] = markets
