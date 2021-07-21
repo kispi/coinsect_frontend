@@ -10,13 +10,19 @@
         />
       </div>
       <div class="crypto-icons">
-        <AppImg
-          @click="profile.image = `https://static.upbit.com/logos/${symbol}.png`"
-          :class="{'selected': (profile.image || '').endsWith(`${symbol}.png`)}"
-          :src="`https://static.upbit.com/logos/${symbol}.png`"
-          :key="symbol"
-          v-for="symbol in Object.keys($store.getters.symbols)"
-        />
+        <div class="grid">
+          <div
+            class="img-container"
+            :key="symbol"
+            v-for="symbol in Object.keys($store.getters.symbols)">
+            <AppImg
+              @click="profile.image = `https://static.upbit.com/logos/${symbol}.png`"
+              :class="{'selected': (profile.image || '').endsWith(`${symbol}.png`)}"
+              class="overlay"
+              :src="`https://static.upbit.com/logos/${symbol}.png`"
+            />
+          </div>
+        </div>
       </div>
       <div class="field-name" v-html="$translate('NICKNAME')"/>
       <input
@@ -90,27 +96,38 @@ export default {
     }
 
     .crypto-icons {
-      display: grid;
-      grid-template-columns: repeat(16, 1fr);
-      grid-gap: 8px;
       background: var(--white);
       padding: 16px;
       margin-bottom: 16px;
-      max-height: 240px;
-      overflow-y: auto;
       border-radius: 4px;
 
-      .app-img {
-        width: 100%;
-        cursor: pointer;
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(16, 1fr);
+        grid-gap: 8px;
+      }
 
-        &.selected {
-          border: 2px solid var(--danger);
+      .img-container {
+        padding-top: 100%;
+        width: 100%;
+        position: relative;
+
+        .app-img {
+          cursor: pointer;
+
+          &.selected {
+            border: 2px solid var(--danger);
+          }
         }
       }
 
       @media (max-width: 767px) {
-        grid-template-columns: repeat(12, 1fr);
+        max-height: 240px;
+        overflow-y: auto;
+
+        .grid {
+          grid-template-columns: repeat(12, 1fr);
+        }
       }
     }
   }

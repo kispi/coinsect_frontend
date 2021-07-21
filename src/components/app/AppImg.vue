@@ -2,10 +2,10 @@
   <img
     class="app-img"
     :class="fit"
-    :src="imageSource"
+    :src="src"
     :alt="alt"
     @load="e => $emit('load', e)"
-    @error="error = true"
+    @error="e => e.target.src = fallbackImage"
   >
 </template>
 
@@ -16,7 +16,7 @@
  * 사용법:)
  * <AppImg :src="소스"/>
  */
-import { ref, computed, watch } from 'vue'
+import fallbackImage from '@/assets/images/no-image.png'
 
 export default {
   props: {
@@ -29,19 +29,11 @@ export default {
     },
     alt: {
       type: String,
-      default: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
     },
   },
-  setup(props) {
-    const error = ref(null)
-
-    const fallbackImage = require('@/assets/images/no-image.png')
-
-    const imageSource = computed(() => error.value ? fallbackImage : props.src)
-
+  setup() {
     return {
-      imageSource,
-      error,
+      fallbackImage,
     }
   },
 }

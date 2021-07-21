@@ -96,6 +96,14 @@ select {
   textarea,
   select {
     color: var(--text-stress);
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--background-light);
+  }
+
+  .input-wrapper,
+  .textarea-wrapper {
+    input,
+    textarea {
+      background: none;
+    }
   }
 }
