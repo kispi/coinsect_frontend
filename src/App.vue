@@ -50,10 +50,16 @@ export default {
 #app {
   width: 100vw;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   &.dark {
     background: var(--background-base);
   }
+}
+
+.app-header {
+  flex: 1;
 }
 
 .app-body {
