@@ -121,8 +121,9 @@ export default {
         const lowered = keyword.value.toLowerCase()
 
         return t.$$name.en.toLowerCase().includes(lowered) ||
+          t.$$symbol.toLowerCase().includes(lowered) ||
           t.$$name.kr.includes(lowered) ||
-          t.$$symbol.toLowerCase().includes(lowered)
+          plugins.$helpers.includesChosung(lowered, t.$$name.kr)
       }).sort((a, b) => {
         const former = settings.value.sort.direction === 'asc' ? a : b
         const latter = settings.value.sort.direction === 'asc' ? b : a

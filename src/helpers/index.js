@@ -3,6 +3,7 @@ import animate from './animate'
 import dataSetter from './data-setter'
 import dayjs from 'dayjs'
 import dom from './dom'
+import hangul from 'hangul-js'
 import meta from './meta'
 import modal from './modal'
 import template from './template'
@@ -95,6 +96,23 @@ const helpers = {
     }
   },
   sleep: ms => new Promise(resolve => setTimeout(resolve, ms)),
+  includesChosung: (partial, whole) => {
+    const d = hangul.disassemble
+    if (d(partial, true).length !== d(partial).length) return
+
+    if (!partial || !whole) return
+
+    const arr = {
+      partial: d(partial, true).map(group => group[0]),
+      whole: d(whole, true).map(group => group[0]),
+    }
+
+    const foundIndices = arr.partial.map(val => arr.whole.indexOf(val))
+    if (foundIndices.includes(-1)) return
+
+    const orderedIndices = JSON.parse(JSON.stringify(foundIndices)).sort()
+    return JSON.stringify(foundIndices) === JSON.stringify(orderedIndices)
+  },
 }
 
 export default helpers
