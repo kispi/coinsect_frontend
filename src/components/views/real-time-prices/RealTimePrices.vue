@@ -14,7 +14,7 @@
           <input
             v-model="keyword"
             @keydown="onKeydown"
-            placeholder="EX:) BIT, CASH, ADA, 토큰"
+            placeholder="EX:) btc, bit, 비트, ㅂㅌ"
           >
         </div>
       </div>
@@ -33,7 +33,7 @@
               { column: '$$changeRate1D', title: 'CHANGE_RATE_1D' },
               { column: '$$changeRate52WH', title: 'CHANGE_RATE_52W_HIGHEST', $$hide: $store.getters.isMobile },
               { column: '$$changeRate52WL', title: 'CHANGE_RATE_52W_LOWEST', $$hide: $store.getters.isMobile },
-              { column: '$$vol24H', title: 'VOL_24' },
+              { column: '$$vol24HBase', title: 'VOL_24' },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
             <span class="sort-icons">
@@ -200,6 +200,10 @@ export default {
 
   table {
     width: 100%;
+
+    th {
+      cursor: pointer;
+    }
 
     th,
     td {

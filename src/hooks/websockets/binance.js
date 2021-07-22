@@ -27,6 +27,7 @@ const useBinance = () => {
         helpers.dataSetter.calculateKimp({
           $$symbol: json.s.split('USDT')[0],
           $$tradePriceTarget: store.getters.usdKrw * (json.c || 0),
+          $$vol24HTarget: store.getters.usdKrw * (json.q || 0),
         })
       } catch (e) {
         console.error(e)

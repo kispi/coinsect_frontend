@@ -106,5 +106,9 @@
   "NICKNAME": {
     "en": "Nickname",
     "kr": "닉네임"
+  },
+  "UNKNOWN": {
+    "en": "Unknown",
+    "kr": "알수없음"
   }
 }

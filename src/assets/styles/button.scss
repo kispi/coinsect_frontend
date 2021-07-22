@@ -43,7 +43,7 @@
 
   &:not(.disabled):not(:disabled) {
     &:hover {
-      background: var(--hover-brand-primary);
+      background: var(--brand-primary-hover);
     }
   }
 }

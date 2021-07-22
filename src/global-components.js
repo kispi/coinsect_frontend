@@ -7,6 +7,7 @@ import AppImg from '@/components/app/AppImg'
 import AppLoader from '@/components/app/AppLoader'
 import AppLoading from '@/components/app/AppLoading'
 import AppLogo from '@/components/app/AppLogo'
+import AppPagination from '@/components/app/AppPagination'
 import AppToggler from '@/components/app/AppToggler'
 import AppTooltip from '@/components/app/AppTooltip'
 import FormControl from '@/components/app/FormControl'
@@ -29,6 +30,7 @@ const useGlobalComponents = app => {
     .component('AppLoader', AppLoader)
     .component('AppLoading', AppLoading)
     .component('AppLogo', AppLogo)
+    .component('AppPagination', AppPagination)
     .component('AppToggler', AppToggler)
     .component('AppTooltip', AppTooltip)
     .component('FormControl', FormControl)

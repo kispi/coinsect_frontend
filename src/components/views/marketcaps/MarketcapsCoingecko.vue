@@ -6,18 +6,23 @@
       <thead>
         <tr>
           <th
-            @click="setSort(th.column)"
-            :class="sort.column === th.column ? sort.direction : ''"
+            @click="sort(th.column)"
+            :class="[
+              th.column === payload.sort.column ? payload.sort.direction : '',
+              th.column ? 'cursor-pointer' : ''
+            ]"
             :key="th.title"
             v-for="th in [
-              { column: 'name', title: 'COIN' },
-              { column: 'total_volume', title: 'VOL_24' },
-              { column: 'current_price', title: 'PRICE', $$hide: $store.getters.isMobile },
-              { column: 'circulating_supply', title: 'CIRCULATING_SUPPLY', $$hide: $store.getters.isMobile },
+              { column: 'gecko', title: 'COIN' },
+              { column: 'volume', title: 'VOL_24' },
+              { title: 'PRICE', $$hide: $store.getters.isMobile },
+              { title: 'CIRCULATING_SUPPLY', $$hide: $store.getters.isMobile },
               { column: 'market_cap', title: 'MARKETCAPS' },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
-            <span class="sort-icons">
+            <span
+              v-if="['id', 'volume', 'market_cap'].includes(th.column)"
+              class="sort-icons">
               <i class="fas fa-sort-up"/>
               <i class="fas fa-sort-down"/>
             </span>
@@ -28,15 +33,15 @@
         <tr
           class="marketcap"
           :key="idx"
-          v-for="(item, idx) in displayedList">
+          v-for="(item, idx) in $store.getters.marketcaps">
           <td class="ticker">
-            <div class="rank">{{ idx + 1 }}</div>
+            <div class="rank">{{ item.market_cap_rank || '?' }}</div>
             <img
               :src="item.image"
               @error="e => e.target.src = 'https://cryprice.com/cryptocurrency-icons-master/svg/color/generic.svg'"
             >
             <div
-              class="symbol"
+              class="symbol lines-1"
               v-html="(item.symbol || '').toUpperCase()"
             />
             <div
@@ -45,25 +50,33 @@
             />
           </td>
           <td class="vol-24">
-            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.total_volume, true) }) }}
+            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.total_volume, true) }) || '?' }}
           </td>
           <td v-if="!$store.getters.isMobile" class="price">
-            {{ currency === 'usd' ? applyCurrency(item.current_price) : (Math.floor(item.current_price * $store.getters.usdKrw)).toLocaleString() }}
+            {{ item.current_price ? applyCurrency(item.current_price).toLocaleString() : '?' }}
           </td>
           <td v-if="!$store.getters.isMobile" class="circulating">
-            {{ item.circulating_supply.toLocaleString() }}
+            {{ item.circulating_supply ? item.circulating_supply.toLocaleString() : '?' }}
           </td>
           <td class="marketcaps">
-            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.market_cap, true) }) }}
+            {{ item.market_cap ? $helpers.template.koreanizedNumber({ number: applyCurrency(item.market_cap, true) }) : '?' }}
           </td>
         </tr>
       </tbody>
     </table>
+    <AppPagination
+      class="m-t-16"
+      v-if="total"
+      :page="payload.page"
+      :limit="payload.perPage"
+      :total="total"
+      @page="onPage"
+    />
   </div>
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -71,40 +84,37 @@ export default {
     currency: String,
   },
   setup(props) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
-    console.log(store.getters.symbols)
-
-    const sort = ref({
-      column: 'market_cap',
-      direction: 'desc',
-    })
+    const total = ref(null)
 
     const payload = ref({
       // category: '',
       perPage: 100,
       page: 1,
       priceChangePercentage: '1h,24h,7d,14d,30d',
+      sort: {
+        column: 'market_cap',
+        direction: 'desc',
+      },
     })
 
-    const setSort = column => {
-      if (sort.value.column === column) {
-        sort.value.direction = sort.value.direction === 'desc' ? 'asc' : 'desc'
+    const sort = column => {
+      if (!column) return
+
+      if (column === payload.value.sort.column) {
+        payload.value.sort.direction = payload.value.sort.direction === 'desc' ? 'asc' : 'desc'
       } else {
-        sort.value.column = column
-        sort.value.direction = 'desc'
+        payload.value.sort.column = column
+        payload.value.sort.direction = 'desc'
       }
+
+      callApi()
     }
 
-    const displayedList = computed(() => store.getters.marketcaps.sort((a, b) => {
-      const former = sort.value.direction === 'asc' ? a : b
-      const latter = sort.value.direction === 'asc' ? b : a
-      if (sort.value.column === 'name') return former.name > latter.name ? 1 : -1
-
-      return former[sort.value.column] - latter[sort.value.column]
-    }))
-
-    const applyCurrency = (price, noFrac) => {
+    const applyCurrency = (price = 0, noFrac) => {
       if (props.currency === 'usd') {
         const converted = price
         if (noFrac) return Math.round(converted)
@@ -120,21 +130,120 @@ export default {
           })
       }
 
-      return price * store.getters.usdKrw
+      const asKrw = price * store.getters.usdKrw
+      return asKrw >= 100 ? Math.round(asKrw) : asKrw.toLocaleString(1)
     }
 
-    const callApi = () => {
-      store.dispatch('loadMarketcaps', payload.value)
+    const callApi = async page => {
+      await store.dispatch('loadMarketcaps', {
+        ...payload.value,
+        page,
+      })
     }
 
-    onMounted(callApi)
+    const onPage = async page => {
+      if (payload.value.page === page) return
+
+      callApi(page).then(() => payload.value.page = page)
+    }
+
+    onMounted(() => {
+      callApi()
+      plugins.$http.get('https://api.coingecko.com/api/v3/coins/list').then(data => total.value = data.length)
+    })
 
     return {
+      payload,
+      total,
+      onPage,
       sort,
-      displayedList,
-      setSort,
       applyCurrency,
     }
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.marketcaps-coingecko {
+  table {
+    width: 100%;
+    
+    td,
+    th {
+      padding: 8px 0;
+
+      &:first-child {
+        text-align: left;
+      }
+
+      &:not(:first-child) {
+        text-align: right;
+      }
+
+      @media (max-width: 767px) {
+        font-size: 12px;
+      }
+    }
+
+    .ticker {
+      display: flex;
+      align-items: center;
+
+      .rank {
+        min-width: 24px;
+        text-align: center;
+        margin-right: 4px;
+        font-weight: 700;
+      }
+
+      img,
+      .symbol {
+        margin-right: 8px;
+      }
+
+      img {
+        width: 16px;
+      }
+
+      .symbol {
+        white-space: nowrap;
+      }
+
+      .full-name {
+        color: var(--text-stress);
+        font-weight: 700;
+      }
+
+      .symbol,
+      .full-name {
+        max-width: 120px;
+
+        @media (max-width: 767px) {
+          max-width: 80px;
+        }
+
+        @media (max-width: 479px) {
+          max-width: 48px;
+        }
+      }
+    }
+
+    @media (max-width: 479px) {
+      .ticker {
+        max-width: 160px;
+      }
+
+      .vol-24,
+      .marketcaps {
+        letter-spacing: -0.8px;
+      }
+    }
+
+    tr {
+      &:hover {
+        background: var(--brand-primary-bg-lv1);
+      }
+    }
+  }
+}
+</style>

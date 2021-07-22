@@ -54,7 +54,8 @@
       <div v-html="autoFrac(ticker.$$lowest52WeekPrice)"/>
     </td>
     <td class="ticker-vol-24h">
-      <div v-html="$helpers.template.koreanizedNumber({ number: ticker.$$vol24H, numUnits: 1 })"/>
+      <div v-html="$helpers.template.koreanizedNumber({ number: ticker.$$vol24HBase, numUnits: ticker.$$vol24HBase >= Math.pow(10, 12) ? 2 : 1 })"/>
+      <div v-html="$helpers.template.koreanizedNumber({ number: ticker.$$vol24HTarget, numUnits: ticker.$$vol24HTarget >= Math.pow(10, 12) ? 2 : 1 })"/>
     </td>
   </tr>
 </template>

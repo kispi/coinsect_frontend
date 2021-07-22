@@ -14,10 +14,7 @@
       </div>
     </div>
     <AppLoading :loading="$store.getters.loading.marketcaps"/>
-    <MarketcapsCoingecko
-      class="marketcaps-common"
-      :currency="currency"
-    />
+    <MarketcapsCoingecko :currency="currency"/>
   </div>
 </template>
 
@@ -45,6 +42,7 @@ export default {
   max-width: 992px;
   margin: auto;
   padding: var(--app-default-page-padding);
+  padding-bottom: 120px;
 
   .settings {
     display: flex;
@@ -80,76 +78,6 @@ export default {
   .app-dropdown {
     text-transform: uppercase;
     white-space: nowrap;
-  }
-
-  .marketcaps-common {
-    table {
-      width: 100%;
-      
-      td,
-      th {
-        padding: 8px 0;
-
-        &:first-child {
-          text-align: left;
-        }
-
-        &:not(:first-child) {
-          text-align: right;
-        }
-
-        @media (max-width: 767px) {
-          font-size: 12px;
-        }
-      }
-
-      .ticker {
-        display: flex;
-        align-items: center;
-
-        .rank {
-          min-width: 24px;
-          text-align: center;
-          margin-right: 4px;
-          font-weight: 700;
-        }
-
-        img,
-        .symbol {
-          margin-right: 8px;
-        }
-
-        img {
-          width: 16px;
-        }
-
-        .symbol {
-          white-space: nowrap;
-          font-weight: 700;
-        }
-
-        .full-name {
-          color: var(--gray-light);
-        }
-      }
-
-      @media (max-width: 479px) {
-        .ticker {
-          max-width: 160px;
-        }
-
-        .vol-24,
-        .marketcaps {
-          letter-spacing: -0.8px;
-        }
-      }
-
-      tr {
-        &:hover {
-          background: var(--brand-primary-bg-lv1);
-        }
-      }
-    }
   }
 }
 </style>

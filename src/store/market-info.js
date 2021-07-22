@@ -46,6 +46,7 @@ const marketInfo = {
       perPage = 100,
       page = 1,
       priceChangePercentage,
+      sort,
     }) {
       try {
         commit('setLoading', { marketcaps: true })
@@ -54,6 +55,7 @@ const marketInfo = {
           category,
           per_page: perPage,
           page,
+          order: `${sort.column}_${sort.direction}`,
           price_change_percentage: priceChangePercentage,
         })
         commit('setMarketcaps', data)
