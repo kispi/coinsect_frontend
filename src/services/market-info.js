@@ -2,7 +2,7 @@ import * as $http from 'axios'
 
 const marketInfo = {
   indices: () => $http.get('market_info/indices'),
-  marketcaps: source => $http.get('market_info/marketcaps', { params: { source } }),
+  marketcaps: params => $http.get('https://api.coingecko.com/api/v3/coins/markets', { params }),
 }
 
 export default marketInfo

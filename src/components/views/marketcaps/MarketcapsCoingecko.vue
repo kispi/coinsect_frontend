@@ -1,7 +1,7 @@
 <template>
   <div 
-    v-if="($store.getters.marketcaps || {}).coinmarketcap"
-    class="marketcaps-coinmarketcap">
+    v-if="$store.getters.marketcaps"
+    class="marketcaps-coingecko">
     <table class="list">
       <thead>
         <tr>
@@ -10,11 +10,11 @@
             :class="sort.column === th.column ? sort.direction : ''"
             :key="th.title"
             v-for="th in [
-              { column: '$$name', title: 'COIN' },
-              { column: '$$volume24H', title: 'VOL_24' },
-              { column: '$$price', title: 'PRICE', $$hide: $store.getters.isMobile },
-              { column: '$$circulatingSupply', title: 'CIRCULATING_SUPPLY', $$hide: $store.getters.isMobile },
-              { column: '$$marketCap', title: 'MARKETCAPS' },
+              { column: 'name', title: 'COIN' },
+              { column: 'total_volume', title: 'VOL_24' },
+              { column: 'current_price', title: 'PRICE', $$hide: $store.getters.isMobile },
+              { column: 'circulating_supply', title: 'CIRCULATING_SUPPLY', $$hide: $store.getters.isMobile },
+              { column: 'market_cap', title: 'MARKETCAPS' },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
             <span class="sort-icons">
@@ -32,29 +32,29 @@
           <td class="ticker">
             <div class="rank">{{ idx + 1 }}</div>
             <img
-              :src="`https://cryprice.com/cryptocurrency-icons-master/svg/color/${(item.$$symbol || '').toLowerCase()}.svg`"
+              :src="item.image"
               @error="e => e.target.src = 'https://cryprice.com/cryptocurrency-icons-master/svg/color/generic.svg'"
             >
             <div
               class="symbol"
-              v-html="item.$$symbol"
+              v-html="(item.symbol || '').toUpperCase()"
             />
             <div
               class="full-name lines-1"
-              v-html="item.$$name"
+              v-html="($store.getters.symbols[(item.symbol || '').toUpperCase()] || {})[$store.getters.translation.locale]"
             />
           </td>
           <td class="vol-24">
-            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.$$volume24H, true) }) }}
+            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.total_volume, true) }) }}
           </td>
           <td v-if="!$store.getters.isMobile" class="price">
-            {{ currency === 'usd' ? applyCurrency(item.quote.USD.price) : (Math.floor(item.$$price * $store.getters.usdKrw)).toLocaleString() }}
+            {{ currency === 'usd' ? applyCurrency(item.current_price) : (Math.floor(item.current_price * $store.getters.usdKrw)).toLocaleString() }}
           </td>
           <td v-if="!$store.getters.isMobile" class="circulating">
-            {{ item.$$circulatingSupply.toLocaleString() }}
+            {{ item.circulating_supply.toLocaleString() }}
           </td>
           <td class="marketcaps">
-            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.$$marketCap, true) }) }}
+            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.market_cap, true) }) }}
           </td>
         </tr>
       </tbody>
@@ -73,9 +73,18 @@ export default {
   setup(props) {
     const store = useStore()
 
+    console.log(store.getters.symbols)
+
     const sort = ref({
-      column: '$$marketCap', // '$$name', '$$volume24H', '$$price', '$$circulatingSupply', '$$marketCap'
+      column: 'market_cap',
       direction: 'desc',
+    })
+
+    const payload = ref({
+      // category: '',
+      perPage: 100,
+      page: 1,
+      priceChangePercentage: '1h,24h,7d,14d,30d',
     })
 
     const setSort = column => {
@@ -87,10 +96,10 @@ export default {
       }
     }
 
-    const displayedList = computed(() => store.getters.marketcaps.coinmarketcap.sort((a, b) => {
+    const displayedList = computed(() => store.getters.marketcaps.sort((a, b) => {
       const former = sort.value.direction === 'asc' ? a : b
       const latter = sort.value.direction === 'asc' ? b : a
-      if (sort.value.column === '$$name') return former.$$name > latter.$$name ? 1 : -1
+      if (sort.value.column === 'name') return former.name > latter.name ? 1 : -1
 
       return former[sort.value.column] - latter[sort.value.column]
     }))
@@ -115,7 +124,7 @@ export default {
     }
 
     const callApi = () => {
-      store.dispatch('loadMarketcaps', 'coinmarketcap')
+      store.dispatch('loadMarketcaps', payload.value)
     }
 
     onMounted(callApi)

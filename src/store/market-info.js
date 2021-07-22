@@ -2,37 +2,10 @@ import helpers from '@/helpers'
 import marketInfoService from '@/services/market-info'
 import * as $http from 'axios'
 
-const transformIntoCustomRow = ({ original, source }) => {
-  const result = []
-  if (source === 'coinmarketcap') {
-    original.forEach(row => {
-      result.push({
-        $$symbol: row.symbol,
-        $$name: row.name,
-        $$volume24H: row.quote.USD.volume_24h,
-        $$price: row.quote.USD.price,
-        $$circulatingSupply: row.circulating_supply,
-        $$marketCap: row.quote.USD.market_cap,
-      })
-    })
-  }
-
-  if (source === 'upbit') {
-    original.forEach(row => {
-      result.push(row)
-    })
-  }
-
-  return result
-}
-
 const marketInfo = {
   state: () => ({
     indices: null,
-    marketcaps: {
-      upbit: null,
-      coinmarketcap: null,
-    },
+    marketcaps: null,
     markets: {
       upbit: null,
       bithumb: null,
@@ -52,8 +25,8 @@ const marketInfo = {
     setIndices(state, indices) {
       state.indices = indices
     },
-    setMarketcaps(state, { data, source }) {
-      state.marketcaps[source] = data
+    setMarketcaps(state, marketcaps) {
+      state.marketcaps = marketcaps
     },
     setMarkets(state, { exchange, markets, symbols }) {
       state.markets[exchange] = markets
@@ -68,15 +41,22 @@ const marketInfo = {
         return Promise.reject(e)
       }
     },
-    async loadMarketcaps({ commit }, source) {
-      if (helpers.canSkipApiCall(`loadMarketcaps_${source}`)) return
-
+    async loadMarketcaps({ commit }, {
+      category,
+      perPage = 100,
+      page = 1,
+      priceChangePercentage,
+    }) {
       try {
         commit('setLoading', { marketcaps: true })
-        commit('setMarketcaps', {
-          data: transformIntoCustomRow({ original: await marketInfoService.marketcaps(source), source }),
-          source,
+        const data = await marketInfoService.marketcaps({
+          vs_currency: 'usd',
+          category,
+          per_page: perPage,
+          page,
+          price_change_percentage: priceChangePercentage,
         })
+        commit('setMarketcaps', data)
       } catch (e) {
         return Promise.reject(e)
       } finally {
