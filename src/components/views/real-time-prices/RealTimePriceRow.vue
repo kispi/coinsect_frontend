@@ -38,21 +38,21 @@
     </td>
     <td class="ticker-changes-24h" :class="priceColor(ticker.$$changeRate1D)">
       <div v-html="`${autoFrac(ticker.$$changeRate1D)}%`"/>
-      <div v-html="autoFrac(ticker.$$changePrice24H)"/>
+      <div v-html="$helpers.number.pretty.price({ price: ticker.$$changePrice24H, baseCurrency: 'krw' })"/>
     </td>
     <td v-if="!$store.getters.isMobile" class="ticker-changes-52w-high">
       <div
         :class="priceColor(ticker.$$changeRate52WH)"
         v-html="`${autoFrac(ticker.$$changeRate52WH)}%`"
       />
-      <div v-html="autoFrac(ticker.$$highest52WeekPrice)"/>
+      <div v-html="$helpers.number.pretty.price({ price: ticker.$$highest52WeekPrice, baseCurrency: 'krw' })"/>
     </td>
     <td v-if="!$store.getters.isMobile" class="ticker-changes-52w-high">
       <div
         :class="priceColor(ticker.$$changeRate52WL)"
         v-html="`${autoFrac(ticker.$$changeRate52WL, 2)}%`"
       />
-      <div v-html="autoFrac(ticker.$$lowest52WeekPrice)"/>
+      <div v-html="$helpers.number.pretty.price({ price: ticker.$$lowest52WeekPrice, baseCurrency: 'krw' })"/>
     </td>
     <td class="ticker-vol-24h">
       <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HBase, baseCurrency: 'krw', numKorUnits: ticker.$$vol24HBase >= Math.pow(10, 12) ? 2 : 1 })"/>
