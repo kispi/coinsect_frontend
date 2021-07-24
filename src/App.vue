@@ -59,10 +59,11 @@ export default {
 }
 
 .app-header {
-  flex: 1;
+  flex: 0;
 }
 
 .app-body {
   overflow-x: hidden;
+  flex: 1;
 }
 </style>

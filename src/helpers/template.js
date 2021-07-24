@@ -47,12 +47,6 @@ const template = {
         minimumFractionDigits: numFrac || 0,
     })
   },
-  // pricify(5827145.2862) => '$5,827,145.28'
-  pricify: function({ price, currency, numFrac }) {
-    if (typeof price !== 'number') return
-
-    return `${this.currency(currency)}${this.prettyPrice({ price, numFrac })}`
-  },
   withLeadingZero: (value, numDigits) => {
     if (typeof value !== 'number' || !numDigits) return
 

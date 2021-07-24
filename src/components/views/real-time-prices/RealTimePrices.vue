@@ -115,6 +115,8 @@ export default {
       // realTimeTicker가 모든 원화 마켓 길이만큼 채워지기 전에는 필터를 적용하지 않는다 (성능)
       if (arr.length < (store.getters.markets.upbit || []).filter(o => o.market.startsWith('KRW')).length) return []
 
+      const order = settings.value.sort.direction
+      const col = settings.value.sort.column
       return arr.filter(t => {
         if (!keyword.value || !t.$$name) return t
 
@@ -125,11 +127,15 @@ export default {
           t.$$name.kr.includes(lowered) ||
           plugins.$helpers.includesChosung(lowered, t.$$name.kr)
       }).sort((a, b) => {
-        const former = settings.value.sort.direction === 'asc' ? a : b
-        const latter = settings.value.sort.direction === 'asc' ? b : a
-        if (settings.value.sort.column === '$$symbol') return former.$$symbol > latter.$$symbol ? 1 : -1
+        if (a[col] === undefined) return 1
 
-        return former[settings.value.sort.column] - latter[settings.value.sort.column]
+        if (b[col] === undefined) return -1
+
+        if (a[col] === b[col]) return 0
+
+        if (order === 'asc') return a[col] < b[col] ? -1 : 1
+
+        if (order === 'desc') return a[col] < b[col] ? 1 : -1
       })
     })
 
