@@ -38,42 +38,11 @@ const template = {
 
     return symbols[$store.getters.me.currency]
   },
-  prettyPrice: ({ price, numFrac }) => {
-    if (typeof price !== 'number') return 0
-
-    return price.toLocaleString(
-      undefined, {
-        maximumFractionDigits: numFrac || 0,
-        minimumFractionDigits: numFrac || 0,
-    })
-  },
   withLeadingZero: (value, numDigits) => {
     if (typeof value !== 'number' || !numDigits) return
 
     const numDigitsOfGivenValue = value.toString().length
     return `${'0'.repeat(numDigits - numDigitsOfGivenValue)}${value}`
-  },
-  koreanizedNumber: ({ number, numFrac, numUnits = 3 }) => {
-    if (!number) return
-
-    const units = [
-      { key: '조', val: Math.pow(10, 12) },
-      { key: '억', val: Math.pow(10, 8) },
-      { key: '만', val: Math.pow(10, 4) },
-      { key: '', val: Math.pow(10, 0) },
-    ]
-
-    const result = []
-    let current = number
-    units.forEach(unit => {
-      const numbers = Math.floor(current / unit.val)
-      if (numbers >= 1) {
-        current -= numbers * unit.val
-        result.push(`${template.prettyPrice({ price: numbers, numFrac })}${unit.key}`)
-      }
-    })
-
-    return result.slice(0, numUnits).join(' ')
   },
   imageAlt: {
     default: '코인충 - 대한민국 No.1 암호자산 커뮤니티',

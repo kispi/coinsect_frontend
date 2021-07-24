@@ -139,18 +139,7 @@ export default {
       })
     })
 
-    const loadSettings = () => {
-      try {
-        const stored = plugins.$helpers.localStorage.getMeta('settings')
-        if (stored.sort) settings.value.sort = stored.sort
-        if (stored.documentTitleTicker) settings.value.documentTitleTicker = stored.documentTitleTicker
-        store.commit('setSettings', settings.value)
-      } catch (e) {}
-    }
-
     onMounted(() => {
-      loadSettings()
-
       store.dispatch('loadMarkets', baseExchange.value).then(() => {
         hooks.upbit.subscribe()
         hooks.binance.subscribe()

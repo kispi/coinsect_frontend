@@ -24,8 +24,8 @@ const useUpbit = () => {
   const setDocumentTitle = ticker => {
     if (store.getters.settings.documentTitleTicker !== ticker.$$symbol) return
 
-    const priceString = helpers.template.prettyPrice({ price: ticker.$$tradePriceBase, numFrac: ticker.$$tradePriceBase >= 100 ? 0 : 2 })
-    document.title = `${ticker.$$premiumRate ? `${helpers.template.prettyPrice({ price: ticker.$$premiumRate, numFrac: 2 })}% / ` : ''}${priceString} ${ticker.$$symbol}`
+    const priceString = helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })
+    document.title = `${ticker.$$premiumRate ? `${helpers.number.pretty.price({ price: ticker.$$premiumRate, baseCurrency: 'krw' })}% / ` : ''}${priceString} ${ticker.$$symbol}`
   }
 
   const subscribe = () => {

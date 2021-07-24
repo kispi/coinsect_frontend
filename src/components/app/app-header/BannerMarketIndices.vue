@@ -37,7 +37,7 @@ export default {
 
       return [{
         key: 'USD/KRW',
-        value: plugins.$helpers.template.prettyPrice({ price: usdKrw, numFrac: 1 }),
+        value: usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }),
         changes: Math.round(o.upbitForex.signedChangeRate * 10000) / 100,
       }, {
         key: 'BTC_DOMINANCE',
@@ -45,21 +45,11 @@ export default {
         changes: o.coincodex.btc_dominance_24h_change_percent,
       }, {
         key: 'TOTAL_MARKET_CAP',
-        value: loc === 'en' ?
-          `${Math.round(o.coincodex.total_market_cap / Math.pow(10, 12) * 10000) / 10000}T` :
-          plugins.$helpers.template.koreanizedNumber({
-            number: o.coincodex.total_market_cap * usdKrw,
-            numUnits,
-          }),
+        value: plugins.$helpers.number.pretty.cap({ cap: o.coincodex.total_market_cap, baseCurrency: 'usd' }),
         changes: o.coincodex.total_market_cap_24h_change_percent,
       }, {
         key: 'VOL_24',
-        value: loc === 'en' ?
-          `${Math.round(o.coincodex.total_volume / Math.pow(10, 12) * 10000) / 10000}T` :
-          plugins.$helpers.template.koreanizedNumber({
-            number: o.coincodex.total_volume * usdKrw,
-            numUnits,
-          }),
+        value: plugins.$helpers.number.pretty.cap({ cap: o.coincodex.total_volume, baseCurrency: 'usd' }),
         changes: o.coincodex.total_volume_24h_change_percent,
       }]
     })

@@ -6,6 +6,7 @@ import dom from './dom'
 import hangul from 'hangul-js'
 import meta from './meta'
 import modal from './modal'
+import number from './number'
 import template from './template'
 import toast from './toast'
 import tooltip from './tooltip'
@@ -36,6 +37,7 @@ const canSkipApiCall = (apiId, cacheTimeout) => {
 const helpers = {
   tooltip,
   modal,
+  number,
   toast,
   dayjs,
   dom,

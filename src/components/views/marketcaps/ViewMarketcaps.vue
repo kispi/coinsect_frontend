@@ -4,36 +4,17 @@
       <div class="source">
         Powered by <a href="https://coingecko.com" target="_blank">Coingecko<img src="@/assets/images/coingecko.png"></a>
       </div>
-      <div class="currency">
-        {{ $translate('CURRENCY') }}
-        <AppDropdown
-          class="m-l-8"
-          :dropdownItems="currencies"
-          @select-dropdown-item="o => currency = o.key"
-        />
-      </div>
     </div>
     <AppLoading :loading="$store.getters.loading.marketcaps"/>
-    <MarketcapsCoingecko :currency="currency"/>
+    <MarketcapsCoingecko/>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
 import MarketcapsCoingecko from './MarketcapsCoingecko'
 
 export default {
   components: { MarketcapsCoingecko },
-  setup() {
-    const currency = ref('krw')
-
-    const currencies = ref(['krw', 'usd'].map(key => ({ key })))
-
-    return {
-      currency,
-      currencies,
-    }
-  },
 }
 </script>
 

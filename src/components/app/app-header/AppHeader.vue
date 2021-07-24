@@ -142,6 +142,7 @@ export default {
       padding: 12px 8px;
       white-space: nowrap;
       border-bottom: 2px solid transparent;
+      color: var(--text-stress);
 
       &.selected {
         color: var(--brand-primary);

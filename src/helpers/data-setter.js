@@ -34,9 +34,10 @@ export default {
     $$vol24HTarget,
   }) => {
     const o = $store.getters.realTimeTickers[$$symbol] || {}
-    if (!o.$$tradePriceBase || !$$tradePriceTarget) return
+    if (!o.$$tradePriceBase || !($$tradePriceTarget * $store.getters.usdKrw)) return
 
-    o.$$tradePriceTarget = $$tradePriceTarget
+    // 여기서는 전부 원화 기준으로.
+    o.$$tradePriceTarget = $$tradePriceTarget * $store.getters.usdKrw
     o.$$premiumPrice = o.$$tradePriceBase - o.$$tradePriceTarget
     o.$$premiumRate = Math.round(o.$$premiumPrice / o.$$tradePriceTarget * 10000) / 100
     o.$$vol24HTarget = $$vol24HTarget

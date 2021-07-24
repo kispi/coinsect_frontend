@@ -13,7 +13,7 @@
             ]"
             :key="th.title"
             v-for="th in [
-              { column: 'gecko', title: 'COIN' },
+              { column: 'id', title: 'COIN' },
               { column: 'volume', title: 'VOL_24' },
               { title: 'PRICE', $$hide: $store.getters.isMobile },
               { title: 'CIRCULATING_SUPPLY', $$hide: $store.getters.isMobile },
@@ -50,16 +50,16 @@
             />
           </td>
           <td class="vol-24">
-            {{ $helpers.template.koreanizedNumber({ number: applyCurrency(item.total_volume, true) }) || '?' }}
+            {{ $helpers.number.pretty.cap({ cap: item.total_volume, baseCurrency: 'usd' }) || '?' }}
           </td>
           <td v-if="!$store.getters.isMobile" class="price">
-            {{ item.current_price ? applyCurrency(item.current_price).toLocaleString() : '?' }}
+            {{ $helpers.number.pretty.price({ price: item.current_price, baseCurrency: 'usd' }) || '?' }}
           </td>
           <td v-if="!$store.getters.isMobile" class="circulating">
             {{ item.circulating_supply ? item.circulating_supply.toLocaleString() : '?' }}
           </td>
           <td class="marketcaps">
-            {{ item.market_cap ? $helpers.template.koreanizedNumber({ number: applyCurrency(item.market_cap, true) }) : '?' }}
+            {{ $helpers.number.pretty.cap({ cap: item.market_cap, baseCurrency: 'usd' }) }}
           </td>
         </tr>
       </tbody>
@@ -76,14 +76,11 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  props: {
-    currency: String,
-  },
-  setup(props) {
+  setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
@@ -114,26 +111,6 @@ export default {
       callApi()
     }
 
-    const applyCurrency = (price = 0, noFrac) => {
-      if (props.currency === 'usd') {
-        const converted = price
-        if (noFrac) return Math.round(converted)
-
-        let numFrags = 2
-        if (converted < 1) numFrags = 4
-        if (converted < 0.0001) numFrags = 8
-
-        return converted.toLocaleString(
-          undefined, {
-            maximumFractionDigits: numFrags,
-            minimumFractionDigits: numFrags,
-          })
-      }
-
-      const asKrw = price * store.getters.usdKrw
-      return asKrw >= 100 ? Math.round(asKrw) : asKrw.toLocaleString(1)
-    }
-
     const callApi = async page => {
       await store.dispatch('loadMarketcaps', {
         ...payload.value,
@@ -157,7 +134,6 @@ export default {
       total,
       onPage,
       sort,
-      applyCurrency,
     }
   },
 }
