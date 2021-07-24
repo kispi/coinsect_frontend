@@ -139,11 +139,10 @@ const app = {
     },
     // 앱 뜰 때 필요한 정보들 쭉 콜함
     async loadConfig({ commit, dispatch }) {
-      const loadAuthNotRequired = async () => {
-        try {
-          await dispatch('loadMarkets', 'upbit')
-        } catch (e) {}
-      }
+      const loadAuthNotRequired = async () => Promise.all([
+        dispatch('loadMarkets', 'upbit'),
+        dispatch('loadIndices'),
+      ])
 
       commit('setIsMobile')
       commit('setScrollTop', 0)
@@ -155,7 +154,7 @@ const app = {
 
       // 모든 api의 호출 전에 실행
       $http.get('config').then(config => commit('setConfig', config))
-      loadAuthNotRequired()
+      await loadAuthNotRequired()
     },
   },
 }

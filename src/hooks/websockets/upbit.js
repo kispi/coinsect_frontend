@@ -22,10 +22,11 @@ const useUpbit = () => {
   }
 
   const setDocumentTitle = ticker => {
-    if (store.getters.settings.documentTitleTicker !== ticker.$$symbol) return
-
     const priceString = helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })
-    document.title = `${ticker.$$premiumRate ? `${helpers.number.pretty.price({ price: ticker.$$premiumRate, baseCurrency: 'krw' })}% / ` : ''}${priceString} ${ticker.$$symbol}`
+    document.title = `${ticker.$$premiumRate ? `${ticker.$$premiumRate.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })}% / ` : ''}${priceString} ${ticker.$$symbol}`
   }
 
   const subscribe = () => {
@@ -50,7 +51,7 @@ const useUpbit = () => {
         const json = JSON.parse(dec.decode(new Uint8Array(event.data)))
         const symbol = json.code.split('KRW-')[1]
         setAsBasePrice({ symbol, json })
-        setDocumentTitle(store.getters.realTimeTickers[symbol])
+        if (store.getters.settings.documentTitleTicker === symbol) setDocumentTitle(store.getters.realTimeTickers[symbol])
       } catch (e) {
         console.error(e)
       }

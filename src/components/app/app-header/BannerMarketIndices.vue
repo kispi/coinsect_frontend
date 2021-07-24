@@ -55,7 +55,6 @@ export default {
     })
 
     const loadIndices = () => {
-      store.dispatch('loadIndices')
       setTimeout(loadIndices, 60 * 1000)
     }
 
