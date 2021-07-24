@@ -14,25 +14,20 @@
       :class="{'border-top': $store.getters.indices}">
       <div class="flex-row flex-between items-center flex-fill">
         <AppLogo/>
-        <div class="settings">
-          <AppDropdown
-            @select-dropdown-item="item => $store.commit('setLocale', item.key)"
-            :dropdownItems="supportedLocales"
+        <div
+          @click="showSettings = !showSettings"
+          class="settings center">
+          <i
+            ref="refIconSettings"
+            class="fa fa-cog"
           />
-          <i  
-            ref="refIconToggleDarkMode"
-            @click="toggleTheme"
-            class="fa-moon cursor-pointer m-l-12 m-r-12"
-            :class="$store.getters.theme === 'dark' ? 'fa' : 'fal'"
-            @mouseover="$tooltip.show({
-              id: 'tooltipDarkMode',
-              text: 'TOOLTIP_DARK_MODE',
-              showAbove: refIconToggleDarkMode,
-            })"
-            @mouseleave="$tooltip.hide('tooltipDarkMode')"
-          />
-          <!-- <RouterLink :to="'/login'" v-html="$translate('LOGIN')" class="m-l-8"/> -->
         </div>
+        <WrapperDropdownOverlay
+          v-model="showSettings"
+          :alignRight="true"
+          :mountBelow="refIconSettings">
+          <SettingsPanel/>
+        </WrapperDropdownOverlay>
       </div>
     </div>
     <div class="menu-items">
@@ -49,23 +44,19 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { ref } from 'vue'
 import BannerMarketIndices from './BannerMarketIndices'
-import helpers from '@/helpers'
+import SettingsPanel from './SettingsPanel'
 
 export default {
-  components: { BannerMarketIndices },
+  components: {
+    BannerMarketIndices,
+    SettingsPanel,
+  },
   setup() {
-    const refIconToggleDarkMode = ref(null)
+    const refIconSettings = ref(null)
 
-    const store = useStore()
-
-    const toggleTheme = () => {
-      const nextTheme = store.getters.theme === 'dark' ? 'light' : 'dark'
-      store.commit('setTheme', nextTheme)
-      helpers.localStorage.setMeta('theme', nextTheme)
-    }
+    const showSettings = ref(null)
 
     const menuItems = [{
       title: 'HOME',
@@ -87,25 +78,16 @@ export default {
     //   path: '/about',
     }]
 
-    const supportedLocales = ref(['kr', 'en'].map(key => ({ key })))
-
-    watch(
-      () => store.getters.translation.locale,
-      newVal => supportedLocales.value.forEach(o => o.$$selected = o.key === newVal)
-    )
-
     return {
-      refIconToggleDarkMode,
+      refIconSettings,
+      showSettings,
       menuItems,
-      supportedLocales,
-      toggleTheme,
     }
   },
 }
 </script>
 
-<style lang="scss">
-// Don't scope
+<style lang="scss" scoped>
 .app-header {
   transition: all 0.2s ease;
   width: 100%;
@@ -134,19 +116,20 @@ export default {
     &.border-top {
       border-top: 1px solid var(--border-base);
     }
-  }
 
-  .settings {
-    display: flex;
-    align-items: center;
-    color: var(--text-stress);
+    .settings {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
 
-    .app-dropdown {
-      text-transform: uppercase;
-    }
+      .fa-cog {
+        font-size: 16px;
+      }
 
-    .fa-moon {
-      color: var(--bybit-long);
+      &:hover {
+        background: var(--background-light);
+      }
     }
   }
 

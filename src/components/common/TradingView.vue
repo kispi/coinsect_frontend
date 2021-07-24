@@ -25,7 +25,7 @@ export default {
         symbol: props.symbol || 'BINANCE:BTCUSDT',
         interval: 15,
         timezone: 'Asia/Seoul',
-        theme: store.getters.theme,
+        theme: store.getters.settings.theme,
         locale: store.getters.translation.locale,
         toolbar_bg: '#f1f3f6',
         enable_publishing: false,
@@ -35,7 +35,7 @@ export default {
     }
 
     watch([
-      () => store.getters.theme,
+      () => store.getters.settings.theme,
       () => store.getters.translation.locale,
       () => props,
     ], init)

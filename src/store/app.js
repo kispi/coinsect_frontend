@@ -29,6 +29,7 @@ const app = {
         direction: 'desc',
       },
       documentTitleTicker: 'BTC',
+      currency: 'krw',
     },
     windowInnerWidth: null,
     windowInnerHeight: null,
@@ -82,16 +83,17 @@ const app = {
     setNumActiveUsers(state, numActiveUsers) {
       state.numActiveUsers = numActiveUsers
     },
-    setTheme(state, theme) {
-      state.theme = theme
-
-      const app = document.getElementById('app')
-      app.classList.remove(theme === 'dark' ? 'light' : 'dark')
-      app.classList.add(theme === 'dark' ? 'dark' : 'light')
-    },
     setSettings(state, settings) {
-      state.settings = settings
-      helpers.localStorage.setMeta('settings', settings)
+      Object.keys(settings).forEach(key => {
+        state.settings[key] = settings[key]
+
+        if (key.toLowerCase() === 'theme') {
+          const app = document.getElementById('app')
+          app.classList.remove(settings[key] === 'dark' ? 'light' : 'dark')
+          app.classList.add(settings[key] === 'dark' ? 'dark' : 'light')
+        }
+      })
+      helpers.localStorage.setMeta('settings', state.settings)
     },
     setIsMobile(state) {
       state.windowInnerWidth = window.innerWidth

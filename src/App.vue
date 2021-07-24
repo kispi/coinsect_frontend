@@ -32,7 +32,7 @@ export default {
     }
 
     onMounted(() => {
-      store.commit('setTheme', helpers.localStorage.getMeta('theme') || 'dark')
+      store.commit('setSettings', { theme: (helpers.localStorage.getMeta('settings') || {}).theme || 'dark' })
       store.dispatch('loadConfig')
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })

@@ -95,9 +95,17 @@
     "en": "Source",
     "kr": "출처"
   },
+  "LANGUAGE": {
+    "en": "Language",
+    "kr": "언어"
+  },
   "CURRENCY": {
     "en": "Currency",
     "kr": "통화"
+  },
+  "THEME": {
+    "en": "Theme",
+    "kr": "테마"
   },
   "PROFILE_IMAGE": {
     "en": "Profile Image",
