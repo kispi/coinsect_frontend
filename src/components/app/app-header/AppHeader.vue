@@ -118,16 +118,17 @@ export default {
     }
 
     .settings {
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       border-radius: 8px;
       cursor: pointer;
 
       .fa-cog {
-        font-size: 16px;
+        font-size: 20px;
       }
 
       &:hover {
+        color: var(--text-stress);
         background: var(--background-light);
       }
     }

@@ -3,13 +3,14 @@
   <div
     class="app-body"
     :class="['no-scrollbar']">
-    <RouterView/>
+    <RouterView v-if="prepared"/>
+    <AppLoading :loading="!prepared"/>
   </div>
   <AppAddons/>
 </template>
 
 <script>
-import { onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppHeader from './components/app/app-header/AppHeader'
 import AppAddons from '@/components/app/addons/AppAddons'
@@ -23,6 +24,8 @@ export default {
   setup() {
     const store = useStore()
 
+    const prepared = ref(null)
+
     const setIsMobile = () => store.commit('setIsMobile')
 
     const onScroll = e => {
@@ -33,7 +36,7 @@ export default {
 
     onMounted(() => {
       store.commit('setSettings', helpers.localStorage.getMeta('settings') || store.getters.settings)
-      store.dispatch('loadConfig')
+      store.dispatch('loadConfig').then(() => prepared.value = true)
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })
     })
@@ -42,6 +45,10 @@ export default {
       window.removeEventListener('resize', setIsMobile)
       window.removeEventListener('scroll', onScroll)
     })
+
+    return {
+      prepared,
+    }
   },
 }
 </script>

@@ -45,7 +45,6 @@
       </thead>
       <tbody>
         <RealTimePriceRow
-          @click-ticker="setDocumentTitleTicker"
           :ticker="ticker"
           :key="idx"
           v-for="(ticker, idx) in displayedList"
@@ -80,13 +79,6 @@ export default {
     const baseExchange = ref('upbit')
 
     const targetExchange = ref('binance')
-
-    const setDocumentTitleTicker = ticker => {
-      settings.value.documentTitleTicker = ticker.$$symbol
-      store.commit('setSettings', settings.value)
-      hooks.upbit.setDocumentTitle(ticker)
-      plugins.$toast.success(plugins.$translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, ticker.$$symbol))
-    }
 
     const settings = ref(store.getters.settings)
 
@@ -127,6 +119,10 @@ export default {
           t.$$name.kr.includes(lowered) ||
           plugins.$helpers.includesChosung(lowered, t.$$name.kr)
       }).sort((a, b) => {
+        // if (store.getters.settings.favorites[a.$$symbol]) return 1
+
+        // if (store.getters.settings.favorites[b.$$symbol]) return -1
+
         if (a[col] === undefined) return 1
 
         if (b[col] === undefined) return -1
@@ -139,18 +135,21 @@ export default {
       })
     })
 
-    onMounted(() => {
-      store.dispatch('loadMarkets', baseExchange.value).then(() => {
-        hooks.upbit.subscribe()
-        hooks.binance.subscribe()
-      })
-    })
+    const init = async () => {
+      await store.dispatch('loadMarkets', baseExchange.value)
+      hooks.upbit.subscribe(({
+        type: 'ticker',
+        codes: store.getters.markets.upbit.map(o => o.market),
+      }))
+      hooks.binance.subscribe()
+    }
+
+    onMounted(init)
 
     return {
       keyword,
       settings,
       setSort,
-      setDocumentTitleTicker,
       displayedList,
       baseExchange,
       targetExchange,

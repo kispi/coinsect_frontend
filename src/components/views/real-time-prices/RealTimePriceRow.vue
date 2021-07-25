@@ -1,6 +1,6 @@
 <template>
   <tr
-    @click="$emit('click-ticker', ticker)"
+    @click="setDocumentTitleTicker"
     class="real-time-price-row">
     <td class="ticker-symbol">
       <div class="flex-row items-center">
@@ -11,7 +11,15 @@
           :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'c-brand-primary' : 'c-text-stress'"
         />
       </div>
-      <div v-html="ticker.$$symbol" class="symbol f-300"/>
+      <div class="functions">
+        <i
+          @click="toggleFavorite"
+          class="fa-star c-bitcoin o-0"
+          :class="$store.getters.settings.favorites[ticker.$$symbol] ? 'fa' : 'fal'"
+        />
+        <div v-html="ticker.$$symbol" class="symbol"/>
+        <i class="fal fa-book-open o-0"/>
+      </div>
     </td>
     <td>
       <div
@@ -55,16 +63,26 @@
       <div v-html="$helpers.number.pretty.price({ price: ticker.$$lowest52WeekPrice, baseCurrency: 'krw' })"/>
     </td>
     <td class="ticker-vol-24h">
-      <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HBase, baseCurrency: 'krw', numKorUnits: ticker.$$vol24HBase >= Math.pow(10, 8) ? 2 : 1 })"/>
-      <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HTarget, baseCurrency: 'usd', numKorUnits: (ticker.$$vol24HTarget) >= Math.pow(10, 8) ? 2 : 1 })"/>
+      <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HBase, baseCurrency: 'krw', numKorUnits: (ticker.$$vol24HBase >= Math.pow(10, 8) && !$store.getters.isMobile) ? 2 : 1 })"/>
+      <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HTarget, baseCurrency: 'usd', numKorUnits: (ticker.$$vol24HTarget >= Math.pow(10, 8) && !$store.getters.isMobile) ? 2 : 1 })"/>
     </td>
   </tr>
 </template>
 
 <script>
+import { getCurrentInstance } from 'vue'
+import { useStore } from 'vuex'
+import useUpbit from '@/hooks/websockets/upbit'
+
 export default {
   props: ['ticker'],
-  setup() {
+  setup(props) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const store = useStore()
+
+    const { setDocumentTitle } = useUpbit()
+
     const autoFrac = (price, numFrac) => (price || 0).toLocaleString(undefined, {
       maximumFractionDigits: numFrac || (Math.abs(price) >= 100 ? 0 : 2),
       minimumFractionDigits: numFrac || (Math.abs(price) >= 100 ? 0 : 2),
@@ -76,9 +94,27 @@ export default {
       if (rate < 0) return 'c-price-down-upbit'
     }
 
+    const toggleFavorite = () => {
+      const favorites = store.getters.settings.favorites
+      if (favorites[props.ticker.$$symbol]) delete favorites[props.ticker.$$symbol]
+      else favorites[props.ticker.$$symbol] = true
+      store.commit('setSettings', { favorites })
+    }
+
+    const setDocumentTitleTicker = () => {
+      const settings = store.getters.settings
+      settings.documentTitleTicker = props.ticker.$$symbol
+      store.commit('setSettings', settings)
+      setDocumentTitle(props.ticker)
+      settings.documentTitleTicker = props.ticker.$$symbol
+      plugins.$toast.success(plugins.$translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, props.ticker.$$symbol))
+    }
+
     return {
       autoFrac,
       priceColor,
+      setDocumentTitleTicker,
+      toggleFavorite,
     }
   },
 }
@@ -93,10 +129,15 @@ export default {
       width: 16px;
     }
 
-    .symbol {
+    .functions {
+      display: flex;
+      align-items: center;
       margin-top: 4px;
-      margin-left: 20px;
-      font-weight: 500;
+
+      .symbol {
+        font-weight: 300;
+        margin: 0 8px 0 4px;
+      }
     }
 
     .name {

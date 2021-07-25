@@ -1,7 +1,7 @@
 <template>
-  <div class="app-chat" :class="{'folded': $store.getters.chatFolded}">
+  <div class="app-chat" :class="{'folded': $store.getters.settings.chatFolded}">
     <div
-      v-if="!$store.getters.chatFolded"
+      v-if="!$store.getters.settings.chatFolded"
       class="app-chat-container">
       <div class="app-chat-header">
         <div
@@ -113,12 +113,11 @@ export default {
     }
 
     const toggleChatFolded = () => {
-      store.commit('setChatFolded', !store.getters.chatFolded)
-      plugins.$helpers.localStorage.setMeta('chatFolded', store.getters.chatFolded)
+      store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
     }
 
     watch(
-      () => store.getters.chatFolded,
+      () => store.getters.settings.chatFolded,
       newVal => {
         if (!newVal) scrollToBottom()
       },

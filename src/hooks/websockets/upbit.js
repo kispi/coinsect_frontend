@@ -29,7 +29,7 @@ const useUpbit = () => {
     })}% / ` : ''}${priceString} ${ticker.$$symbol}`
   }
 
-  const subscribe = () => {
+  const subscribe = ({ type, codes }) => {
     const connection = new WebSocket('wss://api.upbit.com/websocket/v1')
     connection.binaryType = 'arraybuffer'
 
@@ -37,24 +37,31 @@ const useUpbit = () => {
       connection.send(JSON.stringify([{
         ticket: 'coinsect-upbit',
       }, {
-        type: 'ticker',
-        codes: store.getters.markets.upbit.map(o => o.market),
+        type,
+        codes,
       }]))
     }
 
     connection.onclose = () => {
-      setTimeout(subscribe, 1000)
+      setTimeout(() => subscribe(type, codes), 1000)
+    }
+
+    const handleTickerMessage = json => {
+      const symbol = json.code.split('KRW-')[1]
+      setAsBasePrice({ symbol, json })
+      if (store.getters.settings.documentTitleTicker === symbol) setDocumentTitle(store.getters.realTimeTickers[symbol])
+    }
+
+    const handleOrderbookMessage = json => {
+      console.log(json)
     }
 
     connection.onmessage = event => {
       try {
         const json = JSON.parse(dec.decode(new Uint8Array(event.data)))
-        const symbol = json.code.split('KRW-')[1]
-        setAsBasePrice({ symbol, json })
-        if (store.getters.settings.documentTitleTicker === symbol) setDocumentTitle(store.getters.realTimeTickers[symbol])
-      } catch (e) {
-        console.error(e)
-      }
+        if (type === 'ticker') handleTickerMessage(json)
+        if (type === 'orderbook') handleOrderbookMessage(json)
+      } catch (e) {}
     }
   }
 

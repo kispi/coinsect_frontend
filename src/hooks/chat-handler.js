@@ -132,8 +132,6 @@ const useChatHandler = () => {
       }
     }
 
-    store.commit('setChatFolded', plugins.$helpers.localStorage.getMeta('chatFolded'))
-
     loadRecentMessages()
     connect()
   }

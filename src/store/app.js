@@ -21,15 +21,16 @@ const app = {
     isMobile: null,
     config: null,
     numActiveUsers: null,
-    chatFolded: null,
-    theme: 'dark',
     settings: {
       sort: {
         column: '$$vol24HBase', // '$$symbol', '$$tradePriceBase', '$$premiumRate', '$$changeRate1D', '$$changeRate52WH', '$$changeRate52WL'
         direction: 'desc',
       },
+      theme: 'dark',
       documentTitleTicker: 'BTC',
       currency: 'krw',
+      favorites: {},
+      chatFolded: false,
     },
     windowInnerWidth: null,
     windowInnerHeight: null,
@@ -46,8 +47,6 @@ const app = {
     isMobile: state => state.isMobile,
     config: state => state.config,
     numActiveUsers: state => state.numActiveUsers,
-    chatFolded: state => state.chatFolded,
-    theme: state => state.theme,
     settings: state => state.settings,
     windowInnerWidth: state => state.windowInnerWidth,
     windowInnerHeight: state => state.windowInnerHeight,
@@ -73,9 +72,6 @@ const app = {
       }
 
       Object.keys(payload).forEach(key => state.toast[key] = payload[key])
-    },
-    setChatFolded(state, chatFolded) {
-      state.chatFolded = chatFolded
     },
     setConfig(state, config) {
       state.config = config
@@ -141,7 +137,6 @@ const app = {
     async loadConfig({ commit, dispatch }) {
       const loadAuthNotRequired = async () => Promise.all([
         dispatch('loadMarkets', 'upbit'),
-        dispatch('loadIndices'),
       ])
 
       commit('setIsMobile')
@@ -154,6 +149,7 @@ const app = {
 
       // 모든 api의 호출 전에 실행
       $http.get('config').then(config => commit('setConfig', config))
+      dispatch('loadIndices')
       await loadAuthNotRequired()
     },
   },
