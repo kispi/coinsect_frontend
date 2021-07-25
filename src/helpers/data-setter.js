@@ -19,17 +19,17 @@ export default {
 
     const o = $store.getters.realTimeTickers[$$symbol] || {}
     o.$$symbol = $$symbol
-    if ($$name) o.$$name = $$name
-    if ($$tradePriceBase) o.$$tradePriceBase = $$tradePriceBase
-    if ($$highest52WeekPrice) o.$$highest52WeekPrice = $$highest52WeekPrice
-    if ($$lowest52WeekPrice) o.$$lowest52WeekPrice = $$lowest52WeekPrice
-    if ($$changePrice24H) o.$$changePrice24H = $$changePrice24H
-    if ($$changeRate1D) o.$$changeRate1D = $$changeRate1D
-    if ($$changeRate52WH) o.$$changeRate52WH = $$changeRate52WH
-    if ($$changeRate52WL) o.$$changeRate52WL = $$changeRate52WL
-    if ($$vol24HBase) o.$$vol24HBase = $$vol24HBase
-    if ($$code) o.$$code = $$code
-    if ($$prevClosingPrice) o.$$prevClosingPrice = $$prevClosingPrice
+    o.$$name = $$name
+    o.$$tradePriceBase = $$tradePriceBase
+    o.$$highest52WeekPrice = $$highest52WeekPrice
+    o.$$lowest52WeekPrice = $$lowest52WeekPrice
+    o.$$changePrice24H = $$changePrice24H
+    o.$$changeRate1D = $$changeRate1D
+    o.$$changeRate52WH = $$changeRate52WH
+    o.$$changeRate52WL = $$changeRate52WL
+    o.$$vol24HBase = $$vol24HBase
+    o.$$code = $$code
+    o.$$prevClosingPrice = $$prevClosingPrice
     $store.getters.realTimeTickers[$$symbol] = o
   },
   calculateKimp: ({

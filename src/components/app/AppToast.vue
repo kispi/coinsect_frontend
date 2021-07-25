@@ -67,9 +67,8 @@ export default {
   position: fixed;
   z-index: 6;
   left: 50%;
-  top: var(--app-header-height);
+  top: 64px;
   transform: translateX(-50%);
-  top: var(--app-header-height);
 }
 
 .app-toast-container {

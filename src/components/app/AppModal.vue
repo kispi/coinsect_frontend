@@ -23,7 +23,6 @@
         ref="refTargetModal"
         class="modal-base-style"
         :class="{
-          'modal-slide-up': (modal.options || {}).slideUp,
           'before-prepared': !prepared,
           'fullscreen': (modal.options || {}).fullscreen,
           'resizable': (modal.options || {}).resizable,
@@ -241,21 +240,6 @@ export default {
 
   .before-prepared {
     opacity: 0;
-  }
-
-  .modal-slide-up {
-    position: absolute !important;
-    max-width: initial;
-    top: calc(var(--app-header-height) + 80px);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 0;
-    transition: all .2s ease;
-
-    &.before-prepared {
-      margin-top: 240px;
-    }
   }
 
   &.modal-draggable {

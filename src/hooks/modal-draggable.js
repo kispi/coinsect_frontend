@@ -45,7 +45,7 @@ const useModalDraggable = () => {
 
     setTimeout(() => {
       dragTarget.value = refModal.getElementsByClassName('modal-base-style')[0]
-      if (!dragTarget.value || dragTarget.value.classList.contains('modal-slide-up')) return
+      if (!dragTarget.value) return
 
       modalHeader.value = dragTarget.value.getElementsByClassName('modal-header')[0]
       if (!modalHeader.value) return

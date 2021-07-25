@@ -101,14 +101,22 @@ export default {
       })
     }
 
+    const sorter = (a, b) => {
+      if (a[settings.value.sort.column] === undefined) return 1
+
+      if (b[settings.value.sort.column] === undefined) return -1
+
+      if (settings.value.sort.direction === 'asc') return a[settings.value.sort.column] < b[settings.value.sort.column] ? -1 : 1
+
+      if (settings.value.sort.direction === 'desc') return a[settings.value.sort.column] < b[settings.value.sort.column] ? 1 : -1
+    }
+
     const displayedList = computed(() => {
       const arr = Object.values(store.getters.realTimeTickers)
 
       // realTimeTicker가 모든 원화 마켓 길이만큼 채워지기 전에는 필터를 적용하지 않는다 (성능)
       if (arr.length < (store.getters.markets.upbit || []).filter(o => o.market.startsWith('KRW')).length) return []
 
-      const order = settings.value.sort.direction
-      const col = settings.value.sort.column
       return arr.filter(t => {
         if (!keyword.value || !t.$$name) return t
 
@@ -119,19 +127,13 @@ export default {
           t.$$name.kr.includes(lowered) ||
           plugins.$helpers.includesChosung(lowered, t.$$name.kr)
       }).sort((a, b) => {
+        if (store.getters.settings.favorites[a.$$symbol] === store.getters.settings.favorites[b.$$symbol]) return sorter(a, b)
+
         if (!store.getters.settings.favorites[a.$$symbol]) return 1
 
         if (!store.getters.settings.favorites[b.$$symbol]) return -1
 
-        if (a[col] === undefined) return 1
-
-        if (b[col] === undefined) return -1
-
-        if (a[col] === b[col]) return 0
-
-        if (order === 'asc') return a[col] < b[col] ? -1 : 1
-
-        if (order === 'desc') return a[col] < b[col] ? 1 : -1
+        return sorter(a, b)
       })
     })
 

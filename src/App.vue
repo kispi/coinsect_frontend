@@ -3,7 +3,7 @@
   <div
     class="app-body"
     :class="['no-scrollbar']">
-    <RouterView v-if="prepared"/>
+    <RouterView v-if="prepared" class="router-view-container"/>
     <AppLoading :loading="!prepared"/>
     <AppFooter/>
   </div>
@@ -74,6 +74,10 @@ export default {
 
 .app-body {
   overflow-x: hidden;
-  flex: 1;
+  flex: 1;  
+
+  .router-view-container {
+    min-height: calc(100vh - 336px); // <AppHeader/>, <AppFooter/> height 뺌
+  }
 }
 </style>
