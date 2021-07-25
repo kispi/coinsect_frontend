@@ -55,8 +55,8 @@
       <div v-html="$helpers.number.pretty.price({ price: ticker.$$lowest52WeekPrice, baseCurrency: 'krw' })"/>
     </td>
     <td class="ticker-vol-24h">
-      <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HBase, baseCurrency: 'krw', numKorUnits: ticker.$$vol24HBase >= Math.pow(10, 12) ? 2 : 1 })"/>
-      <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HTarget, baseCurrency: 'usd', numKorUnits: (ticker.$$vol24HTarget * $store.getters.usdKrw) >= Math.pow(10, 12) ? 2 : 1 })"/>
+      <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HBase, baseCurrency: 'krw', numKorUnits: ticker.$$vol24HBase >= Math.pow(10, 8) ? 2 : 1 })"/>
+      <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HTarget, baseCurrency: 'usd', numKorUnits: (ticker.$$vol24HTarget) >= Math.pow(10, 8) ? 2 : 1 })"/>
     </td>
   </tr>
 </template>
