@@ -4,8 +4,11 @@
     class="app-modal">
     <div
       class="modal-fixed-container"
-      :class="{'header-exposed': (modal.options || {}).headerExposed}">
+      :class="{
+        'no-backdrop': (modal.options || {}).noBackdrop,
+      }">
       <div
+        v-if="!(modal.options || {}).noBackdrop"
         class="modal-backdrop"
         :class="{
           'opened': show,
@@ -22,6 +25,8 @@
         :class="{
           'modal-slide-up': (modal.options || {}).slideUp,
           'before-prepared': !prepared,
+          'fullscreen': (modal.options || {}).fullscreen,
+          'resizable': (modal.options || {}).resizable,
         }"
         @close="onClose"
         :options="modal.options"
@@ -42,6 +47,7 @@ export default {
   props: ['modal'],
   components: {
     ModalBasic: defineAsyncComponent(() => import('@/components/modals/ModalBasic')),
+    ModalOrderbook: defineAsyncComponent(() => import('@/components/modals/ModalOrderbook')),
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
     ModalChatProfile: defineAsyncComponent(() => import('@/components/modals/ModalChatProfile')),
@@ -150,15 +156,6 @@ export default {
     right: 0;
     bottom: 0;
     overflow-y: auto;
-
-    &.header-exposed {
-      pointer-events: none;
-    }
-
-    .modal-backdrop,
-    .modal-base-style {
-      pointer-events: auto;
-    }
   }
 
   .modal-backdrop {
@@ -217,6 +214,28 @@ export default {
         flex: 1 1 auto;
         overflow-y: auto;
       }
+    }
+
+    &.fullscreen {
+      top: 0 !important;
+      left: 0 !important;
+      width: 100%;
+      height: 100%;
+      max-width: initial;
+      max-height: initial;
+      border-radius: 0;
+    }
+
+    &.resizable {
+      resize: auto;
+    }
+  }
+
+  .modal-fixed-container.no-backdrop {
+    pointer-events: none;
+
+    .modal-base-style {
+      pointer-events: auto;
     }
   }
 

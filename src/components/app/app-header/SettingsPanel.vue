@@ -35,7 +35,7 @@ export default {
       values: ['krw', 'usd'].map(val => ({ val, $$selected: store.getters.settings.currency === val })),
     }, {
       key: 'THEME',
-      values: ['dark', 'light', 'bybit'].map(val => ({ val, $$selected: store.getters.settings.theme === val })),
+      values: ['dark', 'light'].map(val => ({ val, $$selected: store.getters.settings.theme === val })),
     }])
 
     const onClickValue = (key, value) => {

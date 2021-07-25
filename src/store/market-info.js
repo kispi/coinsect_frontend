@@ -10,6 +10,10 @@ const marketInfo = {
       upbit: null,
       bithumb: null,
     },
+    orderbooks: {
+      upbit: {},
+      bithumb: {},
+    },
     realTimeTickers: {},
     symbols: {},
   }),
@@ -18,6 +22,7 @@ const marketInfo = {
     indices: state => state.indices,
     marketcaps: state => state.marketcaps,
     markets: state => state.markets,
+    orderbooks: state => state.orderbooks,
     realTimeTickers: state => state.realTimeTickers,
     symbols: state => state.symbols,
   },
@@ -31,6 +36,9 @@ const marketInfo = {
     setMarkets(state, { exchange, markets, symbols }) {
       state.markets[exchange] = markets
       state.symbols = symbols
+    },
+    setOrderbooks(state, { exchange, market, orderbooks }) {
+      state.orderbooks[exchange][market] = orderbooks
     },
   },
   actions: {

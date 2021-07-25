@@ -17,6 +17,7 @@ import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 import InputInsta from '@/components/common/InputInsta'
 import InputPhone from '@/components/common/InputPhone'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
+import RealTimeOrderbook from '@/components/common/RealTimeOrderbook'
 import TradingView from '@/components/common/TradingView'
 
 const useGlobalComponents = app => {
@@ -40,6 +41,7 @@ const useGlobalComponents = app => {
     .component('InputInsta', InputInsta)
     .component('InputPhone', InputPhone)
     .component('ModalHeader', ModalHeader)
+    .component('RealTimeOrderbook', RealTimeOrderbook)
     .component('TradingView', TradingView)
 }
 

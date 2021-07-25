@@ -2,5 +2,9 @@
   "MODAL_CHANGE_CHAT_PROFILE": {
     "en": "Change Chat Profile",
     "kr": "채팅 프로필 변경"
+  },
+  "MODAL_ORDERBOOK": {
+    "en": "Orderbook (%exchange / %market)",
+    "kr": "호가창 (%exchange / %market)"
   }
 }

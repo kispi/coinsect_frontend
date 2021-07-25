@@ -5,6 +5,7 @@
     :class="['no-scrollbar']">
     <RouterView v-if="prepared"/>
     <AppLoading :loading="!prepared"/>
+    <AppFooter/>
   </div>
   <AppAddons/>
 </template>
@@ -14,12 +15,14 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppHeader from './components/app/app-header/AppHeader'
 import AppAddons from '@/components/app/addons/AppAddons'
+import AppFooter from '@/components/app/AppFooter'
 import helpers from './helpers'
 
 export default {
   components: {
     AppHeader,
     AppAddons,
+    AppFooter,
   },
   setup() {
     const store = useStore()

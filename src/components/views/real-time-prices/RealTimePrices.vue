@@ -119,9 +119,9 @@ export default {
           t.$$name.kr.includes(lowered) ||
           plugins.$helpers.includesChosung(lowered, t.$$name.kr)
       }).sort((a, b) => {
-        // if (store.getters.settings.favorites[a.$$symbol]) return 1
+        if (!store.getters.settings.favorites[a.$$symbol]) return 1
 
-        // if (store.getters.settings.favorites[b.$$symbol]) return -1
+        if (!store.getters.settings.favorites[b.$$symbol]) return -1
 
         if (a[col] === undefined) return 1
 

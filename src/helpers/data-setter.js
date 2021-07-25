@@ -12,6 +12,8 @@ export default {
     $$changeRate52WH,
     $$changeRate52WL,
     $$vol24HBase,
+    $$code,
+    $$prevClosingPrice,
   }) => {
     if (!$$symbol) return
 
@@ -26,6 +28,8 @@ export default {
     if ($$changeRate52WH) o.$$changeRate52WH = $$changeRate52WH
     if ($$changeRate52WL) o.$$changeRate52WL = $$changeRate52WL
     if ($$vol24HBase) o.$$vol24HBase = $$vol24HBase
+    if ($$code) o.$$code = $$code
+    if ($$prevClosingPrice) o.$$prevClosingPrice = $$prevClosingPrice
     $store.getters.realTimeTickers[$$symbol] = o
   },
   calculateKimp: ({

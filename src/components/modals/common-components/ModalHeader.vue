@@ -32,7 +32,8 @@ export default {
     font-size: 16px;
     font-weight: 600;
     text-align: center;
-    color: var(--dark-gray-lv1);
+    color: var(--text-stress);
+    pointer-events: none;
   }
 
   .fa-chevron-left,

@@ -13,12 +13,15 @@
       </div>
       <div class="functions">
         <i
-          @click="toggleFavorite"
-          class="fa-star c-bitcoin o-0"
+          @click.stop="toggleFavorite"
+          class="fa-star c-bitcoin"
           :class="$store.getters.settings.favorites[ticker.$$symbol] ? 'fa' : 'fal'"
         />
         <div v-html="ticker.$$symbol" class="symbol"/>
-        <i class="fal fa-book-open o-0"/>
+        <i
+          @click.stop="openModalOrderbook"
+          class="fal fa-book-open"
+        />
       </div>
     </td>
     <td>
@@ -83,6 +86,19 @@ export default {
 
     const { setDocumentTitle } = useUpbit()
 
+    const openModalOrderbook = () => {
+      plugins.$modal.custom({
+        component: 'ModalOrderbook',
+        options: {
+          ticker: props.ticker,
+          exchange: 'upbit',
+          fullscreen: store.getters.isMobile,
+          resizable: !store.getters.isMobile,
+          noBackdrop: true,
+        },
+      })
+    }
+
     const autoFrac = (price, numFrac) => (price || 0).toLocaleString(undefined, {
       maximumFractionDigits: numFrac || (Math.abs(price) >= 100 ? 0 : 2),
       minimumFractionDigits: numFrac || (Math.abs(price) >= 100 ? 0 : 2),
@@ -113,6 +129,7 @@ export default {
     return {
       autoFrac,
       priceColor,
+      openModalOrderbook,
       setDocumentTitleTicker,
       toggleFavorite,
     }

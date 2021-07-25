@@ -6,21 +6,23 @@
   --brand-primary-hover:    rgba(36, 222, 100, 1);
   --brand-primary-hover-bg: rgba(36, 175, 100, 0.2);
 
-  --bitcoin:          #ffbb11;
-  --white:            #ffffff;
-  --black:            #000000;
-  --black-dark:       #111111;
-  --black-light:      #222222;
-  --gray-dark:        #444444;
-  --gray:             #e0e0e0;
-  --gray-light:       #aaaaaa;
-  --almost-white:     #fafafa;
-  --success:          var(--brand-primary);
-  --danger:           #c4506b;
-  --price-up-upbit:   #d60000;
-  --price-same-upbit: #2b2b2b;
-  --price-down-upbit: #0051c7;
-  --danger-light:     rgba(247, 73, 113, 1);
+  --bitcoin:             #ffbb11;
+  --white:               #ffffff;
+  --black:               #000000;
+  --black-dark:          #111111;
+  --black-light:         #222222;
+  --gray-dark:           #444444;
+  --gray:                #e0e0e0;
+  --gray-light:          #aaaaaa;
+  --almost-white:        #fafafa;
+  --success:             var(--brand-primary);
+  --danger:              #c4506b;
+  --price-up-upbit:      #d60000;
+  --price-up-upbit-bg:   rgba(216, 14, 53, 0.05);
+  --price-down-upbit:    #0051c7;
+  --price-down-upbit-bg: rgba(0, 98, 223, 0.05);
+  --price-same-upbit:    #2b2b2b;
+  --danger-light:        rgba(247, 73, 113, 1);
 
   --text-stress:      var(--black-light);
   --text-base:        var(--gray-dark);
