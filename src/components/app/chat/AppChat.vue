@@ -10,10 +10,11 @@
           <AppImg :src="profile.image"/>
           <div class="nickname" v-html="profile.nickname"/>
         </div>
-        <i
-          @click="toggleChatFolded"
-          class="fa fa-chevron-down"
-        />
+        <div
+          class="fold clickable-icon-wrapper"
+          @click="toggleChatFolded">
+          <i class="fa fa-chevron-down"/>
+        </div>
       </div>
       <div
         ref="refAppChatBody"
@@ -78,9 +79,10 @@ export default {
     } = useChatHandler()
 
     const onKeydown = e => {
-      if (e.isComposing) return
-
-      if (e.key === 'Enter') sendTextMessage(text.value, true)
+      setTimeout(() => {
+        text.value = e.target.value
+        if (e.key === 'Enter') sendTextMessage(text.value, true)
+      })
     }
 
     const openModalChangeProfile = () => {
@@ -154,14 +156,17 @@ export default {
   right: 24px;
   transition: none;
 
-  .fa-paper-plane,
-  .fa-chevron-down {
-    color: var(--text-stress);
+  .fa-paper-plane {
     cursor: pointer;
 
     &:hover {
-      color: var(--brand-primary);
+      color: var(--text-stress);
     }
+  }
+
+  .fold {
+    width: 24px;
+    height: 24px;
   }
 
   .app-chat-container {

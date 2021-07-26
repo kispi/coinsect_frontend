@@ -16,7 +16,7 @@
         <AppLogo/>
         <div
           @click="showSettings = !showSettings"
-          class="settings center">
+          class="settings clickable-icon-wrapper">
           <i
             ref="refIconSettings"
             class="fa fa-cog"
@@ -120,16 +120,9 @@ export default {
     .settings {
       width: 40px;
       height: 40px;
-      border-radius: 8px;
-      cursor: pointer;
 
       .fa-cog {
         font-size: 20px;
-      }
-
-      &:hover {
-        color: var(--text-stress);
-        background: var(--background-light);
       }
     }
   }

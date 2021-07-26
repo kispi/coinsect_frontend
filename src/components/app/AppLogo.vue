@@ -2,7 +2,7 @@
   <RouterLink
     :to="'/'"
     class="app-logo">
-    COINSECT
+    coinsect.io
   </RouterLink>
 </template>
 
@@ -17,5 +17,6 @@ export default {
   color: var(--brand-primary);
   font-size: 24px;
   font-weight: 700;
+  font-family: NotoSans;
 }
 </style>

@@ -8,6 +8,8 @@ table {
 
   th {
     white-space: nowrap;
+    border-top: 1px solid var(--border-base);
+    font-weight: initial;
 
     .sort-icons {
       position: relative;
@@ -28,13 +30,28 @@ table {
 
     &.desc,
     &.asc {
-      font-weight: 700;
       color: var(--text-stress);
     }
 
     &.desc .fa-sort-down,
     &.asc .fa-sort-up {
       color: var(--gray-dark);
+    }
+  }
+}
+
+.clickable-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+
+  &:hover {
+    background: var(--background-light);
+
+    i {
+      color: var(--text-stress)
     }
   }
 }

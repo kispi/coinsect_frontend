@@ -23,6 +23,7 @@
       <thead>
         <tr>
           <th
+            class="p-t-8 p-b-8"
             @click="setSort(th.column)"
             :class="settings.sort.column === th.column ? settings.sort.direction : ''"
             :key="th.title"
@@ -46,8 +47,8 @@
       <tbody>
         <RealTimePriceRow
           :ticker="ticker"
-          :key="idx"
-          v-for="(ticker, idx) in displayedList"
+          :key="ticker.$$symbol"
+          v-for="ticker in displayedList"
         />
       </tbody>
     </table>

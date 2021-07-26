@@ -6,7 +6,7 @@
       </div>
     </div>
     <AppLoading :loading="$store.getters.loading.marketcaps"/>
-    <MarketcapsCoingecko/>
+    <MarketcapsCoingecko class="m-t-24"/>
   </div>
 </template>
 

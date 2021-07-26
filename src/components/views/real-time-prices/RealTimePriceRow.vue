@@ -3,8 +3,8 @@
     @click="setDocumentTitleTicker"
     class="real-time-price-row">
     <td class="ticker-symbol">
-      <div class="flex-row items-center">
-        <img :src="`https://static.upbit.com/logos/${ticker.$$symbol}.png`" class="flex-wrap m-r-4">
+      <div class="image-name">
+        <img :src="`https://static.upbit.com/logos/${ticker.$$symbol}.png`" class="flex-wrap m-r-8">
         <div
           v-html="ticker.$$name[$store.getters.translation.locale]"
           class="name lines-1"
@@ -36,16 +36,14 @@
         v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceTarget, baseCurrency: 'krw' })" 
       />
     </td>
-    <td class="ticker-premium">
-      <div :class="ticker.$$premiumRate ? '' : 'o-0'">
-        <div
-          :class="priceColor(ticker.$$premiumRate)"
-          v-html="`${autoFrac(ticker.$$premiumRate)}%`"
-        />
-        <div
-          v-html="$helpers.number.pretty.price({ price: ticker.$$premiumPrice, baseCurrency: 'krw' })"
-        />
-      </div>
+    <td class="ticker-premium" :class="ticker.$$premiumRate ? '' : 'o-0'">
+      <div
+        :class="priceColor(ticker.$$premiumRate)"
+        v-html="`${autoFrac(ticker.$$premiumRate)}%`"
+      />
+      <div
+        v-html="$helpers.number.pretty.price({ price: ticker.$$premiumPrice, baseCurrency: 'krw' })"
+      />
     </td>
     <td class="ticker-changes-24h" :class="priceColor(ticker.$$changeRate1D)">
       <div v-html="`${autoFrac(ticker.$$changeRate1D)}%`"/>
@@ -142,18 +140,23 @@ export default {
   cursor: pointer;
 
   .ticker-symbol {
-    img {
-      width: 16px;
+    padding: 8px 0;
+
+    .image-name {
+      display: flex;
+
+      img {
+        width: 16px;
+      }
     }
 
     .functions {
       display: flex;
       align-items: center;
-      margin-top: 4px;
 
       .symbol {
         font-weight: 300;
-        margin: 0 8px 0 4px;
+        margin: 0 8px;
       }
     }
 
@@ -172,6 +175,12 @@ export default {
 
   &:hover {
     background: var(--brand-primary-hover-bg);
+  }
+
+  td {
+    > div:not(:last-child) {
+      margin-bottom: 4px;
+    }
   }
 }
 </style>

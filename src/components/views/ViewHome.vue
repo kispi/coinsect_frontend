@@ -7,6 +7,7 @@
 
 <script>
 import RealTimePrices from './real-time-prices/RealTimePrices'
+
 export default {
   components: {
     RealTimePrices,

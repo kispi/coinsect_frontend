@@ -130,6 +130,7 @@ export default {
 
       .value {
         letter-spacing: 0.32px;
+        font-weight: 700;
       }
 
       &.bordered {
