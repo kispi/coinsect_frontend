@@ -4,8 +4,8 @@
       <BannerMarketIndices/>
       <AdaptiveLayout
         :gap="$store.getters.isMobile ? 0 : 8"
-        class="f-12">
-        <div class="c-text-base text-nowrap" v-html="$translate('ACTIVE_USERS')"/>
+        class="f-12 items-center">
+        <i class="c-text-base far fa-user-friends"/>
         <div class="c-text-stress flex-wrap" v-html="($store.getters.numActiveUsers || 0).toLocaleString()"/>
       </AdaptiveLayout>
     </div>

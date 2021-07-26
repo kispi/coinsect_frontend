@@ -20,24 +20,20 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 export default {
   props: ['options'],
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
     const refBody = ref(null)
 
     const scrollCenter = () => {
-      nextTick(() => {
+      setTimeout(() => {
         refBody.value.scrollTop = (refBody.value.scrollHeight - refBody.value.clientHeight) / 2
-      })
+      }, 100)
     }
 
-    onMounted(() => plugins.$bus.$on('open-websocket', scrollCenter))
-
-    onUnmounted(() => plugins.$bus.$off('open-websocket', scrollCenter))
+    onMounted(scrollCenter)
 
     return {
       refBody,

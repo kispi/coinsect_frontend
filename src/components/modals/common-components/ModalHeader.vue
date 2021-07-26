@@ -5,7 +5,7 @@
       class="far fa-chevron-left"
       @click="$emit('back')"/>
     <div class="title" v-html="$translate(title)" :class="titleClass"/>
-    <i @click="$emit('close')" class="far fa-times"/>
+    <i @click="$emit('close')" class="fal fa-times"/>
   </div>
 </template>
 
@@ -28,6 +28,10 @@ export default {
   padding: 8px 0;
   user-select: none;
 
+  @media (max-width: 767px) {
+    padding: 12px 0;
+  }
+
   .title {
     font-weight: 700;
     text-align: center;
@@ -43,6 +47,10 @@ export default {
     transform: translateY(-50%);
     color: var(--gray-light);
     cursor: pointer;
+
+    &:hover {
+      color: var(--text-stress);
+    }
   }
 
   .fa-chevron-left {

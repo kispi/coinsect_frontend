@@ -51,9 +51,15 @@ export default {
 
     const orderbook = computed(() => store.getters.orderbooks[props.exchange][props.market])
 
-    const prevClosingPrice = ref(null)
+    const realTimeTicker = computed(() => {
+      if (!props.market) return
 
-    const lastTradedPrice = ref(null)
+      return store.getters.realTimeTickers[props.market.split('KRW-')[1]] || {}
+    })
+
+    const prevClosingPrice = computed(() => realTimeTicker.value.$$prevClosingPrice)
+
+    const lastTradedPrice = computed(() => realTimeTicker.value.$$tradePriceBase)
 
     const relativeWidth = size => `${size * 100 / orderbook.value.$$biggestSize}%`
 
@@ -63,32 +69,17 @@ export default {
       return price > prevClosingPrice.value ? 'c-price-up-upbit' : 'c-price-down-upbit'
     }
 
-    const { subscribe, eventAsJSON } = useUpbit()
+    const { subscribe } = useUpbit()
 
-    const connection = ref({
-      orderbook: null,
-      trade: null,
-    })
+    const connection = ref(null)
 
     const init = () => {
-      if (props.exchange === 'upbit') {
-        connection.value.orderbook = subscribe({ type: 'orderbook', codes: [props.market] })
-        connection.value.trade = subscribe({ type: 'trade', codes: [props.market] })
-
-        connection.value.trade.onmessage = event => {
-          const json = eventAsJSON(event)
-          prevClosingPrice.value = json.prev_closing_price
-          lastTradedPrice.value = json.trade_price
-        }
-      }
+      if (props.exchange === 'upbit') connection.value = subscribe({ type: 'orderbook', codes: [props.market] })
     }
 
     onMounted(init)
 
-    onUnmounted(() => {
-      connection.value.orderbook.close()
-      connection.value.trade.close()
-    })
+    onUnmounted(() => connection.value.close())
 
     return {
       orderbook,

@@ -20,7 +20,7 @@
         <div v-html="ticker.$$symbol" class="symbol"/>
         <i
           @click.stop="openModalOrderbook"
-          class="fal fa-book-open"
+          class="fal fa-receipt"
         />
       </div>
     </td>
@@ -158,6 +158,10 @@ export default {
         font-weight: 300;
         margin: 0 8px;
       }
+
+      .fa-receipt:hover {
+        color: var(--text-stress);
+      } 
     }
 
     .name {

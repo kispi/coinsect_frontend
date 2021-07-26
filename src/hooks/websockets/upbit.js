@@ -83,8 +83,6 @@ const useUpbit = () => {
         type,
         codes,
       }]))
-
-      plugins.$bus.$emit('open-websocket', type)
     }
 
     connection.onclose = () => {
