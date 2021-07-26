@@ -69,6 +69,8 @@ const useUpbit = () => {
   }
 
   const subscribe = ({ type, codes }) => {
+    if (!type || !codes) return
+
     const connection = new WebSocket('wss://api.upbit.com/websocket/v1')
     connection.binaryType = 'arraybuffer'
 
@@ -82,8 +84,6 @@ const useUpbit = () => {
     }
 
     connection.onclose = () => {
-      if (!type || !codes) return
-
       setTimeout(() => subscribe(type, codes), 1000)
     }
 
