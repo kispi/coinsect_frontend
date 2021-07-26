@@ -25,12 +25,11 @@ export default {
 .modal-header {
   position: relative;
   border-bottom: 1px solid var(--border-base);
-  padding: 16px 0;
+  padding: 8px 0;
   user-select: none;
 
   .title {
-    font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
     color: var(--text-stress);
     pointer-events: none;

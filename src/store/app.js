@@ -109,8 +109,11 @@ const app = {
     addModal(state, modal) {
       state.modals.push(modal)
     },
-    popModal(state) {
-      state.modals.pop()
+    popModal(state, modal) {
+      const idx = state.modals.findIndex(m => m === modal)
+      if (idx >= 0) delete state.modals[idx]
+
+      if (state.modals.filter(m => m).length === 0) state.modals = []
     },
     removeAllModals(state) {
       state.modals = []

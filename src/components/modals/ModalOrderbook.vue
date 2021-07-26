@@ -7,23 +7,51 @@
       "
       @close="$emit('close')"
     />
-    <div class="body">
-      <RealTimeOrderbook :exchange="options.exchange" :market="options.ticker.$$code"/>
+    <div
+      ref="refBody"
+      class="body">
+      <RealTimeOrderbook
+        @load-orderbook="scrollCenter"
+        :exchange="options.exchange"
+        :market="options.ticker.$$code"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { ref, getCurrentInstance, nextTick, onMounted, onUnmounted } from 'vue'
+
 export default {
   props: ['options'],
+  setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const refBody = ref(null)
+
+    const scrollCenter = () => {
+      nextTick(() => {
+        refBody.value.scrollTop = (refBody.value.scrollHeight - refBody.value.clientHeight) / 2
+      })
+    }
+
+    onMounted(() => plugins.$bus.$on('open-websocket', scrollCenter))
+
+    onUnmounted(() => plugins.$bus.$off('open-websocket', scrollCenter))
+
+    return {
+      refBody,
+      scrollCenter,
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .modal-orderbook {
   border-radius: 4px;
-  width: 480px;
-  height: 640px;
+  width: 320px;
+  height: 480px;
 
   .body {
     line-height: 20px;

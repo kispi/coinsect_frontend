@@ -1,15 +1,17 @@
-import helpers from '@/helpers'
+import { getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
 const useUpbit = () => {
   const store = useStore()
+
+  const plugins = getCurrentInstance().appContext.config.globalProperties
 
   const dec = new TextDecoder('utf-8')
 
   const eventAsJSON = event => JSON.parse(dec.decode(new Uint8Array(event.data)))
 
   const setAsBasePrice = ({ symbol, json }) => {
-    helpers.dataSetter.setPriceRow({
+    plugins.$helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$name: store.getters.symbols[symbol],
       $$tradePriceBase: json.trade_price,
@@ -61,7 +63,7 @@ const useUpbit = () => {
   }
 
   const setDocumentTitle = ticker => {
-    const priceString = helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })
+    const priceString = plugins.$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })
     document.title = `${ticker.$$premiumRate ? `${ticker.$$premiumRate.toLocaleString(undefined, {
       maximumFractionDigits: 2,
       minimumFractionDigits: 2,
@@ -81,6 +83,8 @@ const useUpbit = () => {
         type,
         codes,
       }]))
+
+      plugins.$bus.$emit('open-websocket', type)
     }
 
     connection.onclose = () => {

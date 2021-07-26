@@ -129,7 +129,6 @@ export default {
       justify-content: space-between;
 
       .value {
-        font-weight: 700;
         letter-spacing: 0.32px;
       }
 

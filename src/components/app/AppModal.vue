@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="modal"
     ref="refModal"
     class="app-modal">
     <div
@@ -12,18 +13,15 @@
         class="modal-backdrop"
         :class="{
           'opened': show,
-          'o-0': !prepared,
           'blurred': (modal.options || {}).useBlurredBackdrop,
           'darker': (modal.options || {}).useDarkerBackdrop,
         }"
-        :style="backdropStyle"
         @mousedown="closeOnMousedownBackdrop">
       </div>
       <component
         ref="refTargetModal"
         class="modal-base-style"
         :class="{
-          'before-prepared': !prepared,
           'fullscreen': (modal.options || {}).fullscreen,
           'resizable': (modal.options || {}).resizable,
         }"
@@ -58,32 +56,16 @@ export default {
 
     const store = useStore()
 
-    const prepared = ref(null)
-
     const refModal = ref(null)
 
     const refTargetModal = ref(null)
 
-    const backdropStyle = ref(null)
-
-    const setBackdropStyle = () => {
-      if ((props.modal.options || {}).headerExposed) {
-        backdropStyle.value = {
-          top: `${plugins.$helpers.dom.bannerConsideredHeaderHeight()}px`,
-        }
-      }
-    }
-
     const { makeDraggable } = useModalDraggable()
 
     const onClose = e => {
-      if (props.modal.resolve) {
-        props.modal.resolve(e)
-      }
+      if (props.modal.resolve) props.modal.resolve(e)
 
-      prepared.value = false
-      // 0.2초의 애니메이션을 기다린 후 modal을 제거해야함.
-      setTimeout(() => store.commit('popModal'), 200)
+      store.commit('popModal', props.modal)
     }
 
     const closeOnMousedownBackdrop = e => {
@@ -98,9 +80,6 @@ export default {
       document.addEventListener('keydown', onKeydown)
 
       setTimeout(() => show.value = true)
-
-      // defineAsyncComponent를 통해 비동기로 모달을 로드하기때문에, 약간의 타임아웃을 주어 로드가 완료된 뒤 prepared.value = true로 하기 위함
-      setTimeout(() => prepared.value = true, 100)
 
       makeDraggable(refModal.value)
     })
@@ -117,11 +96,6 @@ export default {
     )
 
     watch(
-      () => prepared.value,
-      setBackdropStyle,
-    )
-
-    watch(
       () => router.currentRoute.value,
       (newVal, oldVal) => {
         // 다른 라우트로 이동하는 경우는 모달을 전부 끈다. (쿼리파라미터가 바뀌는 경우는 제외)
@@ -133,8 +107,6 @@ export default {
 
     return {
       show,
-      prepared,
-      backdropStyle,
       onClose,
       refModal,
       refTargetModal,
@@ -236,10 +208,6 @@ export default {
     .modal-base-style {
       pointer-events: auto;
     }
-  }
-
-  .before-prepared {
-    opacity: 0;
   }
 
   &.modal-draggable {
