@@ -1,12 +1,12 @@
 <template>
   <div
-    v-if="orderbooks"
+    v-if="orderbook"
     class="real-time-orderbook">
     <div :key="type" v-for="type in ['$$asks', '$$bids']">
       <div
         class="order"
         :key="idx"
-        v-for="(order, idx) in orderbooks[type]">
+        v-for="(order, idx) in orderbook[type]">
         <div
           class="price"
           :class="[
@@ -49,23 +49,18 @@ export default {
   setup(props) {
     const store = useStore()
 
-    const orderbooks = computed(() => store.getters.orderbooks[props.exchange][props.market])
+    const orderbook = computed(() => store.getters.orderbooks[props.exchange][props.market])
 
     const prevClosingPrice = ref(null)
 
     const lastTradedPrice = ref(null)
 
-    const biggestSize = computed(() => {
-      const sizes = [...orderbooks.value.$$asks, ...orderbooks.value.$$bids].map(o => o.size).sort((a, b) => b - a)
-      return sizes[0]
-    })
-
-    const relativeWidth = size => `${size * 100 / biggestSize.value}%`
+    const relativeWidth = size => `${size * 100 / orderbook.value.$$biggestSize}%`
 
     const priceColor = price => {
-      if (price > prevClosingPrice.value) return 'c-price-up-upbit'
-      if (price === prevClosingPrice.value) return 'c-price-same-upbit'
-      if (price < prevClosingPrice.value) return 'c-price-down-upbit'
+      if (!prevClosingPrice.value || price === prevClosingPrice.value) return 'c-price-same-upbit'
+
+      return price > prevClosingPrice.value ? 'c-price-up-upbit' : 'c-price-down-upbit'
     }
 
     const { subscribe, eventAsJSON } = useUpbit()
@@ -96,10 +91,9 @@ export default {
     })
 
     return {
-      orderbooks,
+      orderbook,
       prevClosingPrice,
       lastTradedPrice,
-      biggestSize,
       relativeWidth,
       priceColor,
     }

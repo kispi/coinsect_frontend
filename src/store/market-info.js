@@ -37,8 +37,8 @@ const marketInfo = {
       state.markets[exchange] = markets
       state.symbols = symbols
     },
-    setOrderbooks(state, { exchange, market, orderbooks }) {
-      state.orderbooks[exchange][market] = orderbooks
+    setOrderbook(state, { exchange, market, orderbook }) {
+      state.orderbooks[exchange][market] = orderbook
     },
   },
   actions: {

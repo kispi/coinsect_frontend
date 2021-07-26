@@ -25,22 +25,37 @@ const useUpbit = () => {
     })
   }
 
-  const setOrderbooks = json => {
-    store.commit('setOrderbooks', {
+  const setOrderbook = json => {
+    const $$asks = []
+    const $$bids = []
+    const units = json.orderbook_units
+    let $$biggestSize = 0
+
+    units.forEach((unit, idx) => {
+      $$asks.push({
+        price: units[units.length - idx - 1].ask_price,
+        size: units[units.length - idx - 1].ask_size,
+      })
+
+      $$bids.push({
+        price: units[idx].bid_price,
+        size: units[idx].bid_size,
+      })
+
+      if (unit.ask_size >= $$biggestSize) $$biggestSize = unit.ask_size
+      if (unit.bid_size >= $$biggestSize) $$biggestSize = unit.bid_size
+    })
+
+    store.commit('setOrderbook', {
       exchange: 'upbit',
       market: json.code,
-      orderbooks: {
+      orderbook: {
         $$code: json.code,
-        $$asks: json.orderbook_units.sort((a, b) => b.ask_price - a.ask_price).map(o => ({
-          price: o.ask_price,
-          size: o.ask_size,
-        })),
-        $$bids: json.orderbook_units.sort((a, b) => b.bid_price - a.bid_price).map(o => ({
-          price: o.bid_price,
-          size: o.bid_size,
-        })),
+        $$asks,
+        $$bids,
         $$totalAskSize: json.total_ask_size,
         $$totalBidSize: json.total_bid_size,
+        $$biggestSize,
       },
     })
   }
@@ -82,7 +97,7 @@ const useUpbit = () => {
       try {
         const json = eventAsJSON(event)
         if (type === 'ticker') handleTickerMessage(json)
-        if (type === 'orderbook') setOrderbooks(json)
+        if (type === 'orderbook') setOrderbook(json)
       } catch (e) {
         console.error(e)
       }
