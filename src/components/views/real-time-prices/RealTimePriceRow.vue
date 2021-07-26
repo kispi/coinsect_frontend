@@ -36,12 +36,14 @@
         v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceTarget, baseCurrency: 'krw' })" 
       />
     </td>
-    <td class="ticker-premium" :class="ticker.$$premiumRate ? '' : 'o-0'">
+    <td class="ticker-premium">
       <div
+        v-if="typeof ticker.$$premiumRate === 'number'"
         :class="priceColor(ticker.$$premiumRate)"
         v-html="`${autoFrac(ticker.$$premiumRate)}%`"
       />
       <div
+        v-if="ticker.$$premiumPrice"
         v-html="$helpers.number.pretty.price({ price: ticker.$$premiumPrice, baseCurrency: 'krw' })"
       />
     </td>

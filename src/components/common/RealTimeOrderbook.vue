@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import useUpbit from '@/hooks/websockets/upbit'
 
@@ -46,10 +46,12 @@ export default {
     exchange: String,
     market: String,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore()
 
     const orderbook = computed(() => store.getters.orderbooks[props.exchange][props.market])
+
+    const emitted = ref(null)
 
     const realTimeTicker = computed(() => {
       if (!props.market) return
@@ -80,6 +82,16 @@ export default {
     onMounted(init)
 
     onUnmounted(() => connection.value.close())
+
+    watch(
+      () => orderbook.value,
+      newVal => {
+        if (newVal && !emitted.value) {
+          emit('load-orderbook')
+          emitted.value = true
+        }
+      },
+    )
 
     return {
       orderbook,

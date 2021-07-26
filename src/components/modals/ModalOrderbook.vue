@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 export default {
   props: ['options'],
@@ -32,8 +32,6 @@ export default {
         refBody.value.scrollTop = (refBody.value.scrollHeight - refBody.value.clientHeight) / 2
       }, 100)
     }
-
-    onMounted(scrollCenter)
 
     return {
       refBody,
