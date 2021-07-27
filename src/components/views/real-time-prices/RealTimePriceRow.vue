@@ -92,7 +92,7 @@ export default {
         options: {
           ticker: props.ticker,
           exchange: 'upbit',
-          fullscreen: store.getters.isMobile,
+          // fullscreen: store.getters.isMobile,
           resizable: !store.getters.isMobile,
           noBackdrop: true,
         },

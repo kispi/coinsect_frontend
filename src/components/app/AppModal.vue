@@ -36,7 +36,6 @@
 <script>
 import { defineAsyncComponent, onUnmounted, onMounted, ref, watch, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
-import router from '@/router'
 import useModalDraggable from '@/hooks/modal-draggable'
 
 export default {
@@ -93,16 +92,6 @@ export default {
       () => store.getters.windowInnerHeight,
     ],
       () => plugins.$helpers.modal.center(refTargetModal.value.$el),
-    )
-
-    watch(
-      () => router.currentRoute.value,
-      (newVal, oldVal) => {
-        // 다른 라우트로 이동하는 경우는 모달을 전부 끈다. (쿼리파라미터가 바뀌는 경우는 제외)
-        if ((newVal || {}).path !== (oldVal || {}).path) {
-          store.commit('removeAllModals')
-        }
-      },
     )
 
     return {

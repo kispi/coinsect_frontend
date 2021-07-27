@@ -3,6 +3,7 @@ import routesNoAuth from './routes-no-auth-async'
 import routesAuth from './routes-auth-async'
 import ViewNotFound from '@/components/views/ViewNotFound'
 import helpers from '@/helpers'
+import $store from '@/store'
 
 const routes = [
   ...routesNoAuth,
@@ -21,6 +22,15 @@ const router = createRouter({
     setTimeout(() => helpers.dom.scrollToTop())
   },
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  const modals = $store.getters.modals.filter(m => m)
+  if (modals.length === 0) return next()
+
+  const latestModal = modals[modals.length - 1]
+  $store.commit('popModal', latestModal)
+  next(false)
 })
 
 router.afterEach(() => {

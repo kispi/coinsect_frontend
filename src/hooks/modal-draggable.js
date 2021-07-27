@@ -26,7 +26,8 @@ const useModalDraggable = () => {
     if (e.target.classList.contains('fa-times') || e.target.classList.contains('fa-chevron-left')) return
 
     dragging.value = true
-    document.addEventListener(store.getters.isMobile ? 'touchmove' : 'mousemove', onMousemove)
+    document.addEventListener('touchmove', onMousemove)
+    document.addEventListener('mousemove', onMousemove)
 
     const rect = e.target.getBoundingClientRect()
 
@@ -50,7 +51,8 @@ const useModalDraggable = () => {
       modalHeader.value = dragTarget.value.getElementsByClassName('modal-header')[0]
       if (!modalHeader.value) return
 
-      modalHeader.value.addEventListener(store.getters.isMobile ? 'touchstart' : 'mousedown', onMousedown)
+      modalHeader.value.addEventListener('touchstart', onMousedown)
+      modalHeader.value.addEventListener('mousedown', onMousedown)
       refModal.classList.add('modal-draggable')
 
       const modalRect = dragTarget.value.getBoundingClientRect()
@@ -61,12 +63,18 @@ const useModalDraggable = () => {
   }
 
   onMounted(() => {
-    document.addEventListener(store.getters.isMobile ? 'touchend' : 'mouseup', onMouseup)
+    document.addEventListener('touchend', onMouseup)
+    document.addEventListener('mouseup', onMouseup)
   })
 
   onUnmounted(() => {
-    document.removeEventListener(store.getters.isMobile ? 'touchend' : 'mouseup', onMouseup)
-    if (modalHeader.value) modalHeader.value.removeEventListener(store.getters.isMobile ? 'touchstart' : 'mousedown', onMousedown)
+    document.removeEventListener('touchend', onMouseup)
+    document.removeEventListener('mouseup', onMouseup)
+
+    if (modalHeader.value) {
+      modalHeader.value.removeEventListener('touchstart', onMousedown)
+      modalHeader.value.removeEventListener('mousedown', onMousedown)
+    }
   })
 
   return {
