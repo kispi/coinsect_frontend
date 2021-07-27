@@ -1,5 +1,6 @@
 // app components
 import AdaptiveLayout from '@/components/app/AdaptiveLayout'
+import AppBanner from '@/components/app/AppBanner'
 import AppCheckbox from '@/components/app/AppCheckbox'
 import AppDraggable from '@/components/app/AppDraggable'
 import AppDropdown from '@/components/app/AppDropdown'
@@ -24,6 +25,7 @@ const useGlobalComponents = app => {
   app
   // app components
     .component('AdaptiveLayout', AdaptiveLayout)
+    .component('AppBanner', AppBanner)
     .component('AppCheckbox', AppCheckbox)
     .component('AppDraggable', AppDraggable)
     .component('AppDropdown', AppDropdown)
