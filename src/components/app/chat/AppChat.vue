@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, nextTick, watch, computed } from 'vue'
+import { ref, getCurrentInstance, nextTick, watch } from 'vue'
 import { useStore } from 'vuex'
 import AppChatMessage from './AppChatMessage'
 import useChatHandler from '@/hooks/chat-handler'
@@ -138,6 +138,10 @@ export default {
 
     const toggleChatFolded = () => {
       store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
+
+      nextTick(() => {
+        if (!store.getters.settings.chatFolded) scrollToBottom(true)
+      })
     }
 
     const toggleChatSizeMax = () => {
@@ -333,7 +337,7 @@ export default {
     }
 
     &.max-size {
-      top: 8px;
+      top: 48px;
 
       .app-chat-container {
         height: 100%;
