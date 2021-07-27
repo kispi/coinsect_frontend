@@ -27,7 +27,7 @@ export default {
   text-align: center;
   justify-content: center;
   border: 1px solid var(--white);
-  max-width: 440px;
+  max-width: 464px;
   margin: 40px;
 
   span {
