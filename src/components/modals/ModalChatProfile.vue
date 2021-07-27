@@ -81,7 +81,7 @@ export default {
     padding: 16px;
 
     .field-name {
-      font-weight: 500;
+      font-weight: 700;
       margin-bottom: 8px;
     }
 
@@ -98,7 +98,7 @@ export default {
     .crypto-icons {
       background: var(--white);
       padding: 16px;
-      margin-bottom: 16px;
+      margin-bottom: 40px;
       border-radius: 4px;
 
       .grid {

@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance, nextTick } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
 const nicknameRecommendations = [
@@ -15,8 +15,6 @@ const useChatHandler = () => {
   const store = useStore()
 
   const messages = ref([])
-
-  const refAppChatBody = ref(null)
 
   const profile = ref({
     nickname: null,
@@ -40,12 +38,6 @@ const useChatHandler = () => {
     return Object.keys(store.getters.symbols)[randIdx]
   }
 
-  const scrollToBottom = () => {
-    nextTick(() => {
-      if (refAppChatBody.value) refAppChatBody.value.scrollTop = refAppChatBody.value.scrollHeight
-    })
-  }
-
   const addMessage = message => {
     messages.value.push({
       profile: (message.user || {}).profile,
@@ -54,8 +46,6 @@ const useChatHandler = () => {
       timestamp: message.ts,
       type: message.type,
     })
-
-    scrollToBottom()
   }
 
   const sendWebsocketMessage = message => {
@@ -137,12 +127,10 @@ const useChatHandler = () => {
   }
 
   return {
-    refAppChatBody,
     connected,
     profile,
     messages,
     setLocalAccount,
-    scrollToBottom,
     recommendNickname,
     sendWebsocketMessage,
     init,

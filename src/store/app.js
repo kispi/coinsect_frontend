@@ -31,6 +31,7 @@ const app = {
       currency: 'krw',
       favorites: {},
       chatFolded: false,
+      chatSizeMax: false,
     },
     windowInnerWidth: null,
     windowInnerHeight: null,

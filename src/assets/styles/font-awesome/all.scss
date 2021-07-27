@@ -1854,9 +1854,9 @@ readers do not read off random characters that represent icons */
   content: "\f017";
 }
 
-// .fa-clone:before {
-//   content: "\f24d";
-// }
+.fa-clone:before {
+  content: "\f24d";
+}
 
 // .fa-closed-captioning:before {
 //   content: "\f20a";
@@ -5354,13 +5354,13 @@ readers do not read off random characters that represent icons */
 //   content: "\f677";
 // }
 
-// .fa-minus:before {
-//   content: "\f068";
-// }
-
-.fa-minus-circle:before {
-  content: "\f056";
+.fa-minus:before {
+  content: "\f068";
 }
+
+// .fa-minus-circle:before {
+//   content: "\f056";
+// }
 
 // .fa-minus-hexagon:before {
 //   content: "\f307";
@@ -7414,9 +7414,9 @@ readers do not read off random characters that represent icons */
 //   content: "\f935";
 // }
 
-// .fa-square:before {
-//   content: "\f0c8";
-// }
+.fa-square:before {
+  content: "\f0c8";
+}
 
 // .fa-square-full:before {
 //   content: "\f45c";
