@@ -7,7 +7,7 @@
     <div class="subtitle"><span>Loyal</span> Coiner</div>
     <div class="description">
       <div>실시간 시세 / 프리미엄 / 트레이딩뷰 / 호가창</div>
-      <div class="m-t-4">뉴스 / 펀더멘털 / 커뮤니티 ...</div>
+      <div class="m-t-8">뉴스 / 펀더멘털 / 커뮤니티 ...</div>
     </div>
   </div>
 </template>
@@ -22,12 +22,14 @@ export default {
 .app-banner {
   background: var(--background-base);
   color: var(--text-stress);
-  font-size: 40px;
-  padding: 24px;
+  font-size: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;;
   text-align: center;
-  justify-content: center;
   border: 1px solid var(--white);
-  max-width: 464px;
+  max-width: 1200px;
+  height: 600px;
   margin: 40px;
 
   span {
@@ -41,8 +43,8 @@ export default {
     font-weight: 700;
 
     img {
-      max-width: 40px;
-      margin-right: 8px;
+      max-width: 80px;
+      margin-right: 16px;
     }
   }
 
@@ -50,22 +52,22 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 8px;
+    margin-top: 16px;
 
     span {
       font-family: Gungseo;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 16px;
     }
   }
 
   .subtitle {
-    font-size: 14px;
+    font-size: 28px;
   }
 
   .description {
-    font-size: 16px;
-    margin-top: 16px;
+    font-size: 32px;
+    margin-top: 32px;
   }
 }
 </style>
