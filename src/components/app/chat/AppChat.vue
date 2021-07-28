@@ -68,7 +68,8 @@
             v-model="text"
             @keydown="onKeydown"
             @keydown.prevent.enter
-            maxlength="80"
+            maxlength="120"
+            class="no-scrollbar"
           />
           <i
             v-if="text"
@@ -121,7 +122,10 @@ export default {
       setTimeout(() => {
         text.value = e.target.value
         if (e.key === 'Enter') {
-          if (e.shiftKey && text.value) text.value += '\n'
+          if (e.shiftKey && text.value) {
+            text.value += '\n'
+            setTimeout(() => refTextarea.value.scrollTop = refTextarea.value.scrollHeight)
+          }
           else sendTextMessage(text.value, true)
         }
       })
@@ -364,6 +368,7 @@ export default {
 
       textarea {
         padding-right: 16px;
+        font-size: 12px;
       }
 
       .fa-paper-plane {
