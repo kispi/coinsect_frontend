@@ -107,6 +107,10 @@
     "en": "Theme",
     "kr": "테마"
   },
+  "FILTER": {
+    "en": "Filter",
+    "kr": "필터"
+  },
   "PROFILE_IMAGE": {
     "en": "Profile Image",
     "kr": "프로필 이미지"

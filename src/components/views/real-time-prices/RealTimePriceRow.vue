@@ -187,6 +187,10 @@ export default {
     > div:not(:last-child) {
       margin-bottom: 4px;
     }
+
+    &:not(:first-child) {
+      font-family: Arial, Helvetica, sans-serif;
+    }
   }
 }
 </style>

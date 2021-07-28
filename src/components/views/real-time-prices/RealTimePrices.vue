@@ -119,6 +119,8 @@ export default {
       if (arr.length < (store.getters.markets.upbit || []).filter(o => o.market.startsWith('KRW')).length) return []
 
       return arr.filter(t => {
+        if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
+
         if (!keyword.value || !t.$$name) return t
 
         const lowered = keyword.value.toLowerCase()

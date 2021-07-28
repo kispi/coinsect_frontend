@@ -36,6 +36,9 @@ export default {
     }, {
       key: 'THEME',
       values: ['dark', 'light'].map(val => ({ val, $$selected: store.getters.settings.theme === val })),
+    }, {
+      key: 'FILTER',
+      values: ['all', 'favorites'].map(val => ({ val, $$selected: store.getters.settings.filter === val })),
     }])
 
     const onClickValue = (key, value) => {
@@ -52,6 +55,10 @@ export default {
       if (key === 'THEME') {
         store.commit('setSettings', { theme: value })
         return
+      }
+
+      if (key === 'FILTER') {
+        store.commit('setSettings', { filter: value })
       }
     }
 

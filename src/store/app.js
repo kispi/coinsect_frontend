@@ -29,6 +29,7 @@ const app = {
       theme: 'dark',
       documentTitleTicker: 'BTC',
       currency: 'krw',
+      filter: null, // 'favorites'
       favorites: {},
       chatFolded: false,
     },
