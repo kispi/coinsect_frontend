@@ -42,18 +42,32 @@
           v-for="message in messages"
         />
         <div
-          @click="scrollToBottom(true)"
+          v-if="incomingMessage"
+          @click="onClickIncomingMessageOverlay"
+          class="incoming-message-overlay flex-row items-center">
+          <img :src="incomingMessage.profile.image" class="flex-wrap">
+          <div class="flex-fill flex-row items-center">
+            <div class="flex-fill">
+              <div class="text flex-wrap lines-1" v-html="incomingMessage.text"/>
+              <div class="nickname lines-1" v-html="incomingMessage.profile.nickname"/>
+            </div>
+            <i class="fa fa-chevron-down flex-wrap"/>
+          </div>
+        </div>
+        <div
+          @click="scrollToBottom"
           class="clickable-icon-wrapper scroll-to-bottom"
           :class="{'o-0 no-touch': autoScrollable}">
           <i class="fa fa-chevron-down"/>
         </div>
       </div>
       <div class="app-chat-input">
-        <div class="input-wrapper">
-          <input
-            ref="refInput"
+        <div class="textarea-wrapper">
+          <textarea
+            ref="refTextarea"
             v-model="text"
             @keydown="onKeydown"
+            maxlength="80"
           />
           <i
             v-if="text"
@@ -85,11 +99,13 @@ export default {
 
     const store = useStore()
 
-    const refInput = ref(null)
+    const refTextarea = ref(null)
 
     const refAppChatBody = ref(null)
 
     const text = ref('')
+
+    const incomingMessage = ref(null)
 
     const {
       init,
@@ -103,7 +119,9 @@ export default {
     const onKeydown = e => {
       setTimeout(() => {
         text.value = e.target.value
-        if (e.key === 'Enter') sendTextMessage(text.value, true)
+        if (e.key === 'Enter') {
+          if (!e.shiftKey) sendTextMessage(text.value, true)
+        }
       })
     }
 
@@ -133,14 +151,14 @@ export default {
 
       text.value = ''
 
-      if (refInput.value) nextTick(() => refInput.value.focus())
+      if (refTextarea.value) nextTick(() => refTextarea.value.focus())
     }
 
     const toggleChatFolded = () => {
       store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
 
       nextTick(() => {
-        if (!store.getters.settings.chatFolded) scrollToBottom(true)
+        if (!store.getters.settings.chatFolded) scrollToBottom()
       })
     }
 
@@ -152,14 +170,23 @@ export default {
 
     const onScroll = e => {
       const dom = e.target
-      autoScrollable.value = dom.scrollHeight <= dom.scrollTop + dom.clientHeight + 80
+      autoScrollable.value = dom.scrollHeight <= dom.scrollTop + dom.clientHeight + 320
     }
 
-    const scrollToBottom = force => {
+    const onClickIncomingMessageOverlay = () => {
+      incomingMessage.value = null
+      scrollToBottom()
+    }
+
+    const showIncomingMessageOverlay = () => {
+      if ((messages.value || []).length === 0) return
+
+      incomingMessage.value = messages.value[messages.value.length - 1]
+    }
+
+    const scrollToBottom = () => {
       const dom = refAppChatBody.value
       if (!dom) return
-
-      if (!force && !autoScrollable.value) return
 
       nextTick(() => dom.scrollTop = dom.scrollHeight)
     }
@@ -171,22 +198,29 @@ export default {
       },
     )
 
+    // 새 메시지가 왔을 떄
     watch(
       () => messages.value.length,
       () => {
-        scrollToBottom()
+        if (autoScrollable.value) {
+          scrollToBottom()
+        } else {
+          showIncomingMessageOverlay()
+        }
       },
     )
 
     return {
-      refInput,
+      refTextarea,
       refAppChatBody,
       connected,
       profile,
       text,
       messages,
       onKeydown,
+      incomingMessage,
       openModalChangeProfile,
+      onClickIncomingMessageOverlay,
       sendTextMessage,
       toggleChatFolded,
       toggleChatSizeMax,
@@ -215,6 +249,7 @@ export default {
   }
 
   .app-chat-container {
+    border: 1px solid var(--border-light);
     border-radius: 4px;
     display: flex;
     flex-direction: column;
@@ -222,6 +257,7 @@ export default {
     background: var(--border-base);
     height: 400px;
     transition: none;
+    position: relative;
 
     @media (max-width: 479px) {
       width: calc(100% - 32px);
@@ -280,28 +316,51 @@ export default {
     .scroll-to-bottom {
       position: absolute;
       right: 8px;
-      bottom: 64px;
+      bottom: 88px;
       width: 40px;
       height: 40px;
       border-radius: 50%;
+      border: 1px solid var(--border-light);
       background: var(--background-base);
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.24);
       transition: all 0.2s ease;
+    }
+
+    .incoming-message-overlay {
+      position: absolute;
+      color: var(--black-dark);
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 4px;
+      padding: 12px;
+      bottom: 88px;
+      left: 12px;
+      right: 12px;
+      z-index: 1;
+
+      img {
+        width: 24px;
+        margin-right: 16px;
+      }
+
+      .nickname {
+        font-size: 12px;
+        margin-top: 8px;
+      }
     }
   }
 
   .app-chat-input {
     padding: calc(var(--app-chat-padding) / 2) var(--app-chat-padding);
 
-    .input-wrapper {
-      border-radius: 24px;
+    .textarea-wrapper {
+      border-radius: 4px;
       background: var(--background-light);
       width: 100%;
       display: flex;
       align-items: center;
       padding: 8px 16px;
 
-      input {
+      textarea {
         padding-right: 16px;
       }
 
@@ -350,7 +409,6 @@ export default {
   &.light {
     .app-chat-container {
       background: var(--white);
-      border: 1px solid var(--gray-light);
 
       .app-chat-body {
         border-top: 1px solid var(--border-base);
@@ -362,7 +420,6 @@ export default {
   &.dark {
     .app-chat-container {
       background: var(--black-light);
-      border: 1px solid var(--gray);
 
       .app-chat-body {
         border-top: 1px solid var(--gray-dark);

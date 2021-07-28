@@ -50,10 +50,11 @@ export default {
 
     .text {
       background: var(--background-light);
-      padding: 4px;
+      padding: 4px 8px;
       border-radius: 4px;
       max-width: 80%;
       color: var(--text-stress);
+      white-space: pre-line;
     }
 
     .timestamp {

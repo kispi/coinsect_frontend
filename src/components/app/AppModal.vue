@@ -26,6 +26,7 @@
           'resizable': (modal.options || {}).resizable,
         }"
         @close="onClose"
+        @load-modal-component="makeDraggable(refModal)"
         :options="modal.options"
         :is="modal.component"
       />
@@ -101,6 +102,7 @@ export default {
       refTargetModal,
       closeOnMousedownBackdrop,
       onKeydown,
+      makeDraggable,
     }
   },
 }

@@ -1,14 +1,13 @@
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
 
 const useModalDraggable = () => {
-  const store = useStore()
-
   const dragTarget = ref(null)
 
   const modalHeader = ref(null)
 
   const dragging = ref(null)
+
+  const draggable = ref(null)
 
   const offset = ref({
     x: 0,
@@ -42,7 +41,8 @@ const useModalDraggable = () => {
   }
 
   const makeDraggable = refModal => {
-    if (!refModal) return
+    // 이미 이벤트 바인딩된 경우 스킵
+    if (!refModal || draggable.value) return
 
     setTimeout(() => {
       dragTarget.value = refModal.getElementsByClassName('modal-base-style')[0]
@@ -59,6 +59,7 @@ const useModalDraggable = () => {
 
       dragTarget.value.style.top = `calc(50% - ${modalRect.height / 2}px)`
       dragTarget.value.style.left = `calc(50% - ${modalRect.width / 2}px)`
+      draggable.value = true
     }, 100)
   }
 

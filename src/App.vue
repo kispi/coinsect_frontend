@@ -74,7 +74,7 @@ export default {
 
 .app-body {
   overflow-x: hidden;
-  flex: 1;  
+  flex: 1;
 
   .router-view-container {
     min-height: calc(100vh - 336px); // <AppHeader/>, <AppFooter/> height 뺌

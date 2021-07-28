@@ -34,6 +34,7 @@
   --text-base:           var(--gray-dark);
   --text-light:          var(--gray-light);
   --border-base:         var(--gray);
+  --border-light:        var(--gray-light);
   --background-base:     var(--white);
   --background-light:    rgba(0, 0, 0, 0.1);
 
@@ -42,6 +43,7 @@
     --text-base:         var(--gray-light);
     --text-light:        var(--gray-dark);
     --border-base:       var(--black-light);
+    --border-light:      var(--gray);
     --background-base:   var(--black-dark);
     --background-light:  rgba(255, 255, 255, 0.1);
 

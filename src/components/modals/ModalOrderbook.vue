@@ -24,12 +24,13 @@ import { ref } from 'vue'
 
 export default {
   props: ['options'],
-  setup() {
+  setup(_, { emit }) {
     const refBody = ref(null)
 
     const scrollCenter = () => {
       setTimeout(() => {
         refBody.value.scrollTop = (refBody.value.scrollHeight - refBody.value.clientHeight) / 2
+        emit('load-modal-component')
       }, 100)
     }
 
@@ -46,6 +47,7 @@ export default {
   border-radius: 4px;
   width: 320px;
   height: 480px;
+  border: 1px solid var(--border-light);
 
   .body {
     line-height: 20px;
