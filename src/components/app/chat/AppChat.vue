@@ -177,6 +177,8 @@ export default {
     const onScroll = e => {
       const dom = e.target
       autoScrollable.value = dom.scrollHeight <= dom.scrollTop + dom.clientHeight + 320
+
+      if (autoScrollable.value && incomingMessage.value) incomingMessage.value = null
     }
 
     const onClickIncomingMessageOverlay = () => {
@@ -337,7 +339,7 @@ export default {
       color: var(--black-dark);
       background: rgba(255, 255, 255, 0.75);
       border-radius: 4px;
-      padding: 12px;
+      padding: 4px 12px;
       bottom: 88px;
       left: 12px;
       right: 12px;
@@ -350,7 +352,7 @@ export default {
 
       .nickname {
         font-size: 12px;
-        margin-top: 8px;
+        margin-top: 4px;
       }
     }
   }
