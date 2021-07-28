@@ -36,11 +36,6 @@
         class="app-chat-body no-scrollbar"
         @scroll="onScroll">
         <AppLoading :loading="!connected"/>
-        <AppChatMessage
-          :message="message"
-          :key="message.id"
-          v-for="message in messages"
-        />
         <div
           v-if="incomingMessage"
           @click="onClickIncomingMessageOverlay"
@@ -60,6 +55,11 @@
           :class="{'o-0 no-touch': autoScrollable}">
           <i class="fa fa-chevron-down"/>
         </div>
+        <AppChatMessage
+          :message="message"
+          :key="message.id"
+          v-for="message in messages"
+        />
       </div>
       <div class="app-chat-input">
         <div class="textarea-wrapper">
@@ -344,6 +344,7 @@ export default {
       left: 12px;
       right: 12px;
       z-index: 1;
+      cursor: pointer;
 
       img {
         width: 24px;

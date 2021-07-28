@@ -34,8 +34,11 @@ export default {
 <style lang="scss" scoped>
 .app-chat-message {
   font-size: 12px;
-  margin-bottom: 12px;
   display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
 
   .profile {
     margin-right: 8px;
