@@ -32,6 +32,7 @@ const app = {
       filter: null, // 'favorites'
       favorites: {},
       chatFolded: false,
+      chatSizeMax: false,
     },
     windowInnerWidth: null,
     windowInnerHeight: null,
