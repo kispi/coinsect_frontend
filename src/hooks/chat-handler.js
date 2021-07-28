@@ -65,6 +65,7 @@ const useChatHandler = () => {
 
   const handleMessage = message => {
     switch (message.type) {
+      case 'alert':
       case 'text':
         addMessage(message)
         break

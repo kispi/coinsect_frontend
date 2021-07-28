@@ -2,11 +2,17 @@
   <div
     class="app-chat-message"
     :class="{'mine': message.isMine}">
-    <div class="profile">
+    <div
+      v-if="message.profile"
+      class="profile">
       <img :src="message.profile.image">
     </div>
     <div class="content">
-      <div class="nickname" v-html="message.profile.nickname"/>
+      <div
+        v-if="message.profile"
+        class="nickname"
+        v-html="message.profile.nickname"
+      />
       <div class="text-and-timestamp">
         <div class="text" v-html="message.text"/>
         <div

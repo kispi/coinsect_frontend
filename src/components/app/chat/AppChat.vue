@@ -67,6 +67,7 @@
             ref="refTextarea"
             v-model="text"
             @keydown="onKeydown"
+            @keydown.prevent.enter
             maxlength="80"
           />
           <i
@@ -120,7 +121,8 @@ export default {
       setTimeout(() => {
         text.value = e.target.value
         if (e.key === 'Enter') {
-          if (!e.shiftKey) sendTextMessage(text.value, true)
+          if (e.shiftKey && text.value) text.value += '\n'
+          else sendTextMessage(text.value, true)
         }
       })
     }
@@ -142,7 +144,7 @@ export default {
     }
 
     const sendTextMessage = incomingText => {
-      if (!incomingText) return
+      if (!(incomingText || '').trim()) return
 
       sendWebsocketMessage({
         type: 'text',
