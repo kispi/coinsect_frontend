@@ -3,7 +3,7 @@ import store from './store'
 import plugins from './plugins'
 import * as directives from '@/directives'
 import router from './router'
-import App from './App.vue'
+import App from './App'
 import useGlobalComponents from './global-components'
 import useLazyLoads from './lazy-loads'
 

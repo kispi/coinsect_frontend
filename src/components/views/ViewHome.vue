@@ -1,6 +1,6 @@
 <template>
   <div class="view-home">
-    <TradingView/>
+    <TradingView v-if="$store.getters.settings.tradingview === 'show'"/>
     <RealTimePrices/>
   </div>
 </template>

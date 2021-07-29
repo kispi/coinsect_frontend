@@ -111,6 +111,10 @@
     "en": "Filter",
     "kr": "필터"
   },
+  "TRADINGVIEW": {
+    "en": "Tradingview",
+    "kr": "트레이딩뷰"
+  },
   "PROFILE_IMAGE": {
     "en": "Profile Image",
     "kr": "프로필 이미지"
@@ -122,5 +126,9 @@
   "UNKNOWN": {
     "en": "Unknown",
     "kr": "알수없음"
+  },
+  "GAMES": {
+    "en": "Games",
+    "kr": "게임"
   }
 }

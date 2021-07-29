@@ -34,7 +34,7 @@ export default {
   width: 20px;
   height: 20px;
   background: var(--white);
-  border: 1px solid var(--dark-gray-lv3);
+  border: 1px solid var(--border-base);
   overflow: hidden;
   cursor: pointer;
 

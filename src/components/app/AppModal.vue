@@ -45,6 +45,7 @@ export default {
   components: {
     ModalBasic: defineAsyncComponent(() => import('@/components/modals/ModalBasic')),
     ModalOrderbook: defineAsyncComponent(() => import('@/components/modals/ModalOrderbook')),
+    ModalGame: defineAsyncComponent(() => import('@/components/modals/ModalGame')),
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
     ModalChatProfile: defineAsyncComponent(() => import('@/components/modals/ModalChatProfile')),

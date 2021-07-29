@@ -39,6 +39,9 @@ export default {
     }, {
       key: 'FILTER',
       values: ['all', 'favorites'].map(val => ({ val, $$selected: store.getters.settings.filter === val })),
+    }, {
+      key: 'TRADINGVIEW',
+      values: ['show', 'hide'].map(val => ({ val, $$selected: store.getters.settings.tradingview === val })),
     }])
 
     const onClickValue = (key, value) => {
@@ -47,18 +50,10 @@ export default {
         return
       }
 
-      if (key === 'CURRENCY') {
-        store.commit('setSettings', { currency: value })
-        return
-      }
-
-      if (key === 'THEME') {
-        store.commit('setSettings', { theme: value })
-        return
-      }
-
-      if (key === 'FILTER') {
-        store.commit('setSettings', { filter: value })
+      if (['CURRENCY', 'THEME', 'FILTER', 'TRADINGVIEW'].includes(key)) {
+        const o = {}
+        o[key.toLowerCase()] = value
+        store.commit('setSettings', o)
       }
     }
 

@@ -9,6 +9,9 @@ const andSoOn = [{
 }, {
   path: '/marketcaps',
   component: () => import(/* webpackChunkName: 'view-marketcaps' */ '@/components/views/marketcaps/ViewMarketcaps'),
+}, {
+  path: '/games',
+  component: () => import(/* webpackChunkName: 'view-games' */ '@/components/views/ViewGames'),
 }]
 
 const routesNoAuth = [

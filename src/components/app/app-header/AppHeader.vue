@@ -70,6 +70,9 @@ export default {
     }, {
       title: 'MARKETCAPS',
       path: '/marketcaps',
+    }, {
+      title: 'GAMES',
+      path: '/games',
     // }, {
     //   title: 'NEWS',
     //   path: '/news',

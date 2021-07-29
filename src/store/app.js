@@ -30,6 +30,7 @@ const app = {
       documentTitleTicker: 'BTC',
       currency: 'krw',
       filter: 'all', // 'favorites'
+      tradingview: 'show',
       favorites: {},
       chatFolded: false,
       chatSizeMax: false,

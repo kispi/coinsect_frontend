@@ -97,13 +97,8 @@ export default {
   }
 
   &.error {
-    background: var(--danger-light-bg);
-    border: 1px solid var(--danger-light);
-    color: var(--danger-light);
-
-    i {
-      color: var(--danger-light);
-    }
+    background: var(--danger);
+    color: var(--white);
   }
 
   .action {

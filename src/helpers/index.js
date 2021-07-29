@@ -4,6 +4,7 @@ import dataSetter from './data-setter'
 import dayjs from 'dayjs'
 import dom from './dom'
 import hangul from 'hangul-js'
+import math from './math'
 import meta from './meta'
 import modal from './modal'
 import number from './number'
@@ -41,6 +42,7 @@ const helpers = {
   toast,
   dayjs,
   dom,
+  math,
   meta,
   animate,
   dataSetter,
