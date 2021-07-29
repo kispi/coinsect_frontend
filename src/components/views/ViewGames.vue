@@ -37,6 +37,8 @@ export default {
 <style lang="scss" scoped>
 .view-games {
   padding: var(--app-default-page-padding);
+  margin: auto;
+  max-width: 992px;
 
   .list-games {
     display: grid;
