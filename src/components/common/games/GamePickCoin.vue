@@ -7,19 +7,14 @@
           ref="refInput"
           v-model="n"
           type="number"
-          min="1"
+          :min="1"
           :max="symbols.length"
-          @keydown.enter="setN"
-          @input="e => {
-            try {
-              n = parseInt(e.target.value || 1)
-            } catch (e) {}
-          }">
+          @keydown.enter="setN">
         <button class="btn btn-primary flex-wrap m-l-8" @click="setN" v-html="$translate('확인')"/>
       </div>
     </div>
     <div v-if="nCoins.length > 0">
-      <div class="grid-wrapper m-b-24">
+      <div class="grid-wrapper m-b-16">
         <div class="grid">
           <div
             @click="selectCoin(coin)"
@@ -70,7 +65,7 @@
 </template>
 
 <script>
-import { ref, computed, getCurrentInstance, onMounted, nextTick } from 'vue'
+import { ref, computed, getCurrentInstance, onMounted, nextTick, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -87,7 +82,7 @@ export default {
 
     const picked = ref([])
 
-    const n = ref(10)
+    const n = ref(5)
 
     const selectedCoins = computed(() => nCoins.value.filter(o => o.$$selected))
 
@@ -131,18 +126,24 @@ export default {
     }
 
     const setN = () => {
-      if (n.value > symbols.value.length) {
-        plugins.$toast.error('n은 전체 코인 개수보다 클 수 없습니다')
+      const num = parseInt(n.value)
+      if (!num || typeof num !== 'number' || num < 1) {
+        plugins.$toast.error('1 이상의 숫자를 입력해주세요')
         return
       }
 
-      nCoins.value = pickCoins(n.value)
+      if (num > symbols.value.length) {
+        plugins.$toast.error(`코인이 ${symbols.value.length}개 밖에 없는데 어케 ${num}개를 뽑냐?`)
+        return
+      }
+
+      nCoins.value = pickCoins(num)
       return
     }
 
     const pick = () => {
-      if (nCoins.value.filter(o => o.$$selected).length === n.value) {
-        plugins.$toast.error('그러면 무조건 당첨인데 뭔 재미로 함?')
+      if (nCoins.value.filter(o => o.$$selected).length === parseInt(n.value)) {
+        plugins.$toast.error(`${n.value}개 중에 ${n.value}개 뽑으면 무조건 당첨인데 뭔 재미로 함?`)
         return
       }
 
@@ -154,6 +155,14 @@ export default {
     onMounted(() => {
       refInput.value.focus()
     })
+
+    watch(
+      () => n.value,
+      newVal => {
+        if (parseInt(newVal) > symbols.value.length) n.value = symbols.value.length
+        if (parseInt(newVal) < 0) n.value = 1
+      },
+    )
 
     return {
       n,
@@ -178,6 +187,10 @@ export default {
   padding: 24px 8px;
   color: var(--text-stress);
 
+  input {
+    font-size: 18px;
+  }
+
   .title {
     font-size: 16px;
     text-align: center;
@@ -190,8 +203,6 @@ export default {
   }
 
   .grid-wrapper {
-    background: var(--white);
-    border-radius: 8px;
     overflow-y: auto;
     max-height: 240px;
   }
@@ -199,6 +210,8 @@ export default {
   .grid {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
+    background: var(--white);
+    border-radius: 8px;
 
     .coin-wrapper {
       border: 2px dashed transparent;
