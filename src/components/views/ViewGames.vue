@@ -40,8 +40,12 @@ export default {
 
   .list-games {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-gap: 8px;
+
+    @media (max-width: 767px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .game {

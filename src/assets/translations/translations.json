@@ -11,9 +11,17 @@
     "en": "Cancel",
     "kr": "취소"
   },
+  "BACK": {
+    "en": "Back",
+    "kr": "뒤로"
+  },
   "CONFIRM": {
     "en": "Confirm",
     "kr": "확인"
+  },
+  "AGAIN": {
+    "en": "Again",
+    "kr": "다시"
   },
   "BTC_DOMINANCE": {
     "en": "Dominance(BTC)",

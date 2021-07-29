@@ -1,32 +1,28 @@
 <template>
   <div class="game-pick-coin">
-    <div
-      v-if="level === 'setN'"
-      class="level-set-n">
-      <div class="title">총 몇 개 중에서 뽑을까요? (n, 최대 {{ symbols.length }}개)</div>
+    <div v-if="nCoins.length === 0">
+      <div class="title">총 몇 개 중에서 뽑을까요? (최대 {{ symbols.length }}개)</div>
       <div class="flex-row items-center m-t-24">
         <input
           ref="refInput"
           v-model="n"
           type="number"
-          min="2"
+          min="1"
           :max="symbols.length"
-          @keydown.enter="next"
+          @keydown.enter="setN"
           @input="e => {
             try {
-              n = parseInt(e.target.value)
+              n = parseInt(e.target.value || 1)
             } catch (e) {}
           }">
-        <button class="btn btn-primary flex-wrap m-l-8" @click="next" v-html="$translate('확인')"/>
+        <button class="btn btn-primary flex-wrap m-l-8" @click="setN" v-html="$translate('확인')"/>
       </div>
     </div>
-    <div
-      v-if="level === 'setK'"
-      class="level-set-k">
-      <div class="grid-wrapper">
+    <div v-if="nCoins.length > 0">
+      <div class="grid-wrapper m-b-24">
         <div class="grid">
           <div
-            @click="coin.$$selected = !coin.$$selected"
+            @click="selectCoin(coin)"
             class="coin-wrapper"
             :class="{'selected': coin.$$selected}"
             :key="coin"
@@ -35,23 +31,46 @@
           </div>
         </div>
       </div>
-      <div class="pick-functions">
+      <div
+        v-if="numCases > 1"
+        class="explanation">
+        다 맞출 확률: {{ numCases.toLocaleString() }}분의 1
+      </div>
+      <div class="flex-row">
         <button
-          @click="next"
-          class="btn btn-primary"
+          @click="backToFirst"
+          class="btn btn-default flex-fill"
+          v-html="$translate('BACK')"
+        />
+        <button
+          @click="pick"
+          class="btn btn-primary flex-fill m-l-8"
           :disabled="numSelected === 0"
-          v-html="btnPickCoinLabel"
+          v-html="$translate('GAME_PICK_COIN')"
         />
       </div>
-    </div>
-    <div
-      v-if="level === 'pick'">
+      <div
+        v-if="picked.length > 0"
+        class="result m-t-40">
+        <div class="explanation" v-html="resultHtml"/>
+        <div class="grid-wrapper">
+          <div class="grid">
+            <div
+              class="coin-wrapper"
+              :class="coin.$$selected ? 'selected' : 'wrong'"
+              :key="coin.key"
+              v-for="coin in picked">
+              <img :src="`https://static.upbit.com/logos/${coin.key}.png`" draggable="false" @load="$emit('next-level')">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, getCurrentInstance, onMounted } from 'vue'
+import { ref, computed, getCurrentInstance, onMounted, nextTick } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -64,59 +83,72 @@ export default {
 
     const symbols = computed(() => Object.keys(store.getters.symbols))
 
-    const nCoins = ref(null)
+    const nCoins = ref([])
+
+    const picked = ref([])
 
     const n = ref(10)
 
-    const level = ref('setN')
+    const selectedCoins = computed(() => nCoins.value.filter(o => o.$$selected))
 
-    const numSelected = computed(() => (nCoins.value || []).filter(o => o.$$selected).length)
+    const numSelected = computed(() => selectedCoins.value.length)
 
-    const btnPickCoinLabel = computed(() => {
-      const nCr = plugins.$helpers.math.combination(n.value, numSelected.value)
-      let label = `${plugins.$translate('GAME_PICK_COIN')}`
-      if (nCr > 1) label += ` (${n.value}개 중 ${numSelected.value}개 선택 / 성공확률 => ${nCr}분의 1)`
-      return label
+    const resultHtml = computed(() => {
+      const numGotcha = picked.value.filter(o => o.$$selected).length
+      if (numGotcha === 0) return '다틀림 ㅋㅋㅋㅋㅋㅋ'
+
+      if (numGotcha === numSelected.value) return `와 ${numGotcha}개를 다 맞추셨습니다! ㄷㄷ`
+
+      return `선택한 ${numSelected.value}개의 코인 중 ${numGotcha}개를 뽑았습니다`
     })
 
-    const createNCoins = () => {
+    const numCases = computed(() => {
+      return Math.floor(plugins.$helpers.math.combination(n.value, numSelected.value))
+    })
+
+    const selectCoin = coin => {
+      coin.$$selected = !coin.$$selected
+      picked.value = []
+    }
+
+    const pickCoins = (numCoinsToGenerate, pickWithinTheseCoins) => {
       const o = {}
+      const pool = pickWithinTheseCoins || symbols.value
       for (let i = 0; i < 1000; i++) {
-        const randomCoin = symbols.value[Math.floor(Math.random() * symbols.value.length)]
+        const randomCoin = pool[Math.floor(Math.random() * pool.length)]
         o[randomCoin] = true
-        if (Object.keys(o).length >= n.value) break
+        if (Object.keys(o).length >= numCoinsToGenerate) break
       }
 
-      nCoins.value = Object.keys(o).map(key => ({ key, $$selected: false }))
+      return Object.keys(o).map(key => ({ key, $$selected: false }))
     }
 
-    const pickCoins = () => {
-      
+    const backToFirst = () => {
+      nCoins.value = []
+      picked.value = []
+      nextTick(() => refInput.value.focus())
+      emit('next-level')
     }
 
-    const next = () => {
-      if (level.value === 'setN') {
-        if (n.value > symbols.value.length) {
-          plugins.$toast.error('n은 전체 코인 개수보다 클 수 없습니다')
-          return
-        }
-
-        createNCoins()
-        level.value = 'setK'
+    const setN = () => {
+      if (n.value > symbols.value.length) {
+        plugins.$toast.error('n은 전체 코인 개수보다 클 수 없습니다')
         return
       }
 
-      if (level.value === 'setK') {
-        console.log(nCoins.value.filter(o => o.$$selected).length, n.value)
-        if (nCoins.value.filter(o => o.$$selected).length === n.value) {
-          plugins.$toast.error('그러면 무조건 당첨인데 뭔재미로함?')
-          return
-        }
+      nCoins.value = pickCoins(n.value)
+      return
+    }
 
-        pickCoins()
-        level.value = 'pick'
-        emit('next-level')
+    const pick = () => {
+      if (nCoins.value.filter(o => o.$$selected).length === n.value) {
+        plugins.$toast.error('그러면 무조건 당첨인데 뭔 재미로 함?')
+        return
       }
+
+      picked.value = pickCoins(numSelected.value, nCoins.value.map(coin => coin.key))
+      picked.value.forEach(coin => coin.$$selected = selectedCoins.value.find(c => c.key === coin.key) ? true : false)
+      emit('next-level')
     }
 
     onMounted(() => {
@@ -126,12 +158,16 @@ export default {
     return {
       n,
       numSelected,
-      btnPickCoinLabel,
+      selectCoin,
+      numCases,
       refInput,
       symbols,
       nCoins,
-      level,
-      next,
+      setN,
+      pick,
+      resultHtml,
+      picked,
+      backToFirst,
     }
   },
 }
@@ -140,51 +176,49 @@ export default {
 <style lang="scss" scoped>
 .game-pick-coin {
   padding: 24px 8px;
+  color: var(--text-stress);
 
   .title {
     font-size: 16px;
-    font-weight: 700;
     text-align: center;
   }
 
-  .level-set-n {
-    
+  .explanation {
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
   }
 
-  .level-set-k {
-    .grid-wrapper {
-      margin-bottom: 24px;
-      background: var(--white);
-    }
+  .grid-wrapper {
+    background: var(--white);
+    border-radius: 8px;
+    overflow-y: auto;
+    max-height: 240px;
+  }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
 
-      .coin-wrapper {
-        border: 1px solid transparent;
-        padding: 8px;
-        cursor: pointer;
-        transition: none;
+    .coin-wrapper {
+      border: 2px dashed transparent;
+      margin: 4px;
+      padding: 2px;
+      cursor: pointer;
+      transition: none;
 
-        img {
-          width: 100%;
-        }
-
-        &.selected {
-          border: 1px solid var(--border-base);
-          background: var(--brand-primary-hover-bg);
-        }
+      img {
+        width: 100%;
       }
-    }
 
-    .pick-functions {
-      display: flex;
-      align-items: center;
+      &.selected {
+        border: 2px dashed var(--brand-primary);
+        background: var(--brand-primary-hover-bg);
+      }
 
-      .btn-primary {
-        margin-left: 8px;
-        flex: 1;
+      &.wrong {
+        border: 2px dashed var(--danger);
+        background: var(--danger-light);
       }
     }
   }
