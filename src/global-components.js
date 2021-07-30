@@ -19,6 +19,7 @@ import InputInsta from '@/components/common/InputInsta'
 import InputPhone from '@/components/common/InputPhone'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import RealTimeOrderbook from '@/components/common/RealTimeOrderbook'
+import SCoin from '@/components/common/SCoin'
 import TradingView from '@/components/common/TradingView'
 
 const useGlobalComponents = app => {
@@ -44,6 +45,7 @@ const useGlobalComponents = app => {
     .component('InputPhone', InputPhone)
     .component('ModalHeader', ModalHeader)
     .component('RealTimeOrderbook', RealTimeOrderbook)
+    .component('SCoin', SCoin)
     .component('TradingView', TradingView)
 }
 

@@ -11,7 +11,6 @@
         v-for="game in games">
         <div class="overlay">
           <div class="title" v-html="$translate(game.title)"/>
-          <div class="description" v-html="$translate(game.description)"/>
         </div>
       </div>
     </div>
@@ -22,8 +21,10 @@
 export default {
   setup() {
     const games = [{
+      title: 'GAME_FLIP_COIN',
+      component: 'GameFlipCoin',
+    }, {
       title: 'GAME_PICK_COIN',
-      description: 'GAME_PICK_COIN_DESC',
       component: 'GamePickCoin',
     }]
 
@@ -76,7 +77,6 @@ export default {
       }
 
       .description {
-        margin-top: 12px;
         line-height: 20px;
       }
     }

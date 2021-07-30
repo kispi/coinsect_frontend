@@ -3,8 +3,8 @@
     "en": "Pick Coin",
     "kr": "코인 뽑기"
   },
-  "GAME_PICK_COIN_DESC": {
-    "en": "Pick m coins within n coins!",
-    "kr": "n개의 코인 중 m개를 뽑아보자!"
+  "GAME_FLIP_COIN": {
+    "en": "Flip Coin",
+    "kr": "코인 뒤집기"
   }
 }

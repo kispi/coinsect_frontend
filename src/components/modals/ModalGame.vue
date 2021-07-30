@@ -15,10 +15,12 @@
 <script>
 import { ref } from 'vue'
 import GamePickCoin from '@/components/common/games/GamePickCoin'
+import GameFlipCoin from '@/components/common/games/GameFlipCoin'
 
 export default {
   components: {
     GamePickCoin,
+    GameFlipCoin,
   },
   props: ['options'],
   setup() {

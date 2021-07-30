@@ -106,18 +106,6 @@ export default {
       picked.value = []
     }
 
-    const pickCoins = (numCoinsToGenerate, pickWithinTheseCoins) => {
-      const o = {}
-      const pool = pickWithinTheseCoins || symbols.value
-      for (let i = 0; i < 1000; i++) {
-        const randomCoin = pool[Math.floor(Math.random() * pool.length)]
-        o[randomCoin] = true
-        if (Object.keys(o).length >= numCoinsToGenerate) break
-      }
-
-      return Object.keys(o).map(key => ({ key, $$selected: false }))
-    }
-
     const backToFirst = () => {
       nCoins.value = []
       picked.value = []
@@ -137,7 +125,7 @@ export default {
         return
       }
 
-      nCoins.value = pickCoins(num)
+      nCoins.value = plugins.$helpers.coin.pickCoins(num).map(key => ({ key, $$selected: false }))
       return
     }
 
@@ -147,7 +135,7 @@ export default {
         return
       }
 
-      picked.value = pickCoins(numSelected.value, nCoins.value.map(coin => coin.key))
+      picked.value = plugins.$helpers.coin.pickCoins(numSelected.value, nCoins.value.map(coin => coin.key)).map(key => ({ key, $$selected: false }))
       picked.value.forEach(coin => coin.$$selected = selectedCoins.value.find(c => c.key === coin.key) ? true : false)
       emit('next-level')
     }

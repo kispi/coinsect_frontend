@@ -4,7 +4,7 @@
     class="real-time-price-row">
     <td class="ticker-symbol">
       <div class="image-name">
-        <img :src="`https://static.upbit.com/logos/${ticker.$$symbol}.png`" class="flex-wrap m-r-8">
+        <SCoin :symbol="ticker.$$symbol" class="flex-wrap m-r-8"/>
         <div
           v-html="ticker.$$name[$store.getters.translation.locale]"
           class="name lines-1"

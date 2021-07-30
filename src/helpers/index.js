@@ -1,5 +1,6 @@
 import $store from '@/store'
 import animate from './animate'
+import coin from './coin'
 import dataSetter from './data-setter'
 import dayjs from 'dayjs'
 import dom from './dom'
@@ -36,6 +37,7 @@ const canSkipApiCall = (apiId, cacheTimeout) => {
 }
 
 const helpers = {
+  coin,
   tooltip,
   modal,
   number,

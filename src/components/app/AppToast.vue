@@ -13,7 +13,8 @@
           v-if="toast.action.label"
           @click="onClickToastHandler"
           class="action"
-          v-html="$translate(toast.action.label)"/>
+          v-html="$translate(toast.action.label)"
+        />
       </div>
     </transition>
   </div>
