@@ -52,6 +52,7 @@ export default {
     const numTries = ref(null)
 
     const timer = ref({
+      timeoutShowCountdown: null,
       timeout: null,
       ms: 3000,
     })
@@ -96,24 +97,42 @@ export default {
       }))
     }
 
+    const resetTimeouts = () => {
+      if (timer.value.timeout) {
+        clearTimeout(timer.value.timeout)
+        timer.value.timeout = null
+      }
+
+      if (timer.value.timeoutShowCountdown) {
+        clearTimeout(timer.value.timeoutShowCountdown)
+        timer.value.timeoutShowCountdown = null
+      }
+    }
+
     const startTimeout = () => {
+      resetTimeouts()
+
       if (timer.value.ms <= 0) {
         coins.value.forEach(symbol => symbol.$$flipped = true)
         playing.value = true
-        setTimeout(() => showCountdown.value = false, 1000)
+        timer.value.timeoutShowCountdown = setTimeout(() => showCountdown.value = false, 1000)
         return
       }
 
-      setTimeout(() => {
+      timer.value.timeout = setTimeout(() => {
         timer.value.ms -= 1000
         startTimeout()
       }, 1000)
     }
 
     const play = () => {
-      if (playing.value) return
+      coins.value = null
+      playing.value = null
+      showCountdown.value = null
+      numTries.value = null
+      timer.value = { timeout: null, ms: 3000 }
 
-
+      shuffle()
       showCountdown.value = true
       coins.value.forEach(coin => coin.$$flipped = false)
       startTimeout()
@@ -121,14 +140,10 @@ export default {
 
     onMounted(shuffle)
 
-    onUnmounted(() => {
-      if (timer.value.timeout) {
-        clearTimeout(timer.value.timeout)
-        timer.value.timeout = null
-      }
-    })
+    onUnmounted(resetTimeouts)
 
     return {
+      playing,
       showCountdown,
       coins,
       timer,
@@ -157,8 +172,8 @@ export default {
     transform: translateX(-50%);
 
     &.expired {
-      font-size: 64px;
-      top: calc(50% - 64px);
+      font-size: 48px;
+      top: calc(50% - 48px);
     }
   }
 
