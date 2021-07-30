@@ -69,7 +69,7 @@ export default {
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 16px;
+      padding: 8px;
 
       .title {
         font-size: 20px;

@@ -2,12 +2,13 @@
   <div class="game-flip-coin">
     <div
       v-if="showCountdown"
-      class="count"
+      class="count no-touch"
       :class="{'expired': !timer.ms}">
       {{ timer.ms > 0 ? Math.floor(timer.ms / 1000) : 'START!' }}
     </div>
-    <div class="stats m-l-a m-b-16 display-table" :class="numTries ? '' : 'o-0'">
-      시도: {{ numTries }}
+    <div class="stats">
+      <div>스테이지: {{ stage }}</div>
+      <div :class="numTries ? '' : 'o-0'">시도: {{ numTries }}</div>
     </div>
     <div class="board">
       <div class="grid">
@@ -40,7 +41,7 @@
 import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
 
 export default {
-  setup() {
+  setup(_, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const coins = ref(null)
@@ -50,6 +51,8 @@ export default {
     const showCountdown = ref(null)
 
     const numTries = ref(null)
+
+    const stage = ref(1)
 
     const timer = ref({
       timeoutShowCountdown: null,
@@ -71,6 +74,13 @@ export default {
           c.$$testing = false
           c.$$confirmed = true
         })
+
+        if (coins.value.every(c => c.$$confirmed)) {
+          stage.value += 1
+          playing.value = null
+          play()
+          emit('next-level')
+        }
       } else {
         numTries.value += 1
         testingCards.forEach(c => {
@@ -86,8 +96,8 @@ export default {
       }
     }
 
-    const shuffle = () => {
-      const coinSet = plugins.$helpers.coin.pickCoins(16)
+    const shuffle = numCoins => {
+      const coinSet = plugins.$helpers.coin.pickCoins(numCoins)
       coins.value = plugins.$helpers.shuffle([
         ...coinSet,
         ...coinSet,
@@ -126,23 +136,25 @@ export default {
     }
 
     const play = () => {
+      if (playing.value) numTries.value = null
+
       coins.value = null
-      playing.value = null
       showCountdown.value = null
-      numTries.value = null
+      playing.value = null
       timer.value = { timeout: null, ms: 3000 }
 
-      shuffle()
+      shuffle(stage.value * 4)
       showCountdown.value = true
       coins.value.forEach(coin => coin.$$flipped = false)
       startTimeout()
     }
 
-    onMounted(shuffle)
+    onMounted(() => shuffle(stage.value * 4))
 
     onUnmounted(resetTimeouts)
 
     return {
+      stage,
       playing,
       showCountdown,
       coins,
@@ -160,6 +172,15 @@ export default {
   padding: 8px;
   width: 100%;
   position: relative;
+  color: var(--text-stress);
+
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
 
   .count {
     color: var(--white);
