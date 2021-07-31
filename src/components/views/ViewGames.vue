@@ -24,6 +24,9 @@ export default {
       title: 'GAME_FLIP_COIN',
       component: 'GameFlipCoin',
     }, {
+      title: 'GAME_COLOR_SENSE',
+      component: 'GameColorSense',
+    }, {
       title: 'GAME_PICK_COIN',
       component: 'GamePickCoin',
     }]

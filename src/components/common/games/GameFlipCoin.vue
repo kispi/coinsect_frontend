@@ -1,11 +1,9 @@
 <template>
   <div class="game-flip-coin">
-    <div
-      v-if="showCountdown"
-      class="count no-touch"
-      :class="{'expired': !timer.ms}">
-      {{ timer.ms > 0 ? Math.floor(timer.ms / 1000) : 'START!' }}
-    </div>
+    <CTimer
+      @expire="onExpire"
+      :ms="ms"
+    />
     <div class="stats">
       <div>스테이지: {{ stage }}</div>
       <div :class="numTries ? '' : 'o-0'">시도: {{ numTries }}</div>
@@ -38,9 +36,11 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
+import CTimer from './CTimer'
 
 export default {
+  components: { CTimer },
   setup(_, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -48,17 +48,11 @@ export default {
 
     const playing = ref(null)
 
-    const showCountdown = ref(null)
-
     const numTries = ref(null)
 
     const stage = ref(1)
 
-    const timer = ref({
-      timeoutShowCountdown: null,
-      timeout: null,
-      ms: 3000,
-    })
+    const ms = ref(null)
 
     const flip = coin => {
       if (!playing.value || coin.$$confirmed || coin.$$testing) return
@@ -79,7 +73,7 @@ export default {
           stage.value += 1
           playing.value = null
           play()
-          emit('next-level')
+          emit('next-state')
         }
       } else {
         numTries.value += 1
@@ -107,58 +101,31 @@ export default {
       }))
     }
 
-    const resetTimeouts = () => {
-      if (timer.value.timeout) {
-        clearTimeout(timer.value.timeout)
-        timer.value.timeout = null
-      }
-
-      if (timer.value.timeoutShowCountdown) {
-        clearTimeout(timer.value.timeoutShowCountdown)
-        timer.value.timeoutShowCountdown = null
-      }
-    }
-
-    const startTimeout = () => {
-      resetTimeouts()
-
-      if (timer.value.ms <= 0) {
-        coins.value.forEach(symbol => symbol.$$flipped = true)
-        playing.value = true
-        timer.value.timeoutShowCountdown = setTimeout(() => showCountdown.value = false, 1000)
-        return
-      }
-
-      timer.value.timeout = setTimeout(() => {
-        timer.value.ms -= 1000
-        startTimeout()
-      }, 1000)
+    const onExpire = () => {
+      coins.value.forEach(symbol => symbol.$$flipped = true)
+      playing.value = true
     }
 
     const play = () => {
-      if (playing.value) numTries.value = null
+      if (playing.value && stage.value === 1) numTries.value = null
 
       coins.value = null
-      showCountdown.value = null
       playing.value = null
-      timer.value = { timeout: null, ms: 3000 }
+      ms.value = null
+      setTimeout(() => ms.value = 3000)
 
       shuffle(stage.value * 4)
-      showCountdown.value = true
       coins.value.forEach(coin => coin.$$flipped = false)
-      startTimeout()
     }
 
     onMounted(() => shuffle(stage.value * 4))
 
-    onUnmounted(resetTimeouts)
-
     return {
       stage,
       playing,
-      showCountdown,
+      onExpire,
+      ms,
       coins,
-      timer,
       numTries,
       play,
       flip,
@@ -180,22 +147,6 @@ export default {
     align-items: center;
     margin-bottom: 16px;
     font-weight: 700;
-  }
-
-  .count {
-    color: var(--white);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
-    font-size: 120px;
-    position: absolute;
-    z-index: 1;
-    top: calc(50% - 120px);
-    left: 50%;
-    transform: translateX(-50%);
-
-    &.expired {
-      font-size: 48px;
-      top: calc(50% - 48px);
-    }
   }
 
   .board {

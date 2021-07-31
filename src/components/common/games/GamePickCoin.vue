@@ -22,7 +22,7 @@
             :class="{'selected': coin.$$selected}"
             :key="coin"
             v-for="coin in nCoins">
-            <img :src="`https://static.upbit.com/logos/${coin.key}.png`" draggable="false" @load="$emit('next-level')">
+            <img :src="`https://static.upbit.com/logos/${coin.key}.png`" draggable="false" @load="$emit('next-state')">
           </div>
         </div>
       </div>
@@ -55,7 +55,7 @@
               :class="coin.$$selected ? 'selected' : 'wrong'"
               :key="coin.key"
               v-for="coin in picked">
-              <img :src="`https://static.upbit.com/logos/${coin.key}.png`" draggable="false" @load="$emit('next-level')">
+              <img :src="`https://static.upbit.com/logos/${coin.key}.png`" draggable="false" @load="$emit('next-state')">
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@ export default {
       nCoins.value = []
       picked.value = []
       nextTick(() => refInput.value.focus())
-      emit('next-level')
+      emit('next-state')
     }
 
     const setN = () => {
@@ -137,7 +137,7 @@ export default {
 
       picked.value = plugins.$helpers.coin.pickCoins(numSelected.value, nCoins.value.map(coin => coin.key)).map(key => ({ key, $$selected: false }))
       picked.value.forEach(coin => coin.$$selected = selectedCoins.value.find(c => c.key === coin.key) ? true : false)
-      emit('next-level')
+      emit('next-state')
     }
 
     onMounted(() => {

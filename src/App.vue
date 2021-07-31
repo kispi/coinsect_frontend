@@ -77,7 +77,7 @@ export default {
   flex: 1;
 
   .router-view-container {
-    min-height: calc(100vh - 336px); // <AppHeader/>, <AppFooter/> height 뺌
+    min-height: calc(100vh - 160px);
   }
 }
 </style>

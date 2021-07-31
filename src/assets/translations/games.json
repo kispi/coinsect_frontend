@@ -6,5 +6,9 @@
   "GAME_FLIP_COIN": {
     "en": "Flip Coin",
     "kr": "코인 뒤집기"
+  },
+  "GAME_COLOR_SENSE": {
+    "en": "Color Sense Test",
+    "kr": "색 감각 테스트"
   }
 }
