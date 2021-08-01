@@ -54,9 +54,9 @@ export default {
 
     const stage = ref(1)
 
-    const randRGB = () => {
+    const randRGB = (o = {}) => {
       const v = () => Math.floor(Math.random() * 256)
-      return { r: v(), g: v(), b: v() }
+      return { r: o.r || v(), g: o.g || v(), b: o.b || v() }
     }
 
     const colorDiff = (rgb1, rgb2) => {
@@ -104,11 +104,18 @@ export default {
 
       const color2 = (() => {
         const difficulty = (200 - stage.value * 4)
-        let candidate = randRGB()
+        const color1AsArray = [color1.r, color1.g, color1.b]
+        const primeIdx = color1AsArray.indexOf(Math.max(...color1AsArray))
+        const colorArg = {}
+        if (primeIdx === 0) colorArg.r = color1AsArray[0]
+        if (primeIdx === 1) colorArg.g = color1AsArray[1]
+        if (primeIdx === 2) colorArg.b = color1AsArray[2]
+
+        let candidate = randRGB(colorArg)
         let diff = colorDiff(color1, candidate)
 
-        while (diff !== difficulty) {
-          candidate = randRGB()
+        while (Math.abs(diff - difficulty) > 1) {
+          candidate = randRGB(colorArg)
           diff = colorDiff(color1, candidate)
         }
 
@@ -133,6 +140,8 @@ export default {
         timer.value.ms -= 10
 
         if (timer.value.ms <= 0) {
+          playing.value = false
+          emit('next-state')
           clearTimer()
         }
       }, 10)
