@@ -14,49 +14,49 @@ const useUpbit = () => {
     plugins.$helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$name: store.getters.symbols[symbol],
-      $$tradePriceBase: json.trade_price,
-      $$highest52WeekPrice: json.highest_52_week_price,
-      $$lowest52WeekPrice: json.lowest_52_week_price,
-      $$changePrice24H: json.signed_change_price,
-      $$changeRate1D: Math.round(json.signed_change_rate * 10000) / 100,
-      $$changeRate52WH: Math.round((json.trade_price - json.highest_52_week_price) / json.highest_52_week_price * 10000) / 100,
-      $$changeRate52WL: Math.round((json.trade_price - json.lowest_52_week_price) / json.lowest_52_week_price * 10000) / 100,
-      $$vol24HBase: json.acc_trade_price_24h,
-      $$code: json.code,
-      $$prevClosingPrice: json.prev_closing_price,
+      $$tradePriceBase: json.tp,
+      $$highest52WeekPrice: json.h52wp,
+      $$lowest52WeekPrice: json.l52wp,
+      $$changePrice24H: json.scp,
+      $$changeRate1D: Math.round(json.scr * 10000) / 100,
+      $$changeRate52WH: Math.round((json.tp - json.h52wp) / json.h52wp * 10000) / 100,
+      $$changeRate52WL: Math.round((json.tp - json.l52wp) / json.l52wp * 10000) / 100,
+      $$vol24HBase: json.atp24h,
+      $$code: json.cd,
+      $$prevClosingPrice: json.pcp,
     })
   }
 
   const setOrderbook = json => {
     const $$asks = []
     const $$bids = []
-    const units = json.orderbook_units
+    const units = json.obu
     let $$biggestSize = 0
 
     units.forEach((unit, idx) => {
       $$asks.push({
-        price: units[units.length - idx - 1].ask_price,
-        size: units[units.length - idx - 1].ask_size,
+        price: units[units.length - idx - 1].ap,
+        size: units[units.length - idx - 1].as,
       })
 
       $$bids.push({
-        price: units[idx].bid_price,
-        size: units[idx].bid_size,
+        price: units[idx].bp,
+        size: units[idx].bs,
       })
 
-      if (unit.ask_size >= $$biggestSize) $$biggestSize = unit.ask_size
-      if (unit.bid_size >= $$biggestSize) $$biggestSize = unit.bid_size
+      if (unit.as >= $$biggestSize) $$biggestSize = unit.as
+      if (unit.bs >= $$biggestSize) $$biggestSize = unit.bs
     })
 
     store.commit('setOrderbook', {
       exchange: 'upbit',
-      market: json.code,
+      market: json.cd,
       orderbook: {
-        $$code: json.code,
+        $$code: json.cd,
         $$asks,
         $$bids,
-        $$totalAskSize: json.total_ask_size,
-        $$totalBidSize: json.total_bid_size,
+        $$totalAskSize: json.tas,
+        $$totalBidSize: json.tbs,
         $$biggestSize,
       },
     })
@@ -82,6 +82,8 @@ const useUpbit = () => {
       }, {
         type,
         codes,
+      }, {
+        format: 'SIMPLE',
       }]))
     }
 
@@ -90,7 +92,7 @@ const useUpbit = () => {
     }
 
     const handleTickerMessage = json => {
-      const symbol = json.code.split('KRW-')[1]
+      const symbol = json.cd.split('KRW-')[1]
       setAsBasePrice({ symbol, json })
       if (store.getters.settings.documentTitleTicker === symbol) setDocumentTitle(store.getters.realTimeTickers[symbol])
     }
