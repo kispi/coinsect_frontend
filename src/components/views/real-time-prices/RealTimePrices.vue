@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { onMounted, ref, computed, getCurrentInstance } from 'vue'
+import { onMounted, ref, getCurrentInstance, watch } from 'vue'
 import { useStore } from 'vuex'
 import RealTimePriceRow from './RealTimePriceRow'
 import BaseAndTarget from './BaseAndTarget'
@@ -112,13 +112,8 @@ export default {
       if (settings.value.sort.direction === 'desc') return a[settings.value.sort.column] < b[settings.value.sort.column] ? 1 : -1
     }
 
-    const displayedList = computed(() => {
-      const arr = Object.values(store.getters.realTimeTickers)
-
-      // realTimeTicker가 모든 원화 마켓 길이만큼 채워지기 전에는 필터를 적용하지 않는다 (성능)
-      if (arr.length < (store.getters.markets.upbit || []).filter(o => o.market.startsWith('KRW')).length) return []
-
-      return arr.filter(t => {
+    const recalcDisplayedList = () => {
+      displayedList.value = Object.values(store.getters.realTimeTickers).filter(t => {
         if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
 
         if (!keyword.value || !t.$$name) return t
@@ -138,7 +133,9 @@ export default {
 
         return sorter(a, b)
       })
-    })
+    }
+
+    const displayedList = ref([])
 
     const init = async () => {
       await store.dispatch('loadMarkets', baseExchange.value)
@@ -150,6 +147,27 @@ export default {
     }
 
     onMounted(init)
+
+    watch(
+      () => store.getters.settings,
+      recalcDisplayedList,
+      { deep: true },
+    )
+
+    const unwatch = watch(
+      () => store.getters.realTimeTickers,
+      () => {
+        // realTimeTicker가 모든 원화 마켓 길이만큼 채워지기 전에는 리스트를 계산하지 않는다 (성능)
+        if (
+          (Object.values(store.getters.realTimeTickers).length ===
+          (store.getters.markets.upbit || []).filter(o => o.market.startsWith('KRW')).length)
+        ) {
+          recalcDisplayedList()
+          unwatch()
+        }
+      },
+      { deep: true },
+    )
 
     return {
       keyword,
