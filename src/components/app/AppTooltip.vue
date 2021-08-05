@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   props: {
@@ -18,6 +19,10 @@ export default {
     showAbove: HTMLElement,
   },
   setup(props) {
+    const store = useStore()
+
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const refAppTooltip = ref(null)
 
     const finalStyle = ref({})
@@ -31,7 +36,7 @@ export default {
       const rectShowAbove = dom.getBoundingClientRect()
       const rectAppTooltip = refAppTooltip.value.getBoundingClientRect()
 
-      finalStyle.value.top = `${rectShowAbove.top - rectAppTooltip.height - 16}px`
+      finalStyle.value.top = `${-plugins.$helpers.dom.headerHeight() + rectShowAbove.top - rectAppTooltip.height - 16}px`
       const distanceHor = window.innerWidth - rectShowAbove.left
       if (window.innerWidth < rectShowAbove.left + rectAppTooltip.width) {
         finalStyle.value.left = `${window.innerWidth - rectAppTooltip.width}px`
@@ -51,6 +56,11 @@ export default {
       }
     }
 
+    watch(
+      () => store.getters.scrollTop,
+      setFinalStyle,
+    )
+
     onMounted(setFinalStyle)
 
     return {
@@ -63,7 +73,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$triangle-size: 8px;
 .app-tooltip {
   color: var(--white);
   background: rgba(0, 0, 0, 0.8);
@@ -74,6 +83,7 @@ $triangle-size: 8px;
   font-size: 12px;
   line-height: 18px;
 
+  $triangle-size: 8px;
   .triangle {
     width: 0;
     height: 0;
@@ -84,16 +94,6 @@ $triangle-size: 8px;
     left: 50%;
     transform: translateX(-50%);
     bottom: -$triangle-size;
-  }
-}
-
-#app.dark {
-  .app-tooltip {
-    background: var(--black-light);
-
-    .triangle {
-      border-top: $triangle-size solid var(--black-light);
-    }
   }
 }
 </style>

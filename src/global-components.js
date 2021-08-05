@@ -11,12 +11,9 @@ import AppLogo from '@/components/app/AppLogo'
 import AppPagination from '@/components/app/AppPagination'
 import AppToggler from '@/components/app/AppToggler'
 import AppTooltip from '@/components/app/AppTooltip'
-import FormControl from '@/components/app/FormControl'
 import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 
 // common components
-import InputInsta from '@/components/common/InputInsta'
-import InputPhone from '@/components/common/InputPhone'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import RealTimeOrderbook from '@/components/common/RealTimeOrderbook'
 import SCoin from '@/components/common/SCoin'
@@ -37,12 +34,9 @@ const useGlobalComponents = app => {
     .component('AppPagination', AppPagination)
     .component('AppToggler', AppToggler)
     .component('AppTooltip', AppTooltip)
-    .component('FormControl', FormControl)
     .component('WrapperDropdownOverlay', WrapperDropdownOverlay)
 
     // common components
-    .component('InputInsta', InputInsta)
-    .component('InputPhone', InputPhone)
     .component('ModalHeader', ModalHeader)
     .component('RealTimeOrderbook', RealTimeOrderbook)
     .component('SCoin', SCoin)

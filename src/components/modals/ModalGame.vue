@@ -15,13 +15,11 @@
 <script>
 import { ref } from 'vue'
 import GameColorSense from '@/components/common/games/GameColorSense'
-import GamePickCoin from '@/components/common/games/GamePickCoin'
 import GameFlipCoin from '@/components/common/games/GameFlipCoin'
 
 export default {
   components: {
     GameColorSense,
-    GamePickCoin,
     GameFlipCoin,
   },
   props: ['options'],

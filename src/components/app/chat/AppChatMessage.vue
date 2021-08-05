@@ -5,7 +5,7 @@
     <div
       v-if="message.profile"
       class="profile">
-      <img :src="message.profile.image">
+      <img :src="message.profile.image" :alt="message.profile.nickname">
     </div>
     <div class="content">
       <div

@@ -26,9 +26,6 @@ export default {
     }, {
       title: 'GAME_COLOR_SENSE',
       component: 'GameColorSense',
-    }, {
-      title: 'GAME_PICK_COIN',
-      component: 'GamePickCoin',
     }]
 
     return {

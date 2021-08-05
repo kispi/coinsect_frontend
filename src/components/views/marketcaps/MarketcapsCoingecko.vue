@@ -39,6 +39,7 @@
             <img
               :src="item.image"
               @error="e => e.target.src = 'https://cryprice.com/cryptocurrency-icons-master/svg/color/generic.svg'"
+              alt="Default coin image"
             >
             <div
               class="symbol lines-1"

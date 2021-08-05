@@ -25,7 +25,6 @@ export default {
 
     watch([
       () => router.currentRoute.value.path,
-      () => store.getters.scrollTop,
     ],
       () => store.commit('removeAllTooltips'),
     )
@@ -36,11 +35,12 @@ export default {
 <style lang="scss" scoped>
 .app-tooltips {
   position: fixed;
-  top: 0;
+  top: var(--app-header-height);
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 6;
   pointer-events: none;
+  overflow: hidden;
 }
 </style>

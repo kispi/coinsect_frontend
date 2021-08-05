@@ -2,7 +2,7 @@
   <div class="view-marketcaps">
     <div class="settings">
       <div class="source">
-        Powered by <a href="https://coingecko.com" target="_blank">Coingecko<img src="@/assets/images/coingecko.png"></a>
+        Powered by <a href="https://coingecko.com" target="_blank" rel="noopener">Coingecko<img src="@/assets/images/coingecko.png" alt="Coingecko"></a>
       </div>
     </div>
     <AppLoading :loading="$store.getters.loading.marketcaps"/>

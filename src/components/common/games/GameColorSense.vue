@@ -41,8 +41,7 @@ export default {
       if (stage.value <= 2) return 2
       if (stage.value <= 4) return 4
       if (stage.value <= 8) return 8
-      if (stage.value <= 20) return 12
-      return 16
+      return 12
     })
 
     const playing = ref(null)

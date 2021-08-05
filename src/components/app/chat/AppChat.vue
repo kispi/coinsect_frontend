@@ -40,7 +40,7 @@
           v-if="incomingMessage"
           @click="onClickIncomingMessageOverlay"
           class="incoming-message-overlay flex-row items-center">
-          <img :src="incomingMessage.profile.image" class="flex-wrap">
+          <img :src="incomingMessage.profile.image" class="flex-wrap" :alt="incomingMessage.profile.nickname">
           <div class="flex-fill flex-row items-center">
             <div class="flex-fill">
               <div class="text flex-wrap lines-1" v-html="incomingMessage.text"/>

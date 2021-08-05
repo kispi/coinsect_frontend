@@ -2,6 +2,7 @@ import $store from '@/store'
 
 // DOM을 직접 건드리는 함수들을 이쪽으로 분리
 const dom = {
+  headerHeight: () => (document.getElementsByClassName('app-header')[0] || {}).clientHeight || 0,
   scrollToTop: () => {
     const appBody = document.getElementsByClassName('app-body')[0]
     if (appBody) appBody.scrollTop = 0
