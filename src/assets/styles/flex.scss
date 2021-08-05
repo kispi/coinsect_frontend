@@ -28,14 +28,6 @@
   }
 }
   
-.flex-center {
-  justify-content: center;
-  
-  & > * {
-    flex: 0 0 auto;
-  }
-}
-
 .center {
   display: flex;
   justify-content: center;
@@ -43,10 +35,6 @@
   text-align: center;
 }
 
-.justify-end {
-  justify-content: flex-end;
-}
-  
 .flex-fill {
   flex: 1 1 0 !important;
 }

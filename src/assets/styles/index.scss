@@ -26,18 +26,6 @@
   bottom: 0;
 }
 
-.img-cover {
-  background-repeat: no-repeat;
-  background-size: cover !important;
-  background-position: center;
-}
-
-.img-contain {
-  background-repeat: no-repeat;
-  background-size: contain !important;
-  background-position: center;
-}
-
 .no-scrollbar {
   &::-webkit-scrollbar {
       width: 0;

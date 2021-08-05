@@ -11,18 +11,15 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
 import { useStore } from 'vuex'
-import AppHeader from './components/app/app-header/AppHeader'
-import AppAddons from '@/components/app/addons/AppAddons'
-import AppFooter from '@/components/app/AppFooter'
 import helpers from './helpers'
 
 export default {
   components: {
-    AppHeader,
-    AppAddons,
-    AppFooter,
+    AppHeader: defineAsyncComponent(() => import('@/components/app/app-header/AppHeader')),
+    AppAddons: defineAsyncComponent(() => import('@/components/app/addons/AppAddons')),
+    AppFooter: defineAsyncComponent(() => import('@/components/app/AppFooter')),
   },
   setup() {
     const store = useStore()

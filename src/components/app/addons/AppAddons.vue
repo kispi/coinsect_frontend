@@ -1,5 +1,5 @@
 <template>
-  <AppChat/>
+  <AppChat v-if="Object.keys($store.getters.symbols).length > 0"/>
   <AppToast/>
   <AppTooltips/>
   <AppModal

@@ -1,6 +1,6 @@
 import helpers from '@/helpers'
 
-const useLazyLoads = () => {
+const useLazyLoads = async () => {
   const loadGA = async () => {
     if (process.env.NODE_ENV !== 'production') return
 
@@ -8,7 +8,16 @@ const useLazyLoads = () => {
     helpers.dom.loadScript({ url: '/gtm.js' })
   }
 
+  const loadVendors = async () => {
+    await Promise.all([
+      helpers.dom.loadScript({ url: 'https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/dayjs.min.js' }),
+      helpers.dom.loadScript({ url: 'https://cdn.jsdelivr.net/npm/hangul-js@0.2.6/hangul.min.js' }),
+    ])
+    helpers.dayjs = dayjs
+  }
+
   loadGA()
+  await loadVendors()
 }
 
 export default useLazyLoads

@@ -1,18 +1,11 @@
-.text-left        { text-align: left; }
-.text-right       { text-align: right; }
-.text-center      { text-align: center; }
-.text-nowrap      { white-space: nowrap; }
-.text-underline   { text-decoration: underline; }
-.text-linethrough { text-decoration: line-through; }
-.text-initial     { text-transform: initial; }
-.text-lowercase   { text-transform: lowercase; }
-.text-uppercase   { text-transform: uppercase; }
-.text-capitalize  { text-transform: capitalize; }
-.text-original    { text-transform: none; }
+.text-left      { text-align: left; }
+.text-right     { text-align: right; }
+.text-center    { text-align: center; }
+.text-nowrap    { white-space: nowrap; }
+.text-underline { text-decoration: underline; }
 
 .pre-wrap { white-space: pre-wrap; }
 .pre-line { white-space: pre-line; }
-.nowrap { white-space: nowrap; }
 
 .lines-1 {
   white-space: nowrap;

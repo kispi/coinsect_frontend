@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, nextTick, watch } from 'vue'
+import { ref, getCurrentInstance, nextTick, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import AppChatMessage from './AppChatMessage'
 import useChatHandler from '@/hooks/chat-handler'
@@ -199,13 +199,6 @@ export default {
       nextTick(() => dom.scrollTop = dom.scrollHeight)
     }
 
-    watch(
-      () => Object.keys(store.getters.symbols).length,
-      newVal => {
-        if (newVal > 0) init()
-      },
-    )
-
     // 새 메시지가 왔을 떄
     watch(
       () => messages.value.length,
@@ -217,6 +210,15 @@ export default {
         }
       },
     )
+
+    watch(
+      () => store.getters.settings.chatFolded,
+      (newVal, oldVal) => {
+        if (!newVal && oldVal) nextTick(() => refTextarea.value.focus())
+      },
+    )
+
+    onMounted(init)
 
     return {
       refTextarea,

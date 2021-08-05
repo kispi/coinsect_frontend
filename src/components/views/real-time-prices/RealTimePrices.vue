@@ -148,8 +148,10 @@ export default {
 
     onMounted(init)
 
-    watch(
+    watch([
       () => store.getters.settings,
+      () => keyword.value,
+    ],
       recalcDisplayedList,
       { deep: true },
     )

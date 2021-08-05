@@ -2,7 +2,7 @@
 
 @mixin spaceLoop($className, $styleName, $offset) {
   $i: 0;
-  @while $i <= 80 {
+  @while $i <= 40 {
     #{$className + $i} { 
       #{$styleName}: #{$i + 'px'} !important;
     }
@@ -83,12 +83,7 @@ $colors:
 .p-relative { position: relative !important; }
 .p-absolute { position: absolute !important; }
 
-.o-hidden { overflow: hidden !important; }
-.o-visible { overflow: visible !important; }
-.o-auto { overflow: auto !important; }
-
 .o-0 { opacity: 0 !important; }
-.o-50 { opacity: 0.5 !important; }
 
 .w-100 { width: 100% !important; }
 

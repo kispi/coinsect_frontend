@@ -2,9 +2,7 @@ import $store from '@/store'
 import animate from './animate'
 import coin from './coin'
 import dataSetter from './data-setter'
-import dayjs from 'dayjs'
 import dom from './dom'
-import hangul from 'hangul-js'
 import math from './math'
 import meta from './meta'
 import modal from './modal'
@@ -42,7 +40,6 @@ const helpers = {
   modal,
   number,
   toast,
-  dayjs,
   dom,
   math,
   meta,
@@ -103,7 +100,7 @@ const helpers = {
   },
   sleep: ms => new Promise(resolve => setTimeout(resolve, ms)),
   includesChosung: (partial, whole) => {
-    const d = hangul.disassemble
+    const d = Hangul.disassemble
     if (d(partial, true).length !== d(partial).length) return
 
     if (!partial || !whole) return
