@@ -26,7 +26,7 @@
     </td>
     <td>
       <div
-        class="ticker-current-price-base f-700"
+        class="ticker-current-price-base"
         :class="priceColor(ticker.$$changeRate1D)"
         v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })"
       />

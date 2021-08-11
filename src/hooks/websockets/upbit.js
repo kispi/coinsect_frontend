@@ -64,10 +64,10 @@ const useUpbit = () => {
 
   const setDocumentTitle = ticker => {
     const priceString = plugins.$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })
-    document.title = `${ticker.$$premiumRate ? `${ticker.$$premiumRate.toLocaleString(undefined, {
+    document.title = `${!isNaN(ticker.$$premiumRate) ? `${ticker.$$premiumRate.toLocaleString(undefined, {
       maximumFractionDigits: 2,
       minimumFractionDigits: 2,
-    })}% / ` : ''}${priceString} ${ticker.$$symbol}`
+    })}% / ` : 'Connecting... '}${priceString} ${ticker.$$symbol}`
   }
 
   const subscribe = ({ type, codes }) => {

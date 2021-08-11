@@ -1,7 +1,4 @@
 :root {
-  --bybit-long:             rgba(36, 175, 100, 1);
-  --bybit-short:            rgba(240, 64, 64, 1);
-
   --brand-primary:          rgb(48, 129, 235, 1);
   --brand-primary-hover:    rgba(46, 105, 182, 1);
   --brand-primary-hover-bg: rgba(46, 105, 182, 0.2);
@@ -9,7 +6,7 @@
   --bitcoin:             #ffbb11;
   --white:               #ffffff;
   --black:               #000000;
-  --black-dark:          #181818;
+  --black-dark:          #141414;
   --black-light:         #222222;
   --gray-dark:           #444444;
   --gray:                #e0e0e0;
@@ -18,9 +15,9 @@
   --success:             var(--brand-primary);
   --danger:              #aa0000;
   --price-up-upbit:      #d60000;
-  --price-up-upbit-bg:   rgba(216, 14, 53, 0.05);
   --price-down-upbit:    #0051c7;
-  --price-down-upbit-bg: rgba(0, 98, 223, 0.05);
+  --price-up-bybit:      rgba(36, 175, 100, 1);
+  --price-down-bybit:    rgba(240, 64, 64, 1);
   --danger-light:        rgba(176, 0, 0, 0.6);
 
   --text-stress:      var(--black-light);
@@ -38,6 +35,8 @@
   --background-light:    rgba(0, 0, 0, 0.1);
   --price-up:            var(--price-up-upbit);
   --price-down:          var(--price-down-upbit);
+  --price-up-bg:         rgba(214, 0, 0, 0.1);
+  --price-down-bg:       rgba(0, 81, 199, 0.1);
 
   &.dark {
     --brand-primary:     rgba(82, 163, 235, 1);
@@ -49,7 +48,9 @@
     --background-base:   var(--black-dark);
     --background-light:  rgba(255, 255, 255, 0.1);
 
-    --price-up:            var(--bybit-long);
-    --price-down:          var(--bybit-short);
+    --price-up:          var(--price-up-bybit);
+    --price-down:        var(--price-down-bybit);
+    --price-up-bg:       rgba(36, 175, 100, 0.1);
+    --price-down-bg:     rgba(240, 64, 64, 0.1);
   }
 }

@@ -11,7 +11,7 @@
           class="price"
           :class="[
             type === '$$asks' ? 'down' : 'up',
-            priceColor(order.price),
+            priceColor({ price: order.price, type }),
             lastTradedPrice === order.price ? 'bordered' : '',
           ]">
           <div class="value" v-html="$helpers.number.pretty.price({ price: order.price, baseCurrency: 'krw' })"/>
@@ -65,10 +65,13 @@ export default {
 
     const relativeWidth = size => `${size * 100 / orderbook.value.$$biggestSize}%`
 
-    const priceColor = price => {
-      if (!prevClosingPrice.value || price === prevClosingPrice.value) return 'c-price-same-upbit'
+    const priceColor = ({ price, type }) => {
+      if (store.getters.settings.theme === 'light') {
+        if (!prevClosingPrice.value || price === prevClosingPrice.value) return 'c-price-same-upbit'
+        return price > prevClosingPrice.value ? 'c-price-up' : 'c-price-down'
+      }
 
-      return price > prevClosingPrice.value ? 'c-price-up' : 'c-price-down'
+      return type === '$$asks' ? 'c-price-down' : 'c-price-up'
     }
 
     const { subscribe } = useUpbit()
@@ -109,11 +112,11 @@ export default {
   background: var(--background-base);
 
   .down {
-    background: var(--price-down-upbit-bg);
+    background: var(--price-down-bg);
   }
 
   .up {
-    background: var(--price-up-upbit-bg);
+    background: var(--price-up-bg);
   }
 
   .order {

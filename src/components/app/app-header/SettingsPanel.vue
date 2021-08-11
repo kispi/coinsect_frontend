@@ -7,12 +7,12 @@
       <div class="key" v-html="$translate(setting.key)"/>
       <div class="values">
         <div
-          @click="onClickValue(setting.key, o.val)"
+          @click="onClickValue(setting.key, o)"
           class="value"
           :class="{'active': o.$$selected}"
-          :key="o.val"
+          :key="o.value"
           v-for="o in setting.values"
-          v-html="$translate(o.val)"
+          v-html="$translate(o.title)"
         />
       </div>
     </div>
@@ -29,30 +29,45 @@ export default {
 
     const settings = computed(() => [{
       key: 'LANGUAGE',
-      values: ['kr', 'en'].map(val => ({ val, $$selected: store.getters.translation.locale === val })),
+      values: [
+        { title: 'KR', value: 'kr' },
+        { title: 'EN', value: 'en' },
+      ].map(o => ({ ...o, $$selected: store.getters.translation.locale === o.value })),
     }, {
       key: 'CURRENCY',
-      values: ['krw', 'usd'].map(val => ({ val, $$selected: store.getters.settings.currency === val })),
+      values: [
+        { title: 'KRW', value: 'krw' },
+        { title: 'USD', value: 'usd' },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.currency === o.value })),
     }, {
       key: 'THEME',
-      values: ['dark', 'light'].map(val => ({ val, $$selected: store.getters.settings.theme === val })),
+      values: [
+        { title: 'UPBIT', value: 'light' },
+        { title: 'BYBIT', value: 'dark' },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.theme === o.value })),
     }, {
       key: 'FILTER',
-      values: ['all', 'favorites'].map(val => ({ val, $$selected: store.getters.settings.filter === val })),
+      values: [
+        { title: 'ALL', value: 'all' },
+        { title: 'FAVORITES', value: 'favorites' },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.filter === o.value })),
     }, {
       key: 'TRADINGVIEW',
-      values: ['show', 'hide'].map(val => ({ val, $$selected: store.getters.settings.tradingview === val })),
+      values: [
+        { title: 'SHOW', value: 'show' },
+        { title: 'HIDE', value: 'hide' },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.tradingview === o.value })),
     }])
 
-    const onClickValue = (key, value) => {
+    const onClickValue = (key, setting) => {
       if (key === 'LANGUAGE') {
-        store.commit('setLocale', value)
+        store.commit('setLocale', setting.value)
         return
       }
 
       if (['CURRENCY', 'THEME', 'FILTER', 'TRADINGVIEW'].includes(key)) {
         const o = {}
-        o[key.toLowerCase()] = value
+        o[key.toLowerCase()] = setting.value
         store.commit('setSettings', o)
       }
     }
@@ -70,7 +85,7 @@ export default {
   background: var(--background-base);
   border: 1px solid var(--text-base);
   border-radius: 4px;
-  width: 240px;
+  width: 320px;
   color: var(--text-stress);
 
   .setting-item {
@@ -96,6 +111,7 @@ export default {
         border-left: 1px solid var(--text-stress);
         cursor: pointer;
         flex: 1;
+        transition: none;
 
         &:last-child {
           border-right: 1px solid var(--text-stress);
