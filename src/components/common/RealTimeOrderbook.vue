@@ -68,7 +68,7 @@ export default {
     const priceColor = price => {
       if (!prevClosingPrice.value || price === prevClosingPrice.value) return 'c-price-same-upbit'
 
-      return price > prevClosingPrice.value ? 'c-price-up-upbit' : 'c-price-down-upbit'
+      return price > prevClosingPrice.value ? 'c-price-up' : 'c-price-down'
     }
 
     const { subscribe } = useUpbit()

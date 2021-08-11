@@ -395,6 +395,10 @@ export default {
       font-size: 32px;
       color: var(--white);
     }
+
+    &:hover {
+      background: var(--brand-primary-hover);
+    }
   }
 
   &:not(.folded) {

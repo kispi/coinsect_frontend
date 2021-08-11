@@ -10,7 +10,7 @@
       <div class="value" v-html="index.value"/>
       <div
         class="changes"
-        :class="index.changes > 0 ? 'c-price-up-upbit' : 'c-price-down-upbit'"
+        :class="index.changes > 0 ? 'c-price-up' : 'c-price-down'"
         v-html="`${index.changes > 0 ? '+' : ''}${index.changes}%`"
       />
     </AdaptiveLayout>

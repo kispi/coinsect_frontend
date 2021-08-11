@@ -8,7 +8,7 @@
         <div
           v-html="ticker.$$name[$store.getters.translation.locale]"
           class="name lines-1"
-          :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'c-brand-primary' : 'c-text-stress'"
+          :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''"
         />
       </div>
       <div class="functions">
@@ -105,9 +105,9 @@ export default {
     })
 
     const priceColor = rate => {
-      if (rate > 0) return 'c-price-up-upbit'
-      if (rate === 0) return 'c-price-same-upbit'
-      if (rate < 0) return 'c-price-down-upbit'
+      if (rate > 0) return 'c-price-up'
+      if (rate === 0) return 'c-text-stress'
+      if (rate < 0) return 'c-price-down'
     }
 
     const toggleFavorite = () => {
@@ -167,6 +167,7 @@ export default {
     }
 
     .name {
+      color: var(--text-stress);
       font-weight: 500;
 
       @media (max-width: 767px) {

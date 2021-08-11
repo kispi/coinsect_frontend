@@ -73,6 +73,9 @@ export default {
     }, {
       title: 'GAMES',
       path: '/games',
+    }, {
+      title: 'UPDATES',
+      path: '/updates',
     // }, {
     //   title: 'NEWS',
     //   path: '/news',

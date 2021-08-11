@@ -138,5 +138,9 @@
   "GAMES": {
     "en": "Games",
     "kr": "게임"
+  },
+  "UPDATES": {
+    "en": "Updates",
+    "kr": "업데이트"
   }
 }
