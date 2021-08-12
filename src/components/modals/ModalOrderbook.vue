@@ -18,7 +18,7 @@
     </div>
     <div class="notice">
       업비트 테마 => 전일 종가 초과: <span class="upbit-up">빨강</span>, 동일: 회색, 미만: <span class="upbit-down">파랑</span><br>
-      바이빗 테마 => 파는 주문: <span class="bybit-up">빨강</span>, 사는 주문: <span class="bybit-down">초록</span>
+      바이빗 테마 => 파는 주문: <span class="bybit-down">빨강</span>, 사는 주문: <span class="bybit-up">초록</span>
     </div>
   </div>
 </template>
