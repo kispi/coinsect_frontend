@@ -52,6 +52,8 @@ export default {
     width: 100%;
 
     .nickname {
+      text-transform: uppercase;
+
       span:not(.token) {
         color: var(--text-stress);
       }
