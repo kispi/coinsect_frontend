@@ -41,6 +41,7 @@ const useChatHandler = () => {
   const addMessage = message => {
     messages.value.push({
       profile: (message.user || {}).profile,
+      token: token.value,
       isMine: (message.user || {}).token === token.value,
       text: message.text,
       timestamp: message.ts,

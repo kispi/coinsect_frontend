@@ -2,17 +2,19 @@
   <div
     class="app-chat-message"
     :class="{'mine': message.isMine}">
-    <div
+    <img
       v-if="message.profile"
-      class="profile">
-      <img :src="message.profile.image" :alt="message.profile.nickname">
-    </div>
+      :src="message.profile.image"
+      :alt="message.profile.nickname"
+      class="profile-image"
+    >
     <div class="content">
       <div
         v-if="message.profile"
-        class="nickname"
-        v-html="message.profile.nickname"
-      />
+        class="nickname">
+        <span v-html="message.profile.nickname"/>
+        <span class="token" v-html="(message.token || '').substring(0, 3)"/>
+      </div>
       <div class="text-and-timestamp">
         <div class="text" v-html="message.text"/>
         <div
@@ -40,16 +42,26 @@ export default {
     margin-bottom: 12px;
   }
 
-  .profile {
+  .profile-image {
     margin-right: 8px;
-
-    img {
-      width: 24px;
-    }
+    width: 24px;
+    height: fit-content;
   }
 
   .content {
     width: 100%;
+
+    .nickname {
+      span:not(.token) {
+        color: var(--text-stress);
+      }
+
+      .token {
+        font-weight: 300;
+        font-size: 10px;
+        margin-left: 8px;
+      }
+    }
   }
 
   .text-and-timestamp {
@@ -80,7 +92,7 @@ export default {
       flex-direction: row-reverse;
     }
 
-    .profile,
+    .profile-image,
     .nickname {
       display: none;
     }
