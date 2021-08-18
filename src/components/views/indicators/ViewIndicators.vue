@@ -50,6 +50,8 @@ export default {
 <style lang="scss" scoped>
 .view-indicators {
   padding: var(--app-default-page-padding);
+  max-width: 992px;
+  margin: auto;
 
   .indicators {
     display: flex;
