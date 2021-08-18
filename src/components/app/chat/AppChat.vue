@@ -35,7 +35,6 @@
         ref="refAppChatBody"
         class="app-chat-body no-scrollbar"
         @scroll="onScroll">
-        <AppLoading :loading="!connected"/>
         <div
           v-if="incomingMessage"
           @click="onClickIncomingMessageOverlay"
