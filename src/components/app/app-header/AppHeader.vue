@@ -33,7 +33,9 @@
     <div class="menu-items">
       <RouterLink
         class="menu-item"
-        :class="{'selected': menuItem.path === $route.path}"
+        :class="{
+          'selected': (menuItem.path === $route.path) || (menuItem.title === 'INDICATORS' && $route.path.startsWith('/indicators')),
+        }"
         :to="menuItem.path"
         :key="menuItem.title"
         v-for="menuItem in menuItems"
@@ -68,8 +70,8 @@ export default {
     //   title: 'LONG_SHORT',
     //   path: '/long_short'
     }, {
-      title: 'MARKETCAPS',
-      path: '/marketcaps',
+      title: 'INDICATORS',
+      path: '/indicators/marketcaps',
     }, {
       title: 'GAMES',
       path: '/games',

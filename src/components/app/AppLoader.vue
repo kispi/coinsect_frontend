@@ -1,10 +1,10 @@
 <template>
   <div class="app-loader">
     <div class="app-loader-container">
-      <img src="favicon/logo-light.svg" class="loader-app-logo-light"/>
+      <img src="/favicon/logo-light.svg" class="loader-app-logo-light"/>
     </div>
     <div class="app-loader-container main">
-      <img src="favicon/logo.svg" class="loader-app-loader-main"/>
+      <img src="/favicon/logo.svg" class="loader-app-loader-main"/>
     </div>
   </div>
 </template>

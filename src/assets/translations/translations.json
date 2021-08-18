@@ -83,6 +83,18 @@
     "en": "Marketcaps",
     "kr": "시가총액"
   },
+  "INDICATORS": {
+    "en": "Indicators",
+    "kr": "지표"
+  },
+  "DASHBOARD": {
+    "en": "Dashboard",
+    "kr": "대시보드"
+  },
+  "GENERAL": {
+    "en": "General",
+    "kr": "일반"
+  },
   "NEWS": {
     "en": "News",
     "kr": "뉴스"

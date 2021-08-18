@@ -7,8 +7,8 @@ const andSoOn = [{
   path: '/login',
   component: () => import(/* webpackChunkName: 'view-login' */ '@/components/views/ViewLogin'),
 }, {
-  path: '/marketcaps',
-  component: () => import(/* webpackChunkName: 'view-marketcaps' */ '@/components/views/marketcaps/ViewMarketcaps'),
+  path: '/indicators/:key',
+  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
 }, {
   path: '/games',
   component: () => import(/* webpackChunkName: 'view-games' */ '@/components/views/ViewGames'),
