@@ -14,6 +14,7 @@ const marketInfo = {
       upbit: {},
       bithumb: {},
     },
+    leaderboard: null,
     realTimeTickers: {},
     symbols: {},
   }),
@@ -23,6 +24,7 @@ const marketInfo = {
     marketcaps: state => state.marketcaps,
     markets: state => state.markets,
     orderbooks: state => state.orderbooks,
+    leaderboard: state => state.leaderboard,
     realTimeTickers: state => state.realTimeTickers,
     symbols: state => state.symbols,
   },
@@ -39,6 +41,9 @@ const marketInfo = {
     },
     setOrderbook(state, { exchange, market, orderbook }) {
       state.orderbooks[exchange][market] = orderbook
+    },
+    setLeaderboard(state, leaderboard) {
+      state.leaderboard = leaderboard
     },
   },
   actions: {
@@ -96,6 +101,21 @@ const marketInfo = {
         })
       } catch (e) {
         return Promise.reject(e)
+      }
+    },
+    async loadLeaderboard({ commit }) {
+      if (helpers.canSkipApiCall('leaderboard')) return
+
+      try {
+        commit('setLoading', { leaderboard: true })
+        const data = await marketInfoService.leaderboard()
+        const aoa = data.find(row => row.name === 'aoa')
+        if (aoa) aoa.name = 'aoa (워뇨띠)'
+        commit('setLeaderboard', data)
+      } catch (e) {
+        return Promise.reject(e)
+      } finally {
+        commit('setLoading', { leaderboard: false })
       }
     },
   },

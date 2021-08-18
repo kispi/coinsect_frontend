@@ -20,9 +20,6 @@ export default {
 
 <style lang="scss">
 .view-marketcaps {
-  max-width: 992px;
-  margin: auto;
-  padding: var(--app-default-page-padding);
   padding-bottom: 120px;
 
   .settings {

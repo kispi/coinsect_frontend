@@ -5,6 +5,7 @@
       v-for="(update, idx) in updates">
       <div class="date" v-html="update.date"/>
       <li
+        class="disc m-l-16"
         :key="idx"
         v-for="(job, idx) in update.jobsDone"
         v-html="job">

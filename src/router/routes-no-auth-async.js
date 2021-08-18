@@ -9,6 +9,9 @@ const andSoOn = [{
 }, {
   path: '/indicators/:key',
   component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
+  meta: {
+    description: '워뇨띠 포지션, 리더보드, 시가 총액 등...',
+  },
 }, {
   path: '/games',
   component: () => import(/* webpackChunkName: 'view-games' */ '@/components/views/ViewGames'),

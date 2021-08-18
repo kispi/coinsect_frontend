@@ -71,7 +71,7 @@ export default {
     //   path: '/long_short'
     }, {
       title: 'INDICATORS',
-      path: '/indicators/marketcaps',
+      path: '/indicators/leaderboard',
     }, {
       title: 'GAMES',
       path: '/games',

@@ -87,6 +87,38 @@
     "en": "Indicators",
     "kr": "지표"
   },
+  "LEADERBOARD": {
+    "en": "Leaderboard",
+    "kr": "리더보드"
+  },
+  "RANK": {
+    "en": "Rank",
+    "kr": "랭킹"
+  },
+  "NAME": {
+    "en": "Name",
+    "kr": "이름"
+  },
+  "PREDICTED_POSITION": {
+    "en": "Predicted",
+    "kr": "예측 포지션"
+  },
+  "PROFIT_TOTAL": {
+    "en": "Profit (Total)",
+    "kr": "수익 (누적)"
+  },
+  "PROFIT_24H": {
+    "en": "Profit (1D)",
+    "kr": "수익 (일일)"
+  },
+  "PROFIT_7D": {
+    "en": "Profit (1W)",
+    "kr": "수익 (주간)"
+  },
+  "LAST_UPDATE": {
+    "en": "Last Updated",
+    "kr": "최종 업데이트"
+  },
   "DASHBOARD": {
     "en": "Dashboard",
     "kr": "대시보드"

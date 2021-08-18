@@ -48,7 +48,7 @@ export default {
 
     const timer = ref({
       interv: null,
-      ms: 60 * 1000,
+      ms: 15 * 1000,
     })
 
     const stage = ref(1)
@@ -75,16 +75,12 @@ export default {
 
       if (numSameColors === 1) {
         stage.value += 1
+        timer.value.ms = 15000
         populateColors()
         return
       }
 
-      playing.value = false
-      timer.value.ms = 60000
-      stage.value = 1
-      populateColors()
-      clearTimer()
-      emit('next-state')
+      timer.value.ms -= 3000
     }
 
     const populateColors = () => {
@@ -102,7 +98,7 @@ export default {
       })()
 
       const color2 = (() => {
-        const difficulty = (200 - stage.value * 4)
+        const difficulty = (100 - stage.value * 2)
         const color1AsArray = [color1.r, color1.g, color1.b]
         const primeIdx = color1AsArray.indexOf(Math.max(...color1AsArray))
         const colorArg = {}
@@ -134,6 +130,7 @@ export default {
     }
 
     const play = () => {
+      populateColors()
       playing.value = true
       timer.value.interv = setInterval(() => {
         timer.value.ms -= 10
@@ -142,12 +139,11 @@ export default {
           playing.value = false
           emit('next-state')
           clearTimer()
+          timer.value.ms = 15000
         }
       }, 10)
       emit('next-state')
     }
-
-    onMounted(populateColors)
 
     onUnmounted(clearTimer)
 

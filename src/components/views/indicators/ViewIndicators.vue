@@ -20,12 +20,18 @@ import { useRouter } from 'vue-router'
 
 export default {
   components: {
-    ViewMarketcaps: defineAsyncComponent(() => import('@/components/views/indicators/marketcaps/ViewMarketcaps')),
+    ViewGeneral: defineAsyncComponent(() => import('./general/ViewGeneral')),
+    ViewLeaderboard: defineAsyncComponent(() => import('./ViewLeaderboard')),
+    ViewMarketcaps: defineAsyncComponent(() => import('./marketcaps/ViewMarketcaps')),
   },
   setup() {
     const router = useRouter()
 
     const indicators = computed(() => [{
+      path: '/indicators/leaderboard',
+      title: 'LEADERBOARD',
+    }, {
+    //   {
     //   path: '/indicators/general',
     //   title: 'GENERAL',
     // }, {
@@ -35,6 +41,7 @@ export default {
 
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
+      if (p === '/indicators/leaderboard') return 'ViewLeaderboard'
       if (p === '/indicators/general') return 'ViewGeneral'
       if (p === '/indicators/marketcaps') return 'ViewMarketcaps'
     })
