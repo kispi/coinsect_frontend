@@ -15,7 +15,8 @@ import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 
 // common components
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
-import RealTimeOrderbook from '@/components/common/RealTimeOrderbook'
+import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
+import OrderbookUpbit from '@/components/common/orderbooks/OrderbookUpbit'
 import SCoin from '@/components/common/SCoin'
 import TradingView from '@/components/common/TradingView'
 
@@ -38,7 +39,8 @@ const useGlobalComponents = app => {
 
     // common components
     .component('ModalHeader', ModalHeader)
-    .component('RealTimeOrderbook', RealTimeOrderbook)
+    .component('OrderbookBybit', OrderbookBybit)
+    .component('OrderbookUpbit', OrderbookUpbit)
     .component('SCoin', SCoin)
     .component('TradingView', TradingView)
 }

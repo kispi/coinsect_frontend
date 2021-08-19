@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="orderbook"
-    class="real-time-orderbook">
+    class="orderbook-upbit">
     <div :key="type" v-for="type in ['$$asks', '$$bids']">
       <div
         class="order"
@@ -43,13 +43,12 @@ import useUpbit from '@/hooks/websockets/upbit'
 
 export default {
   props: {
-    exchange: String,
     market: String,
   },
   setup(props, { emit }) {
     const store = useStore()
 
-    const orderbook = computed(() => store.getters.orderbooks[props.exchange][props.market])
+    const orderbook = computed(() => store.getters.orderbooks.upbit[props.market])
 
     const emitted = ref(null)
 
@@ -79,7 +78,7 @@ export default {
     const connection = ref(null)
 
     const init = () => {
-      if (props.exchange === 'upbit') connection.value = subscribe({ type: 'orderbook', codes: [props.market] })
+      connection.value = subscribe({ type: 'orderbook', codes: [props.market] })
     }
 
     onMounted(init)
@@ -108,7 +107,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.real-time-orderbook {
+.orderbook-upbit {
   background: var(--background-base);
 
   .down {

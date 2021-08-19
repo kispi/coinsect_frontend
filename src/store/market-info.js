@@ -12,6 +12,7 @@ const marketInfo = {
     },
     orderbooks: {
       upbit: {},
+      bybit: {},
       bithumb: {},
     },
     leaderboard: null,

@@ -10,9 +10,8 @@
     <div
       ref="refBody"
       class="body">
-      <RealTimeOrderbook
+      <OrderbookUpbit
         @load-orderbook="scrollCenter"
-        :exchange="options.exchange"
         :market="options.ticker.$$code"
       />
     </div>
