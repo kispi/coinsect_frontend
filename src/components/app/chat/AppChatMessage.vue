@@ -45,7 +45,7 @@ export default {
   .profile-image {
     margin-right: 8px;
     width: 24px;
-    height: fit-content;
+    height: 24px;
   }
 
   .content {
