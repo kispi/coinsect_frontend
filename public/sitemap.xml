@@ -6,6 +6,18 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
     <url>
-        <loc>https://coinsect.com/</loc>
+        <loc>https://coinsect.io/</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/games</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/updates</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/indicators/leaderboard</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/indicators/marketcaps</loc>
     </url>
 </urlset>
