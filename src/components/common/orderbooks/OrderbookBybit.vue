@@ -94,6 +94,18 @@ export default {
     onMounted(init)
 
     onUnmounted(() => {
+      store.commit('setOrderbook', {
+        exchange: 'bybit',
+        market: props.market,
+        orderbook: null,
+      })
+
+      store.commit('setInstrument', {
+        exchange: 'bybit',
+        market: props.market,
+        instrument: null,
+      })
+
       connection.value.orderbook.close()
       connection.value.instrument.close()
     })

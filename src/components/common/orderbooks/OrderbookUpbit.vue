@@ -83,7 +83,15 @@ export default {
 
     onMounted(init)
 
-    onUnmounted(() => connection.value.close())
+    onUnmounted(() => {
+      store.commit('setOrderbook', {
+        exchange: 'upbit',
+        market: props.market,
+        orderbook: null,
+      })
+
+      connection.value.close()
+    })
 
     watch(
       () => orderbook.value,
