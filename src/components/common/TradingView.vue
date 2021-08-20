@@ -22,7 +22,7 @@ export default {
       await helpers.dom.loadScript({ url: 'https://s3.tradingview.com/tv.js' })
       new TradingView.widget({
         autosize: true,
-        symbol: props.symbol || 'BYBIT:BTCUSDT',
+        symbol: props.symbol || 'BYBIT:BTCUSD',
         interval: 15,
         timezone: 'Asia/Seoul',
         theme: store.getters.settings.theme,
