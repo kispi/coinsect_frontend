@@ -80,6 +80,7 @@
     </div>
     <div
       v-else
+      ref="refFoldedIcon"
       @click="toggleChatFolded"
       class="icon-folded">
       <i class="fal fa-comment-dots"/>
@@ -99,6 +100,8 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
+
+    const refFoldedIcon = ref(null)
 
     const refTextarea = ref(null)
 
@@ -207,6 +210,8 @@ export default {
         } else {
           showIncomingMessageOverlay()
         }
+        
+        if (refFoldedIcon.value) plugins.$helpers.animate.shakeY(refFoldedIcon.value)
       },
     )
 
@@ -220,6 +225,7 @@ export default {
     onMounted(init)
 
     return {
+      refFoldedIcon,
       refTextarea,
       refAppChatBody,
       connected,
