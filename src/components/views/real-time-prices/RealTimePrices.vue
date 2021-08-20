@@ -162,7 +162,7 @@ export default {
         // realTimeTicker가 모든 원화 마켓 길이만큼 채워지기 전에는 리스트를 계산하지 않는다 (성능)
         if (
           (Object.values(store.getters.realTimeTickers).length ===
-          (store.getters.markets.upbit || []).filter(o => o.market.startsWith('KRW')).length)
+          store.getters.markets.upbit.filter(o => o.market.startsWith('KRW')).length)
         ) {
           recalcDisplayedList()
           unwatch()

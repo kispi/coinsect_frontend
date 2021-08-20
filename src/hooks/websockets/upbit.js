@@ -87,10 +87,6 @@ const useUpbit = () => {
       }]))
     }
 
-    connection.onclose = () => {
-      setTimeout(() => subscribe(type, codes), 1000)
-    }
-
     const handleTickerMessage = json => {
       const symbol = json.cd.split('KRW-')[1]
       setAsBasePrice({ symbol, json })

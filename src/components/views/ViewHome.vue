@@ -1,11 +1,7 @@
 <template>
   <div class="view-home">
-    <!-- <TradingView v-if="$store.getters.settings.tradingview === 'show'"/> -->
-    <OrderbookBybit
-      @load-orderbook="scrollCenter"
-      :market="'BTCUSD'"
-    />
-    <!-- <RealTimePrices/> -->
+    <TradingView v-if="$store.getters.settings.tradingview === 'show'"/>
+    <RealTimePrices/>
   </div>
 </template>
 
@@ -14,7 +10,7 @@ import RealTimePrices from './real-time-prices/RealTimePrices'
 
 export default {
   components: {
-    // RealTimePrices,
+    RealTimePrices,
   },
 }
 </script>

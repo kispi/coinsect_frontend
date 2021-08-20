@@ -18,10 +18,17 @@
           :class="$store.getters.settings.favorites[ticker.$$symbol] ? 'fa' : 'fal'"
         />
         <div v-html="ticker.$$symbol" class="symbol"/>
-        <i
-          @click.stop="openModalOrderbook"
-          class="fal fa-receipt"
-        />
+        <img
+          class="exchange-logo"
+          @click.stop="openModalOrderbook('upbit', `KRW-${ticker.$$symbol}`)"
+          src="@/assets/images/upbit.svg"
+        >
+        <img
+          v-if="bybitMarket(ticker.$$symbol)"
+          class="exchange-logo"
+          @click.stop="openModalOrderbook('bybit', bybitMarket(ticker.$$symbol))"
+          src="@/assets/images/bybit.svg"
+        >
       </div>
     </td>
     <td>
@@ -86,13 +93,17 @@ export default {
 
     const { setDocumentTitle } = useUpbit()
 
-    const openModalOrderbook = () => {
+    const bybitMarket = symbol => {
+      const supportedMarkets = ['BTCUSD', 'ETHUSD', 'EOSUSD', 'XRPUSD']
+      return supportedMarkets.find(supported => supported.startsWith(symbol))
+    }
+
+    const openModalOrderbook = (exchange, market) => {
       plugins.$modal.custom({
         component: 'ModalOrderbook',
         options: {
-          ticker: props.ticker,
-          exchange: 'upbit',
-          // fullscreen: store.getters.isMobile,
+          market,
+          exchange: exchange,
           resizable: !store.getters.isMobile,
           noBackdrop: true,
         },
@@ -132,6 +143,7 @@ export default {
       openModalOrderbook,
       setDocumentTitleTicker,
       toggleFavorite,
+      bybitMarket,
     }
   },
 }
@@ -161,9 +173,16 @@ export default {
         margin: 0 8px;
       }
 
-      .fa-receipt:hover {
-        color: var(--text-stress);
-      } 
+      .exchange-logo {
+        width: 16px;
+        height: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+
+        &:not(:last-child) {
+          margin-right: 8px;
+        }
+      }
     }
 
     .name {

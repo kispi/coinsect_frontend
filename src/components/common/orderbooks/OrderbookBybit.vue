@@ -1,32 +1,55 @@
 <template>
+  <AppLoading
+    v-if="!orderbook || !instrument"
+    :loading="true"
+  />
   <div
-    v-if="orderbook"
+    v-else
     class="orderbook-bybit">
-    <div :key="type" v-for="type in ['$$asks', '$$bids']">
-      <div
-        class="order"
-        :key="idx"
-        v-for="(order, idx) in orderbook[type]">
+    <div
+      class="order"
+      :key="idx"
+      v-for="(order, idx) in orderbook.$$asks.slice(-depth)">
+      <div class="price c-price-down">
+        <div class="value" v-html="order.price.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2,
+        })"/>
+      </div>
+      <div class="size">
+        {{ order.size.toLocaleString() }}
         <div
-          class="price"
-          :class="[
-            type === '$$asks' ? 'down' : 'up',
-            priceColor({ price: order.price, type }),
-            lastTradedPrice === order.price ? 'bordered' : '',
-          ]">
-          <div class="value" v-html="order.price.toLocaleString(undefined, {
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2,
-          })"/>
-        </div>
-        <div class="size">
-          {{ order.size.toLocaleString() }}
-          <div
-            class="overlay"
-            :class="type === '$$asks' ? 'down' : 'up'"
-            :style="{ width: relativeWidth(order.size) }"
-          />
-        </div>
+          class="overlay down"
+          :style="{ width: relativeWidth(order.size) }"
+        />
+      </div>
+    </div>
+    <div class="instrument">
+      <div class="last-price" :class="instrument.last_tick_direction.includes('Minus') ? 'c-price-down' : 'c-price-up'">
+        <i class="fa" :class="instrument.last_tick_direction.includes('Minus') ? 'fa-arrow-down' : 'fa-arrow-up'"/>
+        {{ instrument.last_price }}
+      </div>
+      <div class="other-prices">
+        <div class="mark-price m-b-4">Mark {{ instrument.mark_price }}</div>
+        <div class="index-price">Index {{ instrument.index_price }}</div>
+      </div>
+    </div>
+    <div
+      class="order"
+      :key="idx"
+      v-for="(order, idx) in orderbook.$$bids.slice(0, depth)">
+      <div class="price c-price-up">
+        <div class="value" v-html="order.price.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2,
+        })"/>
+      </div>
+      <div class="size">
+        {{ order.size.toLocaleString() }}
+        <div
+          class="overlay up"
+          :style="{ width: relativeWidth(order.size) }"
+        />
       </div>
     </div>
   </div>
@@ -40,46 +63,40 @@ import useBybit from '@/hooks/websockets/bybit'
 export default {
   props: {
     market: String,
+    depth: {
+      type: Number,
+      default: 5,
+    }
   },
   setup(props, { emit }) {
     const store = useStore()
 
     const orderbook = computed(() => store.getters.orderbooks.bybit[props.market])
 
+    const instrument = computed(() => store.getters.instruments.bybit[props.market])
+
     const emitted = ref(null)
-
-    const realTimeTicker = computed(() => {
-      if (!props.market) return
-
-      return store.getters.realTimeTickers[props.market.split('KRW-')[1]] || {}
-    })
-
-    const prevClosingPrice = computed(() => realTimeTicker.value.$$prevClosingPrice)
-
-    const lastTradedPrice = computed(() => realTimeTicker.value.$$tradePriceBase)
 
     const relativeWidth = size => `${size * 100 / orderbook.value.$$biggestSize}%`
 
-    const priceColor = ({ price, type }) => {
-      if (store.getters.settings.theme === 'light') {
-        if (!prevClosingPrice.value || price === prevClosingPrice.value) return 'c-price-same-upbit'
-        return price > prevClosingPrice.value ? 'c-price-up' : 'c-price-down'
-      }
-
-      return type === '$$asks' ? 'c-price-down' : 'c-price-up'
-    }
-
     const { subscribe } = useBybit()
 
-    const connection = ref(null)
+    const connection = ref({
+      orderbook: null,
+      instrument: null,
+    })
 
     const init = () => {
-      connection.value = subscribe({ type: 'orderbook', market: props.market })
+      connection.value.orderbook = subscribe({ type: 'orderBookL2_25', market: props.market })
+      connection.value.instrument = subscribe({ type: 'instrument_info.100ms', market: props.market })
     }
 
     onMounted(init)
 
-    onUnmounted(() => connection.value.close())
+    onUnmounted(() => {
+      connection.value.orderbook.close()
+      connection.value.instrument.close()
+    })
 
     watch(
       () => orderbook.value,
@@ -89,14 +106,13 @@ export default {
           emitted.value = true
         }
       },
+      { deep: true },
     )
 
     return {
       orderbook,
-      prevClosingPrice,
-      lastTradedPrice,
+      instrument,
       relativeWidth,
-      priceColor,
     }
   },
 }
@@ -104,6 +120,7 @@ export default {
 
 <style lang="scss" scoped>
 .orderbook-bybit {
+  font-weight: 500;
   background: var(--background-base);
 
   .down {
@@ -114,24 +131,34 @@ export default {
     background: var(--price-up-bg);
   }
 
+  .instrument {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--bitcoin);
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 8px 16px;
+
+    .other-prices {
+      text-align: right;
+    }
+  }
+
   .order {
     display: flex;
     align-items: center;
+    position: relative;
     font-size: 12px;
-
-    &:not(:first-child) {
-      border-top: 1px solid var(--border-base);
-    }
+    padding: 4px 16px;
 
     .price {
       flex: 1;
-      padding: 8px 16px;
       display: flex;
       justify-content: space-between;
 
       .value {
         letter-spacing: 0.32px;
-        font-weight: 700;
       }
 
       &.bordered {
@@ -143,9 +170,12 @@ export default {
       font-size: 12px;
       flex: 1;
       color: var(--text-stress);
-      padding: 2px 8px;
-      font-weight: 300;
-      position: relative;
+      text-align: right;
+
+      .overlay {
+        margin-left: auto;
+        transition: all 0.5s ease;
+      }
     }
   }
 }

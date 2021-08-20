@@ -7,13 +7,17 @@ const marketInfo = {
     indices: null,
     marketcaps: null,
     markets: {
-      upbit: null,
-      bithumb: null,
+      upbit: [],
+      bithumb: [],
+      bybit: [],
     },
     orderbooks: {
       upbit: {},
       bybit: {},
       bithumb: {},
+    },
+    instruments: {
+      bybit: {},
     },
     leaderboard: null,
     realTimeTickers: {},
@@ -25,6 +29,7 @@ const marketInfo = {
     marketcaps: state => state.marketcaps,
     markets: state => state.markets,
     orderbooks: state => state.orderbooks,
+    instruments: state => state.instruments,
     leaderboard: state => state.leaderboard,
     realTimeTickers: state => state.realTimeTickers,
     symbols: state => state.symbols,
@@ -36,12 +41,15 @@ const marketInfo = {
     setMarketcaps(state, marketcaps) {
       state.marketcaps = marketcaps
     },
-    setMarkets(state, { exchange, markets, symbols }) {
-      state.markets[exchange] = markets
+    setMarkets(state, { markets, symbols }) {
+      state.markets = markets
       state.symbols = symbols
     },
     setOrderbook(state, { exchange, market, orderbook }) {
       state.orderbooks[exchange][market] = orderbook
+    },
+    setInstrument(state, { exchange, market, instrument }) {
+      state.instruments[exchange][market] = instrument
     },
     setLeaderboard(state, leaderboard) {
       state.leaderboard = leaderboard
@@ -79,25 +87,21 @@ const marketInfo = {
         commit('setLoading', { marketcaps: false })
       }
     },
-    async loadMarkets({ commit }, exchange) {
-      if (helpers.canSkipApiCall(`loadMarkets_${exchange}`)) return
-
-      let endpoint
-      if (exchange === 'upbit') endpoint = 'https://api.upbit.com/v1/market/all'
-      if (exchange === 'bithumb') endpoint = 'https://api.bithumb.com/public/ticker/all_krw'
+    async loadMarkets({ commit }) {
+      if (helpers.canSkipApiCall('loadMarkets')) return
 
       try {
-        const data = await $http.get(endpoint)
+        const data = await $http.get('market_info/markets')
         const symbols = {}
-        data.forEach(o => {
+        data.upbit = data.upbit.filter(o => o.market.startsWith('KRW-'))
+        data.upbit.forEach(o => {
           const symbol = o.market.split('-')[1]
           o.$$symbol = symbol
           symbols[symbol] = { en: o.english_name, kr: o.korean_name }
         })
 
         commit('setMarkets', {
-          exchange,
-          markets: data.filter(o => o.market.startsWith('KRW-')),
+          markets: data,
           symbols,
         })
       } catch (e) {

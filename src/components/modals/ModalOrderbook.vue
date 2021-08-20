@@ -3,7 +3,7 @@
     <ModalHeader
       :title="$translate('MODAL_ORDERBOOK')
         .replace('%exchange', options.exchange)
-        .replace('%market', options.ticker.$$code)
+        .replace('%market', options.market)
       "
       @close="$emit('close')"
     />
@@ -11,8 +11,15 @@
       ref="refBody"
       class="body">
       <OrderbookUpbit
+        v-if="options.exchange === 'upbit'"
         @load-orderbook="scrollCenter"
-        :market="options.ticker.$$code"
+        :market="options.market"
+      />
+      <OrderbookBybit
+        v-if="options.exchange === 'bybit'"
+        @load-orderbook="scrollCenter"
+        :market="options.market"
+        :depth="6"
       />
     </div>
     <div class="notice">
@@ -49,7 +56,7 @@ export default {
 .modal-orderbook {
   border-radius: 4px;
   width: 320px;
-  height: 480px;
+  height: 488px;
   border: 1px solid var(--border-light);
 
   .body {

@@ -143,6 +143,7 @@ const app = {
     async loadConfig({ commit, dispatch }) {
       const loadAuthNotRequired = async () => Promise.all([
         dispatch('loadMarkets', 'upbit'),
+        dispatch('loadMarkets', 'bybit'),
       ])
 
       commit('setIsMobile')
