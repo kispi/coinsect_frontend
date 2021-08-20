@@ -25,7 +25,7 @@
         >
         <img
           v-if="bybitMarket(ticker.$$symbol)"
-          class="exchange-logo"
+          class="exchange-logo bybit"
           @click.stop="openModalOrderbook('bybit', bybitMarket(ticker.$$symbol))"
           src="@/assets/images/bybit.svg"
         >
@@ -181,6 +181,10 @@ export default {
 
         &:not(:last-child) {
           margin-right: 8px;
+        }
+
+        &.bybit {
+          background: var(--black-dark);
         }
       }
     }
