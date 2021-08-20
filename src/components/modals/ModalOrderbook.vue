@@ -56,7 +56,7 @@ export default {
 .modal-orderbook {
   border-radius: 4px;
   width: 320px;
-  height: 488px;
+  height: 496px;
   border: 1px solid var(--border-light);
 
   .body {

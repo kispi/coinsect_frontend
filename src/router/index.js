@@ -33,10 +33,6 @@ router.beforeEach((to, from, next) => {
   next(false)
 })
 
-router.afterEach(() => {
-  document.title = '코인충 - 대한민국 No.1 암호자산 커뮤니티'
-})
-
 // 'from' referrer를 달고 이동하고 싶은 경우라면 router.push 대신 이 함수를 사용
 router.pushWithFrom = path => {
   if (path.includes('from=')) {

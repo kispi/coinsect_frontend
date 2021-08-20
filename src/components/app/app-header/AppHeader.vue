@@ -23,6 +23,7 @@
           />
         </div>
         <WrapperDropdownOverlay
+          class="settings-overlay"
           v-model="showSettings"
           :alignRight="true"
           :mountBelow="refIconSettings">
@@ -123,6 +124,10 @@ export default {
 
     &.border-top {
       border-top: 1px solid var(--border-base);
+    }
+
+    .settings-overlay {
+      z-index: 6;
     }
 
     .settings {

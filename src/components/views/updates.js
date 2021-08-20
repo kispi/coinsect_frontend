@@ -1,4 +1,9 @@
 export default [{
+  date: '2021-08-20',
+  jobsDone: [
+    'Bybit 호가창 기능 추가',
+  ],
+}, {
   date: '2021-08-18',
   jobsDone: [
     '로더에 파비콘 사용',
