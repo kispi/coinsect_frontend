@@ -33,15 +33,4 @@ router.beforeEach((to, from, next) => {
   next(false)
 })
 
-// 'from' referrer를 달고 이동하고 싶은 경우라면 router.push 대신 이 함수를 사용
-router.pushWithFrom = path => {
-  if (path.includes('from=')) {
-    router.push(path)
-    return
-  }
-
-  const from = `from=${router.currentRoute.value.path}`
-  router.push(path + (path.includes('?') ? `&${from}` : `?${from}`))
-}
-
 export default router
