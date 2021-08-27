@@ -23,7 +23,7 @@
       v-if="!connected"
       ref="refNotConnected"
       class="not-connected"
-      @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('CONNECTING_TO_UPBIT') }}</div>
+      @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('CONNECTING_TO_EXCHANGES') }}</div>
     </div>
     <table v-else>
       <thead>
