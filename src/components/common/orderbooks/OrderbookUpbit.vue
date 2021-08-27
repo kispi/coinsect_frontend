@@ -78,7 +78,7 @@ export default {
     const connection = ref(null)
 
     const init = () => {
-      connection.value = subscribe({ type: 'orderbook', codes: [props.market] })
+      subscribe({ type: 'orderbook', codes: [props.market] }).then(conn => connection.value = conn)
     }
 
     onMounted(init)

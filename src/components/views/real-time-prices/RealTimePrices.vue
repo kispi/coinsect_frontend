@@ -21,11 +21,9 @@
     </div>
     <div
       v-if="!connected"
+      ref="refNotConnected"
       class="not-connected"
-      @click="subscribeUpbit({
-        type: 'ticker',
-        codes: $store.getters.markets.upbit.map(o => o.market),
-      })"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('CONNECTING_TO_UPBIT') }}</div>
+      @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('CONNECTING_TO_UPBIT') }}</div>
     </div>
     <table v-else>
       <thead>
@@ -64,7 +62,7 @@
 </template>
 
 <script>
-import { onMounted, ref, getCurrentInstance, watch } from 'vue'
+import { onMounted, ref, getCurrentInstance, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import RealTimePriceRow from './RealTimePriceRow'
 import BaseAndTarget from './BaseAndTarget'
@@ -81,9 +79,18 @@ export default {
 
     const store = useStore()
 
-    const { connected, subscribe: subscribeUpbit } = useUpbit()
+    const refNotConnected = ref(null)
+
+    const { subscribe: subscribeUpbit } = useUpbit()
 
     const { subscribe: subscribeBinance } = useBinance()
+
+    const connected = ref(null)
+
+    const connections = ref({
+      upbit: null,
+      binance: null,
+    })
 
     const baseExchange = ref('upbit')
 
@@ -145,16 +152,50 @@ export default {
 
     const displayedList = ref([])
 
-    const init = async () => {
-      await store.dispatch('loadMarkets', baseExchange.value)
-      subscribeUpbit(({
+    /*
+      이걸 사용하지 않고 그냥 init()을 실행하면, unmounted 이후에도 (다른 페이지로 이동 등) closure에 의해 계속 실행되므로,
+      같은 페이지 내에서 끊긴 경우만 자동 재접속하기 위해 programmatically 버튼을 클릭해서 재접속하게 구현.
+    */
+    const initByClickingButton = () => {
+      if (refNotConnected.value) refNotConnected.value.click()
+    }
+
+    const subscriber = {
+      upbit: async () => subscribeUpbit(({
         type: 'ticker',
         codes: store.getters.markets.upbit.map(o => o.market),
-      }))
-      subscribeBinance()
+      })).then(conn => {
+        connections.value.upbit = conn
+        connected.value = true
+
+        connections.value.upbit.onclose = () => {
+          connected.value = false
+          setTimeout(initByClickingButton, 1000)
+        }
+      }),
+      binance: async () => subscribeBinance().then(conn => {
+        connections.value.binance = conn
+        connected.value = true
+
+        connections.value.binance.onclose = () => {
+          connected.value = false
+          setTimeout(initByClickingButton, 1000)
+        }
+      })
+    }
+
+    const init = async () => {
+      await store.dispatch('loadMarkets', baseExchange.value)
+      if (!connections.value.upbit || connections.value.upbit.readyState !== 1) subscriber.upbit()
+      if (!connections.value.binance || connections.value.binance.readyState !== 1) subscriber.binance()
     }
 
     onMounted(init)
+
+    onUnmounted(() => {
+      connections.value.upbit.close()
+      connections.value.binance.close()
+    })
 
     watch([
       () => store.getters.settings,
@@ -180,8 +221,9 @@ export default {
     )
 
     return {
+      refNotConnected,
+      init,
       connected,
-      subscribeUpbit,
       keyword,
       settings,
       setSort,

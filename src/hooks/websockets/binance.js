@@ -4,7 +4,7 @@ import { useStore } from 'vuex'
 const useBinance = () => {
   const store = useStore()
 
-  const subscribe = () => {
+  const subscribe = () => new Promise((resolve) => {
     const connection = new WebSocket('wss://stream.binance.com:9443/ws')
 
     connection.onopen = () => {
@@ -13,10 +13,8 @@ const useBinance = () => {
         params: store.getters.markets.upbit.map(o => `${(o.$$symbol || '').toLowerCase()}usdt@miniTicker`),
         id: 1,
       }))
-    }
 
-    connection.onclose = () => {
-      setTimeout(subscribe, 1000)
+      resolve(connection)
     }
 
     connection.onmessage = event => {
@@ -33,7 +31,7 @@ const useBinance = () => {
         console.error(e)
       }
     }
-  }
+  })
 
   return {
     subscribe,

@@ -99,7 +99,7 @@ const useBybit = () => {
     }
   }
 
-  const subscribe = ({ type, market }) => {
+  const subscribe = ({ type, market }) => new Promise((resolve) => {
     if (!market || !type) return
 
     const connection = new WebSocket('wss://stream.bybit.com/realtime')
@@ -109,6 +109,8 @@ const useBybit = () => {
         op: 'subscribe',
         args: [`${type}.${market}`]
       }))
+
+      resolve(connection)
     }
 
     connection.onmessage = event => {
@@ -124,7 +126,7 @@ const useBybit = () => {
     }
 
     return connection
-  }
+  })
 
   return {
     subscribe,

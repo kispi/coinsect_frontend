@@ -1,12 +1,10 @@
-import { ref, getCurrentInstance } from 'vue'
+import { getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
 const useUpbit = () => {
   const store = useStore()
 
   const plugins = getCurrentInstance().appContext.config.globalProperties
-
-  const connected = ref(null)
 
   const dec = new TextDecoder('utf-8')
 
@@ -72,14 +70,13 @@ const useUpbit = () => {
     })}% / ` : 'Connecting... '}${priceString} ${ticker.$$symbol}`
   }
 
-  const subscribe = ({ type, codes }) => {
+  const subscribe = ({ type, codes }) => new Promise((resolve) => {
     if (!type || !codes) return
 
     const connection = new WebSocket('wss://api.upbit.com/websocket/v1')
     connection.binaryType = 'arraybuffer'
 
     connection.onopen = () => {
-      connected.value = true
       connection.send(JSON.stringify([{
         ticket: 'coinsect-upbit',
       }, {
@@ -88,11 +85,8 @@ const useUpbit = () => {
       }, {
         format: 'SIMPLE',
       }]))
-    }
 
-    connection.onclose = () => {
-      connected.value = false
-      setTimeout(() => subscribe({ type, codes }), 1000)
+      resolve(connection)
     }
 
     const handleTickerMessage = json => {
@@ -110,12 +104,9 @@ const useUpbit = () => {
         console.error(e)
       }
     }
-
-    return connection
-  }
+  })
 
   return {
-    connected,
     eventAsJSON,
     subscribe,
     setDocumentTitle,
