@@ -19,7 +19,15 @@
         </div>
       </div>
     </div>
-    <table>
+    <div
+      v-if="!connected"
+      class="not-connected"
+      @click="subscribeUpbit({
+        type: 'ticker',
+        codes: $store.getters.markets.upbit.map(o => o.market),
+      })"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('CONNECTING_TO_UPBIT') }}</div>
+    </div>
+    <table v-else>
       <thead>
         <tr>
           <th
@@ -60,7 +68,8 @@ import { onMounted, ref, getCurrentInstance, watch } from 'vue'
 import { useStore } from 'vuex'
 import RealTimePriceRow from './RealTimePriceRow'
 import BaseAndTarget from './BaseAndTarget'
-import websocket from '@/hooks/websockets/websocket'
+import useUpbit from '@/hooks/websockets/upbit'
+import useBinance from '@/hooks/websockets/binance'
 
 export default {
   components: {
@@ -72,10 +81,9 @@ export default {
 
     const store = useStore()
 
-    const hooks = {
-      upbit: websocket.useUpbit(),
-      binance: websocket.useBinance()
-    }
+    const { connected, subscribe: subscribeUpbit } = useUpbit()
+
+    const { subscribe: subscribeBinance } = useBinance()
 
     const baseExchange = ref('upbit')
 
@@ -139,11 +147,11 @@ export default {
 
     const init = async () => {
       await store.dispatch('loadMarkets', baseExchange.value)
-      hooks.upbit.subscribe(({
+      subscribeUpbit(({
         type: 'ticker',
         codes: store.getters.markets.upbit.map(o => o.market),
       }))
-      hooks.binance.subscribe()
+      subscribeBinance()
     }
 
     onMounted(init)
@@ -172,6 +180,8 @@ export default {
     )
 
     return {
+      connected,
+      subscribeUpbit,
       keyword,
       settings,
       setSort,
@@ -188,6 +198,17 @@ export default {
 .real-time-prices {
   @media (max-width: 767px) {
     font-size: 12px;
+  }
+
+  .not-connected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    background: var(--background-light);
+    color: var(--text-stress);
+    font-weight: 700;
+    cursor: pointer;
   }
 
   .settings {

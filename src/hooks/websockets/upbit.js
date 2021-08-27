@@ -1,10 +1,12 @@
-import { getCurrentInstance } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
 const useUpbit = () => {
   const store = useStore()
 
   const plugins = getCurrentInstance().appContext.config.globalProperties
+
+  const connected = ref(null)
 
   const dec = new TextDecoder('utf-8')
 
@@ -77,6 +79,7 @@ const useUpbit = () => {
     connection.binaryType = 'arraybuffer'
 
     connection.onopen = () => {
+      connected.value = true
       connection.send(JSON.stringify([{
         ticket: 'coinsect-upbit',
       }, {
@@ -85,6 +88,11 @@ const useUpbit = () => {
       }, {
         format: 'SIMPLE',
       }]))
+    }
+
+    connection.onclose = () => {
+      connected.value = false
+      setTimeout(() => subscribe({ type, codes }), 1000)
     }
 
     const handleTickerMessage = json => {
@@ -107,6 +115,7 @@ const useUpbit = () => {
   }
 
   return {
+    connected,
     eventAsJSON,
     subscribe,
     setDocumentTitle,
