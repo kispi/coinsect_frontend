@@ -1,4 +1,9 @@
 export default [{
+  date: '2021-08-27',
+  jobsDone: [
+    '업비트와의 연결이 끊긴 경우 자동으로 재연결 시도',
+  ],
+}, {
   date: '2021-08-20',
   jobsDone: [
     'Bybit 호가창 기능 추가',
