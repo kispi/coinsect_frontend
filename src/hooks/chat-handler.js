@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance } from 'vue'
+import { ref, getCurrentInstance, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 
 const nicknameRecommendations = [
@@ -24,6 +24,8 @@ const useChatHandler = () => {
   const connection = ref(null)
 
   const connected = ref(null)
+
+  const pingInterv = ref(null)
 
   const token = ref(null)
 
@@ -95,10 +97,16 @@ const useChatHandler = () => {
 
     connection.value.onopen = () => {
       connected.value = true
+      pingInterv.value = setInterval(() => {
+        connection.value.send(JSON.stringify({
+          type: 'ping',
+        }))
+      }, 1000 * 30)
     }
 
     connection.value.onclose = () => {
       connected.value = false
+      clearInterval(pingInterv.value)
       setTimeout(connect, 1000)
     }
   }
@@ -127,6 +135,10 @@ const useChatHandler = () => {
     loadRecentMessages()
     connect()
   }
+
+  onUnmounted(() => {
+    clearInterval(pingInterv.value)
+  })
 
   return {
     connected,
