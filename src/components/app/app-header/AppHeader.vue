@@ -25,7 +25,7 @@
         <WrapperDropdownOverlay
           class="settings-overlay"
           v-model="showSettings"
-          :alignRight="true"
+          :align="'right'"
           :mountBelow="refIconSettings">
           <SettingsPanel/>
         </WrapperDropdownOverlay>

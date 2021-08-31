@@ -8,7 +8,7 @@
         ref="tryToGetMyDirectChildDOM"
         v-show="prepared"
         class="p-absolute"
-        :style="{ top, left, right }">
+        :style="{ top, bottom, left, right }">
         <slot/> <!-- 이 slot에 들어올 element는 가급적 같은 modelValue를 이용하여 v-if로 항상 re-render해주는게 좋다 -->
       </div>
     </transition>
@@ -27,7 +27,7 @@
  *   ANY CONTENT FOR <slot/>
  * </WrapperDropdownOverlay>
  */
-import { onMounted, onUnmounted, ref, watchEffect } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 export default {
   props: {
@@ -42,7 +42,11 @@ export default {
     /**
      * true일 시 오버레이가 열리는 위치를 mountBelow의 우측에 맞춘다. (디폴트는 좌측)
      */
-    alignRight: Boolean,
+    align: {
+      type: String,
+      validator: val => val === 'left' || val === 'center' || val === 'right',
+      default: 'left',
+    },
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
@@ -53,6 +57,8 @@ export default {
     const prepared = ref(null)
 
     const top = ref(null)
+
+    const bottom = ref(null)
 
     const left = ref(null)
 
@@ -71,9 +77,7 @@ export default {
 
       displayNoneClassWhen.value = ''
       if (slotDOM.value) {
-        if (props.alignRight) {
-          right.value = `${window.innerWidth - (rectMountBelow.x + rectMountBelow.width)}px`
-        } else {
+        if (props.align === 'left') {
           // 오른쪽 창 끝까지의 거리가 모자르다면, 현재 보이는 영역을 넘어가지 않도록 left값을 설정해준다.
           const distanceHor = window.innerWidth - rectMountBelow.x
           if (distanceHor - slotDOM.value.clientWidth < 0) {
@@ -82,7 +86,20 @@ export default {
             left.value = `${rectMountBelow.x}px`
           }
         }
-        top.value = `${rectMountBelow.y + rectMountBelow.height}px`
+
+        if (props.align === 'right') {
+          right.value = `${window.innerWidth - (rectMountBelow.x + rectMountBelow.width)}px`
+        }
+
+        if (props.align === 'center') {
+          left.value = `${rectMountBelow.x + (rectMountBelow.width / 2) - (slotDOM.value.clientWidth / 2)}px`
+        }
+
+        if (slotDOM.value.clientHeight + rectMountBelow.y + rectMountBelow.height > window.innerHeight) {
+          bottom.value = 0
+        } else {
+          top.value = `${rectMountBelow.y + rectMountBelow.height}px`
+        }
       }
 
       prepared.value = true
@@ -115,12 +132,20 @@ export default {
       // <slot/>이 사라지면 top, left도 리셋해준다. (안그러면 트랜지션이 먼저 있던곳에서 날아오는 애니메이션이 됨)
       if (!slotDOM.value) {
         top.value = null
+        bottom.value = null
         left.value = null
         right.value = null
+      } else {
+        slideEnter()
       }
     })
 
-    watchEffect(() => props.modelValue ? slideEnter() : slideLeave())
+    watch(
+      () => props.modelValue,
+      newVal => {
+        setTimeout(() => newVal ? slideEnter() : slideLeave())
+      },
+    )
 
     onMounted(() => {
       // slot에 v-if가 걸려있는 않은 경우의 처리
@@ -138,6 +163,7 @@ export default {
 
     return {
       top,
+      bottom,
       left,
       right,
       prepared,
