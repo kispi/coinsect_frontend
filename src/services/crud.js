@@ -2,11 +2,10 @@ import * as $http from 'axios'
 import helpers from '@/helpers'
 
 const crudTargets = [
-  'article',
-  'reply',
+  'post',
 ].map(key => ({
   model: key,
-  endpoint: helpers.case.toSnake(helpers.case.pluralize(key)),
+  endpoint: helpers.template.case.toSnake(helpers.template.case.pluralize(key)),
 }))
 
 const crud = {}

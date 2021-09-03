@@ -64,12 +64,9 @@ export default {
     const menuItems = [{
       title: 'HOME',
       path: '/',
-    // }, {
-    //   title: 'COMMUNITY',
-    //   path: '/boards',
-    // }, {
-    //   title: 'LONG_SHORT',
-    //   path: '/long_short'
+    }, {
+      title: 'COMMUNITY',
+      path: '/community',
     }, {
       title: 'INDICATORS',
       path: '/indicators/leaderboard',

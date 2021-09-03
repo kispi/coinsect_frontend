@@ -2,6 +2,11 @@ import $store from '@/store'
 
 // Vue 2시절 filter로 사용하던, 템플릿에 주로 사용하는 기능들을 이곳에 모으기로 한다.
 const template = {
+  ip: (ip, indices) => {
+    if (!ip) return
+
+    return ip.split('.').slice(0, indices || 2).join('.')
+  },
   case: {
     toSnake: (str, delim) => (str || '').replace(/[A-Z]/g, letter => `${delim || '_'}${letter.toLowerCase()}`),
     toCamel: str => str.replace(/([-_][a-z])/g, group => group.toUpperCase().replace('-', '').replace('_', '')),

@@ -7,6 +7,7 @@ import math from './math'
 import meta from './meta'
 import modal from './modal'
 import number from './number'
+import querybuilder from './querybuilder'
 import template from './template'
 import toast from './toast'
 import tooltip from './tooltip'
@@ -46,7 +47,7 @@ const helpers = {
   animate,
   dataSetter,
   canSkipApiCall,
-  case: template.case,
+  qb: querybuilder,
   translate,
   paramsToQuery: params => Object.keys(params).map(key => `${key}=${params[key]}`).join('&'),
   shuffle: arr => {
