@@ -65,9 +65,6 @@ export default {
       title: 'HOME',
       path: '/',
     }, {
-      title: 'COMMUNITY',
-      path: '/community',
-    }, {
       title: 'INDICATORS',
       path: '/indicators/leaderboard',
     }, {
