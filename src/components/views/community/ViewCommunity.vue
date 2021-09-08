@@ -1,5 +1,5 @@
 <template>
-  <div class="view-community">
+  <div class="view-community view-layout-default">
     <TablePosts/>
   </div>
 </template>
@@ -14,8 +14,5 @@ export default {
 
 <style lang="scss" scoped>
 .view-community {
-  max-width: 992px;
-  margin: auto;
-  padding: var(--app-default-page-padding);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="view-games">
+  <div class="view-games view-layout-default">
     <div class="list-games">
       <div
         @click="$modal.custom({
@@ -37,10 +37,6 @@ export default {
 
 <style lang="scss" scoped>
 .view-games {
-  padding: var(--app-default-page-padding);
-  margin: auto;
-  max-width: 992px;
-
   .list-games {
     display: grid;
     grid-template-columns: repeat(6, 1fr);

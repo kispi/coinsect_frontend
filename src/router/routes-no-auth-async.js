@@ -14,7 +14,14 @@ const andSoOn = [{
   },
 }, {
   path: '/community',
-  component: () => import(/*webpackChunkName: 'view-community' */ '@/components/views/community/ViewCommunity'),
+  component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewCommunity'),
+}, {
+  path: '/community/write',
+  component: () => import(/* webpackChunkName: 'view-post-write */ '@/components/views/community/ViewPostWrite'),
+}, {
+  path: '/community/:id',
+  component: () => import(/* webpackChunkName: 'view-post-detail */ '@/components/views/community/ViewPostDetail'),
+  name: 'ViewPostDetail',
 }, {
   path: '/games',
   component: () => import(/* webpackChunkName: 'view-games' */ '@/components/views/ViewGames'),

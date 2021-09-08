@@ -1,12 +1,14 @@
 import { createStore } from 'vuex'
 import app from './app'
 import marketInfo from './market-info'
+import post from './post'
 import translation from './translation'
 import user from './user'
 
 const initialState = {
   app: app.state,
   marketInfo: marketInfo.state,
+  post: post.state,
   translation: translation.state,
   user: user.state,
 }
@@ -15,6 +17,7 @@ const store = createStore({
   modules: {
     app,
     marketInfo,
+    post,
     translation,
     user,
   },

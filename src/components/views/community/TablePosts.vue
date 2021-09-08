@@ -1,5 +1,7 @@
 <template>
-  <div class="table-posts">
+  <div
+    v-if="posts"
+    class="table-posts">
     <div
       v-if="!$store.getters.isMobile"
       class="row header">
@@ -11,29 +13,30 @@
       <div class="cell number">추천</div>
     </div>
     <AdaptiveLayout
+      @click="onClickRow(row)"
       :gap="4"
       class="row"
+      :class="{'active': parseInt($router.currentRoute.value.params.id) === row.id}"
       :key="row.id"
-      v-for="row in resp.data">
+      v-for="row in posts.data">
       <div class="id-title">
         <div
           v-if="!$store.getters.isMobile"
           class="cell number">
           {{ row.id }}
         </div>
-        <div
-          class="cell title">
-          {{ row.title }}<span v-if="(row.children || []) > 0" class="num-replies"> [{{ (row.children || []).length }}]</span>
+        <div class="cell title">
+          {{ row.title }}<span v-if="(row.children || []).length > 0" class="num-replies"> [{{ (row.children || []).length }}]</span>
         </div>
       </div>
       <div class="content">
         <div
-          class="cell nickname">
-          {{ row.nickname }}<span v-if="row.ip"> ({{ $helpers.template.ip(row.ip) }})</span>
-        </div>
+          class="cell nickname"
+          v-html="$helpers.template.writer(row)"
+        />
         <div
           class="cell date">
-          {{ $helpers.dayjs(row.createdAt).format('MM-DD HH:mm:ss') }}
+          {{ $helpers.template.prettyTime(row.createdAt, true) }}
         </div>
         <div
           class="cell number">
@@ -41,7 +44,7 @@
         </div>
         <div
           class="cell number">
-          <span v-if="$store.getters.isMobile">추천</span> {{ (row.reactions || []).length }}
+          <span v-if="$store.getters.isMobile">추천</span> {{ (row.reactions || []).filter(o => o.type === 'up').length }}
         </div>
       </div>
     </AdaptiveLayout>
@@ -49,39 +52,29 @@
 </template>
 
 <script>
-import { onMounted, getCurrentInstance } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import crudService from '@/services/crud'
-import useTable from '@/hooks/table'
+import { useStore } from 'vuex'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const { resp, params, onParams } = useTable('post')
+    const store = useStore()
 
     const router = useRouter()
 
-    const loadPosts = async () => {
-      try {
-        resp.value = await crudService.post.all(params.value.build())
-      } catch (e) {}
-    }
+    const posts = computed(() => store.getters.posts)
 
-    const onAction = ({ row, key, event }) => {
-      router.push(`/posts/${row.id}`)
+    const onClickRow = row => {
+      router.push(`/community/${row.id}`)
     }
 
     onMounted(() => {
-      params.value = plugins.$helpers.qb().base().where('board_id = 1')
-      loadPosts()
+      store.dispatch('loadPosts')
     })
 
     return {
-      resp,
-      params,
-      onParams,
-      onAction,
+      posts,
+      onClickRow,
     }
   },
 }
@@ -96,6 +89,17 @@ export default {
   .row {
     padding: 8px;
     cursor: pointer;
+
+    &.adaptive-layout {
+      &.active {
+        font-weight: 700;
+        background: var(--background-light);
+      }
+
+      &:hover:not(.active) {
+        background: var(--brand-primary-hover-bg);
+      }
+    }
 
     &:not(:last-child) {
       border-bottom: 1px solid var(--border-base);
@@ -157,7 +161,6 @@ export default {
         padding-right: 8px;
         margin-right: 8px;
         border-right: 1px solid var(--border-base);
-        width: initial !important;
       }
     }
   }

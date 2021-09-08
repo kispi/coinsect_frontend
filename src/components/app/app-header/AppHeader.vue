@@ -1,5 +1,5 @@
 <template>
-  <div class="app-header">
+  <div class="app-header view-layout-default">
     <div class="top">
       <BannerMarketIndices/>
       <AdaptiveLayout
@@ -94,9 +94,6 @@ export default {
 .app-header {
   transition: all 0.2s ease;
   width: 100%;
-  max-width: 992px;
-  margin: auto;
-  padding: var(--app-default-page-padding);
   padding-bottom: 0;
 
   .top {

@@ -49,6 +49,21 @@ const template = {
     const numDigitsOfGivenValue = value.toString().length
     return `${'0'.repeat(numDigits - numDigitsOfGivenValue)}${value}`
   },
+  writer: post => {
+    if (post.user) return post.user.nickname
+
+    return `${post.nickname}${post.ip ? ` (${template.ip(post.ip)})` : ''}`
+  },
+  prettyTime: (timestamp, simple) => {
+    if (!dayjs) return
+
+    if (simple) {
+      const isToday = dayjs(timestamp).format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')
+      return dayjs(timestamp).format(isToday ? 'HH:mm:ss' : 'YYYY-MM-DD')
+    }
+
+    return dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')
+  },
   imageAlt: {
     default: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
   },

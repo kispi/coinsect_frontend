@@ -1,5 +1,5 @@
 <template>
-  <div class="view-home">
+  <div class="view-home view-layout-default">
     <TradingView v-if="$store.getters.settings.tradingview === 'show'"/>
     <RealTimePrices/>
   </div>
@@ -14,11 +14,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.view-home {
-  max-width: 992px;
-  margin: auto;
-  padding: var(--app-default-page-padding);
-}
-</style>

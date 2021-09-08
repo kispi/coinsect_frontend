@@ -15,7 +15,7 @@ crudTargets.forEach(target => {
   crud[model] = {
     create: (modelObj) => $http.post(`${endpoint}`, modelObj),
     all: (params) => $http.get(`${endpoint}`, { params }),
-    detail: (modelId) => $http.get(`${endpoint}/${modelId}`),
+    detail: (modelId, params) => $http.get(`${endpoint}/${modelId}`, { params }),
     update: (modelObj) => $http.put(`${endpoint}/${modelObj.id}`, modelObj),
     delete: (modelId) => $http.delete(`${endpoint}/${modelId}`),
   }

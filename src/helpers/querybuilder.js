@@ -27,6 +27,11 @@ const queryBuilder = () => ({
       return this
   },
 
+  join: function(join) {
+    this.queryParams.join = join
+    return this
+  },
+
   build: function() {
     return JSON.parse(JSON.stringify(this.queryParams))
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="view-indicators">
+  <div class="view-indicators view-layout-default">
     <div class="indicators">
       <div
         @click="$router.push(indicator.path)"
@@ -56,10 +56,6 @@ export default {
 
 <style lang="scss" scoped>
 .view-indicators {
-  padding: var(--app-default-page-padding);
-  max-width: 992px;
-  margin: auto;
-
   .indicators {
     display: flex;
     align-items: center;

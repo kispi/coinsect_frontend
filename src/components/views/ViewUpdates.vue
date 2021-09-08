@@ -1,5 +1,5 @@
 <template>
-  <div class="view-updates">
+  <div class="view-updates view-layout-default">
     <ul
       :key="idx"
       v-for="(update, idx) in updates">
@@ -26,9 +26,6 @@ export default {
 
 <style lang="scss">
 .view-updates {
-  padding: var(--app-default-page-padding);
-  margin: auto;
-  max-width: 992px;
   line-height: 18px;
 
   ul {
