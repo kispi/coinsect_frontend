@@ -1,5 +1,5 @@
 <template>
-  <div class="app-header view-layout-default">
+  <header class="app-header view-layout-default">
     <div class="top">
       <BannerMarketIndices/>
       <AdaptiveLayout
@@ -31,7 +31,7 @@
         </WrapperDropdownOverlay>
       </div>
     </div>
-    <div class="menu-items">
+    <nav class="menu-items">
       <RouterLink
         class="menu-item"
         :class="{
@@ -42,8 +42,8 @@
         v-for="menuItem in menuItems"
         v-html="$translate(menuItem.title)"
       />
-    </div>
-  </div>
+    </nav>
+  </header>
 </template>
 
 <script>
