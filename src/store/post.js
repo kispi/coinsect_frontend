@@ -22,7 +22,7 @@ const post = {
     async loadPost({ commit }, id) {
       try {
         commit('setLoading', { post: true })
-        const data = await communityService.post.detail(id, { join: 'user,board,children,reactions,children.reactions' })
+        const data = await communityService.post.detail(id, { join: 'Post.user,Post.board,Post.replies,Post.reactions' })
         commit('setPost', data)
       } catch (e) {
         return Promise.reject(e)
@@ -32,7 +32,7 @@ const post = {
     },
     async loadPosts({ commit }, params = {}) {
       // 나중엔 저 where문은 여기서 빠지고 백엔드로 가야되긴 함
-      const o = helpers.qb().base().join('children,reactions,children.reactions').where(`Post.board_id = 1 AND Post.post_type = 'normal'`)
+      const o = helpers.qb().base().join('Post.replies,Post.reactions').where(`Post.board_id = 1 AND Post.post_type = 'normal'`)
       if (params.limit) o.limit(params.limit)
       if (params.offset) o.offset(params.offset)
 
