@@ -2,33 +2,36 @@
   <article
     v-if="post"
     class="c-post">
-    <div class="post-header">
-      <div class="post-title" v-html="post.title"/>
-      <div class="writer-and-created-at">
-        <div class="writer" v-html="$helpers.template.writer(post)"/>
-        <div class="created-at" v-html="$helpers.template.prettyTime(post.createdAt)"/>
+    <div class="post-section-body">
+      <div class="post-header">
+        <div class="post-title" v-html="post.title"/>
+        <div class="writer-and-created-at">
+          <div class="writer" v-html="$helpers.template.writer(post)"/>
+          <div class="created-at" v-html="$helpers.template.prettyTime(post.createdAt)"/>
+        </div>
+        <div class="numbers">
+          <div class="views">조회 {{ post.views }}</div>
+          <div class="ups">추천 {{ (post.reactions || []).length }}</div>
+          <div class="replies">댓글 {{ (post.replies || []).length }}</div>
+        </div>
       </div>
-      <div class="numbers">
-        <div class="views">조회 {{ post.views }}</div>
-        <div class="ups">추천 {{ (post.reactions || []).length }}</div>
-        <div class="replies">댓글 {{ (post.replies || []).length }}</div>
+      <div class="post-content" v-html="post.content"/>
+      <div class="post-reactions">
+        <div
+          @click="toggleReaction('up')"
+          class="up reaction-box">
+          <div class="reaction-type">UP</div>
+          <div class="value">{{ (post.reactions || []).filter(o => o.type === 'up').length }}</div></div>
+        <div
+          @click="toggleReaction('down')"
+          class="down reaction-box">
+          <div class="reaction-type">DOWN</div>
+          <div class="value">{{ (post.reactions || []).filter(o => o.type === 'down').length }}</div></div>
       </div>
     </div>
-    <div class="post-content" v-html="post.content"/>
-    <div class="post-reactions">
-      <div
-        @click="toggleReaction('up')"
-        class="up reaction-box">
-        <div class="reaction-type">UP</div>
-        <div class="value">{{ (post.reactions || []).filter(o => o.type === 'up').length }}</div></div>
-      <div
-        @click="toggleReaction('down')"
-        class="down reaction-box">
-        <div class="reaction-type">DOWN</div>
-        <div class="value">{{ (post.reactions || []).filter(o => o.type === 'down').length }}</div></div>
-    </div>
-    <div class="post-replies">
-      댓글
+    <div class="post-section-replies">
+      <div class="header">댓글 <span class="c-brand-primary f-700">[{{ post.$$numReplies }}]</span></div>
+      <CReplies :replies="post.replies"/>
     </div>
   </article>
 </template>
@@ -65,6 +68,19 @@ export default {
     margin-right: 8px;
     padding-right: 8px;
     border-right: 1px solid var(--border-base);
+  }
+
+  .post-section-body {
+    border-top: 1px solid var(--border-base);
+    border-bottom: 1px solid var(--border-base);
+    padding-bottom: 8px;
+  }
+
+  .post-section-replies {
+    .header {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-base);
+    }
   }
 
   .post-header {
@@ -131,10 +147,6 @@ export default {
         font-weight: 700;
       }
     }
-  }
-
-  .post-replies {
-
   }
 }
 </style>

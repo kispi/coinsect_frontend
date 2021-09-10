@@ -22,6 +22,9 @@ import PostEditor from '@/components/common/post-editor/PostEditor'
 import SCoin from '@/components/common/SCoin'
 import TradingView from '@/components/common/TradingView'
 
+// recursive components
+import CReplies from '@/components/views/community/CReplies'
+
 const useGlobalComponents = app => {
   app
   // app components
@@ -47,6 +50,9 @@ const useGlobalComponents = app => {
     .component('PostEditor', PostEditor)
     .component('SCoin', SCoin)
     .component('TradingView', TradingView)
+
+    // recursive components
+    .component('CReplies', CReplies)
 }
 
 export default useGlobalComponents

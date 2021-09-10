@@ -1,5 +1,7 @@
 <template>
-  <div class="view-post-detail view-layout-default">
+  <div
+    v-if="post"
+    class="view-post-detail view-layout-default">
     <ButtonCommunity/>
     <CPost :post="post"/>
     <div class="post-detail-buttons">
@@ -94,7 +96,14 @@ export default {
       return arr
     })
 
-    const loadPost = () => store.dispatch('loadPost', router.currentRoute.value.params.id)
+    const loadPost = async () => {
+      try {
+        await store.dispatch('loadPost', router.currentRoute.value.params.id)
+      } catch (e) {
+        plugins.$toast.error('존재하지 않는 게시글입니다')
+        router.push('/community')
+      }
+    }
 
     watch(
       () => router.currentRoute.value.params.id,
@@ -121,7 +130,6 @@ export default {
 .view-post-detail {
   .post-detail-buttons {
     padding: 16px 0;
-    border-top: 1px solid var(--border-base);
     border-bottom: 1px solid var(--border-base);
     display: flex;
     justify-content: space-between;

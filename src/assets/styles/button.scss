@@ -56,13 +56,7 @@
 .btn-default {
   background: var(--white);
   color: var(--black);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16);
-
-  &:not(.disabled):not(:disabled) {
-    &:hover {
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.32);
-    }
-  }
+  border: 1px solid var(--border-base);
 }
 
 .btn-danger {

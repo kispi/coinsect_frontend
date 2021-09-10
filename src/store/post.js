@@ -23,6 +23,8 @@ const post = {
       try {
         commit('setLoading', { post: true })
         const data = await communityService.post.detail(id)
+        data.$$numReplies = (data.replies || []).length
+        data.replies = helpers.template.makeRecursiveReplies(data.replies)
         commit('setPost', data)
       } catch (e) {
         return Promise.reject(e)
