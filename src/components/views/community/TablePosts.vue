@@ -26,7 +26,7 @@
           {{ row.id }}
         </div>
         <div class="cell title">
-          {{ row.title }}<span v-if="(row.children || []).length > 0" class="num-replies"> [{{ (row.children || []).length }}]</span>
+          {{ row.title }}<span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
         </div>
       </div>
       <div class="content">
@@ -82,8 +82,8 @@ export default {
 
 <style lang="scss" scoped>
 .table-posts {
-  border-top: 2px solid var(--brand-primary-hover-bg);
-  border-bottom: 2px solid var(--brand-primary-hover-bg);
+  border-top: 2px solid var(--brand-primary-hover);
+  border-bottom: 2px solid var(--brand-primary-hover);
   font-size: 12px;
 
   .row {

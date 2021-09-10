@@ -162,7 +162,7 @@ export default {
 
         .card-front,
         .card-back {
-          background: var(--gray);
+          background: var(--gs-e0);
           position: absolute;
           backface-visibility: hidden;
         }

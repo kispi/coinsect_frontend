@@ -6,11 +6,12 @@
   --bitcoin:             #ffbb11;
   --white:               #ffffff;
   --black:               #000000;
-  --black-dark:          #141414;
-  --black-light:         #222222;
-  --gray-dark:           #444444;
-  --gray:                #e0e0e0;
-  --gray-light:          #bbbbbb;
+  --gs-14:               #141414;
+  --gs-22:               #222222;
+  --gs-44:               #444444;
+  --gs-66:               #666666;
+  --gs-e0:               #e0e0e0;
+  --gs-bb:               #bbbbbb;
   --almost-white:        #fafafa;
   --success:             var(--brand-primary);
   --danger:              #aa0000;
@@ -20,17 +21,17 @@
   --price-down-bybit:    rgba(240, 64, 64, 1);
   --danger-light:        rgba(176, 0, 0, 0.6);
 
-  --text-stress:      var(--black-light);
-  --text-base:        var(--gray-dark);
+  --text-stress:         var(--gs-22);
+  --text-base:           var(--gs-44);
 }
 
 #app {
   color:                 var(--text-base);
-  --text-stress:         var(--black-light);
-  --text-base:           var(--gray-dark);
-  --text-light:          var(--gray-light);
-  --border-base:         var(--gray);
-  --border-light:        var(--gray-light);
+  --text-stress:         var(--gs-22);
+  --text-base:           var(--gs-44);
+  --text-light:          var(--gs-bb);
+  --border-base:         var(--gs-e0);
+  --border-light:        var(--gs-bb);
   --background-base:     var(--white);
   --background-light:    rgba(0, 0, 0, 0.1);
   --price-up:            var(--price-up-upbit);
@@ -41,11 +42,11 @@
   &.dark {
     --brand-primary:     rgba(82, 163, 235, 1);
     --text-stress:       var(--white);
-    --text-base:         var(--gray-light);
-    --text-light:        var(--gray-dark);
-    --border-base:       var(--black-light);
-    --border-light:      var(--gray);
-    --background-base:   var(--black-dark);
+    --text-base:         var(--gs-bb);
+    --text-light:        var(--gs-44);
+    --border-base:       var(--gs-66);
+    --border-light:      var(--gs-e0);
+    --background-base:   var(--gs-14);
     --background-light:  rgba(255, 255, 255, 0.1);
 
     --price-up:          var(--price-up-bybit);

@@ -14,9 +14,11 @@ import AppTooltip from '@/components/app/AppTooltip'
 import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 
 // common components
+import ButtonCommunity from '@/components/common/ButtonCommunity'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
 import OrderbookUpbit from '@/components/common/orderbooks/OrderbookUpbit'
+import PostEditor from '@/components/common/post-editor/PostEditor'
 import SCoin from '@/components/common/SCoin'
 import TradingView from '@/components/common/TradingView'
 
@@ -38,9 +40,11 @@ const useGlobalComponents = app => {
     .component('WrapperDropdownOverlay', WrapperDropdownOverlay)
 
     // common components
+    .component('ButtonCommunity', ButtonCommunity)
     .component('ModalHeader', ModalHeader)
     .component('OrderbookBybit', OrderbookBybit)
     .component('OrderbookUpbit', OrderbookUpbit)
+    .component('PostEditor', PostEditor)
     .component('SCoin', SCoin)
     .component('TradingView', TradingView)
 }

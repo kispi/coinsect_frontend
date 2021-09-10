@@ -187,6 +187,22 @@
     "en": "Updates",
     "kr": "업데이트"
   },
+  "TO_LIST": {
+    "en": "To list",
+    "kr": "목록보기"
+  },
+  "WRITE": {
+    "en": "Write",
+    "kr": "글쓰기"
+  },
+  "EDIT": {
+    "en": "Edit",
+    "kr": "수정"
+  },
+  "DELETE": {
+    "en": "Delete",
+    "kr": "삭제"
+  },
   "CONNECTING_TO_EXCHANGES": {
     "en": "Connecting to exchanges... or Click to connect!",
     "kr": "거래소들과 연결중입니다... 오래걸리는 경우 클릭해주세요!"

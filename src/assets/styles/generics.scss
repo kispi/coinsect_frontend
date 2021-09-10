@@ -57,7 +57,7 @@ $colors:
   --white,
   --bitcoin,
   --black,
-  --black-light,
+  --gs-22,
   --success,
   --danger,
   --price-up,
@@ -65,7 +65,7 @@ $colors:
   --text-stress,
   --text-base,
   --border-base,
-  --gray-light;
+  --gs-bb;
 
 @each $color in $colors {
   .c-#{str-slice($color, 3)} {

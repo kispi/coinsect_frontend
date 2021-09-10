@@ -57,7 +57,6 @@ export default {
 
     button {
       padding: 12px 40px;
-      text-transform: initial;
 
       &:not(:last-child) {
         margin-right: 16px;

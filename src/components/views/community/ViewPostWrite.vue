@@ -1,5 +1,7 @@
 <template>
   <div class="view-post-write">
+    <ButtonCommunity/>
+    <PostEditor/>
   </div>
 </template>
 

@@ -44,6 +44,7 @@ export default {
   props: ['modal'],
   components: {
     ModalBasic: defineAsyncComponent(() => import('@/components/modals/ModalBasic')),
+    ModalInput: defineAsyncComponent(() => import('@/components/modals/ModalInput')),
     ModalOrderbook: defineAsyncComponent(() => import('@/components/modals/ModalOrderbook')),
     ModalGame: defineAsyncComponent(() => import('@/components/modals/ModalGame')),
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
@@ -227,7 +228,7 @@ export default {
 
 #app.dark {
   .modal-base-style {
-    background: var(--gray-dark);
+    background: var(--gs-44);
   }
 }
 </style>

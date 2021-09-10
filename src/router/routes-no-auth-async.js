@@ -19,6 +19,9 @@ const andSoOn = [{
   path: '/community/write',
   component: () => import(/* webpackChunkName: 'view-post-write' */ '@/components/views/community/ViewPostWrite'),
 }, {
+  path: '/community/edit/:id',
+  component: () => import(/* webpackChunkName: 'view-post-edit' */ '@/components/views/community/ViewPostEdit'),
+}, {
   path: '/community/:id',
   component: () => import(/* webpackChunkName: 'view-post-detail' */ '@/components/views/community/ViewPostDetail'),
   name: 'ViewPostDetail',

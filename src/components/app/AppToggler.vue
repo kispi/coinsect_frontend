@@ -33,7 +33,7 @@ export default {
   height: calc(var(--app-toggler-width) / 2);
   border-radius: calc(var(--app-toggler-width) / 2);
   position: relative;
-  background: var(--gray-light);
+  background: var(--gs-bb);
   cursor: pointer;
 
   .on-off {

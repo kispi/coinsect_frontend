@@ -1,5 +1,6 @@
 <template>
   <div class="view-community view-layout-default">
+    <ButtonCommunity/>
     <TablePosts/>
   </div>
 </template>

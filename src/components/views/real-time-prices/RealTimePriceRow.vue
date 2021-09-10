@@ -184,7 +184,7 @@ export default {
         }
 
         &.bybit {
-          background: var(--black-dark);
+          background: var(--gs-14);
         }
       }
     }

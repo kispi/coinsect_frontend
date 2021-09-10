@@ -21,7 +21,7 @@ table {
       }
 
       i {
-        color: var(--gray-light);
+        color: var(--gs-bb);
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -35,7 +35,7 @@ table {
 
     &.desc .fa-sort-down,
     &.asc .fa-sort-up {
-      color: var(--gray-dark);
+      color: var(--gs-44);
     }
   }
 }

@@ -45,7 +45,7 @@ export default {
     font-size: 20px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--gray-light);
+    color: var(--gs-bb);
     cursor: pointer;
 
     &:hover {

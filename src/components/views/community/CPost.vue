@@ -11,7 +11,7 @@
       <div class="numbers">
         <div class="views">조회 {{ post.views }}</div>
         <div class="ups">추천 {{ (post.reactions || []).length }}</div>
-        <div class="replies">댓글 {{ (post.children || []).length }}</div>
+        <div class="replies">댓글 {{ (post.replies || []).length }}</div>
       </div>
     </div>
     <div class="post-content" v-html="post.content"/>
@@ -27,7 +27,7 @@
         <div class="reaction-type">DOWN</div>
         <div class="value">{{ (post.reactions || []).filter(o => o.type === 'down').length }}</div></div>
     </div>
-    <div class="post-children">
+    <div class="post-replies">
       댓글
     </div>
   </article>
@@ -133,7 +133,7 @@ export default {
     }
   }
 
-  .post-children {
+  .post-replies {
 
   }
 }

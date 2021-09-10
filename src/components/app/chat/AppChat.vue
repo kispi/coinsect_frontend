@@ -343,7 +343,7 @@ export default {
 
     .incoming-message-overlay {
       position: absolute;
-      color: var(--black-dark);
+      color: var(--gs-14);
       background: rgba(255, 255, 255, 0.75);
       border-radius: 4px;
       padding: 4px 12px;
@@ -440,11 +440,11 @@ export default {
 
   &.dark {
     .app-chat-container {
-      background: var(--black-light);
+      background: var(--gs-22);
 
       .app-chat-body {
-        border-top: 1px solid var(--gray-dark);
-        border-bottom: 1px solid var(--gray-dark);
+        border-top: 1px solid var(--gs-44);
+        border-bottom: 1px solid var(--gs-44);
       }
     }
   }

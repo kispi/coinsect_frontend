@@ -100,7 +100,7 @@ export default {
 
   ul {
     background: var(--background-base);
-    border: 1px solid var(--gray-light);
+    border: 1px solid var(--gs-bb);
     padding: 8px 0;
     border-radius: 4px;
 
