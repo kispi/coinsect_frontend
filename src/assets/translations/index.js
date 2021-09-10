@@ -1,3 +1,4 @@
+import errors from './errors.json'
 import games from './games.json'
 import modals from './modals.json'
 import toasts from './toasts.json'
@@ -7,6 +8,7 @@ import protectedWords from './protected-words.json'
 
 const result = {}
 const list = [
+  errors,
   games,
   modals,
   toasts,

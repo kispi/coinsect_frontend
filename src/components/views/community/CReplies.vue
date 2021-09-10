@@ -8,9 +8,21 @@
       :key="reply.id"
       v-for="reply in replies">
       <div class="reply-body">
-        <div class="writer" v-html="$helpers.template.writer(reply)"/>
+        <div class="reply-header">
+          <div class="writer" v-html="$helpers.template.writer(reply)"/>
+          <div
+            v-if="$helpers.canModify(reply)"
+            class="reply-functions">
+            <!-- <div @click="onClickEdit(reply)" class="reply-edit" v-html="$translate('EDIT')"/> -->
+            <div @click="onClickDelete(reply)" class="reply-delete" v-html="$translate('DELETE')"/>
+            <div @click="reply.$$showReply = !reply.$$showReply" class="reply-reply" v-html="$translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY')"/>
+          </div>
+        </div>
         <div class="content" v-html="reply.content"/>
         <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
+      </div>
+      <div v-if="reply.$$showReply" class="reply-write-container">
+        <ReplyWrite :post="$store.getters.post" :parent="reply"/>
       </div>
       <CReplies :replies="reply.replies" :depth="depth + 1"/>
     </div>
@@ -18,7 +30,10 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import communityService from '@/services/community'
 
 export default {
   props: {
@@ -28,11 +43,32 @@ export default {
       default: 0,
     }
   },
-  setup(props) {
-    onMounted(() => {
-      console.log(props.replies)
-    })
-  }
+  setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const store = useStore()
+
+    const router = useRouter()
+
+    const onClickDelete = async reply => {
+      plugins.$modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+        .then(async password => {
+          if (!password) return
+
+          try {
+            await communityService.remove.reply({ id: reply.id, password })
+            store.dispatch('loadPost', router.currentRoute.value.params.id)
+            store.dispatch('loadPosts')
+          } catch (e) {
+            plugins.$toast.error(e.data.message)
+          }
+        })
+    }
+
+    return {
+      onClickDelete,
+    }
+  },
 }
 </script>
 
@@ -42,12 +78,13 @@ export default {
 
   .reply {
     .content {
-      padding: 4px 0;
+      padding: 8px 0;
+      color: var(--text-stress);
+      white-space: pre-line;
     }
 
-    .writer,
-    .content {
-      color: var(--text-stress);
+    .writer {
+      font-weight: 600;
     }
 
     .created-at {
@@ -58,23 +95,43 @@ export default {
     .reply-body {
       border-bottom: 1px solid var(--border-base);
       padding: 8px 0;
+    }
 
-      @media (min-width: 768px) {
+    .reply-header {
+      display: flex;
+      justify-content: space-between;
+
+      .reply-functions {
         display: flex;
+
+        div {
+          cursor: pointer;
+
+          &:not(:last-child) {
+            margin-right: 8px;
+          }
+        }
       }
     }
   }
 
-  &.depth-1 {
-    .reply-body {
-      padding-left: 12px;
+  .reply-write-container {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-base);
+  }
+
+  @mixin depths() {
+    $i: 1;
+    @while $i <= 10 {
+      &.depth-#{$i} {
+        .reply-body {
+          padding-left: #{$i * 12} + 'px';
+        }
+      }
+      $i: $i + 1;
     }
   }
 
-  &.depth-2 {
-    .reply-body {
-      padding-left: 24px;
-    }
-  }
+  @include depths();
 }
 </style>

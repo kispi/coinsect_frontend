@@ -20,10 +20,13 @@ import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
 import OrderbookUpbit from '@/components/common/orderbooks/OrderbookUpbit'
 import PostEditor from '@/components/common/post-editor/PostEditor'
 import SCoin from '@/components/common/SCoin'
+import TablePosts from '@/components/common/TablePosts'
 import TradingView from '@/components/common/TradingView'
 
-// recursive components
+// community components
+import CommunityButtons from '@/components/views/community/CommunityButtons'
 import CReplies from '@/components/views/community/CReplies'
+import ReplyWrite from '@/components/views/community/ReplyWrite'
 
 const useGlobalComponents = app => {
   app
@@ -49,10 +52,13 @@ const useGlobalComponents = app => {
     .component('OrderbookUpbit', OrderbookUpbit)
     .component('PostEditor', PostEditor)
     .component('SCoin', SCoin)
+    .component('TablePosts', TablePosts)
     .component('TradingView', TradingView)
 
-    // recursive components
+    // community components
+    .component('CommunityButtons', CommunityButtons)
     .component('CReplies', CReplies)
+    .component('ReplyWrite', ReplyWrite)
 }
 
 export default useGlobalComponents

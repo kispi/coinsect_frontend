@@ -5,10 +5,19 @@ const post = crudService.post
 
 const toggleReaction = (postId, type) => $http.post('reactions', { postId, type })
 
-const checkPassword = ({ id, type, password }) => $http.post('check_password', { id, type, password })
+const checkPassword = {
+  post: ({ id, password }) => $http.post(`posts/${id}/check_password`, { password }),
+  reply: ({ id, password }) => $http.post(`replies/${id}/check_password`, { password }),
+}
+
+const remove = {
+  post: ({ id, password }) => $http.delete(`posts/${id}`, { data: { password } }),
+  reply: ({ id, password }) => $http.delete(`replies/${id}`, { data: { password } }),
+}
 
 export default {
   post,
+  remove,
   checkPassword,
   toggleReaction,
 }

@@ -12,7 +12,7 @@
         <div class="numbers">
           <div class="views">조회 {{ post.views }}</div>
           <div class="ups">추천 {{ (post.reactions || []).length }}</div>
-          <div class="replies">댓글 {{ (post.replies || []).length }}</div>
+          <div class="replies">댓글 {{ post.$$numReplies }}</div>
         </div>
       </div>
       <div class="post-content" v-html="post.content"/>
@@ -32,30 +32,32 @@
     <div class="post-section-replies">
       <div class="header">댓글 <span class="c-brand-primary f-700">[{{ post.$$numReplies }}]</span></div>
       <CReplies :replies="post.replies"/>
+      <ReplyWrite :post="post"/>
     </div>
   </article>
 </template>
 
 <script>
-import communityService from '@/services/community'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
+import communityService from '@/services/community'
 
 export default {
-  props: {
-    post: Object,
-  },
-  setup(props) {
+  setup() {
     const store = useStore()
+
+    const post = computed(() => store.getters.post)
 
     const toggleReaction = async type => {
       try {
-        await communityService.toggleReaction(props.post.id, type)
-        store.dispatch('loadPost', props.post.id)
+        await communityService.toggleReaction(post.value.id, type)
+        store.dispatch('loadPost', post.value.id)
         store.dispatch('loadPosts')
       } catch (e) {}
     }
 
     return {
+      post,
       toggleReaction,
     }
   },
@@ -147,6 +149,10 @@ export default {
         font-weight: 700;
       }
     }
+  }
+
+  .reply-write {
+    margin: 64px 0 32px;
   }
 }
 </style>

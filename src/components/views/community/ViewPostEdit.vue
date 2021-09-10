@@ -1,7 +1,8 @@
 <template>
-  <div class="view-post-edit">
+  <div class="view-post-edit view-layout-default">
     <ButtonCommunity/>
     <PostEditor :post="post"/>
+    <TablePosts/>
   </div>
 </template>
 
@@ -31,10 +32,10 @@ export default {
             return
           }
 
-          communityService.checkPassword({ id, type: 'post', password: value })
+          communityService.checkPassword.post({ id, password: value })
             .then(() => store.dispatch('loadPost', id))
             .catch(() => {
-              plugins.$toast.error('비밀번호가 틀립니다')
+              plugins.$toast.error(plugins.$translate('INCORRECT_PASSWORD'))
               router.push(`/community/${id}`)
             })
         })

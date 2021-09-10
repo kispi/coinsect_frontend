@@ -117,6 +117,12 @@ const helpers = {
     const orderedIndices = JSON.parse(JSON.stringify(foundIndices)).sort()
     return JSON.stringify(foundIndices) === JSON.stringify(orderedIndices)
   },
+  canModify: postOrReply => {
+    if (!postOrReply) return
+
+    // 게시글 또는 댓글의 작성자가 나이거나, 둘 다 undefined인 경우.
+    return (postOrReply.user || {}).id === ($store.getters.me || {}).id
+  },
   mustToken: existingTokens => {
     const o = {}
     if (existingTokens) existingTokens.forEach(t => o[t] = true)

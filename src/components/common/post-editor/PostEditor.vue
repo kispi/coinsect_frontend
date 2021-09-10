@@ -1,6 +1,11 @@
 <template>
-  <div class="post-editor">
-    <CPost :post="post"/>
+  <div class="post-editor p-t-40 p-b-40">
+    에디터
+    아직
+    구현
+    안됨
+    복잡함
+    주말에 해야지
   </div>
 </template>
 
@@ -33,7 +38,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.post-editor {
-
-}
+.post-editor {}
 </style>

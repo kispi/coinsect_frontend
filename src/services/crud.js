@@ -3,6 +3,7 @@ import helpers from '@/helpers'
 
 const crudTargets = [
   'post',
+  'reply',
 ].map(key => ({
   model: key,
   endpoint: helpers.template.case.toSnake(helpers.template.case.pluralize(key)),

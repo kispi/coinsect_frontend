@@ -203,6 +203,10 @@
     "en": "Delete",
     "kr": "삭제"
   },
+  "REPLY_REPLY": {
+    "en": "Reply",
+    "kr": "답글"
+  },
   "CONNECTING_TO_EXCHANGES": {
     "en": "Connecting to exchanges... or Click to connect!",
     "kr": "거래소들과 연결중입니다... 오래걸리는 경우 클릭해주세요!"
