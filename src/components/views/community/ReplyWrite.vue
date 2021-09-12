@@ -73,7 +73,7 @@ export default {
         store.dispatch('loadPost', router.currentRoute.value.params.id)
         store.dispatch('loadPosts')
       } catch (e) {
-        plugins.$error.toast(e.data.message)
+        plugins.$toast.error(e.data.message)
       }
     }
 
