@@ -64,7 +64,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .c-post {
   @mixin drawRightBorder {
     margin-right: 8px;
@@ -120,6 +120,10 @@ export default {
   .post-content {
     padding: 32px 0;
     white-space: pre-line;
+
+    img {
+      max-width: 100%;
+    }
   }
 
   .post-reactions {
