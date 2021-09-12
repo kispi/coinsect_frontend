@@ -1,26 +1,76 @@
 <template>
-  <div class="post-editor p-t-40 p-b-40">
-    에디터
-    아직
-    구현
-    안됨
-    복잡함
-    주말에 해야지
+  <div class="post-editor">
+    <div class="nickname-and-password">
+      <input v-model="payload.nickname" class="nickname" :placeholder="$translate('PLACEHOLDER_NICKNAME')" :maxlength="$store.getters.config.maxlength.nickname">
+      <input v-model="payload.password" class="password" :placeholder="$translate('PLACEHOLDER_PASSWORD')" type="password">
+    </div>
+    <input v-model="payload.title" class="title" :placeholder="$translate('PLACEHOLDER_TITLE')" :maxlength="$store.getters.config.maxlength.title">
+    <textarea
+      v-model="payload.content"
+      :placeholder="$translate('PLACEHOLDER_CONTENT')"
+    />
+    <div class="buttons">
+      <button
+        @click="$router.push('/community')"
+        class="btn btn-default"
+        v-html="$translate('CANCEL')"
+      />
+      <button
+        @click="createPost"
+        class="btn btn-primary"
+        v-html="$translate('SUBMIT_PAYLOAD')"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref, watch } from 'vue'
+import { getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import crudService from '@/services/crud'
 
 export default {
   props: {
     post: Object,
   },
   setup(props) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const store = useStore()
+
+    const router = useRouter()
+
     const payload = ref({})
 
     const init = () => {
       if (props.post) payload.value = props.post
+      else payload.value.nickname = ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname
+    }
+
+    const createPost = async () => {
+      if (!store.getters.me) {
+        if (['nickname', 'password', 'title', 'content'].some(key => {
+          if (!payload.value[key]) {
+            plugins.$toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
+            return true
+          }
+          return !payload.value[key]
+        })) return
+      }
+
+      try {
+        await crudService.post[payload.value.id ? 'update' : 'create'](payload.value)
+        store.dispatch('loadPosts')
+        router.push(
+          payload.value.id ?
+          `/community/${payload.value.id}` :
+          '/community',
+        )
+      } catch (e) {
+
+        plugins.$toast.error(e.data.message)
+      }
     }
 
     watch(
@@ -32,11 +82,44 @@ export default {
 
     return {
       payload,
+      createPost
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.post-editor {}
+.post-editor {
+  --editor-gap: 8px;
+  padding-bottom: 32px;
+
+  .nickname-and-password {
+    display: flex;
+    margin-bottom: var(--editor-gap);
+
+    .nickname {
+      margin-right: var(--editor-gap);
+    }
+  }
+
+  .title {
+    margin-bottom: var(--editor-gap);
+  }
+
+  textarea {
+    height: 320px;
+    resize: vertical;
+  }
+
+  .buttons {
+    display: flex;
+    margin-left: auto;
+    justify-content: flex-end;
+    margin-top: 16px;
+
+    button:not(:last-child) {
+      margin-right: var(--editor-gap);
+    }
+  }
+}
 </style>

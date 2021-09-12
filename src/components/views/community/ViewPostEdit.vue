@@ -1,8 +1,10 @@
 <template>
   <div class="view-post-edit view-layout-default">
-    <ButtonCommunity/>
-    <PostEditor :post="post"/>
-    <TablePosts/>
+    <template v-if="post">
+      <ButtonCommunity/>
+      <PostEditor :post="post"/>
+      <TablePosts/>
+    </template>
   </div>
 </template>
 
@@ -25,10 +27,11 @@ export default {
     const id = router.currentRoute.value.params.id
 
     const init = () => {
+      store.commit('setPost', null)
       plugins.$modal.input({ title: '비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
         .then(value => {
           if (!value) {
-            router.push('/community')
+            router.go(-1)
             return
           }
 

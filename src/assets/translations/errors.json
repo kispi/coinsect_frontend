@@ -2,5 +2,21 @@
   "INCORRECT_PASSWORD": {
     "en": "Incorrect password",
     "kr": "비밀번호가 틀립니다"
+  },
+  "MISSING_REQUIRED_FIELD_PASSWORD": {
+    "en": "Password is missing",
+    "kr": "비밀번호를 입력하세요"
+  },
+  "NOT_FOUND": {
+    "en": "Not found",
+    "kr": "존재하지 않는 항목입니다"
+  },
+  "TITLE_TOO_LONG": {
+    "en": "Title can't exceed 40 characters",
+    "kr": "제목은 40자를 초과할 수 없습니다"
+  },
+  "NICKNAME_TOO_LONG": {
+    "en": "Nickname can't exceed 8 characters",
+    "kr": "닉네임은 10자를 초과할 수 없습니다"
   }
 }

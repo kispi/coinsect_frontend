@@ -2,17 +2,26 @@
   <div class="reply-write">
     <form>
       <div class="writer-and-password">
-        <input v-model="payload.nickname" placeholder="닉네임" class="nickname" autocomplete="reply-nickname">
-        <input v-model="payload.password" placeholder="비밀번호" class="password" type="password" autocomplete="reply-password">
+        <input v-model="payload.nickname" :placeholder="$translate('PLACEHOLDER_NICKNAME')" class="nickname" autocomplete="reply-nickname">
+        <input v-model="payload.password" :placeholder="$translate('PLACEHOLDER_PASSWORD')" class="password" type="password" autocomplete="reply-password">
       </div>
-      <textarea v-model="payload.content" placeholder="내용을 입력해주세요"/>
+      <textarea v-model="payload.content" :placeholder="$translate('PLACEHOLDER_CONTENT')"/>
     </form>
     <div class="reply-functions">
-      <button
-        @click="onClickCreateReply"
-        class="btn btn-primary display-table m-l-a"
-        v-html="$translate('등록')"
-      />
+      <div>{{ parent ? `${parent.nickname}님의 댓글에 대한 답글` : '' }}</div>
+      <div class="buttons flex-row">
+        <button
+          v-if="parent"
+          @click="$emit('cancel')"
+          class="btn btn-default"
+          v-html="$translate('CANCEL')"
+        />
+        <button
+          @click="onClickCreateReply"
+          class="btn btn-primary"
+          v-html="$translate('SUBMIT_PAYLOAD')"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -53,20 +62,13 @@ export default {
     }
 
     const onClickCreateReply = async () => {
-      if (!payload.value.nickname) {
-        plugins.$toast.error('닉네임을 입력하세요')
-        return
-      }
-
-      if (!payload.value.password) {
-        plugins.$toast.error('비밀번호를 입력하세요')
-        return
-      }
-
-      if (!payload.value.content) {
-        plugins.$toast.error('내용을 입력하세요')
-        return
-      }
+      if (['nickname', 'password', 'content'].some(key => {
+        if (!payload.value[key]) {
+          plugins.$toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
+          return true
+        }
+        return !payload.value[key]
+      })) return
 
       try {
         await crudService.reply.create(payload.value)
@@ -98,7 +100,7 @@ export default {
 
 <style lang="scss" scoped>
 .reply-write {
-  border: 1px solid var(--brand-primary);
+  border: 1px solid var(--border-base);
 
   input,
   textarea {
@@ -122,11 +124,19 @@ export default {
 
   textarea {
     height: 80px;
+    display: block;
   }
 
   .reply-functions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-top: 1px solid var(--border-base);
     padding: 8px;
+
+    button:not(:last-child) {
+      margin-right: 8px;
+    }
   }
 }
 </style>

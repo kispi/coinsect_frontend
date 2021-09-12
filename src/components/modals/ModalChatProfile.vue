@@ -28,7 +28,7 @@
       <input
         ref="refInputNickname"
         placeholder="EX:) 흑우"
-        maxlength="12"
+        :maxlength="$store.getters.config.maxlength.nickname"
         @keydown.enter="$emit('close', profile)"
         v-model="profile.nickname"
       >

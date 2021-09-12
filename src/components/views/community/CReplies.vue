@@ -22,7 +22,7 @@
         <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
       </div>
       <div v-if="reply.$$showReply" class="reply-write-container">
-        <ReplyWrite :post="$store.getters.post" :parent="reply"/>
+        <ReplyWrite :post="$store.getters.post" :parent="reply" @cancel="reply.$$showReply = false"/>
       </div>
       <CReplies :replies="reply.replies" :depth="depth + 1"/>
     </div>
@@ -72,7 +72,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .c-replies {
   font-size: 13px;
 
@@ -81,6 +81,10 @@ export default {
       padding: 8px 0;
       color: var(--text-stress);
       white-space: pre-line;
+
+      img {
+        max-width: 320px !important;
+      }
     }
 
     .writer {

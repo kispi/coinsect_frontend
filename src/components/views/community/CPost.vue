@@ -152,7 +152,8 @@ export default {
   }
 
   .reply-write {
-    margin: 64px 0 32px;
+    margin: 8px 0;
+    border: 1px solid var(--brand-primary);
   }
 }
 </style>

@@ -191,6 +191,10 @@
     "en": "To list",
     "kr": "목록보기"
   },
+  "SUBMIT_PAYLOAD": {
+    "en": "Submit",
+    "kr": "등록"
+  },
   "WRITE": {
     "en": "Write",
     "kr": "글쓰기"
@@ -210,5 +214,21 @@
   "CONNECTING_TO_EXCHANGES": {
     "en": "Connecting to exchanges... or Click to connect!",
     "kr": "거래소들과 연결중입니다... 오래걸리는 경우 클릭해주세요!"
+  },
+  "PLACEHOLDER_NICKNAME": {
+    "en": "Input nickname",
+    "kr": "닉네임을 입력하세요"
+  },
+  "PLACEHOLDER_PASSWORD": {
+    "en": "Input password",
+    "kr": "비밀번호를 입력하세요"
+  },
+  "PLACEHOLDER_TITLE": {
+    "en": "Input title",
+    "kr": "제목을 입력하세요"
+  },
+  "PLACEHOLDER_CONTENT": {
+    "en": "Input content",
+    "kr": "내용을 입력하세요"
   }
 }
