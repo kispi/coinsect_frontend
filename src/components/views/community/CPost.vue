@@ -113,6 +113,7 @@ export default {
     .writer-and-created-at,
     .numbers {
       display: flex;
+      align-items: flex-end;
       font-size: 13px;
     }
   }
