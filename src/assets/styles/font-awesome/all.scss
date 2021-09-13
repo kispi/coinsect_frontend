@@ -4490,9 +4490,9 @@ readers do not read off random characters that represent icons */
 //   content: "\f7ae";
 // }
 
-// .fa-image:before {
-//   content: "\f03e";
-// }
+.fa-image:before {
+  content: "\f03e";
+}
 
 // .fa-image-polaroid:before {
 //   content: "\f8c4";

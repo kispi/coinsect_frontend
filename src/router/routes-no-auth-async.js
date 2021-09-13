@@ -31,6 +31,9 @@ const andSoOn = [{
 }, {
   path: '/updates',
   component: () => import(/* webpackChunkName: 'view-updates' */ '@/components/views/ViewUpdates'),
+}, {
+  path: '/test',
+  component: () => import(/* webpackChunkName: 'view-test' */ '@/components/views/ViewTest'),
 }]
 
 const routesNoAuth = [

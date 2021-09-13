@@ -11,6 +11,7 @@ import AppLogo from '@/components/app/AppLogo'
 import AppPagination from '@/components/app/AppPagination'
 import AppToggler from '@/components/app/AppToggler'
 import AppTooltip from '@/components/app/AppTooltip'
+import FileUploader from '@/components/app/FileUploader'
 import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 
 // common components
@@ -43,6 +44,7 @@ const useGlobalComponents = app => {
     .component('AppPagination', AppPagination)
     .component('AppToggler', AppToggler)
     .component('AppTooltip', AppTooltip)
+    .component('FileUploader', FileUploader)
     .component('WrapperDropdownOverlay', WrapperDropdownOverlay)
 
     // common components

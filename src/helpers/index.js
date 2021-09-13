@@ -138,6 +138,16 @@ const helpers = {
   
     return nonExistNewToken
   },
+  acceptableFileSize: file => {
+    const fileSizeAsMB = file.size / 1000000
+    const maxFileSize = 10
+    if (fileSizeAsMB > maxFileSize) {
+      modal.alert(`${maxFileSize}MB 이하 용량의 이미지를 사용해주세요`)
+      return
+    }
+
+    return true
+  },
 }
 
 export default helpers
