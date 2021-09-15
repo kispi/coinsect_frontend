@@ -1,7 +1,5 @@
 <template>
-  <div
-    v-if="$store.getters.post"
-    class="view-post-detail view-layout-default">
+  <div class="view-post-detail view-layout-default">
     <ButtonCommunity/>
     <CPost/>
     <CommunityButtons/>

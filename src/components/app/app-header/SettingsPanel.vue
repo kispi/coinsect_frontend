@@ -83,7 +83,7 @@ export default {
 <style lang="scss" scoped>
 .settings-panel {
   background: var(--background-base);
-  border: 1px solid var(--text-base);
+  border: 1px solid var(--border-base);
   border-radius: 4px;
   width: 320px;
   color: var(--text-stress);
@@ -106,16 +106,9 @@ export default {
         align-items: center;
         justify-content: center;
         padding: 4px;
-        border-top: 1px solid var(--text-stress);
-        border-bottom: 1px solid var(--text-stress);
-        border-left: 1px solid var(--text-stress);
         cursor: pointer;
         flex: 1;
         transition: none;
-
-        &:last-child {
-          border-right: 1px solid var(--text-stress);
-        }
 
         &:hover {
           background: var(--brand-primary-hover-bg);
