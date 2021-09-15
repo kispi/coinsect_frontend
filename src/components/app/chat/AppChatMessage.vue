@@ -16,7 +16,7 @@
         <span class="token" v-html="(message.token || '').substring(0, 3)"/>
       </div>
       <div class="text-and-timestamp">
-        <div class="text" v-html="message.text"/>
+        <div class="text">{{ message.text }}</div>
         <div
           class="timestamp"
           :class="message.isMine ? 'm-r-8' : 'm-l-8'"
