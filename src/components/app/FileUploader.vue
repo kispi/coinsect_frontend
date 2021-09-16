@@ -47,16 +47,14 @@ export default {
       return plugins.$helpers.acceptableFileSize(givenFile)
     }
 
-    const doUpload = async e => {
+    const doUpload = async file => {
       try {
         uploading.value = true
-        const url = await s3Service.upload(file.value)
+        const url = await s3Service.upload(file)
         emit('upload-file', {
           url,
-          src: URL.createObjectURL(file.value),
+          src: URL.createObjectURL(file),
         })
-        e.target.value = null
-        file.value = null
       } catch (e) {
         return Promise.reject(e)
       } finally {
@@ -64,12 +62,20 @@ export default {
       }
     }
 
-    const onDrop = e => {
+    const onDrop = async e => {
       if (!validate(e.dataTransfer.files[0])) return
 
       file.value = e.dataTransfer.files[0]
       dragging.value = false
-      doUpload(e)
+
+      try {
+        const blob = await plugins.$helpers.resizeImage({ imageFile: file.value })
+        const newFile = new File([blob], file.value.name, { type: 'image/jpeg' })
+        await doUpload(newFile)
+      } finally {
+        e.target.value = null
+        file.value = null
+      }
     }
 
     const onChangeFile = e => {
