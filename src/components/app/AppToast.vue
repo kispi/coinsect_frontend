@@ -1,6 +1,6 @@
 <template>
   <div class="app-toast">
-    <transition name="slide-down">
+    <transition name="slide-up">
       <div
         v-if="toast.show"
         class="app-toast-container"
@@ -68,7 +68,7 @@ export default {
   position: fixed;
   z-index: 6;
   left: 50%;
-  top: 64px;
+  bottom: 64px;
   transform: translateX(-50%);
 }
 
@@ -77,9 +77,10 @@ export default {
   width: 480px;
   max-width: calc(100vw - 32px);
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 4px;
   margin-top: 16px;
   display: flex;
+  align-items: center;
 
   .html {
     flex: 1;
@@ -90,22 +91,21 @@ export default {
     display: flex;
     align-items: center;
     cursor: pointer;
+    font-weight: 700;
+    border: 1px solid var(--white);
+    border-radius: 4px;
+    padding: 8px 12px;
   }
 
   &.success {
-    background: var(--success);
+    background: var(--gs-66);
     color: var(--white);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
   }
 
   &.error {
     background: var(--danger);
     color: var(--white);
-  }
-
-  .action {
-    padding-left: 16px;
-    margin-left: 16px;
-    border-left: 1px solid var(--brand-primary);
   }
 }
 </style>

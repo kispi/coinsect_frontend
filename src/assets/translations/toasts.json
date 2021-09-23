@@ -2,5 +2,9 @@
   "TOAST_REAL_TIME_TICKER_SELECTED": {
     "en": "%s is set as real time ticker for browser title.",
     "kr": "%s가 실시간 티커로 브라우저 타이틀에 노출됩니다."
+  },
+  "TOAST_NEW_VERSION_AVAILABLE": {
+    "en": "New version is available for the website. Wanna refresh?",
+    "kr": "웹사이트가 업데이트되었습니다. 새로고침하시겠습니까?"
   }
 }

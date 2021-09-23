@@ -207,6 +207,10 @@
     "en": "Delete",
     "kr": "삭제"
   },
+  "REFRESH": {
+    "en": "Refresh",
+    "kr": "새로고침"
+  },
   "REPLY_REPLY": {
     "en": "Reply",
     "kr": "답글"

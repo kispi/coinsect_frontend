@@ -139,8 +139,15 @@ const app = {
     removeToast({ commit }) {
       commit('setToast', null)
     },
+    async loadConfig({ commit }) {
+      try {
+        commit('setConfig', await $http.get('config'))
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
     // 앱 뜰 때 필요한 정보들 쭉 콜함
-    async loadConfig({ commit, dispatch }) {
+    async bootstrap({ commit, dispatch }) {
       const loadAuthNotRequired = async () => Promise.all([
         dispatch('loadMarkets', 'upbit'),
         dispatch('loadMarkets', 'bybit'),
@@ -154,8 +161,7 @@ const app = {
         await dispatch('loadAuthToken')
       } catch (e) {}
 
-      // 모든 api의 호출 전에 실행
-      $http.get('config').then(config => commit('setConfig', config))
+      dispatch('loadConfig')
       dispatch('loadIndices')
       await loadAuthNotRequired()
     },

@@ -7,7 +7,7 @@ const afterSignIn = async ({ dispatch, token, customRouteTo }) => {
   window.localStorage.setItem('header', JSON.stringify({ token }))
 
   try {
-    await dispatch('loadConfig')
+    await dispatch('bootstrap')
     const prevFullPath = helpers.localStorage.getMeta('prevFullPath')
     router.push(customRouteTo || prevFullPath || '/')
   } catch (e) {
@@ -58,7 +58,7 @@ const user = {
       // pushWithFrom 사용 X
       router.push('/').then(() => {
         commit('initAppData')
-        dispatch('loadConfig')
+        dispatch('bootstrap')
       })
     },
   },

@@ -1,11 +1,17 @@
 // slide-down
-.slide-down-enter-active, .slide-down-leave-active {
+.slide-down-enter-active, .slide-down-leave-active,
+.slide-up-enter-active, .slide-up-leave-active {
   transition: all 0.3s ease;
 }
 
 .slide-down-enter-from, .slide-down-leave-to {
   opacity: 0;
   transform: translateY(-40px);
+}
+
+.slide-up-enter-from, .slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(40px);
 }
 
 .shake {

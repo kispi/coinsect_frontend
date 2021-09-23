@@ -14,6 +14,7 @@ import AppChat from '@/components/app/chat/AppChat'
 import AppModal from '@/components/app/AppModal'
 import AppTooltips from '@/components/app/AppTooltips'
 import AppToast from '@/components/app/AppToast'
+import useHealthChecker from '@/hooks/addons/health-checker'
 import useRouteWatcher from '@/hooks/addons/route-watcher'
 
 export default {
@@ -24,6 +25,7 @@ export default {
     AppToast,
   },
   setup() {
+    useHealthChecker()
     useRouteWatcher()
   },
 }
