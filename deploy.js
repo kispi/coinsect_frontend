@@ -4,6 +4,7 @@ const fs = require('fs')
 const aExec = require('await-exec')
 const chalk = require('chalk')
 const promptConfirm = require('prompt-confirm')
+const axios = require('axios')
 
 const s3 = new AWS.S3()
 const bucket = {
@@ -28,7 +29,7 @@ const uploadArgs = env => ({
 const updateGitDescription = async env => {
   const result = await exec('git describe --always --long')
   try {
-    const resp = await axios.post(`${api[env]}/env`, { frontendVersion: result.stdout.trim() })
+    const resp = await axios.post(`${api[env]}/config`, { frontendVersion: result.stdout.trim() })
     return Promise.resolve(resp.data)
   } catch (e) {
     return Promise.reject(e)
