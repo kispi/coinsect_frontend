@@ -10,6 +10,10 @@ const bucket = {
   dev: '',
   prod: 'coinsect.io',
 }
+const api = {
+  dev: '',
+  prod: 'https://api.coinsect.io',
+}
 
 const exec = async arg => await aExec(arg)
 const print = o => console.log(o)
@@ -20,6 +24,16 @@ const uploadArgs = env => ({
   bucketName: bucket[env],
   uploadTargetDirectory: env === 'dev' ? 'dist-dev' : 'dist'
 })
+
+const updateGitDescription = async env => {
+  const result = await exec('git describe --always --long')
+  try {
+    const resp = await axios.post(`${api[env]}/env`, { frontendVersion: result.stdout.trim() })
+    return Promise.resolve(resp.data)
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
 
 const build = async (buildOpt) => {
   if (!buildOpt) {
@@ -117,13 +131,14 @@ const deletePreviousDistribution = async (bucketName) => {
   }
 }
 
-const deploy = async (env) => {
+const deploy = async env => {
   const o = uploadArgs(env)
 
   try {
     await build(o.buildOpt)
     await deletePreviousDistribution(o.bucketName)
     await uploadToS3(o.bucketName, o.uploadTargetDirectory)
+    await updateGitDescription(env)
     success('\n\nDeploy finished!')
   } catch (e) {
     failed(e)
