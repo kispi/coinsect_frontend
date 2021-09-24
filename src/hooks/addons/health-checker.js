@@ -8,8 +8,9 @@ const useHealthChecker = () => {
   const refreshConfig = () => {
     setTimeout(async () => {
       try {
+        const previousVersion = ((store.getters.config || {}).version || {}).frontend
         const config = await store.dispatch('loadConfig')
-        if (config.version.frontend === store.getters.config.version.frontend) {
+        if (previousVersion && config.version.frontend !== previousVersion) {
           helpers.toast.custom({
             html: 'TOAST_NEW_VERSION_AVAILABLE',
             duration: -1,
