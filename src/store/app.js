@@ -139,13 +139,6 @@ const app = {
     removeToast({ commit }) {
       commit('setToast', null)
     },
-    async loadConfig({ commit }) {
-      try {
-        commit('setConfig', await $http.get('config'))
-      } catch (e) {
-        return Promise.reject(e)
-      }
-    },
     // 앱 뜰 때 필요한 정보들 쭉 콜함
     async bootstrap({ commit, dispatch }) {
       const loadAuthNotRequired = async () => Promise.all([
@@ -161,7 +154,7 @@ const app = {
         await dispatch('loadAuthToken')
       } catch (e) {}
 
-      dispatch('loadConfig')
+      $http.get('config').then(data => commit('setConfig', data))
       dispatch('loadIndices')
       await loadAuthNotRequired()
     },

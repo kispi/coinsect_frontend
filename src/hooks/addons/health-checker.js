@@ -1,15 +1,17 @@
-import { onMounted } from 'vue'
+import { getCurrentInstance, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import helpers from '@/helpers'
 
 const useHealthChecker = () => {
+  const plugins = getCurrentInstance().appContext.config.globalProperties
+
   const store = useStore()
 
   const refreshConfig = () => {
     setTimeout(async () => {
       try {
         const previousVersion = ((store.getters.config || {}).version || {}).frontend
-        const config = await store.dispatch('loadConfig')
+        const config = await plugins.$http.get('config')
         if (previousVersion && config.version.frontend !== previousVersion) {
           helpers.toast.custom({
             html: 'TOAST_NEW_VERSION_AVAILABLE',
@@ -20,6 +22,7 @@ const useHealthChecker = () => {
             },
           })
         }
+        store.commit('setConfig', config)
       } catch (e) {}
       refreshConfig()
     }, 1000 * 60)
