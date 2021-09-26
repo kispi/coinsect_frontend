@@ -118,7 +118,8 @@ const useChatHandler = () => {
   const loadRecentMessages = async () => {
     try {
       const data = await plugins.$http.get('messages/latest')
-      messages.value = data
+      messages.value = []
+      data.forEach(addMessage)
     } catch (e) {}
   }
 
