@@ -81,7 +81,11 @@ const useChatHandler = () => {
     store.commit('setNumActiveUsers', message.numConnections)
   }
 
-  const connect = () => {
+  const connect = async () => {
+    try {
+      await loadRecentMessages()
+    } catch (e) {}
+
     const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
 
     connection.value = new WebSocket(`${endpoint}/chat${token.value ? `?token=${token.value}` : ''}`)
@@ -114,7 +118,7 @@ const useChatHandler = () => {
   const loadRecentMessages = async () => {
     try {
       const data = await plugins.$http.get('messages/latest')
-      data.forEach(addMessage)
+      messages.value = data
     } catch (e) {}
   }
 
@@ -132,7 +136,6 @@ const useChatHandler = () => {
       }
     }
 
-    loadRecentMessages()
     connect()
   }
 
