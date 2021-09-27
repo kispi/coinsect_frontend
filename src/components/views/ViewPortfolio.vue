@@ -12,6 +12,8 @@
 
 <style lang="scss" scoped>
 .view-portfolio {
+  padding-bottom: 64px;
+
   .description {
     font-size: 12px;
     line-height: 20px;

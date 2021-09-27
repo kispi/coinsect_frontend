@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import WrapperDropdownOverlay from './WrapperDropdownOverlay'
 
 export default {
@@ -39,11 +39,10 @@ export default {
   props: ['dropdownItems'],
   components: { WrapperDropdownOverlay },
   setup(props, { emit }) {
-    const onClickDropdownItem = (clickedItem, noemit) => {
+    const onClickDropdownItem = clickedItem => {
       props.dropdownItems.forEach(item => item.$$selected = clickedItem.key === item.key)
       dropdownOpened.value = false
-
-      if (!noemit) emit('select-dropdown-item', clickedItem)
+      emit('select-dropdown-item', clickedItem)
     }
 
     const selectedItem = computed(() => props.dropdownItems.find(item => item.$$selected))
@@ -55,8 +54,17 @@ export default {
     onMounted(() => {
       if (!props.dropdownItems) return
 
-      onClickDropdownItem(props.dropdownItems[0], true)
+      onClickDropdownItem(props.dropdownItems[0])
     })
+
+    watch(
+      () => props.dropdownItems,
+      newVal => {
+        if (!newVal) return
+
+        onClickDropdownItem(newVal[0])
+      },
+    )
 
     return {
       selectedItem,

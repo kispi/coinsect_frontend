@@ -89,7 +89,7 @@ export default {
 
       const worth = Math.round(sumWorth)
       const purchase = Math.round(sumPurchase)
-      const total = worth + p.stable
+      const total = worth + (p.stable || 0)
       const unrealized = (worth - purchase)
 
       return {
@@ -202,6 +202,7 @@ export default {
     display: grid;
     grid-gap: 8px;
     grid-template-columns: repeat(2, 1fr);
+    color: var(--text-stress);
 
     @media (max-width: 767px) {
       font-size: 13px;
