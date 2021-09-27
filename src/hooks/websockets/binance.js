@@ -4,13 +4,13 @@ import { useStore } from 'vuex'
 const useBinance = () => {
   const store = useStore()
 
-  const subscribe = () => new Promise((resolve) => {
+  const subscribe = ({ codes, $$raw }) => new Promise((resolve) => {
     const connection = new WebSocket('wss://stream.binance.com:9443/ws')
 
     connection.onopen = () => {
       connection.send(JSON.stringify({
         method: 'SUBSCRIBE',
-        params: store.getters.markets.upbit.map(o => `${(o.$$symbol || '').toLowerCase()}usdt@miniTicker`),
+        params: codes,
         id: 1,
       }))
 
@@ -21,6 +21,11 @@ const useBinance = () => {
       try {
         const json = JSON.parse(event.data)
         if (!json.s) return
+
+        if ($$raw) {
+          store.commit('setRawWebsocketInfo', { exchange: 'binance', market: json.s, json })
+          return
+        }
 
         helpers.dataSetter.calculateKimp({
           $$symbol: json.s.split('USDT')[0],

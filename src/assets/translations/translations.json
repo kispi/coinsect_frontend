@@ -234,5 +234,13 @@
   "PLACEHOLDER_CONTENT": {
     "en": "Input content",
     "kr": "내용을 입력하세요"
+  },
+  "ADD_PORTFOLIO": {
+    "en": "Add Portfolio",
+    "kr": "포트폴리오 추가"
+  },
+  "PORTFOLIO": {
+    "en": "Portfolio",
+    "kr": "포트폴리오"
   }
 }

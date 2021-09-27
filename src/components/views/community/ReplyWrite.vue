@@ -105,7 +105,6 @@ export default {
   input,
   textarea {
     border: 0;
-    padding: 8px;
     border-radius: 0;
   }
 

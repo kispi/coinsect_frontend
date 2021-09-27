@@ -70,7 +70,7 @@ const useUpbit = () => {
     })}% / ` : 'Connecting... '}${priceString} ${ticker.$$symbol}`
   }
 
-  const subscribe = ({ type, codes }) => new Promise((resolve) => {
+  const subscribe = ({ type, codes, $$raw }) => new Promise((resolve) => {
     if (!type || !codes) return
 
     const connection = new WebSocket('wss://api.upbit.com/websocket/v1')
@@ -98,7 +98,14 @@ const useUpbit = () => {
     connection.onmessage = event => {
       try {
         const json = eventAsJSON(event)
-        if (type === 'ticker') handleTickerMessage(json)
+        if (type === 'ticker') {
+          if ($$raw) {
+            store.commit('setRawWebsocketInfo', { exchange: 'upbit', market: json.cd, json })
+            return
+          }
+
+          handleTickerMessage(json)
+        }
         if (type === 'orderbook') setOrderbook(json)
       } catch (e) {
         console.error(e)

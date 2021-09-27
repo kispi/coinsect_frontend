@@ -173,7 +173,9 @@ export default {
           setTimeout(initByClickingButton, 1000)
         }
       }),
-      binance: async () => subscribeBinance().then(conn => {
+      binance: async () => subscribeBinance({
+        codes: store.getters.markets.upbit.map(o => `${(o.$$symbol || '').toLowerCase()}usdt@miniTicker`),
+      }).then(conn => {
         connections.value.binance = conn
         connected.value = true
 

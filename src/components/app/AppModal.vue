@@ -47,6 +47,7 @@ export default {
     ModalInput: defineAsyncComponent(() => import('@/components/modals/ModalInput')),
     ModalOrderbook: defineAsyncComponent(() => import('@/components/modals/ModalOrderbook')),
     ModalGame: defineAsyncComponent(() => import('@/components/modals/ModalGame')),
+    ModalAddPortfolio: defineAsyncComponent(() => import('@/components/modals/ModalAddPortfolio')),
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
     ModalChatProfile: defineAsyncComponent(() => import('@/components/modals/ModalChatProfile')),
@@ -70,7 +71,7 @@ export default {
       store.commit('popModal', props.modal)
     }
 
-    const closeOnMousedownBackdrop = e => {
+    const closeOnMousedownBackdrop = () => {
       if ((props.modal.options || {}).preventCloseOnClickBackdrop) return
 
       onClose()

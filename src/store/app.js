@@ -32,6 +32,7 @@ const app = {
       filter: 'all', // 'favorites'
       tradingview: 'show',
       favorites: {},
+      portfolio: {},
       chatFolded: false,
       chatSizeMax: false,
     },

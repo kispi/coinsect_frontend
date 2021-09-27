@@ -68,6 +68,9 @@ export default {
       title: 'INDICATORS',
       path: '/indicators/leaderboard',
     }, {
+      title: 'PORTFOLIO',
+      path: '/portfolio',
+    }, {
       title: 'GAMES',
       path: '/games',
     }, {

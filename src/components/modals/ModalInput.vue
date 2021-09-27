@@ -3,14 +3,14 @@
     class="modal-input"
     :style="options.style">
     <ModalHeader :title="$translate(options.title)" @close="$emit('close')"/>
-    <form class="p-16">
+    <div class="p-16">
       <input
         ref="refInput"
         v-model="inputValue"
         :type="options.inputType"
         :autocomplete="options.autocomplete"
       >
-    </form>
+    </div>
     <div
       v-if="buttons"
       class="buttons">
@@ -33,7 +33,7 @@ import { onMounted, ref } from 'vue'
 
 export default {
   props: ['options'],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const refInput = ref(null)
 
     const inputValue = ref(null)
@@ -50,6 +50,8 @@ export default {
 
     onMounted(() => {
       if (refInput.value) refInput.value.focus()
+
+      if (props.options.inputValue) inputValue.value = props.options.inputValue
     })
 
     return {

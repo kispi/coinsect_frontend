@@ -103,6 +103,8 @@ export default {
     border: 1px solid var(--gs-bb);
     padding: 8px 0;
     border-radius: 4px;
+    max-height: 240px;
+    overflow-y: auto;
 
     li {
       padding: 8px;

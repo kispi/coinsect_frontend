@@ -21,6 +21,11 @@ const marketInfo = {
     },
     leaderboard: null,
     realTimeTickers: {},
+    rawWebsocketInfo: {
+      upbit: {},
+      bithumb: {},
+      binance: {},
+    },
     symbols: {},
   }),
   getters: {
@@ -32,6 +37,7 @@ const marketInfo = {
     instruments: state => state.instruments,
     leaderboard: state => state.leaderboard,
     realTimeTickers: state => state.realTimeTickers,
+    rawWebsocketInfo: state => state.rawWebsocketInfo,
     symbols: state => state.symbols,
   },
   mutations: {
@@ -53,6 +59,9 @@ const marketInfo = {
     },
     setLeaderboard(state, leaderboard) {
       state.leaderboard = leaderboard
+    },
+    setRawWebsocketInfo(state, { exchange, market, json }) {
+      state.rawWebsocketInfo[exchange][market] = json
     },
   },
   actions: {
