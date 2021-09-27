@@ -63,7 +63,7 @@ export default {
       store.commit('setSettings', { portfolio })
     }
 
-    const displayedPrice = (price, exchange) => plugins.$helpers.number.pretty.price({ price, baseCurrency: ['upbit', 'bithumb'].includes(exchange) ? 'krw' : 'usd' })
+    const displayedPrice = (price, exchange) => plugins.$helpers.number.pretty.price({ price, baseCurrency: 'krw' })
 
     const openModalInput = ({ type, exchange, market, initial }) => {
       const portfolio = store.getters.settings.portfolio

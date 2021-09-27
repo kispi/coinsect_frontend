@@ -7,16 +7,22 @@
         <AppDropdown :dropdownItems="exchanges" @select-dropdown-item="onSelect"/>
       </div>
       <div class="form-control">
-        <label>마켓</label>
-        <input v-model="payload.market" placeholder="EX:) KRW-BTC">
+        <label>심볼</label>
+        <select v-model="payload.market">
+          <option
+            :key="x"
+            v-for="x in sortedMarkets"
+            v-html="x"
+          />
+        </select>
       </div>
       <div class="form-control">
         <label>보유수량</label>
-        <input v-model="payload.amount" placeholder="EX:) 0.1">
+        <input v-model="payload.amount" placeholder="EX:) 1">
       </div>
       <div class="form-control">
-        <label>매수평균단가 (KRW)</label>
-        <input v-model="payload.averagePurchasePrice" placeholder="EX:) 52000000">
+        <label>매수평균단가 ({{ payload.exchange === 'upbit' ? 'KRW' : 'USD' }})</label>
+        <input v-model="payload.averagePurchasePrice" :placeholder="`EX:) ${payload.exchange === 'upbit' ? 52000000 : 42000}`">
       </div>
     </div>
     <div
@@ -30,7 +36,7 @@
         <button
           @click="addPortfolioItem"
           class="btn btn-primary"
-          :disabled="!payload.averagePurchasePrice || !payload.amount || !payload.market"
+          :disabled="!payload.averagePurchasePrice || !payload.amount"
           v-html="$translate('CONFIRM')"
         />
       </div>
@@ -39,7 +45,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref } from 'vue'
+import { computed, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -48,7 +54,13 @@ export default {
 
     const store = useStore()
 
-    const exchanges = ref([{ key: 'upbit' }, { key: 'binance' }])
+    const exchanges = ref(['upbit', 'binance'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) })))
+
+    const sortedMarkets = computed(() => {
+      const x = payload.value.exchange
+      const filtered = JSON.parse(JSON.stringify(store.getters.markets[x].map(o => x === 'upbit' ? o.market : o)))
+      return filtered.sort((a, b) => a > b ? 1 : -1)
+    })
 
     const payload = ref({
       averagePurchasePrice: null,
@@ -66,6 +78,22 @@ export default {
 
     const addPortfolioItem = () => {
       const portfolio = store.getters.settings.portfolio
+      let found, errMsg
+      if (payload.value.exchange === 'upbit') {
+        found = store.getters.markets.upbit.find(o => o.market === payload.value.market)
+        if (!found) errMsg = `페어 'KRW-${s}'는 업비트에 존재하지 않습니다`
+      }
+
+      if (payload.value.exchange === 'binance') {
+        found = store.getters.markets.binance.find(market => market === payload.value.market)
+        payload.value.averagePurchasePrice *= store.getters.usdKrw
+        if (!found) errMsg = `페어 '${s}USDT'는 바이낸스에 존재하지 않습니다`
+      }
+
+      if (errMsg) {
+        plugins.$toast.error(errMsg)
+        return
+      }
 
       if (!payload.value.averagePurchasePrice) {
         plugins.$toast.error('매수평균단가를 입력하세요')
@@ -89,6 +117,7 @@ export default {
 
     return {
       exchanges,
+      sortedMarkets,
       payload,
       onSelect,
       addPortfolioItem,
@@ -103,8 +132,23 @@ export default {
   width: 480px;
 
   .form-control {
+    label {
+      color: var(--text-stress);
+      font-weight: 600;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+    }
+
     input {
       padding: 8px;
+      text-transform: uppercase;
+
+      &::placeholder {
+        color: var(--gs-88);
+      }
     }
   }
 

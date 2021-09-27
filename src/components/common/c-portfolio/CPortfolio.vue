@@ -5,11 +5,29 @@
       class="btn btn-primary w-100 m-b-24">
       <i class="fal fa-plus"/><div class="m-l-8" v-html="$translate('ADD_PORTFOLIO')"/>
     </button>
-    <div
-      @click="editStableMoney"
-      class="form-control flex-row items-center stable-money">
-      <label class="flex-wrap m-r-16 m-b-0">고정자산 (KRW, USDT 등)</label>
-      <input v-model="stable" type="number" :readonly="true">
+    <div class="stats m-b-24">
+      <div>
+        {{ $translate('NET_PURCHASE') }}: {{ $helpers.number.pretty.price({ price: netStat.purchase, baseCurrency: 'krw' })}}
+      </div>
+      <div>
+        {{ $translate('PURCHASEMENT_WORTH') }}: {{ $helpers.number.pretty.price({ price: netStat.worth, baseCurrency: 'krw' })}}
+      </div>
+      <div :class="{'c-price-up': netStat.unrealized > 0, 'c-price-down': netStat.unrealized < 0}">
+        {{ $translate('UNREALIZED') }}: {{ $helpers.number.pretty.price({ price: netStat.unrealized, baseCurrency: 'krw' }) }}
+      </div>
+      <div :class="{'c-price-up': netStat.roi > 0, 'c-price-down': netStat.roi < 0}">
+        {{ $translate('ROI') }}: {{ (netStat.roi || 0).toFixed(2) }}%
+      </div>
+      <AdaptiveLayout
+        :gap="16"
+        @click="editStableMoney"
+        class="items-center stable-money">
+        <div class="flex-wrap">고정자산 (KRW, USDT...)</div>
+        <input v-model="stable" type="number" :readonly="true">
+      </AdaptiveLayout>
+      <div class="net-worth">
+        {{ $translate('NET_WORTH') }}: {{ $helpers.number.pretty.price({ price: netStat.total, baseCurrency: 'krw' }) }}
+      </div>
     </div>
     <div
       class="portfolio-exchange"
@@ -47,6 +65,8 @@ export default {
 
     const { subscribe: sBinance } = useBinance()
 
+    const supportedExchanges = ['upbit', 'binance']
+
     const connections = ref({
       upbit: null,
       binance: null,
@@ -55,6 +75,31 @@ export default {
     const stable = ref(0)
 
     const portfolio = computed(() => store.getters.settings.portfolio)
+
+    const netStat = computed(() => {
+      const p = portfolio.value
+      let sumWorth = 0
+      let sumPurchase = 0
+      supportedExchanges.forEach(x => {
+        (p[x] || []).forEach(item => {
+          sumWorth += item.$$worth
+          sumPurchase += Math.round(item.averagePurchasePrice * item.amount)
+        })
+      })
+
+      const worth = Math.round(sumWorth)
+      const purchase = Math.round(sumPurchase)
+      const total = worth + p.stable
+      const unrealized = (worth - purchase)
+
+      return {
+        worth,
+        purchase,
+        total,
+        roi: Math.round(unrealized / purchase * 10000) / 100,
+        unrealized,
+      }
+    })
 
     const editStableMoney = () => {
       plugins.$modal.input({ title: 'KRW, USDT 등 고정자산을 입력하세요', inputValue: stable.value || 0 })
@@ -73,7 +118,7 @@ export default {
       if (!info) return 0
 
       if (exchange === 'upbit') return Math.round((info.tp - item.averagePurchasePrice) * item.amount)
-      if (exchange === 'binance') return Math.round((info.c - item.averagePurchasePrice) * item.amount)
+      if (exchange === 'binance') return Math.round((info.c * store.getters.usdKrw - item.averagePurchasePrice) * item.amount * 100) / 100
     }
 
     const worth = (exchange, item) => {
@@ -81,13 +126,12 @@ export default {
       if (!info) return 0
 
       if (exchange === 'upbit') return Math.round(info.tp * item.amount)
-      if (exchange === 'binance') return Math.round(info.c * item.amount)
+      if (exchange === 'binance') return Math.round(info.c * item.amount * store.getters.usdKrw * 100) / 100
     }
 
     const displayedPortfolio = computed(() => {
       const arr = []
-      const exchanges = ['upbit', 'binance']
-      exchanges.forEach(exchange => {
+      supportedExchanges.forEach(exchange => {
         const items = portfolio.value[exchange]
         if (!items) return
 
@@ -140,6 +184,8 @@ export default {
     return {
       displayedPortfolio,
       stable,
+      netStat,
+      connections,
       editStableMoney,
       openModalAddPortfolio,
     }
@@ -151,6 +197,17 @@ export default {
 .c-portfolio {
   font-family: Arial, Helvetica, sans-serif;
 
+  .stats {
+    font-size: 16px;
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
+
+    @media (max-width: 767px) {
+      font-size: 13px;
+    }
+  }
+
   img {
     width: 16px;
   }
@@ -160,6 +217,10 @@ export default {
 
     &:hover {
       text-decoration: underline;
+    }
+
+    input {
+      height: 28px;
     }
   }
 

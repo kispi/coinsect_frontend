@@ -242,5 +242,25 @@
   "PORTFOLIO": {
     "en": "Portfolio",
     "kr": "포트폴리오"
+  },
+  "PURCHASEMENT_WORTH": {
+    "en": "Purchasement Worth",
+    "kr": "총 평가"
+  },
+  "NET_PURCHASE": {
+    "en": "Net Purchase",
+    "kr": "총 매수"
+  },
+  "NET_WORTH": {
+    "en": "Net Worth",
+    "kr": "총 자산"
+  },
+  "ROI": {
+    "en": "ROI",
+    "kr": "수익률"
+  },
+  "UNREALIZED": {
+    "en": "Unrealized",
+    "kr": "미실현손익"
   }
 }

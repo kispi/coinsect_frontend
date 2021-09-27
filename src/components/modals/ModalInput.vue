@@ -9,6 +9,7 @@
         v-model="inputValue"
         :type="options.inputType"
         :autocomplete="options.autocomplete"
+        @keydown.enter="$emit('close', inputValue)"
       >
     </div>
     <div

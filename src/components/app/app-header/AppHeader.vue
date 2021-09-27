@@ -39,9 +39,9 @@
         }"
         :to="menuItem.path"
         :key="menuItem.title"
-        v-for="menuItem in menuItems"
-        v-html="$translate(menuItem.title)"
-      />
+        v-for="menuItem in menuItems">
+        {{ $translate(menuItem.title) }}<span v-if="menuItem.$$new" class="new"/>
+      </RouterLink>
     </nav>
   </header>
 </template>
@@ -70,6 +70,7 @@ export default {
     }, {
       title: 'PORTFOLIO',
       path: '/portfolio',
+      $$new: true,
     }, {
       title: 'GAMES',
       path: '/games',
@@ -144,6 +145,7 @@ export default {
       white-space: nowrap;
       border-bottom: 2px solid transparent;
       color: var(--text-stress);
+      position: relative;
 
       &.selected {
         color: var(--brand-primary);
@@ -153,6 +155,16 @@ export default {
 
       &:hover {
         color: var(--brand-primary-hover);
+      }
+
+      .new {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        position: absolute;
+        right: 0;
+        top: calc(50% - 8px);
+        background: var(--brand-primary);
       }
     }
   }
