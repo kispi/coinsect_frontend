@@ -1,7 +1,7 @@
 <template>
   <div class="view-test">
     <img :src="src">
-    <FileUploader @upload-file="onUploadFile"/>
+    <ImageUploader @upload-file="onUploadFile"/>
   </div>
 </template>
 
