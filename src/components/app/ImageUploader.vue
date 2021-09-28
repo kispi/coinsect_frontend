@@ -1,6 +1,6 @@
 <template>
   <div
-    class="file-uploader"
+    class="image-uploader"
     :class="{'dragging-over': dragging}"
     @dragover.prevent
     @drop.prevent="onDrop"
@@ -27,7 +27,7 @@ import { getCurrentInstance, ref } from 'vue'
 import s3Service from '@/services/s3'
 
 export default {
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const file = ref(null)
@@ -36,16 +36,7 @@ export default {
 
     const uploading = ref(null)
 
-    const validate = givenFile => {
-      if (!props.accept) return true
-
-      if (!props.accept.includes(givenFile.type) && !givenFile.name.includes(props.accept)) {
-        plugins.$toast.error(`Upload correct file type please: ${props.accept}`)
-        return
-      }
-
-      return plugins.$helpers.acceptableFileSize(givenFile)
-    }
+    const validate = givenFile => plugins.$helpers.acceptableFileSize(givenFile)
 
     const doUpload = async file => {
       try {
@@ -97,7 +88,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.file-uploader {
+.image-uploader {
   padding-top: 56.25%;
   position: relative;
   background: var(--brand-primary-hover-bg);
