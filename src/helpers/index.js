@@ -138,51 +138,15 @@ const helpers = {
   
     return nonExistNewToken
   },
-  acceptableFileSize: file => {
+  acceptableFileSize: (file, maxFileSize = 5) => {
     const fileSizeAsMB = file.size / 1000000
-    const maxFileSize = 10
     if (fileSizeAsMB > maxFileSize) {
-      modal.alert(`${maxFileSize}MB 이하 용량의 이미지를 사용해주세요`)
+      toast.error(`${maxFileSize}MB 이하 용량의 이미지를 사용해주세요`)
       return
     }
 
     return true
   },
-  // width가 주어지지 않을 시 원본 width를 사용
-  resizeImage: ({ imageFile, width }) => new Promise(resolve => {
-    const img = new Image()
-
-    img.onload = e => {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
-      const oc = document.createElement('canvas')
-      const octx = oc.getContext('2d')
-   
-      canvas.width = e.target.width || width
-      canvas.height = canvas.width * img.height / img.width
-   
-      const cur = {
-        width: Math.floor(img.width * 0.5),
-        height: Math.floor(img.height * 0.5)
-      }
-   
-      oc.width = cur.width
-      oc.height = cur.height
-   
-      octx.drawImage(img, 0, 0, cur.width, cur.height)
-   
-      while (cur.width * 0.5 > width) {
-        cur.width = Math.floor(cur.width * 0.5)
-        cur.height = Math.floor(cur.height * 0.5)
-        octx.drawImage(oc, 0, 0, cur.width * 2, cur.height * 2, 0, 0, cur.width, cur.height)
-      }
-   
-      ctx.drawImage(oc, 0, 0, cur.width, cur.height, 0, 0, canvas.width, canvas.height)
-      canvas.toBlob(resolve)
-    }
-
-    img.src = URL.createObjectURL(imageFile)
-  }),
 }
 
 export default helpers

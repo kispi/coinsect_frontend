@@ -23,8 +23,8 @@ const andSoOn = [{
   component: () => import(/* webpackChunkName: 'view-post-edit' */ '@/components/views/community/ViewPostEdit'),
 }, {
   path: '/community/:id',
-  component: () => import(/* webpackChunkName: 'view-post-detail' */ '@/components/views/community/ViewPostDetail'),
-  name: 'ViewPostDetail',
+  component: () => import(/* webpackChunkName: 'view-post' */ '@/components/views/community/ViewPost'),
+  name: 'ViewPost',
 }, {
   path: '/games',
   component: () => import(/* webpackChunkName: 'view-games' */ '@/components/views/ViewGames'),

@@ -1,5 +1,5 @@
 <template>
-  <div class="view-post-detail view-layout-default">
+  <div class="view-post view-layout-default">
     <ButtonCommunity/>
     <CPost/>
     <CommunityButtons/>
@@ -36,7 +36,7 @@ export default {
       (newVal, oldVal) => {
         if (newVal === oldVal) return
 
-        if (router.currentRoute.value.name !== 'ViewPostDetail') return
+        if (router.currentRoute.value.name !== 'ViewPost') return
 
         loadPost()
       },

@@ -6,18 +6,20 @@
     @drop.prevent="onDrop"
     @dragover="dragging = true"
     @dragleave="dragging = false">
-    <div v-if="uploading" class="loader-overlay overlay center"><AppLoader/></div>
-    <div class="container overlay">
-      <i class="fal fa-image"/>
-      <div class="guide">
-        <div>이미지를 여기 끌어다 놓거나<br>클릭해서 내 컴퓨터에서 찾기</div>
+    <div class="container">
+      <div class="centered-overlay">
+        <AppLoader v-if="uploading"/>
+        <i class="fal fa-image"/>
+        <div class="guide">
+          <div>이미지를 여기 끌어다 놓거나<br>클릭해서 내 컴퓨터에서 찾기</div>
+        </div>
+        <input
+          class="overlay"
+          type="file"
+          @change="onChangeFile"
+          accept="image/*"
+        >
       </div>
-      <input
-        class="overlay"
-        type="file"
-        @change="onChangeFile"
-        accept="image/*"
-      >
     </div>
   </div>
 </template>
@@ -36,8 +38,6 @@ export default {
 
     const uploading = ref(null)
 
-    const validate = givenFile => plugins.$helpers.acceptableFileSize(givenFile)
-
     const doUpload = async file => {
       try {
         uploading.value = true
@@ -54,15 +54,13 @@ export default {
     }
 
     const onDrop = async e => {
-      if (!validate(e.dataTransfer.files[0])) return
+      dragging.value = false
+      if (!plugins.$helpers.acceptableFileSize(e.dataTransfer.files[0])) return
 
       file.value = e.dataTransfer.files[0]
-      dragging.value = false
 
       try {
-        const blob = await plugins.$helpers.resizeImage({ imageFile: file.value })
-        const newFile = new File([blob], file.value.name, { type: 'image/jpeg' })
-        await doUpload(newFile)
+        await doUpload(file.value)
       } finally {
         e.target.value = null
         file.value = null
@@ -70,7 +68,7 @@ export default {
     }
 
     const onChangeFile = e => {
-      if (!validate(e.target.files[0])) return
+      if (!plugins.$helpers.acceptableFileSize(e.target.files[0])) return
 
       file.value = e.target.files[0]
       doUpload(e)
@@ -89,20 +87,31 @@ export default {
 
 <style lang="scss" scoped>
 .image-uploader {
-  padding-top: 56.25%;
-  position: relative;
+  padding: 16px;
   background: var(--brand-primary-hover-bg);
-  min-height: 240px;
 
   .container {
-    margin: 16px;
+    position: relative;
+    padding-top: 56.25%;
     border: 1px dashed var(--border-base);
     color: var(--text-stress);
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
+
+    .centered-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .app-loader {
+      position: absolute;
+    }
 
     input[type=file] {
       opacity: 0;

@@ -50,6 +50,7 @@ export default {
     ModalAddPortfolio: defineAsyncComponent(() => import('@/components/modals/ModalAddPortfolio')),
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
+    ModalImageUploader: defineAsyncComponent(() => import('@/components/modals/ModalImageUploader')),
     ModalChatProfile: defineAsyncComponent(() => import('@/components/modals/ModalChatProfile')),
   },
   setup(props) {
