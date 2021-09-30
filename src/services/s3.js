@@ -6,7 +6,7 @@ const s3Service = {
 
     const endpoint = 's3/upload_url'
     try {
-      const url = await $http.get(endpoint, { params: { key: `boards/1/${encodeURI(file.name)}` } })
+      const url = await $http.get(endpoint, { params: { key: `boards/free_board/${encodeURI(file.name)}` } })
       await $http.put(url, file, {
         // 나중에 할 일이 생기면 해도 될듯
         // onUploadProgress: e => this.progress.value = e.loaded / e.total,

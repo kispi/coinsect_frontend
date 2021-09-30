@@ -1,14 +1,17 @@
 <template>
   <div
     class="image-uploader"
-    :class="{'dragging-over': dragging}"
     @dragover.prevent
     @drop.prevent="onDrop"
     @dragover="dragging = true"
     @dragleave="dragging = false">
     <div class="container">
-      <div class="centered-overlay">
-        <AppLoader v-if="uploading"/>
+      <div
+        v-if="uploading"
+        class="centered-overlay loader-container">
+        <AppLoader/>
+      </div>
+      <div class="centered-overlay" :class="{'dragging-over': dragging && !uploading}">
         <i class="fal fa-image"/>
         <div class="guide">
           <div>이미지를 여기 끌어다 놓거나<br>클릭해서 내 컴퓨터에서 찾기</div>
@@ -71,7 +74,7 @@ export default {
       if (!plugins.$helpers.acceptableFileSize(e.target.files[0])) return
 
       file.value = e.target.files[0]
-      doUpload(e)
+      doUpload(file.value)
     }
 
     return {
@@ -87,14 +90,11 @@ export default {
 
 <style lang="scss" scoped>
 .image-uploader {
-  padding: 16px;
   background: var(--brand-primary-hover-bg);
 
   .container {
     position: relative;
     padding-top: 56.25%;
-    border: 1px dashed var(--border-base);
-    color: var(--text-stress);
 
     .centered-overlay {
       position: absolute;
@@ -102,30 +102,27 @@ export default {
       right: 0;
       bottom: 0;
       left: 0;
+      color: var(--text-stress);
+      margin: 16px;
+      border: 1px dashed var(--border-base);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       user-select: none;
-    }
 
-    .app-loader {
-      position: absolute;
+      &:not(.loader-container) {
+        &.dragging-over,
+        &:hover {
+          color: var(--brand-primary);
+          border: 1px dashed var(--brand-primary);
+        }
+      }
     }
 
     input[type=file] {
       opacity: 0;
       cursor: pointer;
-    }
-  }
-
-  &.dragging-over,
-  &:hover {
-    background: var(--brand-primary-hover-bg);
-
-    .container {
-      color: var(--brand-primary);
-      border: 1px dashed var(--brand-primary);
     }
   }
 
@@ -138,7 +135,7 @@ export default {
     font-size: 80px;
   }
 
-  .loader-overlay {
+  .loader-container {
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
   }
