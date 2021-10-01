@@ -19,11 +19,15 @@
         {{ $translate('ROI') }}: {{ (netStat.roi || 0).toFixed(2) }}%
       </div>
       <AdaptiveLayout
-        :gap="16"
-        @click="editStableMoney"
-        class="items-center stable-money">
+        :gap="8"
+        class="stable-money">
         <div class="flex-wrap">고정자산 (KRW, USDT...)</div>
-        <input v-model="stable" type="number" :readonly="true">
+        <div class="input-wrapper">
+          <input v-model="stable" type="number" @click="e => e.target.select()">
+          <div class="remover-wrapper center" @click="stable = 0">
+            <i class="fal fa-times"/>
+          </div>
+        </div>
       </AdaptiveLayout>
       <div class="net-worth">
         {{ $translate('NET_WORTH') }}: {{ $helpers.number.pretty.price({ price: netStat.total, baseCurrency: 'krw' }) }}
@@ -48,7 +52,7 @@
 
 <script>
 // 있는거 사용하려 하지 말고 새로 웹소켓 연결해서 쓰는게 나을듯
-import { ref, computed, getCurrentInstance, onMounted, onUnmounted } from 'vue'
+import { ref, computed, getCurrentInstance, onMounted, onUnmounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import useBinance from '@/hooks/websockets/binance'
 import useUpbit from '@/hooks/websockets/upbit'
@@ -101,17 +105,14 @@ export default {
       }
     })
 
-    const editStableMoney = () => {
-      plugins.$modal.input({ title: 'KRW, USDT 등 고정자산을 입력하세요', inputValue: stable.value || 0 })
-        .then(money => {
-          if (!money || !parseFloat(money)) return
-
-          stable.value = parseFloat(money)
-          portfolio.value.stable = stable.value
-          store.commit('setSettings', { portfolio: portfolio.value })
-        })
-        return
-    }
+    watch(
+      () => stable.value,
+      newVal => {
+        stable.value = parseFloat(newVal)
+        portfolio.value.stable = stable.value
+        store.commit('setSettings', { portfolio: portfolio.value })
+      },
+    )
 
     const unrealized = (exchange, item) => {
       const info = (store.getters.rawWebsocketInfo[exchange] || {})[item.market]
@@ -186,7 +187,6 @@ export default {
       stable,
       netStat,
       connections,
-      editStableMoney,
       openModalAddPortfolio,
     }
   },
@@ -214,14 +214,22 @@ export default {
   }
 
   .stable-money {
-    cursor: pointer;
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      border-radius: 4px;
 
-    &:hover {
-      text-decoration: underline;
-    }
+      .remover-wrapper {
+        color: var(--text-stress);
+        background: var(--background-light);
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+      }
 
-    input {
-      height: 28px;
+      input {
+        padding: 0 8px;
+      }
     }
   }
 
