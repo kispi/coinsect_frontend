@@ -1,14 +1,11 @@
 <template>
   <div class="post-editor">
     <form class="nickname-and-password" @submit.prevent>
-      <input v-model="payload.nickname" class="nickname" :placeholder="$translate('PLACEHOLDER_NICKNAME')" :maxlength="$store.getters.config.maxlength.nickname">
+      <input v-model="payload.nickname" class="nickname" :placeholder="$translate('PLACEHOLDER_NICKNAME')" :maxlength="(($store.getters.config || {}).maxlength || {}).nickname">
       <input v-model="payload.password" class="password" :placeholder="$translate('PLACEHOLDER_PASSWORD')" type="password" autocomplete="post-password">
     </form>
-    <input v-model="payload.title" class="title" :placeholder="$translate('PLACEHOLDER_TITLE')" :maxlength="$store.getters.config.maxlength.title">
-    <textarea
-      v-model="payload.content"
-      :placeholder="$translate('PLACEHOLDER_CONTENT')"
-    />
+    <input v-model="payload.title" class="title" :placeholder="$translate('PLACEHOLDER_TITLE')" :maxlength="(($store.getters.config || {}).maxlength || {}).title">
+    <Quill v-model="payload.content"/>
     <div class="buttons">
       <button
         @click="$router.push('/community')"

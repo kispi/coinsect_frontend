@@ -15,7 +15,7 @@
           <div class="replies">댓글 {{ post.$$numReplies }}</div>
         </div>
       </div>
-      <div class="post-content" v-html="post.content"/>
+      <div class="post-content ql-editor" v-html="post.content"/>
       <div class="post-reactions">
         <div
           @click="toggleReaction('up')"
@@ -120,7 +120,6 @@ export default {
 
   .post-content {
     padding: 32px 0;
-    white-space: pre-line;
     max-width: 100%;
 
     img {

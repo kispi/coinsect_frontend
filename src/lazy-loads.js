@@ -8,6 +8,10 @@ const useLazyLoads = async () => {
     helpers.dom.loadScript({ url: '/gtm.js' })
   }
 
+  const loadQuill = async () => {
+    await helpers.dom.loadScript({ url: '//cdn.quilljs.com/1.3.7/quill.min.js'})
+  }
+
   const loadVendors = async () => {
     await Promise.all([
       helpers.dom.loadScript({ url: 'https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/dayjs.min.js' }),
@@ -16,8 +20,11 @@ const useLazyLoads = async () => {
     helpers.dayjs = dayjs
   }
 
-  loadGA()
-  await loadVendors()
+  await Promise.all([
+    loadQuill(),
+    loadGA(),
+    loadVendors(),
+  ])
 }
 
 export default useLazyLoads

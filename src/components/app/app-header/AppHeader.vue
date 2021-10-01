@@ -68,9 +68,12 @@ export default {
       title: 'INDICATORS',
       path: '/indicators/leaderboard',
     }, {
+      title: 'COMMUNITY',
+      path: '/community',
+      $$new: true,
+    }, {
       title: 'PORTFOLIO',
       path: '/portfolio',
-      $$new: true,
     }, {
       title: 'GAMES',
       path: '/games',
