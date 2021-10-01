@@ -3,7 +3,7 @@
     class="modal-input"
     :style="options.style">
     <ModalHeader :title="$translate(options.title)" @close="$emit('close')"/>
-    <div class="p-16">
+    <form class="p-16" @submit.prevent>
       <input
         ref="refInput"
         v-model="inputValue"
@@ -11,7 +11,7 @@
         :autocomplete="options.autocomplete"
         @keydown.enter="$emit('close', inputValue)"
       >
-    </div>
+    </form>
     <div
       v-if="buttons"
       class="buttons">

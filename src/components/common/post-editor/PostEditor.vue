@@ -1,9 +1,9 @@
 <template>
   <div class="post-editor">
-    <div class="nickname-and-password">
+    <form class="nickname-and-password" @submit.prevent>
       <input v-model="payload.nickname" class="nickname" :placeholder="$translate('PLACEHOLDER_NICKNAME')" :maxlength="$store.getters.config.maxlength.nickname">
-      <input v-model="payload.password" class="password" :placeholder="$translate('PLACEHOLDER_PASSWORD')" type="password">
-    </div>
+      <input v-model="payload.password" class="password" :placeholder="$translate('PLACEHOLDER_PASSWORD')" type="password" autocomplete="post-password">
+    </form>
     <input v-model="payload.title" class="title" :placeholder="$translate('PLACEHOLDER_TITLE')" :maxlength="$store.getters.config.maxlength.title">
     <textarea
       v-model="payload.content"

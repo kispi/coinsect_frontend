@@ -51,7 +51,7 @@ const useModalDraggable = () => {
       modalHeader.value = dragTarget.value.getElementsByClassName('modal-header')[0]
       if (!modalHeader.value) return
 
-      modalHeader.value.addEventListener('touchstart', onMousedown)
+      modalHeader.value.addEventListener('touchstart', onMousedown, { passive: true })
       modalHeader.value.addEventListener('mousedown', onMousedown)
       refModal.classList.add('modal-draggable')
 
@@ -73,7 +73,7 @@ const useModalDraggable = () => {
     document.removeEventListener('mouseup', onMouseup)
 
     if (modalHeader.value) {
-      modalHeader.value.removeEventListener('touchstart', onMousedown)
+      modalHeader.value.removeEventListener('touchstart', onMousedown, { passive: true })
       modalHeader.value.removeEventListener('mousedown', onMousedown)
     }
   })
