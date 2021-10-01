@@ -11,7 +11,7 @@
         </div>
         <div class="numbers">
           <div class="views">조회 {{ post.views }}</div>
-          <div class="ups">추천 {{ (post.reactions || []).length }}</div>
+          <div class="ups">추천 {{ (post.reactions || []).filter(o => o.type === 'up').length }}</div>
           <div class="replies">댓글 {{ post.$$numReplies }}</div>
         </div>
       </div>
