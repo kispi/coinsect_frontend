@@ -74,7 +74,7 @@ export default {
   flex: 1;
 
   .router-view-container {
-    min-height: calc(100vh - 160px);
+    min-height: calc(100vh - 120px);
   }
 }
 </style>
