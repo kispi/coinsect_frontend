@@ -21,6 +21,7 @@ const app = {
     isMobile: null,
     config: null,
     numActiveUsers: null,
+    notifications: null,
     settings: {
       sort: {
         column: '$$vol24HBase', // '$$symbol', '$$tradePriceBase', '$$premiumRate', '$$changeRate1D', '$$changeRate52WH', '$$changeRate52WL'
@@ -51,6 +52,7 @@ const app = {
     isMobile: state => state.isMobile,
     config: state => state.config,
     numActiveUsers: state => state.numActiveUsers,
+    notifications: state => state.notifications,
     settings: state => state.settings,
     windowInnerWidth: state => state.windowInnerWidth,
     windowInnerHeight: state => state.windowInnerHeight,
@@ -82,6 +84,9 @@ const app = {
     },
     setNumActiveUsers(state, numActiveUsers) {
       state.numActiveUsers = numActiveUsers
+    },
+    setNotifications(state, notifications) {
+      state.notifications = notifications
     },
     setSettings(state, settings) {
       Object.keys(settings).forEach(key => {
@@ -137,8 +142,11 @@ const app = {
     },
   },
   actions: {
-    removeToast({ commit }) {
-      commit('setToast', null)
+    async loadNotifications({ commit }, params) {
+      try {
+        const data = await $http.get('notifications', { params })
+        commit('setNotifications', data)
+      } catch (e) {}
     },
     // 앱 뜰 때 필요한 정보들 쭉 콜함
     async bootstrap({ commit, dispatch }) {

@@ -38,7 +38,7 @@ export default {
       if (!toast.value.action || !toast.value.action.handler) return
 
       toast.value.action.handler()
-      store.dispatch('removeToast')
+      store.commit('setToast', null)
     }
 
     watch(
@@ -50,7 +50,7 @@ export default {
 
         if (toast.value.duration < 0) return
 
-        toastTimeout.value = setTimeout(() => store.dispatch('removeToast'), toast.value.duration || 3000)
+        toastTimeout.value = setTimeout(() => store.commit('setToast', null), toast.value.duration || 3000)
       }
     )
 

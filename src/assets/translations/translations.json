@@ -262,5 +262,9 @@
   "UNREALIZED": {
     "en": "Unrealized",
     "kr": "미실현손익"
+  },
+  "EMPTY_NOTIFICATIONS": {
+    "en": "No notifications",
+    "kr": "새 알림이 없습니다"
   }
 }

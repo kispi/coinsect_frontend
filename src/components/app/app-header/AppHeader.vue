@@ -14,16 +14,38 @@
       :class="{'border-top': $store.getters.indices}">
       <div class="flex-row flex-between items-center flex-fill">
         <AppLogo/>
-        <div
-          @click="showSettings = !showSettings"
-          class="settings clickable-icon-wrapper">
-          <i
-            ref="refIconSettings"
-            class="fa fa-cog"
-          />
+        <div class="icons">
+          <div
+            @click="showSettings = !showSettings"
+            class="clickable-icon-wrapper">
+            <i
+              ref="refIconSettings"
+              class="fa-cog"
+              :class="showSettings ? 'fa' : 'fal'"
+            />
+          </div>
+          <div
+            @click="showNotifications = !showNotifications"
+            class="clickable-icon-wrapper">
+            <i
+              ref="refIconNotifications"
+              class="fa-bell"
+              :class="showNotifications ? 'fa' : 'fal'"
+            />
+            <div
+              v-if="numNewNotifications"
+              class="icon-badge"
+              v-html="numNewNotifications"
+            />
+          </div>
         </div>
         <WrapperDropdownOverlay
-          class="settings-overlay"
+          v-model="showNotifications"
+          :align="'right'"
+          :mountBelow="refIconNotifications">
+          <AppNotifications/>
+        </WrapperDropdownOverlay>
+        <WrapperDropdownOverlay
           v-model="showSettings"
           :align="'right'"
           :mountBelow="refIconSettings">
@@ -47,19 +69,39 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, getCurrentInstance, ref } from 'vue'
+import { useStore } from 'vuex'
+import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
 import SettingsPanel from './SettingsPanel'
 
 export default {
   components: {
+    AppNotifications,
     BannerMarketIndices,
     SettingsPanel,
   },
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const store = useStore()
+
     const refIconSettings = ref(null)
 
+    const refIconNotifications = ref(null)
+
     const showSettings = ref(null)
+
+    const showNotifications = ref(null)
+
+    const numNewNotifications = computed(() => {
+      const n = store.getters.notifications
+      if (!n) return
+
+      const d = plugins.$helpers.dayjs
+
+      return (n.data || []).filter(o => d().diff(o.createdAt, 'hour') < 24).length
+    })
 
     const menuItems = [{
       title: 'HOME',
@@ -89,9 +131,12 @@ export default {
     }]
 
     return {
+      refIconNotifications,
       refIconSettings,
+      showNotifications,
       showSettings,
       menuItems,
+      numNewNotifications,
     }
   },
 }
@@ -124,17 +169,37 @@ export default {
       border-top: 1px solid var(--border-base);
     }
 
-    .settings-overlay {
+    .wrapper-dropdown-overlay {
       z-index: 6;
     }
 
-    .settings {
+    .icons {
+      display: flex;
+    }
+
+    .clickable-icon-wrapper {
       width: 40px;
       height: 40px;
+      position: relative;
 
-      .fa-cog {
+      i {
         font-size: 20px;
       }
+    }
+
+    .icon-badge {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      color: var(--white);
+      background: var(--brand-primary);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 4px;
+      right: 4px;
     }
   }
 
