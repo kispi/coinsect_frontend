@@ -61,7 +61,8 @@ export default {
   background: var(--background-base);
   border: 1px solid var(--border-base);
   border-radius: 4px;
-  width: 320px;
+  width: 360px;
+  max-width: calc(100vw - 32px);
   color: var(--text-stress);
 
   .notification-item {
@@ -90,6 +91,7 @@ export default {
 
     .notification-text {
       font-size: 12px;
+      line-height: 18px;
       color: var(--text-stress);
     }
 
