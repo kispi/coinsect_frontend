@@ -142,9 +142,11 @@ const app = {
     },
   },
   actions: {
-    async loadNotifications({ commit }, params) {
+    async loadNotifications({ commit }) {
+      const o = helpers.qb().sort('id').order('desc')
+
       try {
-        const data = await $http.get('notifications', { params })
+        const data = await $http.get('notifications', { params: o.build() })
         commit('setNotifications', data)
       } catch (e) {}
     },
