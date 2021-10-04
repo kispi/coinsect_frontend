@@ -25,7 +25,7 @@ const useHealthChecker = () => {
         store.commit('setConfig', config)
       } catch (e) {}
       refreshConfig()
-    }, 1000 * 60)
+    }, 1000 * 60 * 5)
   }
 
   onMounted(refreshConfig)

@@ -6,7 +6,7 @@
         class="notification-item"
         :class="{'cursor-pointer': notification.link}"
         :key="notification.id"
-        v-for="notification in $store.getters.notifications.data">
+        v-for="notification in ($store.getters.notifications ||{}).data">
         <div class="notification-header">
           <div class="notification-type" v-html="notification.type"/>
           <div class="notification-created-at" v-html="$helpers.template.prettyTime(notification.createdAt, true)"/>

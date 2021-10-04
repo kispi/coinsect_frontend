@@ -40,12 +40,36 @@ export default {
     const init = () => nextTick(() => {
       if (!Quill || !document.getElementsByClassName('quill-content')[0]) return
 
+      const sizeStyle = Quill.import('attributors/style/size')
+      Quill.register(sizeStyle, true)
+
       quill.value = new Quill('.quill-content', {
         modules: {
-          toolbar: '#toolbar-container',
+          toolbar: {
+            container: '#toolbar-container'
+          },
         },
         placeholder: plugins.$translate('PLACEHOLDER_CONTENT'),
         theme: 'snow',
+      })
+
+      quill.value.getModule('toolbar').addHandler('image', () => {
+        plugins.$modal.custom({
+          component: 'ModalImageUploader',
+        }).then(e => {
+          if (e) {
+            const { index } = quill.value.getSelection()
+            quill.value.updateContents({
+              ops: [
+                { retain: index },
+                {
+                  insert: { image: e.url },
+                  attributes: { link: e.url },
+                }
+              ],
+            })
+          }
+        })
       })
 
       if (quill.value && quill.value.root) {
@@ -72,8 +96,9 @@ export default {
   border-radius: 4px;
 
   .quill-content {
-    min-height: 320px;
+    height: 400px;
     cursor: text;
+    overflow-y: auto;
   }
 }
 </style>

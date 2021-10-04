@@ -15,7 +15,7 @@
           <div class="replies">댓글 {{ post.$$numReplies }}</div>
         </div>
       </div>
-      <div class="post-content ql-editor" v-html="post.content"/>
+      <div class="post-content" v-html="post.content"/>
       <div class="post-reactions">
         <div
           @click="toggleReaction('up')"
@@ -133,13 +133,13 @@ export default {
 
     .reaction-box {
       width: 64px;
-      height: 64px;
+      height: 48px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       border: 1px solid var(--brand-primary);
-      border-radius: 8px;
+      border-radius: 4px;
 
       &:not(:last-child) {
         margin-right: 8px;

@@ -48,7 +48,14 @@ export default {
     const createPost = async () => {
       if (!store.getters.me) {
         if (['nickname', 'password', 'title', 'content'].some(key => {
-          if (!payload.value[key]) {
+          if (!(payload.value[key] || '').trim()) {
+            const dom = document.querySelector(`input.${key}`) || document.querySelector('.ql-container')
+            if (dom) {
+              dom.scrollIntoView({ behavior: 'smooth' })
+              dom.focus()
+              plugins.$animate.shake(dom)
+            }
+
             plugins.$toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
             return true
           }
@@ -65,7 +72,6 @@ export default {
           '/community',
         )
       } catch (e) {
-
         plugins.$toast.error(e.data.message)
       }
     }
