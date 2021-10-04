@@ -16,19 +16,19 @@
         <AppLogo/>
         <div class="icons">
           <div
+            ref="refIconSettings"
             @click="showSettings = !showSettings"
             class="clickable-icon-wrapper">
             <i
-              ref="refIconSettings"
               class="fa-cog"
               :class="showSettings ? 'fa' : 'fal'"
             />
           </div>
           <div
+            ref="refIconNotifications"
             @click="showNotifications = !showNotifications"
             class="clickable-icon-wrapper">
             <i
-              ref="refIconNotifications"
               class="fa-bell"
               :class="showNotifications ? 'fa' : 'fal'"
             />
@@ -43,7 +43,7 @@
           v-model="showNotifications"
           :align="'right'"
           :mountBelow="refIconNotifications">
-          <AppNotifications/>
+          <AppNotifications v-if="showNotifications"/>
         </WrapperDropdownOverlay>
         <WrapperDropdownOverlay
           v-model="showSettings"

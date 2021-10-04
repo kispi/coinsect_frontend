@@ -266,5 +266,9 @@
   "EMPTY_NOTIFICATIONS": {
     "en": "No notifications",
     "kr": "새 알림이 없습니다"
+  },
+  "NOTICE": {
+    "en": "Notice",
+    "kr": "공지"
   }
 }

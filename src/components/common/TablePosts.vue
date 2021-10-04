@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="posts"
+    v-if="notices && posts"
     class="table-posts">
     <div class="table">
       <div
@@ -17,15 +17,18 @@
         @click="onClickRow(row)"
         :gap="4"
         class="row"
-        :class="{'active': parseInt($router.currentRoute.value.params.id) === row.id}"
+        :class="{
+          'active': isActivePost(row),
+          'notice': row.postType === 'notice',
+        }"
         :key="row.id"
-        v-for="row in posts.data">
+        v-for="row in $store.getters.isMobile ? posts.data : [...notices.data, ...posts.data]">
         <div class="id-title">
           <div
             v-if="!$store.getters.isMobile"
-            class="cell number">
-            {{ row.id }}
-          </div>
+            class="cell number"
+            v-html="postNumber(row)"
+          />
           <article class="cell title">
             {{ row.title }}<span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
           </article>
@@ -60,7 +63,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import TablePagination from './TablePagination'
@@ -68,6 +71,8 @@ import TablePagination from './TablePagination'
 export default {
   components: { TablePagination },
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
     const router = useRouter()
@@ -77,6 +82,18 @@ export default {
     const limit = ref(20)
 
     const posts = computed(() => store.getters.posts)
+
+    const notices = computed(() => store.getters.notices)
+
+    const isActivePost = row => parseInt(router.currentRoute.value.params.id) === row.id
+
+    const postNumber = row => {
+      if (row.postType === 'notice') return plugins.$translate('NOTICE')
+
+      if (isActivePost(row)) return '<i class="fa fa-chevron-right"></i>'
+
+      return row.id
+    }
 
     const onClickRow = row => {
       router.push(`/community/${row.id}`)
@@ -91,7 +108,10 @@ export default {
       })
     }
 
-    onMounted(loadPosts)
+    onMounted(() => {
+      store.dispatch('loadNotices')
+      loadPosts()
+    })
 
     watch(
       () => (store.getters.post || {}).id,
@@ -101,7 +121,10 @@ export default {
     return {
       page,
       limit,
+      notices,
       posts,
+      isActivePost,
+      postNumber,
       loadPosts,
       onClickRow,
     }
@@ -114,8 +137,8 @@ export default {
   font-size: 12px;
 
   .table {
-    border-top: 2px solid var(--brand-primary-hover);
-    border-bottom: 2px solid var(--brand-primary-hover);
+    border-top: 1px solid var(--brand-primary-hover);
+    border-bottom: 1px solid var(--brand-primary-hover);
   }
 
   .row {
@@ -124,8 +147,15 @@ export default {
 
     &.adaptive-layout {
       &.active {
-        font-weight: 700;
         background: var(--background-light);
+
+        .title {
+          text-decoration: underline;
+        }
+      }
+
+      &.notice {
+        font-weight: 700;
       }
 
       &:hover:not(.active) {
@@ -139,7 +169,7 @@ export default {
 
     &.header {
       display: flex;
-      border-bottom: 2px solid var(--brand-primary-hover);
+      border-bottom: 1px solid var(--brand-primary-hover);
     }
 
     .cell {
@@ -147,7 +177,7 @@ export default {
         text-align: center;
 
         &.number {
-          width: 40px;
+          width: 64px;
           flex: 0 0 auto;
           text-align: center;
         }
@@ -179,6 +209,7 @@ export default {
   .id-title,
   .content {
     display: flex;
+    align-items: baseline;
   }
 
   .id-title {
