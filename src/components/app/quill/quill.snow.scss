@@ -752,36 +752,6 @@
       width: 18px;
     }
 
-    &.ql-font {
-      width: 108px;
-
-      .ql-picker-label::before, .ql-picker-item::before {
-        content: 'Sans Serif';
-      }
-
-      .ql-picker-label[data-value=serif]::before, .ql-picker-item[data-value=serif]::before {
-        content: 'Serif';
-      }
-
-      .ql-picker-label[data-value=monospace]::before {
-        content: 'Monospace';
-      }
-
-      .ql-picker-item {
-        &[data-value=monospace]::before {
-          content: 'Monospace';
-        }
-
-        &[data-value=serif]::before {
-          font-family: Georgia, Times New Roman, serif;
-        }
-
-        &[data-value=monospace]::before {
-          font-family: Monaco, Courier New, monospace;
-        }
-      }
-    }
-
     &.ql-size {
       width: 98px;
 

@@ -1,6 +1,5 @@
 <template>
   <div class="quill">
-    <QuillToolbar/>
     <div
       ref="refQuillContent"
       class="quill-content"
@@ -11,13 +10,12 @@
 
 <script>
 import { onMounted, ref, nextTick, getCurrentInstance } from 'vue'
-import QuillToolbar from './QuillToolbar'
+import quillToolbarOptions from './quill-toolbar-options'
 
 export default {
   props: {
     modelValue: String,
   },
-  components: { QuillToolbar },
   setup(props, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -40,14 +38,12 @@ export default {
     const init = () => nextTick(() => {
       if (!Quill || !document.getElementsByClassName('quill-content')[0]) return
 
-      const sizeStyle = Quill.import('attributors/style/size')
-      Quill.register(sizeStyle, true)
+      const fontSize = Quill.import('attributors/style/size')
+      Quill.register(fontSize, true)
 
       quill.value = new Quill('.quill-content', {
         modules: {
-          toolbar: {
-            container: '#toolbar-container'
-          },
+          toolbar: quillToolbarOptions,
         },
         placeholder: plugins.$translate('PLACEHOLDER_CONTENT'),
         theme: 'snow',
@@ -59,15 +55,8 @@ export default {
         }).then(e => {
           if (e) {
             const { index } = quill.value.getSelection()
-            quill.value.updateContents({
-              ops: [
-                { retain: index },
-                {
-                  insert: { image: e.url },
-                  attributes: { link: e.url },
-                }
-              ],
-            })
+            quill.value.insertEmbed(index, 'image', e.url)
+            quill.value.setSelection(index + 1)
           }
         })
       })
