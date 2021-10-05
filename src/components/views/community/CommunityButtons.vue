@@ -64,7 +64,7 @@ export default {
 
       if (!post.value) return arr
 
-      if (plugins.$helpers.canModify(post.value)) {
+      if (post.value.postType === 'normal' && plugins.$helpers.canModify(post.value)) {
         arr.push({
           text: 'EDIT',
           class: 'btn-default',
