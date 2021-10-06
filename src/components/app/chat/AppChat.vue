@@ -54,11 +54,16 @@
           :class="{'o-0 no-touch': autoScrollable}">
           <i class="fa fa-chevron-down"/>
         </div>
-        <AppChatMessage
-          :message="message"
+        <div
+          class="app-chat-message-wrapper"
           :key="message.id"
-          v-for="message in messages"
-        />
+          v-for="(message, idx) in messages">
+          <DailySeparator
+            v-if="showSeparator(idx)"
+            :message="message"
+          />
+          <AppChatMessage :message="message"/>
+        </div>
       </div>
       <div class="app-chat-input">
         <div class="textarea-wrapper">
@@ -92,10 +97,14 @@
 import { ref, getCurrentInstance, nextTick, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import AppChatMessage from './AppChatMessage'
+import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
 
 export default {
-  components: { AppChatMessage },
+  components: {
+    AppChatMessage,
+    DailySeparator,
+  },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -131,6 +140,18 @@ export default {
           else sendTextMessage(text.value, true)
         }
       })
+    }
+
+    const showSeparator = idx => {
+      if (idx === messages.value.length - 1) return true
+
+      const curMessage = messages.value[idx]
+      if (!curMessage || !curMessage.timestamp) return false
+
+      const prevMessage = messages.value[idx + 1]
+
+      const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
+      return d(prevMessage.timestamp) !== d(curMessage.timestamp)
     }
 
     const openModalChangeProfile = () => {
@@ -241,6 +262,7 @@ export default {
       toggleChatSizeMax,
       autoScrollable,
       scrollToBottom,
+      showSeparator,
       onScroll,
     }
   },
@@ -362,6 +384,12 @@ export default {
         font-size: 12px;
         margin-top: 4px;
       }
+    }
+  }
+
+  .app-chat-message-wrapper {
+    &:not(:last-child) {
+      margin-bottom: 12px;
     }
   }
 

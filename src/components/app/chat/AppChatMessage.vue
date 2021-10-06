@@ -38,10 +38,6 @@ export default {
   font-size: 12px;
   display: flex;
 
-  &:not(:last-child) {
-    margin-bottom: 12px;
-  }
-
   .profile-image {
     margin-right: 8px;
     width: 24px;
