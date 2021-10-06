@@ -40,15 +40,27 @@ const useChatHandler = () => {
     return Object.keys(store.getters.symbols)[randIdx]
   }
 
+  const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
+
+  const showSeparator = (curMessage, prevMessage) => {
+    if (!curMessage || !curMessage.timestamp) return false
+
+    return prevMessage && curMessage && (d(prevMessage.timestamp) !== d(curMessage.timestamp))
+  }
+
   const addMessage = message => {
-    messages.value.push({
+    const prevMessage = messages.value[messages.value.length - 1]
+    const curMessage = {
       profile: (message.user || {}).profile,
       token: (message.user || {}).token,
       isMine: (message.user || {}).token === token.value,
       text: message.text,
       timestamp: message.ts,
       type: message.type,
-    })
+    }
+
+    curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
+    messages.value.push(curMessage)
   }
 
   const sendWebsocketMessage = message => {

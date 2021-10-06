@@ -14,12 +14,12 @@ export default {
 
 <style lang="scss" scoped>
 .daily-separator {
-  margin: 20px -16px;
+  margin: 20px 0;
 
   .timestamp {
     color: var(--text-base);
     margin: 0 16px;
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .left,
