@@ -49,18 +49,6 @@ export default {
         theme: 'snow',
       })
 
-      quill.value.getModule('toolbar').addHandler('image', () => {
-        plugins.$modal.custom({
-          component: 'ModalImageUploader',
-        }).then(e => {
-          if (e) {
-            const { index } = quill.value.getSelection()
-            quill.value.insertEmbed(index, 'image', e.url)
-            quill.value.setSelection(index + 1)
-          }
-        })
-      })
-
       if (quill.value && quill.value.root) {
         quill.value.root.innerHTML = props.modelValue || ''
         quill.value.on('text-change', onTextChange)
