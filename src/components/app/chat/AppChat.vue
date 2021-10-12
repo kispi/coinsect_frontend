@@ -11,7 +11,8 @@
       <div class="app-chat-header">
         <div
           @click="openModalChangeProfile"
-          class="profile">
+          class="profile"
+          :class="{'o-0': Object.keys($store.getters.symbols).length === 0}">
           <AppImg :src="profile.image"/>
           <div class="nickname" v-html="profile.nickname"/>
         </div>

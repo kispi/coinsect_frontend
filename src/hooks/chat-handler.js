@@ -136,8 +136,6 @@ const useChatHandler = () => {
   }
 
   const init = () => {
-    if (Object.keys(store.getters.symbols).length === 0) return
-
     const user = plugins.$helpers.localStorage.getMeta('user')
     if (user) {
       token.value = user.token
@@ -145,7 +143,7 @@ const useChatHandler = () => {
     } else {
       profile.value = {
         nickname: recommendNickname(),
-        image: `https://static.upbit.com/logos/${recommendSymbol()}.png`,
+        image: `https://static.upbit.com/logos/${recommendSymbol() || 'BTC'}.png`,
       }
     }
 

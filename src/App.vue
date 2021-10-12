@@ -3,8 +3,7 @@
   <div
     class="app-body"
     :class="['no-scrollbar']">
-    <RouterView v-if="prepared" class="router-view-container"/>
-    <AppLoading :loading="!prepared"/>
+    <RouterView class="router-view-container"/>
     <AppFooter/>
   </div>
   <AppAddons/>
@@ -24,8 +23,6 @@ export default {
   setup() {
     const store = useStore()
 
-    const prepared = ref(null)
-
     const setIsMobile = () => store.commit('setIsMobile')
 
     const onScroll = e => {
@@ -36,7 +33,7 @@ export default {
 
     onMounted(() => {
       store.commit('setSettings', helpers.localStorage.getMeta('settings') || store.getters.settings)
-      store.dispatch('bootstrap').then(() => prepared.value = true)
+      store.dispatch('bootstrap')
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })
     })
@@ -45,10 +42,6 @@ export default {
       window.removeEventListener('resize', setIsMobile)
       window.removeEventListener('scroll', onScroll)
     })
-
-    return {
-      prepared,
-    }
   },
 }
 </script>

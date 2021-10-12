@@ -195,8 +195,8 @@ export default {
     onMounted(init)
 
     onUnmounted(() => {
-      connections.value.upbit.close()
-      connections.value.binance.close()
+      if (connections.value.upbit) connections.value.upbit.close()
+      if (connections.value.binance) connections.value.binance.close()
     })
 
     watch([
