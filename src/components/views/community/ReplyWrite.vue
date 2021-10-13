@@ -75,6 +75,8 @@ export default {
         store.dispatch('loadPost', router.currentRoute.value.params.id)
         store.dispatch('loadPosts')
       } catch (e) {
+        if (plugins.$helpers.errorHandlers.bannedUser(e)) return
+
         plugins.$toast.error(e.data.message)
       }
     }

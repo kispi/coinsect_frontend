@@ -72,6 +72,8 @@ export default {
           '/community',
         )
       } catch (e) {
+        if (plugins.$helpers.errorHandlers.bannedUser(e)) return
+
         plugins.$toast.error(e.data.message)
       }
     }

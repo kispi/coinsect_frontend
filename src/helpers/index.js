@@ -3,6 +3,7 @@ import animate from './animate'
 import coin from './coin'
 import dataSetter from './data-setter'
 import dom from './dom'
+import errorHandlers from './error-handlers'
 import math from './math'
 import meta from './meta'
 import modal from './modal'
@@ -42,6 +43,7 @@ const helpers = {
   number,
   toast,
   dom,
+  errorHandlers,
   math,
   meta,
   animate,
