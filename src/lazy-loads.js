@@ -16,6 +16,7 @@ const useLazyLoads = async () => {
     await Promise.all([
       helpers.dom.loadScript({ url: 'https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/dayjs.min.js' }),
       helpers.dom.loadScript({ url: 'https://cdn.jsdelivr.net/npm/hangul-js@0.2.6/hangul.min.js' }),
+      helpers.dom.loadScript({ url: 'https://s3.tradingview.com/tv.js' }),
     ])
     helpers.dayjs = dayjs
   }

@@ -18,8 +18,9 @@ export default {
   setup(props) {
     const store = useStore()
 
-    const init = async () => {
-      await helpers.dom.loadScript({ url: 'https://s3.tradingview.com/tv.js' })
+    const init = () => {
+      if (!TradingView) return
+
       new TradingView.widget({
         autosize: true,
         symbol: props.symbol || 'BYBIT:BTCUSD',
