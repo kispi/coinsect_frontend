@@ -25,7 +25,9 @@ export default {
     o.$$changeRate1D = parseFloat($$changeRate1D)
     o.$$changeRate52WH = parseFloat($$changeRate52WH)
     o.$$changeRate52WL = parseFloat($$changeRate52WL)
-    o.$$vol24HBase = parseFloat($$vol24HBase)
+
+    // $$vol24HBase는 없는 경우도 있음 (빗썸은 tickType === '24H'인 경우만 사용하기 때문)
+    if ($$vol24HBase) o.$$vol24HBase = parseFloat($$vol24HBase)
     o.$$code = $$code
     o.$$prevClosingPrice = parseFloat($$prevClosingPrice)
     $store.getters.realTimeTickers[$$symbol] = o

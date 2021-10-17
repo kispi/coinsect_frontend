@@ -12,7 +12,7 @@ const useBithumb = () => {
       $$tradePriceBase: json.closePrice,
       $$changePrice24H: json.chgAmt,
       $$changeRate1D: (json.chgRate * 100) / 100,
-      $$vol24HBase: json.atp24h,
+      $$vol24HBase: json.tickType === '24H' ? json.value : 0,
       $$code: json.symbol,
       $$prevClosingPrice: json.prevClosePrice,
     })
@@ -25,7 +25,7 @@ const useBithumb = () => {
       $$tradePriceBase: json.closing_price,
       $$changePrice24H: json.fluctate_24H,
       $$changeRate1D: (json.fluctate_rate_24H * 100) / 100,
-      $$vol24HBase: json.units_traded_24H,
+      $$vol24HBase: json.acc_trade_value_24H,
       $$code: symbol,
       $$prevClosingPrice: json.prev_closing_price,
     })
