@@ -3,7 +3,6 @@ import $store from '@/store'
 export default {
   setPriceRow: ({
     $$symbol,
-    $$name,
     $$tradePriceBase,
     $$highest52WeekPrice,
     $$lowest52WeekPrice,
@@ -19,17 +18,16 @@ export default {
 
     const o = $store.getters.realTimeTickers[$$symbol] || {}
     o.$$symbol = $$symbol
-    o.$$name = $$name
-    o.$$tradePriceBase = $$tradePriceBase
-    o.$$highest52WeekPrice = $$highest52WeekPrice
-    o.$$lowest52WeekPrice = $$lowest52WeekPrice
-    o.$$changePrice24H = $$changePrice24H
-    o.$$changeRate1D = $$changeRate1D
-    o.$$changeRate52WH = $$changeRate52WH
-    o.$$changeRate52WL = $$changeRate52WL
-    o.$$vol24HBase = $$vol24HBase
+    o.$$tradePriceBase = parseFloat($$tradePriceBase)
+    o.$$highest52WeekPrice = parseFloat($$highest52WeekPrice)
+    o.$$lowest52WeekPrice = parseFloat($$lowest52WeekPrice)
+    o.$$changePrice24H = parseFloat($$changePrice24H)
+    o.$$changeRate1D = parseFloat($$changeRate1D)
+    o.$$changeRate52WH = parseFloat($$changeRate52WH)
+    o.$$changeRate52WL = parseFloat($$changeRate52WL)
+    o.$$vol24HBase = parseFloat($$vol24HBase)
     o.$$code = $$code
-    o.$$prevClosingPrice = $$prevClosingPrice
+    o.$$prevClosingPrice = parseFloat($$prevClosingPrice)
     $store.getters.realTimeTickers[$$symbol] = o
   },
   calculateKimp: ({

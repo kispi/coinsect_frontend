@@ -2,12 +2,6 @@
   <div
     class="app-chat-message"
     :class="{'mine': message.isMine}">
-    <img
-      v-if="message.profile"
-      :src="message.profile.image"
-      :alt="message.profile.nickname"
-      class="profile-image"
-    >
     <div class="content">
       <div
         v-if="message.profile"
@@ -37,12 +31,6 @@ export default {
 .app-chat-message {
   font-size: 12px;
   display: flex;
-
-  .profile-image {
-    margin-right: 8px;
-    width: 24px;
-    height: 24px;
-  }
 
   .content {
     width: 100%;
@@ -90,7 +78,6 @@ export default {
       flex-direction: row-reverse;
     }
 
-    .profile-image,
     .nickname {
       display: none;
     }

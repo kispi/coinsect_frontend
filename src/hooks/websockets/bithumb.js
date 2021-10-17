@@ -1,28 +1,33 @@
 import { getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
-const useUpbit = () => {
+const useBithumb = () => {
   const store = useStore()
 
   const plugins = getCurrentInstance().appContext.config.globalProperties
 
-  const dec = new TextDecoder('utf-8')
-
-  const eventAsJSON = event => JSON.parse(dec.decode(new Uint8Array(event.data)))
-
-  const setAsBasePrice = ({ symbol, json }) => {
+  const setAsBasePriceFromWebSocket = ({ symbol, json }) => {
     plugins.$helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
-      $$tradePriceBase: json.tp,
-      $$highest52WeekPrice: json.h52wp,
-      $$lowest52WeekPrice: json.l52wp,
-      $$changePrice24H: json.scp,
-      $$changeRate1D: Math.round(json.scr * 10000) / 100,
-      $$changeRate52WH: Math.round((json.tp - json.h52wp) / json.h52wp * 10000) / 100,
-      $$changeRate52WL: Math.round((json.tp - json.l52wp) / json.l52wp * 10000) / 100,
+      $$tradePriceBase: json.closePrice,
+      $$changePrice24H: json.chgAmt,
+      $$changeRate1D: (json.chgRate * 100) / 100,
       $$vol24HBase: json.atp24h,
-      $$code: json.cd,
-      $$prevClosingPrice: json.pcp,
+      $$code: json.symbol,
+      $$prevClosingPrice: json.prevClosePrice,
+    })
+  }
+
+  // 엥간하면 웹소켓이랑 맞추지 빗썸놈들 ㅡㅡ
+  const setAsBasePriceFromRestAPI = ({ symbol, json }) => {
+    plugins.$helpers.dataSetter.setPriceRow({
+      $$symbol: symbol,
+      $$tradePriceBase: json.closing_price,
+      $$changePrice24H: json.fluctate_24H,
+      $$changeRate1D: (json.fluctate_rate_24H * 100) / 100,
+      $$vol24HBase: json.units_traded_24H,
+      $$code: symbol,
+      $$prevClosingPrice: json.prev_closing_price,
     })
   }
 
@@ -48,7 +53,7 @@ const useUpbit = () => {
     })
 
     store.commit('setOrderbook', {
-      exchange: 'upbit',
+      exchange: 'bithumb',
       market: json.cd,
       orderbook: {
         $$code: json.cd,
@@ -69,37 +74,36 @@ const useUpbit = () => {
     })}% / ` : 'Connecting... '}${priceString} ${ticker.$$symbol}`
   }
 
-  const subscribe = ({ type, codes, $$raw }) => new Promise((resolve) => {
-    if (!type || !codes) return
+  const subscribe = ({ type, symbols, $$raw }) => new Promise((resolve) => {
+    if (!type || !symbols) return
 
-    const connection = new WebSocket('wss://api.upbit.com/websocket/v1')
-    connection.binaryType = 'arraybuffer'
+    const connection = new WebSocket('wss://pubwss.bithumb.com/pub/ws')
 
     connection.onopen = () => {
-      connection.send(JSON.stringify([{
-        ticket: 'coinsect-upbit',
-      }, {
-        type,
-        codes,
-      }, {
-        format: 'SIMPLE',
-      }]))
+      connection.send(JSON.stringify({
+        type: 'ticker',
+        symbols,
+        tickTypes: ['30M', '1H', '12H', '24H', 'MID'],
+      }))
 
       resolve(connection)
     }
 
     const handleTickerMessage = json => {
-      const symbol = json.cd.split('KRW-')[1]
-      setAsBasePrice({ symbol, json })
+      if (!json) return
+
+      const symbol = json.symbol.split('_KRW')[0]
+      setAsBasePriceFromWebSocket({ symbol, json })
       if (store.getters.settings.documentTitleTicker === symbol) setDocumentTitle(store.getters.realTimeTickers[symbol])
     }
 
-    connection.onmessage = event => {
+    connection.onmessage = event => {      
       try {
-        const json = eventAsJSON(event)
+        const data = JSON.parse(event.data)
+        const json = data.content
         if (type === 'ticker') {
           if ($$raw) {
-            store.commit('setRawWebsocketInfo', { exchange: 'upbit', market: json.cd, json })
+            store.commit('setRawWebsocketInfo', { exchange: 'bithumb', market: json.symbol, json })
             return
           }
 
@@ -113,10 +117,10 @@ const useUpbit = () => {
   })
 
   return {
-    eventAsJSON,
+    setAsBasePriceFromRestAPI,
     subscribe,
     setDocumentTitle,
   }
 }
 
-export default useUpbit
+export default useBithumb

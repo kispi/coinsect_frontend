@@ -9,13 +9,6 @@
       v-if="!$store.getters.settings.chatFolded"
       class="app-chat-container">
       <div class="app-chat-header">
-        <div
-          @click="openModalChangeProfile"
-          class="profile"
-          :class="{'o-0': Object.keys($store.getters.symbols).length === 0}">
-          <AppImg :src="profile.image"/>
-          <div class="nickname" v-html="profile.nickname"/>
-        </div>
         <div class="chat-settings">
           <div
             class="clickable-icon-wrapper"
@@ -40,7 +33,6 @@
           v-if="incomingMessage"
           @click="onClickIncomingMessageOverlay"
           class="incoming-message-overlay flex-row items-center">
-          <img :src="incomingMessage.profile.image" class="flex-wrap" :alt="incomingMessage.profile.nickname">
           <div class="flex-fill flex-row items-center">
             <div class="flex-fill">
               <div class="text flex-wrap lines-1" v-html="incomingMessage.text"/>
@@ -149,7 +141,6 @@ export default {
         options: {
           profile: {
             nickname: profile.value.nickname,
-            image: profile.value.image,
           },
         },
       }).then(result => {
@@ -291,21 +282,9 @@ export default {
 
   .app-chat-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: var(--app-chat-padding);
-
-    .profile {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .app-img {
-      width: 24px;
-      height: 24px;
-      margin-right: 8px;
-    }
 
     .nickname {
       color: var(--text-stress);
@@ -324,7 +303,6 @@ export default {
       .clickable-icon-wrapper {
         width: 24px;
         height: 24px;
-        // transform: rotate(180deg);
 
         &:not(:first-child) {
           margin-left: 8px;
@@ -362,11 +340,6 @@ export default {
       right: 12px;
       z-index: 1;
       cursor: pointer;
-
-      img {
-        width: 24px;
-        margin-right: 16px;
-      }
 
       .nickname {
         font-size: 12px;

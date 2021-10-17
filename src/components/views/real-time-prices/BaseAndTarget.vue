@@ -5,7 +5,10 @@
       <AppDropdown
         class="m-l-8"
         :dropdownItems="bases"
-        @select-dropdown-item="o => $emit('change-base-exchange', o.key)"
+        @select-dropdown-item="o => {
+          $store.commit('setSettings', { baseExchange: o.key })
+          $emit('change-base-exchange')
+        }"
       />
     </div>
     <div class="target-exchange">
@@ -13,7 +16,10 @@
       <AppDropdown
         class="m-l-8"
         :dropdownItems="targets"
-        @select-dropdown-item="o => $emit('change-target-exchange', o.key)"
+        @select-dropdown-item="o => {
+          $store.commit('setSettings', { targetExchange: o.key })
+          $emit('change-target-exchange')
+        }"
       />
     </div>
   </div>
@@ -21,12 +27,30 @@
 
 <script>
 import { ref } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   setup() {
-    const bases = ref(['upbit'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) })))
+    const store = useStore()
 
-    const targets = ref(['binance'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) })))
+    const bases = ref([{
+      key: 'upbit',
+      img: require('@/assets/images/upbit.svg'),
+    }, {
+      key: 'bithumb',
+      img: require('@/assets/images/bithumb.png'),
+    }].map(o => ({
+      ...o,
+      $$selected: o.key === store.getters.settings.baseExchange,
+    })))
+
+    const targets = ref([{
+      key: 'binance',
+      img: require('@/assets/images/binance.svg'),
+    }].map(o => ({
+      ...o,
+      $$selected: o.key === store.getters.settings.targetExchange,
+    })))
 
     return {
       bases,

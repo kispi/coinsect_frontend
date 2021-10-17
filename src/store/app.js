@@ -32,6 +32,8 @@ const app = {
       currency: 'krw',
       filter: 'all', // 'favorites'
       tradingview: 'show',
+      baseExchange: 'upbit',
+      targetExchange: 'binance',
       favorites: {},
       portfolio: {},
       chatFolded: false,
@@ -153,8 +155,8 @@ const app = {
     // 앱 뜰 때 필요한 정보들 쭉 콜함
     async bootstrap({ commit, dispatch }) {
       const loadAuthNotRequired = async () => Promise.all([
-        dispatch('loadMarkets', 'upbit'),
-        dispatch('loadMarkets', 'bybit'),
+        dispatch('loadMarkets'),
+        dispatch('loadSymbols'),
         dispatch('loadNotifications'),
       ])
 

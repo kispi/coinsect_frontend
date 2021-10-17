@@ -52,9 +52,7 @@ export default {
     const dropdownButton = ref(null)
 
     onMounted(() => {
-      if (!props.dropdownItems) return
-
-      onClickDropdownItem(props.dropdownItems[0])
+      if (selectedItem.value) onClickDropdownItem(selectedItem.value)
     })
 
     watch(

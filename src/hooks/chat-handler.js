@@ -18,7 +18,6 @@ const useChatHandler = () => {
 
   const profile = ref({
     nickname: null,
-    image: null,
   })
 
   const connection = ref(null)
@@ -33,11 +32,6 @@ const useChatHandler = () => {
     const randIdx = Math.floor(Math.random() * nicknameRecommendations.length)
     const randNo = Math.floor(Math.random() * 100 + 1)
     return `${nicknameRecommendations[randIdx]}${randNo}`.slice(0, 8)
-  }
-
-  const recommendSymbol = () => {
-    const randIdx = Math.floor(Math.random() * Object.keys(store.getters.symbols).length)
-    return Object.keys(store.getters.symbols)[randIdx]
   }
 
   const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
@@ -143,7 +137,6 @@ const useChatHandler = () => {
     } else {
       profile.value = {
         nickname: recommendNickname(),
-        image: `https://static.upbit.com/logos/${recommendSymbol() || 'BTC'}.png`,
       }
     }
 

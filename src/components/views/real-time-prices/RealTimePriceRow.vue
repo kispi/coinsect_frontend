@@ -4,9 +4,9 @@
     class="real-time-price-row">
     <td class="ticker-symbol">
       <div class="image-name">
-        <SCoin :symbol="ticker.$$symbol" class="flex-wrap m-r-8"/>
+        <AppImg :src="($store.getters.symbols[ticker.$$symbol] || {}).thumb" class="flex-wrap m-r-8"/>
         <div
-          v-html="ticker.$$name[$store.getters.translation.locale]"
+          v-html="($store.getters.symbols[ticker.$$symbol] || {}).name"
           class="name lines-1"
           :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''"
         />
@@ -19,6 +19,7 @@
         />
         <div v-html="ticker.$$symbol" class="symbol"/>
         <img
+          v-if="$store.getters.settings.baseExchange === 'upbit'"
           class="exchange-logo"
           @click.stop="openModalOrderbook('upbit', `KRW-${ticker.$$symbol}`)"
           src="@/assets/images/upbit.svg"
@@ -58,14 +59,14 @@
       <div v-html="`${autoFrac(ticker.$$changeRate1D)}%`"/>
       <div v-html="$helpers.number.pretty.price({ price: ticker.$$changePrice24H, baseCurrency: 'krw' })"/>
     </td>
-    <td v-if="!$store.getters.isMobile" class="ticker-changes-52w-high">
+    <td v-if="!$store.getters.isMobile && $store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
       <div
         :class="priceColor(ticker.$$changeRate52WH)"
         v-html="`${autoFrac(ticker.$$changeRate52WH)}%`"
       />
       <div v-html="$helpers.number.pretty.price({ price: ticker.$$highest52WeekPrice, baseCurrency: 'krw' })"/>
     </td>
-    <td v-if="!$store.getters.isMobile" class="ticker-changes-52w-high">
+    <td v-if="!$store.getters.isMobile && $store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
       <div
         :class="priceColor(ticker.$$changeRate52WL)"
         v-html="`${autoFrac(ticker.$$changeRate52WL, 2)}%`"

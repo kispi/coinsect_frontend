@@ -49,7 +49,6 @@ const marketInfo = {
     },
     setMarkets(state, { markets, symbols }) {
       state.markets = markets
-      state.symbols = symbols
     },
     setOrderbook(state, { exchange, market, orderbook }) {
       state.orderbooks[exchange][market] = orderbook
@@ -62,6 +61,16 @@ const marketInfo = {
     },
     setRawWebsocketInfo(state, { exchange, market, json }) {
       state.rawWebsocketInfo[exchange][market] = json
+    },
+    setSymbols(state, coins) {
+      const symbols = {}
+      coins.forEach(coin => {
+        if (!symbols[coin.symbol]) symbols[coin.symbol] = coin
+      })
+      state.symbols = symbols
+    },
+    initRealTimeTickers(state) {
+      state.realTimeTickers = {}
     },
   },
   actions: {
@@ -101,18 +110,26 @@ const marketInfo = {
 
       try {
         const data = await $http.get('market_info/markets')
-        const symbols = {}
         data.upbit = data.upbit.filter(o => o.market.startsWith('KRW-'))
         data.upbit.forEach(o => {
           const symbol = o.market.split('-')[1]
           o.$$symbol = symbol
-          symbols[symbol] = { en: o.english_name, kr: o.korean_name }
         })
+        data.bithumb.forEach(o => o.$$symbol = o.symbol)
 
         commit('setMarkets', {
           markets: data,
-          symbols,
         })
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    async loadSymbols({ commit }) {
+      if (helpers.canSkipApiCall('loadSymbols')) return
+
+      try {
+        const { coins } = await $http.get('https://api.coingecko.com/api/v3/search?locale=ko')
+        commit('setSymbols', coins)
       } catch (e) {
         return Promise.reject(e)
       }

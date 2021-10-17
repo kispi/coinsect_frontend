@@ -3,7 +3,7 @@
     class="wrapper-dropdown-overlay"
     :class="displayNoneClassWhen"
     @mousedown="slideLeave">
-    <transition name="slide-down">
+    <transition name="fade">
       <div
         ref="tryToGetMyDirectChildDOM"
         v-show="prepared"

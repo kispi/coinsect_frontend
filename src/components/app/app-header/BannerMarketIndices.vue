@@ -31,9 +31,7 @@ export default {
       const o = store.getters.indices
       if (!o) return
 
-      const loc = store.getters.translation.locale
       const usdKrw = store.getters.usdKrw
-      const numUnits = store.getters.windowInnerWidth >= 992 ? 2 : 1
 
       return [{
         key: 'USD/KRW',

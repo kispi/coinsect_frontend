@@ -3,10 +3,6 @@
     v-if="$store.getters.realTimeTickers"
     class="real-time-prices">
     <div class="settings">
-      <BaseAndTarget
-        @change-base-exchange="e => baseExchange = e"
-        @change-target-exchange="e => targetExchange = e"
-      />
       <div class="total-and-search">
         <div>총 {{ displayedList.length }} 암호자산</div>
         <div class="input-wrapper">
@@ -38,8 +34,8 @@
               { column: '$$tradePriceBase', title: 'PRICE' },
               { column: '$$premiumRate', title: 'PREMIUM' },
               { column: '$$changeRate1D', title: 'CHANGE_RATE_1D' },
-              { column: '$$changeRate52WH', title: 'CHANGE_RATE_52W_HIGHEST', $$hide: $store.getters.isMobile },
-              { column: '$$changeRate52WL', title: 'CHANGE_RATE_52W_LOWEST', $$hide: $store.getters.isMobile },
+              { column: '$$changeRate52WH', title: 'CHANGE_RATE_52W_HIGHEST', $$hide: $store.getters.isMobile || $store.getters.settings.baseExchange !== 'upbit' },
+              { column: '$$changeRate52WL', title: 'CHANGE_RATE_52W_LOWEST', $$hide: $store.getters.isMobile || $store.getters.settings.baseExchange !== 'upbit'},
               { column: '$$vol24HBase', title: 'VOL_24' },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
@@ -62,17 +58,16 @@
 </template>
 
 <script>
-import { onMounted, ref, getCurrentInstance, watch, onUnmounted } from 'vue'
+import { onMounted, ref, getCurrentInstance, watch, onUnmounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import RealTimePriceRow from './RealTimePriceRow'
-import BaseAndTarget from './BaseAndTarget'
 import useUpbit from '@/hooks/websockets/upbit'
+import useBithumb from '@/hooks/websockets/bithumb'
 import useBinance from '@/hooks/websockets/binance'
 
 export default {
   components: {
     RealTimePriceRow,
-    BaseAndTarget,
   },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
@@ -83,18 +78,21 @@ export default {
 
     const { subscribe: subscribeUpbit } = useUpbit()
 
+    const { subscribe: subscribeBithumb, setAsBasePriceFromRestAPI } = useBithumb()
+
     const { subscribe: subscribeBinance } = useBinance()
 
     const connected = ref(null)
 
     const connections = ref({
       upbit: null,
+      bithumb: null,
       binance: null,
     })
 
-    const baseExchange = ref('upbit')
+    const baseExchange = computed(() => store.getters.settings.baseExchange)
 
-    const targetExchange = ref('binance')
+    const targetExchange = computed(() => store.getters.settings.targetExchange)
 
     const settings = ref(store.getters.settings)
 
@@ -131,14 +129,15 @@ export default {
       displayedList.value = Object.values(store.getters.realTimeTickers).filter(t => {
         if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
 
-        if (!keyword.value || !t.$$name) return t
+        const geckoName = (store.getters.symbols[t.$$symbol] || {}).name
+        if (!keyword.value || !geckoName) return t
 
         const lowered = keyword.value.toLowerCase()
 
-        return t.$$name.en.toLowerCase().includes(lowered) ||
+        return geckoName.toLowerCase().includes(lowered) ||
           t.$$symbol.toLowerCase().includes(lowered) ||
-          t.$$name.kr.includes(lowered) ||
-          plugins.$helpers.includesChosung(lowered, t.$$name.kr)
+          geckoName.includes(lowered) ||
+          plugins.$helpers.includesChosung(lowered, geckoName)
       }).sort((a, b) => {
         if (store.getters.settings.favorites[a.$$symbol] === store.getters.settings.favorites[b.$$symbol]) return sorter(a, b)
 
@@ -160,43 +159,53 @@ export default {
       if (refNotConnected.value) refNotConnected.value.click()
     }
 
+    const onConnected = (conn, exchange) => {
+      connections.value[exchange] = conn
+      connected.value = true
+
+      connections.value[exchange].onclose = () => {
+        connected.value = false
+        setTimeout(initByClickingButton, 1000)
+      }
+    }
+
     const subscriber = {
-      upbit: async () => subscribeUpbit(({
+      upbit: () => subscribeUpbit({
         type: 'ticker',
         codes: store.getters.markets.upbit.map(o => o.market),
-      })).then(conn => {
-        connections.value.upbit = conn
-        connected.value = true
+      }).then(conn => onConnected(conn, 'upbit')),
+      bithumb: () => subscribeBithumb({
+        type: 'ticker',
+        symbols: store.getters.markets.bithumb.map(o => `${o.symbol}_KRW`),
+        tickTypes: ['24H', 'MID'],
+      }).then(conn => onConnected(conn, 'bithumb')),
+      binance: () => subscribeBinance({
+        codes: store.getters.markets[baseExchange.value].map(o => `${(o.$$symbol || '').toLowerCase()}usdt@miniTicker`),
+      }).then(conn => onConnected(conn, 'binance')),
+    }
 
-        connections.value.upbit.onclose = () => {
-          connected.value = false
-          setTimeout(initByClickingButton, 1000)
-        }
-      }),
-      binance: async () => subscribeBinance({
-        codes: store.getters.markets.upbit.map(o => `${(o.$$symbol || '').toLowerCase()}usdt@miniTicker`),
-      }).then(conn => {
-        connections.value.binance = conn
-        connected.value = true
+    const prepareBithumb = () => {
+      if (!store.getters.markets.bithumb) return
 
-        connections.value.binance.onclose = () => {
-          connected.value = false
-          setTimeout(initByClickingButton, 1000)
-        }
+      store.getters.markets.bithumb.forEach(json => {
+        setAsBasePriceFromRestAPI({ symbol: json.symbol, json })
       })
     }
 
     const init = async () => {
+      store.commit('initRealTimeTickers')
+      if (baseExchange.value === 'bithumb') prepareBithumb()
       await store.dispatch('loadMarkets', baseExchange.value)
-      if (!connections.value.upbit || connections.value.upbit.readyState !== 1) subscriber.upbit()
-      if (!connections.value.binance || connections.value.binance.readyState !== 1) subscriber.binance()
+      if (!connections.value[baseExchange.value] || connections.value[baseExchange.value].readyState !== 1) subscriber[baseExchange.value]()
+      if (!connections.value[targetExchange.value] || connections.value[targetExchange.value].readyState !== 1) subscriber[targetExchange.value]()
     }
 
     onMounted(init)
 
     onUnmounted(() => {
-      if (connections.value.upbit) connections.value.upbit.close()
-      if (connections.value.binance) connections.value.binance.close()
+      Object.keys(connections.value).forEach(key => {
+        if (connections.value[key]) connections.value[key].close()
+      })
     })
 
     watch([
@@ -213,7 +222,10 @@ export default {
         // realTimeTicker가 모든 원화 마켓 길이만큼 채워지기 전에는 리스트를 계산하지 않는다 (성능)
         if (
           (Object.values(store.getters.realTimeTickers).length ===
-          store.getters.markets.upbit.filter(o => o.market.startsWith('KRW')).length)
+          store.getters.markets[baseExchange.value].filter(o => {
+            if (baseExchange.value === 'upbit') return o.market.includes('KRW')
+            if (baseExchange.value === 'bithumb') return true
+          }).length)
         ) {
           recalcDisplayedList()
           unwatch()
