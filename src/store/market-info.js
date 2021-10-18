@@ -62,11 +62,7 @@ const marketInfo = {
     setRawWebsocketInfo(state, { exchange, market, json }) {
       state.rawWebsocketInfo[exchange][market] = json
     },
-    setSymbols(state, coins) {
-      const symbols = {}
-      coins.forEach(coin => {
-        if (!symbols[coin.symbol]) symbols[coin.symbol] = coin
-      })
+    setSymbols(state, symbols) {
       state.symbols = symbols
     },
     initRealTimeTickers(state) {
@@ -128,8 +124,8 @@ const marketInfo = {
       if (helpers.canSkipApiCall('loadSymbols')) return
 
       try {
-        const { coins } = await $http.get('https://api.coingecko.com/api/v3/search?locale=ko')
-        commit('setSymbols', coins)
+        const symbols = await marketInfoService.symbols()
+        commit('setSymbols', symbols)
       } catch (e) {
         return Promise.reject(e)
       }

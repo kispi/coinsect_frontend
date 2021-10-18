@@ -4,9 +4,9 @@
     class="real-time-price-row">
     <td class="ticker-symbol">
       <div class="image-name">
-        <AppImg :src="($store.getters.symbols[ticker.$$symbol] || {}).thumb" class="flex-wrap m-r-8"/>
+        <AppImg :src="symbol.thumb" class="flex-wrap m-r-8"/>
         <div
-          v-html="($store.getters.symbols[ticker.$$symbol] || {}).name"
+          v-html="symbol[$store.getters.translation.locale] || symbol.en"
           class="name lines-1"
           :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''"
         />
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
+import { getCurrentInstance, computed } from 'vue'
 import { useStore } from 'vuex'
 import useUpbit from '@/hooks/websockets/upbit'
 
@@ -91,6 +91,8 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
+
+    const symbol = computed(() => store.getters.symbols[props.ticker.$$symbol] || {})
 
     const { setDocumentTitle } = useUpbit()
 
@@ -139,6 +141,7 @@ export default {
     }
 
     return {
+      symbol,
       autoFrac,
       priceColor,
       openModalOrderbook,
