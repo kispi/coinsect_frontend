@@ -129,15 +129,14 @@ export default {
       displayedList.value = Object.values(store.getters.realTimeTickers).filter(t => {
         if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
 
-        const geckoName = (store.getters.symbols[t.$$symbol] || {}).name
+        const geckoName = store.getters.symbols[t.$$symbol] || {}
         if (!keyword.value || !geckoName) return t
 
         const lowered = keyword.value.toLowerCase()
-
-        return geckoName.toLowerCase().includes(lowered) ||
-          t.$$symbol.toLowerCase().includes(lowered) ||
-          geckoName.includes(lowered) ||
-          plugins.$helpers.includesChosung(lowered, geckoName)
+        return (geckoName.en || '').toLowerCase().includes(lowered) ||
+          (geckoName.kr || '').includes(lowered) ||
+          plugins.$helpers.includesChosung(lowered, geckoName.kr) ||
+          t.$$symbol.toLowerCase().includes(lowered)
       }).sort((a, b) => {
         if (store.getters.settings.favorites[a.$$symbol] === store.getters.settings.favorites[b.$$symbol]) return sorter(a, b)
 
