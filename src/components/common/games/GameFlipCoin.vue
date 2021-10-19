@@ -21,7 +21,7 @@
           :key="idx"
           v-for="(coin, idx) in coins">
           <div class="coin-container-inner">
-            <AppImg :src="($store.getters.symbols[coin.symbol] || {}).large" class="card-front overlay"/>
+            <AppImg :src="($store.getters.symbols[coin.symbol] || {}).thumb" class="card-front overlay"/>
             <div class="card-back overlay"></div>
           </div>
         </div>

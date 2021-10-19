@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, nextTick, watch, onMounted } from 'vue'
+import { ref, getCurrentInstance, nextTick, watch, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppChatMessage from './AppChatMessage'
 import DailySeparator from './DailySeparator'
@@ -120,6 +120,7 @@ export default {
       profile,
       messages,
       sendWebsocketMessage,
+      loadMessages,
     } = useChatHandler()
 
     const onKeydown = e => {
@@ -177,9 +178,11 @@ export default {
 
     const autoScrollable = ref(true)
 
-    const onScroll = e => {
+    const onScroll = async e => {
       const dom = e.target
       autoScrollable.value = dom.scrollHeight <= dom.scrollTop + dom.clientHeight + 320
+
+      if (dom.scrollTop === 0) await loadMessages()
 
       if (autoScrollable.value && incomingMessage.value) incomingMessage.value = null
     }
@@ -202,19 +205,15 @@ export default {
       nextTick(() => dom.scrollTop = dom.scrollHeight)
     }
 
-    // 새 메시지가 왔을 떄
-    watch(
-      () => messages.value.length,
-      () => {
-        if (autoScrollable.value) {
-          scrollToBottom()
-        } else {
-          showIncomingMessageOverlay()
-        }
-        
-        if (refFoldedIcon.value) plugins.$helpers.animate.shakeY(refFoldedIcon.value)
-      },
-    )
+    const onIncomingMessage = () => {
+      if (autoScrollable.value) {
+        scrollToBottom()
+      } else {
+        showIncomingMessageOverlay()
+      }
+      
+      if (refFoldedIcon.value) plugins.$helpers.animate.shakeY(refFoldedIcon.value)
+    }
 
     watch(
       () => store.getters.settings.chatFolded,
@@ -223,7 +222,16 @@ export default {
       },
     )
 
-    onMounted(init)
+    onMounted(() => {
+      init()
+      plugins.$bus.$on('incoming-message', onIncomingMessage)
+      plugins.$bus.$on('first-load-messages', scrollToBottom)
+    })
+
+    onUnmounted(() => {
+      plugins.$bus.$off('incoming-message', onIncomingMessage)
+      plugins.$bus.$off('first-load-messages', scrollToBottom)
+    })
 
     return {
       refFoldedIcon,

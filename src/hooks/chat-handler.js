@@ -24,6 +24,8 @@ const useChatHandler = () => {
 
   const connected = ref(null)
 
+  const loadingMessages = ref(null)
+
   const pingInterv = ref(null)
 
   const token = ref(null)
@@ -42,20 +44,15 @@ const useChatHandler = () => {
     return prevMessage && curMessage && (d(prevMessage.timestamp) !== d(curMessage.timestamp))
   }
 
-  const addMessage = message => {
-    const prevMessage = messages.value[messages.value.length - 1]
-    const curMessage = {
-      profile: (message.user || {}).profile,
-      token: (message.user || {}).token,
-      isMine: (message.user || {}).token === token.value,
-      text: message.text,
-      timestamp: message.ts,
-      type: message.type,
-    }
-
-    curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
-    messages.value.push(curMessage)
-  }
+  const preparedMessage = message => ({
+    id: message.id,
+    profile: (message.user || {}).profile,
+    token: (message.user || {}).token,
+    isMine: (message.user || {}).token === token.value,
+    text: message.text,
+    timestamp: message.ts,
+    type: message.type,
+  })
 
   const sendWebsocketMessage = message => {
     message.user = {
@@ -75,9 +72,16 @@ const useChatHandler = () => {
   const handleMessage = message => {
     switch (message.type) {
       case 'alert':
-      case 'text':
-        addMessage(message)
+      case 'text': {
+        const curMessage = preparedMessage(message)
+        const prevMessage = messages.value[messages.value.length - 1]
+        curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
+
+        // 여기서는 배열의 끝에 넣는 것이므로 Array.push가 맞음
+        messages.value.push(curMessage)
+        plugins.$bus.$emit('incoming-message', curMessage)
         break
+      }
       case 'auth':
         token.value = message.user.token
         setLocalAccount()
@@ -89,7 +93,7 @@ const useChatHandler = () => {
 
   const connect = async () => {
     try {
-      await loadRecentMessages()
+      await loadMessages()
     } catch (e) {}
 
     const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
@@ -121,12 +125,26 @@ const useChatHandler = () => {
     }
   }
 
-  const loadRecentMessages = async () => {
+  const loadMessages = async () => {
+    if (loadingMessages.value) return
+
+    const firstMessageId = (messages.value[0] || {}).id
     try {
-      const data = await plugins.$http.get('messages/latest')
-      messages.value = []
-      data.forEach(addMessage)
-    } catch (e) {}
+      loadingMessages.value = true
+      const data = await plugins.$http.get('messages', { params: { firstMessageId } })
+      data.forEach(message => messages.value.unshift(preparedMessage(message)))
+      messages.value.forEach((_, idx) => {
+        const prevMessage = messages.value[idx - 1]
+        const curMessage = messages.value[idx]
+        if (prevMessage && curMessage) curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
+      })
+
+      if (!firstMessageId) {
+        plugins.$bus.$emit('first-load-messages')
+      }
+    } finally {
+      loadingMessages.value = false
+    }
   }
 
   const init = () => {
@@ -151,6 +169,7 @@ const useChatHandler = () => {
     connected,
     profile,
     messages,
+    loadMessages,
     setLocalAccount,
     recommendNickname,
     sendWebsocketMessage,
