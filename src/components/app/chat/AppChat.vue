@@ -9,6 +9,11 @@
       v-if="!$store.getters.settings.chatFolded"
       class="app-chat-container">
       <div class="app-chat-header">
+        <div
+          @click="openModalChangeProfile"
+          class="profile">
+          <div class="nickname" v-html="profile.nickname"/>
+        </div>
         <div class="chat-settings">
           <div
             class="clickable-icon-wrapper"
@@ -290,7 +295,7 @@ export default {
 
   .app-chat-header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding: var(--app-chat-padding);
 
@@ -298,6 +303,7 @@ export default {
       color: var(--text-stress);
       margin-right: 16px;
       font-weight: 700;
+      cursor: pointer;
 
       &:hover {
         text-decoration: underline;
