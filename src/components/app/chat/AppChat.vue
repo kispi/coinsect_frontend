@@ -440,7 +440,7 @@ export default {
       padding: 4px;
       border-radius: 12px;
       background: var(--danger);
-      color: var(--text-stress);
+      color: var(--white);
       position: absolute;
       top: 0;
       right: 0;
