@@ -1,9 +1,10 @@
 import $store from '@/store'
 
 const coin = {
-  pickCoins: (numCoinsToGenerate, withinTheseSymbols) => {
+  pickCoins: ({ numCoinsToGenerate, withinTheseSymbols, upbitOnly }) => {
     const o = {}
-    const pool = withinTheseSymbols || Object.keys($store.getters.symbols)
+    const pool = withinTheseSymbols || Object.keys($store.getters.symbols).filter(o => upbitOnly ? o.kr : true)
+
     if (!pool) return
 
     for (let i = 0; i < 1000; i++) {

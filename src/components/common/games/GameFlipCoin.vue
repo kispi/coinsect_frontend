@@ -90,8 +90,8 @@ export default {
       }
     }
 
-    const shuffle = numCoins => {
-      const coinSet = plugins.$helpers.coin.pickCoins(numCoins)
+    const shuffle = numCoinsToGenerate => {
+      const coinSet = plugins.$helpers.coin.pickCoins({ numCoinsToGenerate, upbitOnly: true })
       coins.value = plugins.$helpers.shuffle([
         ...coinSet,
         ...coinSet,
