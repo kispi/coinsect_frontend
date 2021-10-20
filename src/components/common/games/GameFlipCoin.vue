@@ -21,7 +21,7 @@
           :key="idx"
           v-for="(coin, idx) in coins">
           <div class="coin-container-inner">
-            <AppImg :src="($store.getters.symbols[coin.symbol] || {}).thumb" class="card-front overlay"/>
+            <AppImg :src="coin.thumb" class="card-front overlay"/>
             <div class="card-back overlay"></div>
           </div>
         </div>
@@ -95,8 +95,9 @@ export default {
       coins.value = plugins.$helpers.shuffle([
         ...coinSet,
         ...coinSet,
-      ]).map(symbol => ({
-        symbol,
+      ]).map(([key, value]) => ({
+        symbol: key,
+        thumb: value.thumb, 
         $$flipped: true,
       }))
     }
