@@ -112,7 +112,6 @@ export default {
     }, {
       title: 'COMMUNITY',
       path: '/community',
-      $$new: true,
     }, {
       title: 'PORTFOLIO',
       path: '/portfolio',

@@ -87,12 +87,17 @@
       @click="toggleChatFolded"
       class="icon-folded">
       <i class="fal fa-comment-dots"/>
+      <div
+        v-if="numUnreads"
+        class="badge-unreads center">
+        {{ numUnreads > 999 ? '999+' : numUnreads }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, getCurrentInstance, nextTick, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, getCurrentInstance, nextTick, watch, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppChatMessage from './AppChatMessage'
 import DailySeparator from './DailySeparator'
@@ -107,6 +112,18 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
+
+    const lastReadMessage = ref(null)
+
+    const numUnreads = computed(() => {
+      if ((messages.value || []).length === 0) return 0
+
+      return messages.value.filter(message => {
+        if (!lastReadMessage.value) return
+
+        return message.timestamp > lastReadMessage.value.timestamp
+      }).length
+    })
 
     const refFoldedIcon = ref(null)
 
@@ -209,6 +226,9 @@ export default {
     }
 
     const scrollToBottom = () => {
+      // 바닥까지 스크롤된 경우 당연히 마지막 메시지가 최종 읽은 메시지이다.
+      lastReadMessage.value = messages.value[messages.value.length - 1]
+
       const dom = refAppChatBody.value
       if (!dom) return
 
@@ -216,13 +236,15 @@ export default {
     }
 
     const onIncomingMessage = () => {
+      if (store.getters.settings.chatFolded) return
+
+      // 채팅창이 열려있는 경우의 처리
       if (autoScrollable.value) {
         scrollToBottom()
       } else {
         showIncomingMessageOverlay()
       }
-      
-      if (refFoldedIcon.value) plugins.$helpers.animate.shakeY(refFoldedIcon.value)
+      lastReadMessage.value = messages.value[messages.value.length - 1]
     }
 
     watch(
@@ -233,9 +255,10 @@ export default {
     )
 
     onMounted(() => {
-      init()
       plugins.$bus.$on('incoming-message', onIncomingMessage)
-      plugins.$bus.$on('first-load-messages', scrollToBottom)
+      plugins.$bus.$on('first-load-messages', scrollToBottom) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
+
+      init()
     })
 
     onUnmounted(() => {
@@ -247,6 +270,7 @@ export default {
       refFoldedIcon,
       refTextarea,
       refAppChatBody,
+      numUnreads,
       connected,
       profile,
       text,
@@ -290,6 +314,7 @@ export default {
     margin: auto;
     background: var(--border-base);
     height: 400px;
+    max-height: calc(100vh - 16px); // 100vh - 2 * bottom padding
     transition: none;
     position: relative;
 
@@ -407,6 +432,18 @@ export default {
     .fa-comment-dots {
       font-size: 32px;
       color: var(--white);
+    }
+
+    .badge-unreads {
+      min-width: 24px;
+      min-height: 24px;
+      padding: 4px;
+      border-radius: 12px;
+      background: var(--danger);
+      color: var(--text-stress);
+      position: absolute;
+      top: 0;
+      right: 0;
     }
 
     &:hover {
