@@ -26,6 +26,8 @@ const useChatHandler = () => {
 
   const loadingMessages = ref(null)
 
+  const fullyLoaded = ref(null)
+
   const pingInterv = ref(null)
 
   const token = ref(null)
@@ -126,12 +128,17 @@ const useChatHandler = () => {
   }
 
   const loadMessages = async () => {
-    if (loadingMessages.value) return
+    if (loadingMessages.value || fullyLoaded.value) return
 
     const firstMessageId = (messages.value[0] || {}).id
     try {
       loadingMessages.value = true
       const data = await plugins.$http.get('messages', { params: { firstMessageId } })
+      if ((data || []).length === 0) {
+        fullyLoaded.value = true
+        return
+      }
+
       data.forEach(message => messages.value.unshift(preparedMessage(message)))
       messages.value.forEach((_, idx) => {
         const prevMessage = messages.value[idx - 1]

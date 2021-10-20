@@ -16,10 +16,10 @@
       </div>
     </div>
     <div
-      v-if="!connected"
+      v-if="!connected || !$store.getters.symbols || !$store.getters.markets"
       ref="refNotConnected"
       class="not-connected"
-      @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('CONNECTING_TO_EXCHANGES') }}</div>
+      @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('PREPARING_REAL_TIME_PRICES') }}</div>
     </div>
     <table v-else>
       <thead>

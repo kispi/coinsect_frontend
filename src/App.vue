@@ -4,7 +4,6 @@
     class="app-body"
     :class="['no-scrollbar']">
     <RouterView v-if="prepared" class="router-view-container"/>
-    <AppLoading :loading="!prepared"/>
     <AppFooter/>
   </div>
   <AppAddons/>

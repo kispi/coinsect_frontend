@@ -32,7 +32,7 @@
       </div>
       <div
         ref="refAppChatBody"
-        class="app-chat-body no-scrollbar"
+        class="app-chat-body"
         @scroll="onScroll">
         <div
           v-if="incomingMessage"
@@ -187,7 +187,12 @@ export default {
       const dom = e.target
       autoScrollable.value = dom.scrollHeight <= dom.scrollTop + dom.clientHeight + 320
 
-      if (dom.scrollTop === 0) await loadMessages()
+      if (dom.scrollTop === 0) {
+        // 더 불러와진 과거의 메시지들이 추가되면 현재 위치로 다시 스크롤 위치를 맞춰줘야함
+        const previousScrollHeight = dom.scrollHeight
+        await loadMessages()
+        dom.scrollTop = dom.scrollHeight - previousScrollHeight
+      }
 
       if (autoScrollable.value && incomingMessage.value) incomingMessage.value = null
     }
