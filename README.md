@@ -1,4 +1,4 @@
-# Coinsect Mall Frontend
+# Coinsect Frontend
 
 ## Project setup
 ```
