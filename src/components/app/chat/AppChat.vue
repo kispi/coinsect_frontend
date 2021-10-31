@@ -32,7 +32,7 @@
       </div>
       <div
         ref="refAppChatBody"
-        class="app-chat-body"
+        class="app-chat-body no-scrollbar"
         @scroll="onScroll">
         <div
           v-if="incomingMessage"
