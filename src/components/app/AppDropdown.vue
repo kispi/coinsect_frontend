@@ -61,6 +61,7 @@ export default {
         if (!newVal) return
 
         onClickDropdownItem(newVal[0])
+        console.log('dlrp dufjqjs?')
       },
     )
 

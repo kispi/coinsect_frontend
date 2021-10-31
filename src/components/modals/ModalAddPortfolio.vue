@@ -48,7 +48,7 @@ export default {
 
     const store = useStore()
 
-    const exchanges = ref(['upbit', 'binance'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) })))
+    const exchanges = ref([])
 
     const sortedMarkets = ref([])
 
@@ -123,7 +123,10 @@ export default {
       populateMarkets,
     )
 
-    onMounted(populateMarkets)
+    onMounted(() => {
+      exchanges.value = ['upbit', 'binance'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) }))
+      populateMarkets()
+    })
 
     return {
       exchanges,
