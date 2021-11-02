@@ -2,6 +2,7 @@ import * as $http from 'axios'
 import helpers from '@/helpers'
 
 const crudTargets = [
+  'person',
   'post',
   'reply',
 ].map(key => ({

@@ -48,6 +48,7 @@ const helpers = {
   meta,
   animate,
   dataSetter,
+  imageUrl: `https://coinsect-production.s3.ap-northeast-2.amazonaws.com/`,
   canSkipApiCall,
   qb: querybuilder,
   translate,

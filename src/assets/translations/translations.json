@@ -87,9 +87,17 @@
     "en": "Indicators",
     "kr": "지표"
   },
+  "INFO": {
+    "en": "Info",
+    "kr": "정보"
+  },
   "LEADERBOARD": {
     "en": "Leaderboard",
     "kr": "리더보드"
+  },
+  "INFLUENCERS": {
+    "en": "Influencers",
+    "kr": "인플루언서"
   },
   "RANK": {
     "en": "Rank",

@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import app from './app'
+import content from './content'
 import marketInfo from './market-info'
 import post from './post'
 import translation from './translation'
@@ -7,6 +8,7 @@ import user from './user'
 
 const initialState = {
   app: app.state,
+  content: app.content,
   marketInfo: marketInfo.state,
   post: post.state,
   translation: translation.state,
@@ -16,6 +18,7 @@ const initialState = {
 const store = createStore({
   modules: {
     app,
+    content,
     marketInfo,
     post,
     translation,

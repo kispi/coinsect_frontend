@@ -109,15 +109,16 @@ export default {
     }, {
       title: 'INDICATORS',
       path: '/indicators/leaderboard',
+    // }, {
+    //   title: 'INFO',
+    //   path: '/info/influencers',
+    //   $$new: true,
     }, {
       title: 'COMMUNITY',
       path: '/community',
     }, {
       title: 'PORTFOLIO',
       path: '/portfolio',
-    }, {
-      title: 'GAMES',
-      path: '/games',
     }, {
       title: 'UPDATES',
       path: '/updates',

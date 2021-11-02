@@ -1,9 +1,9 @@
 <template>
   <div class="view-indicators view-layout-default">
-    <div class="indicators">
+    <div class="sub-header-items">
       <div
         @click="$router.push(indicator.path)"
-        class="indicator"
+        class="sub-header-item"
         :class="{'selected': indicator.path === $route.path}"
         :key="indicator.path"
         v-for="indicator in indicators">
