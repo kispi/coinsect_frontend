@@ -123,7 +123,10 @@ const useChatHandler = () => {
     connection.value.onclose = () => {
       connected.value = false
       clearInterval(pingInterv.value)
-      setTimeout(connect, 1000)
+      setTimeout(() => {
+        messages.value = []
+        connect()
+      }, 1000)
     }
   }
 
