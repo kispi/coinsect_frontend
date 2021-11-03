@@ -47,7 +47,7 @@ const marketInfo = {
     setMarketcaps(state, marketcaps) {
       state.marketcaps = marketcaps
     },
-    setMarkets(state, { markets, symbols }) {
+    setMarkets(state, markets) {
       state.markets = markets
     },
     setOrderbook(state, { exchange, market, orderbook }) {
@@ -112,10 +112,7 @@ const marketInfo = {
           o.$$symbol = symbol
         })
         data.bithumb.forEach(o => o.$$symbol = o.symbol)
-
-        commit('setMarkets', {
-          markets: data,
-        })
+        commit('setMarkets', data)
       } catch (e) {
         return Promise.reject(e)
       }

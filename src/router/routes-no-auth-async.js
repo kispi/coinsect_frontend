@@ -13,7 +13,10 @@ const andSoOn = [{
     description: '워뇨띠 포지션, 리더보드, 시가 총액 등...',
   },
 }, {
-  path: '/info/:key',
+  path: '/info/:a',
+  component: () => import(/* webpackChunkName: 'view-info' */ '@/components/views/info/ViewInfo'),
+}, {
+  path: '/info/:a/:b',
   component: () => import(/* webpackChunkName: 'view-info' */ '@/components/views/info/ViewInfo'),
 }, {
   path: '/community',

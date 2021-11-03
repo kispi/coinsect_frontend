@@ -2,11 +2,12 @@
   <div class="view-influencers">
     <div class="grid">
       <div
+        @click="$router.push(`/info/influencers/${item.$$key}`)"
         class="influencer"
         :key="item.id"
         v-for="item in items">
         <div class="image-container">
-          <AppImg :src="`${$helpers.imageUrl}${item.images[0].key}`" class="overlay"/>
+          <AppImg :src="$helpers.useS3(item.images[0].key)" class="overlay"/>
         </div>
         <div class="influencer-name">{{ item.name }}</div>
       </div>
@@ -24,9 +25,7 @@ export default {
 
     const items = computed(() => (store.getters.influencers || {}).data || [])
 
-    const loadInfluencers = () => {
-      store.dispatch('loadInfluencers')
-    }
+    const loadInfluencers = () => store.dispatch('loadInfluencers')
 
     onMounted(loadInfluencers)
 

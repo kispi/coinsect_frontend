@@ -1,4 +1,5 @@
 import crudService from '@/services/crud'
+import helpers from '@/helpers'
 
 const marketInfo = {
   state: () => ({
@@ -14,9 +15,18 @@ const marketInfo = {
   },
   actions: {
     async loadInfluencers({ commit }) {
+      if (helpers.canSkipApiCall('loadInfluencers', 60)) return
+
       try {
-        const data = await crudService.person.all()
-        commit('setInfluencers', data)
+        const resp = await crudService.person.all()
+        resp.data.forEach(o => {
+          o.$$key = (o.name || '').toLowerCase().replace(/ /g, '-')
+          try {
+            o.$$description = JSON.parse(o.description)
+            o.$$bio = JSON.parse(o.bio)
+          } catch (e) {}
+        })
+        commit('setInfluencers', resp)
       } catch (e) {
         return Promise.reject(e)
       }

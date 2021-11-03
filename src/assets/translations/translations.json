@@ -278,5 +278,25 @@
   "NOTICE": {
     "en": "Notice",
     "kr": "공지"
+  },
+  "BIRTH": {
+    "en": "Birth",
+    "kr": "생년"
+  },
+  "NATIONALITY": {
+    "en": "Nationality",
+    "kr": "국적"
+  },
+  "ESTIMATED_NET_WORTH": {
+    "en": "Estimated Net Worth",
+    "kr": "추정자산"
+  },
+  "CAREER": {
+    "en": "Career",
+    "kr": "커리어"
+  },
+  "QUOTES": {
+    "en": "Quotes",
+    "kr": "말말말"
   }
 }

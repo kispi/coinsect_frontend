@@ -4,7 +4,7 @@
       <div
         @click="$router.push(indicator.path)"
         class="sub-header-item"
-        :class="{'selected': indicator.path === $route.path}"
+        :class="{'selected': $router.currentRoute.value.path.includes(indicator.path)}"
         :key="indicator.path"
         v-for="indicator in indicators">
         {{ $translate(indicator.title) }}
@@ -21,6 +21,7 @@ import { useRouter } from 'vue-router'
 export default {
   components: {
     ViewInfluencers: defineAsyncComponent(() => import('./influencers/ViewInfluencers')),
+    ViewInfluencerDetail: defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail')),
   },
   setup() {
     const router = useRouter()
@@ -33,6 +34,7 @@ export default {
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/info/influencers') return 'ViewInfluencers'
+      if (p.startsWith('/info/influencers/')) return 'ViewInfluencerDetail'
     })
 
     return {
@@ -42,8 +44,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.view-info {
-}
-</style>
