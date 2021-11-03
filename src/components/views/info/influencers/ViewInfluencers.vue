@@ -1,8 +1,8 @@
 <template>
   <div class="view-influencers">
     <div class="grid">
-      <div
-        @click="$router.push(`/info/influencers/${item.$$key}`)"
+      <RouterLink
+        :to="`/info/influencers/${item.$$key}`"
         class="influencer"
         :key="item.id"
         v-for="item in items">
@@ -10,7 +10,7 @@
           <AppImg :src="$helpers.useS3(item.images[0].key)" class="overlay"/>
         </div>
         <div class="influencer-name">{{ item.name }}</div>
-      </div>
+      </RouterLink>
     </div>
   </div>
 </template>
