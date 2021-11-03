@@ -1,6 +1,6 @@
 <template>
   <div class="app-notifications">
-    <div class="notifications-list">
+    <div class="notifications-list pretty-scrollbar">
       <div
         @click="onClickNotificationItem(notification)"
         class="notification-item"
@@ -66,9 +66,15 @@ export default {
   width: 360px;
   max-width: calc(100vw - 32px);
   color: var(--text-stress);
+  display: flex;
+
+  .notifications-list {
+    overflow-y: auto;
+    max-height: 400px;
+  }
 
   .notification-item {
-    padding: 12px 8px;
+    padding: 12px 16px 12px 8px;
     user-select: none;
 
     .notification-header {

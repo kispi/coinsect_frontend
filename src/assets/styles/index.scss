@@ -38,6 +38,18 @@
   }
 }
 
+.pretty-scrollbar {
+  &::-webkit-scrollbar {
+    width: 8px;
+    background: var(--white);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--brand-primary);
+    border-radius: 4px;
+  }
+}
+
 u {
   text-decoration: underline;
 }

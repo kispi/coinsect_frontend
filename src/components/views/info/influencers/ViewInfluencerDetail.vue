@@ -39,9 +39,9 @@
         <ul class="value">
           <li
             :key="career"
-            v-for="career in influencer.$$bio.career"
-            v-html="career"
-          />
+            v-for="career in influencer.$$bio.career">
+            - {{ career }}
+          </li>
         </ul>
       </div>
       <div
@@ -51,9 +51,9 @@
         <ul class="value">
           <li
             :key="quote"
-            v-for="quote in influencer.$$bio.quotes"
-            v-html="quote"
-          />
+            v-for="quote in influencer.$$bio.quotes">
+            - {{ quote }}
+          </li>
         </ul>
       </div>
       <div

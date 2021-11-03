@@ -38,6 +38,8 @@ export default {
 
 <style lang="scss" scoped>
 .view-influencers {
+  padding-bottom: 40px;
+
   .grid {
     display: grid;
     grid-gap: 24px;
