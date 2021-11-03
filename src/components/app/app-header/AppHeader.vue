@@ -43,7 +43,7 @@
           v-model="showNotifications"
           :align="'right'"
           :mountBelow="refIconNotifications">
-          <AppNotifications v-if="showNotifications"/>
+          <AppNotifications v-if="showNotifications" @close="showNotifications = false"/>
         </WrapperDropdownOverlay>
         <WrapperDropdownOverlay
           v-model="showSettings"

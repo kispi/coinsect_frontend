@@ -29,7 +29,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
-  setup() {
+  setup(_, { emit }) {
     const store = useStore()
 
     const router = useRouter()
@@ -39,10 +39,12 @@ export default {
 
       if (notification.link.startsWith('http')) {
         window.open(notification.link, '_blank')
+        emit('close')
         return
       }
 
       router.push(notification.link)
+      emit('close')
     }
 
     onMounted(() => {
@@ -79,7 +81,7 @@ export default {
       .notification-type {
         background: var(--brand-primary);
         color: var(--white);
-        padding: 4px 8px;
+        padding: 2px 8px;
         border-radius: 24px;
         text-transform: capitalize;
       }
