@@ -57,7 +57,7 @@
       <RouterLink
         class="menu-item"
         :class="{
-          'selected': $route.path.includes(menuItem.path),
+          'selected': ($route.path === '/' && menuItem.title === 'HOME') || $route.path.includes(menuItem.path),
         }"
         :to="menuItem.path"
         :key="menuItem.title"
