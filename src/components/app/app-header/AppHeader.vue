@@ -57,7 +57,7 @@
       <RouterLink
         class="menu-item"
         :class="{
-          'selected': (menuItem.path === $route.path) || (menuItem.title === 'INDICATORS' && $route.path.startsWith('/indicators')),
+          'selected': $route.path.includes(menuItem.path),
         }"
         :to="menuItem.path"
         :key="menuItem.title"
