@@ -57,7 +57,7 @@
       <RouterLink
         class="menu-item"
         :class="{
-          'selected': ($route.path === '/' && menuItem.title === 'HOME') || $route.path.includes(menuItem.path),
+          'selected': menuItem.$$selected,
         }"
         :to="menuItem.path"
         :key="menuItem.title"
@@ -71,6 +71,7 @@
 <script>
 import { computed, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
 import SettingsPanel from './SettingsPanel'
@@ -85,6 +86,8 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
+
+    const router = useRouter()
 
     const refIconSettings = ref(null)
 
@@ -103,7 +106,7 @@ export default {
       return (n.data || []).filter(o => d().diff(o.createdAt, 'hour') < 24).length
     })
 
-    const menuItems = [{
+    const menuItems = computed(() => [{
       title: 'HOME',
       path: '/',
     }, {
@@ -131,7 +134,18 @@ export default {
     // }, {
     //   title: 'ABOUT',
     //   path: '/about',
-    }]
+    }].map(o => {
+      const p = router.currentRoute.value.path
+
+      return {
+        ...o,
+        $$selected: (() => {
+          if (o.title === 'HOME') {
+            if (p === '/') return true
+          } else return p.startsWith(o.path)
+        })()
+      }
+    }))
 
     return {
       refIconNotifications,
