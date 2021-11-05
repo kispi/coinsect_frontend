@@ -14,7 +14,8 @@
     </div>
     <WrapperDropdownOverlay
       v-model="dropdownOpened"
-      :mountBelow="dropdownButton">
+      :mountBelow="dropdownButton"
+      :align="align">
       <ul>
         <li
           @click="onClickDropdownItem(item)"
@@ -36,7 +37,7 @@ import WrapperDropdownOverlay from './WrapperDropdownOverlay'
 
 export default {
   name: 'AppDropdown',
-  props: ['dropdownItems'],
+  props: ['dropdownItems', 'align'],
   components: { WrapperDropdownOverlay },
   setup(props, { emit }) {
     const onClickDropdownItem = clickedItem => {

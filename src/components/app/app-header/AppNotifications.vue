@@ -117,6 +117,7 @@ export default {
     flex-direction: column;
     align-items: center;
     padding: 40px;
+    margin: auto;
 
     .fa-bell {
       margin-bottom: 16px;

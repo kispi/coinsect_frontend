@@ -35,7 +35,7 @@ export default {
 .view-general {
   .site {
     border: 1px solid var(--border-base);
-    border-radius: 4px;
+    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
     overflow: hidden;
 
@@ -49,6 +49,7 @@ export default {
     font-size: 16px;
     font-weight: 700;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     color: var(--white);
     background: var(--brand-primary-bg);

@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss">
 .view-updates {
-  line-height: 18px;
+  line-height: 22px;
 
   ul {
     &:not(:last-child) {

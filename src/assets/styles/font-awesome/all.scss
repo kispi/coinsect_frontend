@@ -1602,9 +1602,9 @@ readers do not read off random characters that represent icons */
 //   content: "\f080";
 // }
 
-// .fa-chart-line:before {
-//   content: "\f201";
-// }
+.fa-chart-line:before {
+  content: "\f201";
+}
 
 // .fa-chart-line-down:before {
 //   content: "\f64d";

@@ -90,6 +90,8 @@ export default {
       binance: null,
     })
 
+    const intervRecalc = ref(null)
+
     const baseExchange = computed(() => store.getters.settings.baseExchange)
 
     const targetExchange = computed(() => store.getters.settings.targetExchange)
@@ -192,6 +194,9 @@ export default {
     }
 
     const init = async () => {
+      // 대충 정렬이 너무 오래 풀려있는걸 막기 위해 2초에 한번정도씩만 강제로 다시 그려준다
+      intervRecalc.value = setInterval(recalcDisplayedList, 2000)
+
       store.commit('initRealTimeTickers')
       if (baseExchange.value === 'bithumb') prepareBithumb()
       await store.dispatch('loadMarkets', baseExchange.value)
@@ -205,6 +210,8 @@ export default {
       Object.keys(connections.value).forEach(key => {
         if (connections.value[key]) connections.value[key].close()
       })
+
+      if (intervRecalc.value) clearInterval(intervRecalc.value)
     })
 
     watch([

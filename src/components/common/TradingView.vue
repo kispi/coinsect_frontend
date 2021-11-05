@@ -1,13 +1,12 @@
 <template>
   <div class="trading-view">
     <div class="trading-view-container">
-      <div id="tradingview_6f69e"/>
+      <div :id="`tradingview_upbit_${symbol}`"/>
     </div>
   </div>
 </template>
 
 <script>
-import helpers from '@/helpers'
 import { onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 
@@ -31,7 +30,7 @@ export default {
         toolbar_bg: '#f1f3f6',
         enable_publishing: false,
         allow_symbol_change: true,
-        container_id: 'tradingview_6f69e',
+        container_id: `tradingview_upbit_${props.symbol}`,
       })
     }
 

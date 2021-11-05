@@ -10,6 +10,7 @@
           class="name lines-1"
           :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''"
         />
+        <i @click.stop="tradingView.show = !tradingView.show" class="fa fa-chart-line"/>
       </div>
       <div class="functions">
         <i
@@ -78,10 +79,15 @@
       <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HTarget, baseCurrency: 'usd', numKorUnits: (ticker.$$vol24HTarget >= Math.pow(10, 8) && !$store.getters.isMobile) ? 2 : 1 })"/>
     </td>
   </tr>
+  <tr v-if="tradingView.show">
+    <td colspan="100%">
+      <TradingView :symbol="tradingView.symbol"/>
+    </td>
+  </tr>
 </template>
 
 <script>
-import { getCurrentInstance, computed } from 'vue'
+import { getCurrentInstance, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import useUpbit from '@/hooks/websockets/upbit'
 
@@ -93,6 +99,11 @@ export default {
     const store = useStore()
 
     const symbol = computed(() => store.getters.symbols[props.ticker.$$symbol] || {})
+
+    const tradingView = ref({
+      show: null,
+      symbol: `${store.getters.settings.baseExchange.toUpperCase()}:${props.ticker.$$symbol}KRW`,
+    })
 
     const { setDocumentTitle } = useUpbit()
 
@@ -141,6 +152,7 @@ export default {
     }
 
     return {
+      tradingView,
       symbol,
       autoFrac,
       priceColor,
@@ -162,9 +174,14 @@ export default {
 
     .image-name {
       display: flex;
+      align-items: center;
 
       img {
         width: 16px;
+      }
+
+      .fa-chart-line {
+        margin-left: 8px;
       }
     }
 

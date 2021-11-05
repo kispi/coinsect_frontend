@@ -16,6 +16,7 @@
       <AppDropdown
         class="m-l-8"
         :dropdownItems="targets"
+        :align="'right'"
         @select-dropdown-item="o => {
           $store.commit('setSettings', { targetExchange: o.key })
           $emit('change-target-exchange')
