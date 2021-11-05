@@ -1,15 +1,6 @@
 <template>
-  <div class="view-info view-layout-default">
-    <div class="sub-header-items">
-      <div
-        @click="$router.push(indicator.path)"
-        class="sub-header-item"
-        :class="{'selected': $router.currentRoute.value.path.includes(indicator.path)}"
-        :key="indicator.path"
-        v-for="indicator in indicators">
-        {{ $translate(indicator.title) }}
-      </div>
-    </div>
+  <div class="view-contents view-layout-default">
+    <SubHeader :items="contents"/>
     <component :is="selectedComponent"/>
   </div>
 </template>
@@ -26,19 +17,19 @@ export default {
   setup() {
     const router = useRouter()
 
-    const indicators = computed(() => [{
-      path: '/info/influencers',
+    const contents = computed(() => [{
+      path: '/contents/influencers',
       title: 'INFLUENCERS',
     }])
 
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
-      if (p === '/info/influencers') return 'ViewInfluencers'
-      if (p.startsWith('/info/influencers/')) return 'ViewInfluencerDetail'
+      if (p === '/contents/influencers') return 'ViewInfluencers'
+      if (p.startsWith('/contents/influencers/')) return 'ViewInfluencerDetail'
     })
 
     return {
-      indicators,
+      contents,
       selectedComponent,
     }
   },

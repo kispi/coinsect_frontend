@@ -27,48 +27,51 @@
         <loc>https://coinsect.io/indicators/marketcaps</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers</loc>
+        <loc>https://coinsect.io/indicators/general</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/alessio-rastani</loc>
+        <loc>https://coinsect.io/contents/influencers</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/carl-runefelt</loc>
+        <loc>https://coinsect.io/contents/influencers/alessio-rastani</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/chris-jaszczynski</loc>
+        <loc>https://coinsect.io/contents/influencers/carl-runefelt</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/michael-saylor</loc>
+        <loc>https://coinsect.io/contents/influencers/chris-jaszczynski</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/anup-dhungana</loc>
+        <loc>https://coinsect.io/contents/influencers/michael-saylor</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/anthony-pompliano</loc>
+        <loc>https://coinsect.io/contents/influencers/anup-dhungana</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/tyler-strejilevich</loc>
+        <loc>https://coinsect.io/contents/influencers/anthony-pompliano</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/sami-loyal</loc>
+        <loc>https://coinsect.io/contents/influencers/tyler-strejilevich</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/crypto-kirby</loc>
+        <loc>https://coinsect.io/contents/influencers/sami-loyal</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/lark-davis</loc>
+        <loc>https://coinsect.io/contents/influencers/crypto-kirby</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/benjamin-cowen</loc>
+        <loc>https://coinsect.io/contents/influencers/lark-davis</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/davinci-jeremie</loc>
+        <loc>https://coinsect.io/contents/influencers/benjamin-cowen</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/sunny-decree</loc>
+        <loc>https://coinsect.io/contents/influencers/davinci-jeremie</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/info/influencers/kiyoung-ju</loc>
+        <loc>https://coinsect.io/contents/influencers/sunny-decree</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/contents/influencers/kiyoung-ju</loc>
     </url>
 </urlset>

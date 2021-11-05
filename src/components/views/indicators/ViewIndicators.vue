@@ -1,15 +1,6 @@
 <template>
   <div class="view-indicators view-layout-default">
-    <div class="sub-header-items">
-      <div
-        @click="$router.push(indicator.path)"
-        class="sub-header-item"
-        :class="{'selected': indicator.path === $route.path}"
-        :key="indicator.path"
-        v-for="indicator in indicators">
-        {{ $translate(indicator.title) }}
-      </div>
-    </div>
+    <SubHeader :items="indicators"/>
     <component :is="selectedComponent"/>
   </div>
 </template>
@@ -31,19 +22,18 @@ export default {
       path: '/indicators/leaderboard',
       title: 'LEADERBOARD',
     }, {
-    //   {
-    //   path: '/indicators/general',
-    //   title: 'GENERAL',
-    // }, {
       path: '/indicators/marketcaps',
       title: 'MARKETCAPS',
+    }, {
+      path: '/indicators/general',
+      title: 'GENERAL',
     }])
 
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/indicators/leaderboard') return 'ViewLeaderboard'
-      if (p === '/indicators/general') return 'ViewGeneral'
       if (p === '/indicators/marketcaps') return 'ViewMarketcaps'
+      if (p === '/indicators/general') return 'ViewGeneral'
     })
 
     return {

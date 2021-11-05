@@ -112,9 +112,10 @@ export default {
     }, {
       title: 'INDICATORS',
       path: '/indicators/leaderboard',
+      $$new: true,
     }, {
-      title: 'INFO',
-      path: '/info/influencers',
+      title: 'CONTENTS',
+      path: '/contents/influencers',
       $$new: true,
     }, {
       title: 'COMMUNITY',
@@ -140,9 +141,13 @@ export default {
       return {
         ...o,
         $$selected: (() => {
-          if (o.title === 'HOME') {
-            if (p === '/') return true
-          } else return p.startsWith(o.path)
+          if (o.title === 'HOME') return p === '/'
+
+          if (o.title === 'INDICATORS') return p.startsWith('/indicators/')
+
+          if (o.title === 'CONTENTS') return p.startsWith('/contents/')
+
+          else return p.startsWith(o.path)
         })()
       }
     }))

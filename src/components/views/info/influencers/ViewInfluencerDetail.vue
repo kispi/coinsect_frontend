@@ -101,15 +101,15 @@ export default {
     const influencer = computed(() => {
       if (!store.getters.influencers) return
 
-      const key = router.currentRoute.value.path.split('/info/influencers/')[1]
+      const key = router.currentRoute.value.path.split('/contents/influencers/')[1]
       if (!key) {
-        router.push('/info/influencers')
+        router.push('/contents/influencers')
         return
       }
 
       const target = store.getters.influencers.data.find(o => o.sharingKey === key)
       if (!target) {
-        router.push('/info/influencers')
+        router.push('/contents/influencers')
         return
       }
 
