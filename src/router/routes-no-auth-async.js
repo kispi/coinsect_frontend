@@ -25,10 +25,10 @@ const andSoOn = [{
   path: '/community/write',
   component: () => import(/* webpackChunkName: 'view-post-write' */ '@/components/views/community/ViewPostWrite'),
 }, {
-  path: '/community/edit/:id',
+  path: '/community/edit/:sharingKey',
   component: () => import(/* webpackChunkName: 'view-post-edit' */ '@/components/views/community/ViewPostEdit'),
 }, {
-  path: '/community/:id',
+  path: '/community/:sharingKey',
   component: () => import(/* webpackChunkName: 'view-post' */ '@/components/views/community/ViewPost'),
   name: 'ViewPost',
 }, {

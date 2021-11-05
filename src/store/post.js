@@ -24,10 +24,10 @@ const post = {
     },
   },
   actions: {
-    async loadPost({ commit }, id) {
+    async loadPost({ commit }, sharingKey) {
       try {
         commit('setLoading', { post: true })
-        const data = await communityService.post.detail(id)
+        const data = await communityService.post.detail(sharingKey)
         data.$$numReplies = (data.replies || []).length
         data.replies = helpers.template.makeRecursiveReplies(data.replies)
         commit('setPost', data)

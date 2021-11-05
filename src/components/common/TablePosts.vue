@@ -96,7 +96,7 @@ export default {
     }
 
     const onClickRow = row => {
-      router.push(`/community/${row.id}`)
+      router.push(`/community/${row.sharingKey}`)
     }
 
     const loadPosts = p => {

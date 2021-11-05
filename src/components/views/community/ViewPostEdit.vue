@@ -24,7 +24,7 @@ export default {
 
     const post = computed(() => store.getters.post)
 
-    const id = router.currentRoute.value.params.id
+    const sharingKey = router.currentRoute.value.params.sharingKey
 
     const init = () => {
       store.commit('setPost', null)
@@ -35,11 +35,11 @@ export default {
             return
           }
 
-          communityService.checkPassword.post({ id, password: value })
-            .then(() => store.dispatch('loadPost', id))
+          communityService.checkPassword.post({ sharingKey, password: value })
+            .then(() => store.dispatch('loadPost', sharingKey))
             .catch(() => {
               plugins.$toast.error(plugins.$translate('INCORRECT_PASSWORD'))
-              router.push(`/community/${id}`)
+              router.push(`/community/${sharingKey}`)
             })
         })
     }

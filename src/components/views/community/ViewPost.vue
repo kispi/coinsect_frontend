@@ -24,7 +24,7 @@ export default {
 
     const loadPost = async () => {
       try {
-        await store.dispatch('loadPost', router.currentRoute.value.params.id)
+        await store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
       } catch (e) {
         plugins.$toast.error('존재하지 않는 게시글입니다')
         router.push('/community')
@@ -32,7 +32,7 @@ export default {
     }
 
     watch(
-      () => router.currentRoute.value.params.id,
+      () => router.currentRoute.value.params.sharingKey,
       (newVal, oldVal) => {
         if (newVal === oldVal) return
 

@@ -38,14 +38,14 @@ export default {
 
     const handlers = {
       write: () => router.push('/community/write'),
-      edit: () => router.push(`/community/edit/${post.value.id}`),
+      edit: () => router.push(`/community/edit/${post.value.sharingKey}`),
       delete: () => {
         plugins.$modal.input({ title: '게시글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
           .then(async password => {
             if (!password) return
 
             try {
-              await communityService.remove.post({ id: post.value.id, password })
+              await communityService.remove.post({ sharingKey: post.value.sharingKey, password })
               await store.dispatch('loadPosts')
               router.push('/community')
             } catch (e) {
