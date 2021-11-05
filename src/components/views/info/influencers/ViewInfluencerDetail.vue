@@ -107,7 +107,7 @@ export default {
         return
       }
 
-      const target = store.getters.influencers.data.find(o => (o.name || '').toLowerCase().replace(/ /g, '-') === key)
+      const target = store.getters.influencers.data.find(o => o.sharingKey === key)
       if (!target) {
         router.push('/info/influencers')
         return
