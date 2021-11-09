@@ -57,7 +57,7 @@ export default {
 
           try {
             await communityService.remove.reply({ id: reply.id, password })
-            store.dispatch('loadPost', router.currentRoute.value.params.id)
+            store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
             store.dispatch('loadPosts')
           } catch (e) {
             plugins.$toast.error(e.data.message)

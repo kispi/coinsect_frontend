@@ -72,7 +72,7 @@ export default {
 
       try {
         await crudService.reply.create(payload.value)
-        store.dispatch('loadPost', router.currentRoute.value.params.id)
+        store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
         store.dispatch('loadPosts')
       } catch (e) {
         if (plugins.$helpers.errorHandlers.bannedUser(e)) return
