@@ -6,7 +6,7 @@
     <div
       class="reply"
       :key="reply.id"
-      v-for="reply in replies.filter(o => !o.deletedAt || (o.replies || []).length > 0)">
+      v-for="reply in replies">
       <div class="reply-body">
         <div class="reply-header">
           <div class="writer" v-html="$helpers.template.writer(reply)"/>
