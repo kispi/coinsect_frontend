@@ -121,7 +121,7 @@ const helpers = {
     return JSON.stringify(foundIndices) === JSON.stringify(orderedIndices)
   },
   canModify: postOrReply => {
-    if (!postOrReply) return
+    if (!postOrReply || postOrReply.deletedAt) return
 
     // 게시글 또는 댓글의 작성자가 나이거나, 둘 다 undefined인 경우.
     return (postOrReply.user || {}).id === ($store.getters.me || {}).id

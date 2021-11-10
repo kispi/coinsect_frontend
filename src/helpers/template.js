@@ -68,20 +68,6 @@ const template = {
   imageAlt: {
     default: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
   },
-  makeRecursiveReplies: replies => {
-    if ((replies || []).length === 0) return []
-  
-    replies.forEach(item => {
-      if (!item.parent) return
-  
-      const parent = replies.find(possibleParent => possibleParent.id === (item.parent || {}).id)
-      if (!parent) return
-  
-      parent.replies ? parent.replies.push(item) : parent.replies = [item]
-    })
-  
-    return replies.filter(f => !f.parent)
-  },
 }
 
 export default template

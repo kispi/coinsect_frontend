@@ -6,7 +6,7 @@
     <div
       class="reply"
       :key="reply.id"
-      v-for="reply in replies">
+      v-for="reply in replies.filter(o => !o.deletedAt || (o.replies || []).length > 0)">
       <div class="reply-body">
         <div class="reply-header">
           <div class="writer" v-html="$helpers.template.writer(reply)"/>
@@ -18,7 +18,7 @@
             <div @click="reply.$$showReply = !reply.$$showReply" class="reply-reply" v-html="$translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY')"/>
           </div>
         </div>
-        <div class="content" v-html="reply.content"/>
+        <div class="content" v-html="reply.deletedAt ? `<b>${$translate('DELETED_REPLY')}</b>` : reply.content"/>
         <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
       </div>
       <div v-if="reply.$$showReply" class="reply-write-container">

@@ -223,6 +223,10 @@
     "en": "Reply",
     "kr": "답글"
   },
+  "DELETED_REPLY": {
+    "en": "Deleted Reply",
+    "kr": "삭제된 댓글입니다"
+  },
   "PREPARING_REAL_TIME_PRICES": {
     "en": "Preparing real-time prices... or Click to connect!",
     "kr": "실시간 시세정보를 준비중입니다... 오래걸리는 경우 클릭해주세요!"
