@@ -1,12 +1,12 @@
 <template>
   <div
-    v-if="(replies || []).length > 0"
+    v-if="repliesToDisplay.length > 0"
     class="c-replies"
     :class="`depth-${depth}`">
     <div
       class="reply"
       :key="reply.id"
-      v-for="reply in replies">
+      v-for="reply in repliesToDisplay">
       <div class="reply-body">
         <div class="reply-header">
           <div class="writer" v-html="$helpers.template.writer(reply)"/>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import communityService from '@/services/community'
@@ -43,12 +43,18 @@ export default {
       default: 0,
     }
   },
-  setup() {
+  setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
 
     const router = useRouter()
+
+    const repliesToDisplay = computed(() => (props.replies || []).filter(o => !o.deletedAt || hasNonDeletedChild(o)))
+
+    const hasNonDeletedChild = reply => {
+      return (reply.replies || []).some(child => !child.deletedAt || hasNonDeletedChild(child))
+    }
 
     const onClickDelete = async reply => {
       plugins.$modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
@@ -66,6 +72,8 @@ export default {
     }
 
     return {
+      repliesToDisplay,
+      hasNonDeletedChild,
       onClickDelete,
     }
   },
