@@ -22,7 +22,7 @@ const translation = {
     loadDefaultLocale({ commit }) {
       const supportedLocales = ['kr', 'en']
       const storedLocale = window.localStorage.getItem('locale')
-      const locale = supportedLocales.find(locale => locale === storedLocale) || 'kr'
+      const locale = supportedLocales.find(locale => locale === storedLocale) || 'en'
       commit('setLocale', locale)
     },
   },
