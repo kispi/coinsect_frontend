@@ -41,9 +41,6 @@ const andSoOn = [{
   path: '/updates',
   component: () => import(/* webpackChunkName: 'view-updates' */ '@/components/views/ViewUpdates'),
 }, {
-  path: '/mmcrypto',
-  component: () => import(/* webpackChunkName: 'view-mmcrypto' */ '@/components/views/ViewMMCrypto'),
-}, {
   path: '/test',
   component: () => import(/* webpackChunkName: 'view-test' */ '@/components/views/ViewTest'),
 }]
