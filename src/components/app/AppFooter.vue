@@ -9,8 +9,8 @@
           <i class="fal fa-envelope flex-wrap m-r-4 f-16"/><div><a href="mailto:admin@coinsect.io">admin@coinsect.io</a></div>
         </address>
         <div v-if="($store.getters.config || {}).version">
-          <div>Backend: {{ $store.getters.config.version.backend }}</div>
-          <div>Frontend: {{ $store.getters.config.version.frontend }}</div>
+          <div v-if="$store.getters.config.version.backend">Backend: {{ $store.getters.config.version.backend }}</div>
+          <div v-if="$store.getters.config.version.frontend">Frontend: {{ $store.getters.config.version.frontend }}</div>
         </div>
       </div>
     </div>
