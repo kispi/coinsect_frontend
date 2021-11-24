@@ -22,6 +22,7 @@ import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
 import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
 import OrderbookUpbit from '@/components/common/orderbooks/OrderbookUpbit'
 import PostEditor from '@/components/common/post-editor/PostEditor'
+import PoweredBy from '@/components/common/PoweredBy'
 import SubHeader from '@/components/common/SubHeader'
 import TablePosts from '@/components/common/TablePosts'
 import TradingView from '@/components/common/TradingView'
@@ -57,6 +58,7 @@ const useGlobalComponents = app => {
     .component('OrderbookBybit', OrderbookBybit)
     .component('OrderbookUpbit', OrderbookUpbit)
     .component('PostEditor', PostEditor)
+    .component('PoweredBy', PoweredBy)
     .component('SubHeader', SubHeader)
     .component('TablePosts', TablePosts)
     .component('TradingView', TradingView)

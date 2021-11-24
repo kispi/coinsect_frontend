@@ -185,6 +185,10 @@ export default {
   .bio-item.sns {
     padding: 40px 0 16px;
 
+    a {
+      color: var(--brand-primary);
+    }
+
     a:not(:last-child) {
       margin-right: 24px;
     }

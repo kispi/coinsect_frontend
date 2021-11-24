@@ -1,7 +1,7 @@
 <template>
   <div class="view-contents view-layout-default">
     <SubHeader :items="contents"/>
-    <component :is="selectedComponent"/>
+    <component :is="selectedComponent" class="view-contents-body"/>
   </div>
 </template>
 
@@ -13,6 +13,7 @@ export default {
   components: {
     ViewInfluencers: defineAsyncComponent(() => import('./influencers/ViewInfluencers')),
     ViewInfluencerDetail: defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail')),
+    ViewPublicTreasury: defineAsyncComponent(() => import('./ViewPublicTreasury')),
   },
   setup() {
     const router = useRouter()
@@ -20,12 +21,16 @@ export default {
     const contents = computed(() => [{
       path: '/contents/influencers',
       title: 'INFLUENCERS',
+    }, {
+      path: '/contents/public-treasury',
+      title: 'PUBLIC_TREASURY',
     }])
 
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/contents/influencers') return 'ViewInfluencers'
       if (p.startsWith('/contents/influencers/')) return 'ViewInfluencerDetail'
+      if (p === '/contents/public-treasury') return 'ViewPublicTreasury'
     })
 
     return {
@@ -35,3 +40,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.view-contents {
+  .view-contents-body {
+    padding-bottom: 40px;
+  }
+}
+</style>
