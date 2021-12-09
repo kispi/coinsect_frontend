@@ -106,12 +106,14 @@ const marketInfo = {
 
       try {
         const data = await $http.get('market_info/markets')
-        data.upbit = data.upbit.filter(o => o.market.startsWith('KRW-'))
-        data.upbit.forEach(o => {
-          const symbol = o.market.split('-')[1]
-          o.$$symbol = symbol
-        })
-        data.bithumb.forEach(o => o.$$symbol = o.symbol)
+        if (data.upbit) {
+          data.upbit = data.upbit.filter(o => o.market.startsWith('KRW-'))
+          data.upbit.forEach(o => {
+            const symbol = o.market.split('-')[1]
+            o.$$symbol = symbol
+          })
+        }
+        if (data.bithumb) data.bithumb.forEach(o => o.$$symbol = o.symbol)
         commit('setMarkets', data)
       } catch (e) {
         return Promise.reject(e)
