@@ -177,7 +177,7 @@ export default {
       }).then(conn => onConnected(conn, 'upbit')),
       bithumb: () => subscribeBithumb({
         type: 'ticker',
-        symbols: store.getters.markets.bithumb.map(o => `${o.symbol}_KRW`),
+        symbols: store.getters.markets.bithumb.map(o => `${o.$$symbol}_KRW`),
         tickTypes: ['24H', 'MID'],
       }).then(conn => onConnected(conn, 'bithumb')),
       binance: () => subscribeBinance({
@@ -199,9 +199,14 @@ export default {
 
       store.commit('initRealTimeTickers')
       if (baseExchange.value === 'bithumb') prepareBithumb()
-      await store.dispatch('loadMarkets', baseExchange.value)
-      if (!connections.value[baseExchange.value] || connections.value[baseExchange.value].readyState !== 1) subscriber[baseExchange.value]()
-      if (!connections.value[targetExchange.value] || connections.value[targetExchange.value].readyState !== 1) subscriber[targetExchange.value]()
+
+      try {
+        await store.dispatch('loadBaseMarkets')
+        if (!connections.value[baseExchange.value] || connections.value[baseExchange.value].readyState !== 1) subscriber[baseExchange.value]()
+        if (!connections.value[targetExchange.value] || connections.value[targetExchange.value].readyState !== 1) subscriber[targetExchange.value]()
+      } catch (e) {
+        plugins.$modal.alert(`거래소(${baseExchange.value})의 정보를 불러오는데 실패했습니다. 아마 점검중인 것 같습니다.`)
+      }
     }
 
     onMounted(init)

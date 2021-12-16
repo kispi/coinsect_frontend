@@ -1,4 +1,5 @@
 import $store from '@/store'
+import translate from './translate'
 
 const initModal = (options, component) => new Promise(resolve => {
   $store.commit('addModal', { component, options, resolve })
@@ -8,10 +9,14 @@ const modal = {
   basic: options => initModal(options, 'ModalBasic'),
   input: options => initModal(options, 'ModalInput'),
   images: options => initModal(options, 'ModalImages'),
+  alert: body => modal.confirm({
+    body,
+    buttons: [{ text: 'OK', class: 'btn-primary light' }],
+  }),
   confirm: arg => initModal((() => {
     const options = arg || {}
-    options.title = options.title || 'ARE_YOU_SURE'
-    options.body = helpers.translate(options.body ? `<div class="text-center m-t-16 p-12">${options.body}</div>` : '')
+    options.title = options.title || '알림'
+    options.body = translate(options.body ? `<div class="text-center m-t-16 p-12">${options.body}</div>` : '')
     options.buttons = options.buttons || [
       { text: 'CANCEL', class: 'btn-default' },
       { text: 'CONFIRM', class: options.class ? `btn-${options.class}` : 'btn-primary' },

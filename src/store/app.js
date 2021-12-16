@@ -155,7 +155,7 @@ const app = {
     // 앱 뜰 때 필요한 정보들 쭉 콜함
     async bootstrap({ commit, dispatch }) {
       const loadAuthNotRequired = async () => Promise.all([
-        dispatch('loadMarkets'),
+        dispatch('loadTargetMarkets'),
         dispatch('loadSymbols'),
         dispatch('loadNotifications'),
       ])

@@ -9,6 +9,7 @@ const marketInfo = {
     markets: {
       upbit: [],
       bithumb: [],
+      binance: [],
       bybit: [],
     },
     orderbooks: {
@@ -48,7 +49,7 @@ const marketInfo = {
       state.marketcaps = marketcaps
     },
     setMarkets(state, markets) {
-      state.markets = markets
+      Object.keys(markets).forEach(key => state.markets[key] = markets[key])
     },
     setOrderbook(state, { exchange, market, orderbook }) {
       state.orderbooks[exchange][market] = orderbook
@@ -101,19 +102,40 @@ const marketInfo = {
         commit('setLoading', { marketcaps: false })
       }
     },
-    async loadMarkets({ commit }) {
-      if (helpers.canSkipApiCall('loadMarkets')) return
+    async loadBaseMarkets({ commit, getters }) {
+      const bEx = getters.settings.baseExchange
+      if (helpers.canSkipApiCall(`loadBaseMarkets_${bEx}`)) return
+
+      const endpoint = (() => {
+        if (bEx === 'upbit') return 'https://api.upbit.com/v1/market/all'
+        if (bEx === 'bithumb') return 'https://api.bithumb.com/public/ticker/all_krw'
+      })()
+
+      try {
+        const data = await $http.get(endpoint)
+        if (bEx === 'upbit') {
+          const upbit = data.filter(o => o.market.startsWith('KRW-')).map(o => ({
+            ...o,
+            $$symbol: o.market.split('-')[1]
+          }))
+          commit('setMarkets', { upbit })
+        }
+        if (bEx === 'bithumb') {
+          const bithumb = Object.keys(data['data']).filter(symbol => symbol !== 'date').map($$symbol => ({
+            $$symbol,
+            ...data['data'][$$symbol]
+          }))
+          commit('setMarkets', { bithumb })
+        }
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    async loadTargetMarkets({ commit }) {
+      if (helpers.canSkipApiCall('loadTargetMarkets')) return
 
       try {
         const data = await $http.get('market_info/markets')
-        if (data.upbit) {
-          data.upbit = data.upbit.filter(o => o.market.startsWith('KRW-'))
-          data.upbit.forEach(o => {
-            const symbol = o.market.split('-')[1]
-            o.$$symbol = symbol
-          })
-        }
-        if (data.bithumb) data.bithumb.forEach(o => o.$$symbol = o.symbol)
         commit('setMarkets', data)
       } catch (e) {
         return Promise.reject(e)
