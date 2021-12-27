@@ -16,7 +16,7 @@
       </div>
     </div>
     <div
-      v-if="!connected || !$store.getters.symbols || !$store.getters.markets"
+      v-if="!connected || !$store.getters.symbols || !$store.getters.markets[baseExchange] || !recalced"
       ref="refNotConnected"
       class="not-connected"
       @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('PREPARING_REAL_TIME_PRICES') }}</div>
@@ -98,6 +98,8 @@ export default {
 
     const settings = ref(store.getters.settings)
 
+    const recalced = ref(null)
+
     const setSort = column => {
       if (settings.value.sort.column === column) {
         settings.value.sort.direction = settings.value.sort.direction === 'desc' ? 'asc' : 'desc'
@@ -128,6 +130,7 @@ export default {
     }
 
     const recalcDisplayedList = () => {
+      recalced.value = false
       displayedList.value = Object.values(store.getters.realTimeTickers).filter(t => {
         if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
 
@@ -148,6 +151,7 @@ export default {
 
         return sorter(a, b)
       })
+      recalced.value = true
     }
 
     const displayedList = ref([])
@@ -248,6 +252,7 @@ export default {
     return {
       refNotConnected,
       init,
+      recalced,
       connected,
       keyword,
       settings,
