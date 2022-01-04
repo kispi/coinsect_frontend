@@ -8,14 +8,20 @@
     "serve": "vue-cli-service serve --port 4000 ",
     "build": "vue-cli-service build",
     "build-dev": "vue-cli-service build --mode development",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build:client": "vue-cli-service build --dest dist/client",
+    "build:server": "VUE_APP_SSR=true vue-cli-service build --dest dist/server",
+    "ssr": "rm -rf ./dist && npm run build:client && npm run build:server && node src/server.js"
   },
   "dependencies": {
+    "@vue/server-renderer": "^3.2.26",
     "axios": "^0.21.1",
     "core-js": "^3.13.1",
     "vue": "^3.0.11",
     "vue-router": "^4.0.8",
-    "vuex": "^4.0.1"
+    "vuex": "^4.0.1",
+    "webpack-manifest-plugin": "^4.0.2",
+    "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.13",

@@ -1,26 +1,19 @@
-import { createApp } from 'vue'
+import { createApp, createSSRApp } from 'vue'
 import store from './store'
 import plugins from './plugins'
 import router from './router'
 import App from './App'
 import useLazyLoads from './lazy-loads'
+import useGlobalComponents from './global-components'
 
 require('@/assets/styles/index.scss')
 
-const boot = async () => {
-  const app = createApp(App)
-  app
-    .use(store)
-    .use(router)
+export default () => {
+  const isSSR = process.env.VUE_APP_SSR
 
-  // app.use(store) should precede since some plugins use it
-  Object.values(plugins).forEach(plugin => app.use(plugin))
-
-  // 런타임에 import하게 변경
-  const result = await import('./global-components')
-  result.default(app)
-  await useLazyLoads()
-  app.mount('#app')
+  const app = (isSSR ? createSSRApp : createApp)(App)
+  app.use(store).use(router)
+  Object.values(plugins).forEach(app.use)
+  if (!isSSR) useLazyLoads()
+  useGlobalComponents(app)
 }
-
-boot()
