@@ -1,5 +1,6 @@
 import store from '@/store'
 import router from '@/router'
+import sanitize from './sanitize'
 
 const defaults = {
   title: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
@@ -27,7 +28,7 @@ const appendMetaTags = tags => tags.forEach(tag => {
 
 const meta = {
   setDocumentTitle: title => {
-    const content = title || defaults.title
+    const content = sanitize.strict(title || defaults.title)
     if (!process.env.VUE_APP_SSR) document.title = content
 
     appendMetaTags([
@@ -36,7 +37,7 @@ const meta = {
     ], title)
   },
   renderDescription: description => {
-    const content = description || defaults.description
+    const content = sanitize.strict(description || defaults.description)
     appendMetaTags([
       { id: 'meta-description', name: 'description', content },
       { id: 'meta-og-description', property: 'og:description', content },
@@ -45,6 +46,8 @@ const meta = {
   },
   renderOgImage: image => {
     const content = image || defaults.image
+    if (!content.startsWith('http')) return
+
     appendMetaTags([
       { id: 'meta-og-image', property: 'og:image', content },
       { id: 'meta-twitter-image', property: 'twitter:image', content },
