@@ -154,6 +154,14 @@ const helpers = {
 
     return true
   },
+  retrieveImagesFromHTML: html => {
+    const imgRex = /<img.*?src="(.*?)"[^>]+>/g
+    const images = []
+    let img
+    while ((img = imgRex.exec(html))) images.push(img[1])
+
+    return images
+  },
 }
 
 export default helpers

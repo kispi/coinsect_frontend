@@ -44,6 +44,13 @@ export default {
 
     onServerPrefetch(async () => {
       await loadPost()
+      try {
+        plugins.$helpers.meta.setDocumentTitle(store.getters.post.title)
+        plugins.$helpers.meta.renderDescription(store.getters.post.description)
+
+        const firstImage = (plugins.$helpers.retrieveImagesFromHTML(store.getters.post.content) || [])[0]
+        if (firstImage) plugins.$helpers.meta.renderOgImage(firstImage)
+      } catch (e) {}
     })
 
     onMounted(loadPost)
