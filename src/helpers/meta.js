@@ -1,6 +1,12 @@
 import store from '@/store'
 import router from '@/router'
 
+const defaults = {
+  title: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
+  description: `'코인충'은 코인 시세, 프리미엄, 최신 뉴스, 게시판 등을 제공하는 대한민국 No.1 암호자산 커뮤니티입니다.`,
+  image: 'https://coinsect.io/og-image.png',
+}
+
 const removeExisting = id => {
   if (process.env.VUE_APP_SSR) return
 
@@ -21,17 +27,16 @@ const appendMetaTags = tags => tags.forEach(tag => {
 
 const meta = {
   setDocumentTitle: title => {
-    if (!title) return
-
-    if (!process.env.VUE_APP_SSR) document.title = title
+    const content = title || defaults.title
+    if (!process.env.VUE_APP_SSR) document.title = content
 
     appendMetaTags([
-      { id: 'meta-og-title', property: 'og:title', content: title },
-      { id: 'meta-twitter-title', property: 'twitter:title', content: title },
+      { id: 'meta-og-title', property: 'og:title', content },
+      { id: 'meta-twitter-title', property: 'twitter:title', content },
     ], title)
   },
   renderDescription: description => {
-    const content = description || `'코인충'은 코인 시세, 프리미엄, 최신 뉴스, 게시판 등을 제공하는 대한민국 No.1 암호자산 커뮤니티입니다.`
+    const content = description || defaults.description
     appendMetaTags([
       { id: 'meta-description', name: 'description', content },
       { id: 'meta-og-description', property: 'og:description', content },
@@ -39,7 +44,7 @@ const meta = {
     ])
   },
   renderOgImage: image => {
-    const content = image || `${process.env.VUE_APP_CDN_URL}/images/medium/og-default.jpg'`
+    const content = image || defaults.image
     appendMetaTags([
       { id: 'meta-og-image', property: 'og:image', content },
       { id: 'meta-twitter-image', property: 'twitter:image', content },
