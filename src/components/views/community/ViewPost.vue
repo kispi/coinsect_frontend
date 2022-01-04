@@ -46,7 +46,7 @@ export default {
       await loadPost()
       try {
         plugins.$helpers.meta.setDocumentTitle(store.getters.post.title)
-        plugins.$helpers.meta.renderDescription(store.getters.post.description)
+        plugins.$helpers.meta.renderDescription(store.getters.post.content)
 
         const firstImage = (plugins.$helpers.retrieveImagesFromHTML(store.getters.post.content) || [])[0]
         if (firstImage) plugins.$helpers.meta.renderOgImage(firstImage)
