@@ -13,45 +13,47 @@
         <div class="cell number">조회</div>
         <div class="cell number">추천</div>
       </div>
-      <AdaptiveLayout
-        @click="onClickRow(row)"
-        :gap="4"
+      <a
         class="row"
         :class="{
           'active': isActivePost(row),
           'notice': row.postType === 'notice',
         }"
+        @click.prevent="onClickRow(row)"
+        :href="`/community/${row.sharingKey}`"
         :key="row.id"
         v-for="row in $store.getters.isMobile ? posts.data : [...notices.data, ...posts.data]">
-        <div class="id-title">
-          <div
-            v-if="!$store.getters.isMobile"
-            class="cell number"
-            v-html="postNumber(row)"
-          />
-          <article class="cell title">
-            {{ row.title }}<span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
-          </article>
-        </div>
-        <div class="content">
-          <div
-            class="cell nickname"
-            v-html="$helpers.template.writer(row)"
-          />
-          <div
-            class="cell date">
-            {{ $helpers.template.prettyTime(row.createdAt, true) }}
+        <AdaptiveLayout :gap="4">
+          <div class="id-title">
+            <div
+              v-if="!$store.getters.isMobile"
+              class="cell number"
+              v-html="postNumber(row)"
+            />
+            <article class="cell title">
+              {{ row.title }}<span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
+            </article>
           </div>
-          <div
-            class="cell number">
-            <span v-if="$store.getters.isMobile">조회</span> {{ row.views }}
+          <div class="content">
+            <div
+              class="cell nickname"
+              v-html="$helpers.template.writer(row)"
+            />
+            <div
+              class="cell date">
+              {{ $helpers.template.prettyTime(row.createdAt, true) }}
+            </div>
+            <div
+              class="cell number">
+              <span v-if="$store.getters.isMobile">조회</span> {{ row.views }}
+            </div>
+            <div
+              class="cell number">
+              <span v-if="$store.getters.isMobile">추천</span> {{ (row.reactions || []).filter(o => o.type === 'up').length }}
+            </div>
           </div>
-          <div
-            class="cell number">
-            <span v-if="$store.getters.isMobile">추천</span> {{ (row.reactions || []).filter(o => o.type === 'up').length }}
-          </div>
-        </div>
-      </AdaptiveLayout>
+        </AdaptiveLayout>
+      </a>
     </div>
     <TablePagination
       :limit="limit"
@@ -63,7 +65,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, watch, getCurrentInstance } from 'vue'
+import { ref, computed, onMounted, watch, getCurrentInstance, onServerPrefetch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import TablePagination from './TablePagination'
@@ -99,10 +101,10 @@ export default {
       router.push(`/community/${row.sharingKey}`)
     }
 
-    const loadPosts = p => {
+    const loadPosts = async p => {
       if (typeof p === 'number') page.value = p
 
-      store.dispatch('loadPosts', {
+      await store.dispatch('loadPosts', {
         limit: limit.value,
         offset: page.value * limit.value,
       })
@@ -117,6 +119,13 @@ export default {
       () => (store.getters.post || {}).id,
       () => loadPosts(),
     )
+
+    onServerPrefetch(async () => {
+      await Promise.all([
+        store.dispatch('loadNotices'),
+        loadPosts(),
+      ])
+    })
 
     return {
       page,
@@ -143,24 +152,23 @@ export default {
 
   .row {
     padding: 8px;
+    display: block;
     cursor: pointer;
 
-    &.adaptive-layout {
-      &.active {
-        background: var(--background-light);
+    &.active {
+      background: var(--background-light);
 
-        .title {
-          text-decoration: underline;
-        }
+      .title {
+        text-decoration: underline;
       }
+    }
 
-      &.notice {
-        font-weight: 700;
-      }
+    &.notice {
+      font-weight: 700;
+    }
 
-      &:hover:not(.active) {
-        background: var(--brand-primary-hover-bg);
-      }
+    &:hover:not(.active) {
+      background: var(--brand-primary-hover-bg);
     }
 
     &:not(:last-child) {

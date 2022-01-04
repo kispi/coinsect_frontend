@@ -1,4 +1,5 @@
 import store from '@/store'
+import router from '@/router'
 
 const removeExisting = id => {
   if (process.env.VUE_APP_SSR) return
@@ -49,8 +50,8 @@ const meta = {
       { id: 'meta-og-type', property: 'og:type', content },
     ])
   },
-  renderCanonicalLink: ({ currentRoute, realCanonicalUrl }) => {
-    const content = `https://swatchon.com${realCanonicalUrl || currentRoute.path}`
+  renderCanonicalLink: args => {
+    const content = `https://coinsect.io${(args || {}).realCanonicalUrl || router.currentRoute.value.path}`
     appendMetaTags([
       { id: 'meta-og-url', property: 'og:url', content },
       { id: 'meta-twitter-url', property: 'twitter:url', content },

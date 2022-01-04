@@ -16,7 +16,7 @@ export default {
   props: {
     bind: Boolean,
     text: String,
-    showAbove: HTMLElement,
+    showAbove: null,
   },
   setup(props) {
     const store = useStore()

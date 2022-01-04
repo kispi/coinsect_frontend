@@ -16,18 +16,31 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
     const items = computed(() => (store.getters.influencers || {}).data || [])
 
-    const loadInfluencers = () => store.dispatch('loadInfluencers')
+    onMounted(() => {
+      store.dispatch('loadInfluencers')
+    })
 
-    onMounted(loadInfluencers)
+    onServerPrefetch(async () => {
+      await store.dispatch('loadInfluencers')
+      const people = store.getters.influencers.data
+      try {
+        plugins.$helpers.meta.setDocumentTitle(`크립토 인플루언서`)
+        plugins.$helpers.meta.renderDescription('유튜브나 트위터를 통해 활발하게 활동하는 크립토 인플루언서들')
+        plugins.$helpers.meta.renderOgImage(plugins.$helpers.useS3(people[people.length - 1].images[0].key))
+        plugins.$helpers.meta.renderCanonicalLink()
+      } catch (e) {}
+    })
 
     return {
       items,

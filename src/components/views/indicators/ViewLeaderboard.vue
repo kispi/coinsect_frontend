@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -120,6 +120,10 @@ export default {
     onMounted(loadLeaderboard)
 
     onUnmounted(() => clearTimeout(timeout.value))
+
+    onServerPrefetch(async () => {
+      await store.dispatch('loadLeaderboard')
+    })
 
     return {
       lastUpdate,

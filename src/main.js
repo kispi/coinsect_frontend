@@ -16,4 +16,10 @@ export default () => {
   Object.values(plugins).forEach(app.use)
   if (!isSSR) useLazyLoads()
   useGlobalComponents(app)
+
+  return {
+    app,
+    router,
+    store,
+  }
 }

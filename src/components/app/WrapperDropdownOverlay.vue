@@ -38,7 +38,7 @@ export default {
     /**
      * 아래에 드롭다운이 그려지기를 원하는 HTMLElement를 넘겨준다.
      */
-    mountBelow: HTMLElement,
+    mountBelow: null,
     /**
      * true일 시 오버레이가 열리는 위치를 mountBelow의 우측에 맞춘다. (디폴트는 좌측)
      */
@@ -63,6 +63,8 @@ export default {
     const left = ref(null)
 
     const right = ref(null)
+
+    const observer = ref(null)
 
     const displayNoneClassWhen = ref('display-none')
 
@@ -126,20 +128,6 @@ export default {
       }, 200)
     }
 
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(m => slotDOM.value = m.target.children[0])
-
-      // <slot/>이 사라지면 top, left도 리셋해준다. (안그러면 트랜지션이 먼저 있던곳에서 날아오는 애니메이션이 됨)
-      if (!slotDOM.value) {
-        top.value = null
-        bottom.value = null
-        left.value = null
-        right.value = null
-      } else {
-        slideEnter()
-      }
-    })
-
     watch(
       () => props.modelValue,
       newVal => {
@@ -148,8 +136,24 @@ export default {
     )
 
     onMounted(() => {
+      if (process.env.VUE_APP_SSR) return
+
+      observer.value = new MutationObserver(mutations => {
+        mutations.forEach(m => slotDOM.value = m.target.children[0])
+
+        // <slot/>이 사라지면 top, left도 리셋해준다. (안그러면 트랜지션이 먼저 있던곳에서 날아오는 애니메이션이 됨)
+        if (!slotDOM.value) {
+          top.value = null
+          bottom.value = null
+          left.value = null
+          right.value = null
+        } else {
+          slideEnter()
+        }
+      })
+
       // slot에 v-if가 걸려있는 않은 경우의 처리
-      observer.observe(
+      observer.value.observe(
         tryToGetMyDirectChildDOM.value,
         { childList: true, attributes: true },
       )
@@ -157,7 +161,7 @@ export default {
     })
 
     onUnmounted(() => {
-      observer.disconnect()
+      observer.value.disconnect()
       window.removeEventListener('resize', slideLeaveOnResize)
     })
 

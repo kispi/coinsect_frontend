@@ -88,12 +88,14 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
     const router = useRouter()
@@ -117,6 +119,17 @@ export default {
     })
 
     onMounted(() => store.dispatch('loadInfluencers'))
+
+    onServerPrefetch(async () => {
+      await store.dispatch('loadInfluencers')
+      const p = influencer.value
+      try {
+        plugins.$helpers.meta.setDocumentTitle(`인물 - ${p.name} - 코인충`)
+        plugins.$helpers.meta.renderDescription(JSON.parse(p.description).kr)
+        plugins.$helpers.meta.renderOgImage(plugins.$helpers.useS3(p.images[0].key))
+        plugins.$helpers.meta.renderCanonicalLink()
+      } catch (e) {}
+    })
 
     return {
       influencer,

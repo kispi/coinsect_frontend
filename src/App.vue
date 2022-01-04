@@ -3,7 +3,7 @@
   <div
     class="app-body"
     :class="['no-scrollbar']">
-    <RouterView v-if="prepared" class="router-view-container"/>
+    <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
     <AppFooter/>
   </div>
   <AppAddons/>

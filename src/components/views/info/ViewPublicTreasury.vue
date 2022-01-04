@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, onServerPrefetch, ref } from 'vue'
 
 export default {
   setup() {
@@ -73,6 +73,10 @@ export default {
     }
 
     onMounted(callApi)
+
+    onServerPrefetch(async () => {
+      await callApi()
+    })
 
     return {
       data,

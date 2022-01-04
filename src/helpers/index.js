@@ -2,6 +2,7 @@ import $store from '@/store'
 import animate from './animate'
 import coin from './coin'
 import dataSetter from './data-setter'
+import dayjs from 'dayjs'
 import dom from './dom'
 import errorHandlers from './error-handlers'
 import math from './math'
@@ -20,8 +21,10 @@ import translate from './translate'
  * @param {number} cacheTimeout api를 다시 호출하지 않을 시간 길이. 지정해주지 않을 시 default 10초
  */
 const canSkipApiCall = (apiId, cacheTimeout) => {
+  if (process.env.VUE_APP_SSR) return
+
   const o = $store.state.app.lastApiCall
-  const initLastApiCallTime = () => o[apiId] = dayjs()
+  const initLastApiCallTime = () => o[apiId] = helpers.dayjs()
 
   // If it's never called, can't skip API call.
   if (!o[apiId]) {
@@ -29,7 +32,7 @@ const canSkipApiCall = (apiId, cacheTimeout) => {
     return false
   }
 
-  let diff = dayjs().diff(o[apiId], 'second')
+  let diff = helpers.dayjs().diff(o[apiId], 'second')
   if (diff <= (cacheTimeout || 10)) return true
 
   initLastApiCallTime()
@@ -38,6 +41,7 @@ const canSkipApiCall = (apiId, cacheTimeout) => {
 
 const helpers = {
   coin,
+  dayjs,
   tooltip,
   modal,
   number,

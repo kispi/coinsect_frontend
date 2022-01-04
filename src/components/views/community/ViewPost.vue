@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, watch } from 'vue'
+import { getCurrentInstance, onMounted, onServerPrefetch, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import CPost from './CPost'
@@ -41,6 +41,10 @@ export default {
         loadPost()
       },
     )
+
+    onServerPrefetch(async () => {
+      await loadPost()
+    })
 
     onMounted(loadPost)
   },

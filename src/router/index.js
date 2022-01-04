@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createMemoryHistory, createWebHistory, createRouter } from 'vue-router'
 import routesNoAuth from './routes-no-auth-async'
 import routesAuth from './routes-auth-async'
 import ViewNotFound from '@/components/views/ViewNotFound'
@@ -15,7 +15,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: process.env.VUE_APP_SSR ? createMemoryHistory() : createWebHistory(),
   scrollBehavior: (to, from) => {
     if (to.path === from.path) return
 

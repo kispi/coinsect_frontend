@@ -6,37 +6,19 @@ const { renderToString } = require('@vue/server-renderer')
 const manifest = require('../dist/server/ssr-manifest.json')
 const appPath = path.join(__dirname, '../dist', 'server', manifest['app.js'])
 const App = require(appPath).default
+const logger = require('./was-logger')
 const server = express()
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 4000
 
-server.use(
-  '/img',
-  express.static(path.join(__dirname, '../dist/client', 'img'))
-)
-server.use(
-  '/js',
-  express.static(path.join(__dirname, '../dist/client', 'js'))
-)
-server.use(
-  '/css',
-  express.static(path.join(__dirname, '../dist/client', 'css'))
-)
-server.use(
-  '/font-awesome',
-  express.static(path.join(__dirname, '../dist/client', 'font-awesome'))
-)
-server.use(
-  '/favicon',
-  express.static(path.join(__dirname, '../dist/client', 'favicon'))
-)
+server.use(logger)
+server.use('/img', express.static(path.join(__dirname, '../dist/client', 'img')))
+server.use('/js', express.static(path.join(__dirname, '../dist/client', 'js')))
+server.use('/css', express.static(path.join(__dirname, '../dist/client', 'css')))
+server.use('/font-awesome', express.static(path.join(__dirname, '../dist/client', 'font-awesome')))
+server.use('/favicon', express.static(path.join(__dirname, '../dist/client', 'favicon')))
 const rootFiles = ['gtm.js', 'robots.txt', 'sitemap.xml', 'naver048dfb4862180b4025eb9bd6e296c6ec.html']
-rootFiles.forEach(file => {
-  server.use(
-    `/${file}`,
-    express.static(path.join(__dirname, '../dist/client', file))
-  )
-})
+rootFiles.forEach(file => server.use(`/${file}`, express.static(path.join(__dirname, '../dist/client', file))))
 
 server.get('*', async (req, res) => {
   const { app, router, store } = await App(req)
@@ -72,6 +54,6 @@ server.get('*', async (req, res) => {
   )
 })
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`server listening at port ${PORT}`)
 })
