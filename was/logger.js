@@ -7,7 +7,7 @@ const getActualRequestDurationInMilliseconds = start => {
   return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS
 }
 
-let demoLogger = (req, res, next) => { //middleware function
+const logger = (req, res, next) => {
   let current_datetime = new Date()
   let formatted_date =
     current_datetime.getFullYear() +
@@ -27,19 +27,18 @@ let demoLogger = (req, res, next) => { //middleware function
   const status = res.statusCode
   const start = process.hrtime()
   const durationInMilliseconds = getActualRequestDurationInMilliseconds(start)
-  if (['.js', ',css', '.png', '.svg', '.css', '.woff2'].some(ext => url.endsWith(ext))) {
+  if (['.js', '.css', '.png', '.gif', 'jpg', './jpeg', '.svg', '.woff2', '.ico'].some(ext => url.endsWith(ext))) {
     next()
     return
   }
 
   let log = `[${formatted_date}] ${method}:${url} ${status} ${durationInMilliseconds.toLocaleString()} ms / ${ip}`
   console.log(log)
+
   fs.appendFile('request_logs', log + '\n', err => {
-    if (err) {
-      console.log(err)
-    }
+    if (err) console.log(err)
   })
   next()
 }
 
-module.exports = demoLogger
+module.exports = logger

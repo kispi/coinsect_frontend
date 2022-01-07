@@ -1,5 +1,7 @@
 import helpers from '@/helpers'
 
+const useS3 = imgKey => `https://coinsect-production.s3.ap-northeast-2.amazonaws.com/${imgKey}`
+
 const andSoOn = [{
   path: '/',
   component: () => import(/* webpackChunkName: 'view-home' */ '@/components/views/ViewHome'),
@@ -7,14 +9,43 @@ const andSoOn = [{
   path: '/login',
   component: () => import(/* webpackChunkName: 'view-login' */ '@/components/views/ViewLogin'),
 }, {
-  path: '/indicators/:key',
+  path: '/indicators/leaderboard',
   component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
   meta: {
-    description: '워뇨띠 포지션, 리더보드, 시가 총액 등...',
+    title: '비트멕스 리더보드 - 코인충',
+    description: '워뇨띠 (aoa), Mercury-Wood-Sprite, Skitter-Peridot-Raven, Bog-Pear-Weasel 등의 유명 트레이더들의 예상 포지션, 수익 등',
+    image: useS3('og-images/og-image-leaderboard.png'),
   },
 }, {
-  path: '/contents/:a',
+  path: '/indicators/marketcaps',
+  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
+  meta: {
+    title: '시가총액 - 코인충',
+    description: '비트코인, 이더리움, 리플, 솔라나 등의 시가총액',
+  },
+}, {
+  path: '/indicators/general',
+  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
+  meta: {
+    title: '비트코인 지표 - 코인충',
+    description: 'fear & greed, s2f, nlb price 등의 비트코인 가격 추이 예상에 사용되는 지표들',
+  },
+}, {
+  path: '/contents/influencers',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/info/ViewContents'),
+  meta: {
+    title: '크립토 인플루언서 - 코인충',
+    description: '유튜브나 트위터를 통해 활발하게 활동하는 크립토 / 경제 인플루언서들',
+    image: useS3('og-images/og-image-influencers.png'),
+  },
+}, {
+  path: '/contents/public-treasury',
+  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/info/ViewContents'),
+  meta: {
+    title: '비트코인 보유회사 - 코인충',
+    description: '비트코인을 보유한 상장사들의 목록 및 보유 현황. 갈수록 많은 회사들이 현금 가치 하락에 대한 헤지로 비트코인을 자사의 재무재표에 추가할 것이다.',
+    image: useS3('og-images/og-image-public-treasury.png'),
+  },
 }, {
   path: '/contents/:a/:b',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/info/ViewContents'),
@@ -40,9 +71,6 @@ const andSoOn = [{
 }, {
   path: '/updates',
   component: () => import(/* webpackChunkName: 'view-updates' */ '@/components/views/ViewUpdates'),
-}, {
-  path: '/test',
-  component: () => import(/* webpackChunkName: 'view-test' */ '@/components/views/ViewTest'),
 }]
 
 const routesNoAuth = [
