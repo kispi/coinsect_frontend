@@ -35,7 +35,14 @@ export default {
 
     onMounted(() => {
       store.commit('setSettings', helpers.localStorage.getMeta('settings') || store.getters.settings)
-      store.dispatch('bootstrap').then(() => prepared.value = true)
+      store.dispatch('bootstrap').then(() => {
+        prepared.value = true
+
+        if (typeof document !== 'undefined') {
+          const body = document.getElementsByTagName('body')[0]
+          body.removeAttribute('style')
+        }
+      })
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })
     })
