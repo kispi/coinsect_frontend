@@ -27,16 +27,7 @@ const handleSSRRequest = async (req, res) => {
   await router.push(req.url)
   await router.isReady()
   const matched = matchingRoute(router.options.routes, req.path)
-  if (!matched) {
-    try {
-      const { url } = await axios.get(`short_urls?key=${req.path.substring(1)}`)
-      res.status(302)
-      res.redirect(url)
-      return
-    } catch (e) {
-      res.status(404)
-    }
-  }
+  if (!matched) res.status(404)
 
   const html = await useHtmlRenderer({ app, store })
   res.setHeader('Content-Type', 'text/html')
