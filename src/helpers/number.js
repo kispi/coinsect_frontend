@@ -15,11 +15,8 @@ export default {
 
       let numFracs = 0
       if (Math.abs(converted) < 100) numFracs = 2
-
-      if (baseCurrency === 'usd') {
-        if (Math.abs(converted) < 1) numFracs = 4
-        if (Math.abs(converted) < 0.0001) numFracs = 8
-      }
+      if (Math.abs(converted) < 1) numFracs = 4
+      if (Math.abs(converted) < 0.0001) numFracs = 8
 
       if (converted === 0) numFracs = 2
 
