@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -61,12 +61,12 @@ export default {
     const loadNews = async () => {
       try {
         await store.dispatch('loadNews')
-      } catch (e) {
-
-      }
+      } catch (e) {}
     }
 
     onMounted(loadNews)
+
+    onServerPrefetch(async () => await loadNews())
 
     return {
       sections,
