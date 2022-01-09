@@ -1,16 +1,22 @@
 import crudService from '@/services/crud'
 import helpers from '@/helpers'
+import * as $http from 'axios'
 
 const marketInfo = {
   state: () => ({
     influencers: null,
+    news: null,
   }),
   getters: {
     influencers: state => state.influencers,
+    news: state => state.news,
   },
   mutations: {
     setInfluencers(state, influencers) {
       state.influencers = influencers
+    },
+    setNews(state, news) {
+      state.news = news
     },
   },
   actions: {
@@ -27,6 +33,14 @@ const marketInfo = {
           } catch (e) {}
         })
         commit('setInfluencers', resp)
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    async loadNews({ commit }) {
+      try {
+        const data = await $http.get('https://api-manager.upbit.com/api/v1/coin_news')
+        commit('setNews', data)
       } catch (e) {
         return Promise.reject(e)
       }

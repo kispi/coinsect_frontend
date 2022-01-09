@@ -1,6 +1,11 @@
 <template>
   <div class="powered-by">
-    Powered by <a href="https://coingecko.com" target="_blank" rel="noopener">Coingecko<img src="@/assets/images/coingecko.png" alt="Coingecko"></a>
+    <template v-if="by === 'coingecko'">
+      Powered by <a href="https://coingecko.com" target="_blank" rel="noopener">Coingecko<img src="@/assets/images/coingecko.png" alt="Coingecko"></a>
+    </template>
+    <template v-if="by === 'upbit'">
+      Powered by <a href="https://upbit.com" target="_blank" rel="noopener">Upbit<img src="@/assets/images/upbit.svg" alt="Upbit"></a>
+    </template>
   </div>
 </template>
 
@@ -8,7 +13,7 @@
 export default {
   props: {
     by: String,
-    validator: val => ['coingecko'].includes(val),
+    validator: val => ['coingecko', 'upbit'].includes(val),
   },
 }
 </script>

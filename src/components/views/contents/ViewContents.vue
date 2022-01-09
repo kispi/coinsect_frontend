@@ -11,6 +11,7 @@ import { useRouter } from 'vue-router'
 
 export default {
   components: {
+    ViewNews: defineAsyncComponent(() => import('./ViewNews')),
     ViewInfluencers: defineAsyncComponent(() => import('./influencers/ViewInfluencers')),
     ViewInfluencerDetail: defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail')),
     ViewPublicTreasury: defineAsyncComponent(() => import('./ViewPublicTreasury')),
@@ -19,6 +20,9 @@ export default {
     const router = useRouter()
 
     const contents = computed(() => [{
+      path: '/contents/news',
+      title: 'NEWS',
+    }, {
       path: '/contents/influencers',
       title: 'INFLUENCERS',
     }, {
@@ -28,6 +32,7 @@ export default {
 
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
+      if (p === '/contents/news') return 'ViewNews'
       if (p === '/contents/influencers') return 'ViewInfluencers'
       if (p.startsWith('/contents/influencers/')) return 'ViewInfluencerDetail'
       if (p === '/contents/public-treasury') return 'ViewPublicTreasury'
