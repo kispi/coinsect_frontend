@@ -112,10 +112,9 @@ export default {
     }, {
       title: 'INDICATORS',
       path: '/indicators/leaderboard',
-      $$new: true,
     }, {
-      title: 'CONTENTS',
-      path: '/contents/influencers',
+      title: 'NEWS_AND_CONTENTS',
+      path: '/contents/news',
       $$new: true,
     }, {
       title: 'COMMUNITY',
@@ -123,18 +122,12 @@ export default {
     }, {
       title: 'PORTFOLIO',
       path: '/portfolio',
-    }, {
-      title: 'GAMES',
-      path: '/games',
+    // }, {
+    //   title: 'GAMES',
+    //   path: '/games',
     }, {
       title: 'UPDATES',
       path: '/updates',
-    // }, {
-    //   title: 'NEWS',
-    //   path: '/news',
-    // }, {
-    //   title: 'ABOUT',
-    //   path: '/about',
     }].map(o => {
       const p = router.currentRoute.value.path
 
@@ -145,7 +138,7 @@ export default {
 
           if (o.title === 'INDICATORS') return p.startsWith('/indicators/')
 
-          if (o.title === 'CONTENTS') return p.startsWith('/contents/')
+          if (o.title === 'NEWS_AND_CONTENTS') return p.startsWith('/contents/')
 
           else return p.startsWith(o.path)
         })()

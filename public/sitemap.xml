@@ -30,6 +30,12 @@
         <loc>https://coinsect.io/indicators/general</loc>
     </url>
     <url>
+        <loc>https://coinsect.io/contents/news</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/contents/public-treasury</loc>
+    </url>
+    <url>
         <loc>https://coinsect.io/contents/influencers</loc>
     </url>
     <url>
@@ -73,5 +79,11 @@
     </url>
     <url>
         <loc>https://coinsect.io/contents/influencers/kiyoung-ju</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/contents/influencers/will-clemente</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/contents/influencers/andrej-jikh</loc>
     </url>
 </urlset>

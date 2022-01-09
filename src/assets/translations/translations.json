@@ -87,9 +87,9 @@
     "en": "Indicators",
     "kr": "지표"
   },
-  "CONTENTS": {
-    "en": "Contents",
-    "kr": "콘텐츠"
+  "NEWS_AND_CONTENTS": {
+    "en": "News/Contents",
+    "kr": "뉴스/콘텐츠"
   },
   "LEADERBOARD": {
     "en": "Leaderboard",
@@ -138,6 +138,10 @@
   "GENERAL": {
     "en": "General",
     "kr": "일반"
+  },
+  "FEATURED_NEWS": {
+    "en": "Featured News",
+    "kr": "특집 뉴스"
   },
   "NEWS": {
     "en": "News",

@@ -27,13 +27,17 @@ export default {
 
   .sub-header-item {
     padding: 8px;
-    cursor: pointer;
     border-bottom: 2px solid transparent;
+    cursor: pointer;
 
     &.selected {
       color: var(--text-stress);
       font-weight: 700;
       border-bottom: 2px solid var(--brand-primary);
+    }
+
+    &:hover {
+      color: var(--brand-primary-hover);
     }
   }
 }
