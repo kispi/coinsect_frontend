@@ -86,7 +86,6 @@ export default {
   }
 
   .news-list-box {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
     border-radius: 16px;
     overflow: hidden;
     background: var(--background-light);
