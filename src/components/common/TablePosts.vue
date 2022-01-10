@@ -31,7 +31,9 @@
               v-html="postNumber(row)"
             />
             <article class="cell title">
-              {{ row.title }}<span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
+              <i v-if="iconPostType(row)" class="post-type fa" :class="iconPostType(row)"/>
+              <span v-html="row.title"/>
+              <span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
             </article>
           </div>
           <div class="content">
@@ -87,6 +89,12 @@ export default {
 
     const notices = computed(() => store.getters.notices)
 
+    const iconPostType = row => {
+      if (row.postType === 'notice') return 'fa-exclamation-circle'
+
+      return (row.content || '').includes('<img') ? 'fa-image' : ''
+    }
+
     const isActivePost = row => parseInt(router.currentRoute.value.params.id) === row.id
 
     const postNumber = row => {
@@ -132,6 +140,7 @@ export default {
       limit,
       notices,
       posts,
+      iconPostType,
       isActivePost,
       postNumber,
       loadPosts,
@@ -201,6 +210,15 @@ export default {
     .title {
       flex: 1;
       color: var(--text-stress);
+
+      .post-type {
+        margin-right: 8px;
+        color: var(--price-up-bybit);
+
+        &.fa-exclamation-circle {
+          color: var(--price-down-bybit);
+        }
+      }
 
       .num-replies {
         color: var(--brand-primary);

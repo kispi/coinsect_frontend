@@ -7,11 +7,8 @@
         :class="{'cursor-pointer': notification.link}"
         :key="notification.id"
         v-for="notification in ($store.getters.notifications ||{}).data">
-        <div class="notification-header">
-          <div class="notification-type" v-html="notification.type"/>
-          <div class="notification-created-at" v-html="$helpers.template.prettyTime(notification.createdAt, true)"/>
-        </div>
         <div class="notification-text" v-html="notification.text"/>
+        <div class="passed-time" v-html="$helpers.passedTime(notification.createdAt)"/>
       </div>
     </div>
     <div
@@ -77,30 +74,18 @@ export default {
     padding: 12px 16px 12px 8px;
     user-select: none;
 
-    .notification-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      font-size: 12px;
-
-      .notification-type {
-        background: var(--brand-primary);
-        color: var(--white);
-        padding: 2px 8px;
-        border-radius: 24px;
-        text-transform: capitalize;
-      }
-
-      .notification-created-at {
-        font-family: Arial, Helvetica, sans-serif;
-      }
-    }
-
     .notification-text {
       font-size: 12px;
       line-height: 18px;
       color: var(--text-stress);
+    }
+
+    .passed-time {
+      display: table;
+      margin-left: auto;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--gs-66);
     }
 
     &:hover {

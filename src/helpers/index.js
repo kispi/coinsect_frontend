@@ -52,6 +52,14 @@ const helpers = {
   meta,
   animate,
   dataSetter,
+  passedTime: timestamp => {
+    const d = helpers.dayjs().diff(helpers.dayjs(timestamp), 'seconds')
+    if (d > 60 * 60 * 24) return `${Math.floor(d / 86400)}일 전`
+
+    if (d > 60 * 60) return `${Math.floor(d / 3600)}시간 전`
+
+    if (d > 60) return `${Math.floor(d / 60)}분 전`
+  },
   useS3: key => `https://coinsect-production.s3.ap-northeast-2.amazonaws.com/${key}`,
   canSkipApiCall,
   qb: querybuilder,

@@ -33,16 +33,21 @@ export default {
       store.commit('setScrollTop', e.target.scrollTop)
     }
 
-    onMounted(() => {
-      store.commit('setSettings', helpers.localStorage.getMeta('settings') || store.getters.settings)
-      store.dispatch('bootstrap').then(() => {
+    const prepare = async () => {
+      try {
+        await store.dispatch('bootstrap')
         prepared.value = true
-
+      } finally {
         if (typeof document !== 'undefined') {
           const body = document.getElementsByTagName('body')[0]
           body.removeAttribute('style')
         }
-      })
+      }
+    }
+
+    onMounted(() => {
+      prepare()
+      store.commit('setSettings', helpers.localStorage.getMeta('settings') || store.getters.settings)
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })
     })

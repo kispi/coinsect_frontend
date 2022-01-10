@@ -10,7 +10,7 @@
     <div class="c-u-d">
       <button
         @click="button.handler"
-        class="btn"
+        class="btn btn-default"
         :class="button.class"
         v-html="$translate(button.text)"
         :key="button.text"
@@ -58,7 +58,6 @@ export default {
     const buttons = computed(() => {
       const arr = [{
         text: 'WRITE',
-        class: 'btn-primary',
         handler: handlers.write,
       }]
 
@@ -67,12 +66,10 @@ export default {
       if (post.value.postType === 'normal' && plugins.$helpers.canModify(post.value)) {
         arr.push({
           text: 'EDIT',
-          class: 'btn-default',
           handler: handlers.edit,
         })
         arr.push({
           text: 'DELETE',
-          class: 'btn-danger',
           handler: handlers.delete,
         })
       }

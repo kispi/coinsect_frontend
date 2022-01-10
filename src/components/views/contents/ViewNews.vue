@@ -1,6 +1,6 @@
 <template>
   <div class="view-news">
-    <PoweredBy :by="'upbit'" class="m-b-24"/>
+    <PoweredBy :by="'upbit'" :link="'https://upbit.com/trends'" class="m-b-24"/>
     <AdaptiveLayout :gap="40" :boundaryWidth="1200">
       <div
         class="news-section"
@@ -17,7 +17,7 @@
             v-for="news in section.list">
             <div class="news-header">
               <div class="news-company" v-html="news.company"/>
-              <div class="news-timestamp" v-html="diff(news.created_at)"/>
+              <div class="news-timestamp" v-html="$helpers.passedTime(news.created_at)"/>
             </div>
             <div class="news-title" v-html="news.title"/>
           </a>
@@ -28,23 +28,12 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onServerPrefetch } from 'vue'
+import { computed, onMounted, onServerPrefetch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
     const store = useStore()
-
-    const diff = timestamp => {
-      const d = plugins.$helpers.dayjs().diff(plugins.$helpers.dayjs(timestamp), 'seconds')
-      if (d > 86400) return `${Math.floor(d / 86400)}일 전`
-
-      if (d > 3600) return `${Math.floor(d / 3600)}시간 전`
-
-      if (d > 60) return `${Math.floor(d / 60)}분 전`
-    }
 
     const sections = computed(() => {
       if (!store.getters.news) return
@@ -70,7 +59,6 @@ export default {
 
     return {
       sections,
-      diff,
     }
   },
 }
@@ -86,7 +74,7 @@ export default {
   }
 
   .news-list-box {
-    border-radius: 16px;
+    border-radius: 8px;
     overflow: hidden;
     background: var(--background-light);
 
@@ -115,7 +103,7 @@ export default {
       }
 
       &:hover {
-        background: var(--border-base);
+        background: var(--brand-primary-hover-bg);
       }
     }
   }
