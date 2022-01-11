@@ -4,7 +4,7 @@
       v-if="prepared"
       class="tradingview-widget-container">
       <div class="tradingview-widget-container__widget"></div>
-      <component :is="'script'" type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+      <component :is="'script'" type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
         {{ JSON.stringify(options) }}
       </component>
     </div>

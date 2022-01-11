@@ -54,6 +54,7 @@
         </div>
         <div
           class="app-chat-message-wrapper"
+          :class="{'o-0': !prepared}"
           :key="idx"
           v-for="(message, idx) in messages">
           <DailySeparator
@@ -134,6 +135,8 @@ export default {
     const text = ref('')
 
     const incomingMessage = ref(null)
+
+    const prepared = ref(null)
 
     const {
       init,
@@ -247,6 +250,13 @@ export default {
       lastReadMessage.value = messages.value[messages.value.length - 1]
     }
 
+    const onFirstLoadMessage = () => {
+      setTimeout(() => {
+        scrollToBottom()
+        prepared.value = true
+      }, 500)
+    }
+
     watch(
       () => store.getters.settings.chatFolded,
       (newVal, oldVal) => {
@@ -256,20 +266,21 @@ export default {
 
     onMounted(() => {
       plugins.$bus.$on('incoming-message', onIncomingMessage)
-      plugins.$bus.$on('first-load-messages', scrollToBottom) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
+      plugins.$bus.$on('first-load-messages', onFirstLoadMessage) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
 
       init()
     })
 
     onUnmounted(() => {
       plugins.$bus.$off('incoming-message', onIncomingMessage)
-      plugins.$bus.$off('first-load-messages', scrollToBottom)
+      plugins.$bus.$off('first-load-messages', onFirstLoadMessage)
     })
 
     return {
       refFoldedIcon,
       refTextarea,
       refAppChatBody,
+      prepared,
       numUnreads,
       connected,
       profile,
