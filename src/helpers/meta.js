@@ -1,6 +1,10 @@
 import store from '@/store'
 import router from '@/router'
-import sanitize from './sanitize'
+
+const sanitize = html => {
+  const regex = /(&nbsp;|<([^>]+)>)/ig
+  return (html || '').replace(regex, '')
+}
 
 const defaults = {
   title: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
@@ -28,7 +32,7 @@ const appendMetaTags = tags => tags.forEach(tag => {
 
 const meta = {
   setDocumentTitle: title => {
-    const content = sanitize.strict(title || defaults.title)
+    const content = sanitize(title || defaults.title)
     if (!process.env.VUE_APP_SSR) document.title = content
 
     appendMetaTags([
@@ -37,7 +41,7 @@ const meta = {
     ], title)
   },
   renderDescription: description => {
-    const content = sanitize.strict(description || defaults.description)
+    const content = sanitize(description || defaults.description)
     appendMetaTags([
       { id: 'meta-description', name: 'description', content },
       { id: 'meta-og-description', property: 'og:description', content },
