@@ -24,12 +24,14 @@
           class="exchange-logo"
           @click.stop="openModalOrderbook('upbit', `KRW-${ticker.$$symbol}`)"
           src="@/assets/images/upbit.svg"
+          :alt="ticker.$$symbol"
         >
         <img
           v-if="bybitMarket(ticker.$$symbol)"
           class="exchange-logo bybit"
           @click.stop="openModalOrderbook('bybit', bybitMarket(ticker.$$symbol))"
           src="@/assets/images/bybit.svg"
+          :alt="ticker.$$symbol"
         >
       </div>
     </td>

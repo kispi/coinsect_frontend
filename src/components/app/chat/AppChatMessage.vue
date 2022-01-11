@@ -65,7 +65,6 @@ export default {
     }
 
     .timestamp {
-      color: var(--text-light);
       flex: 0 0 auto;
       font-size: 10px;
     }

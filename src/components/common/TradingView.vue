@@ -18,7 +18,7 @@ export default {
     const store = useStore()
 
     const init = () => {
-      if (!TradingView) return
+      if (typeof TradingView === 'undefined') return
 
       new TradingView.widget({
         autosize: true,

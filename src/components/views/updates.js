@@ -1,4 +1,9 @@
 export default [{
+  date: '2022-01-11',
+  jobsDone: [
+    'TradingView Ticker Widget 추가',
+  ],
+}, {
   date: '2022-01-09',
   jobsDone: [
     '뉴스 섹션 추가',
