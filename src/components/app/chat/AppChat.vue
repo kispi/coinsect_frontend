@@ -54,7 +54,6 @@
         </div>
         <div
           class="app-chat-message-wrapper"
-          :class="{'o-0': !prepared}"
           :key="idx"
           v-for="(message, idx) in messages">
           <DailySeparator
@@ -135,8 +134,6 @@ export default {
     const text = ref('')
 
     const incomingMessage = ref(null)
-
-    const prepared = ref(null)
 
     const {
       init,
@@ -276,7 +273,6 @@ export default {
       refFoldedIcon,
       refTextarea,
       refAppChatBody,
-      prepared,
       numUnreads,
       connected,
       profile,
