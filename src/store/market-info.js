@@ -30,7 +30,7 @@ const marketInfo = {
     symbols: {},
   }),
   getters: {
-    usdKrw: state => state.indices ? state.indices.upbitForex.basePrice : 0,
+    usdKrw: state => state.indices ? state.indices.basePrice : 0,
     indices: state => state.indices,
     marketcaps: state => state.marketcaps,
     markets: state => state.markets,

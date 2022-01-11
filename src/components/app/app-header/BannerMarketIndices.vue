@@ -36,19 +36,19 @@ export default {
       return [{
         key: 'USD/KRW',
         value: usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }),
-        changes: Math.round(o.upbitForex.signedChangeRate * 10000) / 100,
+        changes: Math.round(o.signedChangeRate * 10000) / 100,
       }, {
         key: 'BTC_DOMINANCE',
-        value: `${o.coincodex.btc_dominance}%`,
-        changes: o.coincodex.btc_dominance_24h_change_percent,
+        value: `${o.btcDominance}%`,
+        changes: o.btcDominance24hChangePercent,
       }, {
         key: 'TOTAL_MARKET_CAP',
-        value: plugins.$helpers.number.pretty.cap({ cap: o.coincodex.total_market_cap, baseCurrency: 'usd' }),
-        changes: o.coincodex.total_market_cap_24h_change_percent,
+        value: plugins.$helpers.number.pretty.cap({ cap: o.totalMarketCap, baseCurrency: 'usd' }),
+        changes: o.totalMarketCap24hChangePercent,
       }, {
         key: 'VOL_24',
-        value: plugins.$helpers.number.pretty.cap({ cap: o.coincodex.total_volume, baseCurrency: 'usd' }),
-        changes: o.coincodex.total_volume_24h_change_percent,
+        value: plugins.$helpers.number.pretty.cap({ cap: o.totalVolume, baseCurrency: 'usd' }),
+        changes: o.totalVolume24hChangePercent,
       }]
     })
 
