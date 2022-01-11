@@ -250,30 +250,26 @@ export default {
       lastReadMessage.value = messages.value[messages.value.length - 1]
     }
 
-    const onFirstLoadMessage = () => {
-      setTimeout(() => {
-        scrollToBottom()
-        prepared.value = true
-      }, 500)
-    }
-
     watch(
       () => store.getters.settings.chatFolded,
       (newVal, oldVal) => {
-        if (!newVal && oldVal) nextTick(() => refTextarea.value.focus())
+        if (!newVal && oldVal) nextTick(() => {
+          refTextarea.value.focus()
+          scrollToBottom()
+        })
       },
     )
 
     onMounted(() => {
       plugins.$bus.$on('incoming-message', onIncomingMessage)
-      plugins.$bus.$on('first-load-messages', onFirstLoadMessage) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
+      plugins.$bus.$on('first-load-messages', scrollToBottom) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
 
       init()
     })
 
     onUnmounted(() => {
       plugins.$bus.$off('incoming-message', onIncomingMessage)
-      plugins.$bus.$off('first-load-messages', onFirstLoadMessage)
+      plugins.$bus.$off('first-load-messages', scrollToBottom)
     })
 
     return {
@@ -433,12 +429,12 @@ export default {
   }
 
   .icon-folded {
-    cursor: pointer;
     padding: 12px;
     background: var(--brand-primary);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     border-radius: 50%;
     overflow: hidden;
+    cursor: pointer;
 
     .fa-comment-dots {
       font-size: 32px;
