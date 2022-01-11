@@ -192,9 +192,7 @@ export default {
     const prepareBithumb = () => {
       if (!store.getters.markets.bithumb) return
 
-      store.getters.markets.bithumb.forEach(json => {
-        setAsBasePriceFromRestAPI({ symbol: json.symbol, json })
-      })
+      store.getters.markets.bithumb.forEach(json => setAsBasePriceFromRestAPI({ symbol: json.$$symbol, json }))
     }
 
     const init = async () => {
@@ -202,10 +200,11 @@ export default {
       intervRecalc.value = setInterval(recalcDisplayedList, 2000)
 
       store.commit('initRealTimeTickers')
-      if (baseExchange.value === 'bithumb') prepareBithumb()
 
       try {
         await store.dispatch('loadBaseMarkets')
+        if (baseExchange.value === 'bithumb') prepareBithumb()
+
         if (!connections.value[baseExchange.value] || connections.value[baseExchange.value].readyState !== 1) subscriber[baseExchange.value]()
         if (!connections.value[targetExchange.value] || connections.value[targetExchange.value].readyState !== 1) subscriber[targetExchange.value]()
       } catch (e) {
