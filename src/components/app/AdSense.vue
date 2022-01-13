@@ -1,11 +1,10 @@
 <template>
-  <div class="ad-sense">
-    <ins class="adsbygoogle"
-      data-ad-client="ca-pub-3069752836489386"
-      :data-ad-slot="dataAdSlot"
-      data-full-width-responsive="true"
-    />
-  </div>
+  <ins class="ad-sense adsbygoogle"
+    data-ad-client="ca-pub-3069752836489386"
+    data-ad-format="auto"
+    :data-ad-slot="dataAdSlot"
+    data-full-width-responsive="true"
+  />
 </template>
 
 <script>
@@ -17,7 +16,11 @@ export default {
   },
   setup() {
     onMounted(() => {
-      (adsbygoogle = window.adsbygoogle || []).push({})
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({})
+      } catch (e) {
+        console.error(e)
+      }
     })
   },
 }

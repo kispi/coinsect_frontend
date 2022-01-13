@@ -4,7 +4,7 @@
     class="app-body"
     :class="['no-scrollbar']">
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
-    <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR && advertisable"/>
+    <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR" class="display-block"/>
     <AppFooter/>
   </div>
   <AppAddons v-if="!$store.getters.isSSR"/>
@@ -26,8 +26,6 @@ export default {
 
     const prepared = ref(null)
 
-    const advertisable = ref(null)
-
     const setIsMobile = () => store.commit('setIsMobile')
 
     const onScroll = e => {
@@ -44,9 +42,6 @@ export default {
         if (typeof document !== 'undefined') {
           const body = document.getElementsByTagName('body')[0]
           body.removeAttribute('style')
-          setTimeout(() => {
-            advertisable.value = true
-          }, 1000)
         }
       }
     }
@@ -65,7 +60,6 @@ export default {
 
     return {
       prepared,
-      advertisable,
     }
   },
 }
@@ -74,7 +68,7 @@ export default {
 <style lang="scss">
 #app {
   width: 100vw;
-  height: 100%;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
 
