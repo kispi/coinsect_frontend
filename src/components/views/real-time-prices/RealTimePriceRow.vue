@@ -110,7 +110,7 @@ export default {
     const { setDocumentTitle } = useUpbit()
 
     const bybitMarket = symbol => {
-      const supportedMarkets = ['BTCUSD', 'ETHUSD', 'EOSUSD', 'XRPUSD']
+      const supportedMarkets = store.getters.markets.bybit.filter(o => o.endsWith('USDT'))
       return supportedMarkets.find(supported => supported.startsWith(symbol))
     }
 

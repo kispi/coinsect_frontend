@@ -50,8 +50,12 @@ const useBybit = () => {
       book.$$biggestSize = Math.max(...[...book.$$asks, ...book.$$bids].map(o => o.size))
       return
     }
-    
-    const units = json.data
+
+    /*
+      USDT Perpetual: json.data.order_book
+      Inverse Perpetual: json.data
+    */
+    const units = market.endsWith('USDT') ? json.data.order_book : json.data
     const $$asks = []
     const $$bids = []
 
@@ -102,7 +106,11 @@ const useBybit = () => {
   const subscribe = ({ type, market }) => new Promise((resolve) => {
     if (!market || !type) return
 
-    const connection = new WebSocket('wss://stream.bybit.com/realtime')
+    /*
+      USDT Perpetual: /realtime_public
+      Inverse Perpetual: /realtime
+    */
+    const connection = new WebSocket(`wss://stream.bybit.com/realtime${market.endsWith('USDT') ? '_public' : ''}`)
 
     connection.onopen = () => {
       connection.send(JSON.stringify({
