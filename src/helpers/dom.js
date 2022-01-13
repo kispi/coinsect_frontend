@@ -8,8 +8,7 @@ const dom = {
     return (document.getElementsByClassName('app-header')[0] || {}).clientHeight || 0
   },
   scrollToTop: () => {
-    const appBody = document.getElementsByClassName('app-body')[0]
-    if (appBody) appBody.scrollTop = 0
+    document.scrollingElement.scrollTop = 0
   },
   isElementInViewport: (el, percentVisible = 100) => {
     if (!el) return

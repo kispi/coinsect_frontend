@@ -28,10 +28,11 @@ export default {
 
     const setIsMobile = () => store.commit('setIsMobile')
 
-    const onScroll = e => {
-      if (!e.target.classList || !e.target.classList.contains('app-body')) return
+    const onScroll = () => {
+      const scrollTop = document.scrollingElement.scrollTop
+      if (!scrollTop) return
 
-      store.commit('setScrollTop', e.target.scrollTop)
+      store.commit('setScrollTop', scrollTop)
     }
 
     const prepare = async () => {
