@@ -1,6 +1,5 @@
 import helpers from '@/helpers'
-
-const useS3 = imgKey => `https://coinsect-production.s3.ap-northeast-2.amazonaws.com/${imgKey}`
+import useS3 from '@/helpers/s3'
 
 const andSoOn = [{
   path: '/',

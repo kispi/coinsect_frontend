@@ -10,6 +10,7 @@ import meta from './meta'
 import modal from './modal'
 import number from './number'
 import querybuilder from './querybuilder'
+import useS3 from './s3'
 import template from './template'
 import toast from './toast'
 import tooltip from './tooltip'
@@ -60,7 +61,7 @@ const helpers = {
 
     if (d > 60) return `${Math.floor(d / 60)}분 전`
   },
-  useS3: key => `https://coinsect-production.s3.ap-northeast-2.amazonaws.com/${key}`,
+  useS3,
   canSkipApiCall,
   qb: querybuilder,
   translate,
