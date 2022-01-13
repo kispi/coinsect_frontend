@@ -91,7 +91,7 @@ export default {
 
   .ad-sense {
     padding: 16px;
-    margin: 16px auto;
+    margin: 40px auto;
     max-width: 992px;
     height: 280px;
   }

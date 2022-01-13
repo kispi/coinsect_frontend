@@ -16,11 +16,13 @@ export default {
   },
   setup() {
     onMounted(() => {
-      try {
-        (adsbygoogle = window.adsbygoogle || []).push({})
-      } catch (e) {
-        console.error(e)
-      }
+      setTimeout(() => {
+        try {
+          (adsbygoogle = window.adsbygoogle || []).push({})
+        } catch (e) {
+          console.error(e)
+        }
+      }, 2000)
     })
   },
 }
