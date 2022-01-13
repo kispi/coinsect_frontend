@@ -1,5 +1,5 @@
 <template>
-  <div class="view-games view-layout-default">
+  <div class="view-games">
     <div class="list-games">
       <div
         @click="$modal.custom({

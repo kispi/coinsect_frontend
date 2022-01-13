@@ -1,5 +1,5 @@
 <template>
-  <div class="view-updates view-layout-default">
+  <div class="view-updates">
     <ul
       :key="idx"
       v-for="(update, idx) in updates">

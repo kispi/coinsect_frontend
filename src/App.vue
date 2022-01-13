@@ -1,12 +1,12 @@
 <template>
   <AppHeader/>
   <div
-    class="app-body"
+    class="app-body view-layout-default"
     :class="['no-scrollbar']">
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
     <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR" class="display-block"/>
-    <AppFooter/>
   </div>
+  <AppFooter/>
   <AppAddons v-if="!$store.getters.isSSR"/>
 </template>
 
@@ -67,26 +67,23 @@ export default {
 
 <style lang="scss">
 #app {
-  width: 100vw;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  &.dark {
-    background: var(--background-base);
-  }
+  background: var(--background-base);
 }
 
 .app-header {
-  flex: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: var(--background-base);
 }
 
 .app-body {
   overflow-x: hidden;
   flex: 1;
 
-  .router-view-container {
-    min-height: calc(100vh - 120px);
+  &.view-layout-default {
+    padding-top: calc(var(--app-header-height) + var(--app-default-page-padding));
   }
 
   .ad-sense {

@@ -1,5 +1,5 @@
 <template>
-  <div class="view-indicators view-layout-default">
+  <div class="view-indicators">
     <SubHeader :items="indicators"/>
     <component :is="selectedComponent"/>
   </div>

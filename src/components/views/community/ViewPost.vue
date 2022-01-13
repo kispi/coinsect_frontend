@@ -1,5 +1,5 @@
 <template>
-  <div class="view-post view-layout-default">
+  <div class="view-post">
     <ButtonCommunity/>
     <CPost/>
     <CommunityButtons/>

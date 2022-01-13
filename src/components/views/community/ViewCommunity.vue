@@ -1,5 +1,5 @@
 <template>
-  <div class="view-community view-layout-default">
+  <div class="view-community">
     <div class="flex-row flex-between items-center">
       <ButtonCommunity/>
       <button

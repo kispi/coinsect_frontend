@@ -1,5 +1,5 @@
 <template>
-  <div class="view-post-edit view-layout-default">
+  <div class="view-post-edit">
     <template v-if="post">
       <ButtonCommunity/>
       <PostEditor :post="post"/>

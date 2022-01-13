@@ -1,5 +1,5 @@
 <template>
-  <div class="view-portfolio view-layout-default">
+  <div class="view-portfolio">
     <div class="description">
       나의 자산을 실시간으로 보여줍니다.<br>
       업비트는 KRW마켓, 바이낸스는 USDT마켓만 지원합니다.<br>

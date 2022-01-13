@@ -1,5 +1,5 @@
 <template>
-  <div class="view-post-write view-layout-default">
+  <div class="view-post-write">
     <ButtonCommunity/>
     <PostEditor/>
     <TablePosts/>

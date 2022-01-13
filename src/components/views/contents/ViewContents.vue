@@ -1,5 +1,5 @@
 <template>
-  <div class="view-contents view-layout-default">
+  <div class="view-contents">
     <SubHeader :items="contents"/>
     <component :is="selectedComponent" class="view-contents-body"/>
   </div>

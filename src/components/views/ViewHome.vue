@@ -1,5 +1,5 @@
 <template>
-  <div class="view-home view-layout-default">
+  <div class="view-home">
     <TradingViewTicker v-if="$store.getters.settings.tradingview === 'show'" class="m-b-8"/>
     <TradingView v-if="$store.getters.settings.tradingview === 'show'"/>
     <BaseAndTarget/>
