@@ -4,7 +4,7 @@
     class="app-body"
     :class="['no-scrollbar']">
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
-    <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR"/>
+    <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR && prepared"/>
     <AppFooter/>
   </div>
   <AppAddons v-if="!$store.getters.isSSR"/>
