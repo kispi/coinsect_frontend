@@ -18,8 +18,10 @@ export default {
   },
   setup() {
     onMounted(() => {
-      (adsbygoogle = window.adsbygoogle || []).push({})
+      setTimeout(() => {
+        (adsbygoogle = window.adsbygoogle || []).push({})
+      }, 2000)
     })
-  }
+  },
 }
 </script>
