@@ -1,4 +1,5 @@
 // app components
+import AdSense from '@/components/app/AdSense'
 import AdaptiveLayout from '@/components/app/AdaptiveLayout'
 import AppBanner from '@/components/app/AppBanner'
 import AppCheckbox from '@/components/app/AppCheckbox'
@@ -36,6 +37,7 @@ import ReplyWrite from '@/components/views/community/ReplyWrite'
 const useGlobalComponents = app => {
   app
   // app components
+    .component('AdSense', AdSense)
     .component('AdaptiveLayout', AdaptiveLayout)
     .component('AppBanner', AppBanner)
     .component('AppCheckbox', AppCheckbox)

@@ -4,9 +4,10 @@
     class="app-body"
     :class="['no-scrollbar']">
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
+    <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR"/>
     <AppFooter/>
   </div>
-  <AppAddons/>
+  <AppAddons v-if="!$store.getters.isSSR"/>
 </template>
 
 <script>
@@ -86,6 +87,13 @@ export default {
 
   .router-view-container {
     min-height: calc(100vh - 120px);
+  }
+
+  .ad-sense {
+    padding: 16px;
+    margin: 16px auto;
+    max-width: 992px;
+    height: 280px;
   }
 }
 </style>
