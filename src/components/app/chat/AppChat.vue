@@ -297,6 +297,7 @@ export default {
 .app-chat {
   --app-chat-padding: 12px;
   position: fixed;
+  z-index: 1;
   bottom: 8px;
   right: 8px;
   transition: none;
@@ -360,6 +361,7 @@ export default {
 
   .app-chat-body {
     overflow-y: auto;
+    overscroll-behavior: contain;
     padding: var(--app-chat-padding);
     flex: 1;
 
