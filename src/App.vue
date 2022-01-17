@@ -7,7 +7,7 @@
     <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR" class="display-block"/>
   </div>
   <AppFooter/>
-  <AppAddons v-if="!$store.getters.isSSR"/>
+  <AppAddons/>
 </template>
 
 <script>
