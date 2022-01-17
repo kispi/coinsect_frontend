@@ -36,7 +36,7 @@ export default {
     }
 
     const init = () => nextTick(() => {
-      if (!Quill || !document.getElementsByClassName('quill-content')[0]) return
+      if (typeof Quill === 'undefined' || !document.getElementsByClassName('quill-content')[0]) return
 
       const fontSize = Quill.import('attributors/style/size')
       Quill.register(fontSize, true)
