@@ -22,7 +22,7 @@ export default {
         } catch (e) {
           console.error(e)
         }
-      }, 3000)
+      }, 1000)
     }
 
     onMounted(init)
