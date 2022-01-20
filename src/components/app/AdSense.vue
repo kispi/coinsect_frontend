@@ -8,22 +8,32 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
   props: {
     dataAdSlot: String,
   },
   setup() {
-    onMounted(() => {
+    const router = useRouter()
+
+    const init = () => {
       setTimeout(() => {
         try {
           (adsbygoogle = window.adsbygoogle || []).push({})
         } catch (e) {
           console.error(e)
         }
-      }, 2000)
-    })
+      }, 3000)
+    }
+
+    onMounted(init)
+
+    watch(
+      () => router.currentRoute.value.path,
+      init,
+    )
   },
 }
 </script>
