@@ -8,16 +8,13 @@
 </template>
 
 <script>
-import { onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 
 export default {
   props: {
     dataAdSlot: String,
   },
   setup() {
-    const router = useRouter()
-
     const init = () => {
       setTimeout(() => {
         try {
@@ -29,11 +26,6 @@ export default {
     }
 
     onMounted(init)
-
-    watch(
-      () => router.currentRoute.value.path,
-      init,
-    )
   },
 }
 </script>

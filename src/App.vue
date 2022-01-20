@@ -4,15 +4,16 @@
     class="app-body view-layout-default"
     :class="['no-scrollbar']">
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
-    <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR" class="display-block"/>
+    <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR && showAd" class="display-block"/>
   </div>
   <AppFooter/>
   <AppAddons/>
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
+import { ref, onMounted, onUnmounted, defineAsyncComponent, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import helpers from './helpers'
 
 export default {
@@ -24,7 +25,11 @@ export default {
   setup() {
     const store = useStore()
 
+    const router = useRouter()
+
     const prepared = ref(null)
+
+    const showAd = ref(null)
 
     const setIsMobile = () => store.commit('setIsMobile')
 
@@ -35,10 +40,18 @@ export default {
       store.commit('setScrollTop', scrollTop)
     }
 
+    const initAd = () => {
+      showAd.value = false
+      if (['/updates', '/portfolio'].includes(router.currentRoute.value.path)) return
+
+      setTimeout(() => showAd.value = true, 1000)
+    }
+
     const prepare = async () => {
       try {
         await store.dispatch('bootstrap')
         prepared.value = true
+        initAd()
       } finally {
         if (typeof document !== 'undefined') {
           const body = document.getElementsByTagName('body')[0]
@@ -59,7 +72,13 @@ export default {
       window.removeEventListener('scroll', onScroll)
     })
 
+    watch(
+      () => router.currentRoute.value.path,
+      initAd,
+    )
+
     return {
+      showAd,
       prepared,
     }
   },
@@ -81,6 +100,7 @@ export default {
 
 .app-body {
   overflow-x: hidden;
+  min-height: 100vh;
   flex: 1;
 
   &.view-layout-default {
