@@ -60,9 +60,22 @@ export default {
       }
     }
 
+    const storedSettings = () => {
+      const o = helpers.localStorage.getMeta('settings') || store.getters.settings
+      if (!['upbit', 'bithumb'].includes(o.baseExchange)) {
+        o.baseExchange = 'upbit'
+      }
+
+      if (!['binance'].includes(o.targetExchange)) {
+        o.targetExchange = 'binance'
+      }
+
+      return o
+    }
+
     onMounted(() => {
       prepare()
-      store.commit('setSettings', helpers.localStorage.getMeta('settings') || store.getters.settings)
+      store.commit('setSettings', storedSettings())
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })
     })
@@ -94,7 +107,7 @@ export default {
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 5;
   background: var(--background-base);
 }
 

@@ -184,10 +184,6 @@ export default {
       border-top: 1px solid var(--border-base);
     }
 
-    .wrapper-dropdown-overlay {
-      z-index: 6;
-    }
-
     .icons {
       display: flex;
     }

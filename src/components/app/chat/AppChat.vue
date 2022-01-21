@@ -297,7 +297,7 @@ export default {
 .app-chat {
   --app-chat-padding: 12px;
   position: fixed;
-  z-index: 1;
+  z-index: 5;
   bottom: 8px;
   right: 8px;
   transition: none;

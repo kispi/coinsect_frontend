@@ -33,7 +33,8 @@ const app = {
       currency: 'krw',
       filter: 'all', // 'favorites'
       tradingview: 'show',
-      baseExchange: 'upbit',
+      tradingviewSymbol: 'BITSTAMP:BTCUSD',
+      baseExchange: 'upbit', // 'upbit' || 'bithumb'
       targetExchange: 'binance',
       favorites: {},
       portfolio: {},

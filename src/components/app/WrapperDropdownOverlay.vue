@@ -28,6 +28,7 @@
  * </WrapperDropdownOverlay>
  */
 import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   props: {
@@ -50,6 +51,8 @@ export default {
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
+    const store = useStore()
+
     /**
      * slide-enter: modelValue = true가 되면서 wrapper-dropdown-overlay가 즉시 펼쳐진 뒤, prepared가 뒤이어 true가 되며 이루어짐
      * slide-leave: 먼저 prepared를 false로 하며 약 0.2초간 slide-leave 애니메이션을 기다린 '후에' 비로소 modelValue = false로 하여 wrapper-dropdown-overlay를 감춘다.
@@ -133,6 +136,11 @@ export default {
       newVal => {
         setTimeout(() => newVal ? slideEnter() : slideLeave())
       },
+    )
+
+    watch(
+      () => store.getters.scrollTop,
+      slideEnter,
     )
 
     onMounted(() => {

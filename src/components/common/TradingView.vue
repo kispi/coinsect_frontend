@@ -22,7 +22,7 @@ export default {
 
       new TradingView.widget({
         autosize: true,
-        symbol: props.symbol || 'BYBIT:BTCUSD',
+        symbol: props.symbol || store.getters.settings.tradingviewSymbol,
         interval: 15,
         timezone: 'Asia/Seoul',
         theme: store.getters.settings.theme,
@@ -36,6 +36,7 @@ export default {
 
     watch([
       () => store.getters.settings.theme,
+      () => store.getters.settings.tradingviewSymbol,
       () => store.getters.translation.locale,
       () => props,
     ], init)

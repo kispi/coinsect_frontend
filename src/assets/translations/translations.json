@@ -24,8 +24,8 @@
     "kr": "다시"
   },
   "BTC_DOMINANCE": {
-    "en": "Dominance(BTC)",
-    "kr": "도미(BTC)"
+    "en": "Bitcoin Dominance",
+    "kr": "비트코인 도미넌스"
   },
   "TOTAL_MARKET_CAP": {
     "en": "Total Marketcap",
@@ -51,9 +51,33 @@
     "en": "Change(52WL)",
     "kr": "저가대비(52주)"
   },
+  "KIMCHI_PREMIUM": {
+    "en": "Korean Premium(%)",
+    "kr": "김치 프리미엄 (%)"
+  },
   "PREMIUM": {
     "en": "Premium",
     "kr": "프리미엄"
+  },
+  "BTCUSD_BITSTAMP": {
+    "en": "Bitcoin (Bitstamp)",
+    "kr": "비트코인 (Bitstamp)"
+  },
+  "BTCUSD_BINANCE": {
+    "en": "Bitcoin (Binance)",
+    "kr": "비트코인 (Binance)"
+  },
+  "BTCUSD_BYBIT": {
+    "en": "Bitcoin (Bybit)",
+    "kr": "비트코인 (Bybit)"
+  },
+  "BITCOIN_LONGS": {
+    "en": "Bitcoin (Bitfinex)",
+    "kr": "비트코인 롱 (Bitfinex)"
+  },
+  "BITCOIN_SHORTS": {
+    "en": "Bitcoin (Bitfinex)",
+    "kr": "비트코인 숏 (Bitfinex)"
   },
   "BASE_EXCHANGE": {
     "en": "Base Exchange",

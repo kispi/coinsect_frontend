@@ -6,8 +6,8 @@
       v-if="selectedItem"
       class="clickable-area">
       <i class="item-icon" v-if="selectedItem.icon" :class="selectedItem.icon"/>
-      <img class="item-image" v-if="selectedItem.img" :src="selectedItem.img" :alt="$translate(selectedItem.key)"/>
-      <div class="key" v-html="$translate(selectedItem.key)"/>
+      <img class="item-image" v-if="selectedItem.img" :src="selectedItem.img" :alt="$translate(selectedItem.name || selectedItem.key)"/>
+      <div class="key" v-html="$translate(selectedItem.name || selectedItem.key)"/>
       <div class="chevrons">
         <i class="fa fa-chevron-down"/>
       </div>
@@ -23,8 +23,8 @@
           v-for="item in dropdownItems"
           :class="{'selected': (selectedItem || {}).key === item.key}">
           <i class="item-icon" v-if="item.icon" :class="item.icon"/>
-          <img class="item-image" v-if="item.img" :src="item.img" :alt="$translate(item.key)"/>
-          <div class="key" v-html="$translate(item.key)"/>
+          <img class="item-image" v-if="item.img" :src="item.img" :alt="$translate(item.name || item.key)"/>
+          <div class="key" v-html="$translate(item.name || item.key)"/>
         </li>
       </ul>
     </WrapperDropdownOverlay>
@@ -110,7 +110,7 @@ export default {
     border: 1px solid var(--gs-bb);
     padding: 8px 0;
     border-radius: 4px;
-    max-height: 240px;
+    max-height: 320px;
     overflow-y: auto;
 
     li {
