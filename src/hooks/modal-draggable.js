@@ -15,10 +15,12 @@ const useModalDraggable = () => {
   })
 
   const onMousemove = e => {
+    if (e.touches) return
+
     if (!dragging.value || !dragTarget.value) return
 
-    dragTarget.value.style.top = `${(e.touches ? e.touches[0].clientY : e.clientY) - offset.value.y}px`
-    dragTarget.value.style.left = `${(e.touches ? e.touches[0].clientX : e.clientX) - offset.value.x}px`
+    dragTarget.value.style.top = `${e.clientY - offset.value.y}px`
+    dragTarget.value.style.left = `${e.clientX - offset.value.x}px`
   }
 
   const onMousedown = e => {
@@ -28,11 +30,8 @@ const useModalDraggable = () => {
     document.addEventListener('touchmove', onMousemove)
     document.addEventListener('mousemove', onMousemove)
 
-    const rect = e.target.getBoundingClientRect()
-
-    // 헤더 안에서 클릭된 마우스의 위치만큼(offset)을 onMousemove에서 빼주어야함.
-    offset.value.x = e.touches ? (e.touches[0].pageX - rect.left) : e.offsetX
-    offset.value.y = e.touches ? (e.touches[0].pageY - rect.top) : e.offsetY
+    offset.value.x = e.offsetX
+    offset.value.y = e.offsetY
   }
 
   const onMouseup = () => {

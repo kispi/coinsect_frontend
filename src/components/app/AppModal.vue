@@ -85,7 +85,7 @@ export default {
 
       setTimeout(() => show.value = true)
 
-      makeDraggable(refModal.value)
+      if (!store.getters.isMobile) makeDraggable(refModal.value)
     })
 
     onUnmounted(() => {
