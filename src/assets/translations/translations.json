@@ -24,16 +24,16 @@
     "kr": "다시"
   },
   "BTC_DOMINANCE": {
-    "en": "Bitcoin Dominance",
-    "kr": "비트코인 도미넌스"
+    "en": "BTC.D",
+    "kr": "BTC.D"
   },
   "TOTAL_MARKET_CAP": {
     "en": "Total Marketcap",
     "kr": "전체시가총액"
   },
   "VOL_24": {
-    "en": "Volume(24H)",
-    "kr": "거래량(24시간)"
+    "en": "Volume(1D)",
+    "kr": "거래액(1일)"
   },
   "ACTIVE_USERS": {
     "en": "Active Users",
