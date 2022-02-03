@@ -11,8 +11,10 @@
     "lint": "vue-cli-service lint",
     "build:client": "vue-cli-service build --dest dist/client",
     "build:server": "VUE_APP_SSR=true vue-cli-service build --dest dist/server",
-    "ssr-build": "rm -rf ./dist && npm run build:client && npm run build:server",
-    "ssr-serve": "node was/server.js"
+    "ssr": "rm -rf ./dist && npm run build:client && npm run build:server && NODE_ENV=production node was/server.js",
+    "build:client-dev": "vue-cli-service build --dest dist-dev/client --mode development",
+    "build:server-dev": "VUE_APP_SSR=true vue-cli-service build --dest dist-dev/server --mode development",
+    "ssr-dev": "rm -rf ./dist && npm run build:client-dev && npm run build:server-dev && NODE_ENV=development node was/server.js"
   },
   "dependencies": {
     "@vue/server-renderer": "^3.2.26",

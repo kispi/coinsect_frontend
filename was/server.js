@@ -1,9 +1,14 @@
 const express = require('express')
 const useSSR = require('./ssr')
 const server = express()
+const { outputDir } = require('./helpers')
 
 const PORT = process.env.PORT || 4000
 
 useSSR(server)
 
-server.listen(PORT, '0.0.0.0', () => console.log(`server listening at port ${PORT}`))
+server.listen(PORT, '0.0.0.0', () => console.log(`
+  Server listening at port ${PORT}.
+  NODE_ENV: ${process.env.NODE_ENV}.
+  Static serving using /${outputDir}.
+`))

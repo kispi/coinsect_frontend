@@ -1,31 +1,28 @@
-const { useApp } = require('./helpers')
-const useHtmlRenderer = require('./html-renderer')
 const logger = require('./logger')
 
-const asyncWrapper = promise => async (req, res, next) => {
+const asyncWrapper = promise => async (...args) => {
+  let error
+  const next = args[args.length - 1]
   try {
-    await promise(req, res, next)
-    next()
+    await promise(...args)
   } catch (e) {
-    console.error('Internal Server Error:', e.message)
-    next(e)
+    error = e
   }
+
+  if (error) {
+    console.error('Internal Server Error:', error)
+  }
+
+  next(error)
 }
 
-const errorHandler = async (error, req, res, next) => {
-  const { app, store, router } = await useApp(req)
-  await router.push('/not-found')
-  await router.isReady()
-
-  const html = await useHtmlRenderer({ app, store })
-  res.status(500)
-  res.setHeader('Content-Type', 'text/html')
-  res.send(html)
+const handleErrorByRedirection = (error, req, res, next) => {
+  res.redirect('/not-found')
   next()
 }
 
 module.exports = {
   asyncWrapper,
-  errorHandler,
+  handleErrorByRedirection,
   logger,
 }

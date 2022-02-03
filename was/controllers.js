@@ -7,6 +7,8 @@ const useHtmlRenderer = require('./html-renderer')
   사실 없어도 되긴 하는데, 이걸 사용해서 SSR 응답에 대해 302나 404등의 status 처리를 할 수 있음.
 */
 const matchingRoute = (routes, currentPath) => {
+  if (currentPath === '/index.html') return true // CF에서는 루트(/)를 때리면 디폴트로 index.html을 내려주는 세팅때문인듯?
+
   const fragCurrentPath = currentPath.split('/').slice(1)
 
   return routes.find(route => {
@@ -34,6 +36,14 @@ const handleSSRRequest = async (req, res) => {
   res.send(html)
 }
 
+const routeError = async (req, res) => {
+  const { app, store } = await useApp(req)
+  const html = await useHtmlRenderer({ app, store })
+  res.status(500)
+  res.send(html)
+}
+
 module.exports = {
   handleSSRRequest,
+  routeError,
 }

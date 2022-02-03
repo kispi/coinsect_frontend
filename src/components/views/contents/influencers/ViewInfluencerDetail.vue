@@ -118,18 +118,18 @@ export default {
       return target
     })
 
-    onMounted(() => store.dispatch('loadInfluencers'))
-
-    onServerPrefetch(async () => {
+    const callApi = async () => {
       await store.dispatch('loadInfluencers')
       const p = influencer.value
-      try {
-        plugins.$helpers.meta.setDocumentTitle(`인물 - ${p.name} - 코인충`)
-        plugins.$helpers.meta.renderDescription(JSON.parse(p.description).kr)
-        plugins.$helpers.meta.renderOgImage(plugins.$helpers.useS3(p.images[0].key))
-        plugins.$helpers.meta.renderCanonicalLink()
-      } catch (e) {}
-    })
+      plugins.$helpers.meta.setDocumentTitle(`인물 - ${p.name} - 코인충`)
+      plugins.$helpers.meta.renderDescription(JSON.parse(p.description).kr)
+      plugins.$helpers.meta.renderOgImage(plugins.$helpers.useS3(p.images[0].key))
+      plugins.$helpers.meta.renderCanonicalLink()
+    }
+
+    onMounted(callApi)
+
+    onServerPrefetch(callApi)
 
     return {
       influencer,

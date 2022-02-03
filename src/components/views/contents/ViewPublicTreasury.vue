@@ -74,9 +74,7 @@ export default {
 
     onMounted(callApi)
 
-    onServerPrefetch(async () => {
-      await callApi()
-    })
+    onServerPrefetch(callApi)
 
     return {
       data,

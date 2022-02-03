@@ -118,22 +118,21 @@ export default {
       })
     }
 
-    onMounted(() => {
-      store.dispatch('loadNotices')
-      loadPosts()
-    })
+    const callApi = async () => {
+      await Promise.all([
+        store.dispatch('loadNotices'),
+        loadPosts(),
+      ])
+    }
+
+    onMounted(callApi)
 
     watch(
       () => (store.getters.post || {}).id,
       () => loadPosts(),
     )
 
-    onServerPrefetch(async () => {
-      await Promise.all([
-        store.dispatch('loadNotices'),
-        loadPosts(),
-      ])
-    })
+    onServerPrefetch(callApi)
 
     return {
       page,

@@ -2,8 +2,10 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 const nodeExternals = require('webpack-node-externals')
 const webpack = require('webpack')
 const path = require('path')
+const outputDir = process.env.NODE_ENV === 'production' ? 'dist' : 'dist-dev'
 
 module.exports = {
+  outputDir,
   productionSourceMap: process.env.NODE_ENV !== 'production',
   chainWebpack: webpackConfig => {
     if (!process.env.VUE_APP_SSR) {

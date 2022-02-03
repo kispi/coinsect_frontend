@@ -29,9 +29,7 @@ export default {
       store.dispatch('loadInfluencers')
     })
 
-    onServerPrefetch(async () => {
-      await store.dispatch('loadInfluencers')
-    })
+    onServerPrefetch(() => store.dispatch('loadInfluencers'))
 
     return {
       items,

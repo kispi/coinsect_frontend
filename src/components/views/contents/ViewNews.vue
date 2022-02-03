@@ -55,7 +55,7 @@ export default {
 
     onMounted(loadNews)
 
-    onServerPrefetch(async () => await loadNews())
+    onServerPrefetch(loadNews)
 
     return {
       sections,

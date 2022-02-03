@@ -64,9 +64,6 @@ const template = {
 
     return dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')
   },
-  imageAlt: {
-    default: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
-  },
 }
 
 export default template

@@ -1,5 +1,3 @@
-const fs = require('fs')
-
 const getActualRequestDurationInMilliseconds = start => {
   const NS_PER_SEC = 1e9 //  convert to nanoseconds
   const NS_TO_MS = 1e6 // convert to milliseconds
@@ -8,36 +6,37 @@ const getActualRequestDurationInMilliseconds = start => {
 }
 
 const logger = (req, res, next) => {
-  let current_datetime = new Date()
-  let formatted_date =
-    current_datetime.getFullYear() +
-    '-' +
-    (current_datetime.getMonth() + 1) +
-    '-' +
-    current_datetime.getDate() +
-    ' ' +
-    current_datetime.getHours() +
-    ':' +
-    current_datetime.getMinutes() +
-    ':' +
-    current_datetime.getSeconds()
-  const method = req.method
   const url = req.url
-  const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress
-  const status = res.statusCode
-  const start = process.hrtime()
-  const durationInMilliseconds = getActualRequestDurationInMilliseconds(start)
-  if (['.js', '.css', '.png', '.gif', 'jpg', './jpeg', '.svg', '.woff2', '.ico'].some(ext => url.endsWith(ext))) {
+
+  const extensions = ['.js', '.css', '.png', '.gif', 'jpg', './jpeg', '.svg', '.woff2', '.ico']
+
+  if (extensions.some(ext => url.endsWith(ext))) {
     next()
     return
   }
 
-  let log = `[${formatted_date}] ${method}:${url} ${status} ${durationInMilliseconds.toLocaleString()} ms / ${ip}`
-  console.log(log)
+  const currentDatetime = new Date()
+  const method = req.method
+  const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress
+  const country = req.headers['Cloudfront-Viewer-Country']
+  const userAgent = req.headers['User-Agent']
+  const status = res.statusCode
+  const start = process.hrtime()
+  const durationInMilliseconds = getActualRequestDurationInMilliseconds(start)
 
-  fs.appendFile('request_logs', log + '\n', err => {
-    if (err) console.log(err)
-  })
+  const log = {
+    env: process.env.NODE_ENV,
+    method: method,
+    path: url,
+    status: status,
+    country: country,
+    user_agent: userAgent,
+    remote_ip: ip,
+    duration: durationInMilliseconds,
+    time: currentDatetime.toISOString(),
+  }
+  console.log(JSON.stringify(log))
+
   next()
 }
 
