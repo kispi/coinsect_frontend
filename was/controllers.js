@@ -1,4 +1,3 @@
-const { default: axios } = require('axios')
 const { useApp } = require('./helpers')
 const useHtmlRenderer = require('./html-renderer')
 

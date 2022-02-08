@@ -1,4 +1,4 @@
-import $store from '@/store'
+import { store as $store } from '@/store'
 
 const showToast = options => {
   if (!options.html || $store.getters.isSSR) return

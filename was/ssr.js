@@ -18,16 +18,21 @@ fs.readFile(
 )
 
 const useStaticServing = server => {
-  server.use('/img', express.static(path.join(__dirname, `../${outputDir}/client`, 'img')))
-  server.use('/js', express.static(path.join(__dirname, `../${outputDir}/client`, 'js')))
-  server.use('/css', express.static(path.join(__dirname, `../${outputDir}/client`, 'css')))
-  server.use('/font-awesome', express.static(path.join(__dirname, `../${outputDir}/client`, 'font-awesome')))
-  server.use('/favicon', express.static(path.join(__dirname, `../${outputDir}/client`, 'favicon')))
-  const rootFiles = ['gtm.js', 'ads.txt', 'robots.txt', 'sitemap.xml', 'naver048dfb4862180b4025eb9bd6e296c6ec.html']
-  rootFiles.forEach(file => server.use(`/${file}`, express.static(path.join(__dirname, `../${outputDir}/client`, file))))
+  const folders = ['img', 'js', 'css', 'font-awesome']
+  const publicFiles = ['gtm.js', 'ads.txt', 'robots.txt', 'sitemap.xml', 'naver048dfb4862180b4025eb9bd6e296c6ec.html']
+  const targets = folders.concat(publicFiles)
+  targets.forEach(target =>
+    server.use(`/${target}`, express.static(path.join(__dirname, `../${outputDir}/client`, target), { maxAge: 3600 * 1000 }))
+  )
+}
+
+const useRequestStartTime = (req, res, next) => {
+  req.$$start = new Date()
+  next()
 }
 
 const useSSR = server => {
+  server.use(useRequestStartTime)
   useStaticServing(server)
   useRoutes(server)
   server.use(handleErrorByRedirection)

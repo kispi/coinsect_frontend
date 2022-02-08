@@ -1,4 +1,4 @@
-import $store from '@/store'
+import { store as $store } from '@/store'
 
 export default key => {
   if (typeof key !== 'string') return

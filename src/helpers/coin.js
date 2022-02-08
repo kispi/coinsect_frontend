@@ -1,4 +1,4 @@
-import $store from '@/store'
+import { store as $store } from '@/store'
 
 const coin = {
   pickCoins: ({ numCoinsToGenerate, upbitOnly }) => Object.entries($store.getters.symbols)

@@ -15,7 +15,7 @@ const initialState = {
   user: user.state,
 }
 
-const store = createStore({
+export const newStore = () => createStore({
   modules: {
     app,
     content,
@@ -39,4 +39,12 @@ const store = createStore({
   },
 })
 
-export default store
+export let store = {}
+
+export const setStore = o => store = o
+
+export default {
+  store,
+  setStore,
+  newStore,
+}

@@ -1,4 +1,4 @@
-import $store from '@/store'
+import { store as $store } from '@/store'
 import translate from './translate'
 
 const initModal = (options, component) => new Promise(resolve => {

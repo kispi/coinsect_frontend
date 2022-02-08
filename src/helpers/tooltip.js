@@ -1,4 +1,4 @@
-import $store from '@/store'
+import { store as $store } from '@/store'
 
 const tooltip = {
   show: ({ id, text, showAbove }) => $store.commit('addTooltip', { id, text, showAbove, bind: true }),

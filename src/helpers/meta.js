@@ -1,4 +1,4 @@
-import store from '@/store'
+import { store as $store } from '@/store'
 import router from '@/router'
 import useS3 from './s3'
 
@@ -21,7 +21,7 @@ const removeExisting = id => {
 }
 
 const appendMetaTags = tags => tags.forEach(tag => {
-  store.commit('appendMetaTags', tag)
+  $store.commit('appendMetaTags', tag)
 
   if (process.env.VUE_APP_SSR) return
 

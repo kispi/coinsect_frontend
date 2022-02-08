@@ -1,4 +1,4 @@
-import $store from '@/store'
+import { store as $store } from '@/store'
 
 const conversionRatio = baseCurrency => {
   if (baseCurrency === $store.getters.settings.currency) return 1

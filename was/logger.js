@@ -1,10 +1,3 @@
-const getActualRequestDurationInMilliseconds = start => {
-  const NS_PER_SEC = 1e9 //  convert to nanoseconds
-  const NS_TO_MS = 1e6 // convert to milliseconds
-  const diff = process.hrtime(start)
-  return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS
-}
-
 const logger = (req, res, next) => {
   const url = req.url
 
@@ -19,10 +12,10 @@ const logger = (req, res, next) => {
   const method = req.method
   const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress
   const country = req.headers['Cloudfront-Viewer-Country']
-  const userAgent = req.headers['User-Agent']
+  const userAgent = req.headers['User-Agent'] || req.headers['user-agent']
   const status = res.statusCode
-  const start = process.hrtime()
-  const durationInMilliseconds = getActualRequestDurationInMilliseconds(start)
+  const end = new Date()
+  const duration = `${end.getTime() - req.$$start.getTime()}ms`
 
   const log = {
     env: process.env.NODE_ENV,
@@ -32,11 +25,10 @@ const logger = (req, res, next) => {
     country: country,
     user_agent: userAgent,
     remote_ip: ip,
-    duration: durationInMilliseconds,
+    duration,
     time: currentDatetime.toISOString(),
   }
   console.log(JSON.stringify(log))
-
   next()
 }
 

@@ -1,4 +1,4 @@
-import $store from '@/store'
+import { store as $store } from '@/store'
 import animate from './animate'
 import coin from './coin'
 import dataSetter from './data-setter'

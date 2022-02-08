@@ -1,5 +1,5 @@
 import { createApp, createSSRApp } from 'vue'
-import store from './store'
+import { store, newStore, setStore } from './store'
 import plugins from './plugins'
 import router from './router'
 import App from './App'
@@ -10,6 +10,8 @@ require('@/assets/styles/index.scss')
 
 export default () => {
   const isSSR = process.env.VUE_APP_SSR
+
+  setStore(newStore())
 
   const app = (isSSR ? createSSRApp : createApp)(App)
   app.use(store).use(router)

@@ -3,7 +3,7 @@ import routesNoAuth from './routes-no-auth-async'
 import routesAuth from './routes-auth-async'
 import ViewNotFound from '@/components/views/ViewNotFound'
 import helpers from '@/helpers'
-import $store from '@/store'
+import { store as $store } from '@/store'
 
 const routes = [
   ...routesNoAuth,

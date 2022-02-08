@@ -1,5 +1,5 @@
 import helpers from '@/helpers'
-import $store from '@/store'
+import { store as $store } from '@/store'
 
 export default async (to, from, next) => {
   if ((to || {}).fullPath) {
