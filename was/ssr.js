@@ -18,7 +18,7 @@ fs.readFile(
 )
 
 const useStaticServing = server => {
-  const folders = ['img', 'js', 'css', 'font-awesome']
+  const folders = ['img', 'js', 'css', 'font-awesome', 'favicon']
   const publicFiles = ['gtm.js', 'ads.txt', 'robots.txt', 'sitemap.xml', 'naver048dfb4862180b4025eb9bd6e296c6ec.html']
   const targets = folders.concat(publicFiles)
   targets.forEach(target =>
