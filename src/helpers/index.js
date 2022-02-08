@@ -60,6 +60,8 @@ const helpers = {
     if (d > 60 * 60) return `${Math.floor(d / 3600)}시간 전`
 
     if (d > 60) return `${Math.floor(d / 60)}분 전`
+
+    return `${d}초 전`
   },
   useS3,
   canSkipApiCall,
