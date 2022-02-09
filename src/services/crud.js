@@ -18,7 +18,7 @@ crudTargets.forEach(target => {
     create: (modelObj) => $http.post(`${endpoint}`, modelObj),
     all: (params) => $http.get(`${endpoint}`, { params }),
     detail: (modelId, params) => $http.get(`${endpoint}/${modelId}`, { params }),
-    update: (modelObj) => $http.put(`${endpoint}/${modelObj.id}`, modelObj),
+    update: (modelObj) => $http.put(`${endpoint}/${(modelObj.sharingKey || modelObj.id)}`, modelObj),
     delete: (modelId) => $http.delete(`${endpoint}/${modelId}`),
   }
 })

@@ -1,4 +1,4 @@
-<template>
+<template v-if="useGoogleAdSense">
   <ins class="ad-sense adsbygoogle"
     data-ad-client="ca-pub-3069752836489386"
     data-ad-format="auto"
@@ -15,7 +15,11 @@ export default {
     dataAdSlot: String,
   },
   setup() {
+    const useGoogleAdSense = process.env.NODE_ENV === 'PRODUCTION'
+
     const init = () => {
+      if (typeof adsbygoogle === 'undefined') return
+
       setTimeout(() => {
         try {
           (adsbygoogle = window.adsbygoogle || []).push({})
@@ -26,6 +30,10 @@ export default {
     }
 
     onMounted(init)
+
+    return {
+      useGoogleAdSense,
+    }
   },
 }
 </script>

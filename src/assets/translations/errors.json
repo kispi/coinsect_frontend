@@ -18,5 +18,9 @@
   "NICKNAME_TOO_LONG": {
     "en": "Nickname can't exceed 8 characters",
     "kr": "닉네임은 10자를 초과할 수 없습니다"
+  },
+  "BAD_REQUEST": {
+    "en": "Bad Request",
+    "kr": "잘못된 요청입니다"
   }
 }

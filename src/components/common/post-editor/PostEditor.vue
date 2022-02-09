@@ -67,8 +67,8 @@ export default {
         await crudService.post[payload.value.id ? 'update' : 'create'](payload.value)
         store.dispatch('loadPosts')
         router.push(
-          payload.value.id ?
-          `/community/${payload.value.id}` :
+          payload.value.sharingKey ?
+          `/community/${payload.value.sharingKey}` :
           '/community',
         )
       } catch (e) {

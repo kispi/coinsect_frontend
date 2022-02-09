@@ -26,22 +26,22 @@ export default {
 
     const sharingKey = router.currentRoute.value.params.sharingKey
 
-    const init = () => {
+    const init = async () => {
       store.commit('setPost', null)
-      plugins.$modal.input({ title: '비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
-        .then(value => {
-          if (!value) {
-            router.go(-1)
-            return
-          }
+      const value = await plugins.$modal.input({ title: '비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+      if (!value) {
+        router.go(-1)
+        return
+      }
 
-          communityService.checkPassword.post({ sharingKey, password: value })
-            .then(() => store.dispatch('loadPost', sharingKey))
-            .catch(() => {
-              plugins.$toast.error(plugins.$translate('INCORRECT_PASSWORD'))
-              router.push(`/community/${sharingKey}`)
-            })
-        })
+      try {
+        await communityService.checkPassword.post({ sharingKey, password: value })
+        await store.dispatch('loadPost', sharingKey)
+        post.value.$$originalPassword = value
+      } catch (e) {
+        plugins.$toast.error(plugins.$translate('INCORRECT_PASSWORD'))
+        router.push(`/community/${sharingKey}`)
+      }
     }
 
     onMounted(init)

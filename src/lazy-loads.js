@@ -1,11 +1,12 @@
 import helpers from '@/helpers'
 
 const useLazyLoads = async () => {
-  const loadGA = async () => {
+  const loadGooglePlugins = async () => {
     if (process.env.NODE_ENV !== 'production') return
 
     await helpers.dom.loadScript({ url: 'https://www.googletagmanager.com/gtag/js?id=G-595H41RVLD' })
     helpers.dom.loadScript({ url: '/gtm.js' })
+    helpers.dom.loadScript({ url: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3069752836489386' })
   }
 
   const loadQuill = async () => {
@@ -21,7 +22,7 @@ const useLazyLoads = async () => {
 
   await Promise.all([
     loadQuill(),
-    loadGA(),
+    loadGooglePlugins(),
     loadVendors(),
   ])
 }
