@@ -7,7 +7,6 @@
   font-size: 20px;
   font-weight: 700;
   color: var(--text-stress);
-  margin-bottom: 16px;
   display: block;
 }
 </style>

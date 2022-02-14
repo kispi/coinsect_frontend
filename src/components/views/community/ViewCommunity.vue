@@ -1,6 +1,6 @@
 <template>
   <div class="view-community">
-    <div class="flex-row flex-between items-center">
+    <div class="flex-row flex-between items-center m-b-16">
       <ButtonCommunity/>
       <button
         @click="$router.push('/community/write')"
