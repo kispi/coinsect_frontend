@@ -1,4 +1,9 @@
 export default [{
+  date: '2022-02-16',
+  jobsDone: [
+    `'비트코인 보유회사' => '비트코인 보유단체'로 변경`,
+  ],
+}, {
   date: '2022-01-11',
   jobsDone: [
     'TradingView Ticker Widget 추가',

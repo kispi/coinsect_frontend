@@ -4,14 +4,19 @@ import * as $http from 'axios'
 
 const marketInfo = {
   state: () => ({
+    publicTreasuries: null,
     influencers: null,
     news: null,
   }),
   getters: {
+    publicTreasuries: state => state.publicTreasuries,
     influencers: state => state.influencers,
     news: state => state.news,
   },
   mutations: {
+    setPublicTreasuries(state, publicTreasuries) {
+      state.publicTreasuries = publicTreasuries
+    },
     setInfluencers(state, influencers) {
       state.influencers = influencers
     },
@@ -41,6 +46,14 @@ const marketInfo = {
       try {
         const data = await $http.get('https://api-manager.upbit.com/api/v1/coin_news')
         commit('setNews', data)
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    async loadPublicTreasuries({ commit }) {
+      try {
+        const data = await $http.get('contents/public_treasuries')
+        commit('setPublicTreasuries', data)
       } catch (e) {
         return Promise.reject(e)
       }

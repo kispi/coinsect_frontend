@@ -8,5 +8,6 @@
   font-weight: 700;
   color: var(--text-stress);
   display: block;
+  margin-bottom: 16px;
 }
 </style>

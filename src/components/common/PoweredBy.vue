@@ -6,6 +6,9 @@
     <template v-if="by === 'upbit'">
       Powered by <a :href="link || 'https://upbit.com'" target="_blank" rel="noopener">Upbit<img src="@/assets/images/upbit.svg" alt="Upbit"></a>
     </template>
+    <template v-if="by === 'bitcointreasuries'">
+      Powered by <a :href="link || 'https://bitcointreasuries.net/'" target="_blank" rel="noopener">Bitcointreasuries<img src="@/assets/images/bitcointreasuries.png" alt="Bitcointreasuries"></a>
+    </template>
   </div>
 </template>
 
@@ -14,7 +17,7 @@ export default {
   props: {
     by: String,
     link: String,
-    validator: val => ['coingecko', 'upbit'].includes(val),
+    validator: val => ['coingecko', 'upbit', 'bitcointreasuries'].includes(val),
   },
 }
 </script>

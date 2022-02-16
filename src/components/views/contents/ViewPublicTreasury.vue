@@ -2,8 +2,8 @@
   <div class="view-public-treasury">
     <AppLoading :loading="loading"/>
     <div class="description">
-      비트코인을 보유한 공개된(상장) 회사들의 목록.<br>
-      갈수록 많은 회사들이 dollar-devalution으로 인한 구매력 저하를 막기 위해 자사의 재무재표에 비트코인을 일정비율 추가할 것으로 예상된다.
+      국가 / 상장 회사들 / 비공개 기업 / 펀드 등 비트코인을 보유한 단체들의 목록.<br>
+      갈수록 많은 단체들이 dollar-devalution으로 인한 구매력 저하를 막기 위해 자사의 재무재표에 비트코인을 일정비율 추가할 것이다.
     </div>
     <div class="region">
       <div class="flex-row">
@@ -16,55 +16,50 @@
       </div>
     </div>
     <template v-if="data">
-      <div class="summary">
-        <div class="total-holding">총 코인수: <i class="fab fa-btc"/>{{ data.total_holdings }}</div>
-        <div class="total-current-value-usd">총 평가액: {{ $helpers.number.pretty.cap({ cap: data.total_value_usd, baseCurrency: 'usd' })}}</div>
-        <div class="market-cap-dominance">시총 비중: {{ data.market_cap_dominance }}%</div>
-      </div>
       <div class="list">
         <div
           class="item"
           :class="{
-            'in-profit': company.total_current_value_usd > company.total_entry_value_usd,
-            'in-loss': company.total_current_value_usd < company.total_entry_value_usd,
+            'in-profit': entity.valuation > entity.costBasis,
+            'in-loss': entity.valuation < entity.costBasis,
           }"
-          :key="company.name"
-          v-for="(company, idx) in data.companies">
-          <div class="company-name">{{ idx + 1}}. [{{ company.country }}] {{ company.name }} ({{ company.symbol }})</div>
-          <div class="company-holdings"><i class="fab fa-btc"/>{{ company.total_holdings.toLocaleString() }}</div>
-          <div v-if="company.total_entry_value_usd" class="company-entry">매수금액: {{ $helpers.number.pretty.cap({ cap: company.total_entry_value_usd, baseCurrency: 'usd' }) }}</div>
-          <div v-if="company.total_entry_value_usd" class="company-avg">평단: {{ $helpers.number.pretty.price({ price: company.$$avg_price, baseCurrency: 'usd' }) }}</div>
-          <div class="company-current-value">평가액: {{ $helpers.number.pretty.cap({ cap: company.total_current_value_usd, baseCurrency: 'usd' }) }}</div>
-          <div class="company-dominance">시총 비중: {{ company.percentage_of_total_supply }}%</div>
-          <div v-if="company.$$profit" class="company-profit">수익률: {{ company.$$profit }}%</div>
+          :key="entity.name"
+          v-for="(entity, idx) in data">
+          <div class="entity-name">{{ idx + 1}}. [{{ entity.country }}] {{ entity.name }} ({{ entity.symbol }})</div>
+          <div v-if="entity.holdings" class="entity-holdings"><i class="fab fa-btc"/>{{ entity.holdings.toLocaleString() }}</div>
+          <div v-if="entity.costBasis" class="entity-entry">매수금액: {{ $helpers.number.pretty.cap({ cap: entity.costBasis, baseCurrency: 'usd' }) }}</div>
+          <div v-if="entity.avgPrice" class="entity-avg">평단: {{ $helpers.number.pretty.price({ price: entity.avgPrice, baseCurrency: 'usd' }) }}</div>
+          <div v-if="entity.valuation" class="entity-current-value">평가액: {{ $helpers.number.pretty.cap({ cap: entity.valuation, baseCurrency: 'usd' }) }}</div>
+          <div v-if="entity.dominance" class="entity-dominance">시총 비중: {{ entity.dominance }}%</div>
+          <div v-if="entity.profit" class="entity-profit">수익률: {{ entity.profit }}%</div>
+          <a v-if="entity.source" class="entity-source m-t-8" :href="entity.source" target="_blank" rel="noreferrer">출처: <em class="text-underline">{{ entity.source }}</em></a>
         </div>
       </div>
     </template>
-    <PoweredBy :by="'coingecko'"/>
+    <PoweredBy :by="'bitcointreasuries'"/>
   </div>
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, onServerPrefetch, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch, ref } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
+    const store = useStore()
+
     const loading = ref(null)
 
-    const data = ref(null)
+    const data = computed(() => store.getters.publicTreasuries)
 
     const callApi = async () => {
+      if (store.getters.publicTreasuries) return
+
       try {
         loading.value = true
-        data.value = await plugins.$http.get('https://api.coingecko.com/api/v3/companies/public_treasury/bitcoin')
-        data.value.companies.forEach(company => {
-          if (company.total_entry_value_usd) {
-            company.$$avg_price = Math.round(company.total_entry_value_usd / company.total_holdings)
-            company.$$profit = Math.round(10000 * (company.total_current_value_usd - company.total_entry_value_usd) / company.total_entry_value_usd) / 100
-          }
-        })
+        await store.dispatch('loadPublicTreasuries')
       } catch (e) {
         plugins.$toast.error('정보를 가져올 수 없습니다')
       } finally {
@@ -77,8 +72,8 @@ export default {
     onServerPrefetch(callApi)
 
     return {
-      data,
       loading,
+      data,
     }
   },
 }
@@ -92,7 +87,7 @@ export default {
 
   .description {
     font-size: 14px;
-    line-height: 18px;
+    line-height: 22px;
   }
 
   .in-profit {
@@ -123,11 +118,6 @@ export default {
     color: var(--bitcoin);
   }
 
-  .summary {
-    margin-top: 24px;
-    font-weight: 500;
-  }
-
   .list {
     margin: 24px 0;
     display: grid;
@@ -138,15 +128,16 @@ export default {
       box-shadow: 0 2px 4px var(--border-base);
       padding: 8px;
 
-      .company-name {
+      .entity-name {
         font-size: 18px;
         font-weight: 700;
+        margin-bottom: 8px;
       }
 
-      .company-holdings {
+      .entity-holdings {
         display: flex;
         align-items: center;
-        margin: 8px 0;
+        margin-bottom: 8px;
         padding: 2px 8px;
         border: 1px solid var(--bitcoin);
         display: table;
@@ -154,16 +145,21 @@ export default {
         font-weight: 700;
       }
 
-      .company-profit {
+      .entity-profit {
         font-weight: 500;
+      }
+
+      .entity-source {
+        font-size: 14px;
+        display: block;
       }
     }
 
-    .in-profit .company-profit {
+    .in-profit .entity-profit {
       color: var(--price-up-bybit);
     }
 
-    .in-loss .company-profit {
+    .in-loss .entity-profit {
       color: var(--price-down-bybit);
     }
 

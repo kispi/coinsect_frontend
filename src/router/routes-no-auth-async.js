@@ -48,7 +48,7 @@ const andSoOn = [{
   path: '/contents/public-treasury',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {
-    title: '비트코인 보유회사 - 코인충',
+    title: '비트코인 보유단체 - 코인충',
     description: '비트코인을 보유한 상장사들의 목록 및 보유 현황. 갈수록 많은 회사들이 현금 가치 하락에 대한 헤지로 비트코인을 자사의 재무재표에 추가할 것이다.',
     image: useS3('og-images/og-image-public-treasury.png'),
   },
