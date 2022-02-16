@@ -69,7 +69,7 @@ export default {
 
     onMounted(callApi)
 
-    onServerPrefetch(callApi)
+    onServerPrefetch(() => store.dispatch('loadPublicTreasuries'))
 
     return {
       loading,
