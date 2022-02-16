@@ -10,13 +10,13 @@
     "build-dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "build:client": "vue-cli-service build --dest dist/client",
-    "build:server": "VUE_APP_SSR=true vue-cli-service build --dest dist/server",
-    "ssr-build": "rm -rf ./dist && npm run build:client && npm run build:server",
-    "ssr-serve": "NODE_ENV=production node was/server.js",
+    "build:server": "cross-env VUE_APP_SSR=true vue-cli-service build --dest dist/server",
+    "ssr-build": "npm run build:client && npm run build:server",
+    "ssr-serve": "cross-env NODE_ENV=production node was/server.js",
     "build:client-dev": "vue-cli-service build --dest dist-dev/client --mode development",
-    "build:server-dev": "VUE_APP_SSR=true vue-cli-service build --dest dist-dev/server --mode development",
-    "ssr-dev-build": "rm -rf ./dist && npm run build:client-dev && npm run build:server-dev",
-    "ssr-dev-serve": "NODE_ENV=development node was/server.js"
+    "build:server-dev": "cross-env VUE_APP_SSR=true vue-cli-service build --dest dist-dev/server --mode development",
+    "ssr-dev-build": "npm run build:client-dev && npm run build:server-dev",
+    "ssr-dev-serve": "cross-env NODE_ENV=development node was/server.js"
   },
   "dependencies": {
     "@vue/server-renderer": "^3.2.26",
@@ -37,6 +37,7 @@
     "await-exec": "^0.1.2",
     "aws-sdk": "^2.918.0",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.10.0",
     "prompt-confirm": "^2.0.4",
