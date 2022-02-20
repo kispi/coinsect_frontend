@@ -30,6 +30,13 @@ const andSoOn = [{
     description: 'fear & greed, s2f, nlb price 등의 비트코인 가격 추이 예상에 사용되는 지표들',
   },
 }, {
+  path: '/contents/bitcoin-halving',
+  component: () => import(/* webpackChunkName: 'view-bitcoin-halving' */ '@/components/views/contents/ViewContents'),
+  meta: {
+    title: '다음 비트코인 반감기 - 코인충',
+    description: '다음 비트코인 반감기까지 남은 시간을 카운트다운으로 보여줍니다.',
+  },
+}, {
   path: '/contents/news',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {

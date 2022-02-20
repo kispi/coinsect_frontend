@@ -6,7 +6,7 @@
         :gap="$store.getters.isMobile ? 0 : 8"
         class="f-12 items-center">
         <i class="c-text-base far fa-user-friends"/>
-        <div class="c-text-stress flex-wrap" v-html="($store.getters.numActiveUsers || 0).toLocaleString()"/>
+        <div class="c-text-stress flex-wrap text-center" v-html="($store.getters.numActiveUsers || 0).toLocaleString()"/>
       </AdaptiveLayout>
     </div>
     <div

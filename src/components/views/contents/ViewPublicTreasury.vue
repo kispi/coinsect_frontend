@@ -16,23 +16,29 @@
       </div>
     </div>
     <template v-if="data">
-      <div class="list">
-        <div
-          class="item"
-          :class="{
-            'in-profit': entity.valuation > entity.costBasis,
-            'in-loss': entity.valuation < entity.costBasis,
-          }"
-          :key="entity.name"
-          v-for="(entity, idx) in data">
-          <div class="entity-name">{{ idx + 1}}. [{{ entity.country }}] {{ entity.name }} ({{ entity.symbol }})</div>
-          <div v-if="entity.holdings" class="entity-holdings"><i class="fab fa-btc"/>{{ entity.holdings.toLocaleString() }}</div>
-          <div v-if="entity.costBasis" class="entity-entry">매수금액: {{ $helpers.number.pretty.cap({ cap: entity.costBasis, baseCurrency: 'usd' }) }}</div>
-          <div v-if="entity.avgPrice" class="entity-avg">평단: {{ $helpers.number.pretty.price({ price: entity.avgPrice, baseCurrency: 'usd' }) }}</div>
-          <div v-if="entity.valuation" class="entity-current-value">평가액: {{ $helpers.number.pretty.cap({ cap: entity.valuation, baseCurrency: 'usd' }) }}</div>
-          <div v-if="entity.dominance" class="entity-dominance">시총 비중: {{ entity.dominance }}%</div>
-          <div v-if="entity.profit" class="entity-profit">수익률: {{ entity.profit }}%</div>
-          <a v-if="entity.source" class="entity-source m-t-8" :href="entity.source" target="_blank" rel="noreferrer">출처: <em class="text-underline">{{ entity.source }}</em></a>
+      <div
+        class="list"
+        :key="key"
+        v-for="key in Object.keys(data)">
+        <div class="entity-category">{{ $translate(key) }}</div>
+        <div class="item-layout">
+          <div
+            class="item"
+            :class="{
+              'in-profit': entity.valuation > entity.costBasis,
+              'in-loss': entity.valuation < entity.costBasis,
+            }"
+            :key="entity.name"
+            v-for="(entity, idx) in data[key]">
+            <div class="entity-name">{{ idx + 1}}. [{{ entity.country }}] {{ entity.name }} ({{ entity.symbol }})</div>
+            <div v-if="entity.holdings" class="entity-holdings"><i class="fab fa-btc"/>{{ entity.holdings.toLocaleString() }}</div>
+            <div v-if="entity.costBasis" class="entity-entry">매수금액: {{ $helpers.number.pretty.cap({ cap: entity.costBasis, baseCurrency: 'usd' }) }}</div>
+            <div v-if="entity.avgPrice" class="entity-avg">평단: {{ $helpers.number.pretty.price({ price: entity.avgPrice, baseCurrency: 'usd' }) }}</div>
+            <div v-if="entity.valuation" class="entity-current-value">평가액: {{ $helpers.number.pretty.cap({ cap: entity.valuation, baseCurrency: 'usd' }) }}</div>
+            <div v-if="entity.dominance" class="entity-dominance">시총 비중: {{ entity.dominance }}%</div>
+            <div v-if="entity.profit" class="entity-profit">수익률: {{ entity.profit }}%</div>
+            <a v-if="entity.source" class="entity-source m-t-8" :href="entity.source" target="_blank" rel="noreferrer">출처: <em class="text-underline">{{ entity.source }}</em></a>
+          </div>
         </div>
       </div>
     </template>
@@ -52,11 +58,15 @@ export default {
 
     const loading = ref(null)
 
-    const data = computed(() => store.getters.publicTreasuries)
+    const data = computed(() => {
+      if (!store.getters.publicTreasuries) return
+
+      const group = { public_company: [], private_company: [], etf: [], gov: [], etc: [] }
+      store.getters.publicTreasuries.forEach(pt => group[pt.type].push(pt))
+      return group
+    })
 
     const callApi = async () => {
-      if (store.getters.publicTreasuries) return
-
       try {
         loading.value = true
         await store.dispatch('loadPublicTreasuries')
@@ -119,9 +129,23 @@ export default {
   }
 
   .list {
-    margin: 24px 0;
-    display: grid;
-    grid-gap: 24px;
+    margin: 24px 0 40px;
+
+    .entity-category {
+      margin-bottom: 16px;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 0 16px;
+      background: var(--brand-primary-hover);
+      color: var(--white);
+      display: table;
+      border-radius: 16px;
+    }
+
+    .item-layout {
+      display: grid;
+      grid-gap: 24px;
+    }
 
     .item {
       border-radius: 4px;
@@ -164,7 +188,9 @@ export default {
     }
 
     @media (min-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
+      .item-layout {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   }
 }

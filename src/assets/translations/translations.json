@@ -127,6 +127,10 @@
     "en": "Public Treasury",
     "kr": "비트코인 보유단체"
   },
+  "BITCOIN_HALVING": {
+    "en": "Bitcoin Halving",
+    "kr": "비트코인 반감기"
+  },
   "RANK": {
     "en": "Rank",
     "kr": "랭킹"
@@ -214,6 +218,22 @@
   "NICKNAME": {
     "en": "Nickname",
     "kr": "닉네임"
+  },
+  "DAYS": {
+    "en": "days",
+    "kr": "일"
+  },
+  "HOURS": {
+    "en": "hours",
+    "kr": "시간"
+  },
+  "MINUTES": {
+    "en": "minutes",
+    "kr": "분"
+  },
+  "SECONDS": {
+    "en": "seconds",
+    "kr": "초"
   },
   "UNKNOWN": {
     "en": "Unknown",
@@ -334,5 +354,33 @@
   "QUOTES": {
     "en": "Quotes",
     "kr": "말말말"
+  },
+  "PUBLIC_COMPANY": {
+    "en": "Public Company",
+    "kr": "상장기업"
+  },
+  "PRIVATE_COMPANY": {
+    "en": "Private Company",
+    "kr": "비상장기업"
+  },
+  "ETF": {
+    "en": "ETF Like",
+    "kr": "상장지수펀드류"
+  },
+  "GOV": {
+    "en": "Government",
+    "kr": "정부"
+  },
+  "ESTIMATED_NEXT_HALVING": {
+    "en": "Estimated Next Halving",
+    "kr": "예상 다음 반감일"
+  },
+  "BITCOIN_HALVING_TITLE": {
+    "en": "Block rewards of BTC\ndecreases to 3.125 from 6.25.",
+    "kr": "비트코인의 블록당 보상이\n6.25 => 3.125개로 감소합니다."
+  },
+  "BITCOIN_HALVING_DESCRIPTION": {
+    "en": "Bitcoin blockchain generates one block every 10 minutes.\nNum of BTC rewards for every block halves every 210,000 blocks.\nSo we can expect how much supply will be available,\nthus less BTC will be released into market.",
+    "kr": "비트코인 블록체인은 약 10분에 하나의 블록을 생성하며,\n매 210,000 블록마다 블록당 보상이 절반으로 감소합니다.\n이를 통해 시장에 공급되는 유통량이 예측 가능하게 감소하여\n비트코인 특유의 조작 불가능한 희소성이 점점 심화됩니다."
   }
 }
