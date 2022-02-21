@@ -1,10 +1,8 @@
 <template>
   <div class="app-tooltips">
     <AppTooltip
-      :bind="tooltip.bind"
-      :text="tooltip.text"
-      :showAbove="tooltip.showAbove"
-      :key="tooltip"
+      :tooltip="tooltip"
+      :key="tooltip.key"
       v-for="tooltip in $store.getters.tooltips"
     />
   </div>
@@ -41,6 +39,5 @@ export default {
   left: 0;
   z-index: 6;
   pointer-events: none;
-  overflow: hidden;
 }
 </style>

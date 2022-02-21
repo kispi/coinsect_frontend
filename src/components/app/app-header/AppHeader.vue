@@ -89,6 +89,8 @@ export default {
 
     const router = useRouter()
 
+    const refIconSharer = ref(null)
+
     const refIconSettings = ref(null)
 
     const refIconNotifications = ref(null)
@@ -146,6 +148,7 @@ export default {
     }))
 
     return {
+      refIconSharer,
       refIconNotifications,
       refIconSettings,
       showNotifications,
@@ -157,7 +160,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .app-header {
   transition: all 0.2s ease;
   width: 100%;

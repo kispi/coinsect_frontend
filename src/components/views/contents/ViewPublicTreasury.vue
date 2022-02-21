@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onServerPrefetch, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -67,6 +67,8 @@ export default {
     })
 
     const callApi = async () => {
+      if (store.getters.publicTreasuries) return
+
       try {
         loading.value = true
         await store.dispatch('loadPublicTreasuries')
@@ -78,6 +80,8 @@ export default {
     }
 
     onMounted(callApi)
+
+    onUnmounted(() => store.commit('setPublicTreasuries', null))
 
     onServerPrefetch(() => store.dispatch('loadPublicTreasuries'))
 

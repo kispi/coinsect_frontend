@@ -10,6 +10,7 @@ import meta from './meta'
 import modal from './modal'
 import number from './number'
 import querybuilder from './querybuilder'
+import social from './social'
 import useS3 from './s3'
 import template from './template'
 import toast from './toast'
@@ -53,6 +54,7 @@ const helpers = {
   meta,
   animate,
   dataSetter,
+  social,
   passedTime: timestamp => {
     const d = helpers.dayjs().diff(helpers.dayjs(timestamp), 'seconds')
     if (d > 60 * 60 * 24) return `${Math.floor(d / 86400)}일 전`

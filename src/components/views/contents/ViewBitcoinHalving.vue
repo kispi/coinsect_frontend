@@ -22,7 +22,7 @@
       </div>
       <div class="badge start">셋째 반감기<br>12.5 > 6.25<br>630,000 블록<div class="triangle"/></div>
       <div class="badge end">넷째 반감기<br>6.25 > 3.125<br>840,000 블록<div class="triangle"/></div>
-      <div class="badge current" :style="{ left: `calc(${left} - 41px)` }">최근 블록<br>{{ currentBlock.toLocaleString() }}<div class="triangle"/></div>
+      <div ref="refCurrentBadge" class="badge current" :style="currentBlockBadgeStyle">최근 블록<br>{{ currentBlock.toLocaleString() }}<div class="triangle"/></div>
     </div>
   </div>
 </template>
@@ -37,6 +37,8 @@ export default {
 
     const store = useStore()
 
+    const refCurrentBadge = ref(null)
+
     const currentBlock = ref(0)
 
     const interv = ref(null)
@@ -44,6 +46,16 @@ export default {
     const left = computed(() => `${(currentBlock.value - 630000) / (840000 - 630000) * 100}%`)
 
     const secondsUntilNextHalving = ref(0)
+
+    const currentBlockBadgeStyle = computed(() => {
+      if (!refCurrentBadge.value) return
+
+      const { width } = refCurrentBadge.value.getBoundingClientRect()
+
+      return {
+        left: `calc(${left.value} - ${width / 2 - 1}px)`,
+      }
+    })
 
     const t = computed(() => {
       let seconds = secondsUntilNextHalving.value
@@ -82,7 +94,9 @@ export default {
     })
 
     return {
+      refCurrentBadge,
       currentBlock,
+      currentBlockBadgeStyle,
       t,
       left,
       nextHalving,

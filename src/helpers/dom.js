@@ -21,13 +21,26 @@ const dom = {
       Math.floor(100 - ((rect.bottom - windowHeight) / rect.height) * 100) < percentVisible
     )
   },
-  copyToClipboard: str => {
+  copyToClipboard: (str, link) => {
     const el = document.createElement('textarea')
-    el.value = str
-    document.body.appendChild(el)
-    el.select()
+
+    if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      el.value = str
+      document.body.appendChild(el)
+      el.select()
+    }
+
+    const listener = e => {
+      e.clipboardData.setData('text/html', link ? `<a href="${link}">${str}</a>` : str)
+      e.clipboardData.setData('text/plain', str)
+      e.preventDefault()
+    }
+
+    document.addEventListener('copy', listener)
     document.execCommand('copy')
-    document.body.removeChild(el)
+    document.removeEventListener('copy', listener)
+    el.blur()
+    el.remove()
   },
   loadScript: ({ url, attributes }) => new Promise(resolve => {
     if ($store.getters.lazyLoadedScriptUrls.includes(url)) {

@@ -137,6 +137,8 @@ const app = {
       state.modals = []
     },
     addTooltip(state, tooltip) {
+      if (state.tooltips.find(t => t.id === tooltip.id)) return
+
       state.tooltips.push(tooltip)
     },
     removeTooltip(state, id) {
