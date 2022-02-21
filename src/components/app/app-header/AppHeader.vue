@@ -16,6 +16,11 @@
         <AppLogo/>
         <div class="icons">
           <div
+            ref="refIconSharer"
+            class="clickable-icon-wrapper">
+            <AppSharer/>
+          </div>
+          <div
             ref="refIconSettings"
             @click="showSettings = !showSettings"
             class="clickable-icon-wrapper">
