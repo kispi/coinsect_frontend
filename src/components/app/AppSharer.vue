@@ -133,12 +133,7 @@ export default {
 
   .icon-sharer {
     font-size: 24px;
-    color: var(--gs-44);
     cursor: pointer;
-
-    &:hover {
-      color: var(--gs-88);
-    }
   }
 
   .app-sharer-container {
