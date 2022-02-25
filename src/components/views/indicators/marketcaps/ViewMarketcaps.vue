@@ -1,6 +1,5 @@
 <template>
   <div class="view-marketcaps">
-    <AppLoading :loading="$store.getters.loading.marketcaps"/>
     <PoweredBy :by="'coingecko'"/>
     <MarketcapsCoingecko class="m-t-24"/>
   </div>

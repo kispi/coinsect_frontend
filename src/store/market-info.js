@@ -86,7 +86,7 @@ const marketInfo = {
       sort,
     }) {
       try {
-        commit('setLoading', { marketcaps: true })
+        commit('setLoading', { global: true })
         const data = await marketInfoService.marketcaps({
           vs_currency: 'usd',
           category,
@@ -99,7 +99,7 @@ const marketInfo = {
       } catch (e) {
         return Promise.reject(e)
       } finally {
-        commit('setLoading', { marketcaps: false })
+        commit('setLoading', { global: false })
       }
     },
     async loadBaseMarkets({ commit, getters }) {
@@ -155,7 +155,7 @@ const marketInfo = {
       if (helpers.canSkipApiCall('leaderboard')) return
 
       try {
-        commit('setLoading', { leaderboard: true })
+        commit('setLoading', { global: true })
         const data = await marketInfoService.leaderboard()
         const aoa = data.find(row => row.name === 'aoa')
         if (aoa) aoa.name = 'aoa (워뇨띠)'
@@ -163,7 +163,7 @@ const marketInfo = {
       } catch (e) {
         return Promise.reject(e)
       } finally {
-        commit('setLoading', { leaderboard: false })
+        commit('setLoading', { global: false })
       }
     },
   },

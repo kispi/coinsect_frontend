@@ -1,5 +1,5 @@
 <template>
-  <div class="view-bitcoin-halving">
+  <div v-if="!$store.getters.loading.global" class="view-bitcoin-halving">
     <div class="title" v-html="$translate('BITCOIN_HALVING_TITLE')"/>
     <div class="description" v-html="$translate('BITCOIN_HALVING_DESCRIPTION')"/>
     <div v-if="nextHalving" class="estimated-next-halving">
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -72,26 +72,31 @@ export default {
 
     const init = async () => {
       try {
+        store.commit('setLoading', { global: true })
         currentBlock.value = await plugins.$http.get('https://blockchain.info/q/getblockcount')
         secondsUntilNextHalving.value = (840000 - currentBlock.value) * 10 * 60
         nextHalving.value = plugins.$helpers.dayjs().add(secondsUntilNextHalving.value, 'seconds')
       } catch (e) {}
-      setTimeout(init, 1000 * 60 * 10)
+      store.commit('setLoading', { global: false })
+
+      if (!store.getters.isSSR) setTimeout(init, 1000 * 60 * 10)
     }
 
     onMounted(() => {
       init()
 
-      if (store.getters.isSSR) return
-
-      interv.value = setInterval(() => {
-        secondsUntilNextHalving.value -= 1
-      }, 1000)
+      if (!store.getters.isSSR) {
+        interv.value = setInterval(() => {
+          secondsUntilNextHalving.value -= 1
+        }, 1000)
+      }
     })
 
     onUnmounted(() => {
       clearInterval(interv.value)
     })
+
+    onServerPrefetch(init)
 
     return {
       refCurrentBadge,

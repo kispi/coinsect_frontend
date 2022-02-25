@@ -9,13 +9,16 @@
 
 <script>
 import { onMounted } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   props: {
     dataAdSlot: String,
   },
   setup() {
-    const useGoogleAdSense = process.env.NODE_ENV === 'PRODUCTION'
+    const store = useStore()
+
+    const useGoogleAdSense = process.env.NODE_ENV === 'PRODUCTION' && !store.getters.isSSR
 
     const init = () => {
       if (typeof adsbygoogle === 'undefined') return

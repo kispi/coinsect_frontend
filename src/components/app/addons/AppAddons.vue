@@ -1,4 +1,5 @@
 <template v-if="!$store.getters.isSSR">
+  <AppLoading :loading="$store.getters.loading.global" class="global-loading"/>
   <AppChat/>
   <AppToast/>
   <AppTooltips/>
@@ -30,3 +31,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.global-loading {
+  z-index: 10;
+}
+</style>

@@ -1,6 +1,5 @@
 <template>
   <div class="view-public-treasury">
-    <AppLoading :loading="loading"/>
     <div class="description">
       국가 / 상장 회사들 / 비공개 기업 / 펀드 등 비트코인을 보유한 단체들의 목록.<br>
       갈수록 많은 단체들이 dollar-devalution으로 인한 구매력 저하를 막기 위해 자사의 재무재표에 비트코인을 일정비율 추가할 것이다.
@@ -56,8 +55,6 @@ export default {
 
     const store = useStore()
 
-    const loading = ref(null)
-
     const data = computed(() => {
       if (!store.getters.publicTreasuries) return
 
@@ -70,12 +67,9 @@ export default {
       if (store.getters.publicTreasuries) return
 
       try {
-        loading.value = true
         await store.dispatch('loadPublicTreasuries')
       } catch (e) {
         plugins.$toast.error('정보를 가져올 수 없습니다')
-      } finally {
-        loading.value = false
       }
     }
 
@@ -86,7 +80,6 @@ export default {
     onServerPrefetch(() => store.dispatch('loadPublicTreasuries'))
 
     return {
-      loading,
       data,
     }
   },

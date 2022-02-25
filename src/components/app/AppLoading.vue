@@ -1,6 +1,8 @@
 <template>
   <div
     v-if="loading"
+    @mousewheel.prevent
+    @touchmove.prevent
     class="app-loading">
     <AppLoader/>
   </div>

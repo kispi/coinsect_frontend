@@ -3,8 +3,9 @@
   <div
     class="app-body view-layout-default"
     :class="['no-scrollbar']">
+    <AppRowAds v-if="showAd"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
-    <AdSense :dataAdSlot="'9230500527'" v-if="!$store.getters.isSSR && showAd" class="display-block"/>
+    <AdSense :dataAdSlot="'9230500527'" v-if="showAd" class="display-block"/>
   </div>
   <AppFooter/>
   <AppAddons/>
@@ -21,6 +22,7 @@ export default {
     AppHeader: defineAsyncComponent(() => import('@/components/app/app-header/AppHeader')),
     AppAddons: defineAsyncComponent(() => import('@/components/app/addons/AppAddons')),
     AppFooter: defineAsyncComponent(() => import('@/components/app/AppFooter')),
+    AppRowAds: defineAsyncComponent(() => import('@/components/app/AppRowAds')),
   },
   setup() {
     const store = useStore()

@@ -52,10 +52,13 @@ const marketInfo = {
     },
     async loadPublicTreasuries({ commit }) {
       try {
+        commit('setLoading', { global: true })
         const data = await $http.get('contents/public_treasuries')
         commit('setPublicTreasuries', data)
       } catch (e) {
         return Promise.reject(e)
+      } finally {
+        commit('setLoading', { global: false })
       }
     },
   },
