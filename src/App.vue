@@ -3,7 +3,7 @@
   <div
     class="app-body view-layout-default"
     :class="['no-scrollbar']">
-    <AppRowAds v-if="showAd"/>
+    <AppRowAds v-if="showAd && $store.getters.windowInnerWidth >= 992"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
     <AdSense :dataAdSlot="'9230500527'" v-if="showAd" class="display-block"/>
   </div>
