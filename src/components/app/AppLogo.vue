@@ -18,10 +18,4 @@ export default {
   font-size: 24px;
   font-weight: 700;
 }
-
-#app.dark {
-  .app-logo {
-    text-shadow: 0 0 4px rgba(255, 255, 255, 0.25), 0 0 8px rgba(68, 149, 255, 0.4);
-  }
-}
 </style>

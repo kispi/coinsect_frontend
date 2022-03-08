@@ -14,12 +14,13 @@
   --gs-88:               #888888;
   --gs-bb:               #bbbbbb;
   --gs-e0:               #e0e0e0;
-  --almost-white:        #fafafa;
+  --gs-bybit:            #17181e;
+  --text-bybit:          rgba(255, 255, 255, 0.8);
   --danger:              #aa0000;
   --price-up-upbit:      #d60000;
   --price-down-upbit:    #0051c7;
-  --price-up-bybit:      rgba(36, 175, 100, 1);
-  --price-down-bybit:    rgba(240, 64, 64, 1);
+  --price-up-bybit:      rgba(36, 174, 100, 1);
+  --price-down-bybit:    rgba(224, 64, 64, 1);
   --danger-light:        rgba(176, 0, 0, 0.6);
 
   --text-stress:         var(--gs-22);
@@ -43,11 +44,11 @@
   &.dark {
     --brand-primary:     rgba(82, 163, 235, 1);
     --text-stress:       var(--white);
-    --text-base:         var(--gs-e0);
+    --text-base:         var(--text-bybit);
     --text-light:        var(--gs-44);
     --border-base:       var(--gs-44);
     --border-light:      var(--gs-e0);
-    --background-base:   var(--gs-14);
+    --background-base:   var(--gs-bybit);
     --background-light:  rgba(255, 255, 255, 0.1);
 
     --price-up:          var(--price-up-bybit);

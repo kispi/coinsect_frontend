@@ -1,5 +1,5 @@
 import { store as $store } from '@/store'
-import router from '@/router'
+import { router } from '@/router'
 import useS3 from './s3'
 
 const sanitize = html => {

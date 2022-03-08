@@ -14,23 +14,35 @@ const routes = [
   },
 ]
 
-const router = createRouter({
-  history: process.env.VUE_APP_SSR ? createMemoryHistory() : createWebHistory(),
-  scrollBehavior: (to, from) => {
-    if (to.path === from.path) return
+export const newRouter = () => {
+  const r = createRouter({
+    history: process.env.VUE_APP_SSR ? createMemoryHistory() : createWebHistory(),
+    scrollBehavior: (to, from) => {
+      if (to.path === from.path) return
 
-    setTimeout(() => helpers.dom.scrollToTop())
-  },
-  routes,
-})
+      setTimeout(() => helpers.dom.scrollToTop())
+    },
+    routes,
+  })
 
-router.beforeEach((to, from, next) => {
-  const modals = $store.getters.modals.filter(m => m)
-  if (modals.length === 0) return next()
+  r.beforeEach((to, from, next) => {
+    const modals = $store.getters.modals.filter(m => m)
+    if (modals.length === 0) return next()
+  
+    const latestModal = modals[modals.length - 1]
+    $store.commit('popModal', latestModal)
+    next(false)
+  })
 
-  const latestModal = modals[modals.length - 1]
-  $store.commit('popModal', latestModal)
-  next(false)
-})
+  return r
+}
 
-export default router
+export let router = {}
+
+export const setRouter = o => router = o
+
+export default {
+  router,
+  newRouter,
+  setRouter,
+}

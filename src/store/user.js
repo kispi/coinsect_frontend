@@ -1,6 +1,6 @@
 import helpers from '@/helpers'
 import axios from '@/modules/axios'
-import router from '@/router'
+import { router } from '@/router'
 import userService from '@/services/user'
 
 const afterSignIn = async ({ dispatch, token, customRouteTo }) => {
