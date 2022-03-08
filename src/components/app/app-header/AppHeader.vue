@@ -15,9 +15,7 @@
       <div class="flex-row flex-between items-center flex-fill">
         <AppLogo/>
         <div class="icons">
-          <div
-            ref="refIconSharer"
-            class="clickable-icon-wrapper">
+          <div class="clickable-icon-wrapper">
             <AppSharer/>
           </div>
           <div
@@ -94,8 +92,6 @@ export default {
 
     const router = useRouter()
 
-    const refIconSharer = ref(null)
-
     const refIconSettings = ref(null)
 
     const refIconNotifications = ref(null)
@@ -153,7 +149,6 @@ export default {
     }))
 
     return {
-      refIconSharer,
       refIconNotifications,
       refIconSettings,
       showNotifications,
@@ -203,6 +198,18 @@ export default {
 
       i {
         font-size: 20px;
+      }
+
+      .app-sharer,
+      .app-sharer i {
+        width: 100%;
+        height: 100%;
+      }
+
+      .app-sharer i {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
 

@@ -33,7 +33,7 @@ export default {
         open(`https://${$store.getters.isMobile ? 'api' : 'web'}.whatsapp.com/send?text=${e(url)}`)
       },
       custom: () => {
-        dom.copyToClipboard(window.location.origin + window.location.pathname)
+        dom.copyToClipboard(e(url))
         toast.success('링크가 복사되었습니다! 문자나 카카오톡으로 붙여넣기해서 공유해보세요!')
       },
     }

@@ -24,7 +24,7 @@
           class="brand-wrapper"
           :style="brand.style"
           :key="brand.icon"
-          v-for="brand in brands.filter(o => !o.$$hide)">
+          v-for="brand in brands().filter(o => !o.$$hide)">
           <i :class="brand.icon"/>
         </div>
         <div class="triangle" v-if="direction === 'vertical'"/>
@@ -56,59 +56,54 @@ export default {
 
     const showDropdown = ref(null)
 
-    const foo = ref(null)
+    const brands = () => {
+      const s = helpers.social.share(window.location.origin + window.location.pathname)
 
-    const brands = ref([])
-
-    const s = [{
-      icon: 'fab fa-facebook-f',
-      style: {
-        background: '#5167a7',
-        alignItems: 'flex-end',
-      },
-      handler: () => foo.value.facebook(),
-    }, {
-      icon: 'fab fa-twitter',
-      style: {
-        background: '#7baae4',
-      },
-      handler: () => foo.value.twitter(),
-    }, {
-      icon: 'fab fa-pinterest-p',
-      style: {
-        background: '#a83e35',
-        alignItems: 'flex-end',
-      },
-      handler: () => foo.value.pinterest(),
-    }, {
-      icon: 'fab fa-whatsapp',
-      style: {
-        background: '#65c358',
-      },
-      handler: () => foo.value.whatsapp()
-    }, {
-      icon: 'fa fa-share-alt',
-      style: {
-        background: 'var(--gs-66)',
-      },
-      handler: () => foo.value.custom(),
-      $$hide: props.socialOnly,
-    }]
+      return [{
+        icon: 'fab fa-facebook-f',
+        style: {
+          background: '#5167a7',
+          alignItems: 'flex-end',
+        },
+        handler: () => s.facebook(),
+      }, {
+        icon: 'fab fa-twitter',
+        style: {
+          background: '#7baae4',
+        },
+        handler: () => s.twitter(),
+      }, {
+        icon: 'fab fa-pinterest-p',
+        style: {
+          background: '#a83e35',
+          alignItems: 'flex-end',
+        },
+        handler: () => s.pinterest(),
+        $$hide: true,
+      }, {
+        icon: 'fab fa-whatsapp',
+        style: {
+          background: '#65c358',
+        },
+        handler: () => s.whatsapp(),
+        $$hide: true,
+      }, {
+        icon: 'fa fa-share-alt',
+        style: {
+          background: 'var(--gs-66)',
+        },
+        handler: () => s.custom(),
+        $$hide: props.socialOnly,
+      }]
+    }
 
     const toggleShowDropdown = e => {
       if (e.target.classList.contains('icon-sharer') || e.target.classList.contains('label')) showDropdown.value = !showDropdown.value
       else showDropdown.value = false
     }
 
-    const initSharer = () => {
-      foo.value = helpers.social.share(window.location.origin + window.location.pathname)
-      brands.value = [s[0], s[1], s[4]]
-    }
-
     onMounted(() => {
       if (store.getters.isSSR) return
-
-      initSharer()
 
       document.addEventListener('click', toggleShowDropdown)
     })
@@ -166,7 +161,8 @@ export default {
       border: 1px solid var(--border-base);
       padding: 8px;
       top: 40px;
-      left: -12px;
+      left: 50%;
+      transform: translateX(-50%);
 
       .brand-wrapper {
         &:not(:first-child) {
