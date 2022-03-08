@@ -4,7 +4,7 @@
     <TradingViewTicker v-if="$store.getters.settings.tradingview === 'show'" class="m-b-8"/>
     <TradingView v-if="$store.getters.settings.tradingview === 'show'"/>
     <BaseAndTarget/>
-    <RealTimePrices v-if="prepared"/>
+    <RealTimePrices v-if="prepared && !$store.getters.isSSR"/>
   </div>
 </template>
 

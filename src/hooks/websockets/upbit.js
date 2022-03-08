@@ -115,6 +115,7 @@ const useUpbit = () => {
   return {
     eventAsJSON,
     subscribe,
+    setAsBasePrice,
     setDocumentTitle,
   }
 }

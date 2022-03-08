@@ -16,7 +16,7 @@
       </div>
     </div>
     <div
-      v-if="!connected || !$store.getters.symbols || !$store.getters.markets[baseExchange] || !recalced"
+      v-if="!connected || displayedList.length === 0"
       ref="refNotConnected"
       class="not-connected"
       @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('PREPARING_REAL_TIME_PRICES') }}</div>
@@ -76,7 +76,7 @@ export default {
 
     const refNotConnected = ref(null)
 
-    const { subscribe: subscribeUpbit } = useUpbit()
+    const { subscribe: subscribeUpbit, setAsBasePrice } = useUpbit()
 
     const { subscribe: subscribeBithumb, setAsBasePriceFromRestAPI } = useBithumb()
 
@@ -97,8 +97,6 @@ export default {
     const targetExchange = computed(() => store.getters.settings.targetExchange)
 
     const settings = ref(store.getters.settings)
-
-    const recalced = ref(null)
 
     const setSort = column => {
       if (settings.value.sort.column === column) {
@@ -130,7 +128,6 @@ export default {
     }
 
     const recalcDisplayedList = () => {
-      recalced.value = false
       displayedList.value = Object.values(store.getters.realTimeTickers).filter(t => {
         if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
 
@@ -151,7 +148,6 @@ export default {
 
         return sorter(a, b)
       })
-      recalced.value = true
     }
 
     const displayedList = ref([])
@@ -189,6 +185,12 @@ export default {
       }).then(conn => onConnected(conn, 'binance')),
     }
 
+    const prepareUpbit = () => {
+      if (!store.getters.markets.upbit) return
+
+      store.getters.markets.upbit.forEach(o => setAsBasePrice({ symbol: o.$$symbol, json: {} }))
+    }
+
     const prepareBithumb = () => {
       if (!store.getters.markets.bithumb) return
 
@@ -196,19 +198,18 @@ export default {
     }
 
     const init = async () => {
-      // 대충 정렬이 너무 오래 풀려있는걸 막기 위해 2초에 한번정도씩만 강제로 다시 그려준다
-      intervRecalc.value = setInterval(recalcDisplayedList, 2000)
-
       store.commit('initRealTimeTickers')
 
       try {
         await store.dispatch('loadBaseMarkets')
+        if (baseExchange.value === 'upbit') prepareUpbit()
         if (baseExchange.value === 'bithumb') prepareBithumb()
+        intervRecalc.value = setInterval(recalcDisplayedList, 200)
 
         if (!connections.value[baseExchange.value] || connections.value[baseExchange.value].readyState !== 1) subscriber[baseExchange.value]()
         if (!connections.value[targetExchange.value] || connections.value[targetExchange.value].readyState !== 1) subscriber[targetExchange.value]()
       } catch (e) {
-        plugins.$modal.alert(`거래소(${baseExchange.value})의 정보를 불러오는데 실패했습니다. 아마 점검중인 것 같습니다.`)
+        plugins.$modal.alert(`거래소(${baseExchange.value})의 정보를 불러오는데 실패했습니다. 다시 시도해주세요.`)
       }
     }
 
@@ -219,7 +220,7 @@ export default {
         if (connections.value[key]) connections.value[key].close()
       })
 
-      if (intervRecalc.value) clearInterval(intervRecalc.value)
+      clearInterval(intervRecalc.value)
     })
 
     watch([
@@ -230,28 +231,9 @@ export default {
       { deep: true },
     )
 
-    const unwatch = watch(
-      () => store.getters.realTimeTickers,
-      () => {
-        // realTimeTicker가 모든 원화 마켓 길이만큼 채워지기 전에는 리스트를 계산하지 않는다 (성능)
-        if (
-          (Object.values(store.getters.realTimeTickers).length ===
-          store.getters.markets[baseExchange.value].filter(o => {
-            if (baseExchange.value === 'upbit') return o.market.includes('KRW')
-            if (baseExchange.value === 'bithumb') return true
-          }).length)
-        ) {
-          recalcDisplayedList()
-          unwatch()
-        }
-      },
-      { deep: true },
-    )
-
     return {
       refNotConnected,
       init,
-      recalced,
       connected,
       keyword,
       settings,

@@ -38,7 +38,7 @@
     <td>
       <div
         class="ticker-current-price-base"
-        :class="priceColor(ticker.$$changeRate1D)"
+        :class="[priceColor(ticker.$$changeRate1D), ticker.$$tradePriceBase ? '' : 'o-0']"
         v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })"
       />
       <div
@@ -60,21 +60,21 @@
     </td>
     <td class="ticker-changes-24h" :class="priceColor(ticker.$$changeRate1D)">
       <div v-html="`${autoFrac(ticker.$$changeRate1D)}%`"/>
-      <div v-html="$helpers.number.pretty.price({ price: ticker.$$changePrice24H, baseCurrency: 'krw' })"/>
+      <div v-html="$helpers.number.pretty.price({ price: ticker.$$changePrice24H, baseCurrency: 'krw' })" :class="ticker.$$changePrice24H ? '' : 'o-0'"/>
     </td>
     <td v-if="!$store.getters.isMobile && $store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
       <div
         :class="priceColor(ticker.$$changeRate52WH)"
         v-html="`${autoFrac(ticker.$$changeRate52WH)}%`"
       />
-      <div v-html="$helpers.number.pretty.price({ price: ticker.$$highest52WeekPrice, baseCurrency: 'krw' })"/>
+      <div v-html="$helpers.number.pretty.price({ price: ticker.$$highest52WeekPrice, baseCurrency: 'krw' })" :class="ticker.$$highest52WeekPrice ? '' : 'o-0'"/>
     </td>
     <td v-if="!$store.getters.isMobile && $store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
       <div
         :class="priceColor(ticker.$$changeRate52WL)"
         v-html="`${autoFrac(ticker.$$changeRate52WL, 2)}%`"
       />
-      <div v-html="$helpers.number.pretty.price({ price: ticker.$$lowest52WeekPrice, baseCurrency: 'krw' })"/>
+      <div v-html="$helpers.number.pretty.price({ price: ticker.$$lowest52WeekPrice, baseCurrency: 'krw' })" :class="ticker.$$lowest52WeekPrice ? '' : 'o-0'"/>
     </td>
     <td class="ticker-vol-24h">
       <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HBase, baseCurrency: 'krw', numKorUnits: (ticker.$$vol24HBase >= Math.pow(10, 8) && !$store.getters.isMobile) ? 2 : 1 })"/>
