@@ -16,7 +16,7 @@
       </div>
     </div>
     <div
-      v-if="!connected || displayedList.length === 0"
+      v-if="!connected || calculating"
       ref="refNotConnected"
       class="not-connected"
       @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('PREPARING_REAL_TIME_PRICES') }}</div>
@@ -90,6 +90,8 @@ export default {
       binance: null,
     })
 
+    const calculating = ref(null)
+
     const intervRecalc = ref(null)
 
     const baseExchange = computed(() => store.getters.settings.baseExchange)
@@ -128,6 +130,7 @@ export default {
     }
 
     const recalcDisplayedList = () => {
+      calculating.value = true
       displayedList.value = Object.values(store.getters.realTimeTickers).filter(t => {
         if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
 
@@ -148,6 +151,7 @@ export default {
 
         return sorter(a, b)
       })
+      calculating.value = false
     }
 
     const displayedList = ref([])
@@ -204,7 +208,7 @@ export default {
         await store.dispatch('loadBaseMarkets')
         if (baseExchange.value === 'upbit') prepareUpbit()
         if (baseExchange.value === 'bithumb') prepareBithumb()
-        intervRecalc.value = setInterval(recalcDisplayedList, 200)
+        intervRecalc.value = setInterval(recalcDisplayedList, 500)
 
         if (!connections.value[baseExchange.value] || connections.value[baseExchange.value].readyState !== 1) subscriber[baseExchange.value]()
         if (!connections.value[targetExchange.value] || connections.value[targetExchange.value].readyState !== 1) subscriber[targetExchange.value]()
@@ -234,6 +238,7 @@ export default {
     return {
       refNotConnected,
       init,
+      calculating,
       connected,
       keyword,
       settings,
