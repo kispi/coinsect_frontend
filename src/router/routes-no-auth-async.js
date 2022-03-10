@@ -12,7 +12,7 @@ const andSoOn = [{
   component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
   meta: {
     title: '비트멕스 리더보드 - 코인충',
-    description: '워뇨띠 (aoa), Mercury-Wood-Sprite, Skitter-Peridot-Raven, Bog-Pear-Weasel 등의 유명 트레이더들의 예상 포지션, 수익 등',
+    description: '워뇨띠, 박호두, Mercury-Wood-Sprite, Skitter-Peridot-Raven, Bog-Pear-Weasel 등 유명인들의 포지션 등',
     image: useS3('og-images/og-image-leaderboard.png'),
   },
 }, {
