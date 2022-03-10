@@ -9,7 +9,7 @@ const sanitize = html => {
 
 const defaults = {
   title: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
-  description: `'코인충'은 실시간 코인 시세, 김프, 호가창, 뉴스, 커뮤니티, 트렌드 등을 제공하는 대한민국 No.1 암호자산 커뮤니티입니다.`,
+  description: `'코인충'은 김프, 호가창, 뉴스, 커뮤니티, 비트멕스 리더보드(워뇨띠 포지션), 박호두 포지션 등을 제공하는 대한민국 No.1 암호자산 커뮤니티입니다.`,
   image: useS3('og-images/og-image.png'),
 }
 
