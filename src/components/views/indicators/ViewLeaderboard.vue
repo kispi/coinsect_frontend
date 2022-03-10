@@ -45,17 +45,22 @@
       <div class="m-t-8">
         최종 업데이트 시점 기준으로 비트코인의 가격이 올랐는데 수익이 증가한 트레이더들은 <b class="long">Long</b>을,
         비트코인의 가격이 떨어졌는데 수익이 증가한 트레이더들은 <b class="short">Short</b> 포지션을 갖고 있었을 것으로 예상합니다.
-        손실을 본 트레이더들은 위 기준으로 산정된 <b>'올바른'</b> 포지션의 반대 방향을 잡고 있었으리라 추측할 수 있습니다.</div>
-      <div class="m-t-8">박호두의 포지션까지 기재한 모 사이트의 경우 직접 방송을 모니터링하며 기재하는 것으로 알려져 있습니다.</div>
+        손실을 본 트레이더들은 위 기준으로 산정된 <b>'올바른'</b> 포지션의 반대 방향을 잡고 있었으리라 추측할 수 있습니다.
+      </div>
     </div>
+    <RealTimePositions class="m-t-40"/>
   </div>
 </template>
 
 <script>
 import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import RealTimePositions from './RealTimePositions'
 
 export default {
+  components: {
+    RealTimePositions,
+  },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -181,7 +186,6 @@ export default {
 
   .description {
     padding: 16px 0;
-    color: var(--text-stress);
     font-size: 12px;
     line-height: 20px;
   }

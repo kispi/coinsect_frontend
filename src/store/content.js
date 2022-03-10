@@ -7,11 +7,13 @@ const marketInfo = {
     publicTreasuries: null,
     influencers: null,
     news: null,
+    realTimePositions: null,
   }),
   getters: {
     publicTreasuries: state => state.publicTreasuries,
     influencers: state => state.influencers,
     news: state => state.news,
+    realTimePositions: state => state.realTimePositions,
   },
   mutations: {
     setPublicTreasuries(state, publicTreasuries) {
@@ -22,6 +24,9 @@ const marketInfo = {
     },
     setNews(state, news) {
       state.news = news
+    },
+    setRealTimePositions(state, realTimePositions) {
+      state.realTimePositions = realTimePositions
     },
   },
   actions: {
@@ -59,6 +64,25 @@ const marketInfo = {
         return Promise.reject(e)
       } finally {
         commit('setLoading', { global: false })
+      }
+    },
+    async loadRealTimePositions({ commit, getters, dispatch }) {
+      const promises = [$http.get('contents/real_time_positions')]
+      if (!getters.influencers) promises.push(dispatch('loadInfluencers'))
+
+      try {
+        const result = await Promise.all(promises)
+        const data = result[0].filter(o => o.name).map(row => {
+          if (row.personId) row.person = (getters.influencers.data || []).find(p => p.id === row.personId)
+          row.$$summary = '-'
+          if (row.size > 0) row.$$summary = 'LONG'
+          if (row.size < 0) row.$$summary = 'SHORT'
+
+          return { ...row }
+        })
+        commit('setRealTimePositions', data)
+      } catch (e) {
+        return Promise.reject(e)
       }
     },
   },
