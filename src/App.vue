@@ -96,7 +96,11 @@ export default {
 
     watch(
       () => store.getters.windowInnerWidth,
-      plugins.$helpers.debounce(initAd, 5000),
+      plugins.$helpers.debounce((newVal, oldVal) => {
+        if (!newVal || !oldVal || (newVal === oldVal)) return
+
+        initAd()
+      }, 5000),
     )
 
     return {
