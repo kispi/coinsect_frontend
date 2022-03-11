@@ -26,7 +26,7 @@ export default {
         title: 'S&P 500',
         proName: 'FOREXCOM:SPXUSD',
       }, {
-        title: 'US 100',
+        title: 'NASDAQ 100',
         proName: 'FOREXCOM:NSXUSD',
       }, {
         title: 'KOSPI',

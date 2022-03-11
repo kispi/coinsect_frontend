@@ -26,6 +26,12 @@ export default {
       name: 'BTCUSD_BYBIT',
       key: 'BYBIT:BTCUSD',
     }, {
+      name: 'NASDAQ',
+      key: 'FOREXCOM:NSXUSD',
+    }, {
+      name: 'S&P 500',
+      key: 'FOREXCOM:SPXUSD',
+    }, {
       name: 'BTC_DOMINANCE',
       key: 'CRYPTOCAP:BTC.D',
     }, {
