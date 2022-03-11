@@ -64,6 +64,11 @@ const template = {
 
     return dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')
   },
+  priceColor: value => {
+    if (value > 0) return 'c-price-up'
+    if (value < 0) return 'c-price-down'
+    return ''
+  },
 }
 
 export default template

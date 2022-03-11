@@ -1,6 +1,5 @@
 <template>
   <div class="view-news">
-    <PoweredBy :by="'upbit'" :link="'https://upbit.com/trends'" class="m-b-24"/>
     <AdaptiveLayout :gap="40" :boundaryWidth="1200">
       <div
         class="news-section"
@@ -24,6 +23,7 @@
         </div>
       </div>
     </AdaptiveLayout>
+    <PoweredBy :by="'upbit'" :link="'https://upbit.com/trends'" class="m-t-24"/>
   </div>
 </template>
 

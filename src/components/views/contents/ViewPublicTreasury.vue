@@ -41,12 +41,12 @@
         </div>
       </div>
     </template>
-    <PoweredBy :by="'bitcointreasuries'"/>
+    <PoweredBy :by="'bitcointreasuries'" class="f-14"/>
   </div>
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -60,6 +60,9 @@ export default {
 
       const group = { public_company: [], private_company: [], etf: [], gov: [], etc: [] }
       store.getters.publicTreasuries.forEach(pt => group[pt.type].push(pt))
+      Object.keys(group).forEach(key => {
+        if (group[key].length === 0) delete group[key]
+      })
       return group
     })
 

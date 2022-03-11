@@ -1,7 +1,7 @@
 <template>
   <div class="view-marketcaps">
-    <PoweredBy :by="'coinmarketcap'"/>
-    <MarketcapsCoinmarketcap class="m-t-24"/>
+    <MarketcapsCoinmarketcap/>
+    <PoweredBy :by="'coinmarketcap'" class="m-t-24"/>
   </div>
 </template>
 

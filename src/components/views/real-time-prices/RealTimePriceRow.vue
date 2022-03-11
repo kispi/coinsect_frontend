@@ -38,7 +38,7 @@
     <td>
       <div
         class="ticker-current-price-base"
-        :class="[priceColor(ticker.$$changeRate1D), ticker.$$tradePriceBase ? '' : 'o-0']"
+        :class="[$helpers.template.priceColor(ticker.$$changeRate1D), ticker.$$tradePriceBase ? '' : 'o-0']"
         v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })"
       />
       <div
@@ -50,7 +50,7 @@
     <td class="ticker-premium">
       <div
         v-if="typeof ticker.$$premiumRate === 'number'"
-        :class="priceColor(ticker.$$premiumRate)"
+        :class="$helpers.template.priceColor(ticker.$$premiumRate)"
         v-html="`${autoFrac(ticker.$$premiumRate)}%`"
       />
       <div
@@ -58,20 +58,20 @@
         v-html="$helpers.number.pretty.price({ price: ticker.$$premiumPrice, baseCurrency: 'krw' })"
       />
     </td>
-    <td class="ticker-changes-24h" :class="priceColor(ticker.$$changeRate1D)">
+    <td class="ticker-changes-24h" :class="$helpers.template.priceColor(ticker.$$changeRate1D)">
       <div v-html="`${autoFrac(ticker.$$changeRate1D)}%`"/>
       <div v-html="$helpers.number.pretty.price({ price: ticker.$$changePrice24H, baseCurrency: 'krw' })" :class="ticker.$$changePrice24H ? '' : 'o-0'"/>
     </td>
     <td v-if="!$store.getters.isMobile && $store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
       <div
-        :class="priceColor(ticker.$$changeRate52WH)"
+        :class="$helpers.template.priceColor(ticker.$$changeRate52WH)"
         v-html="`${autoFrac(ticker.$$changeRate52WH)}%`"
       />
       <div v-html="$helpers.number.pretty.price({ price: ticker.$$highest52WeekPrice, baseCurrency: 'krw' })" :class="ticker.$$highest52WeekPrice ? '' : 'o-0'"/>
     </td>
     <td v-if="!$store.getters.isMobile && $store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
       <div
-        :class="priceColor(ticker.$$changeRate52WL)"
+        :class="$helpers.template.priceColor(ticker.$$changeRate52WL)"
         v-html="`${autoFrac(ticker.$$changeRate52WL, 2)}%`"
       />
       <div v-html="$helpers.number.pretty.price({ price: ticker.$$lowest52WeekPrice, baseCurrency: 'krw' })" :class="ticker.$$lowest52WeekPrice ? '' : 'o-0'"/>
@@ -131,12 +131,6 @@ export default {
       minimumFractionDigits: numFrac || (Math.abs(price) >= 100 ? 0 : 2),
     })
 
-    const priceColor = rate => {
-      if (rate > 0) return 'c-price-up'
-      if (rate === 0) return 'c-text-stress'
-      if (rate < 0) return 'c-price-down'
-    }
-
     const toggleFavorite = () => {
       const favorites = store.getters.settings.favorites
       if (favorites[props.ticker.$$symbol]) delete favorites[props.ticker.$$symbol]
@@ -157,7 +151,6 @@ export default {
       tradingView,
       symbol,
       autoFrac,
-      priceColor,
       openModalOrderbook,
       setDocumentTitleTicker,
       toggleFavorite,
