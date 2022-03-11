@@ -5,7 +5,7 @@
     :class="['no-scrollbar']">
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
-    <AdSense v-if="showAd" v-show="$store.getters.windowInnerWidth < 992" :dataAdSlot="'9230500527'" class="bottom"/>
+    <AdSense v-if="showAd" :dataAdSlot="'9230500527'" class="bottom"/>
   </div>
   <AppFooter/>
   <AppAddons/>
