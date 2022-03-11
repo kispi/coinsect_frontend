@@ -58,6 +58,7 @@ export default {
   width: 320px;
   height: 496px;
   border: 1px solid var(--border-light);
+  font-family: Arial, Helvetica, sans-serif;
 
   .body {
     line-height: 20px;
