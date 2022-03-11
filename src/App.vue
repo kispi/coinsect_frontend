@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted, defineAsyncComponent, watch } from 'vue'
+import { ref, onMounted, onUnmounted, defineAsyncComponent, watch, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import helpers from './helpers'
@@ -25,6 +25,8 @@ export default {
     AppRowAds: defineAsyncComponent(() => import('@/components/app/AppRowAds')),
   },
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
     const router = useRouter()
@@ -90,6 +92,11 @@ export default {
     watch(
       () => router.currentRoute.value.path,
       initAd,
+    )
+
+    watch(
+      () => store.getters.windowInnerWidth,
+      plugins.$helpers.debounce(initAd, 5000),
     )
 
     return {
