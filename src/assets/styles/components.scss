@@ -1,8 +1,8 @@
 table {
   border-spacing: 0;
+  border-collapse: collapse;
 
-  td,
-  th {
+  tr {
     border-bottom: 1px solid var(--border-base);
   }
 
@@ -44,8 +44,8 @@ table {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   border-radius: 8px;
+  cursor: pointer;
 
   &:hover {
     background: var(--background-light);

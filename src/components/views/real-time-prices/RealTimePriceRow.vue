@@ -224,6 +224,8 @@ export default {
   }
 
   td {
+    white-space: nowrap;
+
     > div:not(:last-child) {
       margin-bottom: 4px;
     }

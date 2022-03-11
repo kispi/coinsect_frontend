@@ -2,15 +2,18 @@
   <div 
     v-if="$store.getters.marketcaps"
     class="marketcaps-coinmarketcap">
-    <div class="tag-slugs">
-      <div
-        @click="onClickTagSlug(tagSlug)"
-        class="tag-slug"
-        :class="{'selected': tagSlug.$$selected}"
-        :key="tagSlug.key"
-        v-for="tagSlug in tagSlugs"
-        v-html="tagSlug.name"
-      />
+    <div class="header">
+      <div class="tag-slugs">
+        <div
+          @click="onClickTagSlug(tagSlug)"
+          class="tag-slug"
+          :class="{'selected': tagSlug.$$selected}"
+          :key="tagSlug.key"
+          v-for="tagSlug in tagSlugs"
+          v-html="tagSlug.name"
+        />
+      </div>
+      <div class="total">({{ $store.getters.marketcaps.total }})</div>
     </div>
     <table class="list">
       <thead>
@@ -29,8 +32,8 @@
               { column: 'percent_change_24h', title: '24h %', $$hide: $store.getters.windowInnerWidth < 480 },
               { column: 'percent_change_7d', title: '7d %', $$hide: $store.getters.windowInnerWidth < 480 },
               { column: 'market_cap', title: 'MARKETCAPS' },
-              { column: 'volume_24h', title: 'VOL_24', $$hide: $store.getters.isMobile },
               { column: 'circulating_supply', title: 'CIRCULATING_SUPPLY', $$hide: $store.getters.isMobile },
+              { column: 'volume_24h', title: 'VOL_24', $$hide: $store.getters.isMobile },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
             <span
@@ -98,7 +101,7 @@
 </template>
 
 <script>
-import { onMounted, onServerPrefetch, ref, computed } from 'vue'
+import { onMounted, onServerPrefetch, ref, computed, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -131,6 +134,7 @@ export default {
 
     const onClickTagSlug = tagSlug => {
       payload.value.tagSlugs = tagSlug.key
+      payload.value.page = 1
       callApi()
     }
 
@@ -155,6 +159,8 @@ export default {
     const callApi = async () => {
       store.dispatch('loadMarketcaps', payload.value)
 
+      if (store.getters.isSSR) return
+
       clearInterval(interv.value)
       interv.value = setInterval(() => store.dispatch('loadMarketcaps', payload.value), 1000 * 60)
     }
@@ -166,8 +172,12 @@ export default {
       callApi()
     }
 
-    onMounted(() => {
-      store.dispatch('loadMarketcaps', payload.value)
+    onMounted(callApi)
+
+    onUnmounted(() => {
+      if (store.getters.isSSR) return
+
+      clearInterval(interv.value)
     })
 
     onServerPrefetch(() => store.dispatch('loadMarketcaps', payload.value))
@@ -189,10 +199,21 @@ export default {
 .marketcaps-coinmarketcap {
   font-family: Arial, Helvetica, sans-serif;
 
-  .tag-slugs {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 12px 0;
     border-top: 1px solid var(--border-base);
 
+    .total {
+      color: var(--text-stress);
+      flex: 0 0 auto;
+      margin-left: 16px;
+    }
+  }
+
+  .tag-slugs {
     .tag-slug {
       display: inline-block;
       color: var(--text-stress);

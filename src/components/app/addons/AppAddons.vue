@@ -35,5 +35,6 @@ export default {
 <style lang="scss" scoped>
 .global-loading {
   z-index: 10;
+  position: fixed;
 }
 </style>

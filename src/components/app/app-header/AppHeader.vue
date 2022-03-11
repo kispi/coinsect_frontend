@@ -56,7 +56,7 @@
         </WrapperDropdownOverlay>
       </div>
     </div>
-    <nav class="menu-items">
+    <nav class="menu-items no-scrollbar">
       <RouterLink
         class="menu-item"
         :class="{

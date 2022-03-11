@@ -61,6 +61,7 @@ export default {
 
   .body {
     line-height: 20px;
+    position: relative;
   }
 
   .notice {

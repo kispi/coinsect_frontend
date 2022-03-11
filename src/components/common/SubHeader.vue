@@ -1,5 +1,5 @@
 <template>
-  <div class="sub-header">
+  <nav class="sub-header">
     <div
       @click="$router.push(indicator.path)"
       class="sub-header-item"
@@ -8,7 +8,7 @@
       v-for="indicator in items">
       {{ $translate(indicator.title) }}
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>
@@ -32,7 +32,6 @@ export default {
 
     &.selected {
       color: var(--text-stress);
-      font-weight: 700;
       border-bottom: 2px solid var(--brand-primary);
     }
 
