@@ -68,10 +68,7 @@ const useBithumb = () => {
 
   const setDocumentTitle = ticker => {
     const priceString = plugins.$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })
-    document.title = `${!isNaN(ticker.$$premiumRate) ? `${ticker.$$premiumRate.toLocaleString(undefined, {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 2,
-    })}% / ` : 'Connecting... '}${priceString} ${ticker.$$symbol}`
+    document.title = `${!isNaN(ticker.$$premiumRate) ? `${plugins.$helpers.number.pretty.percent(ticker.$$premiumRate)}% / ` : 'Connecting... '}${priceString} ${ticker.$$symbol}`
   }
 
   const subscribe = ({ type, symbols, $$raw }) => new Promise((resolve) => {

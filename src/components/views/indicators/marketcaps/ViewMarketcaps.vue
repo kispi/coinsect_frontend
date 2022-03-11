@@ -1,15 +1,15 @@
 <template>
   <div class="view-marketcaps">
-    <PoweredBy :by="'coingecko'"/>
-    <MarketcapsCoingecko class="m-t-24"/>
+    <PoweredBy :by="'coinmarketcap'"/>
+    <MarketcapsCoinmarketcap class="m-t-24"/>
   </div>
 </template>
 
 <script>
-import MarketcapsCoingecko from './MarketcapsCoingecko'
+import MarketcapsCoinmarketcap from './MarketcapsCoinmarketcap'
 
 export default {
-  components: { MarketcapsCoingecko },
+  components: { MarketcapsCoinmarketcap },
 }
 </script>
 

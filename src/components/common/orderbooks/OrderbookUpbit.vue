@@ -15,10 +15,7 @@
             lastTradedPrice === order.price ? 'bordered' : '',
           ]">
           <div class="value" v-html="$helpers.number.pretty.price({ price: order.price, baseCurrency: 'krw' })"/>
-          <div class="change" v-html="`${(Math.round((order.price - prevClosingPrice) / prevClosingPrice * 10000) / 100).toLocaleString(undefined, {
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2,
-          })}%`"/>
+          <div class="change" v-html="`${$helpers.number.pretty.percent(Math.round((order.price - prevClosingPrice) / prevClosingPrice * 10000) / 100)}%`"/>
         </div>
         <div class="size">
           {{ order.size.toLocaleString(undefined, {

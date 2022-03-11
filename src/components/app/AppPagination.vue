@@ -75,6 +75,8 @@ export default {
     const numTotalPages = computed(() => Math.ceil(props.total / props.limit))
 
     const onPage = value => {
+      if (value < 1 || value > numTotalPages.value) return
+
       pageValue.value = parseInt(value)
       emit('page', pageValue.value)
     }

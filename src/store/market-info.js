@@ -79,27 +79,30 @@ const marketInfo = {
       }
     },
     async loadMarketcaps({ commit }, {
-      category,
-      perPage = 100,
-      page = 1,
-      priceChangePercentage,
-      sort,
+      page,
+      limit,
+      sortBy,
+      sortType,
     }) {
       try {
-        commit('setLoading', { global: true })
-        const data = await marketInfoService.marketcaps({
-          vs_currency: 'usd',
-          category,
-          per_page: perPage,
-          page,
-          order: `${sort.column}_${sort.direction}`,
-          price_change_percentage: priceChangePercentage,
+        const params = {
+          start: (page - 1) * limit + 1,
+          limit,
+          sortBy,
+          sortType,
+          convert: 'USD,BTC',
+          cryptoType: 'all',
+          tagType: 'all',
+          audited: false,
+          aux: 'ath,atl,high24h,low24h,num_market_pairs,cmc_rank,date_added,max_supply,circulating_supply,total_supply,volume_7d,volume_30d,self_reported_circulating_supply,self_reported_market_cap',
+        }
+        const { data } = await marketInfoService.marketcaps(params)
+        commit('setMarketcaps', {
+          data: data.cryptoCurrencyList,
+          total: parseInt(data.totalCount),
         })
-        commit('setMarketcaps', data)
       } catch (e) {
         return Promise.reject(e)
-      } finally {
-        commit('setLoading', { global: false })
       }
     },
     async loadBaseMarkets({ commit, getters }) {

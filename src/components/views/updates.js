@@ -1,4 +1,9 @@
 export default [{
+  date: '2022-03-11',
+  jobsDone: [
+    '시가총액 API를 coingecko => coinmarketcap으로 변경',
+  ],
+}, {
   date: '2022-03-10',
   jobsDone: [
     '리더보드 하단에 실시간 포지션 항목이 추가되었습니다.',

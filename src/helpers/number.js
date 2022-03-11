@@ -54,5 +54,9 @@ export default {
         return result.slice(0, numKorUnits).join(' ')
       }
     },
+    percent: val => val.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    }),
   },
 }

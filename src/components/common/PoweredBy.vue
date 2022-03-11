@@ -1,5 +1,8 @@
 <template>
   <div class="powered-by">
+    <template v-if="by === 'coinmarketcap'">
+      Powered by <a :href="link || 'https://coinmarketcap.com'" target="_blank" rel="noopener">Coinmarketcap<img src="@/assets/images/coinmarketcap.png" alt="Coinmarketcap"></a>
+    </template>
     <template v-if="by === 'coingecko'">
       Powered by <a :href="link || 'https://coingecko.com'" target="_blank" rel="noopener">Coingecko<img src="@/assets/images/coingecko.png" alt="Coingecko"></a>
     </template>
@@ -15,9 +18,11 @@
 <script>
 export default {
   props: {
-    by: String,
+    by: {
+      type: String,
+      validator: val => ['coinmarketcap', 'coingecko', 'upbit', 'bitcointreasuries'].includes(val),
+    },
     link: String,
-    validator: val => ['coingecko', 'upbit', 'bitcointreasuries'].includes(val),
   },
 }
 </script>

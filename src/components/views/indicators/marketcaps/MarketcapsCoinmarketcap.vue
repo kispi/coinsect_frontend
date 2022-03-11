@@ -1,23 +1,25 @@
 <template>
   <div 
     v-if="$store.getters.marketcaps"
-    class="marketcaps-coingecko">
+    class="marketcaps-coinmarketcap">
     <table class="list">
       <thead>
         <tr>
           <th
             @click="sort(th.column)"
             :class="[
-              th.column === payload.sort.column ? payload.sort.direction : '',
+              th.column === payload.sortBy ? payload.sortType : '',
               th.column ? 'cursor-pointer' : ''
             ]"
             :key="th.title"
             v-for="th in [
-              { column: 'id', title: 'COIN' },
-              { column: 'volume', title: 'VOL_24' },
-              { title: 'PRICE', $$hide: $store.getters.isMobile },
+              { column: 'rank', title: 'COIN' },
+              { column: 'price', title: 'PRICE', $$hide: $store.getters.isMobile },
+              { title: '24h %', $$hide: $store.getters.isMobile },
+              { title: '7d %', $$hide: $store.getters.isMobile },
+              { title: 'MARKETCAPS' },
+              { title: 'VOL_24' },
               { title: 'CIRCULATING_SUPPLY', $$hide: $store.getters.isMobile },
-              { column: 'market_cap', title: 'MARKETCAPS' },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
             <span
@@ -33,102 +35,103 @@
         <tr
           class="marketcap"
           :key="idx"
-          v-for="(item, idx) in $store.getters.marketcaps">
+          v-for="(item, idx) in $store.getters.marketcaps.data">
           <td class="ticker">
-            <div class="rank">{{ item.market_cap_rank || '?' }}</div>
+            <div class="rank">{{ item.cmcRank }}</div>
             <img
-              :src="item.image"
-              @error="e => e.target.src = 'https://cryprice.com/cryptocurrency-icons-master/svg/color/generic.svg'"
+              :src="`https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png`"
               alt="Default coin image"
             >
             <div
               class="symbol lines-1"
-              v-html="(item.symbol || '').toUpperCase()"
+              v-html="item.symbol.toUpperCase()"
             />
             <div
-              class="full-name lines-1"
-              v-html="($store.getters.symbols[(item.symbol || '').toUpperCase()] || {})[$store.getters.translation.locale]"
+              class="full-name lines-1 f-700"
+              v-html="item.slug"
             />
           </td>
-          <td class="vol-24">
-            {{ $helpers.number.pretty.cap({ cap: item.total_volume, baseCurrency: 'usd' }) || '?' }}
-          </td>
           <td v-if="!$store.getters.isMobile" class="price">
-            {{ $helpers.number.pretty.price({ price: item.current_price, baseCurrency: 'usd' }) || '?' }}
+            {{ $helpers.number.pretty.price({ price: item.quotes[1].price, baseCurrency: 'usd' }) || '?' }}
           </td>
-          <td v-if="!$store.getters.isMobile" class="circulating">
-            {{ item.circulating_supply ? item.circulating_supply.toLocaleString() : '?' }}
+          <td v-if="!$store.getters.isMobile" class="percent-change-24h" :class="{'c-price-up': item.quotes[1].percentChange24h > 0, 'c-price-down': item.quotes[1].percentChange24h < 0}">
+            {{ $helpers.number.pretty.percent(item.quotes[1].percentChange24h) }}%
+          </td>
+          <td v-if="!$store.getters.isMobile" class="percent-change-7d" :class="{'c-price-up': item.quotes[1].percentChange7d > 0, 'c-price-down': item.quotes[1].percentChange7d < 0}">
+            {{ $helpers.number.pretty.percent(item.quotes[1].percentChange7d) }}%
           </td>
           <td class="marketcaps">
-            {{ $helpers.number.pretty.cap({ cap: item.market_cap, baseCurrency: 'usd' }) }}
+            {{ $helpers.number.pretty.cap({ cap: item.quotes[1].marketCap, baseCurrency: 'usd' }) }}
+          </td>
+          <td v-if="!$store.getters.isMobile" class="circulating">
+            {{ item.circulatingSupply ? item.circulatingSupply.toLocaleString() : '?' }}
+          </td>
+          <td class="vol-24">
+            {{ $helpers.number.pretty.cap({ cap: item.quotes[1].volume24h, baseCurrency: 'usd' }) || '?' }}
           </td>
         </tr>
       </tbody>
     </table>
     <AppPagination
       class="m-t-16"
-      v-if="total"
+      v-if="$store.getters.marketcaps.total"
       :page="payload.page"
-      :limit="payload.perPage"
-      :total="total"
+      :limit="payload.limit"
+      :total="$store.getters.marketcaps.total"
       @page="onPage"
     />
   </div>
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { onMounted, onServerPrefetch, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
     const store = useStore()
 
     const total = ref(null)
 
     const payload = ref({
-      // category: '',
-      perPage: 100,
+      limit: 100,
       page: 1,
-      priceChangePercentage: '1h,24h,7d,14d,30d',
-      sort: {
-        column: 'market_cap',
-        direction: 'desc',
-      },
+      sortBy: 'market_cap',
+      sortType: 'desc',
     })
 
     const sort = column => {
       if (!column) return
 
-      if (column === payload.value.sort.column) {
-        payload.value.sort.direction = payload.value.sort.direction === 'desc' ? 'asc' : 'desc'
+      if (column === payload.value.sortBy) {
+        payload.value.sortType = payload.value.sortType === 'desc' ? 'asc' : 'desc'
       } else {
-        payload.value.sort.column = column
-        payload.value.sort.direction = 'desc'
+        payload.value.sortBy = column
+        payload.value.sortType = 'desc'
       }
 
-      callApi()
+      runIntervalApiCall()
     }
 
-    const callApi = async page => {
-      await store.dispatch('loadMarketcaps', {
-        ...payload.value,
-        page,
-      })
+    const interv = ref(null)
+
+    const runIntervalApiCall = async () => {
+      clearInterval(interv.value)
+      interv.value = setInterval(() => store.dispatch('loadMarketcaps', payload.value), 1000 * 60)
     }
 
     const onPage = async page => {
       if (payload.value.page === page) return
 
-      callApi(page).then(() => payload.value.page = page)
+      payload.value.page = page
+      runIntervalApiCall()
     }
 
     onMounted(() => {
-      callApi()
-      plugins.$http.get('https://api.coingecko.com/api/v3/coins/list').then(data => total.value = data.length)
+      store.dispatch('loadMarketcaps', payload.value)
     })
+
+    onServerPrefetch(() => store.dispatch('loadMarketcaps', payload.value))
 
     return {
       payload,
@@ -141,7 +144,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.marketcaps-coingecko {
+.marketcaps-coinmarketcap {
   table {
     width: 100%;
     
@@ -160,6 +163,11 @@ export default {
       @media (max-width: 767px) {
         font-size: 12px;
       }
+    }
+
+    .full-name,
+    .price {
+      color: var(--text-stress);
     }
 
     .ticker {
@@ -186,11 +194,6 @@ export default {
         white-space: nowrap;
       }
 
-      .full-name {
-        color: var(--text-stress);
-        font-weight: 700;
-      }
-
       .symbol,
       .full-name {
         max-width: 120px;
@@ -206,10 +209,6 @@ export default {
     }
 
     @media (max-width: 479px) {
-      .ticker {
-        max-width: 160px;
-      }
-
       .vol-24,
       .marketcaps {
         letter-spacing: -0.8px;
