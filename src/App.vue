@@ -5,7 +5,7 @@
     :class="['no-scrollbar']">
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
-    <AdSense v-if="showAd" v-show="$store.getters.windowInnerWidth < 992" :dataAdSlot="'9230500527'" class="display-block"/>
+    <AdSense v-if="showAd" v-show="$store.getters.windowInnerWidth < 992" :dataAdSlot="'9230500527'" class="bottom"/>
   </div>
   <AppFooter/>
   <AppAddons/>
@@ -126,6 +126,10 @@ export default {
     margin: 40px auto;
     max-width: 992px;
     height: 280px;
+
+    &.bottom {
+      display: block;
+    }
   }
 }
 </style>
