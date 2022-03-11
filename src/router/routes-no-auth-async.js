@@ -21,7 +21,7 @@ const andSoOn = [{
   meta: {
     title: '실시간 포지션 - 코인충',
     description: '박호두, 짭구 등 방송인들의 실시간 포지션',
-    image: useS3('og-images/og-image-real-time-prices.png'),
+    image: useS3('og-images/og-image-real-time-positions.png'),
   },
 }, {
   path: '/indicators/marketcaps',
