@@ -12,8 +12,16 @@ const andSoOn = [{
   component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
   meta: {
     title: '비트멕스 리더보드 - 코인충',
-    description: '워뇨띠, 박호두, Mercury-Wood-Sprite, Skitter-Peridot-Raven, Bog-Pear-Weasel 등 유명인들의 포지션 등',
+    description: '워뇨띠, Mercury-Wood-Sprite, Skitter-Peridot-Raven, Bog-Pear-Weasel 등 유명 트레이더들의 포지션 등',
     image: useS3('og-images/og-image-leaderboard.png'),
+  },
+}, {
+  path: '/indicators/real-time-positions',
+  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
+  meta: {
+    title: '실시간 포지션 - 코인충',
+    description: '박호두, 짭구 등 방송인들의 실시간 포지션',
+    image: useS3('og-images/og-image-real-time-prices.png'),
   },
 }, {
   path: '/indicators/marketcaps',

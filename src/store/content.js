@@ -66,14 +66,10 @@ const marketInfo = {
         commit('setLoading', { global: false })
       }
     },
-    async loadRealTimePositions({ commit, getters, dispatch }) {
-      const promises = [$http.get('contents/real_time_positions')]
-      if (!getters.influencers) promises.push(dispatch('loadInfluencers'))
-
+    async loadRealTimePositions({ commit }) {
       try {
-        const result = await Promise.all(promises)
-        const data = result[0].filter(o => o.name).map(row => {
-          if (row.personId) row.person = (getters.influencers.data || []).find(p => p.id === row.personId)
+        let data = await $http.get('contents/real_time_positions')
+        data = data.filter(o => o.name).map(row => {
           row.$$summary = '-'
           if (row.size > 0) row.$$summary = 'LONG'
           if (row.size < 0) row.$$summary = 'SHORT'

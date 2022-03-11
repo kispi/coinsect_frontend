@@ -14,6 +14,7 @@ export default {
     ViewGeneral: defineAsyncComponent(() => import('./general/ViewGeneral')),
     ViewLeaderboard: defineAsyncComponent(() => import('./ViewLeaderboard')),
     ViewMarketcaps: defineAsyncComponent(() => import('./marketcaps/ViewMarketcaps')),
+    ViewRealTimePositions: defineAsyncComponent(() => import('./ViewRealTimePositions')),
   },
   setup() {
     const router = useRouter()
@@ -21,6 +22,9 @@ export default {
     const indicators = computed(() => [{
       path: '/indicators/leaderboard',
       title: 'LEADERBOARD',
+    }, {
+      path: '/indicators/real-time-positions',
+      title: 'REAL_TIME_POSITIONS',
     }, {
       path: '/indicators/marketcaps',
       title: 'MARKETCAPS',
@@ -32,6 +36,7 @@ export default {
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/indicators/leaderboard') return 'ViewLeaderboard'
+      if (p === '/indicators/real-time-positions') return 'ViewRealTimePositions'
       if (p === '/indicators/marketcaps') return 'ViewMarketcaps'
       if (p === '/indicators/general') return 'ViewGeneral'
     })

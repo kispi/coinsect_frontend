@@ -48,19 +48,14 @@
         손실을 본 트레이더들은 위 기준으로 산정된 <b>'올바른'</b> 포지션의 반대 방향을 잡고 있었으리라 추측할 수 있습니다.
       </div>
     </div>
-    <RealTimePositions class="m-t-40"/>
   </div>
 </template>
 
 <script>
 import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import RealTimePositions from './RealTimePositions'
 
 export default {
-  components: {
-    RealTimePositions,
-  },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 

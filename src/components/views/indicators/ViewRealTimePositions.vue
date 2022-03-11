@@ -1,7 +1,5 @@
 <template>
-  <div
-    v-if="($store.getters.realTimePositions || []).length > 0"
-    class="real-time-positions">
+  <div class="view-real-time-positions">
     <div class="title">실시간 포지션 <small>({{ currentTime.format('YYYY-MM-DD HH:mm:ss') }})</small></div>
     <div class="grid">
       <div
@@ -12,8 +10,8 @@
         }"
         :key="position.name"
         v-for="position in $store.getters.realTimePositions">
-        <div v-if="position.person" class="image-container">
-          <AppImg :src="$helpers.useS3(position.person.images[0].key)" v-if="position.person" class="overlay"/>
+        <div v-if="position.image" class="image-container">
+          <AppImg :src="position.image" v-if="position.image" class="overlay"/>
         </div>
         <div class="info">
           <div class="summary" v-html="position.$$summary"/>
@@ -77,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.real-time-positions {
+.view-real-time-positions {
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

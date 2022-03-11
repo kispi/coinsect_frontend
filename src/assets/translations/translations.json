@@ -103,10 +103,6 @@
     "en": "Circulating Supply",
     "kr": "유통 공급량"
   },
-  "MARKETCAPS": {
-    "en": "Marketcaps",
-    "kr": "시가총액"
-  },
   "INDICATORS": {
     "en": "Indicators",
     "kr": "지표"
@@ -118,6 +114,14 @@
   "LEADERBOARD": {
     "en": "Leaderboard",
     "kr": "리더보드"
+  },
+  "REAL_TIME_POSITIONS": {
+    "en": "Realtime Positions",
+    "kr": "실시간 포지션"
+  },
+  "MARKETCAPS": {
+    "en": "Marketcaps",
+    "kr": "시가총액"
   },
   "INFLUENCERS": {
     "en": "Influencers",
