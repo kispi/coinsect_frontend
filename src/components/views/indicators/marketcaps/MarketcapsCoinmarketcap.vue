@@ -238,7 +238,6 @@ export default {
       padding: 8px 0;
       text-align: right;
 
-      &:nth-child(1),
       &:nth-child(2) {
         text-align: left;
       }
