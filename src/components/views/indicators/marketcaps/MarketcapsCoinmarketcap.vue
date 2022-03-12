@@ -26,7 +26,7 @@
             ]"
             :key="th.title"
             v-for="th in [
-              { column: 'rank', title: '#' },
+              { column: 'rank' },
               { column: 'name', title: 'COIN' },
               { column: 'price', title: 'PRICE' },
               { column: 'percent_change_24h', title: '24h %', $$hide: $store.getters.windowInnerWidth < 480 },
@@ -237,6 +237,10 @@ export default {
     th {
       padding: 8px 0;
       text-align: right;
+
+      &:first-child {
+        padding-right: 8px;
+      }
 
       &:nth-child(2) {
         text-align: left;

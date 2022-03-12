@@ -1,6 +1,6 @@
 <template>
   <div class="view-real-time-positions">
-    <div class="title">실시간 포지션 <small>({{ currentTime.format('YYYY-MM-DD HH:mm:ss') }})</small></div>
+    <div class="title">{{ currentTime.format('YYYY-MM-DD HH:mm:ss') }}</div>
     <div class="grid">
       <div
         class="position-box"
@@ -135,10 +135,9 @@ export default {
   }
 
   .title {
-    font-size: 16px;
-    font-weight: 700;
     margin-bottom: 16px;
     color: var(--text-stress);
+    font-family: Arial, Helvetica, sans-serif;
   }
 
   .description {
