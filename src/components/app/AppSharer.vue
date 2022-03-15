@@ -10,8 +10,7 @@
     <transition name="slide-down">
       <div
         v-if="showDropdown"
-        class="app-sharer-container"
-        :class="direction">
+        class="app-sharer-container vertical">
         <div
           @click="brand.handler"
           class="brand-wrapper"
