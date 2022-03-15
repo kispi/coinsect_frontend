@@ -9,7 +9,7 @@
     />
     <transition name="slide-down">
       <div
-        v-if="direction !== 'vertical' || showDropdown"
+        v-if="showDropdown"
         class="app-sharer-container"
         :class="direction">
         <div
@@ -21,7 +21,7 @@
           <i v-if="brand.icon" :class="brand.icon"/>
           <img v-if="brand.img" :src="brand.img">
         </div>
-        <div class="triangle" v-if="direction === 'vertical'"/>
+        <div class="triangle"/>
       </div>
     </transition>
   </div>
