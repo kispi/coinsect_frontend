@@ -1,13 +1,6 @@
 <template>
   <div class="app-sharer">
-    <div
-      ref="refSharer"
-      @click.stop="toggleShowDropdown"
-      v-if="label" class="label cursor-pointer"
-      v-html="label"
-    />
     <i
-      v-if="!label && direction === 'vertical'"
       ref="refSharer"
       class="fa-share-alt icon-sharer"
       :class="showDropdown ? 'fa' : 'fal'"
@@ -25,7 +18,8 @@
           :style="brand.style"
           :key="brand.icon"
           v-for="brand in brands().filter(o => !o.$$hide)">
-          <i :class="brand.icon"/>
+          <i v-if="brand.icon" :class="brand.icon"/>
+          <img v-if="brand.img" :src="brand.img">
         </div>
         <div class="triangle" v-if="direction === 'vertical'"/>
       </div>
@@ -40,14 +34,8 @@ import helpers from '@/helpers'
 
 export default {
   props: {
-    direction: {
-      type: String,
-      default: 'vertical',
-      validator: val => val === 'vertical' || val === 'horizontal',
-    },
     socialOnly: Boolean,
     iconSize: Number,
-    label: String,
   },
   setup(props) {
     const store = useStore()
@@ -59,7 +47,10 @@ export default {
     const brands = () => {
       const s = helpers.social.share(window.location.origin + window.location.pathname)
 
-      return [{
+      const items = [{
+        img: require('@/assets/images/naver.png'),
+        handler: () => s.naver(),
+      }, {
         icon: 'fab fa-facebook-f',
         style: {
           background: '#5167a7',
@@ -95,6 +86,8 @@ export default {
         handler: () => s.custom(),
         $$hide: props.socialOnly,
       }]
+
+      return items
     }
 
     const toggleShowDropdown = e => {
@@ -149,6 +142,10 @@ export default {
         &.fa-pinterest-p {
           font-size: 24px;
         }
+      }
+
+      img {
+        width: 100%;
       }
     }
 
