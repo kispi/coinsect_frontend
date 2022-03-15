@@ -8,8 +8,8 @@ const sanitize = html => {
 }
 
 const defaults = {
-  title: '코인충 - 대한민국 No.1 암호자산 커뮤니티',
-  description: `'코인충'은 김프, 호가창, 뉴스, 커뮤니티, 비트멕스 리더보드(워뇨띠 포지션), 박호두 포지션 등을 제공하는 대한민국 No.1 암호자산 커뮤니티입니다.`,
+  title: '코인충 - 당신에게 필요한 단 하나의 김프 사이트',
+  description: '코인충은 김프, 호가창, 뉴스, 커뮤니티, 비트멕스 리더보드(워뇨띠 포지션), 박호두 포지션 등을 제공하는 김프 사이트입니다.',
   image: useS3('og-images/og-image.png'),
 }
 
