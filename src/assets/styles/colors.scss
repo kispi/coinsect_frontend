@@ -19,8 +19,12 @@
   --danger:              #aa0000;
   --price-up-upbit:      #d60000;
   --price-down-upbit:    #0051c7;
+  --price-up-upbit-bg:   rgba(214, 0, 0, 0.1);
+  --price-down-upbit-bg: rgba(0, 81, 199, 0.1);
   --price-up-bybit:      rgba(36, 174, 100, 1);
   --price-down-bybit:    rgba(224, 64, 64, 1);
+  --price-up-bybit-bg:   rgba(36, 174, 100, 0.1);
+  --price-down-bybit-bg: rgba(224, 64, 64, 0.1);
   --danger-light:        rgba(176, 0, 0, 0.6);
 
   --text-stress:         var(--gs-22);
@@ -38,8 +42,8 @@
   --background-light:    rgba(0, 0, 0, 0.1);
   --price-up:            var(--price-up-upbit);
   --price-down:          var(--price-down-upbit);
-  --price-up-bg:         rgba(214, 0, 0, 0.1);
-  --price-down-bg:       rgba(0, 81, 199, 0.1);
+  --price-up-bg:         var(--price-up-upbit-bg);
+  --price-down-bg:       var(--price-down-upbit-bg);
 
   &.dark {
     --brand-primary:     rgba(82, 163, 235, 1);
@@ -53,7 +57,7 @@
 
     --price-up:          var(--price-up-bybit);
     --price-down:        var(--price-down-bybit);
-    --price-up-bg:       rgba(36, 175, 100, 0.1);
-    --price-down-bg:     rgba(240, 64, 64, 0.1);
+    --price-up-bg:       var(--price-up-bybit-bg);
+    --price-down-bg:     var(--price-down-bybit-bg);
   }
 }

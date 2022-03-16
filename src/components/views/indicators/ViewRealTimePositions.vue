@@ -118,18 +118,18 @@ export default {
     }
 
     &.short {
-      background: var(--price-down-bg);
+      background: var(--price-down-bybit-bg);
 
       .summary {
-        color: var(--price-down);
+        color: var(--price-down-bybit);
       }
     }
 
     &.long {
-      background: var(--price-up-bg);
+      background: var(--price-up-bybit-bg);
 
       .summary {
-        color: var(--price-up);
+        color: var(--price-up-bybit);
       }
     }
   }
