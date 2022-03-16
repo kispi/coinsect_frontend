@@ -27,6 +27,7 @@ const matchingRoute = (routes, currentPath) => {
 const handleSSRRequest = async (req, res) => {
   axios.defaults.headers['is-ssr'] = true
   axios.defaults.headers['ssr-proxy-from'] = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress
+  axios.defaults.headers['user-agent'] = req.headers['user-agent']
 
   const { app, store, router } = await useApp(req)
   await router.push(req.url)
