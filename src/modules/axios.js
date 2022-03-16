@@ -28,5 +28,4 @@ const clearRequestHeader = () => Object.keys(axios.defaults.headers).forEach(key
 export default {
   setRequestHeader,
   clearRequestHeader,
-  defaults: axios.defaults,
 }
