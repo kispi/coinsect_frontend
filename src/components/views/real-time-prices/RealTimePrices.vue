@@ -64,6 +64,7 @@ import RealTimePriceRow from './RealTimePriceRow'
 import useUpbit from '@/hooks/websockets/upbit'
 import useBithumb from '@/hooks/websockets/bithumb'
 import useBinance from '@/hooks/websockets/binance'
+import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   components: {
@@ -81,6 +82,8 @@ export default {
     const { subscribe: subscribeBithumb, setAsBasePriceFromRestAPI } = useBithumb()
 
     const { subscribe: subscribeBinance } = useBinance()
+
+    const { loadMessages } = useChatHandler()
 
     const connected = ref(null)
 
@@ -161,7 +164,10 @@ export default {
       같은 페이지 내에서 끊긴 경우만 자동 재접속하기 위해 programmatically 버튼을 클릭해서 재접속하게 구현.
     */
     const initByClickingButton = () => {
-      if (refNotConnected.value) refNotConnected.value.click()
+      if (!refNotConnected.value) return
+
+      refNotConnected.value.click()
+      loadMessages()
     }
 
     const onConnected = (conn, exchange) => {
