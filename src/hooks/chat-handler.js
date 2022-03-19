@@ -30,8 +30,6 @@ const useChatHandler = () => {
 
   const pingInterv = ref(null)
 
-  const connectionInterv = ref(null)
-
   const token = ref(null)
 
   const recommendNickname = () => {
@@ -96,11 +94,6 @@ const useChatHandler = () => {
   }
 
   const connect = async () => {
-    try {
-      messages.value = []
-      await loadMessages()
-    } catch (e) {}
-
     const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
 
     connection.value = new WebSocket(`${endpoint}/chat${token.value ? `?token=${token.value}` : ''}`)
@@ -121,13 +114,15 @@ const useChatHandler = () => {
           type: 'ping',
         }))
       }, 1000 * 30)
-      clearInterval(connectionInterv.value)
+
+      messages.value = []
+      loadMessages()
     }
 
     connection.value.onclose = () => {
       connected.value = false
       clearInterval(pingInterv.value)
-      connectionInterv.value = setInterval(connect, 1000)
+      setTimeout(connect, 1000)
     }
   }
 
