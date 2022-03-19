@@ -30,6 +30,8 @@ const useChatHandler = () => {
 
   const pingInterv = ref(null)
 
+  const connectionInterv = ref(null)
+
   const token = ref(null)
 
   const recommendNickname = () => {
@@ -95,6 +97,7 @@ const useChatHandler = () => {
 
   const connect = async () => {
     try {
+      messages.value = []
       await loadMessages()
     } catch (e) {}
 
@@ -118,15 +121,13 @@ const useChatHandler = () => {
           type: 'ping',
         }))
       }, 1000 * 30)
+      clearInterval(connectionInterv.value)
     }
 
     connection.value.onclose = () => {
       connected.value = false
       clearInterval(pingInterv.value)
-      setTimeout(() => {
-        messages.value = []
-        connect()
-      }, 1000)
+      connectionInterv.value = setInterval(connect, 1000)
     }
   }
 
