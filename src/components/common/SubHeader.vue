@@ -1,12 +1,12 @@
 <template>
   <nav class="sub-header">
     <div
-      @click="$router.push(indicator.path)"
+      @click="$router.push(item.path)"
       class="sub-header-item"
-      :class="{'selected': $router.currentRoute.value.path.includes(indicator.path)}"
-      :key="indicator.path"
-      v-for="indicator in items">
-      {{ $translate(indicator.title) }}
+      :class="{'selected': $router.currentRoute.value.path.includes(item.path)}"
+      :key="item.path"
+      v-for="item in items">
+      {{ $translate(item.title) }}
     </div>
   </nav>
 </template>
@@ -24,10 +24,12 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+  overflow-x: auto;
 
   .sub-header-item {
     padding: 8px;
     border-bottom: 2px solid transparent;
+    white-space: nowrap;
     cursor: pointer;
 
     &.selected {

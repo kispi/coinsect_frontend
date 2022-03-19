@@ -1,13 +1,7 @@
 import helpers from '@/helpers'
 import useS3 from '@/helpers/s3'
 
-const andSoOn = [{
-  path: '/',
-  component: () => import(/* webpackChunkName: 'view-home' */ '@/components/views/ViewHome'),
-}, {
-  path: '/login',
-  component: () => import(/* webpackChunkName: 'view-login' */ '@/components/views/ViewLogin'),
-}, {
+const indicators = [{
   path: '/indicators/leaderboard',
   component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
   meta: {
@@ -37,7 +31,9 @@ const andSoOn = [{
     title: '비트코인 지표 - 코인충',
     description: 'fear & greed, s2f, nlb price 등의 비트코인 가격 추이 예상에 사용되는 지표들',
   },
-}, {
+}]
+
+const contents = [{
   path: '/contents/bitcoin-halving',
   component: () => import(/* webpackChunkName: 'view-bitcoin-halving' */ '@/components/views/contents/ViewContents'),
   meta: {
@@ -70,7 +66,20 @@ const andSoOn = [{
 }, {
   path: '/contents/:a/:b',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
+}]
+
+const apps = [{
+  path: '/apps/games',
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
 }, {
+  path: '/apps/portfolio',
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
+}, {
+  path: '/apps/salary',
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewSalary'),
+}]
+
+const community = [{
   path: '/community',
   component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewCommunity'),
 }, {
@@ -83,18 +92,24 @@ const andSoOn = [{
   path: '/community/:sharingKey',
   component: () => import(/* webpackChunkName: 'view-post' */ '@/components/views/community/ViewPost'),
   name: 'ViewPost',
+}]
+
+const andSoOn = [{
+  path: '/',
+  component: () => import(/* webpackChunkName: 'view-home' */ '@/components/views/ViewHome'),
 }, {
-  path: '/games',
-  component: () => import(/* webpackChunkName: 'view-games' */ '@/components/views/ViewGames'),
-}, {
-  path: '/portfolio',
-  component: () => import(/* webpackChunkName: 'view-portfolio' */ '@/components/views/ViewPortfolio'),
+  path: '/login',
+  component: () => import(/* webpackChunkName: 'view-login' */ '@/components/views/ViewLogin'),
 }, {
   path: '/updates',
   component: () => import(/* webpackChunkName: 'view-updates' */ '@/components/views/ViewUpdates'),
 }]
 
 const routesNoAuth = [
+  ...indicators,
+  ...contents,
+  ...apps,
+  ...community,
   ...andSoOn,
 ].map(o => {
   o.beforeEnter = (to, from) => {

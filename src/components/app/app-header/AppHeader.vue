@@ -123,11 +123,8 @@ export default {
       title: 'COMMUNITY',
       path: '/community',
     }, {
-      title: 'PORTFOLIO',
-      path: '/portfolio',
-    // }, {
-    //   title: 'GAMES',
-    //   path: '/games',
+      title: 'APPS',
+      path: '/apps/portfolio',
     }, {
       title: 'UPDATES',
       path: '/updates',
@@ -142,6 +139,8 @@ export default {
           if (o.title === 'INDICATORS') return p.startsWith('/indicators/')
 
           if (o.title === 'NEWS_AND_CONTENTS') return p.startsWith('/contents/')
+
+          if (o.title === 'APPS') return p.startsWith('/apps/')
 
           else return p.startsWith(o.path)
         })()

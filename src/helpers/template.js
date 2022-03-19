@@ -54,7 +54,9 @@ const template = {
   writer: writing => {
     if (writing.user) return writing.user.nickname
 
-    return `${writing.nickname}${writing.ip ? ` (${template.ip(writing.ip)})` : ''}`
+    return writing.nickname
+
+    // return `${writing.nickname}${writing.ip ? ` (${template.ip(writing.ip)})` : ''}`
   },
   prettyTime: (timestamp, simple) => {
     if (simple) {

@@ -48,25 +48,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.view-indicators {
-  .indicators {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px;
-
-    .indicator {
-      padding: 8px;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-
-      &.selected {
-        color: var(--text-stress);
-        font-weight: 700;
-        border-bottom: 2px solid var(--brand-primary);
-      }
-    }
-  }
-}
-</style>
