@@ -46,7 +46,10 @@ export default {
 
     const initAd = () => {
       showAd.value = false
-      if (['/updates', '/portfolio'].includes(router.currentRoute.value.path)) return
+      if (
+        ['/updates'].includes(router.currentRoute.value.path) ||
+        router.currentRoute.value.path.startsWith('/apps/')
+      ) return
 
       setTimeout(() => showAd.value = true, 1000)
     }
