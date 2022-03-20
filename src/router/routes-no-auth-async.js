@@ -76,7 +76,7 @@ const apps = [{
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
 }, {
   path: '/apps/salary',
-  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewSalary'),
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
 }]
 
 const community = [{

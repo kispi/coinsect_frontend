@@ -99,6 +99,10 @@
     "en": "Apps",
     "kr": "앱"
   },
+  "SALARY": {
+    "en": "Salary",
+    "kr": "연봉계산기"
+  },
   "LONG_SHORT": {
     "en": "Long/Short",
     "kr": "롱/숏"

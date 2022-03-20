@@ -33,8 +33,10 @@ export default {
     cursor: pointer;
 
     &.selected {
-      color: var(--text-stress);
       border-bottom: 2px solid var(--brand-primary);
+      color: var(--brand-primary);
+      border-bottom: 2px solid var(--brand-primary);
+      font-weight: 700;
     }
 
     &:hover {
