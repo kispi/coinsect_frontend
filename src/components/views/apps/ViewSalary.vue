@@ -115,8 +115,6 @@ export default {
 
 <style lang="scss" scoped>
 .view-salary {
-  padding-bottom: 240px;
-
   .title {
     font-size: 20px;
     font-weight: 700;
