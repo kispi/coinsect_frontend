@@ -36,7 +36,7 @@ export default {
       const rectAppTooltip = refAppTooltip.value.getBoundingClientRect()
 
       if (props.tooltip.below) {
-        finalStyle.value.top = `${-plugins.$helpers.dom.headerHeight() + rectShowAbove.top + rectShowAbove.height}px`
+        finalStyle.value.top = `${-plugins.$helpers.dom.headerHeight() + rectShowAbove.top + rectShowAbove.height + 8}px`
       } else {
         finalStyle.value.top = `${-plugins.$helpers.dom.headerHeight() + rectShowAbove.top - rectAppTooltip.height - 16}px`
       }
@@ -78,14 +78,15 @@ export default {
 
 <style lang="scss" scoped>
 .app-tooltip {
-  color: var(--white);
-  background: rgba(0, 0, 0, 0.8);
+  color: var(--text-base);
+  background: var(--background-light);
   position: absolute;
   border-radius: 4px;
   padding: 8px 12px;
-  width: 240px;
+  max-width: 240px;
   font-size: 12px;
   line-height: 18px;
+  backdrop-filter: blur(16px);
 
   --triangle-size: 8px;
   .triangle {
@@ -93,7 +94,7 @@ export default {
     height: 0;
     border-left: var(--triangle-size) solid transparent;
     border-right: var(--triangle-size) solid transparent;
-    border-top: var(--triangle-size) solid rgba(0, 0, 0, 0.8);
+    border-top: var(--triangle-size) solid var(--background-light);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

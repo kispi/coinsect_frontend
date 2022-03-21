@@ -1,8 +1,6 @@
 <template>
   <div class="view-salary">
-    <!-- <div class="title">
-      내 월급은 몇 BTC?
-    </div> -->
+    <SalaryAsCrypto :salary="result" @convert-as-crypto="o => resultAsCrypto = o"/>
     <div class="params">
       <div class="form-control">
         <label>연봉 (세전)</label>
@@ -13,7 +11,19 @@
         <input v-model="numFamily" type="number">
       </div>
       <div class="form-control">
-        <label>비과세 (연)</label>
+        <label>
+          <span>비과세 (연)</span>
+          <i
+            ref="refInfoNonTax"
+            class="far fa-question-circle m-l-8"
+            @mouseover="$tooltip.show({
+              id: 'tooltipNonTax',
+              showAbove: refInfoNonTax,
+              text: '월 식대 10만원이 대표적. 비과세 금액이 많을수록 과세표준이 적게 책정되지만, 인정받을 수 있는 한도가 있습니다.',
+            })"
+            @mouseleave="$tooltip.hide('tooltipNonTax')"
+          />
+        </label>
         <input v-model="nonTax" type="number">
       </div>
     </div>
@@ -24,17 +34,23 @@
         v-for="(report, idx) in reports">
         <div class="report-grid">
           <div
-            :ref="el => item.$$ref = el"
             class="report-box"
-            @mouseover="() => item.tooltip ? $tooltip.show({
-              id: `tooltip${item.name}`,
-              showAbove: item.$$ref,
-              text: item.tooltip,
-            }) : null"
-            @mouseleave="$tooltip.hide(`tooltip${item.name}`)"
             :key="item.name"
             v-for="item in report.items">
-            <div class="key" v-html="item.key"/>
+            <div class="key">
+              <span v-html="item.key"/>
+              <i
+                v-if="item.tooltip"
+                :ref="el => item.$$ref = el"
+                @mouseover="$tooltip.show({
+                  id: `tooltip${item.name}`,
+                  showAbove: item.$$ref,
+                  text: item.tooltip,
+                })"
+                @mouseleave="$tooltip.hide(`tooltip${item.name}`)"
+                class="far fa-question-circle m-l-8"
+              />
+            </div>
             <div class="value" v-html="item.value"/>
           </div>
         </div>
@@ -56,9 +72,15 @@
 <script>
 import { computed, ref } from 'vue'
 import salary from './salary'
+import SalaryAsCrypto from './SalaryAsCrypto'
 
 export default {
+  components: {
+    SalaryAsCrypto,
+  },
   setup() {
+    const refInfoNonTax = ref(null)
+
     const preTax = ref(22000000)
 
     const nonTax = ref(1200000)
@@ -67,32 +89,65 @@ export default {
 
     const showDetail = ref(null)
 
-    const pretty = (value, monthly = true) => (Math.floor(value / (monthly ? 12 : 1))).toLocaleString()
+    const resultAsCrypto = ref({})
+
+    const withCrypto = ref(true)
+
+    const pretty = ({ field, monthly = true }) => {
+      let fiat = result.value[field]
+      let crypto = resultAsCrypto.value[`$$${field}`]
+
+      if (monthly) {
+        fiat /= 12
+        crypto /= 12
+      }
+
+      if (withCrypto.value && crypto) return `
+        <div>${(Math.floor(fiat) || 0).toLocaleString()}</div>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-top: 4px;
+          ">
+          <img src="${resultAsCrypto.value['$$img']}" style="width: 12px; flex: 0 0 auto; margin-right: 4px;">
+          <div>${crypto.toLocaleString(undefined, {
+            maximumFractionDigits: 4,
+            minimumFractionDigits: 4,
+          })}</div>
+        </div>
+      `
+
+      return (Math.floor(fiat) || 0).toLocaleString()
+    }
 
     const reports = computed(() => [{
       title: '요약',
       items: [
-        { key: '월급 (세전)', value: pretty(preTax.value) },
-        { key: '월급 (세후)', value: pretty(result.value.afterTax) },
+        { key: '연봉 (세전)', value: pretty({ field: 'preTax', monthly: false }) },
+        { key: '월급 (세전)', value: pretty({ field: 'preTax' }) },
+        { key: '연봉 (세후)', value: pretty({ field: 'afterTax', monthly: false }) },
+        { key: '월급 (세후)', value: pretty({ field: 'afterTax' }) },
       ],
     }, {
       title: '공제',
       items: [
-        { key: '인적공제', value: pretty(result.value.familyDeduction, false), tooltip: '본인포함 부양자수 * 150만원' },
-        { key: '소득공제', value: pretty(result.value.incomeDeduction, false) },
-        { key: '소득세액공제', value: pretty(result.value.taxDeduction, false) },
-        { key: '과세금액', value: pretty(preTax.value - nonTax.value, false), tooltip: '{연봉 (세전)} - {비과세 (연)}' },
-        { key: '과세표준', value: pretty(result.value.taxOn, false), tooltip: `소득세 계산의 기준이 되는 연소득으로, {과세금액} - {소득세를 제외한 공제항목들} 입니다.` },
+        { key: '인적공제', value: pretty({ field: 'familyDeduction', monthly: false }), tooltip: '본인포함 부양자수 * 150만원' },
+        { key: '소득공제', value: pretty({ field: 'incomeDeduction', monthly: false }) },
+        { key: '소득세액공제', value: pretty({ field: 'taxDeduction', monthly: false }) },
+        { key: '과세표준', value: pretty({ field: 'taxOn', monthly: false }), tooltip: `소득세 계산의 기준이 되는 연소득으로, {과세금액} - {소득세를 제외한 공제항목들} 입니다.` },
       ],
     }, {
       title: '세금',
       items: [
-        { key: '국민연금', value: pretty(result.value.pension), tooltip: '과세금액의 4.5% (상한: 월 235,800)' },
-        { key: '건강보험', value: pretty(result.value.health), tooltip: '과세금액의 3.495%' },
-        { key: '장기요양', value: pretty(result.value.care), tooltip: '건강보험료의 12.27%' },
-        { key: '고용보험', value: pretty(result.value.hire), tooltip: '과세금액의 0.8%' },
-        { key: '소득세', value: pretty(result.value.incomeTax), tooltip: '과세표준 구간별로 상이.' },
-        { key: '지방소득세', value: pretty(result.value.incomeTaxLocal), tooltip: '소득세의 10%' },
+        { key: '국민연금', value: pretty({ field: 'pension' }), tooltip: '과세금액의 4.5% (상한: 월 235,800)' },
+        { key: '건강보험', value: pretty({ field: 'health' }), tooltip: '과세금액의 3.495%' },
+        { key: '장기요양', value: pretty({ field: 'care' }), tooltip: '건강보험료의 12.27%' },
+        { key: '고용보험', value: pretty({ field: 'hire' }), tooltip: '과세금액의 0.8%' },
+        { key: '소득세', value: pretty({ field: 'incomeTax' }), tooltip: '과세표준 구간별로 상이.' },
+        { key: '지방소득세', value: pretty({ field: 'incomeTaxLocal' }), tooltip: '소득세의 10%' },
       ],
     }])
 
@@ -103,11 +158,14 @@ export default {
     }))
 
     return {
+      refInfoNonTax,
       preTax,
       nonTax,
       numFamily,
       showDetail,
+      result,
       reports,
+      resultAsCrypto,
     }
   },
 }
@@ -115,14 +173,6 @@ export default {
 
 <style lang="scss" scoped>
 .view-salary {
-  .title {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-stress);
-    margin: 24px auto;
-    display: table;
-  }
-
   .params {
     display: flex;
 
@@ -179,7 +229,7 @@ export default {
 
     .report-box {
       background: var(--background-light);
-      border: 1px solid var(--border-base);
+      border: 1px solid transparent;
       padding: 12px;
       border-radius: 4px;
       display: flex;
@@ -192,6 +242,11 @@ export default {
         font-weight: 700;
         color: var(--text-stress);
         margin-top: 8px;
+        text-align: center;
+      }
+
+      &:hover {
+        border: 1px solid var(--border-base);
       }
     }
   }
@@ -206,7 +261,7 @@ export default {
     text-align: center;
     margin: 24px auto 40px;
     color: var(--text-stress);
-    animation: y ease infinite 2s;
+    animation: y ease infinite 1s;
     cursor: pointer;
 
     i {

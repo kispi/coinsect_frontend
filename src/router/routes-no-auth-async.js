@@ -74,9 +74,18 @@ const apps = [{
 }, {
   path: '/apps/portfolio',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
+  meta: {
+    title: '포트폴리오 - 코인충',
+    description: '내 포트폴리오의 실시간 평가액을 보여줍니다.',
+  },
 }, {
   path: '/apps/salary',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
+  meta: {
+    title: '연봉 실수령 계산기 - 코인충',
+    description: '내 연봉 실수령액은 얼마일까? 비트코인으로 환산한 내 월급은?',
+    image: useS3('og-images/og-image-salary.png'),
+  },
 }]
 
 const community = [{

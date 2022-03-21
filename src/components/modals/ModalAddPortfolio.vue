@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { getCurrentInstance, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {

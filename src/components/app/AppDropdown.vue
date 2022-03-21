@@ -59,7 +59,7 @@ export default {
     watch(
       () => props.dropdownItems,
       newVal => {
-        if (!newVal) return
+        if (!newVal || selectedItem.value) return // 이미 선택된 아이템이 있으면 첫째 항목을 선택하지 말고 그 아이템을 유지
 
         onClickDropdownItem(newVal[0])
       },
