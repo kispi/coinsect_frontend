@@ -38,6 +38,12 @@ const app = {
       targetExchange: 'binance',
       favorites: {},
       portfolio: {},
+      salary: {
+        symbol: 'BTC',
+        preTax: 22000000,
+        numFamily: 1,
+        nonTax: 1200000,
+      },
       chatFolded: false,
       chatSizeMax: false,
     },

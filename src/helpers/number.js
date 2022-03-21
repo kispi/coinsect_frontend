@@ -8,7 +8,7 @@ const conversionRatio = baseCurrency => {
   if (baseCurrency === 'usd' && $store.getters.settings.currency === 'krw') return $store.getters.usdKrw
 }
 
-export default {
+const number = {
   pretty: {
     price: ({ price, baseCurrency }) => {
       const converted = price * conversionRatio(baseCurrency)
@@ -25,6 +25,26 @@ export default {
         minimumFractionDigits: numFracs,
       })
     },
+    korean: (value, numKorUnits = 2) => {
+      const units = [
+        { key: '조', val: Math.pow(10, 12) },
+        { key: '억', val: Math.pow(10, 8) },
+        { key: '만', val: Math.pow(10, 4) },
+        { key: '', val: Math.pow(10, 0) },
+      ]
+  
+      const result = []
+      let current = value
+      units.forEach(unit => {
+        const numbers = Math.floor(current / unit.val)
+        if (numbers >= 1) {
+          current -= numbers * unit.val
+          result.push(`${numbers.toLocaleString()}${unit.key}`)
+        }
+      })
+  
+      return result.slice(0, numKorUnits).join(' ')
+    },
     cap: ({ cap, baseCurrency, numKorUnits = 2 }) => {
       const converted = cap * conversionRatio(baseCurrency)
 
@@ -33,26 +53,7 @@ export default {
         if (converted / Math.pow(10, 9) >= 1) return `${Math.round(converted / Math.pow(10, 9) * 10000) / 10000}B`
       }
 
-      if ($store.getters.translation.locale === 'kr') {
-        const units = [
-          { key: '조', val: Math.pow(10, 12) },
-          { key: '억', val: Math.pow(10, 8) },
-          { key: '만', val: Math.pow(10, 4) },
-          { key: '', val: Math.pow(10, 0) },
-        ]
-    
-        const result = []
-        let current = converted
-        units.forEach(unit => {
-          const numbers = Math.floor(current / unit.val)
-          if (numbers >= 1) {
-            current -= numbers * unit.val
-            result.push(`${numbers.toLocaleString()}${unit.key}`)
-          }
-        })
-    
-        return result.slice(0, numKorUnits).join(' ')
-      }
+      if ($store.getters.translation.locale === 'kr') return number.pretty.korean(converted, numKorUnits)
     },
     percent: val => val.toLocaleString(undefined, {
       maximumFractionDigits: 2,
@@ -60,3 +61,5 @@ export default {
     }),
   },
 }
+
+export default number

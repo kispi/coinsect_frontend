@@ -4,11 +4,12 @@
     <div class="params">
       <div class="form-control">
         <label>연봉 (세전)</label>
-        <input v-model="preTax" type="number">
+        <input v-model="payload.preTax" type="number">
+        <div class="pretty">{{ $helpers.number.pretty.korean(payload.preTax) }}원</div>
       </div>
       <div class="form-control">
         <label>인적공제 (명)</label>
-        <input v-model="numFamily" type="number">
+        <input v-model="payload.numFamily" type="number">
       </div>
       <div class="form-control">
         <label>
@@ -24,7 +25,8 @@
             @mouseleave="$tooltip.hide('tooltipNonTax')"
           />
         </label>
-        <input v-model="nonTax" type="number">
+        <input v-model="payload.nonTax" type="number">
+        <div class="pretty">{{ $helpers.number.pretty.korean(payload.nonTax) }}원</div>
       </div>
     </div>
     <div class="reports" :class="{'show-detail': showDetail}">
@@ -32,6 +34,7 @@
         class="report-section"
         :key="idx"
         v-for="(report, idx) in reports">
+        <div v-if="showDetail" class="report-title" v-html="report.title"/>
         <div class="report-grid">
           <div
             class="report-box"
@@ -70,8 +73,9 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import salary from './salary'
+import { computed, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+import salaryReport from './salary-report'
 import SalaryAsCrypto from './SalaryAsCrypto'
 
 export default {
@@ -79,13 +83,15 @@ export default {
     SalaryAsCrypto,
   },
   setup() {
+    const store = useStore()
+
     const refInfoNonTax = ref(null)
 
-    const preTax = ref(22000000)
-
-    const nonTax = ref(1200000)
-
-    const numFamily = ref(1)
+    const payload = ref({
+      preTax: store.getters.settings.salary.preTax,
+      numFamily: store.getters.settings.salary.numFamily,
+      nonTax: store.getters.settings.salary.nonTax,
+    })
 
     const showDetail = ref(null)
 
@@ -132,7 +138,7 @@ export default {
         { key: '월급 (세후)', value: pretty({ field: 'afterTax' }) },
       ],
     }, {
-      title: '공제',
+      title: '공제 (단위: 연)',
       items: [
         { key: '인적공제', value: pretty({ field: 'familyDeduction', monthly: false }), tooltip: '본인포함 부양자수 * 150만원' },
         { key: '소득공제', value: pretty({ field: 'incomeDeduction', monthly: false }) },
@@ -140,7 +146,7 @@ export default {
         { key: '과세표준', value: pretty({ field: 'taxOn', monthly: false }), tooltip: `소득세 계산의 기준이 되는 연소득으로, {과세금액} - {소득세를 제외한 공제항목들} 입니다.` },
       ],
     }, {
-      title: '세금',
+      title: '세금 (단위: 월)',
       items: [
         { key: '국민연금', value: pretty({ field: 'pension' }), tooltip: '과세금액의 4.5% (상한: 월 235,800)' },
         { key: '건강보험', value: pretty({ field: 'health' }), tooltip: '과세금액의 3.495%' },
@@ -151,17 +157,23 @@ export default {
       ],
     }])
 
-    const result = computed(() => salary({
-      preTax: preTax.value,
-      nonTax: nonTax.value,
-      numFamily: numFamily.value
+    const result = computed(() => salaryReport({
+      preTax: payload.value.preTax,
+      nonTax: payload.value.nonTax,
+      numFamily: payload.value.numFamily,
     }))
+
+    watch(
+      () => payload.value,
+      newVal => {
+        store.commit('setSettings', { salary: newVal })
+      },
+      { deep: true },
+    )
 
     return {
       refInfoNonTax,
-      preTax,
-      nonTax,
-      numFamily,
+      payload,
       showDetail,
       result,
       reports,
@@ -181,6 +193,11 @@ export default {
 
       &:not(:last-child) {
         margin-right: 8px;
+      }
+
+      .pretty {
+        margin-top: 4px;
+        font-size: 12px;
       }
     }
   }
@@ -219,6 +236,12 @@ export default {
 
     &:not(:last-child) {
       margin-bottom: 32px;
+    }
+
+    .report-title {
+      text-align: right;
+      margin-bottom: 8px;
+      font-size: 12px;
     }
   }
 
@@ -262,7 +285,16 @@ export default {
     margin: 24px auto 40px;
     color: var(--text-stress);
     animation: y ease infinite 1s;
+    border-radius: 4px;
+    border: 1px solid var(--background-base);
+    background: var(--background-light);
+    display: table;
+    padding: 8px;
     cursor: pointer;
+
+    &:hover {
+      border: 1px solid var(--text-stress);
+    }
 
     i {
       font-size: 20px;

@@ -78,15 +78,14 @@ export default {
 
 <style lang="scss" scoped>
 .app-tooltip {
-  color: var(--text-base);
-  background: var(--background-light);
+  color: var(--white);
+  background: var(--gs-44);
   position: absolute;
   border-radius: 4px;
   padding: 8px 12px;
   max-width: 240px;
   font-size: 12px;
   line-height: 18px;
-  backdrop-filter: blur(16px);
 
   --triangle-size: 8px;
   .triangle {
@@ -94,7 +93,7 @@ export default {
     height: 0;
     border-left: var(--triangle-size) solid transparent;
     border-right: var(--triangle-size) solid transparent;
-    border-top: var(--triangle-size) solid var(--background-light);
+    border-top: var(--triangle-size) solid var(--gs-44);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

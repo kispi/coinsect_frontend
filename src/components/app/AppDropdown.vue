@@ -77,6 +77,8 @@ export default {
 
 <style lang="scss" scoped>
 .app-dropdown {
+  font-size: 14px;
+
   .clickable-area {
     display: flex;
     align-items: center;
@@ -90,7 +92,6 @@ export default {
 
   .item-icon,
   .item-image {
-    font-size: 14px;
     width: 16px;
   }
 
@@ -118,8 +119,8 @@ export default {
       display: flex;
       align-items: center;
       padding-right: 24px;
-      cursor: pointer;
       user-select: none;
+      cursor: pointer;
 
       &:hover {
         background: var(--brand-primary-hover-bg);

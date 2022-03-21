@@ -36,7 +36,7 @@ const deducible = (y, numFamily, bonus) => {
   return { income, tax, family, nonTax }
 }
 
-const report = ({
+const salaryReport = ({
   preTax = 22000000, // 세전연봉
   numFamily = 1,     // 인적공제
   nonTax = 1200000,  // 비과세 default: 월 10만원
@@ -82,4 +82,4 @@ const report = ({
 }
 
 
-export default report
+export default salaryReport

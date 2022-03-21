@@ -1,7 +1,7 @@
 <template>
   <div class="salary-as-crypto">
     <div class="header">
-      <div>내 연봉은 몇</div>
+      <div class="text">내 연봉은 몇</div>
       <AppDropdown :dropdownItems="sortedMarkets" @select-dropdown-item="onSelectCrypto" class="m-l-8"/>?
     </div>
   </div>
@@ -36,7 +36,7 @@ export default {
 
     const sortedMarkets = ref([])
 
-    const crypto = ref('BTC')
+    const crypto = ref(store.getters.settings.salary.symbol)
 
     const populateMarkets = () => {
       sortedMarkets.value = JSON.parse(JSON.stringify(store.getters.markets.upbit.map(o => o.market)))
@@ -48,7 +48,12 @@ export default {
       })
     }
 
-    const onSelectCrypto = market => crypto.value = market.key
+    const onSelectCrypto = market => {
+      crypto.value = market.key
+      const stored = store.getters.settings.salary || {}
+      stored.symbol = crypto.value
+      store.commit('setSettings', { salary: stored })
+    }
 
     const init = async () => {
       try {
@@ -104,8 +109,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    font-weight: 700;
     color: var(--text-stress);
     margin: 24px auto;
 
@@ -123,6 +126,12 @@ export default {
       .chevrons {
         display: none;
       }
+    }
+
+    .text,
+    .app-dropdown .clickable-area .key {
+      font-size: 20px;
+      font-weight: 700;
     }
   }
 }
