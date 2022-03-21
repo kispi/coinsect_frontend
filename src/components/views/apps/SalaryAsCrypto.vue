@@ -71,18 +71,22 @@ export default {
       connection.value.close()
     })
 
-    watch(
-      () => (store.getters.rawWebsocketInfo.upbit || {})[`KRW-${crypto.value}`],
-      newVal => {
-        if (!newVal) return 0
+    const updateReport = () => {
+      const t = (store.getters.rawWebsocketInfo.upbit || {})[`KRW-${crypto.value}`]
+      if (!t) return
 
-        const result = {}
-        result.$$symbol = crypto.value
-        result.$$img = store.getters.symbols[crypto.value].thumb
-        Object.keys(props.salary).forEach(key => result[`$$${key}`] = Math.round(10000 * props.salary[key] / newVal.tp) / 10000)
-        emit('convert-as-crypto', result)
-        return result
-      },
+      const result = {}
+      result.$$symbol = crypto.value
+      result.$$img = store.getters.symbols[crypto.value].thumb
+      Object.keys(props.salary).forEach(key => result[`$$${key}`] = Math.round(10000 * props.salary[key] / t.tp) / 10000)
+      emit('convert-as-crypto', result)
+    }
+
+    watch([
+      () => (store.getters.rawWebsocketInfo.upbit || {})[`KRW-${crypto.value}`],
+      () => props.salary,
+    ],
+      updateReport,
     )
 
     return {
