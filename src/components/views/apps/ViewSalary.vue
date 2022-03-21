@@ -166,7 +166,9 @@ export default {
     watch(
       () => payload.value,
       newVal => {
-        store.commit('setSettings', { salary: newVal })
+        const o = store.getters.settings.salary || {}
+        Object.assign(o, newVal)
+        store.commit('setSettings', { salary: o })
       },
       { deep: true },
     )

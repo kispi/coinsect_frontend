@@ -26,8 +26,6 @@ export default {
   setup(props, { emit }) {
     const { subscribe } = useUpbit()
 
-    const loading = ref(null)
-
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
@@ -95,7 +93,6 @@ export default {
     )
 
     return {
-      loading,
       sortedMarkets,
       onSelectCrypto,
     }
