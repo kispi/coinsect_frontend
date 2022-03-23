@@ -224,10 +224,7 @@ export default {
         margin: 0;
 
         &:not(:first-child) {
-          height: 0;
-          opacity: 0;
-          transition: all 0.2s ease;
-          pointer-events: none;
+          display: none;
         }
       }
     }

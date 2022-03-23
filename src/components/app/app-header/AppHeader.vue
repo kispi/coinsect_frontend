@@ -58,6 +58,7 @@
     </div>
     <nav class="menu-items">
       <RouterLink
+        draggable="false"
         class="menu-item"
         :class="{
           'selected': menuItem.$$selected,
@@ -118,13 +119,12 @@ export default {
     }, {
       title: 'NEWS_AND_CONTENTS',
       path: '/contents/news',
-      $$new: true,
-    }, {
-      title: 'COMMUNITY',
-      path: '/community',
     }, {
       title: 'APPS',
       path: '/apps/portfolio',
+    }, {
+      title: 'COMMUNITY',
+      path: '/community',
     }, {
       title: 'UPDATES',
       path: '/updates',

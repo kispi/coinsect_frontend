@@ -1,4 +1,9 @@
 export default [{
+  date: '2022-03-20',
+  jobsDone: [
+    '연봉 계산기 추가 (세전, 세후, 암호화폐 현 싯가로 환산)',
+  ],
+}, {
   date: '2022-03-11',
   jobsDone: [
     '시가총액 API를 coingecko => coinmarketcap으로 변경',

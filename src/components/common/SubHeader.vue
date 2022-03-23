@@ -1,13 +1,14 @@
 <template>
   <nav class="sub-header">
-    <div
-      @click="$router.push(item.path)"
+    <RouterLink
+      draggable="false"
+      :to="item.path"
       class="sub-header-item"
       :class="{'selected': $router.currentRoute.value.path.includes(item.path)}"
       :key="item.path"
       v-for="item in items">
       {{ $translate(item.title) }}
-    </div>
+    </RouterLink>
   </nav>
 </template>
 
