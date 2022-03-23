@@ -3,8 +3,10 @@ import { router } from '@/router'
 import useS3 from './s3'
 
 const sanitize = html => {
+  if (!html) return ''
+
   const regex = /(&nbsp;|<([^>]+)>)/ig
-  return (html || '').replace(regex, '')
+  return (html || '').replace(regex, '').substring(0, 150)
 }
 
 const defaults = {
