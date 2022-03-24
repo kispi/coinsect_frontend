@@ -6,7 +6,7 @@ const sanitize = html => {
   if (!html) return ''
 
   const regex = /(&nbsp;|<([^>]+)>)/ig
-  return (html || '').replace(regex, '').substring(0, 150)
+  return (html || '').replace(regex, '')
 }
 
 const defaults = {
