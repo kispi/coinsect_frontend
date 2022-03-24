@@ -58,7 +58,7 @@ export default {
       try {
         await store.dispatch('bootstrap')
         prepared.value = true
-        initAd()
+        setTimeout(initAd, 2000)
       } finally {
         if (typeof document !== 'undefined') {
           const body = document.getElementsByTagName('body')[0]
@@ -103,7 +103,7 @@ export default {
         if (!newVal || !oldVal || (newVal === oldVal)) return
 
         initAd()
-      }, 5000),
+      }, 3000),
     )
 
     return {

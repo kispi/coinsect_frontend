@@ -200,7 +200,8 @@ export default {
   .stats {
     font-size: 16px;
     display: grid;
-    grid-gap: 8px;
+    grid-gap: 24px;
+    grid-row-gap: 8px;
     grid-template-columns: repeat(2, 1fr);
     color: var(--text-stress);
 
