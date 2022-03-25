@@ -299,5 +299,11 @@ export default {
       font-size: 20px;
     }
   }
+
+  @media (min-width: 767px) {
+    .report-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
 }
 </style>
