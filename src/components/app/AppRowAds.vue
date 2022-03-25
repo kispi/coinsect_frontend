@@ -16,7 +16,7 @@ export default {
 <style lang="scss" scoped>
 .app-row-ads {
   position: fixed;
-  top: calc(var(--app-header-height) + var(app-default-page-padding));
+  top: calc(var(--app-header-height) + var(--app-default-page-padding));
   right: 0;
   left: 0;
 
