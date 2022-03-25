@@ -1,9 +1,7 @@
 <template>
   <AppHeader/>
-  <div
-    class="app-body view-layout-default"
-    :class="['no-scrollbar']">
-    <AppRowAds v-if="showAd" v-show="!$store.getters.isMobile"/>
+  <div class="app-body view-layout-default no-scrollbar">
+    <AppRowAds v-if="showAd"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
     <AdSense v-if="showAd" :dataAdSlot="'9230500527'" class="bottom"/>
   </div>
@@ -137,12 +135,11 @@ export default {
   flex: 1;
 
   .ad-sense {
-    margin: 80px auto 0;
-    max-width: 992px;
-    height: 280px;
-
     &.bottom {
       display: block;
+      margin: 80px auto 0;
+      max-width: 992px;
+      height: 280px;
     }
   }
 }

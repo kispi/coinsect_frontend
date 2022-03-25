@@ -1,8 +1,9 @@
 <template>
   <div class="app-row-ads">
-    <AdSense :dataAdSlot="'1939754740'"/>
-    <div class="blocker"/>
-    <AdSense :dataAdSlot="'3927887162'"/>
+    <div class="relative">
+      <AdSense :dataAdSlot="'1939754740'" class="left"/>
+      <AdSense :dataAdSlot="'3927887162'" class="right"/>
+    </div>
   </div>
 </template>
 
@@ -15,39 +16,27 @@ export default {
 <style lang="scss" scoped>
 .app-row-ads {
   position: fixed;
-  top: var(--app-header-height);
-  display: flex;
-  justify-content: center;
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
+  top: calc(var(--app-header-height) + var(app-default-page-padding));
+  right: 0;
+  left: 0;
 
-  .blocker {
-    min-width: 100%;
-    max-width: 992px;
-    margin: 0 8px;
+  .relative {
+    position: relative;
+    margin: auto;
+    width: 992px;
   }
 
   .ad-sense {
-    min-width: 300px;
+    width: 300px;
     height: 600px;
-    pointer-events: auto;
-    margin: 0;
-    cursor: pointer;
+    position: absolute;
 
     &.left {
-      left: 0;
+      right: 100%;
     }
 
     &.right {
-      right: 0;
-    }
-  }
-
-  @media (min-width: 992px) {
-    .blocker {
-      min-width: 992px;
+      left: 100%;
     }
   }
 }
