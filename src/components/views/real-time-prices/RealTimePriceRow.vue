@@ -107,7 +107,7 @@ export default {
 
     const tradingView = ref({
       show: null,
-      symbol: `${store.getters.settings.baseExchange.toUpperCase()}:${props.ticker.$$symbol}KRW`,
+      symbol: `${store.getters.settings.baseExchange}:${props.ticker.$$symbol}${store.getters.settings.baseExchangeMarket}`.toUpperCase(),
     })
 
     const { setDocumentTitle } = useUpbit()
