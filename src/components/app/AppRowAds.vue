@@ -24,7 +24,7 @@ export default {
   pointer-events: none;
 
   .blocker {
-    width: 100%;
+    min-width: 100%;
     max-width: 992px;
     margin: 0 8px;
   }

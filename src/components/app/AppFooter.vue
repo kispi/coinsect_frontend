@@ -28,6 +28,8 @@ export default {
   font-size: 12px;
   line-height: 24px;
   color: var(--text-stress);
+  padding-top: 32px;
+  padding-bottom: 32px;
 
   .app-logo {
     font-size: 12px;
@@ -38,11 +40,6 @@ export default {
     font-weight: 700;
     text-decoration: underline;
     color: var(--text-stress);
-  }
-
-  @media (min-width: 768px) {
-    padding-top: 32px;
-    padding-bottom: 32px;
   }
 }
 </style>

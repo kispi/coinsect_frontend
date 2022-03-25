@@ -3,7 +3,7 @@
   <div
     class="app-body view-layout-default"
     :class="['no-scrollbar']">
-    <AppRowAds v-if="showAd && !$store.getters.isMobile"/>
+    <AppRowAds v-if="showAd" v-show="!$store.getters.isMobile"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
     <AdSense v-if="showAd" :dataAdSlot="'9230500527'" class="bottom"/>
   </div>
@@ -129,7 +129,7 @@ export default {
   @extend .layout-centered;
 
   padding-top: calc(var(--app-header-height) + var(--app-default-page-padding));
-  padding-bottom: 120px;
+  padding-bottom: 80px;
 }
 
 .app-header {
@@ -146,7 +146,7 @@ export default {
   flex: 1;
 
   .ad-sense {
-    margin: 40px auto;
+    margin: 80px auto 0;
     max-width: 992px;
     height: 280px;
 
