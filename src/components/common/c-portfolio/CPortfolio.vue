@@ -7,13 +7,13 @@
     </button>
     <div class="stats m-b-24">
       <div>
-        {{ $translate('NET_PURCHASE') }}: {{ $helpers.number.pretty.price({ price: netStat.purchase, baseCurrency: 'krw' })}}
+        {{ $translate('NET_PURCHASE') }}: {{ $helpers.number.pretty.price({ price: netStat.purchase, baseCurrency: $store.getters.settings.baseExchangeMarket })}}
       </div>
       <div>
-        {{ $translate('PURCHASEMENT_WORTH') }}: {{ $helpers.number.pretty.price({ price: netStat.worth, baseCurrency: 'krw' })}}
+        {{ $translate('PURCHASEMENT_WORTH') }}: {{ $helpers.number.pretty.price({ price: netStat.worth, baseCurrency: $store.getters.settings.baseExchangeMarket })}}
       </div>
       <div :class="{'c-price-up': netStat.unrealized > 0, 'c-price-down': netStat.unrealized < 0}">
-        {{ $translate('UNREALIZED') }}: {{ $helpers.number.pretty.price({ price: netStat.unrealized, baseCurrency: 'krw' }) }}
+        {{ $translate('UNREALIZED') }}: {{ $helpers.number.pretty.price({ price: netStat.unrealized, baseCurrency: $store.getters.settings.baseExchangeMarket }) }}
       </div>
       <div :class="{'c-price-up': netStat.roi > 0, 'c-price-down': netStat.roi < 0}">
         {{ $translate('ROI') }}: {{ (netStat.roi || 0).toFixed(2) }}%
@@ -30,7 +30,7 @@
         </div>
       </AdaptiveLayout>
       <div class="net-worth">
-        {{ $translate('NET_WORTH') }}: {{ $helpers.number.pretty.price({ price: netStat.total, baseCurrency: 'krw' }) }}
+        {{ $translate('NET_WORTH') }}: {{ $helpers.number.pretty.price({ price: netStat.total, baseCurrency: $store.getters.settings.baseExchangeMarket }) }}
       </div>
     </div>
     <div
@@ -174,6 +174,8 @@ export default {
     }
 
     onMounted(() => {
+      store.dispatch('loadBaseMarkets')
+
       if (portfolio.value) {
         stable.value = portfolio.value.stable
         connect()

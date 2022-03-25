@@ -55,6 +55,8 @@ export default {
 
     const init = async () => {
       try {
+        // 이 페이지에서는 기준이 krw로 강제되어야 함
+        store.commit('setSettings', { baseExchangeMarket: 'krw' })
         await store.dispatch('loadBaseMarkets')
         populateMarkets()
         const conn = await subscribe({

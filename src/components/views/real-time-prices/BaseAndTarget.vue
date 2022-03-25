@@ -5,10 +5,7 @@
       <AppDropdown
         class="m-l-8"
         :dropdownItems="bases"
-        @select-dropdown-item="o => {
-          $store.commit('setSettings', { baseExchange: o.key })
-          $emit('change-base-exchange')
-        }"
+        @select-dropdown-item="onSelectBaseExchange"
       />
     </div>
     <div class="target-exchange">
@@ -19,7 +16,6 @@
         :align="'right'"
         @select-dropdown-item="o => {
           $store.commit('setSettings', { targetExchange: o.key })
-          $emit('change-target-exchange')
         }"
       />
     </div>
@@ -35,14 +31,17 @@ export default {
     const store = useStore()
 
     const bases = ref([{
-      key: 'upbit',
+      key: 'upbit_krw',
       img: require('@/assets/images/upbit.svg'),
     }, {
-      key: 'bithumb',
+      key: 'upbit_btc',
+      img: require('@/assets/images/upbit.svg'),
+    }, {
+      key: 'bithumb_krw',
       img: require('@/assets/images/bithumb.png'),
     }].map(o => ({
       ...o,
-      $$selected: o.key === store.getters.settings.baseExchange,
+      $$selected: o.key === `${store.getters.settings.baseExchange}_${store.getters.settings.baseExchangeMarket}`.toLowerCase(),
     })))
 
     const targets = ref([{
@@ -53,9 +52,18 @@ export default {
       $$selected: o.key === store.getters.settings.targetExchange,
     })))
 
+    const onSelectBaseExchange = o => {
+      const [baseExchange, baseExchangeMarket] = o.key.split('_')
+      store.commit('setSettings', {
+        baseExchange,
+        baseExchangeMarket,
+      })
+    }
+
     return {
       bases,
       targets,
+      onSelectBaseExchange,
     }
   }
 }

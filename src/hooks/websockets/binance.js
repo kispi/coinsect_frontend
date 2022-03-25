@@ -28,13 +28,12 @@ const useBinance = () => {
         }
 
         helpers.dataSetter.calculateKimp({
-          $$symbol: json.s.split('USDT')[0],
+          // krw마켓은 usdt와 비교, btc는 그대로.
+          $$symbol: json.s.split((store.getters.settings.baseExchangeMarket === 'krw' ? 'usdt' : 'btc').toUpperCase())[0],
           $$tradePriceTarget: parseFloat(json.c) || 0,
           $$vol24HTarget: parseFloat(json.q) || 0,
         })
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     }
   })
 

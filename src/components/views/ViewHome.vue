@@ -26,8 +26,10 @@ export default {
 
     const prepared = ref(null)
 
-    watch(
+    watch([
       () => store.getters.settings.baseExchange,
+      () => store.getters.settings.baseExchangeMarket,
+    ],
       () => {
         prepared.value = false
         setTimeout(() => prepared.value = true)

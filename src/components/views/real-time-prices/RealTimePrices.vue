@@ -191,7 +191,8 @@ export default {
         tickTypes: ['24H', 'MID'],
       }).then(conn => onConnected(conn, 'bithumb')),
       binance: () => subscribeBinance({
-        codes: store.getters.markets[baseExchange.value].map(o => `${(o.$$symbol || '').toLowerCase()}usdt@miniTicker`),
+        codes: store.getters.markets[baseExchange.value].map(o => `${(o.$$symbol || '').toLowerCase()}${store.getters.settings.baseExchangeMarket === 'krw' ? 'usdt' : 'btc'}@miniTicker`),
+        // 원화마켓(krw)은 usdt와 비교하고, btc마켓은 그대로.
       }).then(conn => onConnected(conn, 'binance')),
     }
 

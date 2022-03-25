@@ -35,6 +35,7 @@ const app = {
       tradingview: 'show',
       tradingviewSymbol: 'BITSTAMP:BTCUSD',
       baseExchange: 'upbit', // 'upbit' || 'bithumb'
+      baseExchangeMarket: 'krw', // 'krw' || 'btc' || 'usdt'...
       targetExchange: 'binance',
       favorites: {},
       portfolio: {},

@@ -14,7 +14,7 @@
             priceColor({ price: order.price, type }),
             lastTradedPrice === order.price ? 'bordered' : '',
           ]">
-          <div class="value" v-html="$helpers.number.pretty.price({ price: order.price, baseCurrency: 'krw' })"/>
+          <div class="value" v-html="$helpers.number.pretty.price({ price: order.price, baseCurrency: $store.getters.settings.baseExchangeMarket })"/>
           <div class="change" v-html="`${$helpers.number.pretty.percent(Math.round((order.price - prevClosingPrice) / prevClosingPrice * 10000) / 100)}%`"/>
         </div>
         <div class="size">
@@ -52,7 +52,7 @@ export default {
     const realTimeTicker = computed(() => {
       if (!props.market) return
 
-      return store.getters.realTimeTickers[props.market.split('KRW-')[1]] || {}
+      return store.getters.realTimeTickers[props.market.split(`${store.getters.settings.baseExchangeMarket.toUpperCase()}-`)[1]] || {}
     })
 
     const prevClosingPrice = computed(() => realTimeTicker.value.$$prevClosingPrice)

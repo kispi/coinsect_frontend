@@ -67,7 +67,7 @@ const useBithumb = () => {
   }
 
   const setDocumentTitle = ticker => {
-    const priceString = plugins.$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: 'krw' })
+    const priceString = plugins.$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: store.getters.settings.baseExchangeMarket })
     document.title = `${!isNaN(ticker.$$premiumRate) ? `${plugins.$helpers.number.pretty.percent(ticker.$$premiumRate)}% / ` : 'Connecting... '}${priceString} ${ticker.$$symbol}`
   }
 

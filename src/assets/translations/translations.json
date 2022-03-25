@@ -95,6 +95,18 @@
     "en": "Community",
     "kr": "커뮤니티"
   },
+  "UPBIT_KRW": {
+    "en": "Upbit (KRW)",
+    "kr": "업비트 (원화)"
+  },
+  "UPBIT_BTC": {
+    "en": "Upbit (BTC)",
+    "kr": "업비트 (BTC)"
+  },
+  "BITHUMB_KRW": {
+    "en": "Bithumb (KRW)",
+    "kr": "빗썸 (원화)"
+  },
   "APPS": {
     "en": "Apps",
     "kr": "앱"

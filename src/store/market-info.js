@@ -110,30 +110,13 @@ const marketInfo = {
       }
     },
     async loadBaseMarkets({ commit, getters }) {
-      const bEx = getters.settings.baseExchange
-      if (helpers.canSkipApiCall(`loadBaseMarkets_${bEx}`)) return
-
-      const endpoint = (() => {
-        if (bEx === 'upbit') return 'https://api.upbit.com/v1/market/all'
-        if (bEx === 'bithumb') return 'https://api.bithumb.com/public/ticker/all_krw'
-      })()
-
       try {
-        const data = await $http.get(endpoint)
-        if (bEx === 'upbit') {
-          const upbit = data.filter(o => o.market.startsWith('KRW-')).map(o => ({
-            ...o,
-            $$symbol: o.market.split('-')[1]
-          }))
-          commit('setMarkets', { upbit })
-        }
-        if (bEx === 'bithumb') {
-          const bithumb = Object.keys(data['data']).filter(symbol => symbol !== 'date').map($$symbol => ({
-            $$symbol,
-            ...data['data'][$$symbol]
-          }))
-          commit('setMarkets', { bithumb })
-        }
+        const data = await marketInfoService.base({
+          baseExchange: getters.settings.baseExchange,
+          baseExchangeMarket: getters.settings.baseExchangeMarket,
+        })
+        if (getters.settings.baseExchange === 'upbit') commit('setMarkets', { upbit: data })
+        if (getters.settings.baseExchange === 'bithumb') commit('setMarkets', { bithumb: data })
       } catch (e) {
         return Promise.reject(e)
       }
