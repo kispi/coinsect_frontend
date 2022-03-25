@@ -3,7 +3,7 @@
   <div
     class="app-body view-layout-default"
     :class="['no-scrollbar']">
-    <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
+    <AppRowAds v-if="showAd && !$store.getters.isMobile"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
     <AdSense v-if="showAd" :dataAdSlot="'9230500527'" class="bottom"/>
   </div>
@@ -58,7 +58,7 @@ export default {
       try {
         await store.dispatch('bootstrap')
         prepared.value = true
-        setTimeout(initAd, 2000)
+        initAd()
       } finally {
         if (typeof document !== 'undefined') {
           const body = document.getElementsByTagName('body')[0]
@@ -119,6 +119,19 @@ export default {
   background: var(--background-base);
 }
 
+.layout-centered {
+  max-width: 992px;
+  margin: auto;
+  padding: var(--app-default-page-padding);
+}
+
+.view-layout-default {
+  @extend .layout-centered;
+
+  padding-top: calc(var(--app-header-height) + var(--app-default-page-padding));
+  padding-bottom: 120px;
+}
+
 .app-header {
   position: fixed;
   left: 0;
@@ -131,10 +144,6 @@ export default {
   overflow-x: hidden;
   min-height: 100vh;
   flex: 1;
-
-  &.view-layout-default {
-    padding-top: calc(var(--app-header-height) + var(--app-default-page-padding));
-  }
 
   .ad-sense {
     margin: 40px auto;

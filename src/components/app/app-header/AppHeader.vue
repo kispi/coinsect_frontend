@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header view-layout-default">
+  <header class="app-header layout-centered">
     <div class="top">
       <BannerMarketIndices/>
       <AdaptiveLayout
