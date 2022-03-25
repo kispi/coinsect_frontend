@@ -94,7 +94,7 @@ export default {
 
     watch(
       () => router.currentRoute.value.path,
-      initAd,
+      plugins.$helpers.debounce(initAd, 1000),
     )
 
     watch(
