@@ -1,10 +1,9 @@
 import { store as $store } from '@/store'
 
 const conversionRatio = baseCurrency => {
-  if (
-    baseCurrency === $store.getters.settings.currency ||
-    baseCurrency === $store.getters.settings.baseExchangeMarket
-  ) return 1
+  if (baseCurrency === $store.getters.settings.currency) return 1
+
+  if ($store.getters.settings.baseExchangeMarket === 'btc') return 1
 
   if (baseCurrency === 'krw' && $store.getters.settings.currency === 'usd') return 1 / $store.getters.usdKrw
 
