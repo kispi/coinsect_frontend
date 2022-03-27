@@ -1,9 +1,9 @@
 <template>
   <AppHeader/>
   <div class="app-body view-layout-default no-scrollbar">
-    <!-- <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/> -->
+    <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
-    <!-- <AdSense v-if="showAd" :dataAdSlot="'9230500527'" class="bottom"/> -->
+    <AdSense v-if="showAd" :dataAdSlot="'9230500527'" class="bottom"/>
   </div>
   <AppFooter/>
   <AppAddons/>
@@ -20,7 +20,7 @@ export default {
     AppHeader: defineAsyncComponent(() => import('@/components/app/app-header/AppHeader')),
     AppAddons: defineAsyncComponent(() => import('@/components/app/addons/AppAddons')),
     AppFooter: defineAsyncComponent(() => import('@/components/app/AppFooter')),
-    // AppRowAds: defineAsyncComponent(() => import('@/components/app/AppRowAds')),
+    AppRowAds: defineAsyncComponent(() => import('@/components/app/AppRowAds')),
   },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
