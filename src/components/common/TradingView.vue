@@ -49,13 +49,11 @@ export default {
 <style lang="scss" scoped>
 .trading-view {
   height: 320px;
-  margin-bottom: 8px;
   resize: vertical;
   overflow: auto;
 
   .trading-view-container {
     height: 100%;
-    padding-bottom: 16px;
 
     > div {
       height: 100%;

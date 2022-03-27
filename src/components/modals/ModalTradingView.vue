@@ -6,26 +6,13 @@
       "
       @close="$emit('close')"
     />
-    <div
-      ref="refBody"
-      class="body">
-      <TradingView :symbol="options.symbol"/>
-    </div>
+    <TradingView :symbol="options.symbol"/>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-
 export default {
   props: ['options'],
-  setup(_, { emit }) {
-    const refBody = ref(null)
-
-    return {
-      refBody,
-    }
-  },
 }
 </script>
 
