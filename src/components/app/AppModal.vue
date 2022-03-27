@@ -45,6 +45,7 @@ export default {
   components: {
     ModalBasic: defineAsyncComponent(() => import('@/components/modals/ModalBasic')),
     ModalInput: defineAsyncComponent(() => import('@/components/modals/ModalInput')),
+    ModalTradingView: defineAsyncComponent(() => import('@/components/modals/ModalTradingView')),
     ModalOrderbook: defineAsyncComponent(() => import('@/components/modals/ModalOrderbook')),
     ModalGame: defineAsyncComponent(() => import('@/components/modals/ModalGame')),
     ModalAddPortfolio: defineAsyncComponent(() => import('@/components/modals/ModalAddPortfolio')),

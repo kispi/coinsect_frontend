@@ -6,5 +6,9 @@
   "MODAL_ORDERBOOK": {
     "en": "Orderbook (%exchange / %market)",
     "kr": "호가창 (%exchange / %market)"
+  },
+  "MODAL_TRADING_VIEW": {
+    "en": "TradingView (%ticker)",
+    "kr": "트레이딩뷰 (%ticker)"
   }
 }

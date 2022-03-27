@@ -10,7 +10,7 @@
           class="name lines-1"
           :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''"
         />
-        <i @click.stop="tradingView.show = !tradingView.show" class="fa fa-chart-line"/>
+        <i @click.stop="openModalTradingView" class="fa fa-chart-line"/>
       </div>
       <div class="functions">
         <i
@@ -84,11 +84,6 @@
       />
     </td>
   </tr>
-  <tr v-if="tradingView.show">
-    <td colspan="100%">
-      <TradingView :symbol="tradingView.symbol"/>
-    </td>
-  </tr>
 </template>
 
 <script>
@@ -105,16 +100,22 @@ export default {
 
     const symbol = computed(() => store.getters.symbols[props.ticker.$$symbol] || {})
 
-    const tradingView = ref({
-      show: null,
-      symbol: `${store.getters.settings.baseExchange}:${props.ticker.$$symbol}${store.getters.settings.baseExchangeMarket}`.toUpperCase(),
-    })
-
     const { setDocumentTitle } = useUpbit()
 
     const bybitMarket = symbol => {
       const supportedMarkets = store.getters.markets.bybit.filter(o => o.endsWith('USDT'))
       return supportedMarkets.find(supported => supported.startsWith(symbol))
+    }
+
+    const openModalTradingView = () => {
+      plugins.$modal.custom({
+        component: 'ModalTradingView',
+        options: {
+          symbol: `${store.getters.settings.baseExchange}:${props.ticker.$$symbol}${store.getters.settings.baseExchangeMarket}`.toUpperCase(),
+          resizable: !store.getters.isMobile,
+          noBackdrop: true,
+        },
+      })
     }
 
     const openModalOrderbook = (exchange, market) => {
@@ -151,8 +152,8 @@ export default {
     }
 
     return {
-      tradingView,
       symbol,
+      openModalTradingView,
       autoFrac,
       openModalOrderbook,
       setDocumentTitleTicker,
