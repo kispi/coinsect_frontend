@@ -16,17 +16,35 @@
       v-model="dropdownOpened"
       :mountBelow="dropdownButton"
       :align="align">
-      <ul>
-        <li
-          @click="onClickDropdownItem(item)"
-          :key="item.key"
-          v-for="item in dropdownItems"
-          :class="{'selected': (selectedItem || {}).key === item.key}">
-          <i class="item-icon" v-if="item.icon" :class="item.icon"/>
-          <img class="item-image" v-if="item.img" :src="item.img" :alt="$translate(item.name || item.key)"/>
-          <div class="key" v-html="$translate(item.name || item.key)"/>
-        </li>
-      </ul>
+      <div class="list-container">
+        <div
+          v-if="useSearch"          
+          class="search-box input-wrapper">
+          <i class="fal fa-search"/>
+          <input
+            v-model="keyword"
+            ref="refInput"
+            placeholder="btc, eth..."
+            @keydown="onKeydown"
+          >
+          <i v-if="keyword" class="fal fa-times" @click="initKeyword"/>
+        </div>
+        <ul
+          v-if="filteredList.length > 0">
+          <li
+            @click="onClickDropdownItem(item)"
+            :key="item.key"
+            v-for="item in filteredList"
+            :class="{'selected': (selectedItem || {}).key === item.key}">
+            <i class="item-icon" v-if="item.icon" :class="item.icon"/>
+            <img class="item-image" v-if="item.img" :src="item.img" :alt="$translate(item.name || item.key)"/>
+            <div class="key" v-html="$translate(item.name || item.key)"/>
+          </li>
+        </ul>
+        <div v-else class="empty" @click="initKeyword">
+          <i class="fa fa-ban"/>
+        </div>
+      </div>
     </WrapperDropdownOverlay>
   </div>
 </template>
@@ -37,20 +55,35 @@ import WrapperDropdownOverlay from './WrapperDropdownOverlay'
 
 export default {
   name: 'AppDropdown',
-  props: ['dropdownItems', 'align'],
+  props: ['dropdownItems', 'align', 'useSearch'],
   components: { WrapperDropdownOverlay },
   setup(props, { emit }) {
-    const onClickDropdownItem = clickedItem => {
-      props.dropdownItems.forEach(item => item.$$selected = clickedItem.key === item.key)
-      dropdownOpened.value = false
-      emit('select-dropdown-item', clickedItem)
-    }
+    const refInput = ref(null)
+
+    const keyword = ref(null)
 
     const selectedItem = computed(() => props.dropdownItems.find(item => item.$$selected))
 
     const dropdownOpened = ref(null)
 
     const dropdownButton = ref(null)
+
+    const filteredList = computed(() => props.dropdownItems.filter(o => keyword.value ? o.key.toLowerCase().includes(keyword.value.toLowerCase()) : true))
+
+    const initKeyword = () => {
+      keyword.value = null
+      refInput.value.focus()
+    }
+
+    const onKeydown = e => {
+      setTimeout(() => keyword.value = e.target.value)
+    }
+
+    const onClickDropdownItem = clickedItem => {
+      props.dropdownItems.forEach(item => item.$$selected = clickedItem.key === item.key)
+      dropdownOpened.value = false
+      emit('select-dropdown-item', clickedItem)
+    }
 
     onMounted(() => {
       if (selectedItem.value) onClickDropdownItem(selectedItem.value)
@@ -65,11 +98,25 @@ export default {
       },
     )
 
+    watch(
+      () => dropdownOpened.value,
+      newVal => {
+        if (newVal && props.useSearch) {
+          setTimeout(() => refInput.value ? refInput.value.focus() : null, 200)
+        }
+      },
+    )
+
     return {
+      refInput,
+      keyword,
       selectedItem,
+      filteredList,
       dropdownOpened,
       dropdownButton,
+      initKeyword,
       onClickDropdownItem,
+      onKeydown,
     }
   },
 }
@@ -106,11 +153,42 @@ export default {
     }
   }
 
-  ul {
+  .list-container {
     background: var(--background-base);
     border: 1px solid var(--gs-bb);
     padding: 8px 0;
     border-radius: 4px;
+    width: 160px;
+  }
+
+  .search-box {
+    padding: 0 8px 8px;
+    border: 0;
+    border-bottom: 1px solid var(--border-base);
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    i {
+      flex: 0 0 auto;
+
+      &.fa-search {
+        margin-right: 8px;
+      }
+
+      &.fa-times {
+        margin-left: 8px;
+        cursor: pointer;
+      }
+    }
+
+    input {
+      font-size: 16px;
+      flex: 1;
+    }
+  }
+
+  ul {
     max-height: 400px;
     overflow-y: auto;
 
@@ -130,6 +208,19 @@ export default {
       &.selected {
         color: var(--brand-primary);
       }
+    }
+  }
+
+  .empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 0;
+    cursor: pointer;
+
+    i {
+      color: var(--danger);
+      font-size: 24px;
     }
   }
 }

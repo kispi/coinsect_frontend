@@ -1,6 +1,7 @@
 <template>
   <div class="view-salary">
     <SalaryAsCrypto :salary="result" @convert-as-crypto="o => resultAsCrypto = o"/>
+    <AppSlider @change="onSlide"/>
     <div class="params">
       <div class="form-control">
         <label>연봉 (세전)</label>
@@ -99,6 +100,10 @@ export default {
 
     const withCrypto = ref(true)
 
+    const onSlide = ratio => {
+      payload.value.preTax = Math.round((22000000 + 78000000 * ratio) / 100000) * 100000
+    }
+
     const pretty = ({ field, monthly = true }) => {
       let fiat = result.value[field]
       let crypto = resultAsCrypto.value[`$$${field}`]
@@ -180,6 +185,7 @@ export default {
       result,
       reports,
       resultAsCrypto,
+      onSlide,
     }
   },
 }
@@ -187,11 +193,19 @@ export default {
 
 <style lang="scss" scoped>
 .view-salary {
+  .app-slider {
+    margin-bottom: 24px;
+  }
+
   .params {
     display: flex;
 
     .form-control {
       flex: 1;
+
+      label {
+        user-select: none;
+      }
 
       &:not(:last-child) {
         margin-right: 8px;

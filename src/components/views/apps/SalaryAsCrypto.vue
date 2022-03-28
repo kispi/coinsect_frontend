@@ -2,8 +2,14 @@
   <div class="salary-as-crypto">
     <div class="header">
       <div class="text">내 연봉은 몇</div>
-      <AppDropdown :dropdownItems="sortedMarkets" @select-dropdown-item="onSelectCrypto" class="m-l-8"/>?
+      <AppDropdown
+        :useSearch="true"
+        :dropdownItems="sortedMarkets"
+        @select-dropdown-item="onSelectCrypto"
+        class="m-l-8"
+      />?
     </div>
+    <div class="current-price">{{ $helpers.number.pretty.price({ price: currentPriceAsKrw, baseCurrency: 'krw' }) }} {{ crypto }}/{{ $store.getters.settings.currency }}</div>
   </div>
 </template>
 
@@ -33,6 +39,8 @@ export default {
     const connection = ref(null)
 
     const sortedMarkets = ref([])
+
+    const currentPriceAsKrw = ref(0)
 
     const crypto = ref(store.getters.settings.salary.symbol)
 
@@ -80,6 +88,8 @@ export default {
       const t = (store.getters.rawWebsocketInfo.upbit || {})[`KRW-${crypto.value}`]
       if (!t) return
 
+      currentPriceAsKrw.value = t.tp
+
       const result = {}
       result.$$symbol = crypto.value
       result.$$img = store.getters.symbols[crypto.value].thumb
@@ -95,6 +105,8 @@ export default {
     )
 
     return {
+      crypto,
+      currentPriceAsKrw,
       sortedMarkets,
       onSelectCrypto,
     }
@@ -109,7 +121,7 @@ export default {
     align-items: center;
     justify-content: center;
     color: var(--text-stress);
-    margin: 24px auto;
+    margin: 24px auto 0;
 
     .app-dropdown {
       white-space: nowrap;
@@ -132,6 +144,14 @@ export default {
       font-size: 20px;
       font-weight: 700;
     }
+  }
+
+  .current-price {
+    display: table;
+    margin: 12px auto 24px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
   }
 }
 </style>
