@@ -215,12 +215,15 @@ export default {
         await store.dispatch('loadBaseMarkets')
         if (baseExchange.value === 'upbit') prepareUpbit()
         if (baseExchange.value === 'bithumb') prepareBithumb()
-        intervRecalc.value = setInterval(recalcDisplayedList, 500)
 
-        if (!connections.value[baseExchange.value] || connections.value[baseExchange.value].readyState !== 1) subscriber[baseExchange.value]()
-        if (!connections.value[targetExchange.value] || connections.value[targetExchange.value].readyState !== 1) subscriber[targetExchange.value]()
+        if (!connections.value[baseExchange.value] || connections.value[baseExchange.value].readyState !== 1) await subscriber[baseExchange.value]()
+        if (!connections.value[targetExchange.value] || connections.value[targetExchange.value].readyState !== 1) await subscriber[targetExchange.value]()
+
+        // 웹소켓 구독을 먼저 해서 코인 실시간 시세들을 불러운 뒤에 recalc를 해야 현재 정렬상태가 반영됨.
+        recalcDisplayedList()
+        intervRecalc.value = setInterval(recalcDisplayedList, 1000 * 5) // 코인 정렬 주기 5초. (너무 짧으면 계속 코인 위치가 바뀌어서 무히려 짜증남)
       } catch (e) {
-        plugins.$modal.alert(`거래소(${baseExchange.value})의 정보를 불러오는데 실패했습니다. 다시 시도해주세요.`)
+        plugins.$toast.error(`거래소(${baseExchange.value})의 정보를 불러오는데 실패했습니다. 다시 시도해주세요.`)
       }
     }
 
