@@ -10,7 +10,7 @@
       </div>
       <div class="form-control">
         <label>인적공제 (명)</label>
-        <input v-model="payload.numFamily" type="number">
+        <input v-model="payload.numFamily" type="number" min="1">
       </div>
       <div class="form-control">
         <label>
@@ -162,11 +162,11 @@ export default {
       ],
     }])
 
-    const result = computed(() => salaryReport({
-      preTax: payload.value.preTax,
-      nonTax: payload.value.nonTax,
-      numFamily: payload.value.numFamily,
-    }))
+    const result = computed(() => salaryReport(
+      payload.value.preTax,
+      payload.value.numFamily,
+      payload.value.nonTax,
+    ))
 
     watch(
       () => payload.value,
