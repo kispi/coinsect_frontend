@@ -42,7 +42,10 @@ export default {
     const emitRatio = () => emit('change', ratio.value) // emits (0 <= ratio <= 1)
 
     const setNext = e => {
-      nextX.value = (e.touches ? e.touches[0].clientX : e.clientX) - handleSize
+      if (!refContainer.value) return
+
+      const rectX = refContainer.value.getBoundingClientRect().x
+      nextX.value = (e.touches ? e.touches[0].clientX : e.clientX) - handleSize / 2 - rectX
 
       if (nextX.value < 0) nextX.value = 0
       if (nextX.value > containerSize.value - handleSize) nextX.value = containerSize.value - handleSize
