@@ -57,7 +57,7 @@ export default {
       key: 'SORT_INTERVAL',
       values: [
         { title: 'REAL_TIME', value: 50 },
-        { title: `5${plugins.$translate('SECONDS')}`, value: 5000 },
+        { title: `5 ${plugins.$translate('SECONDS')}`, value: 5000 },
       ].map(o => ({ ...o, $$selected: store.getters.settings.sortInterval === o.value })),
     }, {
       key: 'TRADINGVIEW',
