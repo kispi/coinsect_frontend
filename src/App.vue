@@ -146,7 +146,6 @@ export default {
       margin-bottom: 8px;
       max-width: 992px;
       height: 280px;
-      background: red;
     }
   }
 }
