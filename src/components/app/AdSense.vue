@@ -1,6 +1,6 @@
-<template>
+<template
+  v-if="useGoogleAdSense">
   <ins
-    v-if="useGoogleAdSense"
     class="ad-sense adsbygoogle"
     data-ad-client="ca-pub-3069752836489386"
     data-ad-format="auto"
@@ -21,8 +21,6 @@ export default {
     const store = useStore()
 
     const useGoogleAdSense = process.env.NODE_ENV === 'PRODUCTION' && !store.getters.isSSR
-
-    console.log(process.env.NODE_ENV, store.getters.isSSR, 'test')
 
     const init = () => {
       if (store.getters.isSSR || typeof window.adsbygoogle === 'undefined') return
