@@ -16,7 +16,7 @@
       </div>
     </div>
     <div
-      v-if="!connected || calculating"
+      v-if="!connected"
       ref="refNotConnected"
       class="not-connected"
       @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('PREPARING_REAL_TIME_PRICES') }}</div>
@@ -93,8 +93,6 @@ export default {
       binance: null,
     })
 
-    const calculating = ref(null)
-
     const intervRecalc = ref(null)
 
     const baseExchange = computed(() => store.getters.settings.baseExchange)
@@ -133,7 +131,6 @@ export default {
     }
 
     const recalcDisplayedList = () => {
-      calculating.value = true
       displayedList.value = Object.values(store.getters.realTimeTickers).filter(t => {
         if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
 
@@ -154,7 +151,6 @@ export default {
 
         return sorter(a, b)
       })
-      calculating.value = false
     }
 
     const displayedList = ref([])
@@ -208,6 +204,11 @@ export default {
       store.getters.markets.bithumb.forEach(json => setAsBasePriceFromRestAPI({ symbol: json.$$symbol, json }))
     }
 
+    const runRecalcInterv = () => {
+      clearInterval(intervRecalc.value)
+      intervRecalc.value = setInterval(recalcDisplayedList, store.getters.settings.sortInterval)
+    }
+
     const init = async () => {
       store.commit('initRealTimeTickers')
 
@@ -221,7 +222,7 @@ export default {
 
         // 웹소켓 구독을 먼저 해서 코인 실시간 시세들을 불러운 뒤에 recalc를 해야 현재 정렬상태가 반영됨.
         recalcDisplayedList()
-        intervRecalc.value = setInterval(recalcDisplayedList, 1000 * 5) // 코인 정렬 주기 5초. (너무 짧으면 계속 코인 위치가 바뀌어서 무히려 짜증남)
+        runRecalcInterv()
       } catch (e) {
         plugins.$toast.error(`거래소(${baseExchange.value})의 정보를 불러오는데 실패했습니다. 다시 시도해주세요.`)
       }
@@ -245,10 +246,14 @@ export default {
       { deep: true },
     )
 
+    watch(
+      () => store.getters.settings.sortInterval,
+      runRecalcInterv,
+    )
+
     return {
       refNotConnected,
       init,
-      calculating,
       connected,
       keyword,
       settings,

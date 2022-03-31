@@ -20,11 +20,13 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
     const settings = computed(() => [{
@@ -52,6 +54,12 @@ export default {
         { title: 'FAVORITES', value: 'favorites' },
       ].map(o => ({ ...o, $$selected: store.getters.settings.filter === o.value })),
     }, {
+      key: 'SORT_INTERVAL',
+      values: [
+        { title: 'REAL_TIME', value: 50 },
+        { title: `5${plugins.$translate('SECONDS')}`, value: 5000 },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.sortInterval === o.value })),
+    }, {
       key: 'TRADINGVIEW',
       values: [
         { title: 'SHOW', value: 'show' },
@@ -65,11 +73,9 @@ export default {
         return
       }
 
-      if (['CURRENCY', 'THEME', 'FILTER', 'TRADINGVIEW'].includes(key)) {
-        const o = {}
-        o[key.toLowerCase()] = setting.value
-        store.commit('setSettings', o)
-      }
+      const o = {}
+      o[plugins.$helpers.template.case.toCamel(key.toLowerCase())] = setting.value
+      store.commit('setSettings', o)
     }
 
     return {

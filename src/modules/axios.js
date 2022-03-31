@@ -1,31 +1,55 @@
 import axios from 'axios'
+import { store } from '@/store'
 
-axios.interceptors.response.use(
-  res => res.data,
-  err => {
-    if (!err.response) {
-      throw err
+export let $http = {}
+
+export const setHttpClient = o => $http = o
+
+export const createHttpClient = () => {
+  const httpClient = axios.create({
+    baseURL: `${process.env.VUE_APP_API_DOMAIN}`,
+  })
+
+  httpClient.interceptors.request.use(req => {
+    if (process.env.VUE_APP_SSR) req.headers['is-ssr'] = true
+
+    if (req.headers['is-ssr'] && store.state.axiosHeaderSSR) {
+      Object.keys(store.state.axiosHeaderSSR).forEach(key => req.headers[key] = store.state.axiosHeaderSSR[key])
     }
 
-    throw err.response
-  },
-)
+    return req
+  })
 
-axios.defaults.baseURL = `${process.env.VUE_APP_API_DOMAIN}`
+  httpClient.interceptors.response.use(
+    res => res.data,
+    err => {
+      if (!err.response) {
+        throw err
+      }
+  
+      throw err.response
+    },
+  )
 
-const setRequestHeader = header => {
-  if (header.token) axios.defaults.headers['Authorization'] = `Bearer ${header.token}`
+  return httpClient
+}
+
+export const setRequestHeader = header => {
+  if (header.token) $http.defaults.headers['Authorization'] = `Bearer ${header.token}`
 
   Object.keys(header).forEach(key => {
     if (!header[key]) return
 
-    axios.defaults.headers[key] = header[key]
+    $http.defaults.headers[key] = header[key]
   })
 }
 
-const clearRequestHeader = () => Object.keys(axios.defaults.headers).forEach(key => delete axios.defaults.headers[key])
+const clearRequestHeader = () => Object.keys($http.defaults.headers).forEach(key => delete $http.defaults.headers[key])
 
 export default {
+  $http,
+  createHttpClient,
+  setHttpClient,
   setRequestHeader,
   clearRequestHeader,
 }

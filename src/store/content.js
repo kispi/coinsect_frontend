@@ -1,6 +1,6 @@
 import crudService from '@/services/crud'
 import helpers from '@/helpers'
-import * as $http from 'axios'
+import { $http } from '@/modules/axios'
 
 const marketInfo = {
   state: () => ({

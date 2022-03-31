@@ -1,5 +1,5 @@
 import helpers from '@/helpers'
-import * as $http from 'axios'
+import { $http } from '@/modules/axios'
 
 const app = {
   state: () => ({
@@ -28,6 +28,7 @@ const app = {
         column: '$$vol24HBase', // '$$symbol', '$$tradePriceBase', '$$premiumRate', '$$changeRate1D', '$$changeRate52WH', '$$changeRate52WL'
         direction: 'desc',
       },
+      sortInterval: 5000, // Number (ms)
       theme: 'dark',
       documentTitleTicker: 'BTC',
       currency: 'krw',

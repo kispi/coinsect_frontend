@@ -12,11 +12,17 @@
       </div>
       <div class="form-control">
         <label>보유수량</label>
-        <input v-model="payload.amount" placeholder="EX:) 1">
+        <input
+          v-model="payload.amount"
+          placeholder="EX:) 1"
+          @keydown.enter="addPortfolioItem">
       </div>
       <div class="form-control">
         <label>매수평균단가 ({{ payload.exchange === 'upbit' ? 'KRW' : 'USD' }})</label>
-        <input v-model="payload.averagePurchasePrice" :placeholder="`EX:) ${payload.exchange === 'upbit' ? 52000000 : 42000}`">
+        <input
+          v-model="payload.averagePurchasePrice"
+          :placeholder="`EX:) ${payload.exchange === 'upbit' ? 52000000 : 42000}`"
+          @keydown.enter="addPortfolioItem">
       </div>
     </div>
     <div
@@ -30,7 +36,7 @@
         <button
           @click="addPortfolioItem"
           class="btn btn-primary"
-          :disabled="!payload.averagePurchasePrice || !payload.amount"
+          :disabled="disabled"
           v-html="$translate('CONFIRM')"
         />
       </div>
@@ -39,7 +45,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -51,6 +57,8 @@ export default {
     const exchanges = ref([])
 
     const sortedMarkets = ref([])
+
+    const disabled = computed(() => !payload.value.averagePurchasePrice || !payload.value.amount)
 
     const populateMarkets = () => {
       const x = payload.value.exchange
@@ -80,6 +88,8 @@ export default {
     }
 
     const addPortfolioItem = () => {
+      if (disabled.value) return
+
       const portfolio = store.getters.settings.portfolio
       let found, errMsg
       if (payload.value.exchange === 'upbit') {
@@ -129,6 +139,7 @@ export default {
     })
 
     return {
+      disabled,
       exchanges,
       sortedMarkets,
       payload,

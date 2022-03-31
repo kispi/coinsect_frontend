@@ -1,0 +1,118 @@
+{
+  "LANGUAGE": {
+    "en": "Language",
+    "kr": "언어"
+  },
+  "CURRENCY": {
+    "en": "Currency",
+    "kr": "통화"
+  },
+  "THEME": {
+    "en": "Theme",
+    "kr": "테마"
+  },
+  "FILTER": {
+    "en": "Filter",
+    "kr": "필터"
+  },
+  "ALL": {
+    "en": "All",
+    "kr": "전체"
+  },
+  "FAVORITES": {
+    "en": "Favorites",
+    "kr": "즐겨찾기"
+  },
+  "SORT_INTERVAL": {
+    "en": "Sort Interval",
+    "kr": "정렬주기"
+  },
+  "REAL_TIME": {
+    "en": "Realtime",
+    "kr": "실시간"
+  },
+  "TRADINGVIEW": {
+    "en": "Tradingview",
+    "kr": "트레이딩뷰"
+  },
+  "SHOW": {
+    "en": "Show",
+    "kr": "보기"
+  },
+  "HIDE": {
+    "en": "Hide",
+    "kr": "숨기기"
+  },
+  "ACTIVE_USERS": {
+    "en": "Active Users",
+    "kr": "접속자수"
+  },
+  "HOME": {
+    "en": "Home",
+    "kr": "홈"
+  },
+  "INDICATORS": {
+    "en": "Indicators",
+    "kr": "지표"
+  },
+  "LEADERBOARD": {
+    "en": "Leaderboard",
+    "kr": "리더보드"
+  },
+  "REAL_TIME_POSITIONS": {
+    "en": "Realtime Positions",
+    "kr": "실시간 포지션"
+  },
+  "MARKETCAPS": {
+    "en": "Marketcaps",
+    "kr": "시가총액"
+  },
+  "GENERAL": {
+    "en": "General",
+    "kr": "일반"
+  },
+  "NEWS_AND_CONTENTS": {
+    "en": "News/Contents",
+    "kr": "뉴스/콘텐츠"
+  },
+  "NEWS": {
+    "en": "News",
+    "kr": "뉴스"
+  },
+  "INFLUENCERS": {
+    "en": "Influencers",
+    "kr": "인플루언서"
+  },
+  "PUBLIC_TREASURY": {
+    "en": "Public Treasury",
+    "kr": "비트코인 보유단체"
+  },
+  "BITCOIN_HALVING": {
+    "en": "Bitcoin Halving",
+    "kr": "비트코인 반감기"
+  },
+  "APPS": {
+    "en": "Apps",
+    "kr": "앱"
+  },
+  "PORTFOLIO": {
+    "en": "Portfolio",
+    "kr": "포트폴리오"
+  },
+  "SALARY": {
+    "en": "Salary",
+    "kr": "연봉계산기"
+  },
+  "GAMES": {
+    "en": "Games",
+    "kr": "게임"
+  },
+  "COMMUNITY": {
+    "en": "Community",
+    "kr": "커뮤니티"
+  },
+  "UPDATES": {
+    "en": "Updates",
+    "kr": "업데이트"
+  }
+}

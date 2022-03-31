@@ -22,7 +22,12 @@ const useStaticServing = server => {
   const publicFiles = ['gtm.js', 'ads.txt', 'robots.txt', 'sitemap.xml', 'naver048dfb4862180b4025eb9bd6e296c6ec.html']
   const targets = folders.concat(publicFiles)
   targets.forEach(target =>
-    server.use(`/${target}`, express.static(path.join(__dirname, `../${outputDir}/client`, target), { maxAge: 3600 * 1000 }))
+    server.use(
+      `/${target}`,
+      express.static(
+        path.join(__dirname, `../${outputDir}/client`, target),
+        process.env.NODE_ENV === 'production' ? { maxAge: 3600 * 1000 } : null,
+      ))
   )
 }
 

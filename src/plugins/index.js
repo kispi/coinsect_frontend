@@ -1,6 +1,6 @@
-import axios from 'axios'
 import helpers from '@/helpers/index'
 import createBus from '@/helpers/bus'
+import { $http } from '@/modules/axios'
 
 export default {
   install: (app) => {
@@ -10,7 +10,7 @@ export default {
 
     app.config.globalProperties.$currency = helpers.template.currency
 
-    app.config.globalProperties.$http = axios
+    app.config.globalProperties.$http = $http
 
     app.config.globalProperties.$tooltip = helpers.tooltip
 

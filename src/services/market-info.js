@@ -1,4 +1,4 @@
-import * as $http from 'axios'
+import { $http } from '@/modules/axios'
 
 const cacheTime = 1000 * 60
 

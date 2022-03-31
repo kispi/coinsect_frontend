@@ -1,4 +1,4 @@
-import * as $http from 'axios'
+import { $http } from '@/modules/axios'
 import crudService from './crud'
 
 const post = crudService.post

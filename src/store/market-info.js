@@ -1,6 +1,6 @@
 import helpers from '@/helpers'
 import marketInfoService from '@/services/market-info'
-import * as $http from 'axios'
+import { $http } from '@/modules/axios'
 
 const marketInfo = {
   state: () => ({

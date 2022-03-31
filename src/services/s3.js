@@ -1,4 +1,4 @@
-import * as $http from 'axios'
+import { $http } from '@/modules/axios'
 
 const s3Service = {
   upload: async function(file) {
