@@ -22,6 +22,8 @@ export default {
 
     const useGoogleAdSense = process.env.NODE_ENV === 'PRODUCTION' && !store.getters.isSSR
 
+    console.log(process.env.NODE_ENV, store.getters.isSSR, 'test')
+
     const init = () => {
       if (store.getters.isSSR || typeof window.adsbygoogle === 'undefined') return
 
