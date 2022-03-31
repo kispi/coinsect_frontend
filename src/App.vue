@@ -1,9 +1,9 @@
 <template>
   <AppHeader/>
   <div class="app-body view-layout-default no-scrollbar">
+    <AdSense v-if="showAd" :dataAdSlot="'9230500527'" class="horizontal"/>
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
-    <AdSense v-if="showAd" :dataAdSlot="'9230500527'" class="bottom"/>
   </div>
   <AppFooter/>
   <AppAddons/>
@@ -49,14 +49,14 @@ export default {
         router.currentRoute.value.path.startsWith('/apps/')
       ) return
 
-      setTimeout(() => showAd.value = true, 1000)
+      showAd.value = true
     }
 
     const prepare = async () => {
       try {
         await store.dispatch('bootstrap')
         prepared.value = true
-        initAd()
+        setTimeout(initAd, 2000)
       } finally {
         if (typeof document !== 'undefined') {
           const body = document.getElementsByTagName('body')[0]
@@ -90,9 +90,15 @@ export default {
       window.removeEventListener('scroll', onScroll)
     })
 
+    // 같은 값에 대한 watcher가 아래도 있는데, showAd.value = false와 initAd에 대한 debounced 실행을 분리하기 위함.
     watch(
       () => router.currentRoute.value.path,
-      plugins.$helpers.debounce(initAd, 1000),
+      () => showAd.value = false,
+    )
+
+    watch(
+      () => router.currentRoute.value.path,
+      plugins.$helpers.debounce(initAd, 2000),
     )
 
     return {
@@ -135,11 +141,12 @@ export default {
   flex: 1;
 
   .ad-sense {
-    &.bottom {
+    &.horizontal {
       display: block;
-      margin: 80px auto 0;
+      margin-bottom: 8px;
       max-width: 992px;
       height: 280px;
+      background: red;
     }
   }
 }
