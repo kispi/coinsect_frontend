@@ -1,5 +1,7 @@
-<template v-if="useGoogleAdSense">
-  <ins class="ad-sense adsbygoogle"
+<template>
+  <ins
+    v-if="useGoogleAdSense"
+    class="ad-sense adsbygoogle"
     data-ad-client="ca-pub-3069752836489386"
     data-ad-format="auto"
     :data-ad-slot="dataAdSlot"
