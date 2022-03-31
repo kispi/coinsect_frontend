@@ -67,6 +67,8 @@ export default {
     .timestamp {
       flex: 0 0 auto;
       font-size: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      margin-bottom: 2px;
     }
   }
 
