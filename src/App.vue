@@ -79,7 +79,6 @@ export default {
     }
 
     onMounted(() => {
-      plugins.$toast.success('Hello! World')
       prepare()
       store.commit('setSettings', storedSettings())
       window.addEventListener('resize', setIsMobile)
