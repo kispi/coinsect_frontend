@@ -79,6 +79,7 @@ export default {
     }
 
     onMounted(() => {
+      plugins.$modal.toast('Hello!')
       prepare()
       store.commit('setSettings', storedSettings())
       window.addEventListener('resize', setIsMobile)
