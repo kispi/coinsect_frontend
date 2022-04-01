@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -41,18 +41,22 @@ export default {
       store.commit('setToast', null)
     }
 
+    const checkAndCloseToast = () => {
+      if (toastTimeout.value) {
+        clearTimeout(toastTimeout.value)
+      }
+
+      if (toast.value.duration < 0) return
+
+      toastTimeout.value = setTimeout(() => store.commit('setToast', null), toast.value.duration || 3000)
+    }
+
     watch(
       () => toast.value.show,
-      () => {
-        if (toastTimeout.value) {
-          clearTimeout(toastTimeout.value)
-        }
-
-        if (toast.value.duration < 0) return
-
-        toastTimeout.value = setTimeout(() => store.commit('setToast', null), toast.value.duration || 3000)
-      }
+      checkAndCloseToast,
     )
+
+    onMounted(checkAndCloseToast)
 
     return {
       toast,
