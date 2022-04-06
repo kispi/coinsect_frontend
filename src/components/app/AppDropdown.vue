@@ -144,7 +144,6 @@ export default {
 
   .key {
     margin: 0 4px;
-    font-weight: 500;
   }
 
   .chevrons {

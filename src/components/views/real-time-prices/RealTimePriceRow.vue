@@ -54,13 +54,13 @@
         v-html="`${autoFrac(ticker.$$premiumRate)}%`"
       />
       <div
-        v-if="ticker.$$premiumPrice"
+        v-if="!isNaN(ticker.$$premiumPrice)"
         v-html="$helpers.number.pretty.price({ price: ticker.$$premiumPrice, baseCurrency: $store.getters.settings.baseExchangeMarket })"
       />
     </td>
     <td class="ticker-changes-24h" :class="$helpers.template.priceColor(ticker.$$changeRate1D)">
       <div v-html="`${autoFrac(ticker.$$changeRate1D)}%`"/>
-      <div v-html="$helpers.number.pretty.price({ price: ticker.$$changePrice24H, baseCurrency: $store.getters.settings.baseExchangeMarket })" :class="ticker.$$changePrice24H ? '' : 'o-0'"/>
+      <div v-html="$helpers.number.pretty.price({ price: ticker.$$changePrice24H, baseCurrency: $store.getters.settings.baseExchangeMarket })" :class="isNaN(ticker.$$changePrice24H) ? 'o-0' : ''"/>
     </td>
     <td v-if="!$store.getters.isMobile && $store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
       <div
