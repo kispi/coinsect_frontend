@@ -50,7 +50,6 @@ export default {
 .trading-view {
   height: 320px;
   resize: vertical;
-  overflow: auto;
 
   .trading-view-container {
     height: 100%;
