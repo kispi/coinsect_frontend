@@ -2,7 +2,7 @@
   <div class="view-influencers">
     <div class="grid">
       <RouterLink
-        :to="`/contents/influencers/${item.$$key}`"
+        :to="`/contents/influencers/${item.sharingKey}`"
         class="influencer"
         :key="item.id"
         v-for="item in items">

@@ -36,7 +36,6 @@ const marketInfo = {
       try {
         const resp = await crudService.person.all()
         resp.data.forEach(o => {
-          o.$$key = (o.name || '').toLowerCase().replace(/ /g, '-')
           try {
             o.$$description = JSON.parse(o.description)
             o.$$bio = JSON.parse(o.bio)
