@@ -2,7 +2,6 @@
   v-if="useGoogleAdSense">
   <ins
     class="ad-sense adsbygoogle"
-    :class="{'display-none': !useGoogleAdSense}"
     data-ad-client="ca-pub-3069752836489386"
     data-ad-format="auto"
     :data-ad-slot="dataAdSlot"
