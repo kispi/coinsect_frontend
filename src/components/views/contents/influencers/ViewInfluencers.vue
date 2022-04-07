@@ -43,17 +43,18 @@ export default {
   .grid {
     display: grid;
     grid-gap: 24px;
+    grid-row-gap: 48px;
     grid-template-columns: repeat(2, 1fr);
 
     .influencer {
       .image-container {
         transition: all 0.3s ease;
         padding-top: 100%;
-        border-radius: 50%;
+        border-radius: 16px;
         position: relative;
         overflow: hidden;
-        cursor: pointer;
         border: 2px solid transparent;
+        cursor: pointer;
       }
 
       &:hover {
@@ -61,7 +62,6 @@ export default {
 
         .image-container {
           opacity: 0.5;
-          border: 2px solid var(--brand-primary);
         }
       }
 
@@ -78,7 +78,7 @@ export default {
     }
 
     @media (min-width: 768px) {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(6, 1fr);
     }
   }
 }
