@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-orderbook scrollable-body">
+  <div class="modal-orderbook scrollable-body f-mono">
     <ModalHeader
       :title="$translate('MODAL_ORDERBOOK')
         .replace('%exchange', options.exchange)
@@ -53,7 +53,6 @@ export default {
   border-radius: 4px;
   width: 320px;
   height: 480px;
-  font-family: Arial, Helvetica, sans-serif;
 
   .body {
     line-height: 20px;

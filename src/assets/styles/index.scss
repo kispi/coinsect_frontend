@@ -62,26 +62,6 @@ s {
   font-style: italic;
 }
 
-@media (max-width: 991px) {
-  .over-992 {
-    display: none !important;
-  }
-}
-
-@media (min-width: 992px) {
-  .under-992 {
-    display: none !important;
-  }
-}
-
-@media (max-width: 767px) {
-  .over-768 {
-    display: none !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .under-768 {
-    display: none !important;
-  }
+.f-mono {
+  font-family: Arial, Helvetica, sans-serif;
 }

@@ -9,7 +9,7 @@
         class="m-l-8"
       />?
     </div>
-    <div class="current-price">{{ $helpers.number.pretty.price({ price: currentPriceAsKrw, baseCurrency: 'krw' }) }} {{ crypto }}/{{ $store.getters.settings.currency }}</div>
+    <div class="current-price f-mono">{{ $helpers.number.pretty.price({ price: currentPriceAsKrw, baseCurrency: 'krw' }) }} {{ crypto }}/{{ $store.getters.settings.currency }}</div>
   </div>
 </template>
 
@@ -151,7 +151,6 @@ export default {
     margin: 12px auto 24px;
     text-align: center;
     text-transform: uppercase;
-    font-family: Arial, Helvetica, sans-serif;
   }
 }
 </style>

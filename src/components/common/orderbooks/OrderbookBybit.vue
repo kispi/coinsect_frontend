@@ -24,7 +24,7 @@
         />
       </div>
     </div>
-    <div class="instrument">
+    <div class="instrument f-mono">
       <div class="last-price" :class="instrument.last_tick_direction.includes('Minus') ? 'c-price-down' : 'c-price-up'">
         <i class="fa" :class="instrument.last_tick_direction.includes('Minus') ? 'fa-arrow-down' : 'fa-arrow-up'"/>
         {{ instrument.last_price }}
@@ -149,7 +149,6 @@ export default {
     align-items: center;
     color: var(--bitcoin);
     font-size: 12px;
-    font-family: Arial, Helvetica, sans-serif;
     padding: 8px 16px;
 
     .other-prices {

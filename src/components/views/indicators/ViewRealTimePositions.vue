@@ -1,6 +1,6 @@
 <template>
   <div class="view-real-time-positions">
-    <div class="title">{{ currentTime.format('YYYY-MM-DD HH:mm:ss') }}</div>
+    <div class="title f-mono">{{ currentTime.format('YYYY-MM-DD HH:mm:ss') }}</div>
     <div class="grid">
       <div
         class="position-box"
@@ -137,7 +137,6 @@ export default {
   .title {
     margin-bottom: 16px;
     color: var(--text-stress);
-    font-family: Arial, Helvetica, sans-serif;
   }
 
   .description {

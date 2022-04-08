@@ -1,7 +1,7 @@
 <template>
   <div 
     v-if="$store.getters.marketcaps"
-    class="marketcaps-coinmarketcap">
+    class="marketcaps-coinmarketcap f-mono">
     <div class="header">
       <div class="tag-slugs">
         <div
@@ -197,8 +197,6 @@ export default {
 
 <style lang="scss" scoped>
 .marketcaps-coinmarketcap {
-  font-family: Arial, Helvetica, sans-serif;
-
   .header {
     display: flex;
     align-items: center;

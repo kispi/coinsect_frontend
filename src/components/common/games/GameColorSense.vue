@@ -2,7 +2,7 @@
   <div class="game-color-sense">
     <div class="stats">
       <div>스테이지: {{ stage }}</div>
-      <div class="timer" v-html="(timer.ms / 1000).toLocaleString(undefined, { minimumFractionDigits: 2 })"/>
+      <div class="timer f-mono" v-html="(timer.ms / 1000).toLocaleString(undefined, { minimumFractionDigits: 2 })"/>
     </div>
     <div v-if="playing" class="colorchips">
       <div class="grid" :style="{ gridTemplateColumns: `repeat(${numColumns}, 1fr)`}">
@@ -170,10 +170,6 @@ export default {
     align-items: center;
     margin-bottom: 16px;
     font-weight: 700;
-
-    .timer {
-      font-family: Arial, Helvetica, sans-serif;
-    }
   }
 
   .colorchips {

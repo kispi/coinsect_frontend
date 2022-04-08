@@ -1,5 +1,5 @@
 <template>
-  <div class="c-portfolio">
+  <div class="c-portfolio f-mono">
     <button
       @click="openModalAddPortfolio"
       class="btn btn-primary w-100 m-b-24">
@@ -197,8 +197,6 @@ export default {
 
 <style lang="scss" scoped>
 .c-portfolio {
-  font-family: Arial, Helvetica, sans-serif;
-
   .stats {
     font-size: 16px;
     display: grid;

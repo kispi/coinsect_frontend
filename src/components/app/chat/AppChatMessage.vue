@@ -12,7 +12,7 @@
       <div class="text-and-timestamp">
         <div class="text">{{ message.text }}</div>
         <div
-          class="timestamp"
+          class="timestamp f-mono"
           :class="message.isMine ? 'm-r-8' : 'm-l-8'"
           v-html="$helpers.dayjs(message.timestamp).format('HH:mm')"
         />
@@ -67,7 +67,6 @@ export default {
     .timestamp {
       flex: 0 0 auto;
       font-size: 10px;
-      font-family: Arial, Helvetica, sans-serif;
       margin-bottom: 2px;
     }
   }
