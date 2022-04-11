@@ -14,12 +14,12 @@ $fontPath: '/font-awesome';
   }
 }
 
-@include fontFace('Font Awesome 5 Brands', 'fa-brands-400', 400, '.fab');
-@include fontFace('Font Awesome 5 Pro', 'fa-light-300', 300, '.fal');
-@include fontFace('Font Awesome 5 Pro', 'fa-regular-400', 400, '.far');
-@include fontFace('Font Awesome 5 Pro', 'fa-solid-900', 900, '.fa');
+@include fontFace('Font Awesome 6 Brands', 'fa-brands-400', 400, '.fab');
+@include fontFace('Font Awesome 6 Pro', 'fa-light-300', 300, '.fal');
+@include fontFace('Font Awesome 6 Pro', 'fa-regular-400', 400, '.far');
+@include fontFace('Font Awesome 6 Pro', 'fa-solid-900', 900, '.fa');
 
 .fas {
-  font-family: 'Font Awesome 5 Pro';
+  font-family: 'Font Awesome 6 Pro';
   font-weight: 900;
 }
