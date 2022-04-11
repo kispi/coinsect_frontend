@@ -86,6 +86,9 @@ const apps = [{
     description: '내 연봉 실수령액은 얼마일까? 비트코인으로 환산한 내 월급은?',
     image: useS3('og-images/og-image-salary.png'),
   },
+}, {
+  path: '/apps/voice-recorder',
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
 }]
 
 const community = [{
