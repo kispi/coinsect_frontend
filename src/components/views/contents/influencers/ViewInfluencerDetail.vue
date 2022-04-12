@@ -3,7 +3,7 @@
     v-if="influencer"
     class="view-influencer-detail">
     <div class="influencer-image">
-      <AppImg :src="$helpers.useS3(influencer.images[0].key)"/>
+      <AppImg v-if="(influencer.images || []).length > 0" :src="$helpers.useS3(influencer.images[0].key)"/>
     </div>
     <div class="influencer-name">{{ influencer.name }}</div>
     <div
@@ -123,7 +123,7 @@ export default {
       const p = influencer.value
       plugins.$helpers.meta.setDocumentTitle(`인물 - ${p.name} - 코인충`)
       plugins.$helpers.meta.renderDescription(JSON.parse(p.description).kr)
-      plugins.$helpers.meta.renderOgImage(plugins.$helpers.useS3(p.images[0].key))
+      plugins.$helpers.meta.renderOgImage(plugins.$helpers.useS3(((p.images || [])[0] || {}).key))
       plugins.$helpers.meta.renderCanonicalLink()
     }
 
