@@ -160,7 +160,7 @@ export default {
 
     const onClickDownload = () => {
       const a = document.createElement('a')
-      a.download = true
+      a.download = 'coinsect-recording'
       a.href = audioUrl.value
       a.click()
     }
