@@ -5,7 +5,7 @@ const useLazyLoads = async () => {
     if (process.env.NODE_ENV !== 'production') return
 
     await helpers.dom.loadScript({ url: 'https://www.googletagmanager.com/gtag/js?id=G-595H41RVLD' })
-    helpers.dom.loadScript({ url: '/gtm.js' })
+    helpers.dom.loadScript({ url: '/scripts/gtm.js' })
     helpers.dom.loadScript({ url: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3069752836489386' })
   }
 
