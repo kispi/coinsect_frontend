@@ -58,30 +58,41 @@
       </div>
       <div
         v-if="influencer.$$bio.sns"
-        class="bio-item sns">
-        <div v-if="influencer.$$bio.sns.homepage">
+        class="bio-item">
+        <div
+          v-if="influencer.$$bio.sns.websites"
+          class="websites">
+          <a
+            :key="website"
+            :href="website"
+            target="_blank"
+            v-for="website in influencer.$$bio.sns.websites"
+            v-html="website"
+          />
         </div>
-        <a
-          v-if="influencer.$$bio.sns.youtube"
-          :href="influencer.$$bio.sns.youtube"
-          target="_blank"
-          rel="noreferrer">
-          <i class="fab fa-youtube"/>
-        </a>
-        <a
-          v-if="influencer.$$bio.sns.twitter"
-          :href="influencer.$$bio.sns.twitter"
-          target="_blank"
-          rel="noreferrer">
-          <i class="fab fa-twitter"/>
-        </a>
-        <a
-          v-if="influencer.$$bio.sns.instagram"
-          :href="influencer.$$bio.sns.instagram"
-          target="_blank"
-          rel="noreferrer">
-          <i class="fab fa-instagram"/>
-        </a>
+        <div class="sns">
+          <a
+            v-if="influencer.$$bio.sns.youtube"
+            :href="influencer.$$bio.sns.youtube"
+            target="_blank"
+            rel="noreferrer">
+            <i class="fab fa-youtube"/>
+          </a>
+          <a
+            v-if="influencer.$$bio.sns.twitter"
+            :href="influencer.$$bio.sns.twitter"
+            target="_blank"
+            rel="noreferrer">
+            <i class="fab fa-twitter"/>
+          </a>
+          <a
+            v-if="influencer.$$bio.sns.instagram"
+            :href="influencer.$$bio.sns.instagram"
+            target="_blank"
+            rel="noreferrer">
+            <i class="fab fa-instagram"/>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -195,15 +206,24 @@ export default {
     }
   }
 
-  .bio-item.sns {
+  .bio-item {
     padding: 40px 0 16px;
+
+    .sns {
+      display: flex;
+
+      a:not(:last-child) {
+        margin-right: 24px;
+      }
+    }
+
+    .websites {
+      margin-bottom: 24px;
+    }
 
     a {
       color: var(--brand-primary);
-    }
-
-    a:not(:last-child) {
-      margin-right: 24px;
+      display: block;
     }
   }
 }
