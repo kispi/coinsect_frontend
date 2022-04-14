@@ -23,6 +23,7 @@ import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 import ButtonCommunity from '@/components/common/ButtonCommunity'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
+import CPosition from '@/components/common/CPosition'
 import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
 import OrderbookUpbit from '@/components/common/orderbooks/OrderbookUpbit'
 import PostEditor from '@/components/common/post-editor/PostEditor'
@@ -64,6 +65,7 @@ const useGlobalComponents = app => {
     .component('ButtonCommunity', ButtonCommunity)
     .component('ModalHeader', ModalHeader)
     .component('CPortfolio', CPortfolio)
+    .component('CPosition', CPosition)
     .component('OrderbookBybit', OrderbookBybit)
     .component('OrderbookUpbit', OrderbookUpbit)
     .component('PostEditor', PostEditor)

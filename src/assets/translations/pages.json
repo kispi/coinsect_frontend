@@ -111,6 +111,26 @@
     "en": "Featured News",
     "kr": "특집 뉴스"
   },
+  "ENTRY_PRICE": {
+    "en": "Entry Price",
+    "kr": "진입가"
+  },
+  "MARK_PRICE": {
+    "en": "Mark Price",
+    "kr": "시장 평균가"
+  },
+  "LIQ_PRICE": {
+    "en": "Liq. Price",
+    "kr": "청산가"
+  },
+  "UNREALIZED_PNL": {
+    "en": "Unrealized P&L",
+    "kr": "미실현 손익"
+  },
+  "SIZE": {
+    "en": "Size",
+    "kr": "규모"
+  },
   "REPLY_REPLY": {
     "en": "Reply",
     "kr": "답글"

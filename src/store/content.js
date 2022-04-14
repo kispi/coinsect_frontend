@@ -68,13 +68,7 @@ const marketInfo = {
     async loadRealTimePositions({ commit }) {
       try {
         let data = await $http.get('contents/real_time_positions')
-        data = data.filter(o => o.name).map(row => {
-          row.$$summary = '-'
-          if (row.size > 0) row.$$summary = 'LONG'
-          if (row.size < 0) row.$$summary = 'SHORT'
-
-          return { ...row }
-        })
+        data = data.filter(o => o.name)
         commit('setRealTimePositions', data)
       } catch (e) {
         return Promise.reject(e)
