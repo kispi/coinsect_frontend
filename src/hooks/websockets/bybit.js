@@ -99,23 +99,25 @@ const useBybit = () => {
     } else {
       const exst = store.getters.instruments.bybit[market]
       const o = json.data.update[0]
-      Object.keys(o).forEach(key => exst[key] = o[key])
+      Object.keys(o).forEach(key => {
+        if (exst) exst[key] = o[key]
+      })
     }
   }
 
-  const subscribe = ({ type, market }) => new Promise((resolve) => {
-    if (!market || !type) return
+  const subscribe = ({ type, markets }) => new Promise((resolve) => {
+    if (!markets || !type) return
 
     /*
       USDT Perpetual: /realtime_public
       Inverse Perpetual: /realtime
     */
-    const connection = new WebSocket(`wss://stream.bybit.com/realtime${market.endsWith('USDT') ? '_public' : ''}`)
+    const connection = new WebSocket('wss://stream.bybit.com/realtime_public')
 
     connection.onopen = () => {
       connection.send(JSON.stringify({
         op: 'subscribe',
-        args: [`${type}.${market}`]
+        args: markets.map(market => `${type}.${market}`),
       }))
 
       resolve(connection)
@@ -126,8 +128,8 @@ const useBybit = () => {
         const json = JSON.parse(event.data)
         if (!json.data) return
 
-        if (type.includes('orderBookL2')) setOrderbook(json, market)
-        if (type === 'instrument_info.100ms') setInstrument(json, market)
+        if (type.includes('orderBookL2')) markets.forEach(market => setOrderbook(json, market))
+        if (type === 'instrument_info.100ms') markets.forEach(market => setInstrument(json, market))
       } catch (e) {
         console.error(e)
       }

@@ -111,6 +111,10 @@
     "en": "Featured News",
     "kr": "특집 뉴스"
   },
+  "CONTRACT": {
+    "en": "Contract",
+    "kr": "계약"
+  },
   "ENTRY_PRICE": {
     "en": "Entry Price",
     "kr": "진입가"

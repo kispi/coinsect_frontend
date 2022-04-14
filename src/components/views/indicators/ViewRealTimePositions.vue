@@ -15,11 +15,14 @@
 </template>
 
 <script>
-import { onMounted, ref, getCurrentInstance, onUnmounted } from 'vue'
+import { onMounted, ref, getCurrentInstance, onUnmounted, watch, computed } from 'vue'
 import { useStore } from 'vuex'
+import useBybit from '@/hooks/websockets/bybit'
 
 export default {
   setup() {
+    const { subscribe } = useBybit()
+
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
@@ -30,10 +33,30 @@ export default {
 
     const currentTime = ref(plugins.$helpers.dayjs())
 
+    const connection = ref(null)
+
+    const markets = computed(() => {
+      if (!store.getters.realTimePositions) return []
+
+      const o = {}
+      store.getters.realTimePositions.forEach(position => {
+        if (position.contract) o[position.contract] = true
+      })
+      return Object.keys(o)
+    })
+
     const callApi = async () => {
       try {
+        if (connection.value) connection.value.close()
         await store.dispatch('loadRealTimePositions')
+        openWebsocket()
       } catch (e) {}
+    }
+
+    const openWebsocket = () => {
+      if (markets.value.length === 0) return
+
+      subscribe({ type: 'instrument_info.100ms', markets: markets.value }).then(conn => connection.value = conn)
     }
 
     onMounted(() => {
@@ -51,7 +74,30 @@ export default {
 
       clearInterval(timeInterv.value)
       clearInterval(apiInterv.value)
+
+      if (connection.value) connection.value.close()
     })
+
+    watch(
+      () => store.getters.instruments.bybit,
+      newVal => {
+        if (!newVal) return
+
+        store.getters.realTimePositions.forEach(position => {
+          position.markPrice = parseFloat((newVal[position.contract] || {}).mark_price || 0)
+          if (!position.entryPrice) return
+
+          if (position.size > 0) {
+            position.unrealized = Math.floor(position.size * (position.markPrice - position.entryPrice))
+          }
+
+          if (position.size < 0) {
+            position.unrealized = Math.floor(position.size * (position.markPrice - position.entryPrice))
+          }
+        })
+      },
+      { deep: true },
+    )
 
     return {
       currentTime,

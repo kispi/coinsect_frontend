@@ -87,8 +87,8 @@ export default {
     })
 
     const init = () => {
-      subscribe({ type: 'orderBookL2_25', market: props.market }).then(conn => connection.value.orderbook = conn)
-      subscribe({ type: 'instrument_info.100ms', market: props.market }).then(conn => connection.value.instrument = conn)
+      subscribe({ type: 'orderBookL2_25', markets: [props.market] }).then(conn => connection.value.orderbook = conn)
+      subscribe({ type: 'instrument_info.100ms', markets: [props.market] }).then(conn => connection.value.instrument = conn)
     }
 
     onMounted(init)

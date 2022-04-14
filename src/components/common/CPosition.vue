@@ -13,33 +13,33 @@
     </div>
     <div class="position-info">
       <div class="base">
-        <div class="contract" v-if="position.contract">
-          <div class="key c-white" :class="{'f-16': $store.getters.windowInnerWidth >= 480}">{{ position.contract.toLocaleString() }}</div>
+        <div class="contract">
+          <div class="key c-white" :class="{'f-16': $store.getters.windowInnerWidth >= 480}">{{ position.contract ? position.contract.toLocaleString() : '' }}</div>
           <div class="value">
-            <div class="badge-summary" v-html="badgeSummary(position)"/>
+            <div class="badge-summary" v-html="position.contract ? badgeSummary(position) : ''"/>
           </div>
         </div>
         <div class="size">
           <div class="key">{{ $translate('SIZE') }}</div>
-          <div class="value">{{ display('size') }}</div>
+          <div class="value f-mono">{{ display('size') }}</div>
         </div>
         <div class="unrealized">
           <div class="key">{{ $translate('UNREALIZED_PNL') }}</div>
-          <div class="value">{{ display('unrealized') }}</div>
+          <div class="value f-mono" :class="display('unrealized') > 0 ? 'long' : 'short'">{{ display('unrealized') }}</div>
         </div>
       </div>
       <div class="prices">
         <div class="entry">
           <div class="key">{{ $translate('ENTRY_PRICE') }}</div>
-          <div class="value">{{ display('entryPrice') }}</div>
+          <div class="value f-mono">{{ display('entryPrice') }}</div>
         </div>
         <div class="mark">
           <div class="key">{{ $translate('MARK_PRICE') }}</div>
-          <div class="value">{{ display('markPrice') }}</div>
+          <div class="value f-mono">{{ display('markPrice') }}</div>
         </div>
         <div class="liq">
           <div class="key">{{ $translate('LIQ_PRICE') }}</div>
-          <div class="value">{{ display('liqPrice') }}</div>
+          <div class="value f-mono">{{ display('liqPrice') }}</div>
         </div>
       </div>
     </div>
@@ -158,8 +158,7 @@ export default {
       color: var(--price-down-bybit);
     }
 
-    .size,
-    .unrealized {
+    .size {
       .value {
         color: var(--price-down-bybit);
       }
@@ -172,11 +171,20 @@ export default {
       color: var(--price-up-bybit);
     }
 
-    .size,
-    .unrealized {
+    .size {
       .value {
         color: var(--price-up-bybit);
       }
+    }
+  }
+
+  .value {
+    &.short {
+      color: var(--price-down-bybit);
+    }
+
+    &.long {
+      color: var(--price-up-bybit);
     }
   }
 
