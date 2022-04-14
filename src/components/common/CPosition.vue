@@ -25,7 +25,14 @@
         </div>
         <div class="unrealized">
           <div class="key">{{ $translate('UNREALIZED_PNL') }}</div>
-          <div class="value f-mono" :class="display('unrealized') > 0 ? 'long' : 'short'">{{ display('unrealized') }}</div>
+          <div
+            class="value f-mono"
+            :class="{
+              'long': display('unrealized') > 0,
+              'short': display('unrealized') < 0,
+            }">
+            {{ display('unrealized') }}
+          </div>
         </div>
       </div>
       <div class="prices">
@@ -47,9 +54,13 @@
 </template>
 
 <script>
+import { getCurrentInstance } from 'vue'
+
 export default {
   props: ['position'],
   setup(props) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const badgeSummary = position => {
       if (position.size > 0) return 'Long'
       if (position.size < 0) return 'Short'
@@ -58,7 +69,7 @@ export default {
     }
 
     const display = key => {
-      return props.position[key] ? props.position[key].toLocaleString() : '-'
+      return props.position[key] ? plugins.$helpers.number.pretty.price({ price: props.position[key], baseCurrency: 'usd', noConvert: true }) : '-'
     }
 
     return {

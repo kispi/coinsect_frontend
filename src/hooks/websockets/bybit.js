@@ -7,6 +7,8 @@ const useBybit = () => {
 
   const setOrderbook = (json, market) => {
     if (json.type === 'delta') {
+      if ((json.topic || '').split('.')[1] !== market) return
+
       const book = store.getters.orderbooks.bybit[market]
       if (!book) return
 
@@ -51,6 +53,8 @@ const useBybit = () => {
       return
     }
 
+    if (((json.data.order_book || [])[0] || {}).symbol !== market) return
+
     /*
       USDT Perpetual: json.data.order_book
       Inverse Perpetual: json.data
@@ -91,14 +95,18 @@ const useBybit = () => {
 
   const setInstrument = (json, market) => {
     if (!json.data.update) {
+      if (json.data.symbol !== market) return
+
       store.commit('setInstrument', {
         exchange: 'bybit',
         market,
         instrument: json.data,
       })
     } else {
-      const exst = store.getters.instruments.bybit[market]
       const o = json.data.update[0]
+      if (o.symbol !== market) return
+
+      const exst = store.getters.instruments.bybit[market]
       Object.keys(o).forEach(key => {
         if (exst) exst[key] = o[key]
       })

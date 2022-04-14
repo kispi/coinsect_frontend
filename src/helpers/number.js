@@ -1,9 +1,11 @@
 import { store as $store } from '@/store'
 
-const conversionRatio = baseCurrency => {
-  if (baseCurrency === $store.getters.settings.currency) return 1
-
-  if ($store.getters.settings.baseExchangeMarket === 'btc') return 1
+const conversionRatio = (baseCurrency, noConvert) => {
+  if (
+    baseCurrency === $store.getters.settings.currency ||
+    $store.getters.settings.baseExchangeMarket === 'btc' ||
+    noConvert
+  ) return 1
 
   if (baseCurrency === 'krw' && $store.getters.settings.currency === 'usd') return 1 / $store.getters.usdKrw
 
@@ -12,8 +14,8 @@ const conversionRatio = baseCurrency => {
 
 const number = {
   pretty: {
-    price: ({ price, baseCurrency }) => {
-      const converted = price * conversionRatio(baseCurrency)
+    price: ({ price, baseCurrency, noConvert }) => {
+      const converted = price * conversionRatio(baseCurrency, noConvert)
 
       let numFracs = 0
       if (Math.abs(converted) < 100) numFracs = 2
