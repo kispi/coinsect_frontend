@@ -1,7 +1,7 @@
 <template>
   <AppHeader/>
   <div class="app-body view-layout-default no-scrollbar">
-    <AdSense v-if="showAd" v-show="$router.currentRoute.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
+    <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
   </div>
