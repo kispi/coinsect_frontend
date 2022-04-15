@@ -28,11 +28,11 @@
           <div
             class="value f-mono"
             :class="{
-              'long': display('unrealized') > 0,
-              'short': display('unrealized') < 0,
-            }">
-            {{ display('unrealized') }}
-          </div>
+              'long': position.unrealized > 0,
+              'short': position.unrealized < 0,
+            }"
+            v-html="display('unrealized')"
+          />
         </div>
       </div>
       <div class="prices">
