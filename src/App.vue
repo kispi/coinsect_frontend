@@ -1,7 +1,7 @@
 <template>
   <AppHeader/>
   <div class="app-body view-layout-default no-scrollbar">
-    <AdSense v-if="showAd" :dataAdSlot="'9230500527'" class="horizontal"/>
+    <AdSense v-if="showAd" v-show="$router.currentRoute.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView v-if="$store.getters.isSSR || prepared" class="router-view-container"/>
   </div>
@@ -42,21 +42,11 @@ export default {
       store.commit('setScrollTop', scrollTop)
     }
 
-    const initAd = () => {
-      showAd.value = false
-      if (
-        ['/updates'].includes(router.currentRoute.value.path) ||
-        router.currentRoute.value.path.startsWith('/apps/')
-      ) return
-
-      showAd.value = true
-    }
-
     const prepare = async () => {
       try {
         await store.dispatch('bootstrap')
         prepared.value = true
-        setTimeout(initAd, 2000)
+        showAd.value = true
       } finally {
         if (typeof document !== 'undefined') {
           const body = document.getElementsByTagName('body')[0]
@@ -98,7 +88,7 @@ export default {
 
     watch(
       () => router.currentRoute.value.path,
-      plugins.$helpers.debounce(initAd, 2000),
+      plugins.$helpers.debounce(() => showAd.value = true, 2000),
     )
 
     return {
