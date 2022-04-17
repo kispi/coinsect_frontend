@@ -46,7 +46,7 @@ export default {
       try {
         await store.dispatch('bootstrap')
         prepared.value = true
-        showAd.value = true
+        setTimeout(() => showAd.value = true, 2000)
       } finally {
         if (typeof document !== 'undefined') {
           const body = document.getElementsByTagName('body')[0]
