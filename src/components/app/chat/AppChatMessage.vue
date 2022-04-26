@@ -42,9 +42,9 @@ export default {
       align-items: center;
 
       .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
+        width: 6px;
+        height: 6px;
+        border-radius: 3px;
         box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
         margin-right: 4px;
       }

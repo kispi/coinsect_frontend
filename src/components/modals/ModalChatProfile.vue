@@ -8,6 +8,7 @@
         placeholder="EX:) 흑우"
         :maxlength="$store.getters.config.maxlength.nickname"
         @keydown.enter="$emit('close', profile)"
+        @keydown="onKeydown"
         v-model="profile.nickname"
       >
     </div>
@@ -38,6 +39,12 @@ export default {
 
     const profile = ref(props.options.profile)
 
+    const onKeydown = e => {
+      setTimeout(() => {
+        profile.value.nickname = e.target.value
+      })
+    }
+
     onMounted(() => {
       if (refInputNickname.value) refInputNickname.value.focus()
     })
@@ -45,6 +52,7 @@ export default {
     return {
       refInputNickname,
       profile,
+      onKeydown,
     }
   },
 }
