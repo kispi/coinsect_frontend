@@ -6,6 +6,7 @@
       <div
         v-if="message.profile"
         class="nickname">
+        <span class="dot" :style="{ background: `#${(message.token || '').slice(0, 6)}` }"/>
         <span v-html="message.profile.nickname"/>
         <span class="token" v-html="(message.token || '').substring(0, 3)"/>
       </div>
@@ -37,6 +38,16 @@ export default {
 
     .nickname {
       text-transform: uppercase;
+      display: flex;
+      align-items: center;
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+        margin-right: 4px;
+      }
 
       span:not(.token) {
         color: var(--text-stress);

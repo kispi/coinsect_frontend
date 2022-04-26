@@ -167,7 +167,10 @@ export default {
           },
         },
       }).then(result => {
-        if (result) profile.value = result
+        if (result) {
+          result.nickname = (result.nickname || '').slice(0, store.getters.config.maxlength.nickname)
+          profile.value = result
+        }
 
         setLocalAccount()
       })

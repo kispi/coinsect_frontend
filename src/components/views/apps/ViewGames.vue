@@ -4,7 +4,10 @@
       <div
         @click="$modal.custom({
           component: 'ModalGame',
-          options: { game },
+          options: {
+            game,
+            preventCloseOnClickBackdrop: true,
+          },
         })"
         class="game"
         :key="game.title"

@@ -35,7 +35,7 @@ const useChatHandler = () => {
   const recommendNickname = () => {
     const randIdx = Math.floor(Math.random() * nicknameRecommendations.length)
     const randNo = Math.floor(Math.random() * 100 + 1)
-    return `${nicknameRecommendations[randIdx]}${randNo}`.slice(0, 8)
+    return `${nicknameRecommendations[randIdx]}${randNo}`
   }
 
   const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')

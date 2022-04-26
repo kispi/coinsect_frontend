@@ -1,21 +1,23 @@
 <template>
-  <div class="view-real-time-positions">
-    <div class="title f-mono">{{ currentTime.format('YYYY-MM-DD HH:mm:ss') }}</div>
+  <div
+    v-if="$store.getters.realTimePositions"
+    class="view-real-time-positions">
+    <div class="timestamp f-mono m-b-16">최종업데이트: {{ $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('YYYY-MM-DD HH:mm:ss') }}</div>
     <div class="positions">
       <CPosition
         :position="position"
         :key="position.name"
-        v-for="position in $store.getters.realTimePositions"
+        v-for="position in $store.getters.realTimePositions.data"
       />
     </div>
     <div class="description">
-      * 운영자가 각 방송을 모니터링하며 입력하므로 대부분 실시간이지만, 미처 업데이트하지 못하고 잠들었을 수 있으므로 최신 포지션임을 보장할 수 없습니다. 어떤 경우이든 재미로만 보시고, 호반꿀이든 호반반꿀이든 <b class="c-danger">절대로 타인의 매매를 참고하여 매매하지 마십시오</b>.
+      * 운영자가 각 방송을 모니터링하며 입력하므로 대부분 실시간이지만, 미처 업데이트하지 못하고 잠들었을 수 있으므로 최신 포지션임을 보장할 수 없습니다. 업데이트된지 오래된 경우 신뢰하지 마십시오. 어떤 경우이든 재미로만 보시고, 호반꿀이든 호반반꿀이든 <b class="c-danger">절대로 타인의 매매를 참고하여 매매하지 마십시오</b>.
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref, getCurrentInstance, onUnmounted, watch, computed } from 'vue'
+import { onMounted, ref, onUnmounted, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import useBybit from '@/hooks/websockets/bybit'
 
@@ -23,15 +25,9 @@ export default {
   setup() {
     const { subscribe } = useBybit()
 
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
     const store = useStore()
 
-    const timeInterv = ref(null)
-
     const apiInterv = ref(null)
-
-    const currentTime = ref(plugins.$helpers.dayjs())
 
     const connection = ref(null)
 
@@ -39,7 +35,7 @@ export default {
       if (!store.getters.realTimePositions) return []
 
       const o = {}
-      store.getters.realTimePositions.forEach(position => {
+      store.getters.realTimePositions.data.forEach(position => {
         if (position.contract) o[position.contract] = true
       })
       return Object.keys(o)
@@ -64,15 +60,12 @@ export default {
 
       if (store.getters.isSSR) return
 
-      timeInterv.value = setInterval(() => currentTime.value = plugins.$helpers.dayjs(), 1000)
-
       apiInterv.value = setInterval(callApi, 1000 * 60)
     })
 
     onUnmounted(() => {
       if (store.getters.isSSR) return
 
-      clearInterval(timeInterv.value)
       clearInterval(apiInterv.value)
 
       if (connection.value) connection.value.close()
@@ -83,7 +76,7 @@ export default {
       newVal => {
         if (!newVal) return
 
-        store.getters.realTimePositions.forEach(position => {
+        store.getters.realTimePositions.data.forEach(position => {
           position.markPrice = parseFloat((newVal[position.contract] || {}).mark_price || 0)
           if (!position.entryPrice) return
 
@@ -98,10 +91,6 @@ export default {
       },
       { deep: true },
     )
-
-    return {
-      currentTime,
-    }
   },
 }
 </script>
@@ -113,8 +102,7 @@ export default {
     grid-gap: 8px;
   }
 
-  .title {
-    margin-bottom: 16px;
+  .timestamp {
     color: var(--text-stress);
   }
 
