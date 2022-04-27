@@ -58,7 +58,7 @@ export default {
       }
 
       &.selected {
-        border: 1px solid rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--text-stress);
         color: var(--text-stress);
       }
 
