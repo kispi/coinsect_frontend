@@ -1,13 +1,20 @@
 <template>
   <div class="news-coinness">
-    준비중입니다 :)
+    <NewsCoinnessFeeds/>
+    <!-- <NewsCoinnessArticles/> -->
     <PoweredBy :by="'coinness'" :link="'https://coinness.live'" class="m-t-24"/>
   </div>
 </template>
 
 <script>
-export default {
+// import NewsCoinnessArticles from './NewsCoinnessArticles'
+import NewsCoinnessFeeds from './NewsCoinnessFeeds'
 
+export default {
+  components: {
+    // NewsCoinnessArticles,
+    NewsCoinnessFeeds,
+  },
 }
 </script>
 

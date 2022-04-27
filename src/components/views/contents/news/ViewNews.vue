@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import { computed, onMounted, onServerPrefetch } from 'vue'
-import { useStore } from 'vuex'
 import NewsCoinness from './NewsCoinness'
 import NewsUpbit from './NewsUpbit'
 
@@ -31,35 +29,6 @@ export default {
   components: {
     NewsCoinness,
     NewsUpbit,
-  },
-  setup() {
-    const store = useStore()
-
-    const sections = computed(() => {
-      if (!store.getters.news) return
-
-      return [{
-        title: 'FEATURED_NEWS',
-        list: store.getters.news.data.featured_list,
-      }, {
-        title: 'NEWS',
-        list: store.getters.news.data.list,
-      }]
-    })
-
-    const loadNews = async () => {
-      try {
-        await store.dispatch('loadNews')
-      } catch (e) {}
-    }
-
-    onMounted(loadNews)
-
-    onServerPrefetch(loadNews)
-
-    return {
-      sections,
-    }
   },
 }
 </script>
@@ -77,7 +46,8 @@ export default {
     }
 
     .provider {
-      padding: 4px;
+      border-radius: 4px;
+      padding: 4px 8px;
       border: 1px solid var(--border-base);
       display: flex;
       align-items: center;
@@ -88,7 +58,7 @@ export default {
       }
 
       &.selected {
-        border: 1px solid var(--text-stress);
+        border: 1px solid rgba(0, 0, 0, 0.5);
         color: var(--text-stress);
       }
 

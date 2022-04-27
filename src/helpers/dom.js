@@ -9,6 +9,7 @@ const dom = {
   },
   scrollToTop: () => {
     document.scrollingElement.scrollTop = 0
+    $store.commit('setScrollTop', 0)
   },
   isElementInViewport: (el, percentVisible = 100) => {
     if (!el) return

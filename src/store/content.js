@@ -6,10 +6,6 @@ const marketInfo = {
   state: () => ({
     publicTreasuries: null,
     influencers: null,
-    news: {
-      upbit: null,
-      coinness: null,
-    },
     realTimePositions: null,
   }),
   getters: {
@@ -24,9 +20,6 @@ const marketInfo = {
     },
     setInfluencers(state, influencers) {
       state.influencers = influencers
-    },
-    setNews(state, news) {
-      Object.keys(news).forEach(key => state.news[key] = news[key])
     },
     setRealTimePositions(state, realTimePositions) {
       state.realTimePositions = realTimePositions
@@ -45,21 +38,6 @@ const marketInfo = {
           } catch (e) {}
         })
         commit('setInfluencers', resp)
-      } catch (e) {
-        return Promise.reject(e)
-      }
-    },
-    async loadNews({ commit, getters }, params) {
-      let endpoint
-      if (getters.settings.newsProvider === 'upbit') endpoint = 'https://api-manager.upbit.com/api/v1/coin_news'
-      if (getters.settings.newsProvider === 'coinness') endpoint = 'https://api.coinness.live/feed/v1/news'
-      if (!endpoint) commit('setSettings', { newsProvider: 'upbit' })
-
-      try {
-        const data = await $http.get(endpoint, { params })
-        const o = {}
-        o[getters.settings.newsProvider] = data
-        commit('setNews', o)
       } catch (e) {
         return Promise.reject(e)
       }

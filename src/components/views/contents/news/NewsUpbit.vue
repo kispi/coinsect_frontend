@@ -1,6 +1,6 @@
 <template>
   <div class="news-upbit">
-    <AdaptiveLayout :gap="40" :boundaryWidth="1200">
+    <AdaptiveLayout :gap="40">
       <div
         class="news-section"
         :key="section.title"
@@ -28,28 +28,29 @@
 </template>
 
 <script>
-import { computed, onMounted, onServerPrefetch } from 'vue'
-import { useStore } from 'vuex'
+import { getCurrentInstance, ref, computed, onMounted, onServerPrefetch } from 'vue'
 
 export default {
   setup() {
-    const store = useStore()
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const upbitNews = ref(null)
 
     const sections = computed(() => {
-      if (!store.getters.news.upbit) return
+      if (!upbitNews.value) return
 
       return [{
         title: 'FEATURED_NEWS',
-        list: store.getters.news.upbit.data.featured_list,
+        list: upbitNews.value.data.featured_list,
       }, {
         title: 'NEWS',
-        list: store.getters.news.upbit.data.list,
+        list: upbitNews.value.data.list,
       }]
     })
 
     const loadNews = async () => {
       try {
-        await store.dispatch('loadNews')
+        upbitNews.value = await plugins.$http.get('https://api-manager.upbit.com/api/v1/coin_news')
       } catch (e) {}
     }
 
