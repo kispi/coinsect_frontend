@@ -46,6 +46,7 @@ const app = {
         numFamily: 1,
         nonTax: 1200000,
       },
+      newsProvider: 'upbit', // 'upbit' || 'coinness'
       chatFolded: false,
       chatSizeMax: false,
     },

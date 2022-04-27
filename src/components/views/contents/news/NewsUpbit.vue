@@ -1,5 +1,5 @@
 <template>
-  <div class="view-news">
+  <div class="news-upbit">
     <AdaptiveLayout :gap="40" :boundaryWidth="1200">
       <div
         class="news-section"
@@ -36,14 +36,14 @@ export default {
     const store = useStore()
 
     const sections = computed(() => {
-      if (!store.getters.news) return
+      if (!store.getters.news.upbit) return
 
       return [{
         title: 'FEATURED_NEWS',
-        list: store.getters.news.data.featured_list,
+        list: store.getters.news.upbit.data.featured_list,
       }, {
         title: 'NEWS',
-        list: store.getters.news.data.list,
+        list: store.getters.news.upbit.data.list,
       }]
     })
 
@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view-news {
+.news-upbit {
   .section-title {
     font-size: 18px;
     font-weight: 700;

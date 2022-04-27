@@ -12,7 +12,7 @@ import { useRouter } from 'vue-router'
 export default {
   components: {
     ViewBitcoinHalving: defineAsyncComponent(() => import('./ViewBitcoinHalving')),
-    ViewNews: defineAsyncComponent(() => import('./ViewNews')),
+    ViewNews: defineAsyncComponent(() => import('./news/ViewNews')),
     ViewInfluencers: defineAsyncComponent(() => import('./influencers/ViewInfluencers')),
     ViewInfluencerDetail: defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail')),
     ViewPublicTreasury: defineAsyncComponent(() => import('./ViewPublicTreasury')),

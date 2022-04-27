@@ -10,7 +10,10 @@
       Powered by <a :href="link || 'https://upbit.com'" target="_blank" rel="noopener">Upbit<img src="@/assets/images/upbit.svg" alt="Upbit"></a>
     </template>
     <template v-if="by === 'bitcointreasuries'">
-      Powered by <a :href="link || 'https://bitcointreasuries.net/'" target="_blank" rel="noopener">Bitcointreasuries<img src="@/assets/images/bitcointreasuries.png" alt="Bitcointreasuries"></a>
+      Powered by <a :href="link || 'https://bitcointreasuries.net'" target="_blank" rel="noopener">Bitcointreasuries<img src="@/assets/images/bitcointreasuries.png" alt="Bitcointreasuries"></a>
+    </template>
+    <template v-if="by === 'coinness'">
+      Powered by <a :href="link || 'https://coinness.live'" target="_blank" rel="noopener">CoinNess<img src="@/assets/images/coinness.svg" alt="Bitcointreasuries"></a>
     </template>
   </div>
 </template>
@@ -20,7 +23,7 @@ export default {
   props: {
     by: {
       type: String,
-      validator: val => ['coinmarketcap', 'coingecko', 'upbit', 'bitcointreasuries'].includes(val),
+      validator: val => ['coinmarketcap', 'coingecko', 'upbit', 'bitcointreasuries', 'coinness'].includes(val),
     },
     link: String,
   },
@@ -37,10 +40,6 @@ export default {
     display: flex;
     align-items: center;
     margin-left: 8px;
-
-    &:hover {
-      font-weight: 700;
-    }
 
     img {
       width: 16px;
