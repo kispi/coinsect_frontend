@@ -126,11 +126,6 @@ export default {
       media.value.ondataavailable = e => {
         clearInterval(recordStatus.value.interv)
         recordStatus.value.ing = false
-
-        if (typeof window.ysFixWebmDuration !== 'undefined') {
-          window.ysFixWebmDuration(e.data, refAudio.value.duration)
-        }
-
         audioUrl.value = URL.createObjectURL(e.data)
       }
 
@@ -209,8 +204,6 @@ export default {
       slider.value.size = slider.value.ref.getBoundingClientRect().width
       document.addEventListener('mouseup', onMouseup)
       document.addEventListener('touchend', onMouseup)
-
-      plugins.$helpers.dom.loadScript({ url: '/scripts/fix-webm-duration.js' })
     })
 
     onUnmounted(() => {

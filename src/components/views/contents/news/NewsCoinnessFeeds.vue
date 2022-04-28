@@ -24,6 +24,7 @@
       </div>
       <AppLoader v-if="loading" class="m-a"/>
     </div>
+    <PoweredBy :by="'coinness'" :link="'https://coinness.live'" class="m-t-24"/>
   </div>
 </template>
 
@@ -84,7 +85,7 @@ export default {
 
       if (store.getters.isSSR) return
 
-      // interv.value = setInterval(loadRecent, 5000)
+      interv.value = setInterval(loadRecent, 1000 * 60 * 5)
     })
 
     onUnmounted(() => {
