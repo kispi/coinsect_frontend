@@ -89,6 +89,7 @@ export default {
   .html {
     flex: 1;
     line-height: 20px;
+    white-space: pre-line;
   }
 
   .action {

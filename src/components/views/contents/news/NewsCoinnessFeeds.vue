@@ -22,12 +22,13 @@
           <div class="bear c-price-down"><i class="fa fa-arrow-trend-down"/>Bear {{ feed.bear }}</div>
         </div>
       </div>
+      <AppLoader v-if="loading" class="m-a"/>
     </div>
   </div>
 </template>
 
 <script>
-import { getCurrentInstance, ref, onMounted, watch } from 'vue'
+import { getCurrentInstance, ref, onMounted, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import GoToTop from './GoToTop'
 
@@ -40,18 +41,35 @@ export default {
 
     const store = useStore()
 
+    const interv = ref(null)
+
     const lastId = ref(null)
 
     const loading = ref(null)
 
     const data = ref([])
 
+    const endpoint = 'contents/news/coinness/feeds'
+
+    const loadRecent = async () => {
+      if (data.value.length === 0) return
+
+      const recentId = data.value[0].id
+      try {
+        const respData = await plugins.$http.get(endpoint)
+        const newFeeds = respData.slice(0, respData.findIndex(o => o.id === recentId))
+        data.value = newFeeds.concat(data.value)
+      } catch (e) {
+        plugins.$toast.error(e.data.message)
+      }
+    }
+
     const loadNext = async () => {
       if (loading.value) return
 
       try {
         loading.value = true
-        const respData = await plugins.$http.get('contents/news/coinness/feeds', { params: { lastId: lastId.value } })
+        const respData = await plugins.$http.get(endpoint, { params: { lastId: lastId.value } })
         data.value = data.value.concat(respData)
         lastId.value = data.value[data.value.length - 1].id
       } catch (e) {
@@ -61,7 +79,19 @@ export default {
       }
     }
 
-    onMounted(loadNext)
+    onMounted(() => {
+      loadNext()
+
+      if (store.getters.isSSR) return
+
+      // interv.value = setInterval(loadRecent, 5000)
+    })
+
+    onUnmounted(() => {
+      if (store.getters.isSSR) return
+
+      clearInterval(interv.value)
+    })
 
     watch(
       () => store.getters.scrollTop,
@@ -78,6 +108,7 @@ export default {
 
     return {
       data,
+      loading,
     }
   },
 }
@@ -85,6 +116,8 @@ export default {
 
 <style lang="scss" scoped>
 .news-coinness-feeds {
+  position: relative;
+
   .feed-list {
     border: 1px solid var(--border-base);
   }

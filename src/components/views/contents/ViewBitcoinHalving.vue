@@ -43,6 +43,8 @@ export default {
 
     const interv = ref(null)
 
+    const timeout = ref(null)
+
     const left = computed(() => `${(currentBlock.value - 630000) / (840000 - 630000) * 100}%`)
 
     const secondsUntilNextHalving = ref(0)
@@ -79,21 +81,24 @@ export default {
       } catch (e) {}
       store.commit('setLoading', { global: false })
 
-      if (!store.getters.isSSR) setTimeout(init, 1000 * 60 * 10)
+      if (!store.getters.isSSR) timeout.value = setTimeout(init, 1000 * 60 * 10)
     }
 
     onMounted(() => {
       init()
 
-      if (!store.getters.isSSR) {
-        interv.value = setInterval(() => {
-          secondsUntilNextHalving.value -= 1
-        }, 1000)
-      }
+      if (store.getters.isSSR) return
+
+      interv.value = setInterval(() => {
+        secondsUntilNextHalving.value -= 1
+      }, 1000)
     })
 
     onUnmounted(() => {
+      if (store.getters.isSSR) return
+
       clearInterval(interv.value)
+      clearTimeout(timeout.value)
     })
 
     onServerPrefetch(init)
