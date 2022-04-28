@@ -113,8 +113,8 @@ const andSoOn = [{
   path: '/login',
   component: () => import(/* webpackChunkName: 'view-login' */ '@/components/views/ViewLogin'),
 }, {
-  path: '/updates',
-  component: () => import(/* webpackChunkName: 'view-updates' */ '@/components/views/ViewUpdates'),
+  path: '/about',
+  component: () => import(/* webpackChunkName: 'view-about' */ '@/components/views/ViewAbout'),
 }]
 
 const routesNoAuth = [

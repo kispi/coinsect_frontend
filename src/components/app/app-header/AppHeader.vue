@@ -126,8 +126,8 @@ export default {
       title: 'COMMUNITY',
       path: '/community',
     }, {
-      title: 'UPDATES',
-      path: '/updates',
+      title: 'ABOUT',
+      path: '/about',
     }].map(o => {
       const p = router.currentRoute.value.path
 

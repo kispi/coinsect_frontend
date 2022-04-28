@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref, computed, onMounted, onServerPrefetch } from 'vue'
+import { getCurrentInstance, ref, computed, onMounted } from 'vue'
 
 export default {
   setup() {
@@ -55,8 +55,6 @@ export default {
     }
 
     onMounted(loadNews)
-
-    onServerPrefetch(loadNews)
 
     return {
       sections,
