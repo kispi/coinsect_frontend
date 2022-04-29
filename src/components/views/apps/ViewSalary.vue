@@ -2,6 +2,7 @@
   <div class="view-salary">
     <SalaryAsCrypto :salary="result" @convert-as-crypto="o => resultAsCrypto = o"/>
     <AppSlider @change="onSlide"/>
+    <div class="percentage">내 연봉은 상위 <b>{{ percentage }}%</b> 입니다<small>(국세청, 2022)</small></div>
     <div class="params">
       <div class="form-control">
         <label>연봉 (세전)</label>
@@ -74,9 +75,10 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import salaryReport from './salary-report'
+import salary2022 from './salary-2022.json'
 import SalaryAsCrypto from './SalaryAsCrypto'
 
 export default {
@@ -95,6 +97,8 @@ export default {
     })
 
     const showDetail = ref(null)
+
+    const percentage = ref(null)
 
     const resultAsCrypto = ref({})
 
@@ -168,19 +172,34 @@ export default {
       payload.value.nonTax,
     ))
 
+    const findMyPercentage = () => {
+      if (!payload.value || !payload.value.preTax) return
+
+      const s = payload.value.preTax
+      const found = salary2022.find(row => s >= row[1])
+      if (!found) return
+
+      percentage.value = found[0]
+    }
+
     watch(
       () => payload.value,
       newVal => {
         const o = store.getters.settings.salary || {}
         Object.assign(o, newVal)
         store.commit('setSettings', { salary: o })
+
+        findMyPercentage()
       },
       { deep: true },
     )
 
+    onMounted(findMyPercentage)
+
     return {
       refInfoNonTax,
       payload,
+      percentage,
       showDetail,
       result,
       reports,
@@ -195,6 +214,17 @@ export default {
 .view-salary {
   .app-slider {
     margin-bottom: 24px;
+  }
+
+  .percentage {
+    font-size: 20px;
+    margin-bottom: 24px;
+    text-align: center;
+
+    small {
+      margin-left: 8px;
+      font-size: 10px;
+    }
   }
 
   .params {
