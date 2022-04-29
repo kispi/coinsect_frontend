@@ -157,7 +157,7 @@ export default {
     border: 1px solid var(--gs-bb);
     padding: 8px 0;
     border-radius: 4px;
-    width: 160px;
+    width: 176px;
   }
 
   .search-box {
