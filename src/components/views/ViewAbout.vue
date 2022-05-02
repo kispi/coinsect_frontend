@@ -7,7 +7,6 @@
         <AppImg :src="$helpers.useS3('og-images/og-image.png')" class="og-image"/>
       </a>
       <b>코인충</b>은 직장인 개발자가 진행하는 1인 프로젝트입니다.
-      국내에서 가장 유명한 김프 사이트인 <a href="https://kimpga.com" target="_blank" class="c-bitcoin f-700">김프가</a>를 보고 영감을 받아 시작되었으며,
       이 사이트만 켜놓으면 다른 어떤 사이트도 켜둘 필요가 없을 정도의 많은 정보 / 유틸리티들을 갖춘 사이트가 되는 것을 목표로 하고 있습니다.<br><br>
       현재 제공하는 기능들로는
       <ul class="box">

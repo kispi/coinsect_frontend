@@ -2,7 +2,7 @@
   <div
     v-if="$store.getters.realTimePositions"
     class="view-real-time-positions">
-    <div class="timestamp f-mono m-b-16">최종업데이트: {{ $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('YYYY-MM-DD HH:mm:ss') }}</div>
+    <div class="timestamp f-mono m-b-16">최종업데이트: {{ $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('YYYY-MM-DD HH:mm:ss') }} <span class="diff" :class="diff.class" v-if="diff.string">({{ diff.string }})</span></div>
     <div class="positions">
       <CPosition
         :position="position"
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { onMounted, ref, onUnmounted, watch, computed } from 'vue'
+import { onMounted, ref, onUnmounted, watch, computed, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import useBybit from '@/hooks/websockets/bybit'
 
@@ -25,11 +25,18 @@ export default {
   setup() {
     const { subscribe } = useBybit()
 
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
     const apiInterv = ref(null)
 
     const connection = ref(null)
+
+    const diff = ref({
+      string: null,
+      class: null,
+    })
 
     const markets = computed(() => {
       if (!store.getters.realTimePositions) return []
@@ -45,6 +52,10 @@ export default {
       try {
         if (connection.value) connection.value.close()
         await store.dispatch('loadRealTimePositions')
+        diff.value.string = plugins.$helpers.passedTime(store.getters.realTimePositions.lastUpdate) || ''
+        if (plugins.$helpers.dayjs().diff(store.getters.realTimePositions.lastUpdate, 'second') >= 3600) {
+          diff.value.class = 'c-danger'
+        }
         openWebsocket()
       } catch (e) {}
     }
@@ -60,7 +71,7 @@ export default {
 
       if (store.getters.isSSR) return
 
-      apiInterv.value = setInterval(callApi, 1000 * 60)
+      apiInterv.value = setInterval(callApi, 1000 * 60 * 5)
     })
 
     onUnmounted(() => {
@@ -91,6 +102,10 @@ export default {
       },
       { deep: true },
     )
+
+    return {
+      diff,
+    }
   },
 }
 </script>
