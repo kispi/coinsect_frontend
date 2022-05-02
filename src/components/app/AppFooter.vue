@@ -5,7 +5,7 @@
       <div>이 사이트에서 제공하는 정보들은 투자에 대한 조언이 아니며, 투자에 대한 모든 책임은 본인에게 있습니다.</div>
       <div class="flex-row flex-between items-end m-t-16">
         <address class="flex-row items-center">
-          <i class="fal fa-envelope flex-wrap m-r-4 f-16"/><div><a href="mailto:admin@coinsect.io">admin@coinsect.io</a></div>
+          <i class="fal fa-envelope flex-wrap m-r-4 f-16"/><div><a href="mailto:admin@coinsect.io">coinsect.io@gmail.com</a></div>
         </address>
         <div v-if="($store.getters.config || {}).version">
           <div v-if="$store.getters.config.version.backend">Backend: {{ $store.getters.config.version.backend }}</div>
