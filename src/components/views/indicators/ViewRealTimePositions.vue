@@ -57,7 +57,9 @@ export default {
           diff.value.class = 'c-danger'
         }
         openWebsocket()
-      } catch (e) {}
+      } catch (e) {
+        console.log(e)
+      }
     }
 
     const openWebsocket = () => {
