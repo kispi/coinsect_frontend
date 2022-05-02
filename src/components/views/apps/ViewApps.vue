@@ -25,12 +25,12 @@ export default {
     }, {
       path: '/apps/salary',
       title: 'SALARY',
-    }, {
-      path: '/apps/games',
-      title: 'GAMES',
-    }, {
-      path: '/apps/voice-recorder',
-      title: 'VOICE_RECORDER',
+    // }, {
+    //   path: '/apps/games',
+    //   title: 'GAMES',
+    // }, {
+    //   path: '/apps/voice-recorder',
+    //   title: 'VOICE_RECORDER',
     }])
 
     const selectedComponent = computed(() => {
