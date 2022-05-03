@@ -57,13 +57,12 @@ export default {
 
     const storedSettings = () => {
       const o = helpers.localStorage.getMeta('settings') || store.getters.settings
-      if (!['upbit', 'bithumb'].includes(o.baseExchange)) {
-        o.baseExchange = 'upbit'
-      }
+      if (!['upbit', 'bithumb'].includes(o.baseExchange)) o.baseExchange = 'upbit'
 
-      if (!['binance'].includes(o.targetExchange)) {
-        o.targetExchange = 'binance'
-      }
+      if (!['binance'].includes(o.targetExchange)) o.targetExchange = 'binance'
+
+      // 코인니스 API 뚫리기 전까진 upbit 강제
+      if (o.newsProvider !== 'upbit') o.newsProvider = 'upbit'
 
       return o
     }
