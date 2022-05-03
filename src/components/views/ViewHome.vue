@@ -1,6 +1,6 @@
 <template>
   <div class="view-home">
-    <TradingViewSymbols class="m-b-8"/>
+    <TradingViewSymbols/>
     <TradingViewTicker v-if="$store.getters.settings.tradingview === 'show'" class="m-b-8"/>
     <TradingView v-if="$store.getters.settings.tradingview === 'show'" class="m-b-8"/>
     <BaseAndTarget/>
@@ -13,13 +13,11 @@ import { onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import BaseAndTarget from './real-time-prices//BaseAndTarget'
 import RealTimePrices from './real-time-prices/RealTimePrices'
-import TradingViewSymbols from './TradingViewSymbols'
 
 export default {
   components: {
     BaseAndTarget,
     RealTimePrices,
-    TradingViewSymbols,
   },
   setup() {
     const store = useStore()

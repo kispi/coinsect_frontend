@@ -47,6 +47,17 @@
   }
 }
 
+.btn-dark {
+  background: var(--black);
+  color: var(--white);
+
+  &:not(.disabled):not(:disabled) {
+    &:hover {
+      background: var(--gs-44);
+    }
+  }
+}
+
 .btn-block {
   display: block;
   width: 100%;

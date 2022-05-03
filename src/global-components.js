@@ -31,6 +31,7 @@ import PoweredBy from '@/components/common/PoweredBy'
 import SubHeader from '@/components/common/SubHeader'
 import TablePosts from '@/components/common/TablePosts'
 import TradingView from '@/components/common/TradingView'
+import TradingViewSymbols from '@/components/common/TradingViewSymbols'
 import TradingViewTicker from '@/components/common/TradingViewTicker'
 
 // community components
@@ -73,6 +74,7 @@ const useGlobalComponents = app => {
     .component('SubHeader', SubHeader)
     .component('TablePosts', TablePosts)
     .component('TradingView', TradingView)
+    .component('TradingViewSymbols', TradingViewSymbols)
     .component('TradingViewTicker', TradingViewTicker)
 
     // community components

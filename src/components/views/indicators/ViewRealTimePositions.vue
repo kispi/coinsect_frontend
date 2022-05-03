@@ -2,6 +2,8 @@
   <div
     v-if="$store.getters.realTimePositions"
     class="view-real-time-positions">
+    <TradingViewSymbols/>
+    <TradingView v-if="$store.getters.settings.tradingview === 'show'" class="m-b-24"/>
     <div class="timestamp f-mono m-b-16">최종업데이트: {{ $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('YYYY-MM-DD HH:mm:ss') }} <span class="diff" :class="diff.class" v-if="diff.string">({{ diff.string }})</span></div>
     <div class="positions">
       <CPosition
@@ -13,6 +15,11 @@
     <div class="description">
       * 운영자가 각 방송을 모니터링하며 입력하므로 대부분 실시간이지만, 미처 업데이트하지 못하고 잠들었을 수 있으므로 최신 포지션임을 보장할 수 없습니다. 업데이트된지 오래된 경우 신뢰하지 마십시오. 어떤 경우이든 재미로만 보시고, 호반꿀이든 호반반꿀이든 <b class="c-danger">절대로 타인의 매매를 참고하여 매매하지 마십시오</b>.
     </div>
+    <RouterLink
+      to="/"
+      class="btn btn-dark m-t-40">
+      김프 보러가기
+    </RouterLink>
   </div>
 </template>
 
@@ -127,6 +134,10 @@ export default {
     font-size: 12px;
     line-height: 20px;
     margin-top: 16px;
+  }
+
+  .btn-dark {
+    border-radius: 0;
   }
 
   @media (min-width: 768px) {
