@@ -1,9 +1,11 @@
 <template>
   <div
+    @click="onClickPosition"
     class="c-position"
     :class="{
       'short': position.size < 0,
       'long': position.size > 0,
+      'cursor-pointer': position.link,
     }">
     <div v-if="position.image" class="image-container">
       <div class="ratio-container">
@@ -61,6 +63,12 @@ export default {
   setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
+    const onClickPosition = position => {
+      if (!position.link) return
+
+      window.open(position.link, '_blank')
+    }
+
     const badgeSummary = position => {
       if (position.size > 0) return 'Long'
       if (position.size < 0) return 'Short'
@@ -75,6 +83,7 @@ export default {
     return {
       badgeSummary,
       display,
+      onClickPosition,
     }
   },
 }
