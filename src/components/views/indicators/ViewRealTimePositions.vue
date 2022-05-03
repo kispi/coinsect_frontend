@@ -94,11 +94,11 @@ export default {
           if (!position.entryPrice) return
 
           if (position.size > 0) {
-            position.unrealized = Math.floor(position.size * (position.markPrice - position.entryPrice))
+            position.unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
           }
 
           if (position.size < 0) {
-            position.unrealized = Math.floor(position.size * (position.markPrice - position.entryPrice))
+            position.unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
           }
         })
       },

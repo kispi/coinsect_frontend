@@ -33,7 +33,7 @@
               'long': position.unrealized > 0,
               'short': position.unrealized < 0,
             }"
-            v-html="display('unrealized')"
+            v-html="display('unrealized', 2)"
           />
         </div>
       </div>
@@ -76,8 +76,15 @@ export default {
       return '-'
     }
 
-    const display = key => {
-      return props.position[key] ? plugins.$helpers.number.pretty.price({ price: props.position[key], baseCurrency: 'usd', noConvert: true }) : '-'
+    const display = (key, numFracs) => {
+      if (!props.position[key]) return '-'
+
+      if (numFracs) return props.position[key].toLocaleString(undefined, {
+        maximumFractionDigits: numFracs,
+        minimumFractionDigits: numFracs,
+      })
+
+      return plugins.$helpers.number.pretty.price({ price: props.position[key], baseCurrency: 'usd', noConvert: true })
     }
 
     return {
