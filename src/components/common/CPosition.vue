@@ -33,7 +33,7 @@
               'long': position.unrealized > 0,
               'short': position.unrealized < 0,
             }"
-            v-html="display('unrealized', 2)"
+            v-html="display('unrealized')"
           />
         </div>
       </div>
@@ -56,17 +56,22 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
   props: ['position'],
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const router = useRouter()
 
     const onClickPosition = () => {
       if (!props.position.link) return
 
-      window.open(props.position.link, '_blank')
+      if (props.position.link.startsWith('http')) {
+        window.open(props.position.link, '_blank')
+        return
+      }
+
+      router.push(props.position.link)
     }
 
     const badgeSummary = position => {
@@ -76,15 +81,13 @@ export default {
       return '-'
     }
 
-    const display = (key, numFracs) => {
+    const display = key => {
       if (!props.position[key]) return '-'
 
-      if (numFracs) return props.position[key].toLocaleString(undefined, {
-        maximumFractionDigits: numFracs,
-        minimumFractionDigits: numFracs,
+      return props.position[key].toLocaleString(undefined, {
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 2,
       })
-
-      return plugins.$helpers.number.pretty.price({ price: props.position[key], baseCurrency: 'usd', noConvert: true })
     }
 
     return {
@@ -109,6 +112,10 @@ export default {
   > * {
     flex: 1 1 0;
     min-width: 0;
+  }
+
+  &:hover {
+    border: 1px solid var(--border-light);
   }
 
   .badge-summary {
