@@ -2,8 +2,13 @@
   <div
     v-if="$store.getters.realTimePositions"
     class="view-real-time-positions">
-    <TradingViewSymbols/>
-    <TradingView v-if="$store.getters.settings.tradingview === 'show'" class="m-b-24"/>
+    <AdaptiveLayout
+      v-if="$store.getters.settings.tradingview === 'show'"
+      class="m-b-24"
+      :gap="8">
+      <TradingView :symbol="'BITSTAMP:BTCUSD'" :interval="1"/>
+      <TradingView :symbol="'FOREXCOM:NSXUSD'" :interval="1"/>
+    </AdaptiveLayout>
     <div class="timestamp f-mono m-b-16">최종업데이트: {{ $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('YYYY-MM-DD HH:mm:ss') }} <span class="diff" :class="diff.class" v-if="diff.string">({{ diff.string }})</span></div>
     <div class="positions">
       <CPosition
@@ -76,6 +81,7 @@ export default {
     }
 
     onMounted(() => {
+      plugins.$toast.success('화면 상단 우측 <i class="fal fa-cog"></i> 아이콘을 클릭해서 트레이딩뷰 차트를 숨기실 수 있습니다.')
       callApi()
 
       if (store.getters.isSSR) return
@@ -140,7 +146,15 @@ export default {
     border-radius: 0;
   }
 
+  .trading-view {
+    height: 240px;
+  }
+
   @media (min-width: 768px) {
+    .trading-view {
+      height: 280px;
+    }
+
     .positions {
       grid-template-columns: repeat(2, 1fr);
     }

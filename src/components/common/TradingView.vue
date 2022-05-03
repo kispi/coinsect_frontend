@@ -13,6 +13,7 @@ import { useStore } from 'vuex'
 export default {
   props: {
     symbol: String,
+    interval: Number,
   },
   setup(props) {
     const store = useStore()
@@ -23,7 +24,7 @@ export default {
       new TradingView.widget({
         autosize: true,
         symbol: props.symbol || store.getters.settings.tradingviewSymbol,
-        interval: 15,
+        interval: props.interval || 15,
         timezone: 'Asia/Seoul',
         theme: store.getters.settings.theme,
         locale: store.getters.translation.locale,
