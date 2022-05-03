@@ -63,10 +63,10 @@ export default {
   setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
-    const onClickPosition = position => {
-      if (!position.link) return
+    const onClickPosition = () => {
+      if (!props.position.link) return
 
-      window.open(position.link, '_blank')
+      window.open(props.position.link, '_blank')
     }
 
     const badgeSummary = position => {
