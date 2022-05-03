@@ -8,7 +8,7 @@
           @click="$store.commit('setSettings', { newsProvider: 'upbit' })">
           <img src="@/assets/images/upbit.svg">뉴스룸
         </div>
-        <div
+        <!-- <div
           class="provider"
           :class="{'selected': $store.getters.settings.newsProvider === 'coinness_feed'}"
           @click="$store.commit('setSettings', { newsProvider: 'coinness_feed' })">
@@ -19,7 +19,7 @@
           :class="{'selected': $store.getters.settings.newsProvider === 'coinness_article'}"
           @click="$store.commit('setSettings', { newsProvider: 'coinness_article' })">
           <img src="@/assets/images/coinness.svg">뉴스룸
-        </div>
+        </div> -->
       </div>
     </div>
     <NewsUpbit v-if="$store.getters.settings.newsProvider === 'upbit'"/>
@@ -46,7 +46,7 @@ export default {
 
     onMounted(() => {
       if (['upbit', 'coinness_feed', 'coinness_article'].indexOf(store.getters.settings.newsProvider) < 0) {
-        store.commit('setSettings', { newsProvider: 'coinness_feed' })
+        store.commit('setSettings', { newsProvider: 'upbit' })
       }
     })
   },
