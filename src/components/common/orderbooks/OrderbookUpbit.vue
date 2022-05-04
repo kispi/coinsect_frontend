@@ -15,7 +15,7 @@
             lastTradedPrice === order.price ? 'bordered' : '',
           ]">
           <div class="value" v-html="$helpers.number.pretty.price({ price: order.price, baseCurrency: $store.getters.settings.baseExchangeMarket })"/>
-          <div class="change" v-html="`${$helpers.number.pretty.percent(Math.round((order.price - prevClosingPrice) / prevClosingPrice * 10000) / 100)}%`"/>
+          <div class="change" v-html="`${zeroOrPercent(order)}%`"/>
         </div>
         <div class="size">
           {{ order.size.toLocaleString(undefined, {
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import useUpbit from '@/hooks/websockets/upbit'
 
@@ -43,6 +43,8 @@ export default {
     market: String,
   },
   setup(props, { emit }) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
     const orderbook = computed(() => store.getters.orderbooks.upbit[props.market])
@@ -73,6 +75,11 @@ export default {
     const { subscribe } = useUpbit()
 
     const connection = ref(null)
+
+    const zeroOrPercent = order => {
+      const value = plugins.$helpers.number.pretty.percent(Math.round((order.price - prevClosingPrice.value) / prevClosingPrice.value * 10000) / 100)
+      return isNaN(value) ? 0 : value
+    }
 
     const init = () => {
       subscribe({ type: 'orderbook', codes: [props.market] }).then(conn => connection.value = conn)
@@ -106,6 +113,7 @@ export default {
       lastTradedPrice,
       relativeWidth,
       priceColor,
+      zeroOrPercent,
     }
   },
 }
