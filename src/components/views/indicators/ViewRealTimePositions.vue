@@ -3,7 +3,7 @@
     v-if="$store.getters.realTimePositions"
     class="view-real-time-positions">
     <AdaptiveLayout
-      v-if="$store.getters.settings.tradingview === 'show'"
+      v-if="$store.getters.settings.tradingview.realTimePositions"
       class="m-b-24"
       :gap="8">
       <TradingView :symbol="'BITSTAMP:BTCUSD'" :interval="1"/>
@@ -22,11 +22,9 @@
         </span>
       </div>
       <div
-        @click="() => $store.commit('setSettings', {
-          tradingview: $store.getters.settings.tradingview === 'hide' ? 'show' : 'hide',
-        })"
+        @click="toggleTradingview"
         class="toggle-tradingview">
-        <AppCheckbox :modelValue="$store.getters.settings.tradingview === 'show'" class="no-touch"/>
+        <AppCheckbox :modelValue="$store.getters.settings.tradingview.realTimePositions" class="no-touch"/>
         BTC / NASDAQ
       </div>
     </div>
@@ -98,6 +96,12 @@ export default {
       subscribe({ type: 'instrument_info.100ms', markets: markets.value }).then(conn => connection.value = conn)
     }
 
+    const toggleTradingview = () => {
+      const o = store.getters.settings.tradingview
+      o.realTimePositions = !o.realTimePositions
+      store.commit('setSettings', { tradingview: o })
+    }
+
     onMounted(() => {
       callApi()
 
@@ -137,6 +141,7 @@ export default {
 
     return {
       diff,
+      toggleTradingview,
     }
   },
 }

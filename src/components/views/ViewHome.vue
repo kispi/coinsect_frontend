@@ -1,6 +1,6 @@
 <template>
   <div class="view-home">
-    <template v-if="$store.getters.settings.tradingview === 'show'">
+    <template v-if="$store.getters.settings.tradingview.home">
       <TradingViewSymbols/>
       <TradingViewTicker class="m-b-8"/>
       <TradingView class="m-b-8"/>

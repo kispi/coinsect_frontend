@@ -62,14 +62,21 @@ export default {
     }, {
       key: 'TRADINGVIEW',
       values: [
-        { title: 'SHOW', value: 'show' },
-        { title: 'HIDE', value: 'hide' },
-      ].map(o => ({ ...o, $$selected: store.getters.settings.tradingview === o.value })),
+        { title: 'SHOW', value: true },
+        { title: 'HIDE', value: false },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.tradingview.home === o.value })),
     }])
 
     const onClickValue = (key, setting) => {
       if (key === 'LANGUAGE') {
         store.commit('setLocale', setting.value)
+        return
+      }
+
+      if (key === 'TRADINGVIEW') {
+        const tradingview = store.getters.settings.tradingview
+        tradingview.home = setting.value
+        store.commit('setSettings', { tradingview })
         return
       }
 
