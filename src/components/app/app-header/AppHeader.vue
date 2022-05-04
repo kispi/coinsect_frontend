@@ -115,7 +115,7 @@ export default {
       path: '/',
     }, {
       title: 'INDICATORS',
-      path: '/indicators/leaderboard',
+      path: '/indicators/real-time-positions',
     }, {
       title: 'NEWS_AND_CONTENTS',
       path: '/contents/news',

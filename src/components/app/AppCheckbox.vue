@@ -3,17 +3,15 @@
     class="app-checkbox"
     :class="{
       'checked': modelValue,
-      'radio-shape': radioShape,
     }"
     @click.stop="onClickCheckbox">
-    <i v-if="!radioShape" class="fal fa-check"/>
-    <div v-else class="circle"/>
+    <i v-if="modelValue" class="fal fa-check"/>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['modelValue', 'radioShape'],
+  props: ['modelValue'],
   setup(props ,{ emit }) {
     const onClickCheckbox = () => {
       const newVal = props.modelValue !== true
@@ -31,10 +29,9 @@ export default {
 <style lang="scss" scoped>
 .app-checkbox {
   border-radius: 2px;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background: var(--white);
-  border: 1px solid var(--border-base);
   overflow: hidden;
   cursor: pointer;
 
@@ -44,47 +41,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--dark-gray-lv3);
-  }
-
-  &.checked:not(.radio-shape) {
-    border: 1px solid var(--white);
-
-    .fa-check {
-      color: var(--white);
-      background: var(--brand-primary);
-      font-weight: 700;
-    }
-  }
-
-  &.small {
-    width: 12px;
-    height: 12px;
-
-    .fa-check {
-      font-size: 10px;
-    }
-  }
-
-  &.radio-shape {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-
-    .circle {
-      background: var(--brand-primary);
-      border-radius: 50%;
-      width: 12px;
-      height: 12px;
-      margin: auto;
-    }
-
-    &:not(.checked) {
-      .circle {
-        display: none;
-      }
-    }
+    color: var(--white);
+    font-weight: 700;
+    background: var(--brand-primary);
   }
 }
 </style>

@@ -9,7 +9,27 @@
       <TradingView :symbol="'BITSTAMP:BTCUSD'" :interval="1"/>
       <TradingView :symbol="'FOREXCOM:NSXUSD'" :interval="1"/>
     </AdaptiveLayout>
-    <div class="timestamp f-mono m-b-16">최종업데이트: {{ $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('YYYY-MM-DD HH:mm:ss') }} <span class="diff" :class="diff.class" v-if="diff.string">({{ diff.string }})</span></div>
+    <div class="header">
+      <div class="timestamp">
+        업데이트:
+        <span v-if="$store.getters.realTimePositions.lastUpdate">
+          {{
+            $store.getters.realTimePositions.lastUpdate ?
+            $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('YY-MM-DD HH:mm:ss') :
+            ''
+          }}
+          <span class="diff" :class="diff.class" v-if="diff.string">({{ diff.string }})</span>
+        </span>
+      </div>
+      <div
+        @click="() => $store.commit('setSettings', {
+          tradingview: $store.getters.settings.tradingview === 'hide' ? 'show' : 'hide',
+        })"
+        class="toggle-tradingview">
+        <AppCheckbox :modelValue="$store.getters.settings.tradingview === 'show'" class="no-touch"/>
+        BTC / NASDAQ
+      </div>
+    </div>
     <div class="positions">
       <CPosition
         :position="position"
@@ -22,7 +42,7 @@
     </div>
     <RouterLink
       to="/"
-      class="btn btn-dark m-t-40">
+      class="btn btn-dark">
       김프 보러가기
     </RouterLink>
   </div>
@@ -79,7 +99,6 @@ export default {
     }
 
     onMounted(() => {
-      plugins.$toast.success('화면 상단 우측 <i class="fal fa-cog"></i> 아이콘을 클릭해서 트레이딩뷰 차트를 숨기실 수 있습니다.')
       callApi()
 
       if (store.getters.isSSR) return
@@ -130,6 +149,26 @@ export default {
     grid-gap: 8px;
   }
 
+  .header {
+    margin-bottom: 8px;
+    font-size: 12px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+    .toggle-tradingview {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      color: var(--text-stress);
+      cursor: pointer;
+
+      .app-checkbox {
+        margin-right: 8px;
+      }
+    }
+  }
+
   .timestamp {
     color: var(--text-stress);
   }
@@ -142,6 +181,8 @@ export default {
 
   .btn-dark {
     border-radius: 0;
+    padding: 20px;
+    margin-top: 120px;
   }
 
   .trading-view {

@@ -20,11 +20,11 @@ export default {
     const router = useRouter()
 
     const indicators = computed(() => [{
-      path: '/indicators/leaderboard',
-      title: 'LEADERBOARD',
-    }, {
       path: '/indicators/real-time-positions',
       title: 'REAL_TIME_POSITIONS',
+    }, {
+      path: '/indicators/leaderboard',
+      title: 'LEADERBOARD',
     }, {
       path: '/indicators/marketcaps',
       title: 'MARKETCAPS',

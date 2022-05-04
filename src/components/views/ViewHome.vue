@@ -1,8 +1,10 @@
 <template>
   <div class="view-home">
-    <TradingViewSymbols/>
-    <TradingViewTicker v-if="$store.getters.settings.tradingview === 'show'" class="m-b-8"/>
-    <TradingView v-if="$store.getters.settings.tradingview === 'show'" class="m-b-8"/>
+    <template v-if="$store.getters.settings.tradingview === 'show'">
+      <TradingViewSymbols/>
+      <TradingViewTicker class="m-b-8"/>
+      <TradingView class="m-b-8"/>
+    </template>
     <BaseAndTarget/>
     <RealTimePrices v-if="prepared && !$store.getters.isSSR"/>
   </div>
