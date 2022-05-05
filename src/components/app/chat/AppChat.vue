@@ -173,6 +173,7 @@ export default {
         }
 
         setLocalAccount()
+        setTimeout(() => refTextarea.value.focus()) // 바로하면 textarea에서 엔터까지 쳐짐
       })
     }
 

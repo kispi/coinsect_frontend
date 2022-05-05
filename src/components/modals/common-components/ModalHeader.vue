@@ -33,7 +33,6 @@ export default {
   }
 
   .title {
-    font-weight: 700;
     text-align: center;
     color: var(--text-stress);
     pointer-events: none;

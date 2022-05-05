@@ -53,6 +53,7 @@ export default {
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
     ModalImageUploader: defineAsyncComponent(() => import('@/components/modals/ModalImageUploader')),
     ModalChatProfile: defineAsyncComponent(() => import('@/components/modals/ModalChatProfile')),
+    ModalPositionRequestEdit: defineAsyncComponent(() => import('@/components/modals/ModalPositionRequestEdit')),
   },
   setup(props) {
     const show = ref(false)

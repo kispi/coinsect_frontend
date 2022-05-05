@@ -1,11 +1,11 @@
 <template>
   <div
-    @click="onClickPosition"
+    @click.stop="onContextmenu"
+    @contextmenu.prevent="onContextmenu"
     class="c-position"
     :class="{
       'short': position.size < 0,
       'long': position.size > 0,
-      'cursor-pointer': position.link,
     }">
     <div v-if="position.image" class="image-container">
       <div class="ratio-container">
@@ -52,28 +52,19 @@
         </div>
       </div>
     </div>
+    <CPositionContextMenu :position="position"/>
   </div>
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import CPositionContextMenu from './CPositionContextMenu'
 
 export default {
+  components: {
+    CPositionContextMenu,
+  },
   props: ['position'],
   setup(props) {
-    const router = useRouter()
-
-    const onClickPosition = () => {
-      if (!props.position.link) return
-
-      if (props.position.link.startsWith('http')) {
-        window.open(props.position.link, '_blank')
-        return
-      }
-
-      router.push(props.position.link)
-    }
-
     const badgeSummary = position => {
       if (position.size > 0) return 'Long'
       if (position.size < 0) return 'Short'
@@ -93,7 +84,6 @@ export default {
     return {
       badgeSummary,
       display,
-      onClickPosition,
     }
   },
 }
@@ -108,6 +98,8 @@ export default {
   display: flex;
   align-items: center;
   overflow: hidden;
+  user-select: none;
+  position: relative;
 
   > * {
     flex: 1 1 0;

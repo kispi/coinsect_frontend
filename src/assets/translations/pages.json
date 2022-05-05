@@ -135,6 +135,14 @@
     "en": "Size",
     "kr": "규모"
   },
+  "GO_TO_PLATFORM": {
+    "en": "Go to platform",
+    "kr": "방송보기"
+  },
+  "REQUEST_EDIT": {
+    "en": "Request Edit",
+    "kr": "수정요청"
+  },
   "REPLY_REPLY": {
     "en": "Reply",
     "kr": "답글"

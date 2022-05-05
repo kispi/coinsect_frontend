@@ -10,5 +10,13 @@
   "MODAL_TRADING_VIEW": {
     "en": "TradingView (%ticker)",
     "kr": "트레이딩뷰 (%ticker)"
+  },
+  "MODAL_POSITION_NOTIFY_CHANGE": {
+    "en": "[%s] Notify Position Change",
+    "kr": "[%s] 포지션 변경 반영 요청"
+  },
+  "MODAL_POSITION_NOTIFY_CHANGE_DESC": {
+    "en": "Notify the admin that the current position of <b class='text-underline'>%s</b> has changed.<br>If the streamer liquidated the position, just empty all fields and then submit.",
+    "kr": "운영자에게 <b class='text-underline'>%s</b>님의 포지션이 다음과 같이 변경되었음을 알립니다.<br>무포지션이 된 경우 전부 비워서 제출해주시면 됩니다."
   }
 }
