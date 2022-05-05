@@ -135,6 +135,10 @@
     "en": "Size",
     "kr": "규모"
   },
+  "STREAMER_NOT_ON_AIR": {
+    "en": "Streamer is not on air",
+    "kr": "스트리머가 현재 방송중이지 않습니다"
+  },
   "GO_TO_PLATFORM": {
     "en": "Go to platform",
     "kr": "방송보기"

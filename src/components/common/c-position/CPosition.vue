@@ -6,7 +6,13 @@
     :class="{
       'short': position.size < 0,
       'long': position.size > 0,
+      'on-air': !position.onAir,
     }">
+    <div
+      v-if="!position.onAir"
+      class="streamer-off overlay center">
+      {{ $translate('STREAMER_NOT_ON_AIR') }}
+    </div>
     <div v-if="position.image" class="image-container">
       <div class="ratio-container">
         <AppImg :src="position.image" v-if="position.image" class="overlay"/>
@@ -106,8 +112,15 @@ export default {
     min-width: 0;
   }
 
-  &:hover {
+  &:not(.on-air):hover {
     border: 1px solid var(--border-light);
+  }
+
+  .streamer-off {
+    color: var(--text-stress);
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 1;
+    pointer-events: none;
   }
 
   .badge-summary {
