@@ -35,6 +35,11 @@
         v-for="position in $store.getters.realTimePositions.data"
       />
     </div>
+    <div
+      v-if="($store.getters.realTimePositions.data || []).length === 0"
+      class="empty">
+      유의미한 크기의 포지션을 갖고 있거나 포지션을 알 수 있는 관심 스트리머가 없는 것 같네요 ㅜ.ㅜ
+    </div>
     <div class="description">
       * 운영자가 각 방송을 모니터링하며 입력하므로 대부분 실시간이지만, 미처 업데이트하지 못하고 잠들었을 수 있으므로 최신 포지션임을 보장할 수 없습니다. 업데이트된지 오래된 경우 신뢰하지 마십시오. 어떤 경우이든 재미로만 보시고, 호반꿀이든 호반반꿀이든 <b class="c-danger">절대로 타인의 매매를 참고하여 매매하지 마십시오</b>.
     </div>
@@ -192,6 +197,14 @@ export default {
 
   .trading-view {
     height: 240px;
+  }
+
+  .empty {
+    text-align: center;
+    margin: 40px 0;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--text-stress);
   }
 
   @media (min-width: 768px) {
