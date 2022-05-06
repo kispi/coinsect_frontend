@@ -62,7 +62,7 @@ export default {
       if (!['binance'].includes(o.targetExchange)) o.targetExchange = 'binance'
 
       // 코인니스 API 뚫리기 전까진 upbit 강제
-      if (o.newsProvider !== 'upbit') o.newsProvider = 'upbit'
+      // if (o.newsProvider !== 'upbit') o.newsProvider = 'upbit'
 
       // 1, 2주정도만 유지
       if (typeof o.tradingview !== 'object') o.tradingview = {
