@@ -5,9 +5,10 @@
     <div class="content">
       <div
         v-if="message.profile"
-        class="nickname">
+        class="nickname"
+        :class="{'admin': $store.getters.config.adminToken === message.token}">
         <span class="dot" :style="{ background: `#${(message.token || '').slice(0, 6)}` }"/>
-        <span v-html="message.profile.nickname"/>
+        <span class="name" v-html="message.profile.nickname"/>
         <span class="token" v-html="(message.token || '').substring(0, 3)"/>
       </div>
       <div class="text-and-timestamp">
@@ -39,7 +40,18 @@ export default {
     .nickname {
       text-transform: uppercase;
       display: flex;
-      align-items: center;
+      align-items: baseline;
+
+      &.admin {
+        .name {
+          color: var(--brand-primary);
+        }
+
+        .dot,
+        .token {
+          display: none;
+        }
+      }
 
       .dot {
         width: 6px;
@@ -48,7 +60,7 @@ export default {
         margin-right: 4px;
       }
 
-      span:not(.token) {
+      .name {
         color: var(--text-stress);
       }
 
@@ -56,6 +68,9 @@ export default {
         font-weight: 300;
         font-size: 10px;
         margin-left: 8px;
+        padding: 0 4px;
+        border: 1px solid var(--border-base);
+        border-radius: 16px;
       }
     }
   }
