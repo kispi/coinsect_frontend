@@ -41,6 +41,7 @@ export default {
       show: null,
       top: null,
       left: null,
+      right: null,
     })
 
     const menuHandlers = {
@@ -72,8 +73,14 @@ export default {
         return
       }
 
+      const remainWidth = window.innerWidth - e.clientX
+      console.log(remainWidth)
       customMenu.value.top = e.clientY
-      customMenu.value.left = e.clientX
+      if (remainWidth > 120) {
+        customMenu.value.left = e.clientX
+      } else {
+        customMenu.value.right = 0
+      }
       customMenu.value.show = true
     }
 
@@ -105,6 +112,7 @@ export default {
   }
 
   .custom-menu {
+    width: 120px;
     position: absolute;
     border-radius: 4px;
     background: var(--white);
