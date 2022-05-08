@@ -74,7 +74,6 @@ export default {
       }
 
       const remainWidth = window.innerWidth - e.clientX
-      console.log(remainWidth)
       customMenu.value.top = e.clientY
       if (remainWidth > 120) {
         customMenu.value.left = e.clientX

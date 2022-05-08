@@ -31,13 +31,18 @@
 
 <script>
 import { onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   props: ['options'],
-  setup(props) {
+  setup() {
+    const store = useStore()
+
     const refInputNickname = ref(null)
 
-    const profile = ref(props.options.profile)
+    const profile = ref({
+      nickname: store.getters.me.profile.nickname
+    })
 
     const onKeydown = e => {
       setTimeout(() => {

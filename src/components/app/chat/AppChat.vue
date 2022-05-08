@@ -10,9 +10,10 @@
       class="app-chat-container">
       <div class="app-chat-header">
         <div
+          v-if="$store.getters.me"
           @click="openModalChangeProfile"
           class="profile">
-          <div class="nickname" v-html="profile.nickname"/>
+          <div class="nickname" v-html="$store.getters.me.profile.nickname"/>
         </div>
         <div class="chat-settings">
           <div
@@ -138,8 +139,7 @@ export default {
     const {
       init,
       connected,
-      setLocalAccount,
-      profile,
+      setAccount,
       messages,
       sendWebsocketMessage,
       loadMessages,
@@ -161,18 +161,12 @@ export default {
     const openModalChangeProfile = () => {
       plugins.$modal.custom({
         component: 'ModalChatProfile',
-        options: {
-          profile: {
-            nickname: profile.value.nickname,
-          },
-        },
       }).then(result => {
         if (result) {
           result.nickname = (result.nickname || '').slice(0, store.getters.config.maxlength.nickname)
-          profile.value = result
+          setAccount(result)
         }
 
-        setLocalAccount()
         setTimeout(() => refTextarea.value.focus()) // 바로하면 textarea에서 엔터까지 쳐짐
       })
     }
@@ -279,7 +273,6 @@ export default {
       refAppChatBody,
       numUnreads,
       connected,
-      profile,
       text,
       messages,
       onKeydown,
