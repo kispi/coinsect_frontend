@@ -44,6 +44,7 @@
 
 <script>
 import { getCurrentInstance, onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   props: ['options'],
@@ -51,6 +52,8 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const payload = ref({})
+
+    const store = useStore()
 
     const onClickSubmit = async () => {
       try {
@@ -60,10 +63,12 @@ export default {
         plugins.$toast.success('TOAST_POSITION_EDIT_REQUESTED')
       } catch (e) {
         plugins.$toast.error(e.data.message)
+      } finally {
+        initPayload()
       }
     }
 
-    onMounted(() => {
+    const initPayload = () => {
       const p = props.options.position
       payload.value.id = p.id
       payload.value.name = p.name
@@ -71,7 +76,10 @@ export default {
       payload.value.liqPrice = p.liqPrice
       payload.value.size = p.size
       payload.value.contract = p.contract || 'BTCUSDT'
-    })
+      payload.value.token = store.getters.me.token
+    }
+
+    onMounted(initPayload)
 
     return {
       payload,
