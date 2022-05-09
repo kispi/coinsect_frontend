@@ -6,7 +6,7 @@
       v-if="$store.getters.settings.tradingview.realTimePositions"
       class="m-b-24"
       :gap="8">
-      <TradingView :symbol="'BITSTAMP:BTCUSD'" :interval="1"/>
+      <TradingView :symbol="'BINANCE:BTCUSDT'" :interval="1"/>
       <TradingView :symbol="'FOREXCOM:NSXUSD'" :interval="1"/>
     </AdaptiveLayout>
     <div class="header">
