@@ -116,7 +116,11 @@ export default {
 
     const lastReadMessage = ref(null)
 
+    const storedUnreads = ref(null)
+
     const numUnreads = computed(() => {
+      if (storedUnreads.value) return storedUnreads.value
+
       if ((messages.value || []).length === 0) return 0
 
       return messages.value.filter(message => {
@@ -186,6 +190,10 @@ export default {
 
     const toggleChatFolded = () => {
       store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
+      if (!store.getters.settings.chatFolded) {
+        storedUnreads.value = 0
+        plugins.$helpers.localStorage.setMeta('numUnreads')
+      }
 
       nextTick(() => {
         if (!store.getters.settings.chatFolded) scrollToBottom()
@@ -255,7 +263,18 @@ export default {
       },
     )
 
+    watch(
+      () => numUnreads.value,
+      newVal => {
+        if (newVal > 0) {
+          plugins.$helpers.localStorage.setMeta('numUnreads', newVal)
+        }
+      },
+    )
+
     onMounted(() => {
+      storedUnreads.value = plugins.$helpers.localStorage.getMeta('numUnreads')
+
       plugins.$bus.$on('incoming-message', onIncomingMessage)
       plugins.$bus.$on('first-load-messages', scrollToBottom) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
 
@@ -273,6 +292,7 @@ export default {
       refAppChatBody,
       numUnreads,
       connected,
+      storedUnreads,
       text,
       messages,
       onKeydown,
