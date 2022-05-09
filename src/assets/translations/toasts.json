@@ -10,5 +10,9 @@
   "TOAST_POSITION_EDIT_REQUESTED": {
     "en": "You notified the admin that the BJ has changed position",
     "kr": "운영자에게 BJ의 포지션 변경사항을 알렸습니다"
+  },
+  "TOAST_POSITION_EDITED": {
+    "en": "You just edited the position of the BJ",
+    "kr": "스트리머의 포지션을 수정하였습니다"
   }
 }

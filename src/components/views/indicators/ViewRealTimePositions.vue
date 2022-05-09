@@ -117,6 +117,8 @@ export default {
       if (store.getters.isSSR) return
 
       apiInterv.value = setInterval(callApi, 1000 * 60 * 5)
+
+      plugins.$bus.$on('call-api', callApi)
     })
 
     onUnmounted(() => {
@@ -125,6 +127,8 @@ export default {
       clearInterval(apiInterv.value)
 
       if (connection.value) connection.value.close()
+
+      plugins.$bus.$off('call-api', callApi)
     })
 
     watch(
