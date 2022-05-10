@@ -9,7 +9,7 @@
         :class="{'admin': $store.getters.config.adminToken === message.token}">
         <span class="dot" :style="{ background: `#${(message.token || '').slice(0, 6)}` }"/>
         <span class="name" v-html="message.profile.nickname"/>
-        <span class="token" v-html="(message.token || '').substring(0, 3)"/>
+        <BadgeToken/>
       </div>
       <div class="text-and-timestamp">
         <div class="text">{{ message.text }}</div>
@@ -24,7 +24,12 @@
 </template>
 
 <script>
+import BadgeToken from './BadgeToken'
+
 export default {
+  components: {
+    BadgeToken,
+  },
   props: ['message'],
 }
 </script>
@@ -62,15 +67,7 @@ export default {
 
       .name {
         color: var(--text-stress);
-      }
-
-      .token {
-        font-weight: 300;
-        font-size: 10px;
-        margin-left: 8px;
-        padding: 0 4px;
-        border: 1px solid var(--border-base);
-        border-radius: 16px;
+        margin-right: 8px;
       }
     }
   }

@@ -51,6 +51,14 @@
     "en": "Bitcoin (Bitfinex)",
     "kr": "비트코인 숏 (Bitfinex)"
   },
+  "GOLD": {
+    "en": "Gold",
+    "kr": "금"
+  },
+  "SILVER": {
+    "en": "Silver",
+    "kr": "은"
+  },
   "BASE_EXCHANGE": {
     "en": "Base Exchange",
     "kr": "기준 거래소"

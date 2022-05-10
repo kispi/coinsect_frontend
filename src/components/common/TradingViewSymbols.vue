@@ -32,6 +32,12 @@ export default {
       name: 'S&P 500',
       key: 'FOREXCOM:SPXUSD',
     }, {
+      name: 'GOLD',
+      key: 'GOLD',
+    }, {
+      name: 'SILVER',
+      key: 'SILVER',
+    }, {
       name: 'BTC_DOMINANCE',
       key: 'CRYPTOCAP:BTC.D',
     }, {

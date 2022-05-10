@@ -14,8 +14,14 @@
           @click="openModalChangeProfile"
           class="profile">
           <div class="nickname" v-html="$store.getters.me.profile.nickname"/>
+          <BadgeToken/>
         </div>
         <div class="chat-settings">
+          <div
+            class="clickable-icon-wrapper"
+            @click="$store.commit('setSettings', { chatDing: !$store.getters.settings.chatDing })">
+            <i class="fal" :class="$store.getters.settings.chatDing ? 'fa-bell' : 'fa-bell-slash'"/>
+          </div>
           <div
             class="clickable-icon-wrapper"
             @click="toggleChatFolded">
@@ -101,12 +107,14 @@
 import { ref, computed, getCurrentInstance, nextTick, watch, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppChatMessage from './AppChatMessage'
+import BadgeToken from './BadgeToken'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   components: {
     AppChatMessage,
+    BadgeToken,
     DailySeparator,
   },
   setup() {
@@ -241,8 +249,15 @@ export default {
       nextTick(() => dom.scrollTop = dom.scrollHeight)
     }
 
+    const ding = new Audio(plugins.$helpers.useS3('files/ding.mp3'))
+    ding.volume = 0.2
+
     const onIncomingMessage = () => {
-      if (store.getters.settings.chatFolded) return
+      if (store.getters.settings.chatFolded) {
+        plugins.$helpers.animate.shake(refFoldedIcon.value)
+        if (ding && store.getters.settings.chatDing) ding.play()
+        return
+      }
 
       // 채팅창이 열려있는 경우의 처리
       if (autoScrollable.value) {
@@ -350,14 +365,19 @@ export default {
     align-items: center;
     padding: var(--app-chat-padding);
 
-    .nickname {
-      color: var(--text-stress);
-      margin-right: 16px;
-      font-weight: 700;
-      cursor: pointer;
+    .profile {
+      display: flex;
+      align-items: baseline;
 
-      &:hover {
-        text-decoration: underline;
+      .nickname {
+        color: var(--text-stress);
+        margin-right: 8px;
+        font-weight: 700;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
@@ -449,7 +469,6 @@ export default {
     background: var(--brand-primary);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     border-radius: 50%;
-    overflow: hidden;
     cursor: pointer;
 
     .fa-comment-dots {
