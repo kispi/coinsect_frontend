@@ -28,7 +28,9 @@
         BTC / NASDAQ
       </div>
     </div>
-    <div class="position-group">
+    <div
+      v-if="positions.editable.length > 0"
+      class="position-group">
       <div class="positions">
         <CPosition
           :position="position"
@@ -49,7 +51,9 @@
       <div>* 포지션의 규모가 너무 작거나(정찰병같은) 거미줄이 체결되는 상황등 포지션 변동이 극도로 잦은 경우 모니터링 대상에서 제외됩니다.</div>
       <div>* 사용되는 시장평균가는 Bybit USDT 마켓 기준이며, Binance, Bitget 또는 MEXC등 타 거래소들에서 산정한 시장평균가와는 차이가 있을 수 있습니다.</div>
     </div>
-    <div class="position-group m-t-40">
+    <div
+      v-if="positions.nonEditable.length > 0"
+      class="position-group m-t-40">
       <RouterLink
         to="/contents/public-treasury"
         class="text-underline c-brand-primary display-block m-b-8">
