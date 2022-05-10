@@ -1,8 +1,8 @@
 <template>
   <span
-    v-if="$store.getters.me.token"
+    v-if="token"
     class="badge-token">
-    {{ $store.getters.me.token.substring(0, 3).toUpperCase() }}
+    {{ token.substring(0, 3).toUpperCase() }}
   </span>
 </template>
 

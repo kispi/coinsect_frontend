@@ -14,7 +14,7 @@
           @click="openModalChangeProfile"
           class="profile">
           <div class="nickname" v-html="$store.getters.me.profile.nickname"/>
-          <BadgeToken/>
+          <BadgeToken :token="$store.getters.me.token"/>
         </div>
         <div class="chat-settings">
           <div

@@ -9,7 +9,7 @@
         :class="{'admin': $store.getters.config.adminToken === message.token}">
         <span class="dot" :style="{ background: `#${(message.token || '').slice(0, 6)}` }"/>
         <span class="name" v-html="message.profile.nickname"/>
-        <BadgeToken/>
+        <BadgeToken :token="message.token"/>
       </div>
       <div class="text-and-timestamp">
         <div class="text">{{ message.text }}</div>
