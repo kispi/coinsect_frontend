@@ -169,6 +169,7 @@ export default {
 
         &:last-child {
           text-align: right;
+          white-space: nowrap;
         }
       }
     }
