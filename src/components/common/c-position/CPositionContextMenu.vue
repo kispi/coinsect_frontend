@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="refContextOverlay"
     @click="onContextmenu"
     @contextmenu.prevent="onContextmenu"
     class="c-position-context-overlay"
@@ -18,6 +19,7 @@
         <i class="fal fa-home"/>{{ $translate('GO_TO_PLATFORM') }}
       </div>
       <div
+        v-if="position.editable"
         @click="menuHandlers.requestEdit"
         class="menu-item">
         <i class="fal fa-pencil"/>{{ $translate($store.getters.config.allowDirectPositionEdit ? 'EDIT' : 'REQUEST_EDIT') }}
@@ -27,7 +29,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref } from 'vue'
+import { getCurrentInstance, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -36,6 +38,8 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const router = useRouter()
+
+    const refContextOverlay = ref(null)
 
     const customMenu = ref({
       show: null,
@@ -78,12 +82,34 @@ export default {
       if (remainWidth > 120) {
         customMenu.value.left = e.clientX
       } else {
-        customMenu.value.right = 0
+        customMenu.value.left = window.innerWidth - 120
       }
       customMenu.value.show = true
     }
 
+    const prevent = e => {
+      e.preventDefault()
+    }
+
+    watch(
+      () => customMenu.value.show,
+      newVal => {
+        if (!refContextOverlay.value) return
+
+        if (newVal) {
+          refContextOverlay.value.addEventListener('mousewheel', prevent)
+          refContextOverlay.value.addEventListener('touchmove', prevent)
+          document.addEventListener('keydown', prevent)
+        } else {
+          refContextOverlay.value.removeEventListener('mousewheel', prevent)
+          refContextOverlay.value.removeEventListener('touchmove', prevent)
+          document.removeEventListener('keydown', prevent)
+        }
+      },
+    )
+
     return {
+      refContextOverlay,
       customMenu,
       menuHandlers,
       onContextmenu,

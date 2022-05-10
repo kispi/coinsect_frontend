@@ -28,15 +28,17 @@
         BTC / NASDAQ
       </div>
     </div>
-    <div class="positions">
-      <CPosition
-        :position="position"
-        :key="position.name"
-        v-for="position in $store.getters.realTimePositions.data"
-      />
+    <div class="position-group">
+      <div class="positions">
+        <CPosition
+          :position="position"
+          :key="position.name"
+          v-for="position in positions.editable"
+        />
+      </div>
     </div>
     <div
-      v-if="($store.getters.realTimePositions.data || []).length === 0"
+      v-if="($store.getters.realTimePositions.data || []).filter(o => o.editable).length === 0"
       class="empty">
       유의미한 크기의 포지션을 갖고 있거나 포지션을 알 수 있는 관심 스트리머가 없는 것 같네요 ㅜ.ㅜ
     </div>
@@ -46,6 +48,20 @@
       <div>* 포지션 정보는 5분 간격으로 새로 가져오므로, 현재 방송으로 보고 있는 포지션과 다른 경우 새로고침을 해보십시오.</div>
       <div>* 포지션의 규모가 너무 작거나(정찰병같은) 거미줄이 체결되는 상황등 포지션 변동이 극도로 잦은 경우 모니터링 대상에서 제외됩니다.</div>
       <div>* 사용되는 시장평균가는 Bybit USDT 마켓 기준이며, Binance, Bitget 또는 MEXC등 타 거래소들에서 산정한 시장평균가와는 차이가 있을 수 있습니다.</div>
+    </div>
+    <div class="position-group m-t-40">
+      <RouterLink
+        to="/contents/public-treasury"
+        class="text-underline c-brand-primary display-block m-b-8">
+        기관들
+      </RouterLink>
+      <div class="positions">
+        <CPosition
+          :position="position"
+          :key="position.name"
+          v-for="position in positions.nonEditable"
+        />
+      </div>
     </div>
     <RouterLink
       to="/"
@@ -71,6 +87,17 @@ export default {
     const apiInterv = ref(null)
 
     const connection = ref(null)
+
+    const positions = computed(() => {
+      const editable = []
+      const nonEditable = []
+      store.getters.realTimePositions.data.forEach(o => o.editable ? editable.push(o) : nonEditable.push(o))
+
+      return {
+        editable,
+        nonEditable,
+      }
+    })
 
     const diff = ref({
       string: null,
@@ -154,6 +181,7 @@ export default {
 
     return {
       diff,
+      positions,
       toggleTradingview,
     }
   },
@@ -194,7 +222,7 @@ export default {
   .description {
     font-size: 12px;
     line-height: 20px;
-    margin-top: 16px;
+    margin-top: 32px;
 
     div {
       &:not(:last-child) {
