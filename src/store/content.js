@@ -1,6 +1,6 @@
+import contentService from '@/services/content'
 import crudService from '@/services/crud'
 import helpers from '@/helpers'
-import { $http } from '@/modules/axios'
 
 const marketInfo = {
   state: () => ({
@@ -45,7 +45,7 @@ const marketInfo = {
     async loadPublicTreasuries({ commit }) {
       try {
         commit('setLoading', { global: true })
-        const data = await $http.get('contents/public_treasuries')
+        const data = await contentService.publicTreasuries()
         commit('setPublicTreasuries', data)
       } catch (e) {
         return Promise.reject(e)
@@ -55,7 +55,7 @@ const marketInfo = {
     },
     async loadRealTimePositions({ commit }) {
       try {
-        const data = await $http.get('contents/real_time_positions')
+        const data = await contentService.realTimePositions()
         commit('setRealTimePositions', data)
       } catch (e) {
         return Promise.reject(e)

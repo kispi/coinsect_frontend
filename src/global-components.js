@@ -22,6 +22,7 @@ import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 // common components
 import ButtonCommunity from '@/components/common/ButtonCommunity'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
+import CoinnessIssues from '@/components/common/CoinnessIssues'
 import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
 import CPosition from '@/components/common/c-position/CPosition'
 import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
@@ -64,9 +65,10 @@ const useGlobalComponents = app => {
 
     // common components
     .component('ButtonCommunity', ButtonCommunity)
-    .component('ModalHeader', ModalHeader)
+    .component('CoinnessIssues', CoinnessIssues)
     .component('CPortfolio', CPortfolio)
     .component('CPosition', CPosition)
+    .component('ModalHeader', ModalHeader)
     .component('OrderbookBybit', OrderbookBybit)
     .component('OrderbookUpbit', OrderbookUpbit)
     .component('PostEditor', PostEditor)

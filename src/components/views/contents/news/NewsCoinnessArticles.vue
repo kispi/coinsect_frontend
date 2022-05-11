@@ -54,6 +54,7 @@
 import { getCurrentInstance, ref, onMounted, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import GoToTop from './GoToTop'
+import contentService from '@/services/content'
 
 export default {
   components: {
@@ -72,8 +73,6 @@ export default {
 
     const data = ref([])
 
-    const endpoint = 'contents/news/coinness/articles'
-
     const section = ref('latest')
 
     const loadRecent = async () => {
@@ -81,9 +80,9 @@ export default {
 
       const recentId = data.value[0].id
       try {
-        const respData = await plugins.$http.get(endpoint)
-        const newarticles = respData.slice(0, respData.findIndex(o => o.id === recentId))
-        data.value = newarticles.concat(data.value)
+        const respData = await contentService.news.articles()
+        const newArticles = respData.slice(0, respData.findIndex(o => o.id === recentId))
+        data.value = newArticles.concat(data.value)
       } catch (e) {
         plugins.$toast.error(e.data.message)
       }
@@ -94,14 +93,13 @@ export default {
 
       try {
         loading.value = true
-        const respData = await plugins.$http.get(endpoint, {
-          params: {
-            lastId: lastId.value,
-            section: section.value,
-          },
+        const respData = await contentService.news.articles({
+          lastId: lastId.value,
+          section: section.value,
         })
         data.value = data.value.concat(respData)
         lastId.value = data.value[data.value.length - 1].id
+        console.log(lastId.value, data.value)
       } catch (e) {
         plugins.$toast.error(e.data.message)
       } finally {
