@@ -53,8 +53,8 @@
             <i class="fa fa-chevron-down flex-wrap"/>
           </div>
         </div>
-        <div class="num-users">
-          <i class="fal fa-user-friends"/>{{ ($store.getters.numActiveUsers || 0).toLocaleString() }}
+        <div class="num-users f-mono">
+          <i class="fas fa-user-friends"/>{{ ($store.getters.numActiveUsers || 0).toLocaleString() }}
         </div>
         <div
           @click="scrollToBottom"
@@ -440,10 +440,12 @@ export default {
       position: absolute;
       text-align: right;
       top: calc(48px + 1px);
+      color: var(--price-up);
       left: 0;
       right: 0;
       padding: 8px;
-      font-size: 10px;
+      font-size: 12px;
+      font-weight: 700;
       background: linear-gradient(to bottom, var(--gs-22), transparent);
 
       .fa-user-friends {
