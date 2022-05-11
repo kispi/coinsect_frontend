@@ -7,9 +7,9 @@
       v-for="index in indices"
       :gap="$store.getters.isMobile ? 0 : 8">
       <div class="key" v-html="$translate(index.key)"/>
-      <div class="value" v-html="index.value"/>
+      <div class="value f-mono" v-html="index.value"/>
       <div
-        class="changes"
+        class="changes f-mono"
         :class="index.changes > 0 ? 'c-price-up' : 'c-price-down'"
         v-html="`${index.changes > 0 ? '+' : ''}${index.changes}%`"
       />
@@ -81,12 +81,14 @@ export default {
     .key {
       color: var(--text-base);
       flex: 0 0 auto;
+      line-height: 16px;
     }
 
     .value {
       color: var(--text-stress);
       font-weight: 500;
       flex: 0 0 auto;
+      line-height: 16px;
     }
 
     .changes {

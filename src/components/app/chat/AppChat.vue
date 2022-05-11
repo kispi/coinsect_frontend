@@ -53,6 +53,9 @@
             <i class="fa fa-chevron-down flex-wrap"/>
           </div>
         </div>
+        <div class="num-users">
+          <i class="fal fa-user-friends"/>{{ ($store.getters.numActiveUsers || 0).toLocaleString() }}
+        </div>
         <div
           @click="scrollToBottom"
           class="clickable-icon-wrapper scroll-to-bottom"
@@ -77,7 +80,7 @@
             v-model="text"
             @keydown="onKeydown"
             @keydown.prevent.enter
-            :maxlength="$store.getters.config.maxlength.message"
+            :maxlength="(($store.getters.config || {}).maxlength || {}).message"
             class="no-scrollbar"
           />
           <i
@@ -432,6 +435,21 @@ export default {
         margin-top: 4px;
       }
     }
+
+    .num-users {
+      position: absolute;
+      text-align: right;
+      top: calc(48px + 1px);
+      left: 0;
+      right: 0;
+      padding: 8px;
+      font-size: 10px;
+      background: linear-gradient(to bottom, var(--gs-22), transparent);
+
+      .fa-user-friends {
+        margin-right: 4px;
+      }
+    }
   }
 
   .app-chat-message-wrapper {
@@ -449,7 +467,7 @@ export default {
       width: 100%;
       display: flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: 8px;
 
       textarea {
         padding-right: 16px;

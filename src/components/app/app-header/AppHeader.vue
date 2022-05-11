@@ -1,13 +1,8 @@
 <template>
   <header class="app-header layout-centered">
     <div class="top">
+      <CoinnessIssues v-if="$store.getters.windowInnerWidth >= 480"/>
       <BannerMarketIndices/>
-      <AdaptiveLayout
-        :gap="$store.getters.isMobile ? 0 : 8"
-        class="f-12 items-center">
-        <i class="c-text-base fal fa-user-friends"/>
-        <div class="c-text-stress flex-wrap text-center f-mono" v-html="($store.getters.numActiveUsers || 0).toLocaleString()"/>
-      </AdaptiveLayout>
     </div>
     <div
       class="logo-and-settings"

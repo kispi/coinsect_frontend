@@ -99,7 +99,6 @@ export default {
         })
         data.value = data.value.concat(respData)
         lastId.value = data.value[data.value.length - 1].id
-        console.log(lastId.value, data.value)
       } catch (e) {
         plugins.$toast.error(e.data.message)
       } finally {
