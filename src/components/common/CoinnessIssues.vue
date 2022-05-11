@@ -19,7 +19,7 @@
           class="header"
           target="_blank"
           rel="noopener noreferrer">
-          <div class="title"><img src="@/assets/images/coinness.svg">실시간</div>
+          <div class="title"><img src="@/assets/images/coinness.svg">실시간 이슈</div>
           <div class="last-update">{{ lastUpdate }}</div>
         </a>
         <div
