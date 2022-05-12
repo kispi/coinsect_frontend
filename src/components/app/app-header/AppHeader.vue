@@ -162,7 +162,7 @@ export default {
 
   .top {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     height: 40px;
 
