@@ -164,6 +164,7 @@ export default {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    height: 40px;
 
     .coinness-issues,
     .banner-market-indices {
