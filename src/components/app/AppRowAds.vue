@@ -32,11 +32,11 @@ export default {
     position: absolute;
 
     &.left {
-      right: 100%;
+      right: calc(100% + 16px);
     }
 
     &.right {
-      left: 100%;
+      left: calc(100% + 16px);
     }
   }
 }
