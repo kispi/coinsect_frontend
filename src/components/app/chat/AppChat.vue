@@ -446,7 +446,6 @@ export default {
       padding: 8px;
       font-size: 12px;
       font-weight: 700;
-      background: linear-gradient(to bottom, var(--gs-22), transparent);
 
       .fa-user-friends {
         margin-right: 4px;
@@ -542,6 +541,10 @@ export default {
         border-top: 1px solid var(--border-base);
         border-bottom: 1px solid var(--border-base);
       }
+
+      .num-users {
+        background: linear-gradient(to bottom, var(--gs-e0), transparent);
+      }
     }
   }
 
@@ -552,6 +555,10 @@ export default {
       .app-chat-body {
         border-top: 1px solid var(--gs-44);
         border-bottom: 1px solid var(--gs-44);
+      }
+
+      .num-users {
+        background: linear-gradient(to bottom, var(--gs-22), transparent);
       }
     }
   }
