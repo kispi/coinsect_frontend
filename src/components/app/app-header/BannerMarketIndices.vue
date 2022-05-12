@@ -73,7 +73,7 @@ export default {
       setTimeout(() => {
         const dom = document.getElementsByClassName('marquee-unit')[0]
         if (dom) refBannerMarketIndices.value.style.setProperty('--marquee-width', `${dom.clientWidth}px`)
-      }, 1000)
+      })
     }
 
     onMounted(loadIndices)
@@ -81,6 +81,7 @@ export default {
     watch([
       () => store.getters.windowInnerWidth,
       () => store.getters.translation.locale,
+      () => store.getters.indices,
     ], checkMarqueeSize)
 
     return {
