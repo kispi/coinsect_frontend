@@ -1,9 +1,10 @@
 <template>
   <div class="view-not-found">
-    <div class="something-went-wrong">
-      페이지를 찾을 수 없습니다 ㅜ.ㅜ
-    </div>
-    <button @click="onClickBack" class="btn btn-primary m-a m-t-16">GO BACK</button>
+    <AppImg :src="$helpers.useS3('og-images/og-image.png')"/>
+    <div class="error-404">페이지를 찾을 수 없습니다 ㅜ.ㅜ</div>
+    <button @click="onClickBack" class="btn btn-primary m-a m-t-16">
+      김프 보러가기
+    </button>
   </div>
 </template>
 
@@ -34,12 +35,18 @@ export default {
   text-align: center;
 
   img {
-    width: 184px;
-    margin: 24px;
+    max-width: 320px;
   }
 
-  .something-went-wrong {
+  .error-404 {
+    margin: 40px 0;
     font-size: 18px;
+    color: var(--text-stress);
+  }
+
+  .btn-primary {
+    border-radius: 0;
+    padding: 12px 40px;
   }
 }
 </style>

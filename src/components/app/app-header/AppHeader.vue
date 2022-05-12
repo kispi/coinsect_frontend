@@ -1,7 +1,7 @@
 <template>
   <header class="app-header layout-centered">
     <div class="top">
-      <CoinnessIssues v-if="$store.getters.windowInnerWidth >= 480"/>
+      <CoinnessIssues v-show="$store.getters.windowInnerWidth >= 480"/>
       <BannerMarketIndices/>
     </div>
     <div
@@ -158,15 +158,16 @@ export default {
 .app-header {
   transition: all 0.2s ease;
   width: 100%;
-  padding-bottom: 0;
+  padding: 0 var(--app-default-page-padding);
 
   .top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
 
+    .coinness-issues,
     .banner-market-indices {
-      padding-bottom: var(--app-default-page-padding);
+      padding: var(--app-default-page-padding) 0;
     }
   }
 

@@ -74,7 +74,7 @@ export default {
         }
 
         .dot,
-        .token {
+        .badge-token {
           display: none;
         }
       }

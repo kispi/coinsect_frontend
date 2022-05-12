@@ -379,11 +379,8 @@ export default {
         color: var(--text-stress);
         margin-right: 8px;
         font-weight: 700;
+        text-decoration: underline;
         cursor: pointer;
-
-        &:hover {
-          text-decoration: underline;
-        }
       }
     }
 

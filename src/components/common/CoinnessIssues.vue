@@ -60,8 +60,6 @@ export default {
 
     const lastUpdate = ref(null)
 
-
-
     const onClickIssue = issue => {
       if (issue.url) {
         window.open(issue.url, '_blank', 'noopener')
@@ -86,7 +84,7 @@ export default {
       callApi()
 
       interv.value = setInterval(() => {
-        if (currentIdx.value >= 4) currentIdx.value = 0
+        if (currentIdx.value >= issues.value.length - 1) currentIdx.value = 0
         else currentIdx.value += 1
       }, 5000)
 
@@ -122,8 +120,8 @@ export default {
     cursor: pointer;
 
     .badge-issue {
-      background: var(--background-light);
-      color: var(--white);
+      background: var(--border-base);
+      color: var(--text-stress);
       padding: 0 6px;
       font-size: 12px;
       border-radius: 8px;
@@ -197,7 +195,7 @@ export default {
     }
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 768px) {
     .current {
       width: 240px;
     }

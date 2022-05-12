@@ -191,7 +191,6 @@ const app = {
       } catch (e) {}
 
       $http.get('config').then(data => commit('setConfig', data))
-      dispatch('loadIndices')
       await loadAuthNotRequired()
     },
   },

@@ -37,17 +37,6 @@
 }
 
 .btn-primary {
-  background: var(--brand-primary);
-  color: var(--white);
-
-  &:not(.disabled):not(:disabled) {
-    &:hover {
-      background: var(--brand-primary-hover);
-    }
-  }
-}
-
-.btn-dark {
   background: var(--black);
   color: var(--white);
 
