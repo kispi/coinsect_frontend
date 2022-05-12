@@ -116,6 +116,7 @@ export default {
     display: flex;
     align-items: baseline;
     font-size: 12px;
+    line-height: 16px;
     width: 160px;
     cursor: pointer;
 
@@ -174,7 +175,6 @@ export default {
     .issue {
       display: flex;
       align-items: baseline;
-      // font-size: 12px;
 
       &:not(:last-child) {
         margin-bottom: 8px;
