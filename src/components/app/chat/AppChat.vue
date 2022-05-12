@@ -70,7 +70,10 @@
             v-if="message.$$showSeparator"
             :message="message"
           />
-          <AppChatMessage :message="message"/>
+          <AppChatMessage
+            :message="message"
+            :nextMessage="messages[idx + 1]"
+          />
         </div>
       </div>
       <div class="app-chat-input">

@@ -14,6 +14,7 @@
       <div class="text-and-timestamp">
         <div class="text">{{ message.text }}</div>
         <div
+          v-if="showTimestamp()"
           class="timestamp f-mono"
           :class="message.isMine ? 'm-r-8' : 'm-l-8'"
           v-html="$helpers.dayjs(message.timestamp).format('HH:mm')"
@@ -24,13 +25,33 @@
 </template>
 
 <script>
+import { getCurrentInstance } from 'vue'
 import BadgeToken from './BadgeToken'
 
 export default {
   components: {
     BadgeToken,
   },
-  props: ['message'],
+  props: ['message', 'nextMessage'],
+  setup(props) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
+
+    const showTimestamp = () => {
+      if (!props.nextMessage) return true
+
+      // 직전 메시지와 다음 메시지를 다른 유저가 보낸 경우
+      if (props.nextMessage.token !== props.message.token) return true
+
+      // 직전 메시지와 다음 메시지의 유저가 같으나 타임스탬프도 1분 이상 차이가 나는 경우
+      return d(props.nextMessage.timestamp) !== d(props.message.timestamp)
+    }
+
+    return {
+      showTimestamp,
+    }
+  },
 }
 </script>
 
