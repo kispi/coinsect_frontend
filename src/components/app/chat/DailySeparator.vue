@@ -12,7 +12,7 @@ export default {
 
 <style lang="scss" scoped>
 .daily-separator {
-  margin: 20px auto;
+  margin: 20px auto 12px;
   background: var(--background-light);
   border-radius: 16px;
   padding: 4px 8px;

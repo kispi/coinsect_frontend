@@ -4,7 +4,7 @@
     :class="{'mine': message.isMine}">
     <div class="content">
       <div
-        v-if="message.profile"
+        v-if="showNickname"
         class="nickname"
         :class="{'admin': $store.getters.config.adminToken === message.token}">
         <span class="dot" :style="{ background: `#${(message.token || '').slice(0, 6)}` }"/>
@@ -14,7 +14,7 @@
       <div class="text-and-timestamp">
         <div class="text">{{ message.text }}</div>
         <div
-          v-if="showTimestamp()"
+          v-if="showTimestamp"
           class="timestamp f-mono"
           :class="message.isMine ? 'm-r-8' : 'm-l-8'"
           v-html="$helpers.dayjs(message.timestamp).format('HH:mm')"
@@ -25,20 +25,28 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 import BadgeToken from './BadgeToken'
 
 export default {
   components: {
     BadgeToken,
   },
-  props: ['message', 'nextMessage'],
+  props: ['prevMessage', 'message', 'nextMessage'],
   setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
-    const showTimestamp = () => {
+    const showNickname = computed(() => {
+      if (!props.message.profile) return
+
+      if (!props.prevMessage) return true
+
+      return props.prevMessage.token !== props.message.token
+    })
+
+    const showTimestamp = computed(() => {
       if (!props.nextMessage) return true
 
       // 직전 메시지와 다음 메시지를 다른 유저가 보낸 경우
@@ -46,9 +54,10 @@ export default {
 
       // 직전 메시지와 다음 메시지의 유저가 같으나 타임스탬프도 1분 이상 차이가 나는 경우
       return d(props.nextMessage.timestamp) !== d(props.message.timestamp)
-    }
+    })
 
     return {
+      showNickname,
       showTimestamp,
     }
   },
@@ -67,6 +76,7 @@ export default {
       text-transform: uppercase;
       display: flex;
       align-items: baseline;
+      margin-top: 12px;
 
       &.admin {
         .name {

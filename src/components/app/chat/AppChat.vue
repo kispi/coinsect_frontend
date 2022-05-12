@@ -71,6 +71,7 @@
             :message="message"
           />
           <AppChatMessage
+            :prevMessage="messages[idx - 1]"
             :message="message"
             :nextMessage="messages[idx + 1]"
           />
@@ -450,12 +451,6 @@ export default {
       .fa-user-friends {
         margin-right: 4px;
       }
-    }
-  }
-
-  .app-chat-message-wrapper {
-    &:not(:last-child) {
-      margin-bottom: 12px;
     }
   }
 
