@@ -4,13 +4,13 @@
     <div class="filters">
       <button
         class="btn"
-        :class="{'selected': section === 'latest'}"
+        :class="section === 'latest' ? 'btn-primary' : 'btn-default'"
         @click="section = 'latest'">
         최신뉴스
       </button>
       <button
         class="btn"
-        :class="{'selected': section === 'popularity'}"
+        :class="section === 'popularity' ? 'btn-primary' : 'btn-default'"
         @click="section = 'popularity'">
         많이 본 뉴스
       </button>
@@ -162,16 +162,10 @@ export default {
     margin-bottom: 16px;
 
     button {
-      color: var(--black);
       font-weight: 500;
 
       &:not(:last-child) {
         margin-right: 8px;
-      }
-
-      &.selected {
-        background: var(--black);
-        color: var(--white);
       }
     }
   }

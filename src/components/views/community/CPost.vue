@@ -11,22 +11,21 @@
         </div>
         <div class="numbers">
           <div class="views">조회 {{ post.views }}</div>
-          <div class="ups">추천 {{ (post.reactions || []).filter(o => o.type === 'up').length }}</div>
+          <div class="ups">추천 {{ post.$$reactions.up.count }}</div>
           <div class="replies">댓글 {{ post.$$numReplies }}</div>
         </div>
       </div>
       <div class="post-content" v-html="post.content"/>
       <div class="post-reactions">
         <div
-          @click="toggleReaction('up')"
-          class="up reaction-box">
-          <div class="reaction-type">UP</div>
-          <div class="value">{{ (post.reactions || []).filter(o => o.type === 'up').length }}</div></div>
-        <div
-          @click="toggleReaction('down')"
-          class="down reaction-box">
-          <div class="reaction-type">DOWN</div>
-          <div class="value">{{ (post.reactions || []).filter(o => o.type === 'down').length }}</div></div>
+          @click="toggleReaction(rType)"
+          class="reaction-box"
+          :class="{'activated': post.$$reactions[rType].activated}"
+          :key="rType"
+          v-for="rType in ['up', 'down']">
+          <div class="reaction-type">{{ rType }}</div>
+          <div class="value">{{ post.$$reactions[rType].count }}</div>
+        </div>
       </div>
     </div>
     <div class="post-section-replies">
@@ -138,16 +137,19 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: 1px solid var(--brand-primary);
-      border-radius: 4px;
+      text-transform: uppercase;
+      border: 1px solid var(--border-base);
 
       &:not(:last-child) {
         margin-right: 8px;
       }
 
       &:hover {
-        background: var(--brand-primary-hover-bg);
         cursor: pointer;
+      }
+
+      &.activated {
+        border: 1px solid var(--brand-primary);
       }
 
       .value {

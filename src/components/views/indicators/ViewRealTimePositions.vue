@@ -69,7 +69,7 @@
     </div>
     <RouterLink
       to="/"
-      class="btn btn-dark">
+      class="btn btn-primary">
       김프 보러가기
     </RouterLink>
   </div>
@@ -235,7 +235,7 @@ export default {
     }
   }
 
-  .btn-dark {
+  .btn-primary {
     border-radius: 0;
     padding: 20px;
     margin-top: 120px;
