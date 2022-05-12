@@ -171,5 +171,9 @@ export default {
       margin-right: 16px;
     }
   }
+
+  @media (min-width: 992px) {
+    max-width: 720px;
+  }
 }
 </style>
