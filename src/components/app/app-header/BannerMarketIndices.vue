@@ -74,7 +74,6 @@ export default {
         const dom = document.getElementsByClassName('marquee-unit')[0]
         if (dom) {
           refBannerMarketIndices.value.style.setProperty('--marquee-width', `${dom.clientWidth}px`)
-          plugins.$toast.success(dom.clientWidth)
         }
       })
     }
@@ -97,6 +96,7 @@ export default {
 <style lang="scss">
 .banner-market-indices {
   position: relative;
+  --marquee-width: 720px; // default
 
   .marquee-unit {
     display: flex;
