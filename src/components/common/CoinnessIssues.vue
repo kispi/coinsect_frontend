@@ -26,7 +26,7 @@
           @click="onClickIssue(issue)"
           class="issue"
           :key="issue.id"
-          v-for="(issue, idx) in issues.slice(0, 6)">
+          v-for="(issue, idx) in issues">
           <div class="issue-num f-mono">{{ idx + 1 }}</div>
           <div class="issue-title">{{ issue.title }}</div>
         </div>
@@ -133,6 +133,7 @@ export default {
     .num {
       font-weight: 700;
       margin-right: 8px;
+      white-space: nowrap;
     }
   }
 
