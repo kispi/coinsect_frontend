@@ -96,7 +96,6 @@ export default {
 <style lang="scss">
 .banner-market-indices {
   position: relative;
-  --marquee-width: 720px; // default
 
   .marquee-unit {
     display: flex;
