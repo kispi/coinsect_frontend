@@ -321,9 +321,12 @@ export default {
       },
     )
 
-    watch(
+    watch([
       () => store.getters.windowInnerWidth,
-      setAppChatPosition,
+      () => store.getters.windowInnerHeight,
+      () => store.getters.settings.chatSizeMax,
+    ],
+      () => setTimeout(setAppChatPosition),
     )
 
     onMounted(() => {
