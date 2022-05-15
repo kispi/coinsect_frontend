@@ -26,7 +26,7 @@
           'resizable': (modal.options || {}).resizable,
         }"
         @close="onClose"
-        @load-modal-component="makeDraggable(refModal)"
+        @load-modal-component="makeDraggable(refModal, { toMove: 'modal-base-style', toGrab: 'modal-header' })"
         :options="modal.options"
         :is="modal.component"
       />
@@ -87,7 +87,7 @@ export default {
 
       setTimeout(() => show.value = true)
 
-      if (!store.getters.isMobile) makeDraggable(refModal.value)
+      if (!store.getters.isMobile) makeDraggable(refModal.value, { toMove: 'modal-base-style', toGrab: 'modal-header' })
     })
 
     onUnmounted(() => {

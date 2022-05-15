@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="refAppChat"
     class="app-chat"
     :class="{
       'folded': $store.getters.settings.chatFolded,
@@ -7,7 +8,8 @@
     }">
     <div
       v-if="!$store.getters.settings.chatFolded"
-      class="app-chat-container">
+      class="app-chat-container"
+      :class="{'transparent': $store.getters.settings.chatTransparent}">
       <div class="app-chat-header">
         <div
           v-if="$store.getters.me"
@@ -17,6 +19,11 @@
           <BadgeToken :token="$store.getters.me.token"/>
         </div>
         <div class="chat-settings">
+          <div
+            class="clickable-icon-wrapper"
+            @click="$store.commit('setSettings', { chatTransparent: !$store.getters.settings.chatTransparent })">
+            <i class="fal" :class="$store.getters.settings.chatTransparent ? 'fa-eye' : 'fa-eye-slash'"/>
+          </div>
           <div
             class="clickable-icon-wrapper"
             @click="$store.commit('setSettings', { chatDing: !$store.getters.settings.chatDing })">
@@ -117,6 +124,7 @@ import AppChatMessage from './AppChatMessage'
 import BadgeToken from './BadgeToken'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
+import useModalDraggable from '@/hooks/modal-draggable'
 
 export default {
   components: {
@@ -151,9 +159,13 @@ export default {
 
     const refAppChatBody = ref(null)
 
+    const refAppChat = ref(null)
+
     const text = ref('')
 
     const incomingMessage = ref(null)
+
+    const { makeDraggable } = useModalDraggable()
 
     const {
       init,
@@ -275,12 +287,27 @@ export default {
       lastReadMessage.value = messages.value[messages.value.length - 1]
     }
 
+    const setAppChatPosition = () => {
+      if (!refAppChat.value || store.getters.settings.chatFolded) return
+
+      const container = refAppChat.value.getElementsByClassName('app-chat-container')[0]
+      if (!container) return
+
+      const rect = container.getBoundingClientRect()
+      const padding = 8
+      const isMobile = store.getters.windowInnerWidth < 480
+      container.style.top = `calc(100% - ${rect.height + padding}px)`
+      container.style.left = isMobile ? `${padding}px` : `calc(100% - ${rect.width + padding}px)`
+      makeDraggable(refAppChat.value, { toMove: 'app-chat-container', toGrab: 'app-chat-header' })
+    }
+
     watch(
       () => store.getters.settings.chatFolded,
       (newVal, oldVal) => {
         if (!newVal && oldVal) nextTick(() => {
           refTextarea.value.focus()
           scrollToBottom()
+          setAppChatPosition()
         })
       },
     )
@@ -294,6 +321,11 @@ export default {
       },
     )
 
+    watch(
+      () => store.getters.windowInnerWidth,
+      setAppChatPosition,
+    )
+
     onMounted(() => {
       storedUnreads.value = plugins.$helpers.localStorage.getMeta('numUnreads')
 
@@ -301,6 +333,7 @@ export default {
       plugins.$bus.$on('first-load-messages', scrollToBottom) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
 
       init()
+      setAppChatPosition()
     })
 
     onUnmounted(() => {
@@ -312,6 +345,7 @@ export default {
       refFoldedIcon,
       refTextarea,
       refAppChatBody,
+      refAppChat,
       numUnreads,
       connected,
       storedUnreads,
@@ -335,10 +369,6 @@ export default {
 <style lang="scss" scoped>
 .app-chat {
   --app-chat-padding: 12px;
-  position: fixed;
-  z-index: 5;
-  bottom: 8px;
-  right: 8px;
   transition: none;
 
   .fa-paper-plane {
@@ -349,6 +379,12 @@ export default {
     }
   }
 
+  .app-chat-container,
+  .icon-folded {
+    position: fixed;
+    z-index: 5;
+  }
+
   .app-chat-container {
     border: 1px solid var(--border-light);
     border-radius: 4px;
@@ -356,13 +392,13 @@ export default {
     flex-direction: column;
     margin: auto;
     background: var(--border-base);
+    width: 320px;
     height: 400px;
     max-height: calc(100vh - 16px); // 100vh - 2 * bottom padding
     transition: none;
-    position: relative;
 
     @media (max-width: 479px) {
-      width: calc(100% - 32px);
+      width: calc(100% - 16px);
     }
   }
 
@@ -371,6 +407,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: var(--app-chat-padding);
+    cursor: grab;
 
     .profile {
       display: flex;
@@ -483,6 +520,8 @@ export default {
     background: var(--brand-primary);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     border-radius: 50%;
+    right: 8px;
+    bottom: 8px;
     cursor: pointer;
 
     .fa-comment-dots {
@@ -508,13 +547,10 @@ export default {
   }
 
   &:not(.folded) {
-    @media (max-width: 479px) {
-      right: 0;
-      left: 0;
-    }
-
     @media (min-width: 480px) {
-      width: 320px;
+      .app-chat-container {
+        width: 320px;
+      }
     }
 
     &.max-size {
@@ -532,6 +568,10 @@ export default {
     .app-chat-container {
       background: var(--white);
 
+      &.transparent {
+        background: rgba(255, 255, 255, 0.75);
+      }
+
       .app-chat-body {
         border-top: 1px solid var(--border-base);
         border-bottom: 1px solid var(--border-base);
@@ -546,6 +586,10 @@ export default {
   &.dark {
     .app-chat-container {
       background: var(--gs-22);
+
+      &.transparent {
+        background: rgba(34, 34, 34, 0.75);
+      }
 
       .app-chat-body {
         border-top: 1px solid var(--gs-44);

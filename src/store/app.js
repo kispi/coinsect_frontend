@@ -53,6 +53,7 @@ const app = {
       chatFolded: false,
       chatSizeMax: false,
       chatDing: true,
+      chatTransparent: false,
     },
     windowInnerWidth: null,
     windowInnerHeight: null,
