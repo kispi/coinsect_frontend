@@ -80,6 +80,9 @@ export default {
       const canvas = dom.getElementsByTagName('canvas')[0]
       if (canvas) canvas.remove()
 
+      const img = dom.getElementsByTagName('img')[0]
+      if (img) img.remove()
+
       if (qrcode.value) {
         qrcode.value.clear()
         qrcode.value.makeCode(selectedWallet.value.address)
