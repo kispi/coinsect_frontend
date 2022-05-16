@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -76,6 +76,10 @@ export default {
 
       if (typeof QRCode === 'undefined') return
 
+      const dom = document.getElementById('modal-donation-qr-code')
+      const canvas = dom.getElementsByTagName('canvas')[0]
+      if (canvas) canvas.remove()
+
       if (qrcode.value) {
         qrcode.value.clear()
         qrcode.value.makeCode(selectedWallet.value.address)
@@ -102,10 +106,6 @@ export default {
     }
 
     onMounted(init)
-
-    onUnmounted(() => {
-      if (qrcode.value) qrcode.value.clear()
-    })
 
     return {
       wallets,
