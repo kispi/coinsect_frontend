@@ -22,7 +22,7 @@
           v-html="((selectedWallet || {}).blockchain || {}).symbol || 'PLACEHOLDER'"
         />
         <div class="qr-code-container">
-          <div id="modal-donation-qr-code" class="overlay"/>
+          <div v-if="selectedWallet" id="modal-donation-qr-code" class="overlay"/>
         </div>
         <div
           @click="copyToClipboard"
