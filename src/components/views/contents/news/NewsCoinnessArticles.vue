@@ -1,6 +1,5 @@
 <template>
   <div class="news-coinness-articles">
-    <GoToTop :class="{'no-show': $store.getters.scrollTop <= 120}"/>
     <div class="filters">
       <button
         class="btn"
@@ -53,13 +52,9 @@
 <script>
 import { getCurrentInstance, ref, onMounted, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
-import GoToTop from './GoToTop'
 import contentService from '@/services/content'
 
 export default {
-  components: {
-    GoToTop,
-  },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -230,11 +225,6 @@ export default {
     &:not(:last-child) {
       border-bottom: 1px solid var(--border-base);
     }
-  }
-
-  .no-show {
-    opacity: 0;
-    pointer-events: none;
   }
 
   @media (max-width: 479px) {

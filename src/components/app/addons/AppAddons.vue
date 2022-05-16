@@ -8,6 +8,7 @@
     :key="idx"
     v-for="(modal, idx) in $store.getters.modals"
   />
+  <GoToTop/>
 </template>
 
 <script>
@@ -15,6 +16,7 @@ import AppChat from '@/components/app/chat/AppChat'
 import AppModal from '@/components/app/AppModal'
 import AppTooltips from '@/components/app/AppTooltips'
 import AppToast from '@/components/app/AppToast'
+import GoToTop from '@/components/app/GoToTop'
 import useHealthChecker from '@/hooks/addons/health-checker'
 import useRouteWatcher from '@/hooks/addons/route-watcher'
 
@@ -24,6 +26,7 @@ export default {
     AppModal,
     AppTooltips,
     AppToast,
+    GoToTop,
   },
   setup() {
     useHealthChecker()

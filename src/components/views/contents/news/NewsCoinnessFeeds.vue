@@ -1,6 +1,5 @@
 <template>
   <div class="news-coinness-feeds">
-    <GoToTop :class="{'no-show': $store.getters.scrollTop <= 120}"/>
     <div class="feed-list">
       <div
         class="feed-item"
@@ -31,12 +30,8 @@
 <script>
 import { getCurrentInstance, ref, onMounted, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
-import GoToTop from './GoToTop'
 
 export default {
-  components: {
-    GoToTop,
-  },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -189,11 +184,6 @@ export default {
     &:not(:last-child) {
       border-bottom: 1px solid var(--border-base);
     }
-  }
-
-  .no-show {
-    opacity: 0;
-    pointer-events: none;
   }
 }
 </style>

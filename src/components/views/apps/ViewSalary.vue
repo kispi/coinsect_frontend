@@ -6,7 +6,7 @@
     <div class="params">
       <div class="form-control">
         <label>연봉 (세전)</label>
-        <input v-model="payload.preTax" type="number">
+        <input v-model="payload.preTax" type="number" step="10000">
         <div class="pretty">{{ $helpers.number.pretty.korean(payload.preTax) }}원</div>
       </div>
       <div class="form-control">
@@ -105,7 +105,7 @@ export default {
     const withCrypto = ref(true)
 
     const onSlide = ratio => {
-      payload.value.preTax = Math.round((22000000 + 78000000 * ratio) / 100000) * 100000
+      payload.value.preTax = Math.round((22000000 + 178000000 * ratio) / 100000) * 100000
     }
 
     const pretty = ({ field, monthly = true }) => {
