@@ -1,11 +1,38 @@
 <template>
   <div
+    v-if="!noShow"
     @click="$helpers.dom.scrollToTop"
     class="go-to-top"
     :class="{'no-show': $store.getters.scrollTop <= 120}">
     <i class="fal fa-arrow-up"/>
+    {{ $router.currentRoute.value.routeGroup }}
   </div>
 </template>
+
+<script>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+export default {
+  setup() {
+    const router = useRouter()
+
+    const noShow = computed(() => {
+      const excludes = [
+        '/about',
+        '/apps/',
+        '/indicators/',
+      ]
+
+      return excludes.some(path => router.currentRoute.value.path.includes(path))
+    })
+
+    return {
+      noShow,
+    }
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .go-to-top {
@@ -14,8 +41,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.25);
-  color: var(--text-stress);
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--white);
   border-radius: 50%;
   bottom: 16px;
   left: 16px;
@@ -31,12 +58,6 @@
 
   i {
     font-size: 24px;
-  }
-}
-
-#app.dark {
-  .go-to-top {
-    background: rgba(255, 255, 255, 0.25);
   }
 }
 </style>

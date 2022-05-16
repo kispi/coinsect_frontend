@@ -1,5 +1,6 @@
 :root {
   --brand-primary:          rgba(48, 129, 235, 1);
+  --brand-primary-50:       rgba(48, 129, 235, 0.5);
   --brand-primary-bg:       rgba(68, 149, 255, 1);
   --brand-primary-hover:    rgba(46, 105, 182, 1);
   --brand-primary-hover-bg: rgba(46, 105, 182, 0.2);
@@ -47,6 +48,7 @@
 
   &.dark {
     --brand-primary:     rgba(82, 163, 235, 1);
+    --brand-primary-50:  rgba(82, 163, 235, 0.5);
     --text-stress:       var(--white);
     --text-base:         var(--text-bybit);
     --text-light:        var(--gs-44);
