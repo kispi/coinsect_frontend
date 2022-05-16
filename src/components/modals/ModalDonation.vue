@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -102,6 +102,10 @@ export default {
     }
 
     onMounted(init)
+
+    onUnmounted(() => {
+      if (qrcode.value) qrcode.value.clear()
+    })
 
     return {
       wallets,
