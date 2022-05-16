@@ -22,14 +22,14 @@
           v-html="((selectedWallet || {}).blockchain || {}).symbol || 'PLACEHOLDER'"
         />
         <div class="qr-code-container">
-          <div v-if="selectedWallet" id="modal-donation-qr-code" class="overlay"/>
+          <div id="modal-donation-qr-code" class="overlay"/>
         </div>
         <div
-          @click="copyToClipboard"
           class="address"
-          :class="{'o-0': !selectedWallet}"
-          v-html="(selectedWallet || {}).address || 'PLACEHOLDER'"
-        />
+          :class="{'o-0': !selectedWallet}">
+          <i class="fal fa-copy f-16 m-r-8" @click="copyToClipboard"/>
+          <div class="value" @click="openBlockExplore">{{ (selectedWallet || {}).address || 'PLACEHOLDER' }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -57,12 +57,12 @@ export default {
     const copyToClipboard = () => {
       plugins.$helpers.dom.copyToClipboard(selectedWallet.value.address)
       plugins.$toast.success(`코인충 운영자의 ${selectedWallet.value.blockchain.symbol}주소를 클립보드로 복사했습니다`)
+    }
 
+    const openBlockExplore = () => {
       if (!selectedWallet.value.blockchain.exploreUrl) return
 
-      setTimeout(() => {
-        window.open(`${selectedWallet.value.blockchain.exploreUrl}${selectedWallet.value.address}`, '_blank', 'noopener')
-      }, 1000)
+      window.open(`${selectedWallet.value.blockchain.exploreUrl}${selectedWallet.value.address}`, '_blank', 'noopener')      
     }
 
     const callApi = async () => {
@@ -75,10 +75,6 @@ export default {
       selectedWallet.value = wallet
 
       if (typeof QRCode === 'undefined') return
-
-      const dom = document.getElementById('modal-donation-qr-code')
-      const canvas = dom.getElementsByTagName('canvas')[0]
-      if (canvas) canvas.remove()
 
       if (qrcode.value) {
         qrcode.value.clear()
@@ -111,6 +107,7 @@ export default {
       wallets,
       selectedWallet,
       copyToClipboard,
+      openBlockExplore,
       selectWallet,
     }
   },
@@ -121,6 +118,7 @@ export default {
 .modal-donation {
   border-radius: 4px;
   width: 480px;
+  min-height: 520px;
 
   .body {
     padding: 16px;
@@ -133,7 +131,7 @@ export default {
   .sendable-tickers {
     background: var(--white);
     padding: 8px;
-    margin-top: 28px;
+    margin-top: 27px;
     border: 1px solid var(--gs-22);
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.24);
 
@@ -179,18 +177,21 @@ export default {
     .qr-code-container {
       padding-top: 100%;
       position: relative;
-      border: 1px solid var(--text-stress);
+      box-shadow: 0 0 1px var(--gs-22);
       margin: 8px 0;
     }
 
     .address {
-      margin: auto;
-      display: table;
+      display: flex;
+    }
 
-      &:hover {
-        text-decoration: underline;
-        cursor: pointer;
-      }
+    i,
+    .value {
+      cursor: pointer;
+    }
+
+    .value:hover {
+      text-decoration: underline;
     }
   }
 
