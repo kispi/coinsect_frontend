@@ -76,13 +76,6 @@ export default {
 
       if (typeof QRCode === 'undefined') return
 
-      const dom = document.getElementById('modal-donation-qr-code')
-      const canvas = dom.getElementsByTagName('canvas')[0]
-      if (canvas) canvas.remove()
-
-      const img = dom.getElementsByTagName('img')[0]
-      if (img) img.remove()
-
       if (qrcode.value) {
         qrcode.value.clear()
         qrcode.value.makeCode(selectedWallet.value.address)
@@ -104,6 +97,15 @@ export default {
           plugins.$helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' }).then(() => prepared.value),
           callApi(),
         ])
+
+        // 왜인지는 모르겠으나 이 찌꺼기가 남아있는 경우가 있음
+        const dom = document.getElementById('modal-donation-qr-code')
+        const canvas = dom.getElementsByTagName('canvas')[0]
+        if (canvas) canvas.remove()
+
+        const img = dom.getElementsByTagName('img')[0]
+        if (img) img.remove()
+
         selectWallet(wallets.value.data[0])
       } catch (e) {}
     }
