@@ -519,7 +519,11 @@ export default {
   }
 
   .icon-folded {
-    padding: 12px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--brand-primary);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     border-radius: 50%;
@@ -528,7 +532,7 @@ export default {
     cursor: pointer;
 
     .fa-comment-dots {
-      font-size: 32px;
+      font-size: 24px;
       color: var(--white);
     }
 

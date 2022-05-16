@@ -3,15 +3,14 @@
     @click="$helpers.dom.scrollToTop"
     class="go-to-top"
     :class="{'no-show': $store.getters.scrollTop <= 120}">
-    <i class="fa fa-arrow-up"/>
+    <i class="fal fa-arrow-up"/>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .go-to-top {
-  width: 32px;
-  height: 32px;
-  padding: 8px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,6 +27,10 @@
   &.no-show {
     opacity: 0;
     pointer-events: none;
+  }
+
+  i {
+    font-size: 24px;
   }
 }
 

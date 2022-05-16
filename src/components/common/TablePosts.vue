@@ -22,7 +22,7 @@
         @click.prevent="onClickRow(row)"
         :href="`/community/${row.sharingKey}`"
         :key="row.id"
-        v-for="row in $store.getters.isMobile ? posts.data : [...notices.data, ...posts.data]">
+        v-for="row in [...notices.data, ...posts.data]">
         <AdaptiveLayout :gap="4">
           <div class="id-title">
             <div
