@@ -9,21 +9,20 @@ const useLazyLoads = async () => {
     helpers.dom.loadScript({ url: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3069752836489386' })
   }
 
-  const loadQuill = async () => {
-    await helpers.dom.loadScript({ url: '//cdn.quilljs.com/1.3.7/quill.min.js'})
-  }
+  const loadQuill = () => helpers.dom.loadScript({ url: '//cdn.quilljs.com/1.3.7/quill.min.js'})
 
-  const loadVendors = async () => {
-    await Promise.all([
-      helpers.dom.loadScript({ url: 'https://cdn.jsdelivr.net/npm/hangul-js@0.2.6/hangul.min.js' }),
-      helpers.dom.loadScript({ url: 'https://s3.tradingview.com/tv.js' }),
-    ])
-  }
+  const loadVendors = () => Promise.all([
+    helpers.dom.loadScript({ url: 'https://cdn.jsdelivr.net/npm/hangul-js@0.2.6/hangul.min.js' }),
+    helpers.dom.loadScript({ url: 'https://s3.tradingview.com/tv.js' }),
+  ])
+
+  const usePWA = () => helpers.dom.loadScript({ url: '/scripts/pwa.js' })
 
   await Promise.all([
     loadQuill(),
     loadGooglePlugins(),
     loadVendors(),
+    usePWA(),
   ])
 }
 

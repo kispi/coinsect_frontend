@@ -6,6 +6,7 @@ import plugins from './plugins'
 import App from './App'
 import useLazyLoads from './lazy-loads'
 import useGlobalComponents from './global-components'
+import './registerServiceWorker'
 
 require('@/assets/styles/index.scss')
 
