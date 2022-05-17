@@ -44,8 +44,8 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   color: var(--white);
   border-radius: 50%;
-  bottom: 16px;
-  left: 16px;
+  bottom: 8px;
+  left: 8px;
   transition: all 0.5s ease;
   position: fixed;
   z-index: 1;
