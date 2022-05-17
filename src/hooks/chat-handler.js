@@ -79,7 +79,8 @@ const useChatHandler = () => {
   const connect = async token => {
     const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
 
-    connection.value = new WebSocket(`${endpoint}/chat${token ? `?token=${token}` : ''}`)
+    // 나중엔 endpoint가 채팅서버로 바뀌어야함
+    connection.value = new WebSocket(`${endpoint}/webchat${token ? `?token=${token}` : ''}`)
 
     connection.value.onmessage = event => {
       try {
@@ -115,7 +116,7 @@ const useChatHandler = () => {
     const firstMessageId = (messages.value[0] || {}).id
     try {
       loadingMessages.value = true
-      const data = await plugins.$http.get('messages', { params: { firstMessageId } })
+      const data = await plugins.$http.get('webchat/messages', { params: { firstMessageId } })
       if ((data || []).length === 0) {
         fullyLoaded.value = true
         return
