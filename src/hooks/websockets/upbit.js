@@ -61,11 +61,6 @@ const useUpbit = () => {
     })
   }
 
-  const setDocumentTitle = ticker => {
-    const priceString = plugins.$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: store.getters.settings.baseExchangeMarket })
-    document.title = `${!isNaN(ticker.$$premiumRate) ? `${plugins.$helpers.number.pretty.percent(ticker.$$premiumRate)}% / ` : 'Connecting... '}${priceString} ${ticker.$$symbol}`
-  }
-
   const subscribe = ({ type, codes, $$raw }) => new Promise((resolve) => {
     if (!type || !codes) return
 
@@ -88,7 +83,6 @@ const useUpbit = () => {
     const handleTickerMessage = json => {
       const symbol = json.cd.split(`${store.getters.settings.baseExchangeMarket.toUpperCase()}-`)[1]
       setAsBasePrice({ symbol, json })
-      if (store.getters.settings.documentTitleTicker === symbol) setDocumentTitle(store.getters.realTimeTickers[symbol])
     }
 
     connection.onmessage = event => {
@@ -113,7 +107,6 @@ const useUpbit = () => {
     eventAsJSON,
     subscribe,
     setAsBasePrice,
-    setDocumentTitle,
   }
 }
 

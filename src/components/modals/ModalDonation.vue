@@ -1,10 +1,17 @@
 <template>
-  <div   class="modal-donation">
+  <div
+    ref="refModalDonation"
+    class="modal-donation">
+    <AppLoading :loading="drawing"/>
     <ModalHeader :title="$translate('MODAL_DONATION')" @close="$emit('close')"/>
     <div class="body pre-line">
+      <div class="description m-b-16">
+        <div class="m-b-8">혹시 커피한잔 사주시고 싶으신 형님들이 계시다면 아래 지갑으로 송금해주시면 잘 사용하겠습니다 :)</div>
+        <div>하단 QRCode는 각 코인별 지갑주소이며, QRCode 하단 지갑주소를 클릭하시면 해당 지갑의 트랜잭션 내역을 블록체인 익스플로어에서 보실 수 있습니다.</div>
+      </div>
       <div
         v-if="wallets"
-        class="sendable-tickers">
+        class="sendable-tickers pretty-scrollbar">
         <div
           @click="selectWallet(wallet)"
           class="sendable-ticker"
@@ -16,11 +23,6 @@
         </div>
       </div>
       <div class="selected-wallet f-mono">
-        <div
-          class="text-center"
-          :class="{'o-0': !selectedWallet}"
-          v-html="((selectedWallet || {}).blockchain || {}).symbol || 'PLACEHOLDER'"
-        />
         <div class="qr-code-container">
           <div id="modal-donation-qr-code" class="overlay"/>
         </div>
@@ -37,16 +39,15 @@
 
 <script>
 import { getCurrentInstance, onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
 
 export default {
   props: ['options'],
-  setup() {
+  setup(_, { emit }) {
+    const refModalDonation = ref(null)
+
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
-    const store = useStore()
-
-    const prepared = ref(null)
+    const drawing = ref(null)
 
     const wallets = ref(null)
 
@@ -71,9 +72,11 @@ export default {
       } catch (e) {}
     }
 
-    const selectWallet = wallet => {
+    const selectWallet = async wallet => {
+      drawing.value = true
+      await plugins.$helpers.sleep(100)
+      drawing.value = false
       selectedWallet.value = wallet
-
       if (typeof QRCode === 'undefined') return
 
       if (qrcode.value) {
@@ -82,7 +85,12 @@ export default {
         return
       }
 
-      const size = store.getters.windowInnerWidth < 480 ? 200 : 320
+      if (!refModalDonation.value) {
+        emit('close')
+        return
+      }
+
+      const size = refModalDonation.value.getBoundingClientRect().width - 16 * 2 // 양쪽 패딩만큼 뺌
       qrcode.value = new QRCode(document.getElementById('modal-donation-qr-code'), {
         text: selectedWallet.value.address,
         width: size,
@@ -94,7 +102,7 @@ export default {
     const init = async () => {
       try {
         await Promise.all([
-          plugins.$helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' }).then(() => prepared.value),
+          plugins.$helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' }),
           callApi(),
         ])
 
@@ -113,6 +121,8 @@ export default {
     onMounted(init)
 
     return {
+      refModalDonation,
+      drawing,
       wallets,
       selectedWallet,
       copyToClipboard,
@@ -126,32 +136,34 @@ export default {
 <style lang="scss" scoped>
 .modal-donation {
   border-radius: 4px;
-  width: 480px;
+  width: 400px;
   min-height: 520px;
 
   .body {
     padding: 16px;
-    line-height: 20px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+  }
+
+  .description {
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--text-stress);
   }
 
   .sendable-tickers {
     background: var(--white);
-    padding: 8px;
-    margin-top: 27px;
     border: 1px solid var(--gs-22);
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.24);
+    display: flex;
+    overflow: auto;
 
     .sendable-ticker {
-      display: flex;
-      align-items: center;
+      padding: 4px 8px;
+      flex: 1 1 0;
+      user-select: none;
 
-      .app-img {
-        width: 16px;
-        height: 16px;
-        margin-right: 8px;
+      img {
+        width: 24px;
+        height: 24px;
       }
 
       .symbol {
@@ -161,18 +173,16 @@ export default {
         font-size: 12px;
       }
 
-      &:not(:last-child) {
-        margin-bottom: 4px;
-      }
-
       &:hover {
         text-decoration: underline;
         cursor: pointer;
       }
 
       &.selected {
+        background: var(--brand-primary);
+
         .symbol {
-          color: var(--brand-primary);
+          color: var(--white);
         }
       }
     }
@@ -180,18 +190,18 @@ export default {
 
   .selected-wallet {
     font-size: 12px;
-    width: 200px;
     color: var(--text-stress);
 
     .qr-code-container {
       padding-top: 100%;
       position: relative;
       box-shadow: 0 0 1px var(--gs-22);
-      margin: 8px 0;
+      margin: 16px 0;
     }
 
     .address {
       display: flex;
+      color: var(--text-stress);
     }
 
     i,
@@ -201,12 +211,6 @@ export default {
 
     .value:hover {
       text-decoration: underline;
-    }
-  }
-
-  @media (min-width: 480px) {
-    .selected-wallet {
-      width: 320px;
     }
   }
 }

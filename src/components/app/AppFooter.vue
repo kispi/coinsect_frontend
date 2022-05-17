@@ -9,7 +9,7 @@
             <i class="fal fa-envelope"/><div><a href="mailto:admin@coinsect.io">coinsect.io@gmail.com</a></div>
           </address>
           <div class="flex-row items-center cursor-pointer">
-            <i class="fal fa-coffee f-14"/><a class="cursor-pointer" @click="$modal.custom({ component: 'ModalDonation' })">운영자에게 커피한잔 사주기</a>
+            <i class="fal fa-coffee f-14"/><a class="cursor-pointer" @click="$modal.custom({ component: 'ModalDonation' })" v-html="$translate('MODAL_DONATION')"/>
           </div>
         </div>
         <div v-if="($store.getters.config || {}).version">

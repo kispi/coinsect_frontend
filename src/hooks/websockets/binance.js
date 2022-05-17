@@ -1,8 +1,11 @@
 import helpers from '@/helpers'
+import useWebsocketCommon from './websocket-common'
 import { useStore } from 'vuex'
 
 const useBinance = () => {
   const store = useStore()
+
+  const { setTickerSummaryInTitle } = useWebsocketCommon()
 
   const subscribe = ({ codes, $$raw }) => new Promise((resolve) => {
     const connection = new WebSocket('wss://stream.binance.com:9443/ws')
@@ -27,12 +30,15 @@ const useBinance = () => {
           return
         }
 
+        const $$symbol = json.s.split((store.getters.settings.baseExchangeMarket === 'krw' ? 'usdt' : 'btc').toUpperCase())[0]
         helpers.dataSetter.calculateKimp({
           // krw마켓은 usdt와 비교, btc는 그대로.
-          $$symbol: json.s.split((store.getters.settings.baseExchangeMarket === 'krw' ? 'usdt' : 'btc').toUpperCase())[0],
+          $$symbol,
           $$tradePriceTarget: parseFloat(json.c) || 0,
           $$vol24HTarget: parseFloat(json.q) || 0,
         })
+
+        if (store.getters.settings.documentTitleTicker === $$symbol) setTickerSummaryInTitle(store.getters.realTimeTickers[$$symbol])
       } catch (e) {}
     }
   })

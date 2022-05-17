@@ -11,7 +11,7 @@
         </div>
         <div class="numbers">
           <div class="views">조회 {{ post.views }}</div>
-          <div class="ups">추천 {{ post.$$reactions.up.count }}</div>
+          <div class="ups">추천 {{ (post.$$reactions.up || {}).count || 0 }}</div>
           <div class="replies">댓글 {{ post.$$numReplies }}</div>
         </div>
       </div>
@@ -20,11 +20,11 @@
         <div
           @click="toggleReaction(rType)"
           class="reaction-box"
-          :class="{'activated': post.$$reactions[rType].activated}"
+          :class="{'activated': (post.$$reactions[rType] || {}).activated}"
           :key="rType"
           v-for="rType in ['up', 'down']">
           <div class="reaction-type">{{ rType }}</div>
-          <div class="value">{{ post.$$reactions[rType].count }}</div>
+          <div class="value">{{ (post.$$reactions[rType] || {}).count || 0 }}</div>
         </div>
       </div>
     </div>

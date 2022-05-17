@@ -1,6 +1,6 @@
 <template>
   <tr
-    @click="setDocumentTitleTicker"
+    @click="setSummaryOnDocumentTitle"
     class="real-time-price-row">
     <td class="ticker-symbol">
       <div class="image-name">
@@ -89,7 +89,7 @@
 <script>
 import { getCurrentInstance, computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import useUpbit from '@/hooks/websockets/upbit'
+import useWebsocketCommon from '@/hooks/websockets/websocket-common'
 
 export default {
   props: ['ticker'],
@@ -100,7 +100,7 @@ export default {
 
     const symbol = computed(() => store.getters.symbols[props.ticker.$$symbol] || {})
 
-    const { setDocumentTitle } = useUpbit()
+    const { setTickerSummaryInTitle } = useWebsocketCommon()
 
     const bybitMarket = symbol => {
       const supportedMarkets = store.getters.markets.bybit.filter(o => o.endsWith('USDT'))
@@ -142,13 +142,10 @@ export default {
       store.commit('setSettings', { favorites })
     }
 
-    const setDocumentTitleTicker = () => {
-      const settings = store.getters.settings
-      settings.documentTitleTicker = props.ticker.$$symbol
-      store.commit('setSettings', settings)
-      setDocumentTitle(props.ticker)
-      settings.documentTitleTicker = props.ticker.$$symbol
+    const setSummaryOnDocumentTitle = () => {
+      store.commit('setSettings', { documentTitleTicker: props.ticker.$$symbol })
       plugins.$toast.success(plugins.$translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, props.ticker.$$symbol))
+      setTickerSummaryInTitle(props.ticker)
     }
 
     return {
@@ -156,7 +153,7 @@ export default {
       openModalTradingView,
       autoFrac,
       openModalOrderbook,
-      setDocumentTitleTicker,
+      setSummaryOnDocumentTitle,
       toggleFavorite,
       bybitMarket,
     }

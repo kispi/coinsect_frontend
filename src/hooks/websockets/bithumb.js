@@ -66,11 +66,6 @@ const useBithumb = () => {
     })
   }
 
-  const setDocumentTitle = ticker => {
-    const priceString = plugins.$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: store.getters.settings.baseExchangeMarket })
-    document.title = `${!isNaN(ticker.$$premiumRate) ? `${plugins.$helpers.number.pretty.percent(ticker.$$premiumRate)}% / ` : 'Connecting... '}${priceString} ${ticker.$$symbol}`
-  }
-
   const subscribe = ({ type, symbols, $$raw }) => new Promise((resolve) => {
     if (!type || !symbols) return
 
@@ -91,7 +86,6 @@ const useBithumb = () => {
 
       const symbol = json.symbol.split('_KRW')[0]
       setAsBasePriceFromWebSocket({ symbol, json })
-      if (store.getters.settings.documentTitleTicker === symbol) setDocumentTitle(store.getters.realTimeTickers[symbol])
     }
 
     connection.onmessage = event => {      
@@ -116,7 +110,6 @@ const useBithumb = () => {
   return {
     setAsBasePriceFromRestAPI,
     subscribe,
-    setDocumentTitle,
   }
 }
 
