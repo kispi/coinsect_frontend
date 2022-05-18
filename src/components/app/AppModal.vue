@@ -53,8 +53,9 @@ export default {
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
     ModalImageUploader: defineAsyncComponent(() => import('@/components/modals/ModalImageUploader')),
-    ModalChatSettings: defineAsyncComponent(() => import('@/components/modals/ModalChatSettings')),
     ModalPositionRequestEdit: defineAsyncComponent(() => import('@/components/modals/ModalPositionRequestEdit')),
+    ModalChatUsers: defineAsyncComponent(() => import('@/components/modals/ModalChatUsers')),
+    ModalChatSettings: defineAsyncComponent(() => import('@/components/modals/ModalChatSettings')),
   },
   setup(props) {
     const show = ref(false)
@@ -70,6 +71,8 @@ export default {
     const { makeDraggable } = useModalDraggable()
 
     const onClose = e => {
+      if (!props.modal) return
+
       if (props.modal.resolve) props.modal.resolve(e)
 
       store.commit('popModal', props.modal)

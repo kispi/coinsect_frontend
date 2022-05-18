@@ -1,9 +1,9 @@
 <template>
-  <span
+  <div
     v-if="token"
     class="badge-token">
     {{ token.substring(0, 3).toUpperCase() }}
-  </span>
+  </div>
 </template>
 
 <script>

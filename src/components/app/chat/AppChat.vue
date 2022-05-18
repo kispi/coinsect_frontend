@@ -14,17 +14,27 @@
         <div class="section-users">
           <div
             @click="openModalChatUsers"
-            class="num-users f-mono">
+            class="num-users f-mono"
+            :class="numUsersClass">
             <i class="fa fa-user-group m-r-4"/>
             {{ ($store.getters.numActiveUsers || 0).toLocaleString() }}
           </div>
           <div class="m-l-16 m-r-16">/</div>
           <div
             v-if="$store.getters.me"
-            @click="openModalChatSettings"
             class="profile">
-            <AppImg v-if="$store.getters.me.profile.image" :src="$store.getters.me.profile.image"/>
-            <div class="nickname" v-html="$store.getters.me.profile.nickname"/>
+            <AppImg
+              @click="$modal.images({
+                images: [$store.getters.me.profile.image],
+              })"
+              v-if="$store.getters.me.profile.image"
+              :src="$store.getters.me.profile.image"
+            />
+            <div
+              @click="openModalChatSettings"
+              class="nickname"
+              v-html="$store.getters.me.profile.nickname"
+            />
           </div>
         </div>
         <div class="chat-settings">
@@ -50,7 +60,7 @@
           class="incoming-message-overlay flex-row items-center">
           <div class="flex-fill flex-row items-center">
             <div class="flex-fill">
-              <div class="text flex-wrap lines-1" v-html="incomingMessage.text"/>
+              <div class="flex-wrap lines-1" v-html="incomingMessage.text"/>
               <div class="nickname lines-1" v-html="incomingMessage.profile.nickname"/>
             </div>
             <i class="fa fa-chevron-down flex-wrap"/>
@@ -157,6 +167,8 @@ export default {
 
     const incomingMessage = ref(null)
 
+    const numUsersClass = ref(null)
+
     const { makeDraggable } = useModalDraggable()
 
     const {
@@ -182,9 +194,12 @@ export default {
     }
 
     const openModalChatUsers = () => {
-      // plugins.$modal.custom({
-      //   component: 'ModalChatUsers',
-      // })
+      plugins.$modal.custom({
+        component: 'ModalChatUsers',
+        options: {
+          noBackdrop: true,
+        },
+      })
     }
 
     const openModalChatSettings = () => {
@@ -326,6 +341,16 @@ export default {
       () => setTimeout(setAppChatPosition),
     )
 
+    watch(
+      () => store.getters.numActiveUsers,
+      (newVal, oldVal) => {
+        if (!newVal || !oldVal) return
+
+        if (newVal > oldVal) numUsersClass.value = 'c-price-up'
+        if (newVal < oldVal) numUsersClass.value = 'c-price-down'
+      },
+    )
+
     onMounted(() => {
       storedUnreads.value = plugins.$helpers.localStorage.getMeta('numUnreads')
 
@@ -346,6 +371,7 @@ export default {
       refTextarea,
       refAppChatBody,
       refAppChat,
+      numUsersClass,
       numUnreads,
       connected,
       storedUnreads,
@@ -407,6 +433,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: var(--app-chat-padding);
+    user-select: none;
     cursor: grab;
 
     .section-users {
@@ -426,6 +453,7 @@ export default {
           height: 16px;
           margin-right: 4px;
           border-radius: 50%;
+          cursor: pointer;
         }
 
         .nickname {

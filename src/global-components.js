@@ -19,6 +19,10 @@ import Quill from '@/components/app/quill/Quill'
 import ImageUploader from '@/components/app/ImageUploader'
 import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 
+// chat components
+import AppChatProfile from '@/components/app/chat/AppChatProfile'
+import BadgeToken from '@/components/app/chat/BadgeToken'
+
 // common components
 import ButtonCommunity from '@/components/common/ButtonCommunity'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
@@ -62,6 +66,10 @@ const useGlobalComponents = app => {
     .component('Quill', Quill)
     .component('ImageUploader', ImageUploader)
     .component('WrapperDropdownOverlay', WrapperDropdownOverlay)
+
+    // chat components
+    .component('AppChatProfile', AppChatProfile)
+    .component('BadgeToken', BadgeToken)
 
     // common components
     .component('ButtonCommunity', ButtonCommunity)

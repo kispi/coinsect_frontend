@@ -2,7 +2,11 @@ import { store as $store } from '@/store'
 import translate from './translate'
 
 const initModal = (options, component) => new Promise(resolve => {
-  if ($store.getters.modals.findIndex(modal => modal.component === component) !== -1) return
+  if ($store.getters.modals.findIndex(modal => {
+    if (!modal) return
+
+    return modal.component === component
+  }) !== -1) return
 
   $store.commit('addModal', { component, options, resolve })
 })

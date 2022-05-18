@@ -18,7 +18,7 @@
             $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('YY-MM-DD HH:mm:ss') :
             ''
           }}
-          <span class="diff" :class="diff.class" v-if="diff.string">({{ diff.string }})</span>
+          <span class="m-l-4 diff" :class="diff.class" v-if="diff.string">({{ diff.string }})</span>
         </span>
       </div>
       <div

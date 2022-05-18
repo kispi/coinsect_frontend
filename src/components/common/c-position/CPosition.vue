@@ -118,7 +118,7 @@ export default {
 
   .streamer-off {
     color: var(--text-stress);
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1;
     pointer-events: none;
   }

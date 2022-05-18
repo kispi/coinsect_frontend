@@ -2,27 +2,8 @@
   <div
     class="app-chat-message"
     :class="{'mine': message.isMine}">
-    <div class="content" :class="{'m-t-12': (prevMessage ||{}).isMine !== (message || {}).isMine}">
-      <div
-        v-if="showNickname"
-        class="nickname"
-        :class="{'admin': $store.getters.config.adminToken === message.token}">
-        <AppImg
-          v-if="message.profile.image"
-          class="profile-img"
-          :src="message.profile.image"
-          @click="$modal.images({
-            images: [message.profile.image],
-          })"
-        />
-        <span
-          v-else
-          class="dot"
-          :style="{ background: `#${(message.token || '').slice(0, 6)}` }"
-        />
-        <span class="name" v-html="message.profile.nickname"/>
-        <BadgeToken :token="message.token"/>
-      </div>
+    <div class="content" :class="{'m-t-12': !(prevMessage ||{}).isMine && (message || {}).isMine}">
+      <AppChatProfile v-if="showProfile" :user="message"/>
       <div class="text-and-timestamp">
         <div class="text">{{ message.text }}</div>
         <div
@@ -38,19 +19,15 @@
 
 <script>
 import { computed, getCurrentInstance } from 'vue'
-import BadgeToken from './BadgeToken'
 
 export default {
-  components: {
-    BadgeToken,
-  },
   props: ['prevMessage', 'message', 'nextMessage'],
   setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
-    const showNickname = computed(() => {
+    const showProfile = computed(() => {
       if (!props.message.profile) return
 
       if (!props.prevMessage) return true
@@ -69,7 +46,7 @@ export default {
     })
 
     return {
-      showNickname,
+      showProfile,
       showTimestamp,
     }
   },
@@ -84,43 +61,9 @@ export default {
   .content {
     width: 100%;
 
-    .nickname {
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
+    .app-chat-profile {
       margin-top: 12px;
       margin-bottom: 8px;
-
-      &.admin {
-        .name {
-          color: var(--brand-primary);
-        }
-
-        .dot,
-        .badge-token {
-          display: none;
-        }
-      }
-
-      .profile-img {
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        margin-right: 4px;
-        cursor: pointer;
-      }
-
-      .dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 3px;
-        margin-right: 4px;
-      }
-
-      .name {
-        color: var(--text-stress);
-        margin-right: 8px;
-      }
     }
   }
 
@@ -152,7 +95,7 @@ export default {
       flex-direction: row-reverse;
     }
 
-    .nickname {
+    .app-chat-profile {
       display: none;
     }
   }

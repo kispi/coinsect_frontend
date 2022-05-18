@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance, onUnmounted } from 'vue'
+import { ref, getCurrentInstance, onUnmounted, computed } from 'vue'
 import { useStore } from 'vuex'
 
 const useChatHandler = () => {
@@ -8,7 +8,7 @@ const useChatHandler = () => {
 
   const messages = ref([])
 
-  const connection = ref(null)
+  const connection = computed(() => store.getters.websocketConnections.chat)
 
   const connected = ref(null)
 
@@ -58,6 +58,9 @@ const useChatHandler = () => {
         plugins.$helpers.localStorage.setMeta('token', message.user.token)
         store.commit('setMe', message.user)
         break
+      case 'connections':
+        plugins.$bus.$emit('incoming-connections', message)
+        break
     }
 
     store.commit('setNumActiveUsers', message.numConnections)
@@ -77,7 +80,9 @@ const useChatHandler = () => {
     const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
 
     // 나중엔 endpoint가 채팅서버로 바뀌어야함
-    connection.value = new WebSocket(`${endpoint}/webchat${token ? `?token=${token}` : ''}`)
+    store.commit('setWebsocketConnections', {
+      chat: new WebSocket(`${endpoint}/webchat${token ? `?token=${token}` : ''}`),
+    })
 
     connection.value.onmessage = event => {
       try {
@@ -143,6 +148,7 @@ const useChatHandler = () => {
   })
 
   return {
+    connection,
     connected,
     messages,
     loadMessages,
