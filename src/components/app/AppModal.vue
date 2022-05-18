@@ -53,7 +53,7 @@ export default {
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
     ModalImageUploader: defineAsyncComponent(() => import('@/components/modals/ModalImageUploader')),
-    ModalChatProfile: defineAsyncComponent(() => import('@/components/modals/ModalChatProfile')),
+    ModalChatSettings: defineAsyncComponent(() => import('@/components/modals/ModalChatSettings')),
     ModalPositionRequestEdit: defineAsyncComponent(() => import('@/components/modals/ModalPositionRequestEdit')),
   },
   setup(props) {
@@ -158,6 +158,7 @@ export default {
     transition: all .2s ease;
     max-width: calc(100vw - 32px);
     background: var(--white);
+    border: 1px solid var(--border-base);
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
     position: absolute;
@@ -233,7 +234,7 @@ export default {
 
 #app.dark {
   .modal-base-style {
-    background: var(--gs-44);
+    background: var(--gs-bybit);
   }
 }
 </style>

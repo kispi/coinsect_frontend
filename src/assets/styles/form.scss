@@ -4,7 +4,7 @@
 
   &.focus,
   &.active {
-    border: 1px solid var(--brand-primary);
+    border: 1px solid var(--text-stress);
   }
 
   input,
@@ -23,7 +23,6 @@
 textarea {
   resize: none;
   font-family: proxima-nova, sans-serif;
-  border-radius: 4px;
   font-size: 14px;
   line-height: 22px;
 }
@@ -32,12 +31,12 @@ input,
 textarea {
   border: 1px solid var(--border-base);
   padding: 8px;
-  border-radius: 4px;
-  transition: all 0.35s ease;
+  transition: none;
 
   &:focus,
   &:active {
-    border: 1px solid var(--brand-primary);
+    border: 1px solid var(--text-stress);
+    transition: none;
   }
 
   &:not([type=radio]):not([type=checkbox]) {

@@ -11,36 +11,32 @@
       class="app-chat-container"
       :class="{'transparent': $store.getters.settings.chatTransparent}">
       <div class="app-chat-header">
-        <div
-          v-if="$store.getters.me"
-          @click="openModalChangeProfile"
-          class="profile">
-          <div class="nickname" v-html="$store.getters.me.profile.nickname"/>
-          <BadgeToken :token="$store.getters.me.token"/>
+        <div class="section-users">
+          <div
+            @click="openModalChatUsers"
+            class="num-users f-mono">
+            <i class="fa fa-user-group m-r-4"/>
+            {{ ($store.getters.numActiveUsers || 0).toLocaleString() }}
+          </div>
+          <div class="m-l-16 m-r-16">/</div>
+          <div
+            v-if="$store.getters.me"
+            @click="openModalChatSettings"
+            class="profile">
+            <AppImg v-if="$store.getters.me.profile.image" :src="$store.getters.me.profile.image"/>
+            <div class="nickname" v-html="$store.getters.me.profile.nickname"/>
+          </div>
         </div>
         <div class="chat-settings">
           <div
             class="clickable-icon-wrapper"
-            @click="$store.commit('setSettings', { chatTransparent: !$store.getters.settings.chatTransparent })">
-            <i class="fal" :class="$store.getters.settings.chatTransparent ? 'fa-eye' : 'fa-eye-slash'"/>
-          </div>
-          <div
-            class="clickable-icon-wrapper"
-            @click="$store.commit('setSettings', { chatDing: !$store.getters.settings.chatDing })">
-            <i class="fal" :class="$store.getters.settings.chatDing ? 'fa-bell' : 'fa-bell-slash'"/>
+            @click="openModalChatSettings">
+            <i class="fal fa-cog"/>
           </div>
           <div
             class="clickable-icon-wrapper"
             @click="toggleChatFolded">
             <i class="fal fa-minus"/>
-          </div>
-          <div
-            class="clickable-icon-wrapper"
-            @click="toggleChatSizeMax">
-            <i
-              class="fal"
-              :class="$store.getters.settings.chatSizeMax ? 'fa-clone' : 'fa-square'"
-            />
           </div>
         </div>
       </div>
@@ -59,9 +55,6 @@
             </div>
             <i class="fa fa-chevron-down flex-wrap"/>
           </div>
-        </div>
-        <div class="num-users f-mono">
-          <i class="fas fa-user-friends"/>{{ ($store.getters.numActiveUsers || 0).toLocaleString() }}
         </div>
         <div
           @click="scrollToBottom"
@@ -122,7 +115,6 @@
 import { ref, computed, getCurrentInstance, nextTick, watch, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppChatMessage from './AppChatMessage'
-import BadgeToken from './BadgeToken'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
 import useModalDraggable from '@/hooks/modal-draggable'
@@ -130,7 +122,6 @@ import useModalDraggable from '@/hooks/modal-draggable'
 export default {
   components: {
     AppChatMessage,
-    BadgeToken,
     DailySeparator,
   },
   setup() {
@@ -190,16 +181,25 @@ export default {
       })
     }
 
-    const openModalChangeProfile = () => {
-      plugins.$modal.custom({
-        component: 'ModalChatProfile',
-      }).then(result => {
-        if (result) {
-          result.nickname = (result.nickname || '').slice(0, store.getters.config.maxlength.nickname)
-          setAccount(result)
-        }
+    const openModalChatUsers = () => {
+      // plugins.$modal.custom({
+      //   component: 'ModalChatUsers',
+      // })
+    }
 
-        setTimeout(() => refTextarea.value.focus()) // 바로하면 textarea에서 엔터까지 쳐짐
+    const openModalChatSettings = () => {
+      plugins.$modal.custom({
+        component: 'ModalChatSettings',
+        options: {
+          setAccount,
+        },
+      }).then(() => {
+        // 바로하면 textarea에서 엔터까지 쳐짐
+        setTimeout(() => {
+          if (!refTextarea.value) return
+
+          refTextarea.value.focus()
+        })
       })
     }
 
@@ -226,10 +226,6 @@ export default {
       nextTick(() => {
         if (!store.getters.settings.chatFolded) scrollToBottom()
       })
-    }
-
-    const toggleChatSizeMax = () => {
-      store.commit('setSettings', { chatSizeMax: !store.getters.settings.chatSizeMax })
     }
 
     const autoScrollable = ref(true)
@@ -357,11 +353,11 @@ export default {
       messages,
       onKeydown,
       incomingMessage,
-      openModalChangeProfile,
+      openModalChatUsers,
+      openModalChatSettings,
       onClickIncomingMessageOverlay,
       sendTextMessage,
       toggleChatFolded,
-      toggleChatSizeMax,
       autoScrollable,
       scrollToBottom,
       onScroll,
@@ -413,16 +409,32 @@ export default {
     padding: var(--app-chat-padding);
     cursor: grab;
 
-    .profile {
+    .section-users {
       display: flex;
-      align-items: baseline;
+      align-items: center;
 
-      .nickname {
-        color: var(--text-stress);
-        margin-right: 8px;
-        font-weight: 700;
-        text-decoration: underline;
+      .num-users {
+        font-size: 12px;
         cursor: pointer;
+      }
+
+      .profile {
+        display: flex;
+
+        .app-img {
+          width: 16px;
+          height: 16px;
+          margin-right: 4px;
+          border-radius: 50%;
+        }
+
+        .nickname {
+          color: var(--text-stress);
+          margin-right: 8px;
+          font-weight: 700;
+          text-decoration: underline;
+          cursor: pointer;
+        }
       }
     }
 
@@ -475,22 +487,6 @@ export default {
       .nickname {
         font-size: 12px;
         margin-top: 4px;
-      }
-    }
-
-    .num-users {
-      position: absolute;
-      text-align: right;
-      top: calc(48px + 1px);
-      color: var(--price-up);
-      left: 0;
-      right: 0;
-      padding: 8px;
-      font-size: 12px;
-      font-weight: 700;
-
-      .fa-user-friends {
-        margin-right: 4px;
       }
     }
   }
@@ -588,10 +584,6 @@ export default {
         border-top: 1px solid var(--border-base);
         border-bottom: 1px solid var(--border-base);
       }
-
-      .num-users {
-        background: linear-gradient(to bottom, var(--gs-e0), transparent);
-      }
     }
   }
 
@@ -606,10 +598,6 @@ export default {
       .app-chat-body {
         border-top: 1px solid var(--gs-44);
         border-bottom: 1px solid var(--gs-44);
-      }
-
-      .num-users {
-        background: linear-gradient(to bottom, var(--gs-22), transparent);
       }
     }
   }

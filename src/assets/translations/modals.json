@@ -1,7 +1,7 @@
 {
-  "MODAL_CHANGE_CHAT_PROFILE": {
-    "en": "Change Chat Profile",
-    "kr": "채팅 프로필 변경"
+  "MODAL_CHAT_SETTINGS": {
+    "en": "Chat Settings",
+    "kr": "채팅 설정"
   },
   "MODAL_ORDERBOOK": {
     "en": "Orderbook (%exchange / %market)",

@@ -79,7 +79,7 @@ export default {
 <style lang="scss" scoped>
 .app-tooltip {
   color: var(--white);
-  background: var(--gs-44);
+  background: var(--gs-66);
   position: absolute;
   border-radius: 4px;
   padding: 8px 12px;
@@ -93,7 +93,7 @@ export default {
     height: 0;
     border-left: var(--triangle-size) solid transparent;
     border-right: var(--triangle-size) solid transparent;
-    border-top: var(--triangle-size) solid var(--gs-44);
+    border-top: var(--triangle-size) solid var(--gs-66);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

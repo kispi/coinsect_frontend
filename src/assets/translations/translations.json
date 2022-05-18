@@ -7,6 +7,10 @@
     "en": "Cancel",
     "kr": "취소"
   },
+  "CLOSE": {
+    "en": "Close",
+    "kr": "닫기"
+  },
   "CONFIRM": {
     "en": "Confirm",
     "kr": "확인"

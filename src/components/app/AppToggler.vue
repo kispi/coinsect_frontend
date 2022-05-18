@@ -3,14 +3,13 @@
     class="app-toggler"
     :class="{'checked': modelValue}"
     @click.stop="onClickCheckbox">
-    <span v-if="useOnOff" class="on-off" v-html="modelValue ? 'On' : 'Off'"/>
     <div class="handle"/>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['modelValue', 'useOnOff'],
+  props: ['modelValue'],
   setup(props ,{ emit }) {
     const onClickCheckbox = () => {
       const newVal = props.modelValue !== true
@@ -35,17 +34,6 @@ export default {
   position: relative;
   background: var(--gs-bb);
   cursor: pointer;
-
-  .on-off {
-    position: absolute;
-    top: 50%;
-    right: calc(var(--app-toggler-gap) * 2);
-    transform: translateY(-50%);
-    color: var(--white);
-    opacity: 0.6;
-    font-size: 12px;
-    font-weight: 700;
-  }
 
   .handle {
     width: calc(var(--app-toggler-width) / 2 - var(--app-toggler-gap) * 2);

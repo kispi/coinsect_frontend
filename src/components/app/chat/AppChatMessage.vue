@@ -7,7 +7,19 @@
         v-if="showNickname"
         class="nickname"
         :class="{'admin': $store.getters.config.adminToken === message.token}">
-        <span class="dot" :style="{ background: `#${(message.token || '').slice(0, 6)}` }"/>
+        <AppImg
+          v-if="message.profile.image"
+          class="profile-img"
+          :src="message.profile.image"
+          @click="$modal.images({
+            images: [message.profile.image],
+          })"
+        />
+        <span
+          v-else
+          class="dot"
+          :style="{ background: `#${(message.token || '').slice(0, 6)}` }"
+        />
         <span class="name" v-html="message.profile.nickname"/>
         <BadgeToken :token="message.token"/>
       </div>
@@ -75,8 +87,9 @@ export default {
     .nickname {
       text-transform: uppercase;
       display: flex;
-      align-items: baseline;
+      align-items: center;
       margin-top: 12px;
+      margin-bottom: 8px;
 
       &.admin {
         .name {
@@ -87,6 +100,14 @@ export default {
         .badge-token {
           display: none;
         }
+      }
+
+      .profile-img {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        margin-right: 4px;
+        cursor: pointer;
       }
 
       .dot {

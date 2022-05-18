@@ -23,6 +23,7 @@ const useHealthChecker = () => {
           })
         }
         store.commit('setConfig', config)
+        store.dispatch('loadNotifications')
       } catch (e) {}
       refreshConfig()
     }, 1000 * 60 * 5)

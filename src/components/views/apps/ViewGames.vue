@@ -42,7 +42,7 @@ export default {
 .view-games {
   .list-games {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 8px;
 
     @media (max-width: 767px) {
@@ -52,7 +52,7 @@ export default {
 
   .game {
     border-radius: 8px;
-    background: var(--brand-primary);
+    background: var(--gs-44);
     padding-top: 100%;
     position: relative;
     cursor: pointer;

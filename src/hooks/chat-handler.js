@@ -58,22 +58,19 @@ const useChatHandler = () => {
         plugins.$helpers.localStorage.setMeta('token', message.user.token)
         store.commit('setMe', message.user)
         break
-      case 'account':
-        store.commit('setMe', message.user)
-        break
     }
 
     store.commit('setNumActiveUsers', message.numConnections)
   }
 
-  const setAccount = profile => {
-    connection.value.send(JSON.stringify({
-      type: 'account',
-      user: {
-        token: store.getters.me.token,
+  const setAccount = async profile => {
+    try {
+      return await plugins.$http.put(`webchat/users/${store.getters.me.token}`, {
         profile,
-      },
-    }))
+      })
+    } catch (e) {
+      return Promise.reject(e)
+    }
   }
 
   const connect = async token => {
