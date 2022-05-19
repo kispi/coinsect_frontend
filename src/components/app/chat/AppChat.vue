@@ -280,13 +280,12 @@ export default {
       nextTick(() => dom.scrollTop = dom.scrollHeight)
     }
 
-    const ding = new Audio(plugins.$helpers.useS3('files/ding.mp3'))
-    ding.volume = 0.2
+    const ding = ref(null)
 
     const onIncomingMessage = () => {
       if (store.getters.settings.chatFolded) {
         plugins.$helpers.animate.shake(refFoldedIcon.value)
-        if (ding && store.getters.settings.chatDing) ding.play()
+        if (ding.value && store.getters.settings.chatDing) ding.value.play()
         return
       }
 
@@ -359,6 +358,11 @@ export default {
 
       init()
       setAppChatPosition()
+
+      if (typeof Audio === 'undefined') return
+
+      ding.value = new Audio('files/ding.mp3')
+      ding.value.volume = 0.2
     })
 
     onUnmounted(() => {
