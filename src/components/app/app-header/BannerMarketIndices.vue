@@ -82,7 +82,7 @@ export default {
 
     watch([
       () => store.getters.windowInnerWidth,
-      () => store.getters.translation.locale,
+      () => store.getters.settings.locale,
     ], checkMarqueeSize)
 
     return {

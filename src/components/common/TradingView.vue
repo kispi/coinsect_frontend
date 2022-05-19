@@ -27,7 +27,7 @@ export default {
         interval: props.interval || 15,
         timezone: 'Asia/Seoul',
         theme: store.getters.settings.theme,
-        locale: store.getters.translation.locale,
+        locale: store.getters.settings.locale,
         toolbar_bg: '#f1f3f6',
         enable_publishing: false,
         allow_symbol_change: true,
@@ -38,7 +38,7 @@ export default {
     watch([
       () => store.getters.settings.theme,
       () => store.getters.settings.tradingviewSymbol,
-      () => store.getters.translation.locale,
+      () => store.getters.settings.locale,
       () => props,
     ], init)
 

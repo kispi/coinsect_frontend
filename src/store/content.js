@@ -2,7 +2,7 @@ import contentService from '@/services/content'
 import crudService from '@/services/crud'
 import helpers from '@/helpers'
 
-const marketInfo = {
+const content = {
   state: () => ({
     publicTreasuries: null,
     influencers: null,
@@ -64,4 +64,4 @@ const marketInfo = {
   },
 }
 
-export default marketInfo
+export default content

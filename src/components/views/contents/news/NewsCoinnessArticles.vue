@@ -30,7 +30,7 @@
                 <div
                   v-if="article.source"
                   class="article-source m-l-8"
-                  v-html="$store.getters.translation.locale === 'en' ? article.source.nameEn : article.source.nameKo"
+                  v-html="$store.getters.settings.locale === 'en' ? article.source.nameEn : article.source.nameKo"
                 />
               </div>
               <div class="article-title" v-html="article.title"/>

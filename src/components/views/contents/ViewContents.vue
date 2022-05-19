@@ -13,6 +13,7 @@ export default {
   components: {
     ViewBitcoinHalving: defineAsyncComponent(() => import('./ViewBitcoinHalving')),
     ViewNews: defineAsyncComponent(() => import('./news/ViewNews')),
+    ViewTwitter: defineAsyncComponent(() => import('./ViewTwitter')),
     ViewInfluencers: defineAsyncComponent(() => import('./influencers/ViewInfluencers')),
     ViewInfluencerDetail: defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail')),
     ViewPublicTreasury: defineAsyncComponent(() => import('./ViewPublicTreasury')),
@@ -23,6 +24,9 @@ export default {
     const contents = computed(() => [{
       path: '/contents/news',
       title: 'NEWS',
+    }, {
+      path: '/contents/twitter',
+      title: 'TWITTER',
     }, {
       path: '/contents/influencers',
       title: 'INFLUENCERS',
@@ -37,6 +41,7 @@ export default {
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/contents/news') return 'ViewNews'
+      if (p === '/contents/twitter') return 'ViewTwitter'
       if (p === '/contents/influencers') return 'ViewInfluencers'
       if (p.startsWith('/contents/influencers/')) return 'ViewInfluencerDetail'
       if (p === '/contents/public-treasury') return 'ViewPublicTreasury'

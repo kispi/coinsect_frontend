@@ -31,13 +31,12 @@ export default {
     padding: 8px;
     border-bottom: 2px solid transparent;
     white-space: nowrap;
+    transition: none;
     cursor: pointer;
 
     &.selected {
       border-bottom: 2px solid var(--brand-primary);
       color: var(--brand-primary);
-      border-bottom: 2px solid var(--brand-primary);
-      font-weight: 700;
     }
 
     &:hover {

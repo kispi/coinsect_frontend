@@ -40,13 +40,13 @@
         <div class="chat-settings">
           <div
             class="clickable-icon-wrapper"
-            @click="openModalChatSettings">
-            <i class="fal fa-cog"/>
+            @click="toggleChatFolded">
+            <i class="fal fa-minus"/>
           </div>
           <div
             class="clickable-icon-wrapper"
-            @click="toggleChatFolded">
-            <i class="fal fa-minus"/>
+            @click="openModalChatSettings">
+            <i class="fal fa-cog"/>
           </div>
         </div>
       </div>
@@ -442,7 +442,6 @@ export default {
 
       .num-users {
         font-size: 12px;
-        cursor: pointer;
       }
 
       .profile {
@@ -453,7 +452,6 @@ export default {
           height: 16px;
           margin-right: 4px;
           border-radius: 50%;
-          cursor: pointer;
         }
 
         .nickname {
@@ -461,7 +459,17 @@ export default {
           margin-right: 8px;
           font-weight: 700;
           text-decoration: underline;
-          cursor: pointer;
+        }
+      }
+
+      .num-users,
+      .app-img,
+      .nickname {
+        transition: none;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.5;
         }
       }
     }

@@ -30,11 +30,11 @@ export default {
     const store = useStore()
 
     const settings = computed(() => [{
-      key: 'LANGUAGE',
+      key: 'LOCALE',
       values: [
         { title: 'KR', value: 'kr' },
         { title: 'EN', value: 'en' },
-      ].map(o => ({ ...o, $$selected: store.getters.translation.locale === o.value })),
+      ].map(o => ({ ...o, $$selected: store.getters.settings.locale === o.value })),
     }, {
       key: 'CURRENCY',
       values: [
@@ -68,11 +68,6 @@ export default {
     }])
 
     const onClickValue = (key, setting) => {
-      if (key === 'LANGUAGE') {
-        store.commit('setLocale', setting.value)
-        return
-      }
-
       if (key === 'TRADINGVIEW') {
         const tradingview = store.getters.settings.tradingview
         tradingview.home = setting.value

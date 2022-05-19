@@ -27,6 +27,7 @@ const app = {
     numActiveUsers: null,
     notifications: null,
     settings: {
+      locale: 'kr',
       sort: {
         column: '$$vol24HBase', // '$$symbol', '$$tradePriceBase', '$$premiumRate', '$$changeRate1D', '$$changeRate52WH', '$$changeRate52WL'
         direction: 'desc',
@@ -192,7 +193,6 @@ const app = {
 
       commit('setIsMobile')
       commit('setScrollTop', 0)
-      dispatch('loadDefaultLocale')
 
       try {
         await dispatch('loadAuthToken')

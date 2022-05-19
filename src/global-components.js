@@ -38,6 +38,7 @@ import TablePosts from '@/components/common/TablePosts'
 import TradingView from '@/components/common/TradingView'
 import TradingViewSymbols from '@/components/common/TradingViewSymbols'
 import TradingViewTicker from '@/components/common/TradingViewTicker'
+import TwitterTimeline from '@/components/common/TwitterTimeline'
 
 // community components
 import CommunityButtons from '@/components/views/community/CommunityButtons'
@@ -86,6 +87,7 @@ const useGlobalComponents = app => {
     .component('TradingView', TradingView)
     .component('TradingViewSymbols', TradingViewSymbols)
     .component('TradingViewTicker', TradingViewTicker)
+    .component('TwitterTimeline', TwitterTimeline)
 
     // community components
     .component('CommunityButtons', CommunityButtons)

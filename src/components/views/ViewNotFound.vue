@@ -1,7 +1,7 @@
 <template>
   <div class="view-not-found">
     <AppImg :src="$helpers.useS3('og-images/og-image.png')"/>
-    <div class="error-404">페이지를 찾을 수 없습니다 ㅜ.ㅜ</div>
+    <div class="error-404">어떻게 여기 들어오셨어요?</div>
     <button @click="onClickBack" class="btn btn-primary m-a m-t-16">
       김프 보러가기
     </button>
@@ -35,7 +35,7 @@ export default {
   text-align: center;
 
   img {
-    max-width: 320px;
+    max-width: 480px;
   }
 
   .error-404 {

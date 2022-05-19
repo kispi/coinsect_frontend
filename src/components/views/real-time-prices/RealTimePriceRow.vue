@@ -6,7 +6,7 @@
       <div class="image-name">
         <AppImg :src="symbol.thumb" class="flex-wrap m-r-8"/>
         <div
-          v-html="symbol[$store.getters.translation.locale] || symbol.en"
+          v-html="symbol[$store.getters.settings.locale] || symbol.en"
           class="name lines-1"
           :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''"
         />

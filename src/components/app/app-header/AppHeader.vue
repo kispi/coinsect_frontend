@@ -235,11 +235,11 @@ export default {
       border-bottom: 2px solid transparent;
       color: var(--text-stress);
       position: relative;
+      transition: none;
 
       &.selected {
         color: var(--brand-primary);
         border-bottom: 2px solid var(--brand-primary);
-        font-weight: 700;
       }
 
       &:hover {

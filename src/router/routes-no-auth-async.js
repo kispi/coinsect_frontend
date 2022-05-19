@@ -48,6 +48,13 @@ const contents = [{
     description: '각종 암호화폐 / 코인 뉴스',
   },
 }, {
+  path: '/contents/twitter',
+  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
+  meta: {
+    title: '트위터 뉴스 - 코인충',
+    description: '트위터는 뉴스 등의 전통 매체들보다 정보가 훨씬 빠릅니다. whale_alert를 비롯한 각종 코인 관련 트위터 계정들의 타임라인을 제공합니다.',
+  },
+}, {
   path: '/contents/influencers',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {

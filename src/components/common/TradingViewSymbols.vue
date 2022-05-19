@@ -17,14 +17,14 @@ export default {
     const store = useStore()
 
     const tradingviewSymbols = ref([{
-      name: 'BTCUSD_BITSTAMP',
-      key: 'BITSTAMP:BTCUSD',
-    }, {
       name: 'BTCUSD_BINANCE',
       key: 'BINANCE:BTCUSD',
     }, {
       name: 'BTCUSD_BYBIT',
       key: 'BYBIT:BTCUSD',
+    }, {
+      name: 'BTCUSD_BITSTAMP',
+      key: 'BITSTAMP:BTCUSD',
     }, {
       name: 'NASDAQ',
       key: 'FOREXCOM:NSXUSD',

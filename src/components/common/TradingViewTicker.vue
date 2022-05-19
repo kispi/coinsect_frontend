@@ -44,12 +44,12 @@ export default {
       colorTheme: store.getters.settings.theme,
       isTransparent: false,
       showSymbolLogo: true,
-      locale: store.getters.translation.locale
+      locale: store.getters.settings.locale
     }))
 
     watch([
       () => store.getters.settings.theme,
-      () => store.getters.translation.locale,
+      () => store.getters.settings.locale,
     ], () => {
       prepared.value = false
 

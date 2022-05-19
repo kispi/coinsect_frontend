@@ -28,7 +28,7 @@ export const newRouter = () => {
   r.beforeEach((to, from, next) => {
     const modals = $store.getters.modals.filter(m => m)
     if (modals.length === 0) return next()
-  
+
     const latestModal = modals[modals.length - 1]
     $store.commit('popModal', latestModal)
     next(false)

@@ -1,6 +1,6 @@
 {
-  "LANGUAGE": {
-    "en": "Language",
+  "LOCALE": {
+    "en": "Locale",
     "kr": "언어"
   },
   "CURRENCY": {
@@ -102,6 +102,10 @@
   "NEWS": {
     "en": "News",
     "kr": "뉴스"
+  },
+  "TWITTER": {
+    "en": "Twitter",
+    "kr": "트위터"
   },
   "INFLUENCERS": {
     "en": "Influencers",
