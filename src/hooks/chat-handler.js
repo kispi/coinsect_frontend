@@ -16,6 +16,8 @@ const useChatHandler = () => {
 
   const fullyLoaded = ref(null)
 
+  const token = ref(null)
+
   const pingInterv = ref(null)
 
   const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
@@ -55,7 +57,7 @@ const useChatHandler = () => {
         break
       }
       case 'auth':
-        plugins.$helpers.localStorage.setMeta('token', message.user.token)
+        plugins.$helpers.localStorage.setMeta('user', message.user)
         store.commit('setMe', message.user)
         break
       case 'connections':
@@ -76,12 +78,12 @@ const useChatHandler = () => {
     }
   }
 
-  const connect = async token => {
+  const connect = async () => {
     const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
 
     // 나중엔 endpoint가 채팅서버로 바뀌어야함
     store.commit('setWebsocketConnections', {
-      chat: new WebSocket(`${endpoint}/webchat${token ? `?token=${token}` : ''}`),
+      chat: new WebSocket(`${endpoint}/webchat${token.value ? `?token=${token.value}` : ''}`),
     })
 
     connection.value.onmessage = event => {
@@ -108,7 +110,7 @@ const useChatHandler = () => {
     connection.value.onclose = () => {
       connected.value = false
       clearInterval(pingInterv.value)
-      setTimeout(connect, 1000)
+      setTimeout(connect, 5000)
     }
   }
 
@@ -140,7 +142,8 @@ const useChatHandler = () => {
   }
 
   const init = () => {
-    connect(plugins.$helpers.localStorage.getMeta('token'))
+    token.value = (plugins.$helpers.localStorage.getMeta('user') || {}).token
+    connect()
   }
 
   onUnmounted(() => {
