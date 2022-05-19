@@ -74,6 +74,8 @@ export default {
 
 <style lang="scss" scoped>
 .modal-chat-users {
+  min-width: 320px;
+
   .body {
     max-height: 640px;
     height: 100%;
