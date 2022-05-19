@@ -9,7 +9,7 @@
   },
   "TOOLTIP_CHAT_TRANSPARENT": {
     "en": "Set chat background transparent.",
-    "kr": "채팅창의 배경을 불투명하게 합니다."
+    "kr": "채팅창의 배경을 투명하게 합니다."
   },
   "TOOLTIP_CHAT_SIZE_MAX": {
     "en": "Toggle chat size along Base/Max.",
