@@ -361,7 +361,7 @@ export default {
 
       if (typeof Audio === 'undefined') return
 
-      ding.value = new Audio('files/ding.mp3')
+      ding.value = new Audio(plugins.$helpers.useS3('files/ding.mp3'))
       ding.value.volume = 0.2
     })
 
