@@ -74,6 +74,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 8px;
 
   .base-exchange,
   .target-exchange {

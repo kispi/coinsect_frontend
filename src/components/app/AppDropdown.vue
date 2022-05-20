@@ -1,13 +1,14 @@
 <template>
-  <div class="app-dropdown">
+  <div
+    class="app-dropdown"
+    :class="{'transparent': transparent}">
     <div
       ref="dropdownButton"
       @click="dropdownOpened = true"
-      v-if="selectedItem"
       class="clickable-area">
-      <i class="item-icon" v-if="selectedItem.icon" :class="selectedItem.icon"/>
-      <img class="item-image" v-if="selectedItem.img" :src="selectedItem.img" :alt="$translate(selectedItem.name || selectedItem.key)"/>
-      <div class="key" v-html="$translate(selectedItem.name || selectedItem.key)"/>
+      <i class="item-icon" v-if="(selectedItem || {}).icon" :class="(selectedItem || {}).icon"/>
+      <img class="item-image" v-if="(selectedItem || {}).img" :src="(selectedItem || {}).img"/>
+      <div class="key" v-html="$translate((selectedItem || {}).name || (selectedItem || {}).key || 'SELECT')"/>
       <div class="chevrons">
         <i class="fa fa-chevron-down"/>
       </div>
@@ -55,7 +56,7 @@ import WrapperDropdownOverlay from './WrapperDropdownOverlay'
 
 export default {
   name: 'AppDropdown',
-  props: ['dropdownItems', 'align', 'useSearch'],
+  props: ['dropdownItems', 'align', 'useSearch', 'transparent'],
   components: { WrapperDropdownOverlay },
   setup(props, { emit }) {
     const refInput = ref(null)
@@ -124,10 +125,9 @@ export default {
 
 <style lang="scss" scoped>
 .app-dropdown {
-  font-size: 14px;
-
   .clickable-area {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 8px 0;
     cursor: pointer;
@@ -221,6 +221,13 @@ export default {
       color: var(--danger);
       font-size: 24px;
     }
+  }
+
+  &:not(.transparent) {
+    background: var(--background-light);
+    padding: 0 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border-base);
   }
 }
 </style>

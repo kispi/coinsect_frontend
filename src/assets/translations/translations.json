@@ -62,5 +62,9 @@
   "REFRESH": {
     "en": "Refresh",
     "kr": "새로고침"
+  },
+  "SELECT": {
+    "en": "Select",
+    "kr": "선택"
   }
 }

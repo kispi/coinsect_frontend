@@ -5,6 +5,7 @@
       <AppDropdown
         :useSearch="true"
         :dropdownItems="sortedMarkets"
+        :transparent="true"
         @select-dropdown-item="onSelectCrypto"
         class="m-l-8"
       />?

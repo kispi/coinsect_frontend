@@ -2,10 +2,10 @@
   <div class="view-home">
     <template v-if="$store.getters.settings.tradingview.home">
       <TradingViewSymbols/>
-      <TradingViewTicker class="m-b-8"/>
-      <TradingView class="m-b-8"/>
+      <TradingViewTicker class="m-t-8 m-b-8"/>
+      <TradingView/>
     </template>
-    <BaseAndTarget/>
+    <BaseAndTarget class="m-t-8 m-b-8"/>
     <RealTimePrices v-if="prepared && !$store.getters.isSSR"/>
   </div>
 </template>

@@ -42,7 +42,8 @@ const app = {
         home: true,
         realTimePositions: true,
       },
-      tradingviewSymbol: 'BITSTAMP:BTCUSD',
+      tradingviewSymbol: 'BINANCE:BTCUSDT',
+      tradingviewTimeframe: 15,
       baseExchange: 'upbit', // 'upbit' || 'bithumb'
       baseExchangeMarket: 'krw', // 'krw' || 'btc' || 'usdt'...
       targetExchange: 'binance',
