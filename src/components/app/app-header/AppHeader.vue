@@ -1,5 +1,6 @@
 <template>
   <header class="app-header layout-centered">
+    <SearchFaker/>
     <div class="top">
       <CoinnessIssues v-show="$store.getters.windowInnerWidth >= 480"/>
       <BannerMarketIndices/>
@@ -74,12 +75,14 @@ import { useRouter } from 'vue-router'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
 import SettingsPanel from './SettingsPanel'
+import SearchFaker from './SearchFaker'
 
 export default {
   components: {
     AppNotifications,
     BannerMarketIndices,
     SettingsPanel,
+    SearchFaker,
   },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
@@ -177,6 +180,11 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding-top: 8px;
+
+    .section-logo {
+      display: flex;
+      align-items: baseline;
+    }
 
     &.border-top {
       border-top: 1px solid var(--border-base);

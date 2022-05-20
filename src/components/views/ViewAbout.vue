@@ -6,7 +6,7 @@
         target="_blank">
         <AppImg :src="$helpers.useS3('og-images/og-image.png')" class="og-image"/>
       </a>
-      <div class="m-b-8"><b>코인충</b>에 오신 것을 환영합니다. 코인충은 1인 프로젝트이며, 이 사이트만 켜놓으면 다른 어떤 사이트도 켜둘 필요가 없을 정도의 많은 정보 / 유틸리티들을 갖춘 사이트가 되는 것을 목표로 하고 있습니다.</div>
+      <div class="m-b-8"><b>coinsect.io</b>에 오신 것을 환영합니다. coinsect는 coin(코인) + insect(충)에서 유래하였으며, 이 사이트만 켜놓으면 다른 어떤 사이트도 켜둘 필요가 없을 정도의 많은 정보 / 유틸리티들을 갖춘 사이트가 되는 것을 목표로 하고 있습니다.</div>
       <div class="m-b-8">항상 '굳이 다른 유명한 사이트들을 두고 이곳을 이용할 메리트가 있는가?'를 생각하며, 방문자분들의 편의성과 필요성을 최대한으로 고려합니다.</div>
       현재 제공하는 기능들로는
       <ul class="box">
@@ -73,7 +73,7 @@ export default {
   .og-image {
     display: block;
     max-width: 640px;
-    margin: 0 auto 16px;
+    margin: 40px auto;
   }
 
   a {

@@ -12,12 +12,6 @@
   </div>
 </template>
 
-<script>
-export default {
-
-}
-</script>
-
 <style lang="scss" scoped>
 .app-banner {
   background: var(--background-base);

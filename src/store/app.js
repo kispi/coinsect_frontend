@@ -27,6 +27,7 @@ const app = {
     notifications: null,
     settings: {
       blockedUsers: {},
+      hideSearchFaker: null,
       locale: 'kr',
       sort: {
         column: '$$vol24HBase', // '$$symbol', '$$tradePriceBase', '$$premiumRate', '$$changeRate1D', '$$changeRate52WH', '$$changeRate52WL'

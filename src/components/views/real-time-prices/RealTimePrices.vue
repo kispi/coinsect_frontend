@@ -10,8 +10,13 @@
           <input
             v-model="keyword"
             @keydown="onKeydown"
-            placeholder="EX:) btc, bit, 비트, ㅂㅌ"
+            placeholder="ㅂㅌ, 비트, btc, bit"
           >
+          <i
+            v-if="keyword"
+            class="fal fa-times"
+            @click="keyword = null"
+          />
         </div>
       </div>
     </div>
@@ -54,6 +59,12 @@
         />
       </tbody>
     </table>
+    <div
+      v-if="displayedList.length === 0"
+      class="empty">
+      <div class="m-b-8">검색된 코인이 없네요 :(</div>
+      <div>혹시 즐겨찾기한 코인이 없는 상태인데 설정에서 필터를 '즐겨찾기'로 하신건 아닌지, 혹은 검색되지 않는 코인을 검색어로 입력하신 건 아닌지 확인해보세요!</div>
+    </div>
   </div>
 </template>
 
@@ -296,10 +307,17 @@ export default {
         display: flex;
         align-items: center;
         padding: 8px 12px;
+        position: relative;
         background: var(--background-light);
 
         .fa-search {
           margin-right: 8px;
+        }
+
+        .fa-times {
+          right: 16px;
+          position: absolute;
+          cursor: pointer;
         }
       }
     }
@@ -330,6 +348,13 @@ export default {
         text-align: right;
       }
     }
+  }
+
+  .empty {
+    font-size: 16px;
+    color: var(--text-stress);
+    margin: 40px;
+    text-align: center;
   }
 }
 </style>
