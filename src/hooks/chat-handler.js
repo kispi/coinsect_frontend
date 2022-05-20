@@ -8,6 +8,8 @@ const useChatHandler = () => {
 
   const messages = ref([])
 
+  const filteredMessages = computed(() => messages.value.filter(m => !store.getters.settings.blockedUsers[m.token]))
+
   const connection = computed(() => store.getters.websocketConnections.chat)
 
   const connected = ref(null)
@@ -152,6 +154,7 @@ const useChatHandler = () => {
     connection,
     connected,
     messages,
+    filteredMessages,
     loadMessages,
     setAccount,
     sendWebsocketMessage,

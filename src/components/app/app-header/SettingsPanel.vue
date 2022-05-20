@@ -16,6 +16,11 @@
         />
       </div>
     </div>
+    <button
+      @click="onClickInitSettings"
+      class="btn btn-primary"
+      v-html="$translate('INIT_SETTINGS')"
+    />
   </div>
 </template>
 
@@ -80,9 +85,20 @@ export default {
       store.commit('setSettings', o)
     }
 
+    const onClickInitSettings = () => {
+      plugins.$modal.confirm({
+        body: plugins.$translate('MODAL_INIT_SETTINGS'),
+      }).then(idx => {
+        if (idx === 1) {
+          store.dispatch('initSettings')
+        }
+      })
+    }
+
     return {
       settings,
       onClickValue,
+      onClickInitSettings,
     }
   },
 }
@@ -94,7 +110,13 @@ export default {
   border: 1px solid var(--border-base);
   border-radius: 4px;
   width: 320px;
+  padding: 16px;
   color: var(--text-stress);
+
+  .btn-primary {
+    width: 100%;
+    margin-top: 16px;
+  }
 
   .setting-item {
     display: flex;

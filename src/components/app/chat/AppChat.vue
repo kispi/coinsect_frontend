@@ -175,7 +175,7 @@ export default {
       init,
       connected,
       setAccount,
-      messages,
+      filteredMessages: messages,
       sendWebsocketMessage,
       loadMessages,
     } = useChatHandler()
@@ -471,10 +471,6 @@ export default {
       .nickname {
         transition: none;
         cursor: pointer;
-
-        &:hover {
-          opacity: 0.5;
-        }
       }
     }
 

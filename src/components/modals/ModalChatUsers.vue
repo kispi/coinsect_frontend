@@ -1,14 +1,42 @@
 <template>
-  <div class="modal-chat-users scrollable-body">
-    <ModalHeader :title="`${$translate('MODAL_CHAT_USERS')} (${(connections || []).length})`" @close="$emit('close')"/>
+  <div
+    ref="refModalChatUsers"
+    class="modal-chat-users scrollable-body">
+    <ModalHeader :title="`${$translate('MODAL_CHAT_USERS')} (${connections.length})`" @close="$emit('close')"/>
     <div class="body">
-      <div class="connections pretty-scrollbar">
+      <div class="tabs">
+        <div
+          class="tab"
+          :class="{'selected': selectedTab === key}"
+          @click="selectedTab = key"
+          :key="key"
+          v-for="key in Object.keys(tabs)">
+          {{ $translate(key) }} ({{ tabs[key].length }})
+        </div>
+      </div>
+      <div
+        v-if="selectedTab === 'BLOCKED' && tabs.BLOCKED.length > 0"
+        class="btn-container">
+        <button
+          class="btn btn-primary"
+          @click="$store.commit('setSettings', { blockedUsers: {} })"
+          v-html="$translate('UNBLOCK_ALL')"
+        />
+      </div>
+      <div
+        v-if="tabs[selectedTab].length > 0"
+        class="connections pretty-scrollbar">
         <div
           class="connection"
           :key="idx"
-          v-for="(connection, idx) in connections">
+          v-for="(connection, idx) in tabs[selectedTab]">
           <AppChatProfile :user="connection.user"/>
         </div>
+      </div>
+      <div
+        v-else
+        class="empty">
+        유저가 없습니다
       </div>
     </div>
   </div>
@@ -24,9 +52,26 @@ export default {
 
     const store = useStore()
 
+    const refModalChatUsers = ref(null)
+
+    const centered = ref(null) // 모달이 로드된 직후 한번만 true로 설정하고 그 뒤로는 바뀔 일 없음
+
     const connection = computed(() => store.getters.websocketConnections.chat)
 
-    const connections = ref(null)
+    const connections = ref([])
+
+    const tabs = computed(() => {
+      const nonBlocked = []
+      const blocked = []
+      connections.value.forEach(c => (store.getters.settings.blockedUsers[c.user.token] ? blocked : nonBlocked).push(c))
+
+      return {
+        'NON_BLOCKED': nonBlocked,
+        'BLOCKED': blocked,
+      }
+    })
+
+    const selectedTab = ref('NON_BLOCKED')
 
     const timeout = ref(null)
 
@@ -53,6 +98,11 @@ export default {
 
         return a.user.profile.nickname > b.user.profile.nickname ? 1 : -1
       })
+
+      if (!centered.value) {
+        plugins.$helpers.modal.center(refModalChatUsers.value)
+        centered.value = true
+      }
     }
 
     onMounted(() => {
@@ -66,6 +116,9 @@ export default {
     })
 
     return {
+      refModalChatUsers,
+      selectedTab,
+      tabs,
       connections,
     }
   },
@@ -74,19 +127,56 @@ export default {
 
 <style lang="scss" scoped>
 .modal-chat-users {
-  min-width: 320px;
+  width: 560px;
 
   .body {
-    max-height: 640px;
     height: 100%;
     display: flex;
     flex-direction: column;
+
+    .btn-container {
+      padding: 16px;
+    }
+
+    .btn-primary {
+      width: 100%;
+    }
+
+    .tabs,
+    .btn-container {
+      border-bottom: 1px solid var(--border-base);
+    }
+
+    .tabs {
+      display: flex;
+
+      .tab {
+        padding: 8px;
+        flex: 1;
+        color: var(--text-stress);
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+
+        &.selected {
+          color: var(--white);
+          background: var(--brand-primary);
+        }
+      }
+    }
+
+    .empty {
+      color: var(--text-stress);
+      font-size: 24px;
+      font-weight: 700;
+      margin: 40px auto;
+    }
 
     .connections {
       padding: 16px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      height: 100%;
       overflow-y: auto;
       overscroll-behavior: contain;
 

@@ -55,6 +55,12 @@
 .btn-default {
   background: var(--white);
   color: var(--black);
+
+  &:not(.disabled):not(:disabled) {
+    &:hover {
+      background: var(--gs-e0);
+    }
+  }
 }
 
 .btn-danger {

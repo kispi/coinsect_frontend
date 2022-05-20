@@ -34,5 +34,25 @@
   "MODAL_CHAT_USERS": {
     "en": "Chat Users",
     "kr": "채팅 유저"
+  },
+  "BLOCK_USER": {
+    "en": "Block the user <b class='text-underline'>%nickname (%token)</b>.\nYou can always unblock by clicking the no. of users.",
+    "kr": "유저 <b class='text-underline'>%nickname (%token)</b>을 차단합니다.\n현재 유저 수를 클릭하시면 언제든 다시 해제할 수 있습니다."
+  },
+  "UNBLOCK_USER": {
+    "en": "Unblock the user <b class='text-underline'>%nickname (%token)</b>",
+    "kr": "유저 <b class='text-underline'>%nickname (%token)</b>의 차단을 해제합니다."
+  },
+  "UNBLOCK_ALL": {
+    "en": "Unblock All",
+    "kr": "모든 차단 해제"
+  },
+  "MODAL_INIT_SETTINGS": {
+    "en": "Reset all personal settings.\n(Including portfolio, blocked users, favorite coins, etc)",
+    "kr": "모든 개인화 설정을 초기화합니다.\n(포트폴리오, 차단 유저, 즐겨찾기 코인 등 포함)"
+  },
+  "INIT_SETTINGS": {
+    "en": "Init Settings",
+    "kr": "개인화 설정 초기화"
   }
 }

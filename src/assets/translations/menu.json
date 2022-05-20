@@ -43,6 +43,14 @@
     "en": "All",
     "kr": "전체"
   },
+  "NON_BLOCKED": {
+    "en": "Non-Blocked",
+    "kr": "차단되지 않음"
+  },
+  "BLOCKED": {
+    "en": "Blocked",
+    "kr": "차단됨"
+  },
   "FAVORITES": {
     "en": "Favorites",
     "kr": "즐겨찾기"
