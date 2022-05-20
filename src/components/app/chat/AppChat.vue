@@ -312,15 +312,22 @@ export default {
       makeDraggable(refAppChat.value, { toMove: 'app-chat-container', toGrab: 'app-chat-header' })
     }
 
+    const onOpenChatContainer = () => nextTick(() => {
+      refTextarea.value.focus()
+      scrollToBottom()
+      setAppChatPosition()
+    })
+
     watch(
       () => store.getters.settings.chatFolded,
       (newVal, oldVal) => {
-        if (!newVal && oldVal) nextTick(() => {
-          refTextarea.value.focus()
-          scrollToBottom()
-          setAppChatPosition()
-        })
+        if (!newVal && oldVal) onOpenChatContainer()
       },
+    )
+
+    watch(
+      () => store.getters.settings.blockedUsers,
+      onOpenChatContainer,
     )
 
     watch(

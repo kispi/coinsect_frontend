@@ -15,7 +15,7 @@
         </div>
       </div>
       <div
-        v-if="selectedTab === 'BLOCKED' && tabs.BLOCKED.length > 0"
+        v-if="selectedTab === 'BLOCKED'"
         class="btn-container">
         <button
           class="btn btn-primary"
