@@ -3,7 +3,7 @@
     <template v-if="$store.getters.settings.tradingview.home">
       <TradingViewSymbols/>
       <TradingViewTicker class="m-t-8 m-b-8"/>
-      <TradingView/>
+      <TradingView :interval="$store.getters.settings.tradingviewTimeframe"/>
     </template>
     <BaseAndTarget class="m-t-8 m-b-8"/>
     <RealTimePrices v-if="prepared && !$store.getters.isSSR"/>

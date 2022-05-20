@@ -6,7 +6,7 @@
       "
       @close="$emit('close')"
     />
-    <TradingView :symbol="options.symbol"/>
+    <TradingView :symbol="options.symbol" :interval="$store.getters.settings.tradingviewTimeframe"/>
   </div>
 </template>
 

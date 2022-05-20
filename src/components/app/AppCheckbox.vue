@@ -28,6 +28,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-checkbox {
+  border: 1px solid var(--border-base);
   border-radius: 2px;
   width: 16px;
   height: 16px;
