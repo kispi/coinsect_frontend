@@ -93,8 +93,9 @@ export default {
           return a.user.profile.nickname > b.user.profile.nickname ? 1 : -1
         }
 
-        if (a.user.profile.image && !b.user.profile.image) return -1
-        if (!a.user.profile.image && b.user.profile.image) return -1
+        if (a.user.profile.image) return -1
+
+        if (b.user.profile.image) return 1
 
         return a.user.profile.nickname > b.user.profile.nickname ? 1 : -1
       })
