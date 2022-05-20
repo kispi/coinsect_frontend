@@ -24,7 +24,7 @@
       </div>
       <div class="selected-wallet f-mono">
         <div class="qr-code-container">
-          <div id="modal-donation-qr-code" class="overlay"/>
+          <div id="modal-donation-qr-code"/>
         </div>
         <div
           class="address"
@@ -90,7 +90,7 @@ export default {
         return
       }
 
-      const size = refModalDonation.value.getBoundingClientRect().width - 16 * 2 // 양쪽 패딩만큼 뺌
+      const size = refModalDonation.value.getBoundingClientRect().width - 16 * 4 // 양쪽 패딩만큼 뺌
       qrcode.value = new QRCode(document.getElementById('modal-donation-qr-code'), {
         text: selectedWallet.value.address,
         width: size,
@@ -138,6 +138,7 @@ export default {
   border-radius: 4px;
   width: 400px;
   min-height: 520px;
+  position: relative;
 
   .body {
     padding: 16px;
@@ -189,17 +190,19 @@ export default {
   }
 
   .selected-wallet {
+    margin: 16px 0;
     font-size: 12px;
     color: var(--text-stress);
 
     .qr-code-container {
-      padding-top: 100%;
+      background: var(--white);
+      padding: 16px;
       position: relative;
       box-shadow: 0 0 1px var(--gs-22);
-      margin: 16px 0;
     }
 
     .address {
+      margin-top: 16px;
       display: flex;
       color: var(--text-stress);
     }

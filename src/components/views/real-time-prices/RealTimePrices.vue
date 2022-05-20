@@ -60,7 +60,7 @@
       </tbody>
     </table>
     <div
-      v-if="displayedList.length === 0"
+      v-if="displayedList.length === 0 && !calculating"
       class="empty">
       <div class="m-b-8">검색된 코인이 없네요 :(</div>
       <div>혹시 즐겨찾기한 코인이 없는 상태인데 설정에서 필터를 '즐겨찾기'로 하신건 아닌지, 혹은 검색되지 않는 코인을 검색어로 입력하신 건 아닌지 확인해보세요!</div>
@@ -112,6 +112,8 @@ export default {
 
     const settings = ref(store.getters.settings)
 
+    const calculating = ref(true)
+
     const setSort = column => {
       if (settings.value.sort.column === column) {
         settings.value.sort.direction = settings.value.sort.direction === 'desc' ? 'asc' : 'desc'
@@ -141,7 +143,8 @@ export default {
       if (settings.value.sort.direction === 'desc') return a[settings.value.sort.column] < b[settings.value.sort.column] ? 1 : -1
     }
 
-    const recalcDisplayedList = () => {
+    const recalcDisplayedList = async () => {
+      calculating.value = true
       displayedList.value = Object.values(store.getters.realTimeTickers).filter(t => {
         if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
 
@@ -162,6 +165,7 @@ export default {
 
         return sorter(a, b)
       })
+      calculating.value = false
     }
 
     const displayedList = ref([])
@@ -265,6 +269,7 @@ export default {
     return {
       refNotConnected,
       init,
+      calculating,
       connected,
       keyword,
       settings,
