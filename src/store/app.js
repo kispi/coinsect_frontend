@@ -3,7 +3,6 @@ import { $http } from '@/modules/axios'
 
 const app = {
   state: () => ({
-    metaTags: {},
     toast: {
       html: null,
       type: null,
@@ -67,8 +66,6 @@ const app = {
     lazyLoadedScriptUrls: [],
   }),
   getters: {
-    metaTags: state => state.metaTags,
-    isSSR: () => process.env.VUE_APP_SSR,
     toast: state => state.toast,
     modals: state => state.modals,
     tooltips: state => state.tooltips,
@@ -87,9 +84,6 @@ const app = {
     lazyLoadedScriptUrls: state => state.lazyLoadedScriptUrls,
   },
   mutations: {
-    appendMetaTags(state, tag) {
-      state.metaTags[tag.id] = tag
-    },
     setToast(state, payload) {
       if (!payload) {
         state.toast = {

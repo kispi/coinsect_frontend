@@ -26,10 +26,10 @@ const matchingRoute = (routes, currentPath) => {
 
 const handleSSRRequest = async (req, res) => {
   const { app, store, router } = await useApp(req)
-  store.state.axiosHeaderSSR = {
+  store.commit('setAxiosHeader', {
     'ssr-proxy-from': req.headers['x-forwarded-for'] ||  req.connection.remoteAddress,
     'user-agent': req.headers['user-agent'],
-  }
+  })
   await router.push(req.url)
   await router.isReady()
   const matched = matchingRoute(router.options.routes, req.path)

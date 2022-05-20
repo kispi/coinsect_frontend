@@ -3,6 +3,7 @@ import app from './app'
 import content from './content'
 import marketInfo from './market-info'
 import post from './post'
+import ssr from './ssr'
 import user from './user'
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
   content: content.state,
   marketInfo: marketInfo.state,
   post: post.state,
+  ssr: ssr.state,
   user: user.state,
 }
 
@@ -19,6 +21,7 @@ export const newStore = () => createStore({
     content,
     marketInfo,
     post,
+    ssr,
     user,
   },
   mutations: {

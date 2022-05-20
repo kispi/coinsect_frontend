@@ -15,8 +15,8 @@ export const createHttpClient = () => {
   httpClient.interceptors.request.use(req => {
     if (process.env.VUE_APP_SSR) req.headers['is-ssr'] = true
 
-    if (req.headers['is-ssr'] && store.state.axiosHeaderSSR) {
-      Object.keys(store.state.axiosHeaderSSR).forEach(key => req.headers[key] = store.state.axiosHeaderSSR[key])
+    if (req.headers['is-ssr'] && store.getters.axiosHeader) {
+      Object.keys(store.getters.axiosHeader).forEach(key => req.headers[key] = store.getters.axiosHeader[key])
     }
 
     return req

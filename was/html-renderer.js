@@ -12,16 +12,16 @@ const renderToStringAsyncWrapper = (app, store) => new Promise((resolve, reject)
   app.config.errorHandler = error => {
     if (!error) return
 
-    store.state.errorDuringSSR = error
+    store.commit('setFrontendError', error)
   }
 
-  renderToString(app).then(() => {
-    if (store.state.errorDuringSSR) return reject({
+  renderToString(app).then(html => {
+    if (store.getters.frontendError) return reject({
       message: 'Frontend code has a problem',
-      clientError: store.state.errorDuringSSR,
+      clientError: store.getters.frontendError,
     })
 
-    resolve()
+    resolve(html)
   })
 })
 
