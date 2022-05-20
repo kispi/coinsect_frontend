@@ -2,7 +2,7 @@ const express = require('express')
 const fs = require('fs')
 const path = require('path')
 const useRoutes = require('./routes')
-const { handleErrorByRedirection, logger } = require('./middleware')
+const { handleError, logger } = require('./middleware')
 const { outputDir } = require('./helpers')
 const env = `.env.${process.env.NODE_ENV}`
 require('dotenv').config({ path: env }) // 이거 빼먹으면 .env안의 VUE_APP 등등 안읽힘.
@@ -40,7 +40,7 @@ const useSSR = server => {
   server.use(useRequestStartTime)
   useStaticServing(server)
   useRoutes(server)
-  server.use(handleErrorByRedirection)
+  server.use(handleError)
   server.use(logger)
 }
 

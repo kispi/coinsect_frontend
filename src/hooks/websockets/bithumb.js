@@ -101,9 +101,7 @@ const useBithumb = () => {
           handleTickerMessage(json)
         }
         if (type === 'orderbook') setOrderbook(json)
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     }
   })
 

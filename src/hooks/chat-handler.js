@@ -90,9 +90,7 @@ const useChatHandler = () => {
       try {
         const json = JSON.parse(event.data)
         handleMessage(json)
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     }
 
     connection.value.onopen = () => {

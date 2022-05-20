@@ -16,13 +16,13 @@ const asyncWrapper = promise => async (...args) => {
   next(error)
 }
 
-const handleErrorByRedirection = (error, req, res, next) => {
+const handleError = (error, req, res, next) => {
   res.redirect('/not-found')
   next()
 }
 
 module.exports = {
   asyncWrapper,
-  handleErrorByRedirection,
+  handleError,
   logger,
 }

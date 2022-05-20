@@ -138,9 +138,7 @@ const useBybit = () => {
 
         if (type.includes('orderBookL2')) markets.forEach(market => setOrderbook(json, market))
         if (type === 'instrument_info.100ms') markets.forEach(market => setInstrument(json, market))
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     }
 
     return connection
