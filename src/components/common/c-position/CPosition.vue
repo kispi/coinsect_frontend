@@ -82,7 +82,7 @@ export default {
       const v = props.position[key]
       if (!v) return '-'
 
-      const frac = v > 1 ? 2 : 4
+      const frac = Math.abs(v) >= 1 ? 2 : 4
       return v.toLocaleString(undefined, {
         maximumFractionDigits: frac,
         minimumFractionDigits: frac,
