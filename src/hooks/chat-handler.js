@@ -1,10 +1,13 @@
 import { ref, getCurrentInstance, onUnmounted, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 const useChatHandler = () => {
   const plugins = getCurrentInstance().appContext.config.globalProperties
 
   const store = useStore()
+
+  const router = useRouter()
 
   const messages = ref([])
 
@@ -61,6 +64,7 @@ const useChatHandler = () => {
       case 'auth':
         plugins.$helpers.localStorage.setMeta('user', message.user)
         store.commit('setMe', message.user)
+        ping()
         break
       case 'connections':
         plugins.$bus.$emit('incoming-connections', message)
@@ -80,6 +84,15 @@ const useChatHandler = () => {
     }
   }
 
+  const ping = () => {
+    connection.value.send(JSON.stringify({
+      type: 'ping',
+      user: {
+        path: router.currentRoute.value.path,
+      },
+    }))
+  }
+
   const connect = async () => {
     const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
 
@@ -97,11 +110,7 @@ const useChatHandler = () => {
 
     connection.value.onopen = () => {
       connected.value = true
-      pingInterv.value = setInterval(() => {
-        connection.value.send(JSON.stringify({
-          type: 'ping',
-        }))
-      }, 1000 * 30)
+      pingInterv.value = setInterval(ping, 1000 * 30)
 
       messages.value = []
       loadMessages()
@@ -155,6 +164,7 @@ const useChatHandler = () => {
     connected,
     messages,
     filteredMessages,
+    ping,
     loadMessages,
     setAccount,
     sendWebsocketMessage,

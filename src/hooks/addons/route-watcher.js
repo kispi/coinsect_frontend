@@ -1,9 +1,12 @@
 import { onServerPrefetch, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import helpers from '@/helpers'
+import useChatHandler from '../chat-handler'
 
 const useRouteWatcher = () => {
   const router = useRouter()
+
+  const { ping } = useChatHandler()
 
   const appendMetaTags = currentRoute => {
     helpers.meta.setDocumentTitle(currentRoute.meta.title)
@@ -16,6 +19,7 @@ const useRouteWatcher = () => {
     () => router.currentRoute.value,
     newVal => {
       appendMetaTags(newVal)
+      ping()
     },
   )
 
