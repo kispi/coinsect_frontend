@@ -28,11 +28,14 @@ export default {
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
     const showProfile = computed(() => {
+      if (props.message.isMine) return
+
       if (!props.message.profile) return
 
       if (!props.prevMessage) return true
 
-      return props.prevMessage.token !== props.message.token
+      return props.prevMessage.token !== props.message.token ||
+        d(props.prevMessage.timestamp) !== d(props.message.timestamp)
     })
 
     const showTimestamp = computed(() => {
@@ -93,10 +96,6 @@ export default {
 
     .text-and-timestamp {
       flex-direction: row-reverse;
-    }
-
-    .app-chat-profile {
-      display: none;
     }
   }
 }
