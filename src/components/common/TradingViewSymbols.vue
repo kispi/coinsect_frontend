@@ -27,10 +27,10 @@ export default {
 
     const tradingviewSymbols = ref([{
       name: 'BTCUSD_BINANCE',
-      key: 'BINANCE:BTCUSD',
+      key: 'BINANCE:BTCUSDT',
     }, {
       name: 'BTCUSD_BYBIT',
-      key: 'BYBIT:BTCUSD',
+      key: 'BYBIT:BTCUSDT',
     }, {
       name: 'BTCUSD_BITSTAMP',
       key: 'BITSTAMP:BTCUSD',
