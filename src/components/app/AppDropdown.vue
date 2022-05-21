@@ -125,6 +125,8 @@ export default {
 
 <style lang="scss" scoped>
 .app-dropdown {
+  color: var(--text-stress);
+
   .clickable-area {
     display: flex;
     justify-content: space-between;

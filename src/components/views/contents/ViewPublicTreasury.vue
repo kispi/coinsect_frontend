@@ -10,7 +10,7 @@
         :key="key"
         v-for="key in Object.keys(data)">
         <div class="entity-category">{{ $translate(key) }}</div>
-        <div class="table">
+        <div class="table f-mono">
           <div class="thead">
             <div class="row">
               <div class="td">단체</div>

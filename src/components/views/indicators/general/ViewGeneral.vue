@@ -51,8 +51,8 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: var(--white);
-    background: var(--brand-primary-bg);
+    color: var(--text-stress);
+    background: var(--border-base);
 
     &:hover {
       text-decoration: underline;
