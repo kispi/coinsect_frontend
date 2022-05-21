@@ -79,11 +79,13 @@ export default {
     }
 
     const display = key => {
-      if (!props.position[key]) return '-'
+      const v = props.position[key]
+      if (!v) return '-'
 
-      return props.position[key].toLocaleString(undefined, {
-        maximumFractionDigits: 3,
-        minimumFractionDigits: 3,
+      const frac = v > 1 ? 2 : 4
+      return v.toLocaleString(undefined, {
+        maximumFractionDigits: frac,
+        minimumFractionDigits: frac,
       })
     }
 
