@@ -22,6 +22,7 @@ export default {
   props: {
     src: {
       type: String,
+      default: fallbackImage,
     },
     fit: {
       type: String,
