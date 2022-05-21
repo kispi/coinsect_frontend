@@ -94,7 +94,7 @@
             v-model="text"
             @keydown="onKeydown"
             @keydown.prevent.enter
-            :maxlength="(($store.getters.config || {}).maxlength || {}).message"
+            :maxlength="120"
             class="no-scrollbar"
           />
           <i
