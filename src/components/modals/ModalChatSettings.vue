@@ -64,7 +64,6 @@
           <div class="field-name">{{ $translate('PROFILE_IMAGE_URL') }}</div>
           <input
             :placeholder="'https://static.upbit.com/logos/BTC.png'"
-            :maxlength="$store.getters.config.maxlength.profileImageUrl"
             @keydown.enter="onConfirm"
             @keydown="e => onKeydown(e, 'image')"
             v-model="profile.image"

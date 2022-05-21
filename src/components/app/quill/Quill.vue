@@ -74,8 +74,8 @@ export default {
 
   .quill-content {
     height: 400px;
-    cursor: text;
     overflow-y: auto;
+    cursor: text;
   }
 }
 </style>
