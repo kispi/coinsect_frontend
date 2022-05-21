@@ -2,41 +2,50 @@
   <div class="view-public-treasury">
     <div class="description">
       국가 / 상장 회사들 / 비공개 기업 / 펀드 등 비트코인을 보유한 단체들의 목록.<br>
-      갈수록 많은 단체들이 dollar-devalution으로 인한 구매력 저하를 막기 위해 자사의 재무재표에 비트코인을 일정비율 추가할 것이다.
-    </div>
-    <div class="region">
-      <div class="flex-row">
-        <div class="in-profit m-b-8"/>
-        <div>수익중</div>
-      </div>
-      <div class="flex-row">
-        <div class="in-loss"/>
-        <div>손실중</div>
-      </div>
+      클릭시 해당 내역의 근거자료 링크로 이동합니다.
     </div>
     <template v-if="data">
       <div
-        class="list"
+        class="list pretty-scrollbar"
         :key="key"
         v-for="key in Object.keys(data)">
         <div class="entity-category">{{ $translate(key) }}</div>
-        <div class="item-layout">
-          <div
-            class="item"
-            :class="{
-              'in-profit': entity.valuation > entity.costBasis,
-              'in-loss': entity.valuation < entity.costBasis,
-            }"
-            :key="entity.name"
-            v-for="(entity, idx) in data[key]">
-            <div class="entity-name">{{ idx + 1}}. [{{ entity.country }}] {{ entity.name }} ({{ entity.symbol }})</div>
-            <div v-if="entity.holdings" class="entity-holdings"><i class="fab fa-btc"/>{{ entity.holdings.toLocaleString() }}</div>
-            <div v-if="entity.costBasis" class="entity-entry">매수금액: {{ $helpers.number.pretty.cap({ cap: entity.costBasis, baseCurrency: 'usd' }) }}</div>
-            <div v-if="entity.avgPrice" class="entity-avg">평단: {{ $helpers.number.pretty.price({ price: entity.avgPrice, baseCurrency: 'usd' }) }}</div>
-            <div v-if="entity.valuation" class="entity-current-value">평가액: {{ $helpers.number.pretty.cap({ cap: entity.valuation, baseCurrency: 'usd' }) }}</div>
-            <div v-if="entity.dominance" class="entity-dominance">시총 비중: {{ entity.dominance }}%</div>
-            <div v-if="entity.profit" class="entity-profit">수익률: {{ entity.profit }}%</div>
-            <a v-if="entity.source" class="entity-source m-t-8" :href="entity.source" target="_blank" rel="noreferrer">출처: <em class="text-underline">{{ entity.source }}</em></a>
+        <div class="table">
+          <div class="thead">
+            <div class="row">
+              <div class="td">단체</div>
+              <div class="td"><div>홀딩</div><div>시총비중</div></div>
+              <div class="td"><div>매수금액</div><div>평가액</div></div>
+              <div class="td" v-if="!$store.getters.isMobile"><div>평단</div><div>수익률</div></div>
+            </div>
+          </div>
+          <div class="tbody">
+            <a
+              :href="entity.source"
+              target="_blank"
+              rel="noreferrer"
+              class="row"
+              :class="{
+                'in-profit': entity.valuation > entity.costBasis,
+                'in-loss': entity.valuation < entity.costBasis,
+                'cursor-pointer': entity.source,
+              }"
+              :key="entity.name"
+              v-for="(entity, idx) in data[key]">
+              <div class="td">{{ idx + 1}} [{{ entity.country }}] {{ entity.name }} ({{ entity.symbol }})</div>
+              <div class="td">
+                <div><i class="fab fa-btc" v-if="entity.holdings"/>{{ entity.holdings ? entity.holdings.toLocaleString() : '-' }}</div>
+                <div>{{ entity.dominance ? `${entity.dominance}%` : '-' }}</div>
+              </div>
+              <div class="td">
+                <div>{{ entity.costBasis ? $helpers.number.pretty.cap({ cap: entity.costBasis, baseCurrency: 'usd' }) : '-' }}</div>
+                <div>{{ entity.valuation ? $helpers.number.pretty.cap({ cap: entity.valuation, baseCurrency: 'usd' }) : '-' }}</div>
+              </div>
+              <div class="td" v-if="!$store.getters.isMobile">
+                <div>{{ entity.profit ? $helpers.number.pretty.price({ price: entity.avgPrice, baseCurrency: 'usd' }) : '-' }}</div>
+                <div class="profit">{{ entity.profit ? `${entity.profit}%` : '-' }}</div>
+              </div>
+            </a>
           </div>
         </div>
       </div>
@@ -91,105 +100,106 @@ export default {
 
 <style lang="scss" scoped>
 .view-public-treasury {
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--text-stress);
-
   .description {
     font-size: 14px;
     line-height: 22px;
   }
 
-  .in-profit {
-    background: rgba(36, 175, 100, 0.1);
-  }
-
-  .in-loss {
-    background: rgba(240, 64, 64, 0.1);
-  }
-
-  .region {
-    margin-top: 24px;
-    font-size: 13px;
-    border: 1px solid var(--border-base);
-    padding: 12px;
-
-    .in-profit,
-    .in-loss {
-      width: 24px;
-      height: 24px;
-      flex: 0 0 auto;
-      margin-right: 8px;
-    }
-  }
-
   .fa-btc {
-    margin-right: 8px;
     color: var(--bitcoin);
+    margin-right: 4px;
   }
 
   .list {
     margin: 24px 0 40px;
 
     .entity-category {
-      margin-bottom: 16px;
-      font-weight: 700;
-      font-size: 16px;
-      padding: 0 16px;
-      background: var(--brand-primary-hover);
-      color: var(--white);
+      font-size: 14px;
+      margin-bottom: 8px;
+      padding: 4px 8px;
+      background: var(--background-light);
+      color: var(--text-stress);
       display: table;
-      border-radius: 16px;
-    }
-
-    .item-layout {
-      display: grid;
-      grid-gap: 24px;
-    }
-
-    .item {
       border-radius: 4px;
-      box-shadow: 0 2px 4px var(--border-base);
-      padding: 8px;
+    }
+  }
 
-      .entity-name {
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 8px;
+  .table {
+    display: table;
+    font-size: 12px;
+    width: 100%;
+
+    .thead {
+      border-top: 1px solid var(--border-base);
+    }
+
+    .tbody {
+      .row:not(.cursor-pointer) .td:first-child {
+        opacity: 0.5;
+      }
+    }
+
+    .row {
+      display: flex;
+      color: var(--text-stress);
+      border-bottom: 1px solid var(--border-base);
+
+      &.cursor-pointer {
+        &:hover {
+          background: var(--brand-primary-hover-bg);
+        }
       }
 
-      .entity-holdings {
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-        padding: 2px 8px;
-        border: 1px solid var(--bitcoin);
-        display: table;
-        border-radius: 16px;
-        font-weight: 700;
+      .td {
+        width: 80px;
+        padding: 8px;
+        flex: 0 0 auto;
+
+        &:nth-child(1) {
+          flex: 1 1 0;
+        }
+
+        &:nth-child(2),
+        &:nth-child(3),
+        &:nth-child(4) {
+          width: 104px;
+          text-align: right;
+        }
+
+        > div:not(:last-child) {
+          margin-bottom: 4px;
+        }
       }
 
-      .entity-profit {
-        font-weight: 500;
-      }
-
-      .entity-source {
-        font-size: 14px;
+      a {
         display: block;
       }
     }
+  }
 
-    .in-profit .entity-profit {
-      color: var(--price-up-bybit);
-    }
+  .in-profit .profit {
+    color: var(--price-up);
+  }
 
-    .in-loss .entity-profit {
-      color: var(--price-down-bybit);
-    }
+  .in-loss .profit {
+    color: var(--price-down);
+  }
 
-    @media (min-width: 768px) {
-      .item-layout {
-        grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 768px) {
+    .table {
+      font-size: 14px;
+
+      .row {
+        .td {
+          width: 160px;
+          flex: 0 0 auto;
+
+          &:nth-child(2),
+          &:nth-child(3),
+          &:nth-child(4) {
+            width: 160px;
+          }
+        }
       }
     }
   }

@@ -184,5 +184,9 @@ export default {
     font-size: 12px;
     line-height: 20px;
   }
+
+  .fa-btc {
+    color: var(--bitcoin);
+  }
 }
 </style>
