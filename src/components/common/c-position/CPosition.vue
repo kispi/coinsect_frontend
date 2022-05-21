@@ -82,8 +82,8 @@ export default {
       if (!props.position[key]) return '-'
 
       return props.position[key].toLocaleString(undefined, {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
+        maximumFractionDigits: 3,
+        minimumFractionDigits: 3,
       })
     }
 
