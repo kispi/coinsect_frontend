@@ -95,7 +95,7 @@ export default {
     const positions = computed(() => {
       const editable = []
       const nonEditable = []
-      store.getters.realTimePositions.data.forEach(o => o.editable ? editable.push(o) : nonEditable.push(o))
+      store.getters.realTimePositions.filter(p => p.entryPrice && p.size).data.forEach(o => o.editable ? editable.push(o) : nonEditable.push(o))
 
       return {
         editable,
