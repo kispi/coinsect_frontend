@@ -91,6 +91,7 @@ export default {
       }).then(idx => {
         if (idx === 1) {
           store.dispatch('initSettings')
+          location.reload()
         }
       })
     }
