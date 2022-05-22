@@ -96,7 +96,7 @@ export default {
           // settings.tradingviewHomeDoubleChart 넣고서 리셋하면 트뷰가 전체화면 덮게 렌더링되는 문제가 있어서 (그 버그를 고치는게 이 편보단 나을듯) 강제 새로고침해줌
           setTimeout(() => {
             location.reload()
-          }, 500)
+          }, store.getters.isMobile ? 2000 : 1000)
         }
       })
     }
