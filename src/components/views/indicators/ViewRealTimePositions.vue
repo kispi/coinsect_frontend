@@ -24,7 +24,11 @@
       <div
         @click="toggleTradingview"
         class="toggle-tradingview">
-        <AppCheckbox :modelValue="$store.getters.settings.tradingview.realTimePositions" class="no-touch"/>
+        <AppToggler
+          :modelValue="$store.getters.settings.tradingview.realTimePositions"
+          class="no-touch m-r-8"
+          :small="$store.getters.isMobile"
+        />
         BTC / NASDAQ
       </div>
     </div>
@@ -203,7 +207,7 @@ export default {
     margin-bottom: 8px;
     font-size: 12px;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
 
     .toggle-tradingview {
@@ -212,10 +216,6 @@ export default {
       align-items: center;
       color: var(--text-stress);
       cursor: pointer;
-
-      .app-checkbox {
-        margin-right: 8px;
-      }
     }
   }
 

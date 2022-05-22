@@ -1,5 +1,7 @@
 <template>
-  <div class="trading-view-symbols">
+  <div
+    class="trading-view-symbols"
+    :gap="8">
     <AppDropdown
       :dropdownItems="tradingviewSymbols"
       @select-dropdown-item="o => {
@@ -9,7 +11,6 @@
     <AppDropdown
       class="timeframe"
       :dropdownItems="defaultTimeframes"
-      :align="'right'"
       @select-dropdown-item="o => {
         $store.commit('setSettings', { tradingviewTimeframe: o.key })
       }"
@@ -28,12 +29,15 @@ export default {
     const tradingviewSymbols = ref([{
       name: 'BTCUSD_BINANCE',
       key: 'BINANCE:BTCUSDT',
+      img: require('@/assets/images/binance.svg'),
     }, {
       name: 'BTCUSD_BYBIT',
       key: 'BYBIT:BTCUSDT',
+      img: require('@/assets/images/bybit.svg'),
     }, {
       name: 'BTCUSD_BITSTAMP',
       key: 'BITSTAMP:BTCUSD',
+      img: require('@/assets/images/bitstamp.svg'),
     }, {
       name: 'NASDAQ',
       key: 'FOREXCOM:NSXUSD',
@@ -103,11 +107,11 @@ export default {
 <style lang="scss">
 .trading-view-symbols {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 
   .timeframe {
     width: 80px;
+    margin-left: 8px;
 
     .wrapper-dropdown-overlay {
       .list-container {

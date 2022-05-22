@@ -1,14 +1,16 @@
 <template>
   <div
+    ref="dropdownButton"
     class="app-dropdown"
     :class="{'transparent': transparent}">
     <div
-      ref="dropdownButton"
       @click="dropdownOpened = true"
       class="clickable-area">
-      <i class="item-icon" v-if="(selectedItem || {}).icon" :class="(selectedItem || {}).icon"/>
-      <img class="item-image" v-if="(selectedItem || {}).img" :src="(selectedItem || {}).img"/>
-      <div class="key" v-html="$translate((selectedItem || {}).name || (selectedItem || {}).key || 'SELECT')"/>
+      <div class="info">
+        <i class="item-icon" v-if="(selectedItem || {}).icon" :class="(selectedItem || {}).icon"/>
+        <img class="item-image" v-if="(selectedItem || {}).img" :src="(selectedItem || {}).img"/>
+        <div class="key" v-html="$translate((selectedItem || {}).name || (selectedItem || {}).key || 'SELECT')"/>
+      </div>
       <div class="chevrons">
         <i class="fa fa-chevron-down"/>
       </div>
@@ -134,6 +136,11 @@ export default {
     padding: 8px 0;
     cursor: pointer;
 
+    .info {
+      display: flex;
+      align-items: center;
+    }
+
     & > * {
       pointer-events: none;
     }
@@ -146,6 +153,7 @@ export default {
 
   .key {
     margin: 0 4px;
+    white-space: nowrap;
   }
 
   .chevrons {
@@ -230,6 +238,10 @@ export default {
     padding: 0 8px;
     border-radius: 8px;
     border: 1px solid var(--border-base);
+  }
+
+  @media (max-width: 767px) {
+    font-size: 12px;
   }
 }
 </style>

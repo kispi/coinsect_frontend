@@ -1,7 +1,10 @@
 <template>
   <div
     class="app-toggler"
-    :class="{'checked': modelValue}"
+    :class="{
+      'checked': modelValue,
+      'small': small,
+    }"
     @click.stop="onClickCheckbox">
     <div class="handle"/>
   </div>
@@ -9,7 +12,10 @@
 
 <script>
 export default {
-  props: ['modelValue'],
+  props: {
+    modelValue: null,
+    small: Boolean,
+  },
   setup(props ,{ emit }) {
     const onClickCheckbox = () => {
       const newVal = props.modelValue !== true
@@ -58,6 +64,10 @@ export default {
       transition: all 0.1s ease-in-out;
       transform: translateX(calc(var(--app-toggler-width) / 2));
     }
+  }
+
+  &.small {
+    --app-toggler-width: 32px;
   }
 }
 </style>

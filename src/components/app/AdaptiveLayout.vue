@@ -14,7 +14,7 @@ export default {
   props: {
     boundaryWidth: {
       type: Number,
-      default: 768, // 0, 768, 992, 1200 (0인 경우 항상 가로)
+      default: 768, // 480, 768, 992, 1200 (0인 경우 항상 가로)
     },
     gap: {
       type: Number,
@@ -63,6 +63,7 @@ export default {
 
 .adaptive-layout {
   @include createLayout(0);
+  @include createLayout(480);
   @include createLayout(768);
   @include createLayout(992);
   @include createLayout(1200);

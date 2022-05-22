@@ -44,6 +44,7 @@ const app = {
       },
       tradingviewSymbol: 'BINANCE:BTCUSDT',
       tradingviewTimeframe: 15,
+      tradingviewHomeDoubleChart: false,
       baseExchange: 'upbit', // 'upbit' || 'bithumb'
       baseExchangeMarket: 'krw', // 'krw' || 'btc' || 'usdt'...
       targetExchange: 'binance',

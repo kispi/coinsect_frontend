@@ -1,24 +1,17 @@
 <template>
   <div class="base-and-target">
-    <div class="base-exchange">
-      {{ $translate('BASE_EXCHANGE') }}
-      <AppDropdown
-        class="m-l-8"
-        :dropdownItems="bases"
-        @select-dropdown-item="onSelectBaseExchange"
-      />
-    </div>
-    <div class="target-exchange">
-      {{ $translate('TARGET_EXCHANGE') }}
-      <AppDropdown
-        class="m-l-8"
-        :dropdownItems="targets"
-        :align="'right'"
-        @select-dropdown-item="o => {
-          $store.commit('setSettings', { targetExchange: o.key })
-        }"
-      />
-    </div>
+    <AppDropdown
+      :dropdownItems="bases"
+      @select-dropdown-item="onSelectBaseExchange"
+    />
+    <div><i class="fal fa-exchange"/></div>
+    <AppDropdown
+      :dropdownItems="targets"
+      :align="'right'"
+      @select-dropdown-item="o => {
+        $store.commit('setSettings', { targetExchange: o.key })
+      }"
+    />
   </div>
 </template>
 
@@ -74,12 +67,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 8px;
 
-  .base-exchange,
-  .target-exchange {
-    display: flex;
-    align-items: center;
+  .fa-exchange {
+    font-size: 12px;
+    margin: 0 16px;
   }
 }
 </style>
