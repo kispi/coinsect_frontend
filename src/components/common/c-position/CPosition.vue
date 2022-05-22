@@ -1,7 +1,5 @@
 <template>
   <div
-    @click.stop="onContextmenu"
-    @contextmenu.prevent="onContextmenu"
     class="c-position"
     :class="{
       'short': position.size < 0,
@@ -13,7 +11,12 @@
       class="streamer-off overlay center">
       {{ $translate('STREAMER_NOT_ON_AIR') }}
     </div>
-    <div v-if="position.image" class="image-container">
+    <div
+      v-if="position.image"
+      class="image-container"
+      @click="$modal.images({
+        images: [position.image],
+      })">
       <div class="ratio-container">
         <AppImg :src="position.image" v-if="position.image" class="overlay"/>
       </div>
@@ -135,6 +138,13 @@ export default {
   .image-container {
     max-width: 96px;
     position: relative;
+    z-index: 1;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+      opacity: 0.5;
+    }
 
     .ratio-container {
       padding-top: 100%;
