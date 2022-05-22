@@ -11,10 +11,7 @@
       :key="idx"
       v-for="(order, idx) in orderbook.$$asks.slice(-depth)">
       <div class="price c-price-down">
-        <div class="value" v-html="order.price.toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-          minimumFractionDigits: 2,
-        })"/>
+        <div class="value" v-html="displayPrice(order.price)"/>
       </div>
       <div class="size">
         {{ order.size.toLocaleString() }}
@@ -27,11 +24,11 @@
     <div class="instrument f-mono">
       <div class="last-price" :class="instrument.last_tick_direction.includes('Minus') ? 'c-price-down' : 'c-price-up'">
         <i class="fa" :class="instrument.last_tick_direction.includes('Minus') ? 'fa-arrow-down' : 'fa-arrow-up'"/>
-        {{ instrument.last_price }}
+        {{ displayPrice(instrument.last_price) }}
       </div>
       <div class="other-prices">
-        <div class="mark-price m-b-4">Mark {{ instrument.mark_price }}</div>
-        <div class="index-price">Index {{ instrument.index_price }}</div>
+        <div class="mark-price m-b-4">Mark {{ displayPrice(instrument.mark_price) }}</div>
+        <div class="index-price">Index {{ displayPrice(instrument.index_price) }}</div>
       </div>
     </div>
     <div
@@ -39,10 +36,7 @@
       :key="idx"
       v-for="(order, idx) in orderbook.$$bids.slice(0, depth)">
       <div class="price c-price-up">
-        <div class="value" v-html="order.price.toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-          minimumFractionDigits: 2,
-        })"/>
+        <div class="value" v-html="displayPrice(order.price)"/>
       </div>
       <div class="size">
         {{ order.size.toLocaleString() }}
@@ -86,6 +80,18 @@ export default {
       instrument: null,
     })
 
+    const numFrac = ref(0)
+
+    const displayPrice = price => {
+      // 그래도 뭐 참조가 매번 재계산보단 빠르겠지
+      if (!numFrac.value) numFrac.value = ((price || '').split('.')[1] || '').length
+
+      return (parseFloat(price) || 0).toLocaleString(undefined, {
+        maximumFractionDigits: numFrac.value,
+        minimumFractionDigits: numFrac.value,
+      })
+    }
+
     const init = () => {
       subscribe({ type: 'orderBookL2_25', markets: [props.market] }).then(conn => connection.value.orderbook = conn)
       subscribe({ type: 'instrument_info.100ms', markets: [props.market] }).then(conn => connection.value.instrument = conn)
@@ -125,6 +131,7 @@ export default {
       orderbook,
       instrument,
       relativeWidth,
+      displayPrice,
     }
   },
 }

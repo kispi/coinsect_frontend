@@ -38,7 +38,11 @@
     <td>
       <div
         class="ticker-current-price-base"
-        :class="[$helpers.template.priceColor(ticker.$$changeRate1D), ticker.$$tradePriceBase ? '' : 'o-0']"
+        :class="[
+          $helpers.template.priceColor(ticker.$$changeRate1D),
+          ticker.$$tradePriceBase ? '' : 'o-0',
+          $store.getters.settings.theme === 'light' ? 'f-500' : '',
+        ]"
         v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: $store.getters.settings.baseExchangeMarket })"
       />
       <div
@@ -87,7 +91,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, computed, ref } from 'vue'
+import { getCurrentInstance, computed } from 'vue'
 import { useStore } from 'vuex'
 import useWebsocketCommon from '@/hooks/websockets/websocket-common'
 
@@ -126,6 +130,7 @@ export default {
           exchange: exchange,
           resizable: !store.getters.isMobile,
           noBackdrop: true,
+          useMultiOpen: true,
         },
       })
     }
@@ -162,6 +167,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/base.scss';
+
 .real-time-price-row {
   cursor: pointer;
 
@@ -232,7 +239,7 @@ export default {
     }
 
     &:not(:first-child) {
-      font-family: Arial, Helvetica, sans-serif;
+      @extend .f-mono;
     }
   }
 }
