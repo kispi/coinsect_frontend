@@ -34,7 +34,7 @@
         </div>
       </div>
       <div
-        v-else
+        v-if="tabs[selectedTab].length === 0 && !loading"
         class="empty">
         유저가 없습니다
       </div>
@@ -60,6 +60,8 @@ export default {
 
     const connections = ref([])
 
+    const loading = ref(true)
+
     const tabs = computed(() => {
       const nonBlocked = []
       const blocked = []
@@ -76,6 +78,7 @@ export default {
     const timeout = ref(null)
 
     const loadConnections = () => {
+      loading.value = true
       connection.value.send(JSON.stringify({
         type: 'connections',
         user: {
@@ -87,6 +90,7 @@ export default {
     }
 
     const onIncomingConnections = message => {
+      loading.value = false
       connections.value = message.meta
       connections.value.sort((a, b) => {
         if (a.user.profile.image && b.user.profile.image) {
@@ -119,6 +123,7 @@ export default {
     return {
       refModalChatUsers,
       selectedTab,
+      loading,
       tabs,
       connections,
     }
@@ -158,11 +163,18 @@ export default {
         text-align: center;
         font-size: 12px;
         font-weight: 700;
+        border: 1px solid var(--border-base);
+        border-radius: 4px;
+        margin: 8px;
         cursor: pointer;
 
         &.selected {
           color: var(--white);
           background: var(--brand-primary);
+        }
+
+        &:not(.selected):hover {
+          background: var(--brand-primary-hover-bg);
         }
       }
     }

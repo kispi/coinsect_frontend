@@ -26,7 +26,7 @@
       </ul>
       등이 있으며, 저 혼자 개발하는 사이트이기 때문에 게시판이나 채팅으로 의견을 남겨주시는 분들이 계시면 매우 빠르게 반영한다는 장점이 있습니다.<br><br>
     </div>
-    <hr class="m-t-40">
+    <div class="hr m-t-40 m-b-40"/>
     <div
       class="toggle-updates text-center"
       @click="showUpdates = !showUpdates">
