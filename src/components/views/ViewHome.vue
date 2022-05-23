@@ -20,6 +20,7 @@
       <AdaptiveLayout
         class="trading-view-double" :gap="8">
         <TradingView
+          :symbol="$store.getters.settings.tradingviewSymbol"
           :interval="$store.getters.settings.tradingviewTimeframe"
         />
         <TradingView

@@ -234,7 +234,7 @@ export default {
   }
 
   &:not(.transparent) {
-    background: var(--background-light);
+    background: var(--background-base);
     padding: 0 8px;
     border-radius: 8px;
     border: 1px solid var(--border-base);
@@ -242,6 +242,17 @@ export default {
 
   @media (max-width: 767px) {
     font-size: 12px;
+  }
+}
+
+#app.dark {
+  .app-dropdown {
+    &:not(.transparent) {
+      background: var(--background-light);
+      padding: 0 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border-base);
+    }
   }
 }
 </style>
