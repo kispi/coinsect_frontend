@@ -22,6 +22,7 @@ const useUpbit = () => {
       $$changeRate52WL: Math.round((json.tp - json.l52wp) / json.l52wp * 10000) / 100,
       $$vol24HBase: json.atp24h,
       $$code: json.cd,
+      $$caution: json.mw,
       $$prevClosingPrice: json.pcp,
     })
   }
