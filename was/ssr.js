@@ -37,6 +37,7 @@ const useRequestStartTime = (req, res, next) => {
 }
 
 const useSSR = server => {
+  server.set('trust proxy', true)
   server.use(useRequestStartTime)
   useStaticServing(server)
   useRoutes(server)
