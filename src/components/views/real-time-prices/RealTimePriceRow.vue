@@ -229,9 +229,9 @@ export default {
 
     .badge-caution {
       background: orange;
-      font-size: 12px;
-      width: 16px;
-      height: 16px;
+      font-size: 10px;
+      width: 12px;
+      height: 12px;
       margin-left: 8px;
       display: flex;
       align-items: center;
