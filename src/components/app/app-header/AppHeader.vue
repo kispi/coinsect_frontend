@@ -37,6 +37,11 @@
               v-html="numNewNotifications"
             />
           </div>
+          <div
+            @click="$modal.custom({ component: 'ModalSignIn' })"
+            class="clickable-icon-wrapper">
+            로그인
+          </div>
         </div>
         <WrapperDropdownOverlay
           v-model="showNotifications"
@@ -99,6 +104,10 @@ export default {
 
     const showNotifications = ref(null)
 
+    const openModalLogin = () => {
+      console.log('sibal')
+    }
+
     const numNewNotifications = computed(() => {
       const n = store.getters.notifications
       if (!n) return
@@ -152,6 +161,7 @@ export default {
       showSettings,
       menuItems,
       numNewNotifications,
+      openModalLogin,
     }
   },
 }
