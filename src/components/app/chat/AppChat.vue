@@ -57,14 +57,10 @@
         <div
           v-if="incomingMessage"
           @click="onClickIncomingMessageOverlay"
-          class="incoming-message-overlay flex-row items-center">
-          <div class="flex-fill flex-row items-center">
-            <div class="flex-fill">
-              <div class="flex-wrap lines-1" v-html="incomingMessage.text"/>
-              <div class="nickname lines-1" v-html="incomingMessage.profile.nickname"/>
-            </div>
-            <i class="fa fa-chevron-down flex-wrap"/>
-          </div>
+          class="incoming-message-overlay">
+          <AppChatProfile :user="incomingMessage"/>
+          <div class="text lines-1" v-html="incomingMessage.text"/>
+          <i class="fa fa-chevron-down"/>
         </div>
         <div
           @click="scrollToBottom"
@@ -401,7 +397,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .app-chat {
   --app-chat-padding: 12px;
   transition: none;
@@ -515,19 +511,50 @@ export default {
 
     .incoming-message-overlay {
       position: absolute;
-      color: var(--gs-14);
-      background: rgba(255, 255, 255, 0.75);
+      color: var(--text-stress);
+      background: var(--border-base);
+      border: 1px solid rgba(0, 0, 0, 0.25);
       border-radius: 4px;
-      padding: 4px 12px;
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 300;
+      padding: 0 12px;
+      height: 36px;
       bottom: 88px;
       left: 12px;
       right: 12px;
       z-index: 1;
       cursor: pointer;
 
+      .app-chat-profile {
+        white-space: nowrap;
+        margin-right: 8px;
+
+        .name {
+          color: var(--gs-bb);
+          margin-right: 4px;
+        }
+
+        .badge-token {
+          background: none;
+          border: 1px solid var(--gs-bb);
+          color: var(--gs-bb);
+        }
+      }
+
       .nickname {
         font-size: 12px;
         margin-top: 4px;
+      }
+
+      .text {
+        flex: 1 1 0;
+      }
+
+      .fa-chevron-down {
+        flex: 0 0 auto;
+        margin-left: 16px;
       }
     }
   }
