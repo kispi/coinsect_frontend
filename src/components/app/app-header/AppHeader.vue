@@ -2,7 +2,7 @@
   <header class="app-header layout-centered">
     <SearchFaker/>
     <div class="top">
-      <CoinnessIssues v-show="$store.getters.windowInnerWidth >= 480"/>
+      <!-- <CoinnessIssues v-show="$store.getters.windowInnerWidth >= 480"/> -->
       <BannerMarketIndices/>
     </div>
     <div

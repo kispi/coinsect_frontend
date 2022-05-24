@@ -6,10 +6,11 @@
       <div class="image-name">
         <AppImg :src="symbol.thumb" class="flex-wrap m-r-8"/>
         <div
-          v-html="symbol[$store.getters.settings.locale] || symbol.en"
           class="name lines-1"
-          :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''"
-        />
+          :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''">
+          {{ symbol[$store.getters.settings.locale] || symbol.en }}
+        </div>
+        <div v-if="ticker.$$caution === 'CAUTION'" class="badge-caution">유</div>
         <i @click.stop="openModalTradingView" class="fa fa-chart-line"/>
       </div>
       <div class="functions">
@@ -224,6 +225,18 @@ export default {
       @media (max-width: 479px) {
         max-width: 48px;
       }
+    }
+
+    .badge-caution {
+      background: orange;
+      font-size: 10px;
+      width: 12px;
+      height: 12px;
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
     }
   }
 

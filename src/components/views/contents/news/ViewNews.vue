@@ -8,7 +8,7 @@
           @click="$store.commit('setSettings', { newsProvider: 'upbit' })">
           <img src="@/assets/images/upbit.svg">뉴스룸
         </div>
-        <div
+        <!-- <div
           class="provider"
           :class="{'selected': $store.getters.settings.newsProvider === 'coinness_feed'}"
           @click="$store.commit('setSettings', { newsProvider: 'coinness_feed' })">
@@ -19,33 +19,33 @@
           :class="{'selected': $store.getters.settings.newsProvider === 'coinness_article'}"
           @click="$store.commit('setSettings', { newsProvider: 'coinness_article' })">
           <img src="@/assets/images/coinness.svg">뉴스룸
-        </div>
+        </div> -->
       </div>
     </div>
     <NewsUpbit v-if="$store.getters.settings.newsProvider === 'upbit'"/>
-    <NewsCoinnessFeeds v-if="$store.getters.settings.newsProvider === 'coinness_feed'"/>
-    <NewsCoinnessArticles v-if="$store.getters.settings.newsProvider === 'coinness_article'"/>
+    <!-- <NewsCoinnessFeeds v-if="$store.getters.settings.newsProvider === 'coinness_feed'"/>
+    <NewsCoinnessArticles v-if="$store.getters.settings.newsProvider === 'coinness_article'"/> -->
   </div>
 </template>
 
 <script>
 import { onMounted } from 'vue'
 import { useStore } from 'vuex'
-import NewsCoinnessArticles from './NewsCoinnessArticles'
-import NewsCoinnessFeeds from './NewsCoinnessFeeds'
+// import NewsCoinnessArticles from './NewsCoinnessArticles'
+// import NewsCoinnessFeeds from './NewsCoinnessFeeds'
 import NewsUpbit from './NewsUpbit'
 
 export default {
   components: {
-    NewsCoinnessArticles,
-    NewsCoinnessFeeds,
+    // NewsCoinnessArticles,
+    // NewsCoinnessFeeds,
     NewsUpbit,
   },
   setup() {
     const store = useStore()
 
     onMounted(() => {
-      if (['upbit', 'coinness_feed', 'coinness_article'].indexOf(store.getters.settings.newsProvider) < 0) {
+      if (['upbit'].indexOf(store.getters.settings.newsProvider) < 0) {
         store.commit('setSettings', { newsProvider: 'upbit' })
       }
     })
