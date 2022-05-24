@@ -4,7 +4,7 @@
     :class="{
       'short': position.size < 0,
       'long': position.size > 0,
-      'on-air': !position.onAir,
+      'on-air': position.onAir,
     }">
     <div
       v-if="!position.onAir"
@@ -121,6 +121,12 @@ export default {
     border: 1px solid var(--border-light);
   }
 
+  &.on-air {
+    .image-container {
+      z-index: 1;
+    }
+  }
+
   .streamer-off {
     color: var(--white);
     background: rgba(0, 0, 0, 0.5);
@@ -138,11 +144,9 @@ export default {
   .image-container {
     max-width: 96px;
     position: relative;
-    z-index: 1;
     cursor: pointer;
 
     &:hover {
-      transform: scale(1.05);
       opacity: 0.5;
     }
 
