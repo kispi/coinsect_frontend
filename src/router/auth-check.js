@@ -16,6 +16,6 @@ export default async (to, from, next) => {
     await $store.dispatch('loadAuthToken')
     next()
   } catch (e) {
-    next('/customers/login')
+    next('/')
   }
 }

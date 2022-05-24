@@ -1,3 +1,4 @@
+import { store } from '@/store'
 import { getCurrentInstance, onMounted } from 'vue'
 
 const useKakao = () => {
@@ -10,27 +11,33 @@ const useKakao = () => {
     if (!Kakao.isInitialized()) Kakao.init(process.env.VUE_APP_OAUTH_KAKAO)
   }
 
-  const signIn = () => {
-    console.log(process.env.VUE_APP_OAUTH_KAKAO)
-    Kakao.Auth.login({
+  const loadKakaoMe = () => new Promise((resolve, reject) => {
+    Kakao.API.request(({
+      url: '/v2/user/me',
       success: resp => {
-        console.log('resp1', resp)
-        Kakao.API.request(({
-          url: '/v2/user/me',
-          success: resp => {
-            console.log(resp)
-          },
-          fail: err => {
-            console.log(err)
-          }
-        }))
+        resolve(resp)
+      },
+      fail: reject,
+    }))
+  })
+
+  const signIn = () => {
+    Kakao.Auth.login({
+      success: async () => {
+        const user = await loadKakaoMe()
+        store.dispatch('signInKakao', {
+          kakaoId: user.id,
+          email: user.kakao_account.email,
+        })
       },
       fail: err => {
-        console.log(err)
+        plugins.$toast.error('카카오 로그인에 실패하였습니다')
+        console.error(err)
       },
     })
   }
 
+  // 탈퇴시 이거 먼저 실행하고 서버에서도 탈퇴처리
   const signOut = () => {
     if (!Kakao.Auth.getAccessToken()) return
 

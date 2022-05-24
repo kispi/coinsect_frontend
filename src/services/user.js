@@ -1,11 +1,10 @@
 import { $http } from '@/modules/axios'
 
 const user = {
-  create: user => $http.post('users', user),
-  all: params => $http.get('users', { params }),
-  detail: userId => $http.get(`users/${userId}`),
-  update: user => $http.put('users', user),
-  delete: userId => $http.delete(`users/${userId}`),
+  me: () => $http.get('users/me'),
+  update: user => $http.put('users/me', user),
+  delete: () => $http.delete('users/me'),
+  signInKakao: payload => $http.post('users/sign_in_kakao', payload),
 }
 
 export default user

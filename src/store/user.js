@@ -7,7 +7,8 @@ const afterSignIn = async ({ dispatch, token, customRouteTo }) => {
   window.localStorage.setItem('header', JSON.stringify({ token }))
 
   try {
-    await dispatch('bootstrap')
+    await dispatch('loadAuthToken')
+    await dispatch('loadAuthRequired')
     const prevFullPath = helpers.localStorage.getMeta('prevFullPath')
     router.push(customRouteTo || prevFullPath || '/')
   } catch (e) {
@@ -47,6 +48,14 @@ const user = {
       try {
         const data = await userService.signIn({ email, password })
         await afterSignIn({ dispatch, token: data.token, customRouteTo })
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    async signInKakao({ dispatch }, { kakaoId, email }) {
+      try {
+        const { token } = await userService.signInKakao({ kakaoId, email })
+        await afterSignIn({ dispatch, token })
       } catch (e) {
         return Promise.reject(e)
       }

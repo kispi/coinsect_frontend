@@ -1,4 +1,4 @@
-import { $http } from '@/modules/axios'
+import { $http, $httpNoAuth } from '@/modules/axios'
 
 const cacheTime = 1000 * 60
 
@@ -13,7 +13,7 @@ const cached = {
 const marketInfo = {
   indices: () => $http.get('market_info/indices'),
   leaderboard: () => $http.get('market_info/leaderboard'),
-  marketcaps: params => $http.get('https://api.coinmarketcap.com/data-api/v3/cryptocurrency/listing', { params }),
+  marketcaps: params => $httpNoAuth.get('https://api.coinmarketcap.com/data-api/v3/cryptocurrency/listing', { params }),
   symbols: () => $http.get('market_info/symbols'),
   base: async ({ baseExchange, baseExchangeMarket }) => {
     const bEx = baseExchange
@@ -28,7 +28,7 @@ const marketInfo = {
     })()
 
     try {
-      const data = await $http.get(endpoint)
+      const data = await $httpNoAuth.get(endpoint)
       if (bEx === 'upbit') {
         const upbit = data.filter(o => o.market.startsWith(`${bExMarket.toUpperCase()}-`)).map(o => ({
           ...o,

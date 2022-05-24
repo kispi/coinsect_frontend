@@ -104,10 +104,6 @@ export default {
 
     const showNotifications = ref(null)
 
-    const openModalLogin = () => {
-      console.log('sibal')
-    }
-
     const numNewNotifications = computed(() => {
       const n = store.getters.notifications
       if (!n) return
@@ -161,7 +157,6 @@ export default {
       showSettings,
       menuItems,
       numNewNotifications,
-      openModalLogin,
     }
   },
 }
