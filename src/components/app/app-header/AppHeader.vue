@@ -38,9 +38,10 @@
             />
           </div>
           <div
-            @click="$modal.custom({ component: 'ModalSignIn' })"
+            @click="onClickAccount"
             class="clickable-icon-wrapper">
-            로그인
+            <i v-if="$store.getters.me" class="fa fa-circle-user"/>
+            <div v-else>로그인</div>
           </div>
         </div>
         <WrapperDropdownOverlay
@@ -150,6 +151,11 @@ export default {
       }
     }))
 
+    const onClickAccount = () => {
+      if (store.getters.me) router.push('/account')
+      else plugins.$modal.custom({ component: 'ModalSignIn' })
+    }
+
     return {
       refIconNotifications,
       refIconSettings,
@@ -157,6 +163,7 @@ export default {
       showSettings,
       menuItems,
       numNewNotifications,
+      onClickAccount,
     }
   },
 }
