@@ -59,7 +59,7 @@ const app = {
       newsProvider: 'upbit', // 'upbit' || 'coinness_feed' || 'coinness_article'
       chatFolded: false,
       chatSizeMax: false,
-      chatDing: true,
+      chatDing: false,
       chatTransparent: false,
     },
     windowInnerWidth: null,
