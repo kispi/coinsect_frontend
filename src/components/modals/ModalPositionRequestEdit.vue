@@ -81,7 +81,7 @@ export default {
       payload.value.liqPrice = p.liqPrice
       payload.value.size = p.size
       payload.value.contract = p.contract || 'BTCUSDT'
-      payload.value.token = store.getters.me.token
+      payload.value.token = store.getters.chatUser.token
       payload.value.onAir = true
     }
 

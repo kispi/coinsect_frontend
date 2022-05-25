@@ -99,8 +99,8 @@ export default {
     const refInputNickname = ref(null)
 
     const profile = ref({
-      nickname: store.getters.me.profile.nickname,
-      image: store.getters.me.profile.image,
+      nickname: store.getters.chatUser.profile.nickname,
+      image: store.getters.chatUser.profile.image,
     })
 
     const onConfirm = async () => {
@@ -110,7 +110,7 @@ export default {
       profile.value.image = (profile.value.image || '').trim()
 
       try {
-        store.commit('setMe', await props.options.setAccount(profile.value))
+        store.commit('setChatUser', await props.options.setAccount(profile.value))
         plugins.$toast.success('닉네임과 이미지를 설정했습니다.')
         emit('close')
       } catch (e) {

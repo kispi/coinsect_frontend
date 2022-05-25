@@ -117,9 +117,6 @@ const andSoOn = [{
   path: '/',
   component: () => import(/* webpackChunkName: 'view-home' */ '@/components/views/ViewHome'),
 }, {
-  path: '/login',
-  component: () => import(/* webpackChunkName: 'view-login' */ '@/components/views/ViewLogin'),
-}, {
   path: '/about',
   component: () => import(/* webpackChunkName: 'view-about' */ '@/components/views/ViewAbout'),
 }]

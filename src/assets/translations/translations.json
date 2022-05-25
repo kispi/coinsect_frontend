@@ -39,6 +39,10 @@
     "en": "Nickname",
     "kr": "닉네임"
   },
+  "CHANGE": {
+    "en": "Change",
+    "kr": "변경"
+  },
   "DAYS": {
     "en": "days",
     "kr": "일"

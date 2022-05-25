@@ -75,7 +75,7 @@ export default {
     const init = async () => {
       try {
         store.commit('setLoading', { global: true })
-        currentBlock.value = await plugins.$http.get('https://blockchain.info/q/getblockcount')
+        currentBlock.value = await plugins.$httpNoAuth.get('https://blockchain.info/q/getblockcount')
         secondsUntilNextHalving.value = (840000 - currentBlock.value) * 10 * 60
         nextHalving.value = plugins.$helpers.dayjs().add(secondsUntilNextHalving.value, 'seconds')
       } catch (e) {}

@@ -181,14 +181,18 @@ const app = {
         commit('setNotifications', data)
       } catch (e) {}
     },
+    async loadAuthNotRequired({ dispatch }) {
+      dispatch('loadTargetMarkets')
+      dispatch('loadSymbols')
+      dispatch('loadNotifications')
+    },
+    async loadAuthRequired({ getters, dispatch }) {
+      if (!getters.header) return
+
+      dispatch('loadMe')
+    },
     // 앱 뜰 때 필요한 정보들 쭉 콜함
     async bootstrap({ commit, dispatch }) {
-      const loadAuthNotRequired = async () => Promise.all([
-        dispatch('loadTargetMarkets'),
-        dispatch('loadSymbols'),
-        dispatch('loadNotifications'),
-      ])
-
       commit('setIsMobile')
       commit('setScrollTop', 0)
 
@@ -197,7 +201,8 @@ const app = {
       } catch (e) {}
 
       $http.get('config').then(data => commit('setConfig', data))
-      await loadAuthNotRequired()
+      await dispatch('loadAuthNotRequired')
+      dispatch('loadAuthRequired')
     },
   },
 }

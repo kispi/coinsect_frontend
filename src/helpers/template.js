@@ -36,14 +36,6 @@ const template = {
     const assigned = format.replace(/%s/, number)
     return number > 1 ? template.case.pluralize(assigned) : assigned
   },
-  currency: currency => {
-    const symbols = { 'usd': '$', 'gbp': '£', 'eur': '€', 'krw': '₩' }
-    if (currency) return symbols[currency]
-
-    if (!$store.getters.me) return '₩'
-
-    return symbols[$store.getters.me.currency]
-  },
   withLeadingZero: (value, numDigits) => {
     if (typeof value !== 'number' || !numDigits) return
 

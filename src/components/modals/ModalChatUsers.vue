@@ -82,7 +82,7 @@ export default {
       connection.value.send(JSON.stringify({
         type: 'connections',
         user: {
-          token: store.getters.me.token,
+          token: store.getters.chatUser.token,
         },
       }))
 

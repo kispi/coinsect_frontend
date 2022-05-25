@@ -7,7 +7,8 @@ const afterSignIn = async ({ dispatch, token, customRouteTo }) => {
   window.localStorage.setItem('header', JSON.stringify({ token }))
 
   try {
-    await dispatch('bootstrap')
+    await dispatch('loadAuthToken')
+    await dispatch('loadAuthRequired')
     const prevFullPath = helpers.localStorage.getMeta('prevFullPath')
     router.push(customRouteTo || prevFullPath || '/')
   } catch (e) {
@@ -18,10 +19,12 @@ const afterSignIn = async ({ dispatch, token, customRouteTo }) => {
 const user = {
   state: () => ({
     me: null,
+    chatUser: null,
     header: null,
   }),
   getters: {
     me: state => state.me,
+    chatUser: state => state.chatUser,
     header: state => state.header,
   },
   actions: {
@@ -51,6 +54,14 @@ const user = {
         return Promise.reject(e)
       }
     },
+    async signInKakao({ dispatch }, { kakaoId, email }) {
+      try {
+        const { token } = await userService.signInKakao({ kakaoId, email })
+        await afterSignIn({ dispatch, token })
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
     signOut({ commit, dispatch }) {
       const removeTheseKeys = ['header', 'meta']
       removeTheseKeys.forEach(key => window.localStorage.removeItem(key))
@@ -65,6 +76,9 @@ const user = {
   mutations: {
     setMe(state, me) {
       state.me = me
+    },
+    setChatUser(state, chatUser) {
+      state.chatUser = chatUser
     },
     setHeader(state, payload) {
       state.header = payload
