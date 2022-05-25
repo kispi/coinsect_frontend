@@ -19,10 +19,12 @@ const afterSignIn = async ({ dispatch, token, customRouteTo }) => {
 const user = {
   state: () => ({
     me: null,
+    chatUser: null,
     header: null,
   }),
   getters: {
     me: state => state.me,
+    chatUser: state => state.chatUser,
     header: state => state.header,
   },
   actions: {
@@ -74,6 +76,9 @@ const user = {
   mutations: {
     setMe(state, me) {
       state.me = me
+    },
+    setChatUser(state, chatUser) {
+      state.chatUser = chatUser
     },
     setHeader(state, payload) {
       state.header = payload

@@ -21,19 +21,19 @@
           </div>
           <div class="m-l-16 m-r-16">/</div>
           <div
-            v-if="$store.getters.me"
+            v-if="$store.getters.chatUser"
             class="profile">
             <AppImg
               @click="$modal.images({
-                images: [$store.getters.me.profile.image],
+                images: [$store.getters.chatUser.profile.image],
               })"
-              v-if="$store.getters.me.profile.image"
-              :src="$store.getters.me.profile.image"
+              v-if="$store.getters.chatUser.profile.image"
+              :src="$store.getters.chatUser.profile.image"
             />
             <div
               @click="openModalChatSettings"
               class="nickname"
-              v-html="$store.getters.me.profile.nickname"
+              v-html="$store.getters.chatUser.profile.nickname"
             />
           </div>
         </div>

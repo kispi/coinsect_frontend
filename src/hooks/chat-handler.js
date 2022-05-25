@@ -37,14 +37,14 @@ const useChatHandler = () => {
     id: message.id,
     profile: (message.user || {}).profile,
     token: (message.user || {}).token,
-    isMine: (message.user || {}).token === store.getters.me.token,
+    isMine: (message.user || {}).token === store.getters.chatUser.token,
     text: message.text,
     timestamp: message.ts,
     type: message.type,
   })
 
   const sendWebsocketMessage = message => {
-    message.user = { token: store.getters.me.token } // 보낸 사람의 토큰만 채팅서버로 알려줌 (기존에는 프로필 다보냄)
+    message.user = { token: store.getters.chatUser.token } // 보낸 사람의 토큰만 채팅서버로 알려줌 (기존에는 프로필 다보냄)
     connection.value.send(JSON.stringify(message))
   }
 
@@ -63,7 +63,7 @@ const useChatHandler = () => {
       }
       case 'auth':
         plugins.$helpers.localStorage.setMeta('user', message.user)
-        store.commit('setMe', message.user)
+        store.commit('setChatUser', message.user)
         ping()
         break
       case 'connections':
@@ -76,7 +76,7 @@ const useChatHandler = () => {
 
   const setAccount = async profile => {
     try {
-      return await plugins.$http.put(`webchat/users/${store.getters.me.token}`, {
+      return await plugins.$http.put(`webchat/users/${store.getters.chatUser.token}`, {
         profile,
       })
     } catch (e) {
