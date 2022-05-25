@@ -51,8 +51,10 @@ export default {
       () => setTimeout(init),
     )
 
-    onMounted(init)
-  }
+    onMounted(() => {
+      setTimeout(init, 500)
+    })
+  },
 }
 </script>
 
