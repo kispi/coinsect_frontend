@@ -48,6 +48,19 @@ const useChatHandler = () => {
     connection.value.send(JSON.stringify(message))
   }
 
+  const openModalSentiment = user => {
+    if ((user.profile || {}).sentiment && plugins.$helpers.dayjs(user.profile.sentiment.expireAt).isAfter(plugins.$helpers.dayjs())) return
+
+    plugins.$modal.custom({
+      component: 'ModalSentiment',
+    }).then(type => {
+      if (!type) return
+
+      store.getters.chatUser.profile.sentiment = { type }
+      setAccount(store.getters.chatUser.profile)
+    })
+  }
+
   const handleMessage = message => {
     switch (message.type) {
       case 'alert':
@@ -62,6 +75,7 @@ const useChatHandler = () => {
         break
       }
       case 'auth':
+        openModalSentiment(message.user)
         plugins.$helpers.localStorage.setMeta('user', message.user)
         store.commit('setChatUser', message.user)
         ping()
@@ -76,9 +90,10 @@ const useChatHandler = () => {
 
   const setAccount = async profile => {
     try {
-      return await plugins.$http.put(`webchat/users/${store.getters.chatUser.token}`, {
+      const user = await plugins.$http.put(`webchat/users/${store.getters.chatUser.token}`, {
         profile,
       })
+      store.commit('setChatUser', user)
     } catch (e) {
       return Promise.reject(e)
     }

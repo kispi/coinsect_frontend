@@ -15,7 +15,12 @@
       class="dot"
       :style="{ background: `#${(user.token || '').slice(0, 6)}` }"
     />
-    <span class="name" v-html="user.profile.nickname" @click="openModalBlockUser"/>
+    <span
+      @click="openModalBlockUser"
+      class="nickname"
+      :class="useSentiment ? (user.profile.sentiment || {}).type || '' : ''"
+      v-html="user.profile.nickname"
+    />
     <BadgeToken :token="user.token" @click="openModalBlockUser"/>
   </div>
 </template>
@@ -25,7 +30,10 @@ import { getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  props: ['user'],
+  props: {
+    user: null,
+    useSentiment: Boolean,
+  },
   setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -76,12 +84,20 @@ export default {
     margin-right: 4px;
   }
 
-  .name {
+  .nickname {
     color: var(--text-stress);
     margin-right: 8px;
+
+    &.long {
+      color: var(--price-up);
+    }
+
+    &.short {
+      color: var(--price-down);
+    }
   }
 
-  .name,
+  .nickname,
   .badge-token {
     cursor: pointer;
   }

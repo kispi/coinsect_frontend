@@ -41,27 +41,35 @@ export default {
     }, {
       name: 'NASDAQ',
       key: 'FOREXCOM:NSXUSD',
+      img: 'https://s3-symbol-logo.tradingview.com/indices/nasdaq-100.svg',
     }, {
       name: 'S&P 500',
       key: 'FOREXCOM:SPXUSD',
+      img: 'https://s3-symbol-logo.tradingview.com/indices/s-and-p-500.svg'
     }, {
       name: 'GOLD',
       key: 'GOLD',
+      img: 'https://s3-symbol-logo.tradingview.com/metal/gold.svg',
     }, {
       name: 'SILVER',
       key: 'SILVER',
+      img: 'https://s3-symbol-logo.tradingview.com/metal/gold.svg',
     }, {
       name: 'BTC_DOMINANCE',
       key: 'CRYPTOCAP:BTC.D',
+      img: 'https://static.upbit.com/logos/BTC.png',
     }, {
       name: 'KIMCHI_PREMIUM',
       key: 'UPBIT:BTCKRW/(BINANCE:BTCUSDT*FX_IDC:USDKRW) * 100',
+      img: 'https://static.upbit.com/logos/BTC.png',
     }, {
       name: 'BITCOIN_LONGS',
       key: 'BITFINEX:BTCUSDLONGS',
+      img: 'https://static.upbit.com/logos/BTC.png',
     }, {
       name: 'BITCOIN_SHORTS',
       key: 'BITFINEX:BTCUSDSHORTS',
+      img: 'https://static.upbit.com/logos/BTC.png',
     }].map(o => ({
       ...o,
       $$selected: o.key === store.getters.settings.tradingviewSymbol,

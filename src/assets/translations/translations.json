@@ -70,5 +70,21 @@
   "SELECT": {
     "en": "Select",
     "kr": "선택"
+  },
+  "LONG": {
+    "en": "Long",
+    "kr": "롱"
+  },
+  "SHORT": {
+    "en": "Short",
+    "kr": "숏"
+  },
+  "BULLISH": {
+    "en": "Bullish",
+    "kr": "떡상각"
+  },
+  "BEARISH": {
+    "en": "Bearish",
+    "kr": "떡락각"
   }
 }

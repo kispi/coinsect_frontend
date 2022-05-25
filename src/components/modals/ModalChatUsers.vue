@@ -4,6 +4,10 @@
     class="modal-chat-users scrollable-body">
     <ModalHeader :title="`${$translate('MODAL_CHAT_USERS')} (${connections.length})`" @close="$emit('close')"/>
     <div class="body">
+      <div class="long-short f-mono">
+        <div class="sentiment long"><i class="fa fa-arrow-trend-up"/>Bulls: {{ sentiment.bulls }}</div>
+        <div class="sentiment short"><i class="fa fa-arrow-trend-down"/>Bears: {{ sentiment.bears }}</div>
+      </div>
       <div class="tabs">
         <div
           class="tab"
@@ -30,7 +34,7 @@
           class="connection"
           :key="idx"
           v-for="(connection, idx) in tabs[selectedTab]">
-          <AppChatProfile :user="connection.user"/>
+          <AppChatProfile :user="connection.user" :useSentiment="true"/>
         </div>
       </div>
       <div
@@ -60,12 +64,22 @@ export default {
 
     const connections = ref([])
 
+    const sentiment = ref({
+      bulls: 0,
+      bears: 0,
+    })
+
     const loading = ref(true)
 
     const tabs = computed(() => {
       const nonBlocked = []
       const blocked = []
-      connections.value.forEach(c => (store.getters.settings.blockedUsers[c.user.token] ? blocked : nonBlocked).push(c))
+      connections.value.forEach(c => {
+        (store.getters.settings.blockedUsers[c.user.token] ? blocked : nonBlocked).push(c)
+        const t = (c.user.profile.sentiment || {}).type
+        if (t === 'long') sentiment.value.bulls++
+        if (t === 'short') sentiment.value.bears++
+      })
 
       return {
         'NON_BLOCKED': nonBlocked,
@@ -126,6 +140,7 @@ export default {
       loading,
       tabs,
       connections,
+      sentiment,
     }
   },
 }
@@ -146,6 +161,28 @@ export default {
 
     .btn-primary {
       width: 100%;
+    }
+
+    .long-short {
+      display: flex;
+      margin: 8px auto;
+      font-size: 12px;
+
+      .sentiment {
+        padding: 4px 12px;
+
+        i {
+          margin-right: 4px;
+        }
+
+        &.long {
+          color: var(--price-up);
+        }
+
+        &.short {
+          color: var(--price-down);
+        }
+      }
     }
 
     .tabs,

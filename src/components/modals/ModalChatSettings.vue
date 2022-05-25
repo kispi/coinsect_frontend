@@ -69,6 +69,17 @@
             v-model="profile.image"
           >
         </div>
+        <div class="chat-setting-item sentiment">
+          <div class="field-name" v-html="$translate('IS_IT_TIME')"/>
+          <div class="buttons">
+            <button class="btn long" :class="{'selected': (profile.sentiment || {}).type === 'long'}" @click="profile.sentiment.type = 'long'">
+              <i v-if="profile.sentiment.type === 'long'" class="fa fa-check"/>{{ $translate('LONG') }}
+            </button>
+            <button class="btn short" :class="{'selected': (profile.sentiment || {}).type === 'short'}" @click="profile.sentiment.type = 'short'">
+              <i v-if="profile.sentiment.type === 'short'" class="fa fa-check"/>{{ $translate('SHORT') }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <button
@@ -101,6 +112,7 @@ export default {
     const profile = ref({
       nickname: store.getters.chatUser.profile.nickname,
       image: store.getters.chatUser.profile.image,
+      sentiment: store.getters.chatUser.profile.sentiment || {},
     })
 
     const onConfirm = async () => {
@@ -110,8 +122,8 @@ export default {
       profile.value.image = (profile.value.image || '').trim()
 
       try {
-        store.commit('setChatUser', await props.options.setAccount(profile.value))
-        plugins.$toast.success('닉네임과 이미지를 설정했습니다.')
+        await props.options.setAccount(profile.value)
+        plugins.$toast.success('닉네임과 이미지, 기분을 설정했습니다.')
         emit('close')
       } catch (e) {
         plugins.$toast.error(e.data.message)
@@ -169,6 +181,37 @@ export default {
         height: 24px;
         padding: 0 8px;
       }
+
+      &.sentiment {
+        .buttons {
+          display: flex;
+          flex: 1;
+
+          .fa-check {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+
+        .btn {
+          flex: 1 1 0;
+          color: var(--white);
+
+          &.long {
+            background: var(--price-up);
+          }
+
+          &.short {
+            background: var(--price-down);
+          }
+
+          &:not(:last-child) {
+            margin-right: 8px;
+          }
+        }
+      }
     }
 
     .section {
@@ -186,7 +229,7 @@ export default {
     }
   }
 
-  button {
+  .btn-primary {
     padding: 12px 40px;
     display: table;
     margin: 24px auto;
