@@ -63,23 +63,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.modal-input {
-  border-radius: 4px;
-  width: 480px;
-
-  .buttons {
-    margin: 16px auto;
-    display: table;
-
-    button {
-      padding: 12px 40px;
-
-      &:not(:last-child) {
-        margin-right: 16px;
-      }
-    }
-  }
-}
-</style>

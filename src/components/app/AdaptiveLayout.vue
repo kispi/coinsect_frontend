@@ -63,9 +63,9 @@ export default {
 
 .adaptive-layout {
   @include createLayout(0);
-  @include createLayout(480);
+  /* @include createLayout(480); */
   @include createLayout(768);
-  @include createLayout(992);
-  @include createLayout(1200);
+  /* @include createLayout(992); */
+  /* @include createLayout(1200); */
 }
 </style>

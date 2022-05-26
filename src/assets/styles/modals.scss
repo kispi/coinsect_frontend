@@ -1,0 +1,55 @@
+.modal-video {
+  border-radius: 0;
+  max-width: 720px;
+}
+
+.modal-trading-view {
+  border-radius: 4px;
+  width: 720px;
+}
+
+.modal-sign-in {
+  width: 320px;
+}
+
+.modal-orderbook {
+  border-radius: 4px;
+  width: 320px;
+  height: 480px;
+
+  .body {
+    line-height: 20px;
+    position: relative;
+  }
+}
+
+.modal-input {
+  border-radius: 4px;
+  width: 480px;
+
+  .buttons {
+    margin: 16px auto;
+    display: table;
+
+    button {
+      padding: 12px 40px;
+
+      &:not(:last-child) {
+        margin-right: 16px;
+      }
+    }
+  }
+}
+
+.modal-image-uploader {
+  border-radius: 4px;
+  width: 480px;
+}
+
+.modal-game {
+  width: 480px;
+
+  @media (min-width: 768px) {
+    width: 720px;
+  }
+}

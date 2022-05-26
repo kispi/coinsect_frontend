@@ -19,10 +19,3 @@ export default {
   props: ['options'],
 }
 </script>
-
-<style lang="scss" scoped>
-.modal-video {
-  border-radius: 0;
-  max-width: 720px;
-}
-</style>

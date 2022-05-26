@@ -15,10 +15,3 @@ export default {
   props: ['options'],
 }
 </script>
-
-<style lang="scss" scoped>
-.modal-trading-view {
-  border-radius: 4px;
-  width: 720px;
-}
-</style>

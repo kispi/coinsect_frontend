@@ -6,10 +6,3 @@
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.modal-image-uploader {
-  border-radius: 4px;
-  width: 480px;
-}
-</style>

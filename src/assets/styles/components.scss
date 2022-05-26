@@ -55,3 +55,8 @@ table {
     }
   }
 }
+
+.global-loading {
+  z-index: 10;
+  position: fixed;
+}

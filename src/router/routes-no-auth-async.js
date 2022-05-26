@@ -35,7 +35,7 @@ const indicators = [{
 
 const contents = [{
   path: '/contents/bitcoin-halving',
-  component: () => import(/* webpackChunkName: 'view-bitcoin-halving' */ '@/components/views/contents/ViewContents'),
+  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {
     title: '다음 비트코인 반감기 - 코인충',
     description: '다음 비트코인 반감기까지 남은 시간을 카운트다운으로 보여줍니다.',
@@ -103,13 +103,13 @@ const community = [{
   component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewCommunity'),
 }, {
   path: '/community/write',
-  component: () => import(/* webpackChunkName: 'view-post-write' */ '@/components/views/community/ViewPostWrite'),
+  component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewPostWrite'),
 }, {
   path: '/community/edit/:sharingKey',
-  component: () => import(/* webpackChunkName: 'view-post-edit' */ '@/components/views/community/ViewPostEdit'),
+  component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewPostEdit'),
 }, {
   path: '/community/:sharingKey',
-  component: () => import(/* webpackChunkName: 'view-post' */ '@/components/views/community/ViewPost'),
+  component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewPost'),
   name: 'ViewPost',
 }]
 
