@@ -97,8 +97,8 @@ export default {
 
     const init = () => {
       loading.value = false
-      sorted.value = JSON.parse(JSON.stringify(connections.value))
-      sorted.value.sort((a, b) => {
+      const arr = JSON.parse(JSON.stringify(connections.value))
+      arr.sort((a, b) => {
         if (a.user.profile.image && b.user.profile.image) {
           return a.user.profile.nickname > b.user.profile.nickname ? 1 : -1
         }
@@ -110,6 +110,7 @@ export default {
         return a.user.profile.nickname > b.user.profile.nickname ? 1 : -1
       })
 
+      sorted.value = arr
       if (!centered.value) {
         plugins.$helpers.modal.center(refModalChatUsers.value)
         centered.value = true

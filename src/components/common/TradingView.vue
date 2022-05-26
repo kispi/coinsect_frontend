@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { onMounted, watch } from 'vue'
+import { onMounted, onUnmounted, watch, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -24,6 +24,8 @@ export default {
   },
   setup(props) {
     const store = useStore()
+
+    const timeout = ref(null)
 
     const init = () => {
       if (typeof TradingView === 'undefined') return
@@ -52,7 +54,11 @@ export default {
     )
 
     onMounted(() => {
-      setTimeout(init, 500)
+      timeout.value = setTimeout(init, 500)
+    })
+
+    onUnmounted(() => {
+      clearTimeout(timeout.value)
     })
   },
 }
