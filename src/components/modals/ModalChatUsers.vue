@@ -111,10 +111,6 @@ export default {
       })
 
       sorted.value = arr
-      if (!centered.value) {
-        plugins.$helpers.modal.center(refModalChatUsers.value)
-        centered.value = true
-      }
     }
 
     onMounted(() => {
@@ -125,6 +121,16 @@ export default {
     onUnmounted(() => {
       clearInterval(interv.value)
     })
+
+    watch(
+      () => sorted.value,
+      () => {
+        if (!centered.value) {
+          plugins.$helpers.modal.center(refModalChatUsers.value)
+          centered.value = true
+        }
+      },
+    )
 
     watch([
       () => store.getters.chatStats.numConnections,
