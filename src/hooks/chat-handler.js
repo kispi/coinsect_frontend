@@ -58,6 +58,7 @@ const useChatHandler = () => {
 
       store.getters.chatUser.profile.sentiment = { type }
       setAccount(store.getters.chatUser.profile)
+      plugins.$toast.success(`참여해주셔서 감사합니다. ${type === 'long' ? '떡상' : '떡락'}을 기원합니다.`)
     })
   }
 

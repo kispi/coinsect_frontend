@@ -4,42 +4,14 @@
       component: 'ModalChatUsers',
     })"
     class="app-chat-stats">
-    <div
-      class="num-users f-mono"
-      :class="numUsersClass">
+    <div class="btn-open-chat-users">접속자보기</div>
+    <div class="num-users f-mono">
       <i class="fa fa-user-group m-r-4"/>
       {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
     </div>
     <ChatStatsLongShort/>
   </div>
 </template>
-
-<script>
-import { ref, watch } from 'vue'
-import { useStore } from 'vuex'
-
-export default {
-  setup() {
-    const store = useStore()
-
-    const numUsersClass = ref(null)
-
-    watch(
-      () => (store.getters.chatStats || {}).numConnections,
-      (newVal, oldVal) => {
-        if (!newVal || !oldVal) return
-
-        if (newVal > oldVal) numUsersClass.value = 'c-price-up'
-        if (newVal < oldVal) numUsersClass.value = 'c-price-down'
-      },
-    )
-
-    return {
-      numUsersClass,
-    }
-  },
-}
-</script>
 
 <style lang="scss">
 .app-chat-stats {
@@ -54,6 +26,10 @@ export default {
 
   &:hover {
     background: linear-gradient(to bottom, var(--brand-primary-hover-bg), transparent);
+
+    .btn-open-chat-users {
+      opacity: 1;
+    }
   }
 
   .num-users {
@@ -69,6 +45,20 @@ export default {
     .sentiment {
       margin-right: 0 !important;
     }
+  }
+
+  .btn-open-chat-users {
+    color: var(--text-stress);
+    border: 1px solid var(--text-stress);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
   }
 }
 </style>
