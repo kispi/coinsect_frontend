@@ -531,21 +531,11 @@ export default {
         white-space: nowrap;
         margin-right: 8px;
 
-        .name {
-          color: var(--gs-bb);
-          margin-right: 4px;
-        }
-
         .badge-token {
           background: none;
           border: 1px solid var(--gs-bb);
           color: var(--gs-bb);
         }
-      }
-
-      .nickname {
-        font-size: 12px;
-        margin-top: 4px;
       }
 
       .text {
