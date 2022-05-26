@@ -23,7 +23,6 @@ const app = {
     },
     isMobile: null,
     config: null,
-    numActiveUsers: null,
     notifications: null,
     settings: {
       blockedUsers: {},
@@ -62,6 +61,8 @@ const app = {
       chatDing: false,
       chatTransparent: false,
     },
+    chatStats: {},
+    chatConnections: null, // 웹소켓 커넥션이 아니고 접속자 정보임
     windowInnerWidth: null,
     windowInnerHeight: null,
     lastApiCall: {},
@@ -77,7 +78,8 @@ const app = {
     websocketConnections: state => state.websocketConnections,
     isMobile: state => state.isMobile,
     config: state => state.config,
-    numActiveUsers: state => state.numActiveUsers,
+    chatStats: state => state.chatStats,
+    chatConnections: state => state.chatConnections,
     notifications: state => state.notifications,
     settings: state => state.settings,
     windowInnerWidth: state => state.windowInnerWidth,
@@ -108,8 +110,11 @@ const app = {
     setConfig(state, config) {
       state.config = config
     },
-    setNumActiveUsers(state, numActiveUsers) {
-      state.numActiveUsers = numActiveUsers
+    setChatStats(state, chatStats) {
+      state.chatStats = chatStats
+    },
+    setChatConnections(state, message) {
+      state.chatConnections = (message || {}).meta
     },
     setNotifications(state, notifications) {
       state.notifications = notifications

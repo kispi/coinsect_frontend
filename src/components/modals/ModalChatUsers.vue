@@ -2,11 +2,11 @@
   <div
     ref="refModalChatUsers"
     class="modal-chat-users scrollable-body">
-    <ModalHeader :title="`${$translate('MODAL_CHAT_USERS')} (${connections.length})`" @close="$emit('close')"/>
+    <ModalHeader :title="`${$translate('MODAL_CHAT_USERS')} (${$store.getters.chatStats.numConnections})`" @close="$emit('close')"/>
     <div class="body">
       <div class="long-short f-mono">
-        <div class="sentiment long"><i class="fa fa-arrow-trend-up"/>Bulls: {{ sentiment.bulls }}</div>
-        <div class="sentiment short"><i class="fa fa-arrow-trend-down"/>Bears: {{ sentiment.bears }}</div>
+        <div class="sentiment long"><i class="fa fa-arrow-trend-up"/>Bulls: {{ $store.getters.chatStats.numBulls }}</div>
+        <div class="sentiment short"><i class="fa fa-arrow-trend-down"/>Bears: {{ $store.getters.chatStats.numBears }}</div>
       </div>
       <div class="tabs">
         <div
@@ -48,7 +48,7 @@
 
 <script>
 import { useStore } from 'vuex'
-import { ref, computed, getCurrentInstance, onMounted, onUnmounted } from 'vue'
+import { ref, computed, getCurrentInstance, onMounted, onUnmounted, watch } from 'vue'
 
 export default {
   setup() {
@@ -62,25 +62,16 @@ export default {
 
     const connection = computed(() => store.getters.websocketConnections.chat)
 
-    const connections = ref([])
-
-    const sentiment = ref({
-      bulls: 0,
-      bears: 0,
-    })
+    const connections = computed(() => store.getters.chatConnections || [])
 
     const loading = ref(true)
 
     const tabs = computed(() => {
       const nonBlocked = []
       const blocked = []
-      sentiment.value.bulls = 0
-      sentiment.value.bears = 0
+
       connections.value.forEach(c => {
         (store.getters.settings.blockedUsers[c.user.token] ? blocked : nonBlocked).push(c)
-        const t = (c.user.profile.sentiment || {}).type
-        if (t === 'long') sentiment.value.bulls++
-        if (t === 'short') sentiment.value.bears++
       })
 
       return {
@@ -91,7 +82,7 @@ export default {
 
     const selectedTab = ref('NON_BLOCKED')
 
-    const timeout = ref(null)
+    const interv = ref(null)
 
     const loadConnections = () => {
       loading.value = true
@@ -102,12 +93,11 @@ export default {
         },
       }))
 
-      timeout.value = setTimeout(loadConnections, 1000 * 60)
+      init()
     }
 
-    const onIncomingConnections = message => {
+    const init = () => {
       loading.value = false
-      connections.value = message.meta
       connections.value.sort((a, b) => {
         if (a.user.profile.image && b.user.profile.image) {
           return a.user.profile.nickname > b.user.profile.nickname ? 1 : -1
@@ -127,14 +117,21 @@ export default {
     }
 
     onMounted(() => {
-      plugins.$bus.$on('incoming-connections', onIncomingConnections)
       loadConnections()
+      interv.value = setInterval(loadConnections, 1000 * 60)
     })
 
     onUnmounted(() => {
-      plugins.$bus.$off('incoming-connections', onIncomingConnections)
-      clearTimeout(timeout.value)
+      clearInterval(interv.value)
     })
+
+    watch([
+      () => store.getters.chatStats.numConnections,
+      () => store.getters.chatStats.numBulls,
+      () => store.getters.chatStats.numBears,
+    ],
+      loadConnections,
+    )
 
     return {
       refModalChatUsers,
@@ -142,7 +139,6 @@ export default {
       loading,
       tabs,
       connections,
-      sentiment,
     }
   },
 }

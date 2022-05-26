@@ -11,15 +11,26 @@
       class="app-chat-container"
       :class="{'transparent': $store.getters.settings.chatTransparent}">
       <div class="app-chat-header">
-        <div class="section-users">
+        <div class="section-stats">
           <div
-            @click="openModalChatUsers"
-            class="num-users f-mono"
-            :class="numUsersClass">
-            <i class="fa fa-user-group m-r-4"/>
-            {{ ($store.getters.numActiveUsers || 0).toLocaleString() }}
+            @click="$modal.custom({
+              component: 'ModalChatUsers',
+            })"
+            class="section-users">
+            <div
+              class="num-users f-mono"
+              :class="numUsersClass">
+              <i class="fa fa-user-group m-r-4"/>
+              {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
+            </div>
+            <div class="long-short f-mono">
+              [
+              <div class="sentiment long"><i class="fa fa-arrow-trend-up"/>{{ $store.getters.chatStats.numBulls }}</div>
+              <div class="sentiment short"><i class="fa fa-arrow-trend-down"/>{{ $store.getters.chatStats.numBears }}</div>
+              ]
+            </div>
           </div>
-          <div class="m-l-16 m-r-16">/</div>
+          <div class="slash">/</div>
           <div
             v-if="$store.getters.chatUser"
             class="profile">
@@ -187,15 +198,6 @@ export default {
       })
     }
 
-    const openModalChatUsers = () => {
-      plugins.$modal.custom({
-        component: 'ModalChatUsers',
-        options: {
-          noBackdrop: true,
-        },
-      })
-    }
-
     const openModalChatSettings = () => {
       plugins.$modal.custom({
         component: 'ModalChatSettings',
@@ -342,13 +344,14 @@ export default {
     )
 
     watch(
-      () => store.getters.numActiveUsers,
+      () => store.getters.stats,
       (newVal, oldVal) => {
         if (!newVal || !oldVal) return
 
         if (newVal > oldVal) numUsersClass.value = 'c-price-up'
         if (newVal < oldVal) numUsersClass.value = 'c-price-down'
       },
+      { deep: true },
     )
 
     onMounted(() => {
@@ -384,7 +387,6 @@ export default {
       messages,
       onKeydown,
       incomingMessage,
-      openModalChatUsers,
       openModalChatSettings,
       onClickIncomingMessageOverlay,
       sendTextMessage,
@@ -441,12 +443,47 @@ export default {
     user-select: none;
     cursor: grab;
 
-    .section-users {
+    .section-stats {
       display: flex;
       align-items: center;
 
+      .section-users {
+        display: flex;
+        align-items: center;
+      }
+
       .num-users {
         font-size: 12px;
+      }
+
+      .long-short {
+        display: flex;
+        align-items: center;
+        margin-left: 4px;
+      }
+
+      .sentiment {
+        font-size: 12px;
+
+        i {
+          margin-right: 4px;
+        }
+
+        &.long {
+          color: var(--price-up);
+        }
+
+        &.short {
+          color: var(--price-down);
+        }
+
+        &:not(:last-child) {
+          margin-right: 4px;
+        }
+      }
+
+      .slash {
+        margin: 0 16px;
       }
 
       .profile {
@@ -467,7 +504,7 @@ export default {
         }
       }
 
-      .num-users,
+      .section-users,
       .app-img,
       .nickname {
         transition: none;

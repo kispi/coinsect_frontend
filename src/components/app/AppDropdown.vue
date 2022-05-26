@@ -256,6 +256,10 @@ export default {
       padding: 0 8px;
       border-radius: 8px;
       border: 1px solid var(--border-base);
+
+      &:hover {
+        background: var(--border-base);
+      }
     }
   }
 }

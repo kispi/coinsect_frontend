@@ -62,6 +62,8 @@ const useChatHandler = () => {
   }
 
   const handleMessage = message => {
+    store.commit('setChatStats', message.stats)
+
     switch (message.type) {
       case 'alert':
       case 'text': {
@@ -81,11 +83,9 @@ const useChatHandler = () => {
         ping()
         break
       case 'connections':
-        plugins.$bus.$emit('incoming-connections', message)
+        store.commit('setChatConnections', message)
         break
     }
-
-    store.commit('setNumActiveUsers', message.numConnections)
   }
 
   const setAccount = async profile => {
