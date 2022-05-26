@@ -92,7 +92,7 @@ export default {
         },
       }))
 
-      init()
+      setTimeout(init, 500)
     }
 
     const init = () => {
