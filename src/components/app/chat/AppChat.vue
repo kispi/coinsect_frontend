@@ -23,14 +23,8 @@
               <i class="fa fa-user-group m-r-4"/>
               {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
             </div>
-            <div class="long-short f-mono">
-              [
-              <div class="sentiment long"><i class="fa fa-arrow-trend-up"/>{{ $store.getters.chatStats.numBulls }}</div>
-              <div class="sentiment short"><i class="fa fa-arrow-trend-down"/>{{ $store.getters.chatStats.numBears }}</div>
-              ]
-            </div>
+            [<ChatStatsLongShort/>]
           </div>
-          <div class="slash">/</div>
           <div
             v-if="$store.getters.chatUser"
             class="profile">
@@ -43,7 +37,7 @@
             />
             <div
               @click="openModalChatSettings"
-              class="nickname"
+              class="nickname lines-1"
               v-html="$store.getters.chatUser.profile.nickname"
             />
           </div>
@@ -454,40 +448,12 @@ export default {
 
       .num-users {
         font-size: 12px;
-      }
-
-      .long-short {
-        display: flex;
-        align-items: center;
-        margin-left: 4px;
-      }
-
-      .sentiment {
-        font-size: 12px;
-
-        i {
-          margin-right: 4px;
-        }
-
-        &.long {
-          color: var(--price-up);
-        }
-
-        &.short {
-          color: var(--price-down);
-        }
-
-        &:not(:last-child) {
-          margin-right: 4px;
-        }
-      }
-
-      .slash {
-        margin: 0 16px;
+        margin-right: 8px;
       }
 
       .profile {
         display: flex;
+        margin-left: 16px;
 
         .app-img {
           width: 16px;
@@ -498,7 +464,9 @@ export default {
 
         .nickname {
           color: var(--text-stress);
+          max-width: 64px;
           margin-right: 8px;
+          font-size: 12px;
           font-weight: 700;
           text-decoration: underline;
         }

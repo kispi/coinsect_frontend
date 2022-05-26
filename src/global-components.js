@@ -27,6 +27,7 @@ import BadgeToken from '@/components/app/chat/BadgeToken'
 import ButtonCommunity from '@/components/common/ButtonCommunity'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 // import CoinnessIssues from '@/components/common/CoinnessIssues'
+import ChatStatsLongShort from '@/components/common/ChatStatsLongShort'
 import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
 import CPosition from '@/components/common/c-position/CPosition'
 import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
@@ -75,6 +76,7 @@ const useGlobalComponents = app => {
     // common components
     .component('ButtonCommunity', ButtonCommunity)
     // .component('CoinnessIssues', CoinnessIssues)
+    .component('ChatStatsLongShort', ChatStatsLongShort)
     .component('CPortfolio', CPortfolio)
     .component('CPosition', CPosition)
     .component('ModalHeader', ModalHeader)

@@ -4,10 +4,7 @@
     class="modal-chat-users scrollable-body">
     <ModalHeader :title="`${$translate('MODAL_CHAT_USERS')} (${$store.getters.chatStats.numConnections})`" @close="$emit('close')"/>
     <div class="body">
-      <div class="long-short f-mono">
-        <div class="sentiment long"><i class="fa fa-arrow-trend-up"/>Bulls: {{ $store.getters.chatStats.numBulls }}</div>
-        <div class="sentiment short"><i class="fa fa-arrow-trend-down"/>Bears: {{ $store.getters.chatStats.numBears }}</div>
-      </div>
+      <ChatStatsLongShort :useText="true"/>
       <div class="tabs">
         <div
           class="tab"
@@ -64,13 +61,15 @@ export default {
 
     const connections = computed(() => store.getters.chatConnections || [])
 
+    const sorted = ref([])
+
     const loading = ref(true)
 
     const tabs = computed(() => {
       const nonBlocked = []
       const blocked = []
 
-      connections.value.forEach(c => {
+      sorted.value.forEach(c => {
         (store.getters.settings.blockedUsers[c.user.token] ? blocked : nonBlocked).push(c)
       })
 
@@ -98,7 +97,8 @@ export default {
 
     const init = () => {
       loading.value = false
-      connections.value.sort((a, b) => {
+      sorted.value = JSON.parse(JSON.stringify(connections.value))
+      sorted.value.sort((a, b) => {
         if (a.user.profile.image && b.user.profile.image) {
           return a.user.profile.nickname > b.user.profile.nickname ? 1 : -1
         }
@@ -153,34 +153,16 @@ export default {
     display: flex;
     flex-direction: column;
 
+    .chat-stats-long-short {
+      margin: 8px auto;
+    }
+
     .btn-container {
       padding: 16px;
     }
 
     .btn-primary {
       width: 100%;
-    }
-
-    .long-short {
-      display: flex;
-      margin: 8px auto;
-      font-size: 12px;
-
-      .sentiment {
-        padding: 4px 12px;
-
-        i {
-          margin-right: 4px;
-        }
-
-        &.long {
-          color: var(--price-up);
-        }
-
-        &.short {
-          color: var(--price-down);
-        }
-      }
     }
 
     .tabs,
