@@ -1,4 +1,3 @@
-const { default: axios } = require('axios')
 const { useApp } = require('./helpers')
 const useHtmlRenderer = require('./html-renderer')
 
@@ -40,14 +39,6 @@ const handleSSRRequest = async (req, res) => {
   res.send(html)
 }
 
-const routeError = async (req, res) => {
-  const { app, store } = await useApp(req)
-  const html = await useHtmlRenderer({ app, store })
-  res.status(500)
-  res.send(html)
-}
-
 module.exports = {
   handleSSRRequest,
-  routeError,
 }
