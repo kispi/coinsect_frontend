@@ -53,7 +53,7 @@ export default {
     }, {
       name: 'SILVER',
       key: 'SILVER',
-      img: 'https://s3-symbol-logo.tradingview.com/metal/gold.svg',
+      img: 'https://s3-symbol-logo.tradingview.com/metal/silver.svg',
     }, {
       name: 'BTC_DOMINANCE',
       key: 'CRYPTOCAP:BTC.D',

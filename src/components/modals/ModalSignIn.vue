@@ -13,7 +13,7 @@ import useKakao from '@/hooks/oauth/kakao'
 
 export default {
   setup() {
-    const { signIn, signOut } = useKakao()
+    const { signIn } = useKakao()
 
     return {
       signIn,
@@ -21,9 +21,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.modal-sign-in {
-  width: 320px;
-}
-</style>

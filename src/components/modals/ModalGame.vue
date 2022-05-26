@@ -32,13 +32,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.modal-game {
-  width: 480px;
-
-  @media (min-width: 768px) {
-    width: 720px;
-  }
-}
-</style>

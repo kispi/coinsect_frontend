@@ -74,6 +74,8 @@ export default {
     const tabs = computed(() => {
       const nonBlocked = []
       const blocked = []
+      sentiment.value.bulls = 0
+      sentiment.value.bears = 0
       connections.value.forEach(c => {
         (store.getters.settings.blockedUsers[c.user.token] ? blocked : nonBlocked).push(c)
         const t = (c.user.profile.sentiment || {}).type

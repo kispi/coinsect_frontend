@@ -1,7 +1,7 @@
 <template>
   <div class="view-contents">
     <SubHeader :items="contents"/>
-    <component :is="selectedComponent" class="view-contents-body"/>
+    <component :is="selectedComponent" class="view-contents-body p-b-40"/>
   </div>
 </template>
 
@@ -55,11 +55,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.view-contents {
-  .view-contents-body {
-    padding-bottom: 40px;
-  }
-}
-</style>

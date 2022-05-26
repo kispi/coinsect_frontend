@@ -177,8 +177,8 @@ export default {
       .coin-container {
         background: transparent;
         perspective: 480px;
-        cursor: pointer;
         margin: 2px;
+        cursor: pointer;
 
         &.flipped .coin-container-inner {
           transform: rotateY(180deg);

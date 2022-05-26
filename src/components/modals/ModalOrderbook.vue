@@ -47,16 +47,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.modal-orderbook {
-  border-radius: 4px;
-  width: 320px;
-  height: 480px;
-
-  .body {
-    line-height: 20px;
-    position: relative;
-  }
-}
-</style>

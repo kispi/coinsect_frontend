@@ -1,10 +1,9 @@
-const express = require('express')
 const fs = require('fs')
 const path = require('path')
 const useRoutes = require('./routes')
-const { handleError, logger } = require('./middleware')
-const { outputDir } = require('./helpers')
+const logger = require('./logger')
 const env = `.env.${process.env.NODE_ENV}`
+const { useStaticServing, useRequestStartTime, useInternalErrorHandler } = require('./middleware')
 require('dotenv').config({ path: env }) // 이거 빼먹으면 .env안의 VUE_APP 등등 안읽힘.
 
 fs.readFile(
@@ -17,31 +16,13 @@ fs.readFile(
   },
 )
 
-const useStaticServing = server => {
-  const folders = ['img', 'js', 'css', 'font-awesome', 'favicon', 'scripts']
-  const publicFiles = ['ads.txt', 'robots.txt', 'sitemap.xml', 'naver048dfb4862180b4025eb9bd6e296c6ec.html']
-  const targets = folders.concat(publicFiles)
-  targets.forEach(target =>
-    server.use(
-      `/${target}`,
-      express.static(
-        path.join(__dirname, `../${outputDir}/client`, target),
-        process.env.NODE_ENV === 'production' ? { maxAge: 3600 * 1000 } : null,
-      ))
-  )
-}
-
-const useRequestStartTime = (req, res, next) => {
-  req.$$start = new Date()
-  next()
-}
-
 const useSSR = server => {
   server.set('trust proxy', true)
+  server.disable('x-powered-by')
   server.use(useRequestStartTime)
   useStaticServing(server)
   useRoutes(server)
-  server.use(handleError)
+  server.use(useInternalErrorHandler)
   server.use(logger)
 }
 
