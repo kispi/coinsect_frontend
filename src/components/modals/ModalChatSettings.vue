@@ -70,7 +70,7 @@
           >
         </div>
         <div class="chat-setting-item sentiment">
-          <div class="field-name" v-html="$translate('IS_IT_TIME')"/>
+          <div class="field-name" v-html="$translate('SENTIMENT')"/>
           <div class="buttons">
             <button class="btn long" :class="{'selected': (profile.sentiment || {}).type === 'long'}" @click="profile.sentiment.type = 'long'">
               <i v-if="profile.sentiment.type === 'long'" class="fa fa-check"/>{{ $translate('LONG') }}
