@@ -4,7 +4,6 @@
       component: 'ModalChatUsers',
     })"
     class="app-chat-stats">
-    <div class="btn-open-chat-users">접속자보기</div>
     <div class="num-users f-mono">
       <i class="fa fa-user-group m-r-4"/>
       {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
@@ -26,10 +25,6 @@
 
   &:hover {
     background: linear-gradient(to bottom, var(--brand-primary-hover-bg), transparent);
-
-    .btn-open-chat-users {
-      opacity: 1;
-    }
   }
 
   .num-users {
@@ -45,20 +40,6 @@
     .sentiment {
       margin-right: 0 !important;
     }
-  }
-
-  .btn-open-chat-users {
-    color: var(--text-stress);
-    border: 1px solid var(--text-stress);
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
   }
 }
 </style>
