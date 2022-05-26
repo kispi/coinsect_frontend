@@ -10,37 +10,23 @@
       v-if="!$store.getters.settings.chatFolded"
       class="app-chat-container"
       :class="{'transparent': $store.getters.settings.chatTransparent}">
+      <AppChatStats/>
       <div class="app-chat-header">
-        <div class="section-stats">
-          <div
-            @click="$modal.custom({
-              component: 'ModalChatUsers',
+        <div
+          v-if="$store.getters.chatUser"
+          class="profile">
+          <AppImg
+            @click="$modal.images({
+              images: [$store.getters.chatUser.profile.image],
             })"
-            class="section-users">
-            <div
-              class="num-users f-mono"
-              :class="numUsersClass">
-              <i class="fa fa-user-group m-r-4"/>
-              {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
-            </div>
-            [<ChatStatsLongShort/>]
-          </div>
+            v-if="$store.getters.chatUser.profile.image"
+            :src="$store.getters.chatUser.profile.image"
+          />
           <div
-            v-if="$store.getters.chatUser"
-            class="profile">
-            <AppImg
-              @click="$modal.images({
-                images: [$store.getters.chatUser.profile.image],
-              })"
-              v-if="$store.getters.chatUser.profile.image"
-              :src="$store.getters.chatUser.profile.image"
-            />
-            <div
-              @click="openModalChatSettings"
-              class="nickname lines-1"
-              v-html="$store.getters.chatUser.profile.nickname"
-            />
-          </div>
+            @click="openModalChatSettings"
+            class="nickname lines-1"
+            v-html="$store.getters.chatUser.profile.nickname"
+          />
         </div>
         <div class="chat-settings">
           <div
@@ -125,6 +111,7 @@
 import { ref, computed, getCurrentInstance, nextTick, watch, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppChatMessage from './AppChatMessage'
+import AppChatStats from './AppChatStats'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
 import useModalDraggable from '@/hooks/modal-draggable'
@@ -132,6 +119,7 @@ import useModalDraggable from '@/hooks/modal-draggable'
 export default {
   components: {
     AppChatMessage,
+    AppChatStats,
     DailySeparator,
   },
   setup() {
@@ -166,8 +154,6 @@ export default {
     const text = ref('')
 
     const incomingMessage = ref(null)
-
-    const numUsersClass = ref(null)
 
     const { makeDraggable } = useModalDraggable()
 
@@ -337,17 +323,6 @@ export default {
       () => setTimeout(setAppChatPosition),
     )
 
-    watch(
-      () => store.getters.stats,
-      (newVal, oldVal) => {
-        if (!newVal || !oldVal) return
-
-        if (newVal > oldVal) numUsersClass.value = 'c-price-up'
-        if (newVal < oldVal) numUsersClass.value = 'c-price-down'
-      },
-      { deep: true },
-    )
-
     onMounted(() => {
       storedUnreads.value = plugins.$helpers.localStorage.getMeta('numUnreads')
 
@@ -373,7 +348,6 @@ export default {
       refTextarea,
       refAppChatBody,
       refAppChat,
-      numUsersClass,
       numUnreads,
       connected,
       storedUnreads,
@@ -437,42 +411,22 @@ export default {
     user-select: none;
     cursor: grab;
 
-    .section-stats {
+    .profile {
       display: flex;
-      align-items: center;
 
-      .section-users {
-        display: flex;
-        align-items: center;
+      .app-img {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        border-radius: 50%;
       }
 
-      .num-users {
-        font-size: 12px;
-        margin-right: 8px;
+      .nickname {
+        color: var(--text-stress);
+        font-weight: 700;
+        text-decoration: underline;
       }
 
-      .profile {
-        display: flex;
-        margin-left: 16px;
-
-        .app-img {
-          width: 16px;
-          height: 16px;
-          margin-right: 4px;
-          border-radius: 50%;
-        }
-
-        .nickname {
-          color: var(--text-stress);
-          max-width: 64px;
-          margin-right: 8px;
-          font-size: 12px;
-          font-weight: 700;
-          text-decoration: underline;
-        }
-      }
-
-      .section-users,
       .app-img,
       .nickname {
         transition: none;

@@ -91,8 +91,6 @@ export default {
           token: store.getters.chatUser.token,
         },
       }))
-
-      setTimeout(init, 500)
     }
 
     const init = () => {
@@ -137,7 +135,15 @@ export default {
       () => store.getters.chatStats.numBulls,
       () => store.getters.chatStats.numBears,
     ],
-      loadConnections,
+      () => {
+        loadConnections()
+        init()
+      },
+    )
+
+    watch(
+      () => store.getters.chatConnections,
+      init,
     )
 
     return {
@@ -154,6 +160,7 @@ export default {
 <style lang="scss" scoped>
 .modal-chat-users {
   width: 560px;
+  max-height: 80vh;
 
   .body {
     height: 100%;
