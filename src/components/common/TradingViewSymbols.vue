@@ -95,10 +95,10 @@ export default {
       key: 240,
     }, {
       name: '1일',
-      key: 60 * 24,
+      key: 'D',
     }, {
       name: '1주',
-      key: 60 * 24 * 7,
+      key: 'W',
     }].map(o => ({
       ...o,
       $$selected: o.key === store.getters.settings.tradingviewTimeframe,
