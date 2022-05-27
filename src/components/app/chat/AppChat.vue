@@ -49,7 +49,7 @@
           v-if="incomingMessage"
           @click="onClickIncomingMessageOverlay"
           class="incoming-message-overlay">
-          <AppChatProfile :user="incomingMessage"/>
+          <AppChatProfile :user="incomingMessage" class="no-touch"/>
           <div class="text lines-1" v-html="incomingMessage.text"/>
           <i class="fa fa-chevron-down"/>
         </div>
