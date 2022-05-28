@@ -1,6 +1,5 @@
 <template>
   <div class="view-apps">
-    <SubHeader :items="apps"/>
     <component :is="selectedComponent"/>
   </div>
 </template>
@@ -19,20 +18,6 @@ export default {
   setup() {
     const router = useRouter()
 
-    const apps = computed(() => [{
-      path: '/apps/portfolio',
-      title: 'PORTFOLIO',
-    }, {
-      path: '/apps/salary',
-      title: 'SALARY',
-    }, {
-      path: '/apps/games',
-      title: 'GAMES',
-    }, {
-      path: '/apps/voice-recorder',
-      title: 'VOICE_RECORDER',
-    }])
-
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/apps/portfolio') return 'ViewPortfolio'
@@ -42,7 +27,6 @@ export default {
     })
 
     return {
-      apps,
       selectedComponent,
     }
   },

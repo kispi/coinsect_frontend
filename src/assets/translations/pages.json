@@ -31,6 +31,10 @@
     "en": "Premium",
     "kr": "프리미엄"
   },
+  "KIMP": {
+    "en": "Kimp",
+    "kr": "김프"
+  },
   "BTCUSD_BITSTAMP": {
     "en": "Bitcoin (Bitstamp)",
     "kr": "비트코인 (Bitstamp)"

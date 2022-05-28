@@ -72,7 +72,7 @@ export default {
 
       setTimeout(() => {
         const dom = document.getElementsByClassName('marquee-unit')[0]
-        if (dom) {
+        if (dom && refBannerMarketIndices.value) {
           refBannerMarketIndices.value.style.setProperty('--marquee-width', `${dom.clientWidth}px`)
         }
       })

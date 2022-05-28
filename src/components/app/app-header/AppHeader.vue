@@ -58,19 +58,23 @@
         </WrapperDropdownOverlay>
       </div>
     </div>
-    <nav class="menu-items">
-      <RouterLink
+    <nav class="ah-menu-items">
+      <a
         draggable="false"
-        class="menu-item"
+        @click.prevent="onClickMenuItem(menuItem)"
+        @mouseover="onMouseoverMenuItem(menuItem)"
+        :href="menuItem.path"
+        class="ah-menu-item"
         :class="{
           'selected': menuItem.$$selected,
+          'hover': (subPages || []).some(subPage => subPage.path.includes(menuItem.pathPrefix)),
         }"
-        :to="menuItem.path"
         :key="menuItem.title"
         v-for="menuItem in menuItems">
         {{ $translate(menuItem.title) }}<span v-if="menuItem.$$new" class="new"/>
-      </RouterLink>
+      </a>
     </nav>
+    <SubHeader v-model="subPages"/>
   </header>
 </template>
 
@@ -78,6 +82,7 @@
 import { computed, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import useMenuItems from './menu-items'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
 import SettingsPanel from './SettingsPanel'
@@ -105,6 +110,8 @@ export default {
 
     const showNotifications = ref(null)
 
+    const { menuItems, subPages, onClickMenuItem, onMouseoverMenuItem } = useMenuItems()
+
     const numNewNotifications = computed(() => {
       const n = store.getters.notifications
       if (!n) return
@@ -113,43 +120,6 @@ export default {
 
       return (n.data || []).filter(o => d().diff(o.createdAt, 'hour') < 24).length
     })
-
-    const menuItems = computed(() => [{
-      title: 'HOME',
-      path: '/',
-    }, {
-      title: 'INDICATORS',
-      path: '/indicators/real-time-positions',
-    }, {
-      title: 'NEWS_AND_CONTENTS',
-      path: '/contents/news',
-    }, {
-      title: 'APPS',
-      path: '/apps/portfolio',
-    }, {
-      title: 'COMMUNITY',
-      path: '/community',
-    }, {
-      title: 'ABOUT',
-      path: '/about',
-    }].map(o => {
-      const p = router.currentRoute.value.path
-
-      return {
-        ...o,
-        $$selected: (() => {
-          if (o.title === 'HOME') return p === '/'
-
-          if (o.title === 'INDICATORS') return p.startsWith('/indicators/')
-
-          if (o.title === 'NEWS_AND_CONTENTS') return p.startsWith('/contents/')
-
-          if (o.title === 'APPS') return p.startsWith('/apps/')
-
-          else return p.startsWith(o.path)
-        })()
-      }
-    }))
 
     const onClickAccount = () => {
       if (store.getters.me) router.push('/account')
@@ -161,8 +131,11 @@ export default {
       refIconSettings,
       showNotifications,
       showSettings,
-      menuItems,
       numNewNotifications,
+      menuItems,
+      subPages,
+      onClickMenuItem,
+      onMouseoverMenuItem,
       onClickAccount,
     }
   },
@@ -244,24 +217,26 @@ export default {
     }
   }
 
-  .menu-items {
+  .ah-menu-items {
     display: flex;
     overflow-x: auto;
     box-shadow: 0 -1px var(--border-base) inset;
 
-    .menu-item {
+    .ah-menu-item {
       padding: 12px 8px;
       white-space: nowrap;
       border-bottom: 2px solid transparent;
       color: var(--text-stress);
       position: relative;
       transition: none;
+      cursor: pointer;
 
       &.selected {
         color: var(--brand-primary);
         border-bottom: 2px solid var(--brand-primary);
       }
 
+      &.hover,
       &:hover {
         color: var(--brand-primary-hover);
       }

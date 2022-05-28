@@ -1,12 +1,15 @@
 <template>
-  <nav class="sub-header">
+  <nav
+    v-if="modelValue"
+    class="sub-header">
     <RouterLink
       draggable="false"
+      @click="$emit('update:modelValue', null)"
       :to="item.path"
       class="sub-header-item"
       :class="{'selected': $router.currentRoute.value.path.includes(item.path)}"
       :key="item.path"
-      v-for="item in items">
+      v-for="item in modelValue">
       {{ $translate(item.title) }}
     </RouterLink>
   </nav>
@@ -15,33 +18,44 @@
 <script>
 export default {
   props: {
-    items: Array,
+    modelValue: Array,
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .sub-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-  overflow-x: auto;
+  position: absolute;
+  background: var(--background-base);
+  top: calc(var(--app-header-height));
+  width: 320px;
+  border-left: 1px solid var(--border-base);
+  border-right: 1px solid var(--border-base);
+  border-bottom: 1px solid var(--border-base);
+  border-radius: 0 0 4px 4px;
+  z-index: 5;
 
   .sub-header-item {
     padding: 8px;
-    border-bottom: 2px solid transparent;
+    display: block;
     white-space: nowrap;
     transition: none;
     cursor: pointer;
 
     &.selected {
-      border-bottom: 2px solid var(--brand-primary);
       color: var(--brand-primary);
     }
 
     &:hover {
       color: var(--brand-primary-hover);
     }
+  }
+
+  @media (max-width: 767px) {
+    padding: var(--app-default-page-padding);
+    width: calc(100% + 2px);
+    left: -1px;
+    right: -1px;
   }
 }
 </style>

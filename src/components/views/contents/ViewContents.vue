@@ -1,6 +1,5 @@
 <template>
   <div class="view-contents">
-    <SubHeader :items="contents"/>
     <component :is="selectedComponent" class="view-contents-body p-b-40"/>
   </div>
 </template>
@@ -21,23 +20,6 @@ export default {
   setup() {
     const router = useRouter()
 
-    const contents = computed(() => [{
-      path: '/contents/news',
-      title: 'NEWS',
-    }, {
-      path: '/contents/twitter',
-      title: 'TWITTER',
-    }, {
-      path: '/contents/influencers',
-      title: 'INFLUENCERS',
-    }, {
-      path: '/contents/public-treasury',
-      title: 'PUBLIC_TREASURY',
-    }, {
-      path: '/contents/bitcoin-halving',
-      title: 'BITCOIN_HALVING',
-    }])
-
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/contents/news') return 'ViewNews'
@@ -49,7 +31,6 @@ export default {
     })
 
     return {
-      contents,
       selectedComponent,
     }
   },

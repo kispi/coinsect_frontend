@@ -1,6 +1,5 @@
 <template>
   <div class="view-indicators">
-    <SubHeader :items="indicators"/>
     <component :is="selectedComponent"/>
   </div>
 </template>
@@ -19,20 +18,6 @@ export default {
   setup() {
     const router = useRouter()
 
-    const indicators = computed(() => [{
-      path: '/indicators/real-time-positions',
-      title: 'REAL_TIME_POSITIONS',
-    }, {
-      path: '/indicators/leaderboard',
-      title: 'LEADERBOARD',
-    }, {
-      path: '/indicators/marketcaps',
-      title: 'MARKETCAPS',
-    }, {
-      path: '/indicators/general',
-      title: 'GENERAL',
-    }])
-
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/indicators/leaderboard') return 'ViewLeaderboard'
@@ -42,7 +27,6 @@ export default {
     })
 
     return {
-      indicators,
       selectedComponent,
     }
   },
