@@ -52,7 +52,7 @@ export default {
   }
 
   @media (max-width: 767px) {
-    padding: var(--app-default-page-padding);
+    padding: 0 var(--app-default-page-padding);
     width: calc(100% + 2px);
     left: -1px;
     right: -1px;
