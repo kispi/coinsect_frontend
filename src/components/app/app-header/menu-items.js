@@ -22,7 +22,7 @@ const useMenuItems = () => {
 
     const cl = e.target.classList
     if (
-      (!cl.contains('ah-menu-item') && !cl.contains('sub-header-item')) ||
+      (!cl.contains('ah-menu-item') && !cl.contains('sub-header-item') && !cl.contains('fa-chevron-down')) ||
       !(lastHover.value || {}).subPages
     ) subPages.value = null
   }

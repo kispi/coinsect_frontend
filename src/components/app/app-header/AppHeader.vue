@@ -71,7 +71,7 @@
         }"
         :key="menuItem.title"
         v-for="menuItem in menuItems">
-        {{ $translate(menuItem.title) }}<span v-if="menuItem.$$new" class="new"/>
+        {{ $translate(menuItem.title) }}<i v-if="menuItem.subPages" class="fal fa-chevron-down"/>
       </a>
     </nav>
     <SubHeader v-model="subPages"/>
@@ -223,6 +223,8 @@ export default {
     box-shadow: 0 -1px var(--border-base) inset;
 
     .ah-menu-item {
+      display: flex;
+      align-items: center;
       padding: 12px 8px;
       white-space: nowrap;
       border-bottom: 2px solid transparent;
@@ -241,14 +243,9 @@ export default {
         color: var(--brand-primary-hover);
       }
 
-      .new {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        position: absolute;
-        right: 0;
-        top: calc(50% - 8px);
-        background: var(--brand-primary);
+      i {
+        font-size: 10px;
+        margin-left: 4px;
       }
     }
   }
