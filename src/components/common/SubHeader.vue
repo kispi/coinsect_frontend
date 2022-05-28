@@ -27,11 +27,9 @@ export default {
 .sub-header {
   position: absolute;
   background: var(--background-base);
-  top: calc(var(--app-header-height));
+  top: calc(var(--app-header-height) - 4px);
   width: 320px;
-  border-left: 1px solid var(--border-base);
-  border-right: 1px solid var(--border-base);
-  border-bottom: 1px solid var(--border-base);
+  border: 1px solid var(--border-base);
   border-radius: 0 0 4px 4px;
   z-index: 5;
 
