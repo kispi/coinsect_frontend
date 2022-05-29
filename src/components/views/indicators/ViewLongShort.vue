@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import marketInfoService from '@/services/market-info'
 import LongShortRatio from './LongShortRatio'
@@ -85,9 +85,7 @@ export default {
       try {
         const { data } = await marketInfoService.longShort(params.value)
         result.value = data[0]
-      } catch (e) {
-        plugins.$toast.error('Bybt API에 문제가 있는 것 같습니다.')
-      }
+      } catch (e) {}
     }
 
     onMounted(() => {
