@@ -33,7 +33,8 @@
           <i v-if="keyword" class="fal fa-times" @click="initKeyword"/>
         </div>
         <ul
-          v-if="filteredList.length > 0">
+          v-if="filteredList.length > 0"
+          class="pretty-scrollbar">
           <li
             @click="onClickDropdownItem(item)"
             :key="item.key"

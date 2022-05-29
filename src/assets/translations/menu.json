@@ -95,6 +95,10 @@
     "en": "Realtime Positions",
     "kr": "실시간 포지션"
   },
+  "LONG_SHORT": {
+    "en": "Long & Short",
+    "kr": "롱 & 숏"
+  },
   "MARKETCAPS": {
     "en": "Marketcaps",
     "kr": "시가총액"

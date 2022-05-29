@@ -97,10 +97,21 @@ export default {
 
     const connection = ref(null)
 
+    const sorter = (a, b) => {
+      if (a.onAir && b.onAir) return a.size > b.size ? -1 : 1
+
+      if (a.onAir) return -1
+
+      if (!a.onAir && !b.onAir) return a.entryPrice ? -1 : 1
+    }
+
     const positions = computed(() => {
       const editable = []
       const nonEditable = []
       store.getters.realTimePositions.data.forEach(o => o.editable ? editable.push(o) : nonEditable.push(o))
+
+      editable.sort(sorter)
+      nonEditable.sort(sorter)
 
       return {
         editable,

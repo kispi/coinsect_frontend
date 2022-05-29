@@ -1,31 +1,32 @@
 <template>
   <div class="powered-by">
-    <template v-if="by === 'coinmarketcap'">
-      Powered by <a :href="link || 'https://coinmarketcap.com'" target="_blank" rel="noopener">Coinmarketcap<img src="@/assets/images/coinmarketcap.png" alt="Coinmarketcap"></a>
-    </template>
-    <template v-if="by === 'coingecko'">
-      Powered by <a :href="link || 'https://coingecko.com'" target="_blank" rel="noopener">Coingecko<img src="@/assets/images/coingecko.png" alt="Coingecko"></a>
-    </template>
-    <template v-if="by === 'upbit'">
-      Powered by <a :href="link || 'https://upbit.com'" target="_blank" rel="noopener">Upbit<img src="@/assets/images/upbit.svg" alt="Upbit"></a>
-    </template>
-    <template v-if="by === 'bitcointreasuries'">
-      Powered by <a :href="link || 'https://bitcointreasuries.net'" target="_blank" rel="noopener">Bitcointreasuries<img src="@/assets/images/bitcointreasuries.png" alt="Bitcointreasuries"></a>
-    </template>
-    <template v-if="by === 'coinness'">
-      Powered by <a :href="link || 'https://coinness.live'" target="_blank" rel="noopener">CoinNess<img src="@/assets/images/coinness.svg" alt="Bitcointreasuries"></a>
-    </template>
+    Powered by <a :href="link || rendered.link" target="_blank" rel="noopener">{{ rendered.title }}<img :src="require(`@/assets/images/${rendered.src}`)" :alt="rendered.title"></a>
   </div>
 </template>
 
 <script>
+import { computed } from 'vue'
+
 export default {
   props: {
     by: {
       type: String,
-      validator: val => ['coinmarketcap', 'coingecko', 'upbit', 'bitcointreasuries', 'coinness'].includes(val),
+      validator: val => ['coinmarketcap', 'coingecko', 'upbit', 'bitcointreasuries', 'coinness', 'coinglass'].includes(val),
     },
     link: String,
+  },
+  setup(props) {
+    const rendered = computed(() => {
+      if (props.by === 'coinmarketcap') return { title: 'Coinmarketcap', src: 'coinmarketcap.png', link: 'https://coinmarketcap.com' }
+      if (props.by === 'upbit') return { title: 'Upbit', src: 'upbit.svg', link: 'https://upbit.com' }
+      if (props.by === 'bitcointreasuries') return { title: 'Bitcointreasuries', src: 'bitcointreasuries.png', link: 'https://bitcointreasuries.net' }
+      if (props.by === 'coinness') return { title: 'CoinNess', src: 'coinness.svg', link: 'https://coinness.live' }
+      if (props.by === 'coinglass') return { title: 'Coinglass', src: 'coinglass.png', link: 'https://coinglass.com' }
+    })
+
+    return {
+      rendered,
+    }
   },
 }
 </script>

@@ -18,6 +18,13 @@ const indicators = [{
     image: useS3('og-images/og-image-real-time-positions.png'),
   },
 }, {
+  path: '/indicators/long-short',
+  component: () => import(/* webpackChunkName: 'view-long-short' */ '@/components/views/indicators/ViewLongShort'),
+  meta: {
+    title: '롱-숏 비율 - 코인충',
+    description: '코인의 거래소별 롱-숏 비율',
+  },
+}, {
   path: '/indicators/marketcaps',
   component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
   meta: {

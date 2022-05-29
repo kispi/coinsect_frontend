@@ -14,6 +14,7 @@ const marketInfo = {
   indices: () => $http.get('market_info/indices'),
   leaderboard: () => $http.get('market_info/leaderboard'),
   marketcaps: params => $httpNoAuth.get('https://api.coinmarketcap.com/data-api/v3/cryptocurrency/listing', { params }),
+  longShort: params => $httpNoAuth.get('https://fapi.coinglass.com/api/futures/longShortRate', { params }),
   symbols: () => $http.get('market_info/symbols'),
   base: async ({ baseExchange, baseExchangeMarket }) => {
     const bEx = baseExchange

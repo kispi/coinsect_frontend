@@ -36,6 +36,7 @@ const useMenuItems = () => {
     subPages: [
       { path: '/indicators/real-time-positions', title: 'REAL_TIME_POSITIONS' },
       { path: '/indicators/leaderboard', title: 'LEADERBOARD' },
+      { path: '/indicators/long-short', title: 'LONG_SHORT' },
       { path: '/indicators/marketcaps', title: 'MARKETCAPS' },
       { path: '/indicators/general', title: 'GENERAL' }
     ],

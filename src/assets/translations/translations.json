@@ -67,6 +67,10 @@
     "en": "Refresh",
     "kr": "새로고침"
   },
+  "STATISTICS": {
+    "en": "Statistics",
+    "kr": "통계"
+  },
   "SELECT": {
     "en": "Select",
     "kr": "선택"
