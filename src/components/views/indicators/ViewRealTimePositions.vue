@@ -98,7 +98,7 @@ export default {
     const connection = ref(null)
 
     const sorter = (a, b) => {
-      if (a.onAir && b.onAir) return a.size > b.size ? -1 : 1
+      if (a.onAir && b.onAir) return Math.abs(a.size) > Math.abs(b.size) ? -1 : 1
 
       if (a.onAir) return -1
 
