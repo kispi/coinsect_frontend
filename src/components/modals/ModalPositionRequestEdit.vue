@@ -26,6 +26,12 @@
           <label>{{ $translate('CONTRACT') }}</label>
           <input v-model="payload.contract" :placeholder="payload.contract">
         </div>
+        <div
+          @click="payload.onAir = !payload.onAir"
+          class="form-control flex-row items-center no-select">
+          <label class="m-0 cursor-pointer">{{ $translate('ON_AIR') }}</label>
+          <AppCheckbox v-model="payload.onAir" class="flex-wrap no-touch"/>
+        </div>
       </div>
     </div>
     <div class="buttons">

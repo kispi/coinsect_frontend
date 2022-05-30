@@ -6,24 +6,26 @@ const useMenuItems = () => {
 
   const subPages = ref(null)
 
-  const lastHover = ref(null)
+  const lastClick = ref(null)
 
   const onClickMenuItem = menuItem => {
-    if (menuItem.path) router.push(menuItem.path)
-  }
+    lastClick.value = menuItem
 
-  const onMouseoverMenuItem = menuItem => {
-    lastHover.value = menuItem
+    if (menuItem.path) {
+      router.push(menuItem.path)
+      return
+    }
+
     if (menuItem.subPages) subPages.value = menuItem.subPages
   }
 
-  const onMousemove = e => {
+  const onClickDocument = e => {
     if (!subPages.value) return
 
     const cl = e.target.classList
     if (
       (!cl.contains('ah-menu-item') && !cl.contains('sub-header-item') && !cl.contains('fa-chevron-down')) ||
-      !(lastHover.value || {}).subPages
+      !(lastClick.value || {}).subPages
     ) subPages.value = null
   }
 
@@ -45,7 +47,7 @@ const useMenuItems = () => {
     pathPrefix: '/contents/',
     subPages: [
       { path: '/contents/news', title: 'NEWS' },
-      { path: '/contents/twitter', title: 'TWITTER' },
+      // { path: '/contents/twitter', title: 'TWITTER' },
       { path: '/contents/influencers', title: 'INFLUENCERS' },
       { path: '/contents/public-treasury', title: 'PUBLIC_TREASURY' },
       { path: '/contents/bitcoin-halving', title: 'BITCOIN_HALVING' }
@@ -56,8 +58,8 @@ const useMenuItems = () => {
     subPages: [
       { path: '/apps/portfolio', title: 'PORTFOLIO', },
       { path: '/apps/salary', title: 'SALARY' },
-      { path: '/apps/games', title: 'GAMES' },
-      { path: '/apps/voice-recorder', title: 'VOICE_RECORDER' }
+      // { path: '/apps/games', title: 'GAMES' },
+      // { path: '/apps/voice-recorder', title: 'VOICE_RECORDER' }
     ],
   }, {
     title: 'COMMUNITY',
@@ -79,18 +81,17 @@ const useMenuItems = () => {
   }))
 
   onMounted(() => {
-    document.addEventListener('mousemove', onMousemove)
+    document.addEventListener('click', onClickDocument)
   })
 
   onUnmounted(() => {
-    document.removeEventListener('mousemove', onMousemove)
+    document.removeEventListener('click', onClickDocument)
   })
 
   return {
     subPages,
     menuItems,
     onClickMenuItem,
-    onMouseoverMenuItem,
   }
 }
 

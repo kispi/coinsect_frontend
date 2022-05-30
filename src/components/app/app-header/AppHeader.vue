@@ -64,7 +64,6 @@
       <a
         draggable="false"
         @click.prevent="onClickMenuItem(menuItem)"
-        @mouseover="onMouseoverMenuItem(menuItem)"
         :href="menuItem.path"
         class="ah-menu-item"
         :class="{
@@ -112,7 +111,7 @@ export default {
 
     const showNotifications = ref(null)
 
-    const { menuItems, subPages, onClickMenuItem, onMouseoverMenuItem } = useMenuItems()
+    const { menuItems, subPages, onClickMenuItem } = useMenuItems()
 
     const numNewNotifications = computed(() => {
       const n = store.getters.notifications
@@ -137,7 +136,6 @@ export default {
       menuItems,
       subPages,
       onClickMenuItem,
-      onMouseoverMenuItem,
       onClickAccount,
     }
   },

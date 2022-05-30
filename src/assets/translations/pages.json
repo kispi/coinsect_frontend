@@ -127,6 +127,10 @@
     "en": "Featured News",
     "kr": "특집 뉴스"
   },
+  "ON_AIR": {
+    "en": "On Air",
+    "kr": "방송중"
+  },
   "CONTRACT": {
     "en": "Contract",
     "kr": "계약"

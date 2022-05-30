@@ -33,15 +33,22 @@
       </div>
     </div>
     <div
-      v-if="positions.editable.length > 0"
-      class="position-group">
-      <div class="positions">
-        <CPosition
-          :position="position"
-          :key="position.name"
-          v-for="position in positions.editable"
-        />
-      </div>
+      class="position-group"
+      :key="idx"
+      v-for="(positionGroup, idx) in [positions.tracked, positions.nonTracked]">
+      <div v-if="idx === 1" class="group-title" @click="showUntracked = !showUntracked">모니터링하고 있지 않은 스트리머들<i class="fal m-l-4" :class="showUntracked ? 'fa-chevron-up' : 'fa-chevron-down'"/></div>
+      <transition name="slide-down">
+        <div
+          v-if="showUntracked || idx === 0"
+          class="positions"
+          :class="{'o-50': idx === 1}">
+          <CPosition
+            :position="position"
+            :key="position.name"
+            v-for="position in positionGroup"
+          />
+        </div>
+      </transition>
     </div>
     <div
       v-if="($store.getters.realTimePositions.data || []).filter(o => o.editable).length === 0"
@@ -53,7 +60,7 @@
       <div>* 포지션을 클릭하시면 해당 스트리머의 방송국으로 가거나, 포지션 업데이트를 요청하실 수 있습니다.</div>
       <div>* 가능하다면 해당 스트리머의 방송을 실제 시청하여 확인하시기 바랍니다.</div>
       <div>* 포지션 정보는 5분 간격으로 새로 가져오므로, 현재 방송으로 보고 있는 포지션과 다른 경우 새로고침을 해보십시오.</div>
-      <div>* 포지션의 규모가 너무 작거나(정찰병같은) 거미줄이 체결되는 상황등 포지션 변동이 극도로 잦은 경우 모니터링 대상에서 제외됩니다.</div>
+      <div>* 포지션의 규모가 너무 작거나(정찰병같은) 거미줄이 체결되는 상황등 포지션 변동이 잦은 경우 모니터링 대상에서 제외될 수 있습니다.</div>
       <div>* 사용되는 시장평균가는 Bybit USDT 마켓 기준이며, Binance, Bitget 또는 MEXC등 타 거래소들에서 산정한 시장평균가와는 차이가 있을 수 있습니다.</div>
     </div>
     <div
@@ -97,6 +104,8 @@ export default {
 
     const connection = ref(null)
 
+    const showUntracked = ref(null)
+
     const sorter = (a, b) => {
       if (a.onAir && b.onAir) return Math.abs(a.size) > Math.abs(b.size) ? -1 : 1
 
@@ -108,14 +117,24 @@ export default {
     const positions = computed(() => {
       const editable = []
       const nonEditable = []
-      store.getters.realTimePositions.data.forEach(o => o.editable ? editable.push(o) : nonEditable.push(o))
+      const tracked = []
+      const nonTracked = []
+      store.getters.realTimePositions.data.forEach(o => {
+        if (o.editable) editable.push(o)
+        else nonEditable.push(o)
 
-      editable.sort(sorter)
-      nonEditable.sort(sorter)
+        if (o.tracking) tracked.push(o)
+        else nonTracked.push(o)
+      })
+
+      const arrays = [editable, nonEditable, tracked, nonTracked]
+      arrays.forEach(arr => arr.sort(sorter))
 
       return {
         editable,
         nonEditable,
+        tracked,
+        nonTracked
       }
     })
 
@@ -202,6 +221,7 @@ export default {
     return {
       diff,
       positions,
+      showUntracked,
       toggleTradingview,
     }
   },
@@ -238,7 +258,7 @@ export default {
   .description {
     font-size: 12px;
     line-height: 20px;
-    margin-top: 32px;
+    margin-top: 80px;
 
     div {
       &:not(:last-child) {
@@ -255,6 +275,22 @@ export default {
 
   .trading-view {
     height: 240px;
+  }
+
+  .position-group {
+    .group-title {
+      font-size: 14px;
+      display: table;
+      text-decoration: underline;
+      user-select: none;
+      margin: 0 auto 16px;
+      color: var(--text-stress);
+      cursor: pointer;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 24px;
+    }
   }
 
   .empty {
