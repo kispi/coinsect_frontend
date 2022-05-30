@@ -40,8 +40,7 @@
       <transition name="slide-down">
         <div
           v-if="showUntracked || idx === 0"
-          class="positions"
-          :class="{'o-50': idx === 1}">
+          class="positions">
           <CPosition
             :position="position"
             :key="position.name"
