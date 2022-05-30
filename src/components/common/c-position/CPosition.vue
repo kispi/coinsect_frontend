@@ -117,7 +117,7 @@ export default {
     min-width: 0;
   }
 
-  &:not(.on-air):hover {
+  &:hover {
     border: 1px solid var(--border-light);
   }
 

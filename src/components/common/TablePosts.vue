@@ -116,6 +116,7 @@ export default {
         limit: limit.value,
         offset: page.value * limit.value,
       })
+      plugins.$helpers.dom.scrollToTop()
     }
 
     const callApi = async () => {

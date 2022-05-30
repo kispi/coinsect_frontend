@@ -231,6 +231,7 @@ export default {
       color: var(--text-stress);
       position: relative;
       transition: none;
+      user-select: none;
       cursor: pointer;
 
       &.selected {
