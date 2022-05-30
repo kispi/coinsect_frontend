@@ -155,6 +155,8 @@ export default {
     .rank {
       width: 24px;
       font-size: 12px;
+      text-align: right;
+      margin-right: 8px;
     }
 
     .logo {
