@@ -1,3 +1,14 @@
+const dayjs = require('dayjs')
+
+const createLogger = () => {
+  return {
+    info: (...args) => console.log(`[${dayjs().format()}]`, ...args),
+    debug: (...args) => console.info(`[${dayjs().format()}]`, ...args),
+    error: (...args) => console.error(`[${dayjs().format()}]`, ...args),
+    warn: (...args) => console.warn(`[${dayjs().format()}]`, ...args),
+  }
+}
+
 const logger = (req, res, next) => {
   const url = req.url
 
@@ -17,7 +28,7 @@ const logger = (req, res, next) => {
   const end = new Date()
   const duration = `${end.getTime() - req.$$start.getTime()}ms`
 
-  const log = {
+  log.info(JSON.stringify({
     env: process.env.NODE_ENV,
     method: method,
     path: url,
@@ -27,9 +38,13 @@ const logger = (req, res, next) => {
     remote_ip: ip,
     duration,
     time: currentDatetime.toISOString(),
-  }
-  console.log(JSON.stringify(log))
+  }))
   next()
 }
 
-module.exports = logger
+const log = createLogger()
+
+module.exports = {
+  log,
+  logger,
+}

@@ -1,4 +1,5 @@
 const { handleSSRRequest } = require('./controllers')
+const { log } = require('./logger')
 
 const asyncWrapper = promise => async (...args) => {
   let error
@@ -10,7 +11,7 @@ const asyncWrapper = promise => async (...args) => {
   }
 
   if (error) {
-    console.error('Internal Server Error:', error)
+    log.error('Internal Server Error:', error)
   }
 
   next(error)

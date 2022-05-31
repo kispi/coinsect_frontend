@@ -8,6 +8,8 @@ const dom = {
     return (document.getElementsByClassName('app-header')[0] || {}).clientHeight || 0
   },
   scrollToTop: () => {
+    if (process.env.VUE_APP_SSR) return
+
     document.scrollingElement.scrollTop = 0
     $store.commit('setScrollTop', 0)
   },
@@ -23,6 +25,8 @@ const dom = {
     )
   },
   copyToClipboard: (str, link) => {
+    if (process.env.VUE_APP_SSR) return
+
     const el = document.createElement('textarea')
 
     if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
@@ -44,6 +48,8 @@ const dom = {
     el.remove()
   },
   loadScript: ({ url, attributes }) => new Promise(resolve => {
+    if (process.env.VUE_APP_SSR) return
+
     if ($store.getters.lazyLoadedScriptUrls.includes(url)) {
       resolve()
       return
