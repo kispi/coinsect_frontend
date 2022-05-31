@@ -38,6 +38,7 @@ export default {
     display: block;
     white-space: nowrap;
     transition: none;
+    user-select: none;
     cursor: pointer;
 
     &.selected {

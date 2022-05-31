@@ -3,11 +3,11 @@
     v-if="user"
     class="app-chat-profile lines-1">
     <AppImg
-      v-if="user.profile.image"
+      v-if="(user.profile || {}).image"
       class="profile-img"
       :src="user.profile.image"
       @click="$modal.images({
-        images: [user.profile.image],
+        images: [(user.profile || {}).image],
       })"
     />
     <span
@@ -18,8 +18,8 @@
     <span
       @click="openModalBlockUser"
       class="nickname"
-      :class="useSentiment ? (user.profile.sentiment || {}).type || '' : ''"
-      v-html="user.profile.nickname"
+      :class="useSentiment ? ((user.profile || {}).sentiment || {}).type || '' : ''"
+      v-html="(user.profile || {}).nickname"
     />
     <BadgeToken :token="user.token" @click="openModalBlockUser"/>
   </div>
