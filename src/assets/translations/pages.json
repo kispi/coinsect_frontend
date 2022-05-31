@@ -11,6 +11,10 @@
     "en": "Volume(1D)",
     "kr": "거래액(1일)"
   },
+  "VOL_24_SHARE": {
+    "en": "Volume(1D)",
+    "kr": "거래량(1일)"
+  },
   "CHANGE_RATE_1D": {
     "en": "Change(1D)",
     "kr": "전일대비"
@@ -160,8 +164,8 @@
     "kr": "스트리머가 현재 방송중이지 않습니다"
   },
   "SIZE_DESC": {
-    "en": "(negative for short)",
-    "kr": "(숏이면 음수로 기재)"
+    "en": "(negative if short)",
+    "kr": "(숏이면 음수)"
   },
   "GO_TO_PLATFORM": {
     "en": "Go to platform",

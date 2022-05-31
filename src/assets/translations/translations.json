@@ -31,6 +31,10 @@
     "en": "Price",
     "kr": "가격"
   },
+  "STOCK": {
+    "en": "Stock",
+    "kr": "종목"
+  },
   "SOURCE": {
     "en": "Source",
     "kr": "출처"

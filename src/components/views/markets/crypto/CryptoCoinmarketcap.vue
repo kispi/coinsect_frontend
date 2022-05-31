@@ -1,6 +1,6 @@
 <template>
   <div 
-    v-if="$store.getters.marketcaps"
+    v-if="$store.getters.crypto"
     class="marketcaps-coinmarketcap f-mono">
     <div class="header">
       <div class="tag-slugs">
@@ -13,7 +13,7 @@
           v-html="tagSlug.name"
         />
       </div>
-      <div class="total">({{ $store.getters.marketcaps.total }})</div>
+      <div class="total">({{ $store.getters.crypto.total }})</div>
     </div>
     <table class="list">
       <thead>
@@ -50,7 +50,7 @@
           @click="onClickCrypto(item)"
           class="marketcap"
           :key="idx"
-          v-for="(item, idx) in $store.getters.marketcaps.data">
+          v-for="(item, idx) in $store.getters.crypto.data">
           <td>
             <div class="rank">{{ item.cmcRank }}</div>
           </td>
@@ -91,10 +91,10 @@
     </table>
     <AppPagination
       class="m-t-16"
-      v-if="$store.getters.marketcaps.total"
+      v-if="$store.getters.crypto.total"
       :page="payload.page"
       :limit="payload.limit"
-      :total="$store.getters.marketcaps.total"
+      :total="$store.getters.crypto.total"
       @page="onPage"
     />
   </div>
@@ -157,12 +157,12 @@ export default {
     }
 
     const callApi = async () => {
-      store.dispatch('loadMarketcaps', payload.value)
+      store.dispatch('loadCrypto', payload.value)
 
       if (store.getters.isSSR) return
 
       clearInterval(interv.value)
-      interv.value = setInterval(() => store.dispatch('loadMarketcaps', payload.value), 1000 * 60)
+      interv.value = setInterval(() => store.dispatch('loadCrypto', payload.value), 1000 * 60)
     }
 
     const onPage = async page => {
@@ -180,7 +180,7 @@ export default {
       clearInterval(interv.value)
     })
 
-    onServerPrefetch(() => store.dispatch('loadMarketcaps', payload.value))
+    onServerPrefetch(() => store.dispatch('loadCrypto', payload.value))
 
     return {
       payload,
@@ -202,7 +202,6 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 12px 0;
-    border-top: 1px solid var(--border-base);
 
     .total {
       color: var(--text-stress);

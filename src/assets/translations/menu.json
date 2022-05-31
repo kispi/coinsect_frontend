@@ -87,6 +87,18 @@
     "en": "Indicators",
     "kr": "지표"
   },
+  "MARKETS": {
+    "en": "Markets",
+    "kr": "시황"
+  },
+  "CRYPTO": {
+    "en": "Crypto",
+    "kr": "크립토"
+  },
+  "NASDAQ": {
+    "en": "Nasdaq",
+    "kr": "나스닥"
+  },
   "LEADERBOARD": {
     "en": "Leaderboard",
     "kr": "리더보드"

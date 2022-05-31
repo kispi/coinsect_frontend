@@ -25,18 +25,27 @@ const indicators = [{
     description: '코인의 거래소별 롱-숏 비율',
   },
 }, {
-  path: '/indicators/marketcaps',
-  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
-  meta: {
-    title: '시가총액 - 코인충',
-    description: '비트코인, 이더리움, 리플, 솔라나 등의 시가총액',
-  },
-}, {
   path: '/indicators/general',
   component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
   meta: {
     title: '비트코인 지표 - 코인충',
     description: 'fear & greed, s2f, nlb price 등의 비트코인 가격 추이 예상에 사용되는 지표들',
+  },
+}]
+
+const markets = [{
+  path: '/markets/crypto',
+  component: () => import(/* webpackChunkName: 'view-markets' */ '@/components/views/markets/ViewMarkets'),
+  meta: {
+    title: '크립토 마켓 - 코인충',
+    description: '비트코인, 이더리움, 리플, 솔라나 등 코인, 크립토 시황',
+  },
+}, {
+  path: '/markets/nasdaq',
+  component: () => import(/* webpackChunkName: 'view-markets' */ '@/components/views/markets/ViewMarkets'),
+  meta: {
+    title: '나스닥 - 코인충',
+    description: '나스닥 100 시황',
   },
 }]
 
@@ -130,6 +139,7 @@ const andSoOn = [{
 
 const routesNoAuth = [
   ...indicators,
+  ...markets,
   ...contents,
   ...apps,
   ...community,

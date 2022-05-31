@@ -12,7 +12,6 @@ export default {
   components: {
     ViewGeneral: defineAsyncComponent(() => import('./general/ViewGeneral')),
     ViewLeaderboard: defineAsyncComponent(() => import('./ViewLeaderboard')),
-    ViewMarketcaps: defineAsyncComponent(() => import('./marketcaps/ViewMarketcaps')),
     ViewRealTimePositions: defineAsyncComponent(() => import('./ViewRealTimePositions')),
   },
   setup() {
@@ -22,7 +21,6 @@ export default {
       const p = router.currentRoute.value.path
       if (p === '/indicators/leaderboard') return 'ViewLeaderboard'
       if (p === '/indicators/real-time-positions') return 'ViewRealTimePositions'
-      if (p === '/indicators/marketcaps') return 'ViewMarketcaps'
       if (p === '/indicators/general') return 'ViewGeneral'
     })
 

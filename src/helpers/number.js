@@ -13,7 +13,7 @@ const conversionRatio = baseCurrency => {
 
 const number = {
   pretty: {
-    price: ({ price, baseCurrency }) => {
+    price: ({ price, baseCurrency, fracs }) => {
       const converted = price * conversionRatio(baseCurrency)
 
       let numFracs = 0
@@ -24,8 +24,8 @@ const number = {
       if (converted === 0) numFracs = 2
 
       return converted.toLocaleString(undefined, {
-        maximumFractionDigits: numFracs,
-        minimumFractionDigits: numFracs,
+        maximumFractionDigits: fracs || numFracs,
+        minimumFractionDigits: fracs || numFracs,
       })
     },
     korean: (value, numKorUnits = 2) => {

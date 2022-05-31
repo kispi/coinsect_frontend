@@ -39,8 +39,14 @@ const useMenuItems = () => {
       { path: '/indicators/real-time-positions', title: 'REAL_TIME_POSITIONS' },
       { path: '/indicators/leaderboard', title: 'LEADERBOARD' },
       { path: '/indicators/long-short', title: 'LONG_SHORT' },
-      { path: '/indicators/marketcaps', title: 'MARKETCAPS' },
       { path: '/indicators/general', title: 'GENERAL' }
+    ],
+  }, {
+    title: 'MARKETS',
+    pathPrefix: '/markets/',
+    subPages: [
+      { path: '/markets/crypto', title: 'CRYPTO' },
+      { path: '/markets/nasdaq', title: 'NASDAQ' },
     ],
   }, {
     title: 'NEWS_AND_CONTENTS',

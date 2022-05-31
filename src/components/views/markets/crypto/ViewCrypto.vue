@@ -1,20 +1,20 @@
 <template>
-  <div class="view-marketcaps">
-    <MarketcapsCoinmarketcap/>
+  <div class="view-crypto">
+    <CryptoCoinmarketcap/>
     <PoweredBy :by="'coinmarketcap'" class="m-t-24"/>
   </div>
 </template>
 
 <script>
-import MarketcapsCoinmarketcap from './MarketcapsCoinmarketcap'
+import CryptoCoinmarketcap from './CryptoCoinmarketcap'
 
 export default {
-  components: { MarketcapsCoinmarketcap },
+  components: { CryptoCoinmarketcap },
 }
 </script>
 
 <style lang="scss">
-.view-marketcaps {
+.view-crypto {
   padding-bottom: 120px;
 
   .app-dropdown {

@@ -186,6 +186,11 @@ export default {
 
       .fa-chart-line {
         margin-left: 8px;
+        transition: none;
+
+        &:hover {
+          color: var(--price-up);
+        }
       }
     }
 

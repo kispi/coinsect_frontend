@@ -43,8 +43,8 @@
           class="positions">
           <CPosition
             :position="position"
-            :key="position.name"
-            v-for="position in positionGroup"
+            :key="idx"
+            v-for="(position, idx) in positionGroup"
           />
         </div>
       </transition>

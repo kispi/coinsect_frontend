@@ -36,10 +36,13 @@
         <loc>https://coinsect.io/indicators/long-short</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/indicators/marketcaps</loc>
+        <loc>https://coinsect.io/indicators/general</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/indicators/general</loc>
+        <loc>https://coinsect.io/markets/crypto</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/markets/nasdaq</loc>
     </url>
     <url>
         <loc>https://coinsect.io/contents/bitcoin-halving</loc>
