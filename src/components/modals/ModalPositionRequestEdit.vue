@@ -12,25 +12,25 @@
       <div class="fields">
         <div class="form-control">
           <label>{{ $translate('ENTRY_PRICE') }}</label>
-          <input v-model="payload.entryPrice" :placeholder="payload.entryPrice">
+          <input v-model="payload.entryPrice" placeholder="EX:) 40000">
         </div>
         <div class="form-control">
           <label>{{ $translate('LIQ_PRICE') }}</label>
-          <input v-model="payload.liqPrice" :placeholder="payload.liqPrice">
+          <input v-model="payload.liqPrice" placeholder="EX:) 30000">
         </div>
         <div class="form-control">
-          <label>{{ $translate('SIZE') }}</label>
-          <input v-model="payload.size" :placeholder="payload.size">
+          <label>{{ $translate('SIZE') }} ({{ $translate('SIZE_DESC') }})</label>
+          <input v-model="payload.size" placeholder="EX:) 5, -3...">
         </div>
         <div class="form-control">
           <label>{{ $translate('CONTRACT') }}</label>
-          <input v-model="payload.contract" :placeholder="payload.contract">
+          <input v-model="payload.contract" placeholder="EX:) BTCUSDT, ETHUSDT...">
         </div>
         <div
           @click="payload.onAir = !payload.onAir"
           class="form-control flex-row items-center no-select">
           <label class="m-0 cursor-pointer">{{ $translate('ON_AIR') }}</label>
-          <AppCheckbox v-model="payload.onAir" class="flex-wrap no-touch"/>
+          <AppToggler v-model="payload.onAir" class="flex-wrap no-touch"/>
         </div>
       </div>
     </div>
