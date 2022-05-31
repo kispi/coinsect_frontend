@@ -106,7 +106,7 @@ export default {
     const showUntracked = ref(null)
 
     const sorter = (a, b) => {
-      if (a.onAir && b.onAir) return Math.abs(a.size) > Math.abs(b.size) ? -1 : 1
+      if (a.onAir && b.onAir) return Math.abs(a.$$value) > Math.abs(b.$$value) ? -1 : 1
 
       if (a.onAir) return -1
 
@@ -206,12 +206,14 @@ export default {
           if (!position.entryPrice) return
 
           if (position.size > 0) {
-            position.unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
+            position.$$unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
           }
 
           if (position.size < 0) {
-            position.unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
+            position.$$unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
           }
+
+          position.$$value = position.size * position.markPrice
         })
       },
       { deep: true },

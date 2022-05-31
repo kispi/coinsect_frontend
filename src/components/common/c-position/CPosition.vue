@@ -39,10 +39,10 @@
           <div
             class="value f-mono"
             :class="{
-              'long': position.unrealized > 0,
-              'short': position.unrealized < 0,
+              'long': position.$$unrealized > 0,
+              'short': position.$$unrealized < 0,
             }"
-            v-html="display('unrealized')"
+            v-html="display('$$unrealized')"
           />
         </div>
       </div>
