@@ -119,6 +119,7 @@ export default {
           symbol: `${store.getters.settings.baseExchange}:${props.ticker.$$symbol}${store.getters.settings.baseExchangeMarket}`.toUpperCase(),
           resizable: !store.getters.isMobile,
           noBackdrop: true,
+          useMultiOpen: true,
         },
       })
     }

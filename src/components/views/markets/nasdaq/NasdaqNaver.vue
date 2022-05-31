@@ -120,6 +120,7 @@ export default {
           symbol: `NASDAQ:${item.symbolCode}`,
           resizable: !store.getters.isMobile,
           noBackdrop: true,
+          useMultiOpen: true,
         },
       })
     }
