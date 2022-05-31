@@ -19,7 +19,7 @@
           <input v-model="payload.liqPrice" placeholder="EX:) 30000">
         </div>
         <div class="form-control">
-          <label>{{ $translate('SIZE') }} ({{ $translate('SIZE_DESC') }})</label>
+          <label>{{ $translate('SIZE') }} {{ $translate('SIZE_DESC') }}</label>
           <input v-model="payload.size" placeholder="EX:) 5, -3...">
         </div>
         <div class="form-control">
