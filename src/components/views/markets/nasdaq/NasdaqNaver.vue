@@ -47,7 +47,10 @@
           </td>
           <td class="price">
             <div class="open">{{ display(item.closePrice).price }}</div>
-            <div v-if="item.overMarketPriceInfo" class="pre">{{ display((item.overMarketPriceInfo || {}).overPrice).price }}</div>
+            <div v-if="item.overMarketPriceInfo" class="over-market">
+              <div class="badge-pre">PRE</div>
+              <div class="value">{{ display((item.overMarketPriceInfo || {}).overPrice).price }}</div>
+            </div>
             <div
               v-else
               class="open-fluctuation"
@@ -180,6 +183,24 @@ export default {
 
     .price {
       color: var(--text-stress);
+    }
+
+    .over-market {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      .badge-pre {
+        margin-right: 8px;
+        font-size: 10px;
+        background: var(--border-base);
+        padding: 0 4px;
+        border-radius: 8px;
+      }
+
+      .value {
+        font-size: 12px;
+      }
     }
 
     .ticker {
