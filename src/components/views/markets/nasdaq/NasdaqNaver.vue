@@ -16,9 +16,9 @@
               { column: 'rank' },
               { column: 'name', title: 'STOCK' },
               { column: 'price', title: 'PRICE' },
-              { column: 'percent_change_24h', title: '24h %', $$hide: $store.getters.windowInnerWidth < 480 },
-              { column: 'market_cap', title: 'MARKETCAPS', $$hide: $store.getters.windowInnerWidth < 768 },
-              { column: 'volume_24h', title: 'VOL_24_SHARE' },
+              { column: 'percent_change_24h', title: '24h %' },
+              { column: 'market_cap', title: 'MARKETCAPS', $$hide: $store.getters.windowInnerWidth < 480 },
+              { column: 'volume_24h', title: 'VOL_24_SHARE', $$hide: $store.getters.windowInnerWidth < 768 },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
             <span
@@ -183,6 +183,7 @@ export default {
 
     .price {
       color: var(--text-stress);
+      white-space: nowrap;
     }
 
     .over-market {
@@ -196,6 +197,7 @@ export default {
         background: var(--border-base);
         padding: 0 4px;
         border-radius: 8px;
+        white-space: nowrap;
       }
 
       .value {
