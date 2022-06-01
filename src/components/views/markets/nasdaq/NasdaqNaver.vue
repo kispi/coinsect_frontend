@@ -8,17 +8,17 @@
           <th
             @click="sort(th.column)"
             :class="[
-              th.column === payload.by ? payload.type : '',
+              th.column === payload.column ? payload.direction : '',
               th.column ? 'cursor-pointer' : ''
             ]"
             :key="th.title"
             v-for="th in [
-              { column: 'rank' },
-              { column: 'name', title: 'STOCK' },
-              { column: 'price', title: 'PRICE' },
-              { column: 'percent_change_24h', title: '24h %' },
-              { column: 'market_cap', title: 'MARKETCAPS', $$hide: $store.getters.windowInnerWidth < 480 },
-              { column: 'volume_24h', title: 'VOL_24_SHARE', $$hide: $store.getters.windowInnerWidth < 768 },
+              { column: '$$rank' },
+              { column: 'symbolCode', title: 'STOCK' },
+              { column: 'closePrice', title: 'PRICE' },
+              { column: 'fluctuationsRatio', title: '24h %' },
+              { column: 'marketValueFull', title: 'MARKETCAPS', $$hide: $store.getters.windowInnerWidth < 480 },
+              { column: 'accumulatedTradingVolume', title: 'VOL_24_SHARE', $$hide: $store.getters.windowInnerWidth < 768 },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
             <span
@@ -35,9 +35,9 @@
           @click="onClickStock(item)"
           class="marketcap"
           :key="idx"
-          v-for="(item, idx) in $store.getters.nasdaq">
+          v-for="(item, idx) in displayedList">
           <td>
-            <div class="rank">{{ idx + 1 }}</div>
+            <div class="rank">{{ item.$$rank }}</div>
           </td>
           <td class="ticker">
             <div class="symbol-code">
@@ -46,10 +46,10 @@
             <div class="stock-name">{{ item.stockName }}</div>
           </td>
           <td class="price">
-            <div class="open">{{ display(item.closePrice).price }}</div>
+            <div class="open">{{ displayPrice(item.closePrice).price }}</div>
             <div v-if="item.overMarketPriceInfo" class="over-market">
               <div class="badge-pre">PRE</div>
-              <div class="value">{{ display((item.overMarketPriceInfo || {}).overPrice).price }}</div>
+              <div class="value">{{ displayPrice((item.overMarketPriceInfo || {}).overPrice).price }}</div>
             </div>
             <div
               v-else
@@ -62,10 +62,10 @@
             {{ item.fluctuationsRatio }}%
           </td>
           <td v-if="$store.getters.windowInnerWidth >= 480" class="market-cap">
-            {{ display(item.marketValueFull).cap }}
+            {{ displayPrice(item.marketValueFull).cap }}
           </td>
           <td v-if="$store.getters.windowInnerWidth >= 768" class="vol-24h">
-            {{ display(item.accumulatedTradingVolume).cap }}주
+            {{ displayPrice(item.accumulatedTradingVolume).cap }}주
           </td>
         </tr>
       </tbody>
@@ -85,11 +85,11 @@ export default {
     const store = useStore()
 
     const payload = ref({
-      by: null,
-      type: null,
+      column: null,
+      direction: null,
     })
 
-    const display = value => {
+    const displayPrice = value => {
       const parsed = parseFloat((value || '').replace(/,/g, ''))
       if (!parsed) return '?'
 
@@ -98,20 +98,39 @@ export default {
 
       return {
         cap: p.cap({ cap: parsed, baseCurrency }),
-        price: p.price({ price: parsed, baseCurrency, fracs: 2 }),
+        price: p.price({ price: parsed, baseCurrency, fracs: store.getters.settings.locale === 'kr' ? 0 : 2 }),
+        parsed,
       }
     }
 
     const sort = column => {
       if (!column) return
 
-      if (column === payload.value.by) {
-        payload.value.type = payload.value.type === 'desc' ? 'asc' : 'desc'
+      if (column === payload.value.column) {
+        payload.value.direction = payload.value.direction === 'desc' ? 'asc' : 'desc'
       } else {
-        payload.value.by = column
-        payload.value.type = 'desc'
+        payload.value.column = column
+        payload.value.direction = 'desc'
       }
     }
+
+    const rawSortColumns = ['symbolCode', '$$rank']
+
+    const displayedList = computed(() => {
+      const arr = []
+      store.getters.nasdaq.forEach(row => arr.push(row))
+      arr.sort((a, b) => {
+        let val1 = a[payload.value.column]
+        let val2 = b[payload.value.column]
+        const A = rawSortColumns.indexOf(payload.value.column) >= 0 ? val1 : displayPrice(val1).parsed
+        const B = rawSortColumns.indexOf(payload.value.column) >= 0 ? val2 : displayPrice(val2).parsed
+        if (payload.value.direction === 'asc') return A < B ? -1 : 1
+
+        if (payload.value.direction === 'desc') return A < B ? 1 : -1
+      })
+
+      return arr
+    })
 
     const interv = ref(null)
 
@@ -154,8 +173,9 @@ export default {
     return {
       payload,
       sort,
+      displayedList,
       onClickStock,
-      display,
+      displayPrice,
       openModalTradingView,
     }
   },
