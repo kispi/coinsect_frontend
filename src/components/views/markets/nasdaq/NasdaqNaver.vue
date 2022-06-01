@@ -55,7 +55,7 @@
               v-else
               class="open-fluctuation"
               :class="$helpers.template.priceColor(item.compareToPreviousClosePrice)">
-              {{ item.compareToPreviousClosePrice }}
+              {{ displayPrice(item.compareToPreviousClosePrice).price }}
             </div>
           </td>
           <td class="percent-change-24h" :class="$helpers.template.priceColor(item.fluctuationsRatio)">
