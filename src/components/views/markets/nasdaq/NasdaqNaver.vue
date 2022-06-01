@@ -98,7 +98,7 @@ export default {
 
       return {
         cap: p.cap({ cap: parsed, baseCurrency }),
-        price: p.price({ price: parsed, baseCurrency, fracs: store.getters.settings.locale === 'kr' ? 0 : 2 }),
+        price: p.price({ price: parsed, baseCurrency, fracs: store.getters.settings.currency === 'krw' ? 0 : 2 }),
         parsed,
       }
     }
