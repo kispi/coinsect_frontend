@@ -31,7 +31,7 @@
               v-html="postNumber(row)"
             />
             <article class="cell title">
-              <i v-if="iconPostType(row)" class="post-type fa" :class="iconPostType(row)"/>
+              <i v-if="iconPostType(row)" class="post-type far" :class="iconPostType(row)"/>
               <span v-html="row.title"/>
               <span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
             </article>
@@ -95,7 +95,7 @@ export default {
       return (row.content || '').includes('<img') ? 'fa-image' : ''
     }
 
-    const isActivePost = row => parseInt(router.currentRoute.value.params.id) === row.id
+    const isActivePost = row => router.currentRoute.value.params.sharingKey === row.sharingKey
 
     const postNumber = row => {
       if (row.postType === 'notice') return plugins.$translate('NOTICE')
@@ -155,8 +155,8 @@ export default {
   font-size: 12px;
 
   .table {
-    border-top: 1px solid var(--brand-primary-hover);
-    border-bottom: 1px solid var(--brand-primary-hover);
+    border-top: 1px solid var(--border-base);
+    border-bottom: 1px solid var(--border-base);
   }
 
   .row {
@@ -186,7 +186,7 @@ export default {
 
     &.header {
       display: flex;
-      border-bottom: 1px solid var(--brand-primary-hover);
+      border-bottom: 1px solid var(--border-base);
     }
 
     .cell {
@@ -221,7 +221,7 @@ export default {
       }
 
       .num-replies {
-        color: var(--brand-primary);
+        color: var(--gs-88);
       }
     }
 

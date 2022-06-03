@@ -101,11 +101,13 @@
 </template>
 
 <script>
-import { onMounted, onServerPrefetch, ref, computed, onUnmounted } from 'vue'
+import { onMounted, onServerPrefetch, ref, computed, onUnmounted, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
 
     const total = ref(null)
@@ -169,6 +171,7 @@ export default {
       if (payload.value.page === page) return
 
       payload.value.page = page
+      plugins.$helpers.dom.scrollToTop()
       callApi()
     }
 

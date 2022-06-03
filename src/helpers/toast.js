@@ -4,6 +4,7 @@ const showToast = options => {
   if (!options.html || $store.getters.isSSR) return
 
   options.show = true
+  if (options.html) options.html = options.html.trim()
   $store.commit('setToast', options)
 }
 

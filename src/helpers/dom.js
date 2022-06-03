@@ -63,6 +63,14 @@ const dom = {
     document.head.appendChild(scriptTag)
     $store.commit('addLazyLoadedScriptUrl', url)
   }),
+  linkify: text => text.replace(/(https?:\/\/[^ ]*)/ig,
+    url => `<a
+      href="${url}"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-underline c-brand-primary">
+      ${url}
+    </a>`),
 }
 
 export default dom

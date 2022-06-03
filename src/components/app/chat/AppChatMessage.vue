@@ -5,7 +5,7 @@
     <div class="content" :class="{'m-t-12': !(prevMessage ||{}).isMine && (message || {}).isMine}">
       <AppChatProfile v-if="showProfile" :user="message"/>
       <div class="text-and-timestamp">
-        <div class="text">{{ message.text }}</div>
+        <div class="text" v-html="$helpers.dom.linkify(message.text)"/>
         <div
           v-if="showTimestamp"
           class="timestamp f-mono"

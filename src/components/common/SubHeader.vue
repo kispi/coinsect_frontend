@@ -1,18 +1,20 @@
 <template>
-  <nav
-    v-if="modelValue"
-    class="sub-header">
-    <RouterLink
-      draggable="false"
-      @click="$emit('update:modelValue', null)"
-      :to="item.path"
-      class="sub-header-item"
-      :class="{'selected': $router.currentRoute.value.path.includes(item.path)}"
-      :key="item.path"
-      v-for="item in modelValue">
-      {{ $translate(item.title) }}
-    </RouterLink>
-  </nav>
+  <transition name="fade">
+    <nav
+      v-if="modelValue"
+      class="sub-header">
+      <RouterLink
+        draggable="false"
+        @click="$emit('update:modelValue', null)"
+        :to="item.path"
+        class="sub-header-item"
+        :class="{'selected': $router.currentRoute.value.path.includes(item.path)}"
+        :key="item.path"
+        v-for="item in modelValue">
+        {{ $translate(item.title) }}
+      </RouterLink>
+    </nav>
+  </transition>
 </template>
 
 <script>
@@ -27,14 +29,18 @@ export default {
 .sub-header {
   position: absolute;
   background: var(--background-base);
-  top: calc(var(--app-header-height) - 4px);
-  width: 320px;
-  border: 1px solid var(--border-base);
-  border-radius: 0 0 4px 4px;
+  top: calc(var(--app-header-height));
+  width: 240px;
+  border-left: 1px double var(--border-base);
+  border-bottom: 1px double var(--border-base);
+  border-right: 1px double var(--border-base);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 1px 2px 4px rgba(32, 64, 128, 0.5);
   z-index: 5;
 
   .sub-header-item {
-    padding: 8px;
+    color: var(--text-stress);
+    padding: 12px 16px;
     display: block;
     white-space: nowrap;
     transition: none;
@@ -46,15 +52,16 @@ export default {
     }
 
     &:hover {
-      color: var(--brand-primary-hover);
+      background: var(--brand-primary-hover-bg);
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--border-base);
     }
   }
 
   @media (max-width: 767px) {
     padding: 0 var(--app-default-page-padding);
-    width: calc(100% + 2px);
-    left: -1px;
-    right: -1px;
   }
 }
 </style>
