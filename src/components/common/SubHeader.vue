@@ -59,9 +59,5 @@ export default {
       border-bottom: 1px solid var(--border-base);
     }
   }
-
-  @media (max-width: 767px) {
-    padding: 0 var(--app-default-page-padding);
-  }
 }
 </style>
