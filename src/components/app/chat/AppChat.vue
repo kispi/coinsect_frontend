@@ -167,14 +167,21 @@ export default {
     } = useChatHandler()
 
     const onKeydown = e => {
+      if (e.key === 'Enter') {
+        if (!text.value) return
+
+        if (e.shiftKey || store.getters.isMobile) {
+          // 커서가 채팅창의 마지막줄에 있을때만 textarea를 끝까지 스크롤함
+          if (e.target.value.length - e.target.selectionStart <= 1) refTextarea.value.scrollTop = refTextarea.value.scrollHeight
+          return
+        }
+
+        e.preventDefault()
+        sendTextMessage(text.value, true)
+      }
+
       setTimeout(() => {
         text.value = e.target.value
-        if (e.key === 'Enter') {
-          if (e.shiftKey && text.value) {
-            setTimeout(() => refTextarea.value.scrollTop = refTextarea.value.scrollHeight)
-          }
-          else sendTextMessage(text.value, true)
-        }
       })
     }
 
