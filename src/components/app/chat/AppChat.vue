@@ -484,7 +484,6 @@ export default {
       display: flex;
       align-items: center;
       font-size: 12px;
-      font-weight: 300;
       padding: 0 12px;
       height: 36px;
       bottom: 88px;
