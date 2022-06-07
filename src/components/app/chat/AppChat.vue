@@ -168,7 +168,7 @@ export default {
 
     const onKeydown = e => {
       if (e.key === 'Enter') {
-        if (!text.value) return
+        if (!text.value || e.isComposing) return
 
         if (e.shiftKey || store.getters.isMobile) {
           // 커서가 채팅창의 마지막줄에 있을때만 textarea를 끝까지 스크롤함
