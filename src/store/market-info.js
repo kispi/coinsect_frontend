@@ -83,9 +83,9 @@ const marketInfo = {
         return Promise.reject(e)
       }
     },
-    async loadNasdaq({ commit }, params) {
+    async loadNasdaq({ commit }) {
       try {
-        commit('setNasdaq', await marketInfoService.nasdaq(params))
+        commit('setNasdaq', await marketInfoService.nasdaq())
       } catch (e) {
         return Promise.reject(e)
       }
