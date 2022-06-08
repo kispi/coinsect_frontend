@@ -35,7 +35,7 @@ export default {
   border-bottom: 1px double var(--border-base);
   border-right: 1px double var(--border-base);
   border-radius: 0 0 8px 8px;
-  box-shadow: 1px 2px 4px rgba(32, 64, 128, 0.5);
+  box-shadow: 1px 2px 4px var(--brand-primary-hover-bg);
   z-index: 5;
 
   .sub-header-item {
