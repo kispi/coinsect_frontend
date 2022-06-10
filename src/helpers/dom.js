@@ -1,5 +1,11 @@
 import { store as $store } from '@/store'
 
+const regex = {
+  url: /\b(?:https?|ftp):\/\/[a-z0-9-+&@#/%?=~_|!:,.;]*[a-z0-9-+&@#/%=~_|]/gim,
+  pseudoUrl: /(^|[^/])(www\.[\S]+(\b|$))/gim,
+  email: /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim,
+}
+
 // DOM을 직접 건드리는 함수들을 이쪽으로 분리
 const dom = {
   headerHeight: () => {
@@ -63,14 +69,10 @@ const dom = {
     document.head.appendChild(scriptTag)
     $store.commit('addLazyLoadedScriptUrl', url)
   }),
-  linkify: text => text.replace(/(https?:\/\/[^ ]*)/ig,
-    url => `<a
-      href="${url}"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-underline c-brand-primary">
-      ${url}
-    </a>`),
+  linkify: text => text
+    .replace(regex.url, `<a href="$&" class='text-underline c-brand-primary' rel='noopener noreferrer'>$&</a>`)
+    .replace(regex.pseudoUrl, `$1<a href="http://$2" class='text-underline c-brand-primary' rel='noopener noreferrer'>$2</a>`)
+    .replace(regex.email, `<a href="mailto:$&" class='text-underline c-brand-primary' rel='noopener noreferrer'>$&</a>`),
 }
 
 export default dom
