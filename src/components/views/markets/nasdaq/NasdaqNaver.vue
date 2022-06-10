@@ -76,7 +76,6 @@
 <script>
 import { onMounted, onServerPrefetch, ref, computed, onUnmounted, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
-import nasdaq100 from './nasdaq-100'
 
 export default {
   setup() {
@@ -152,12 +151,12 @@ export default {
     }
 
     const callApi = async () => {
-      store.dispatch('loadNasdaq', nasdaq100)
+      store.dispatch('loadNasdaq')
 
       if (store.getters.isSSR) return
 
       clearInterval(interv.value)
-      interv.value = setInterval(() => store.dispatch('loadNasdaq', nasdaq100), 1000 * 10)
+      interv.value = setInterval(() => store.dispatch('loadNasdaq'), 1000 * 10)
     }
 
     onMounted(callApi)
@@ -168,7 +167,7 @@ export default {
       clearInterval(interv.value)
     })
 
-    onServerPrefetch(() => store.dispatch('loadNasdaq', nasdaq100))
+    onServerPrefetch(() => store.dispatch('loadNasdaq'))
 
     return {
       payload,
