@@ -44,7 +44,7 @@
           <CPosition
             :position="position"
             :key="idx"
-            v-for="(position, idx) in positionGroup"
+            v-for="(position, idx) in positionGroup.filter(p => p.editable)"
           />
         </div>
       </transition>
