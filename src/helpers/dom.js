@@ -70,9 +70,9 @@ const dom = {
     $store.commit('addLazyLoadedScriptUrl', url)
   }),
   linkify: text => text
-    .replace(regex.url, `<a href="$&" class='text-underline c-brand-primary' rel='noopener noreferrer'>$&</a>`)
-    .replace(regex.pseudoUrl, `$1<a href="http://$2" class='text-underline c-brand-primary' rel='noopener noreferrer'>$2</a>`)
-    .replace(regex.email, `<a href="mailto:$&" class='text-underline c-brand-primary' rel='noopener noreferrer'>$&</a>`),
+    .replace(regex.url, `<a href="$&" class='text-underline c-brand-primary' rel='noopener noreferrer' target="_blank">$&</a>`)
+    .replace(regex.pseudoUrl, `$1<a href="http://$2" class='text-underline c-brand-primary' rel='noopener noreferrer' target="_blank">$2</a>`)
+    .replace(regex.email, `<a href="mailto:$&" class='text-underline c-brand-primary' rel='noopener noreferrer' target="_blank">$&</a>`),
 }
 
 export default dom
