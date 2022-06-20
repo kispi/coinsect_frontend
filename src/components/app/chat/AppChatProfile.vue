@@ -1,7 +1,8 @@
 <template>
   <div
     v-if="user"
-    class="app-chat-profile lines-1">
+    class="app-chat-profile lines-1"
+    :class="user.type">
     <AppImg
       v-if="(user.profile || {}).image"
       class="profile-img"
@@ -100,6 +101,13 @@ export default {
   .nickname,
   .badge-token {
     cursor: pointer;
+  }
+
+  &.alert {
+    .nickname {
+      color: var(--brand-primary);
+      font-weight: 700;
+    }
   }
 }
 </style>

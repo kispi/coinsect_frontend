@@ -33,9 +33,14 @@ const useChatHandler = () => {
     return prevMessage && curMessage && (d(prevMessage.timestamp) !== d(curMessage.timestamp))
   }
 
+  const alertProfile = {
+    image: 'https://coinsect.io/favicon/favicon.svg',
+    nickname: '알림',
+  }
+
   const preparedMessage = message => ({
     id: message.id,
-    profile: (message.user || {}).profile,
+    profile: message.type === 'alert' ? alertProfile : (message.user || {}).profile,
     token: (message.user || {}).token,
     isMine: (message.user || {}).token === store.getters.chatUser.token,
     text: message.text,
