@@ -15,7 +15,7 @@ const indicators = [{
   meta: {
     title: '실시간 포지션 - 코인충',
     description: '박호두, 짭구 등 방송인들의 실시간 포지션',
-    image: useS3('og-images/og-image-real-time-positions.png'),
+    image: useS3('og-images/og-image-streamer-positions.png'),
   },
 }, {
   path: '/indicators/long-short',
@@ -84,7 +84,7 @@ const contents = [{
   meta: {
     title: '비트코인 보유단체 - 코인충',
     description: '비트코인을 보유한 상장사들의 목록 및 보유 현황. 갈수록 많은 회사들이 현금 가치 하락에 대한 헤지로 비트코인을 자사의 재무재표에 추가할 것이다.',
-    image: useS3('og-images/og-image-public-treasury.png'),
+    image: useS3('og-images/og-image-treasuries.png'),
   },
 }, {
   path: '/contents/:a/:b',
