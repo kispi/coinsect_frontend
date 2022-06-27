@@ -1,7 +1,7 @@
 <template>
   <div class="app-slider">
     <div
-      @touchstart="onMousedown"
+      @touchstart.passive="onMousedown"
       @mousedown="onMousedown"
       ref="refContainer"
       class="app-slider-container">

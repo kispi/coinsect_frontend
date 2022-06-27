@@ -56,6 +56,8 @@ export default {
     }
 
     const onSelectCrypto = market => {
+      if (!market) return
+
       crypto.value = market.key
       const stored = store.getters.settings.salary || {}
       stored.symbol = crypto.value
@@ -67,13 +69,13 @@ export default {
         // 이 페이지에서는 기준이 krw로 강제되어야 함
         store.commit('setSettings', { baseExchangeMarket: 'krw' })
         await store.dispatch('loadBaseMarkets')
-        populateMarkets()
         const conn = await subscribe({
           type: 'ticker',
           codes: store.getters.markets.upbit.map(o => o.market),
           $$raw: true,
         })
         connection.value = conn
+        populateMarkets()
       } catch (e) {
         plugins.$toast.error('문제가 발생했습니다 ㅜ.ㅜ 새로고침해주세요')
       }
@@ -82,7 +84,7 @@ export default {
     onMounted(init)
 
     onUnmounted(() => {
-      connection.value.close()
+      if (connection.value) connection.value.close()
     })
 
     const updateReport = () => {
@@ -103,6 +105,11 @@ export default {
       () => props.salary,
     ],
       updateReport,
+    )
+
+    watch(
+      () => store.getters.symbols,
+      populateMarkets,
     )
 
     return {
