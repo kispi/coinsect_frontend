@@ -50,7 +50,7 @@ export default {
         .sort((a, b) => a > b ? 1 : -1).map(market => ({ key: market.split('KRW-')[1] }))
 
       sortedMarkets.value.forEach(o => {
-        o.img = store.getters.symbols[o.key].thumb
+        o.img = (store.getters.symbols[o.key] || {}).thumb
         o.$$selected = o.key === crypto.value
       })
     }
@@ -95,7 +95,7 @@ export default {
 
       const result = {}
       result.$$symbol = crypto.value
-      result.$$img = store.getters.symbols[crypto.value].thumb
+      result.$$img = (store.getters.symbols[crypto.value] || {}).thumb
       Object.keys(props.salary).forEach(key => result[`$$${key}`] = Math.round(10000 * props.salary[key] / t.tp) / 10000)
       emit('convert-as-crypto', result)
     }
