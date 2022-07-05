@@ -11,11 +11,16 @@
     </AdaptiveLayout>
     <div class="header">
       <div class="timestamp">
-        업데이트:
-        <span v-if="$store.getters.realTimePositions.lastUpdate">
+        <button
+          @click="callApi"
+          class="btn btn-primary m-r-8">
+          <i class="fal fa-sync"/>
+        </button>
+        최종:
+        <span v-if="$store.getters.realTimePositions.lastUpdate" class="m-l-4">
           {{
             $store.getters.realTimePositions.lastUpdate ?
-            $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('YY-MM-DD HH:mm:ss') :
+            $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('MM-DD HH:mm') :
             ''
           }}
           <span class="m-l-4 diff" :class="diff.class" v-if="diff.string">({{ diff.string }})</span>
@@ -80,7 +85,7 @@
     </div>
     <RouterLink
       to="/"
-      class="btn btn-primary">
+      class="btn btn-primary bottom">
       김프 보러가기
     </RouterLink>
   </div>
@@ -223,6 +228,7 @@ export default {
       diff,
       positions,
       showUntracked,
+      callApi,
       toggleTradingview,
     }
   },
@@ -254,6 +260,12 @@ export default {
 
   .timestamp {
     color: var(--text-stress);
+    display: flex;
+    align-items: center;
+
+    .btn-primary {
+      padding: 8px;
+    }
   }
 
   .description {
@@ -268,7 +280,7 @@ export default {
     }
   }
 
-  .btn-primary {
+  .btn-primary.bottom {
     border-radius: 0;
     padding: 20px;
     margin-top: 120px;
