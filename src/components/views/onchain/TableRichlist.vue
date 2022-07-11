@@ -12,16 +12,16 @@
           <th>{{ $translate('RICHLIST_DOMINANCE') }}</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="f-mono">
         <tr
           :key="idx"
           v-for="(row, idx) in data">
           <td>{{ row.balanceBetween }}</td>
           <td>{{ row.addressesNum.toLocaleString() }}</td>
-          <td>{{ row.addressesRatio }}%<span> ({{ row.addressesRatioTotal }})%</span></td>
-          <td>{{ row.balance.toLocaleString() }}<span> {{ symbol }}</span></td>
+          <td>{{ row.addressesRatio }}% <span>({{ row.addressesRatioTotal }})%</span></td>
+          <td>{{ row.balance.toLocaleString() }} <span>{{ symbol }}</span></td>
           <td v-if="!$store.getters.isMobile">{{ $helpers.currency() }} {{ $helpers.number.pretty.cap({ cap: row.valuationUsd, baseCurrency: 'usd' }) }}</td>
-          <td>{{ row.dominance }}%<span> ({{ row.dominanceTotal }})%</span></td>
+          <td>{{ row.dominance }}% <span>({{ row.dominanceTotal }})%</span></td>
         </tr>
       </tbody>
     </table>
@@ -46,7 +46,7 @@ export default {
     display: flex;
     align-items: center;
     color: var(--text-stress);
-    margin-bottom: 8px;
+    margin-bottom: 16px;
 
     img {
       width: 20px;

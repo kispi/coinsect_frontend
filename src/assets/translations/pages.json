@@ -326,5 +326,37 @@
   "RICHLIST_DOMINANCE": {
     "en": "Dominance",
     "kr": "도미넌스"
+  },
+  "SHRIMP": {
+    "en": "Shrimp",
+    "kr": "새우"
+  },
+  "CRAB": {
+    "en": "Crab",
+    "kr": "게"
+  },
+  "OCTOPUS": {
+    "en": "Octopus",
+    "kr": "문어"
+  },
+  "FISH": {
+    "en": "Fish",
+    "kr": "물고기"
+  },
+  "DOLPHIN": {
+    "en": "Dolphin",
+    "kr": "돌고래"
+  },
+  "SHARK": {
+    "en": "Shark",
+    "kr": "상어"
+  },
+  "WHALE": {
+    "en": "Whale",
+    "kr": "고래"
+  },
+  "HUMPBACK": {
+    "en": "Humpback",
+    "kr": "혹등고래"
   }
 }

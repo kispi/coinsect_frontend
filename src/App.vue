@@ -118,7 +118,7 @@ export default {
 .view-layout-default {
   @extend .layout-centered;
 
-  padding-top: calc(var(--app-header-height) + var(--app-default-page-padding));
+  padding-top: calc(var(--app-header-height) + var(--app-default-page-padding) * 2);
   padding-bottom: 80px;
 }
 
