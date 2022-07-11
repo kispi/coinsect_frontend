@@ -1,6 +1,5 @@
 <template>
   <header class="app-header layout-centered">
-    <SearchFaker/>
     <div class="top">
       <!-- <CoinnessIssues v-show="$store.getters.windowInnerWidth >= 480"/> -->
       <BannerMarketIndices/>
@@ -87,14 +86,12 @@ import useMenuItems from './menu-items'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
 import SettingsPanel from './SettingsPanel'
-import SearchFaker from './SearchFaker'
 
 export default {
   components: {
     AppNotifications,
     BannerMarketIndices,
     SettingsPanel,
-    SearchFaker,
   },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties

@@ -1,12 +1,24 @@
 <template>
   <div class="view-richlist">
-    <a
-      class="legends"
-      href="https://insights.glassnode.com/bitcoin-supply-distribution"
-      target="_blank"
-      rel="noreferrer noopener">
+    <div class="richlist-symbols">
+      <button
+        @click="onClickSymbol(o)"
+        class="btn"
+        :class="o.$$selected ? 'btn-primary' : 'btn-default'"
+        :key="o.symbol"
+        v-for="o in symbols">
+        <i class="fal fa-check m-r-8" :class="{'o-0': !o.$$selected}"/>{{ o.symbol }}
+      </button>
+    </div>
+    <div
+      v-if="(selected || {}).symbol === 'BTC'"
+      class="legends">
       <div class="legends-title">비트코인 생태계</div>
-      <div class="grid">
+      <a
+        class="grid"
+        href="https://insights.glassnode.com/bitcoin-supply-distribution"
+        target="_blank"
+        rel="noreferrer noopener">
         <div
           class="legend"
           :key="legend.type"
@@ -19,16 +31,15 @@
             <span>{{ legend.max || '&gt;=' }}</span>
           </div>
         </div>
-      </div>
-    </a>
+      </a>
+    </div>
     <TableRichlist
-      :symbol="table.symbol"
-      :data="table.resp.data"
-      :key="table.symbol"
-      v-for="table in tables.filter(t => t.resp)">
+      v-if="data"
+      :symbol="selected.symbol"
+      :data="data.data">
       <PoweredBy
         :by="'BitInfoCharts'"
-        :link="table.resp.link"
+        :link="data.link"
         :imgUrl="'https://bitinfocharts.com/logo-1200.jpg'"
       />
     </TableRichlist>
@@ -36,7 +47,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import TableRichlist from './TableRichlist'
 
@@ -56,23 +67,30 @@ export default {
       { type: 'Humpback', min: 5000, icon: '🐋' },
     ]
 
-    const tables = computed(() => [
-      { symbol: 'BTC', resp: store.getters.richlist.bitcoin },
-      { symbol: 'BCH', resp: store.getters.richlist.bitcoinCash },
-      { symbol: 'DOGE', resp: store.getters.richlist.dogecoin },
-      { symbol: 'LTC', resp: store.getters.richlist.litecoin },
+    const selected = computed(() => symbols.value.find(o => o.$$selected))
+
+    const data = computed(() => store.getters.richlist[(selected.value || {}).name])
+
+    const symbols = ref([
+      { symbol: 'BTC', name: 'bitcoin' },
+      { symbol: 'BCH', name: 'bitcoinCash' },
+      { symbol: 'DOGE', name: 'dogecoin' },
+      { symbol: 'LTC', name: 'litecoin' },
     ])
 
-    onMounted(() => {
-      store.dispatch('loadRichlist', 'bitcoin')
-      store.dispatch('loadRichlist', 'bitcoinCash')
-      store.dispatch('loadRichlist', 'dogecoin')
-      store.dispatch('loadRichlist', 'litecoin')
-    })
+    const onClickSymbol = symbol => {
+      symbols.value.forEach(o => o.$$selected = o.symbol === symbol.symbol)
+      store.dispatch('loadRichlist', symbol.name)
+    }
+
+    onMounted(() => onClickSymbol(symbols.value[0]))
 
     return {
       legends,
-      tables,
+      symbols,
+      data,
+      selected,
+      onClickSymbol,
     }
   },
 }
@@ -85,9 +103,24 @@ export default {
     justify-content: flex-end;
   }
 
-  .legends {
-    display: block;
+  .richlist-symbols {
+    display: grid;
+    margin-bottom: 40px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 8px;
 
+    button {
+      flex: 1;
+      border-radius: 0;
+
+      i {
+        position: absolute;
+        left: 24px;
+      }
+    }
+  }
+
+  .legends {
     .legends-title {
       font-size: 16px;
       font-weight: 700;
@@ -137,9 +170,23 @@ export default {
 
   @media (max-width: 767px) {
     .legends {
+      font-size: 12px;
+
+      .legend {
+        padding: 2px 6px;
+
+        .emoji {
+          font-size: 16px;
+        }
+      }
+
       .grid {
         grid-template-columns: repeat(2, 1fr);
       }
+    }
+
+    .richlist-symbols {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }

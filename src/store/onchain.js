@@ -2,9 +2,7 @@ import onchainService from '@/services/onchain'
 
 const onchain = {
   state: () => ({
-    richlist: {
-      bitcoin: null,
-    },
+    richlist: {},
   }),
   getters: {
     richlist: state => state.richlist,
