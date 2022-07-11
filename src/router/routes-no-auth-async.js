@@ -97,6 +97,7 @@ const onchain = [{
   meta: {
     title: '리치리스트 - 코인충',
     description: '암호화폐의 분포를 보여줍니다.',
+    image: useS3('og-images/og-image-richlist.png'),
   },
 }]
 
