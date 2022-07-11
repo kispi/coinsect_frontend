@@ -34,7 +34,7 @@
       </a>
     </div>
     <TableRichlist
-      v-if="data"
+      v-if="(data || {}).link"
       :symbol="selected.symbol"
       :data="data.data">
       <PoweredBy
