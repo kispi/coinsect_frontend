@@ -15,10 +15,10 @@ const onchain = {
     },
   },
   actions: {
-    async loadRichlist({ commit }) {
+    async loadRichlist({ commit }, key) {
       try {
-        const data = await onchainService.richlist.bitcoin()
-        commit('setRichlist', { key: 'bitcoin', value: data })
+        const data = await onchainService.richlist[key]()
+        commit('setRichlist', { key, value: data })
       } catch (e) {
         return Promise.reject(e)
       }

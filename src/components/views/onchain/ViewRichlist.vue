@@ -5,6 +5,7 @@
       href="https://insights.glassnode.com/bitcoin-supply-distribution"
       target="_blank"
       rel="noreferrer noopener">
+      <div class="legends-title">비트코인 생태계</div>
       <div class="grid">
         <div
           class="legend"
@@ -21,12 +22,13 @@
       </div>
     </a>
     <TableRichlist
-       v-if="$store.getters.richlist.bitcoin"
-      :symbol="'BTC'"
-      :data="$store.getters.richlist.bitcoin">
+      :symbol="table.symbol"
+      :data="table.resp.data"
+      :key="table.symbol"
+      v-for="table in tables.filter(t => t.resp)">
       <PoweredBy
         :by="'BitInfoCharts'"
-        :link="'https://bitinfocharts.com/top-100-richest-bitcoin-addresses.html'"
+        :link="table.resp.link"
         :imgUrl="'https://bitinfocharts.com/logo-1200.jpg'"
       />
     </TableRichlist>
@@ -34,7 +36,7 @@
 </template>
 
 <script>
-import { onMounted, onServerPrefetch } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import TableRichlist from './TableRichlist'
 
@@ -54,14 +56,23 @@ export default {
       { type: 'Humpback', min: 5000, icon: '🐋' },
     ]
 
-    onMounted(() => {
-      store.dispatch('loadRichlist')
-    })
+    const tables = computed(() => [
+      { symbol: 'BTC', resp: store.getters.richlist.bitcoin },
+      { symbol: 'BCH', resp: store.getters.richlist.bitcoinCash },
+      { symbol: 'DOGE', resp: store.getters.richlist.dogecoin },
+      { symbol: 'LTC', resp: store.getters.richlist.litecoin },
+    ])
 
-    onServerPrefetch(() => store.dispatch('loadRichlist'))
+    onMounted(() => {
+      store.dispatch('loadRichlist', 'bitcoin')
+      store.dispatch('loadRichlist', 'bitcoinCash')
+      store.dispatch('loadRichlist', 'dogecoin')
+      store.dispatch('loadRichlist', 'litecoin')
+    })
 
     return {
       legends,
+      tables,
     }
   },
 }
@@ -76,6 +87,13 @@ export default {
 
   .legends {
     display: block;
+
+    .legends-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-stress);
+    }
 
     .grid {
       display: grid;
@@ -108,6 +126,12 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .table-richlist {
+    &:not(:last-child) {
+      margin-bottom: 120px;
     }
   }
 
