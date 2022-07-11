@@ -78,9 +78,9 @@ export default {
       { symbol: 'LTC', name: 'litecoin' },
     ])
 
-    const onClickSymbol = symbol => {
+    const onClickSymbol = async symbol => {
+      await store.dispatch('loadRichlist', symbol.name)
       symbols.value.forEach(o => o.$$selected = o.symbol === symbol.symbol)
-      store.dispatch('loadRichlist', symbol.name)
     }
 
     onMounted(() => onClickSymbol(symbols.value[0]))
