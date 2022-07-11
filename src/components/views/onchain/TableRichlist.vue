@@ -8,7 +8,7 @@
           <th>{{ $translate('RICHLIST_ADDRESSES') }}</th>
           <th>{{ $translate('RICHLIST_ADDRESSES_RATIO') }}</th>
           <th>{{ $translate('RICHLIST_BALANCE') }}</th>
-          <th>{{ $translate('RICHLIST_VALUATION') }}</th>
+          <th v-if="!$store.getters.isMobile">{{ $translate('RICHLIST_VALUATION') }}</th>
           <th>{{ $translate('RICHLIST_DOMINANCE') }}</th>
         </tr>
       </thead>
@@ -18,10 +18,10 @@
           v-for="(row, idx) in data">
           <td>{{ row.balanceBetween }}</td>
           <td>{{ row.addressesNum.toLocaleString() }}</td>
-          <td>{{ row.addressesRatio }}% ({{ row.addressesRatioTotal }})%</td>
-          <td>{{ row.balance.toLocaleString() }} {{ symbol }}</td>
-          <td>{{ $helpers.currency() }} {{ $helpers.number.pretty.cap({ cap: row.valuationUsd, baseCurrency: 'usd' }) }}</td>
-          <td>{{ row.dominance }}% ({{ row.dominanceTotal }})%</td>
+          <td>{{ row.addressesRatio }}%<span> ({{ row.addressesRatioTotal }})%</span></td>
+          <td>{{ row.balance.toLocaleString() }}<span> {{ symbol }}</span></td>
+          <td v-if="!$store.getters.isMobile">{{ $helpers.currency() }} {{ $helpers.number.pretty.cap({ cap: row.valuationUsd, baseCurrency: 'usd' }) }}</td>
+          <td>{{ row.dominance }}%<span> ({{ row.dominanceTotal }})%</span></td>
         </tr>
       </tbody>
     </table>
@@ -67,9 +67,23 @@ export default {
   th {
     padding: 8px;
     text-align: initial;
+    white-space: nowrap;
 
     &:not(:first-child) {
       text-align: right;
+    }
+  }
+
+  @media (max-width: 479px) {
+    font-size: 12px;
+
+    td,
+    th {
+      padding: 8px 4px;
+
+      span {
+        display: none;
+      }
     }
   }
 }
