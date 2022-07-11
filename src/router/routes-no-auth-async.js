@@ -19,7 +19,7 @@ const indicators = [{
   },
 }, {
   path: '/indicators/long-short',
-  component: () => import(/* webpackChunkName: 'view-long-short' */ '@/components/views/indicators/ViewLongShort'),
+  component: () => import(/* webpackChunkName: 'view-long-short' */ '@/components/views/indicators/ViewIndicators'),
   meta: {
     title: '롱-숏 비율 - 코인충',
     description: '코인의 거래소별 롱-숏 비율',
@@ -91,6 +91,15 @@ const contents = [{
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
 }]
 
+const onchain = [{
+  path: '/onchain/richlist',
+  component: () => import(/* webpackChunkName: 'view-onchain' */ '@/components/views/onchain/ViewOnchain'),
+  meta: {
+    title: '리치리스트 - 코인충',
+    description: '암호화폐의 분포를 보여줍니다.',
+  },
+}]
+
 const apps = [{
   path: '/apps/games',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
@@ -141,6 +150,7 @@ const routesNoAuth = [
   ...indicators,
   ...markets,
   ...contents,
+  ...onchain,
   ...apps,
   ...community,
   ...andSoOn,

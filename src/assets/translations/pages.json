@@ -302,5 +302,29 @@
   "BITCOIN_HALVING_DESCRIPTION": {
     "en": "Bitcoin blockchain generates one block every 10 minutes.\nNum of BTC rewards for every block halves every 210,000 blocks.\nSo we can expect how much supply will be available,\nthus less BTC will be released into market.",
     "kr": "비트코인 블록체인은 약 10분에 하나의 블록을 생성하며,\n매 210,000 블록마다 블록당 보상이 절반으로 감소합니다.\n이를 통해 시장에 공급되는 유통량이 예측 가능하게 감소하여\n비트코인 특유의 조작 불가능한 희소성이 점점 심화됩니다."
+  },
+  "RICHLIST_BALANCE_BETWEEN": {
+    "en": "Balance Between",
+    "kr": "잔고 범위"
+  },
+  "RICHLIST_ADDRESSES": {
+    "en": "No. Addresses",
+    "kr": "주소 수"
+  },
+  "RICHLIST_ADDRESSES_RATIO": {
+    "en": "%. Addresses",
+    "kr": "%. 주소"
+  },
+  "RICHLIST_BALANCE": {
+    "en": "Total Balance",
+    "kr": "총 잔고"
+  },
+  "RICHLIST_VALUATION": {
+    "en": "Valuation",
+    "kr": "평가액"
+  },
+  "RICHLIST_DOMINANCE": {
+    "en": "Dominance",
+    "kr": "도미넌스"
   }
 }

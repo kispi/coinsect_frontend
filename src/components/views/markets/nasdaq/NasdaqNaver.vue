@@ -134,7 +134,6 @@ export default {
     const interv = ref(null)
 
     const openModalTradingView = item => {
-      console.log(item)
       plugins.$modal.custom({
         component: 'ModalTradingView',
         options: {

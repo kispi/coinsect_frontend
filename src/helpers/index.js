@@ -85,6 +85,12 @@ const helpers = {
     for (let i = 0; i < len; i++) arr.push(i)
     return arr
   },
+  currency: currency => {
+    const symbols = { 'usd': '$', 'gbp': '£', 'eur': '€', 'krw': '₩' }
+    if (currency) return symbols[currency]
+
+    return symbols[$store.getters.settings.currency]
+  },
   retrieveNumbersOnly: str => str.replace(/[^0-9]+/g, ''),
   retrieveLettersOnly: str => str.replace(/[^a-zA-Z]+/g, ''),
   retrieveInstagramIdFromUrlOnPaste: e => {

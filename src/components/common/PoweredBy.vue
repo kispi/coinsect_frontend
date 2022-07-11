@@ -1,6 +1,6 @@
 <template>
   <div class="powered-by">
-    Powered by <a :href="link || rendered.link" target="_blank" rel="noopener">{{ rendered.title }}<img :src="require(`@/assets/images/${rendered.src}`)" :alt="rendered.title"></a>
+    Powered by <a :href="link || rendered.link" target="_blank" rel="noopener">{{ rendered ? rendered.title : by }}<img :src="imgUrl || require(`@/assets/images/${rendered.src}`)" :alt="rendered ? rendered.title : by"></a>
   </div>
 </template>
 
@@ -9,11 +9,9 @@ import { computed } from 'vue'
 
 export default {
   props: {
-    by: {
-      type: String,
-      validator: val => ['coinmarketcap', 'coingecko', 'upbit', 'bitcointreasuries', 'coinness', 'coinglass', 'naver'].includes(val),
-    },
+    by: String,
     link: String,
+    imgUrl: String,
   },
   setup(props) {
     const rendered = computed(() => {

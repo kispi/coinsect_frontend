@@ -59,6 +59,12 @@ const useMenuItems = () => {
       { path: '/contents/bitcoin-halving', title: 'BITCOIN_HALVING' }
     ],
   }, {
+    title: 'ONCHAIN',
+    pathPrefix: '/onchain/',
+    subPages: [
+      { path: '/onchain/richlist', title: 'RICHLIST' },
+    ],
+  }, {
     title: 'APPS',
     pathPrefix: '/apps/',
     subPages: [
