@@ -1,7 +1,7 @@
 <template>
   <div class="view-leaderboard">
     <div class="last-update">btctools와의 최종 동기화: {{ lastUpdate }}</div>
-    <table>
+    <table class="f-mono">
       <thead>
         <tr>
           <th
