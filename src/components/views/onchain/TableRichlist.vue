@@ -1,6 +1,6 @@
 <template>
   <div class="table-richlist">
-    <div class="table-title"><AppImg :src="$store.getters.symbols[symbol].thumb" :alt="symbol"/>{{ symbol }}</div>
+    <div v-if="$store.getters.symbols[symbol]" class="table-title"><AppImg :src="$store.getters.symbols[symbol].thumb" :alt="symbol"/>{{ symbol }}</div>
     <table>
       <thead>
         <tr>
