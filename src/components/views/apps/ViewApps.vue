@@ -12,6 +12,7 @@ export default {
   components: {
     ViewPortfolio: defineAsyncComponent(() => import('./ViewPortfolio')),
     ViewGames: defineAsyncComponent(() => import('./ViewGames')),
+    ViewLottery: defineAsyncComponent(() => import('./lottery/ViewLottery')),
     ViewSalary: defineAsyncComponent(() => import('./ViewSalary')),
     ViewVoiceRecorder: defineAsyncComponent(() => import('./ViewVoiceRecorder')),
   },
@@ -22,6 +23,7 @@ export default {
       const p = router.currentRoute.value.path
       if (p === '/apps/portfolio') return 'ViewPortfolio'
       if (p === '/apps/salary') return 'ViewSalary'
+      if (p === '/apps/lottery') return 'ViewLottery'
       if (p === '/apps/games') return 'ViewGames'
       if (p === '/apps/voice-recorder') return 'ViewVoiceRecorder'
     })

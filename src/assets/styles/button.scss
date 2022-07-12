@@ -23,8 +23,7 @@
 
   &:disabled,
   &.disabled {
-    background: var(--gs-e0);
-    color: var(--white);
+    opacity: 0.5;
   }
 
   &:not(.disabled):not(:disabled) {
