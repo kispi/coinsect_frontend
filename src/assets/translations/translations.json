@@ -94,5 +94,13 @@
   "BEARISH": {
     "en": "Bearish",
     "kr": "떡락각"
+  },
+  "GENERATE": {
+    "en": "Generate",
+    "kr": "생성"
+  },
+  "CUSTOM_PICK": {
+    "en": "Custom Picker",
+    "kr": "수동 뽑기"
   }
 }

@@ -1,35 +1,50 @@
 <template>
   <div class="view-lottery">
-    <LotteryPick
-      :numbers="payload"
-      class="m-b-40"
-      @click-remove="removeNumber"
-    />
-    <div class="picker">
-      <div
-        class="ball-container"
-        :key="num"
-        v-for="num in $helpers.numArray(45).map(v => v + 1)">
-        <div
-          @click="onClickBall(num)"
-          class="ball center"
-          :class="{'active': payload.indexOf(num) >= 0}"
-          v-html="num"
-        />
-      </div>
+    <div
+      @click="useCustomPick = !useCustomPick"
+      class="custom-pick-toggler">
+      <i class="fa" :class="useCustomPick ? 'fa-chevron-up' : 'fa-chevron-down'"/>
+      <div class="m-l-8">{{ $translate(useCustomPick ? 'CLOSE' : 'CUSTOM_PICK') }}</div>
     </div>
+    <transition name="slide-down">
+      <div
+        v-if="useCustomPick"
+        class="custom-pick m-t-24">
+        <LotteryPick
+          :numbers="payload"
+          class="m-b-40"
+          @click-remove="removeNumber"
+        />
+        <div class="picker">
+          <div
+            class="ball-container"
+            :key="num"
+            v-for="num in $helpers.numArray(45).map(v => v + 1)">
+            <div
+              @click="onClickBall(num)"
+              class="ball center"
+              :class="{'active': payload.indexOf(num) >= 0}"
+              v-html="num"
+            />
+          </div>
+        </div>
+      </div>
+    </transition>
     <button
       @click="() => picks.push(autopick())"
       class="btn btn-primary btn-autopick"
-      v-html="$translate('자동추첨')"
+      v-html="$translate('GENERATE')"
     />
     <div
       v-if="picks.length > 0"
       class="picks m-t-40">
       <LotteryPick
+        @click="() => picks.splice(idx, 1)"
+        :ref="el => pick.$$ref = el"
         :numbers="[...pick.basic, pick.bonus]"
         :key="idx"
         v-for="(pick, idx) in picks"
+        class="cursor-pointer"
       />
     </div>
   </div>
@@ -47,6 +62,8 @@ export default {
     const picks = ref([])
 
     const payload = ref([])
+
+    const useCustomPick = ref(null)
 
     const autopick = () => {
       const o = {}
@@ -79,6 +96,11 @@ export default {
           bonus: payload.value[6],
         })
         payload.value = []
+        const component = picks.value[picks.value.length - 1]
+        setTimeout(() => {
+          if (component.$$ref) component.$$ref.focus()
+          component.$$ref.$el.scrollIntoView({ behavior: 'smooth' })
+        })
       }
     }
 
@@ -94,6 +116,7 @@ export default {
     return {
       picks,
       payload,
+      useCustomPick,
       autopick,
       removeNumber,
       onClickBall,
@@ -150,6 +173,20 @@ export default {
     width: 100%;
     padding: 24px;
     margin-top: 24px;
+  }
+
+  .custom-pick-toggler {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    color: var(--black);
+    background: var(--white);
+    border-radius: 80px;
+    padding: 4px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+    cursor: pointer;
   }
 
   @media (max-width: 479px) {
