@@ -102,9 +102,6 @@ const onchain = [{
 }]
 
 const apps = [{
-  path: '/apps/games',
-  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
-}, {
   path: '/apps/portfolio',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
   meta: {
@@ -119,6 +116,17 @@ const apps = [{
     description: '내 연봉 실수령액은 얼마일까? 비트코인으로 환산한 내 월급은?',
     image: useS3('og-images/og-image-salary.png'),
   },
+}, {
+  path: '/apps/lottery',
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
+  meta: {
+    title: '로또 시뮬레이터 - 코인충',
+    description: '통계적으로 볼 때 로또를 사는건 비합리적이라는 사실을 체험해봅니다.',
+    image: useS3('og-images/og-image-lottery.png'),
+  },
+}, {
+  path: '/apps/games',
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
 }, {
   path: '/apps/voice-recorder',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),

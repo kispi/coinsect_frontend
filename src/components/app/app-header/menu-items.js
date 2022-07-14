@@ -70,6 +70,7 @@ const useMenuItems = () => {
     subPages: [
       { path: '/apps/portfolio', title: 'PORTFOLIO', },
       { path: '/apps/salary', title: 'SALARY' },
+      { path: '/apps/lottery', title: 'LOTTERY' },
       // { path: '/apps/games', title: 'GAMES' },
       // { path: '/apps/voice-recorder', title: 'VOICE_RECORDER' }
     ],

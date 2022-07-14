@@ -2,7 +2,7 @@
 
 @mixin spaceLoop($className, $styleName, $offset) {
   $i: 0;
-  @while $i <= 40 {
+  @while $i <= 80 {
     #{$className + $i} { 
       #{$styleName}: #{$i + 'px'} !important;
     }

@@ -59,7 +59,7 @@
     </div>
     <nav
       class="ah-menu-items"
-      :class="{'pretty-scrollbar': $store.getters.isMobile}">
+      :class="{'pretty-scrollbar': !$store.getters.isMobile}">
       <a
         draggable="false"
         @click.prevent="onClickMenuItem(menuItem)"
