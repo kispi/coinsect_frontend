@@ -3,8 +3,8 @@
     v-if="$store.getters.indices"
     ref="refBannerMarketIndices"
     class="banner-market-indices">
-    <!-- <div class="overlay-left"/>
-    <div class="overlay-right"/> -->
+    <div class="overlay-left"/>
+    <div class="overlay-right"/>
     <div
       class="marquee-unit"
       :key="num"
@@ -169,7 +169,7 @@ export default {
     }
 
     .marquee-unit {
-      // animation: marqueeX 16s linear infinite;
+      animation: marqueeX 16s linear infinite;
       margin-right: 16px;
     }
   }
