@@ -91,6 +91,7 @@ export default {
       width: 160px; // 크기를 미리 지정해줘야 cumulative layout shift를 방지해서 scrollToBottom이 올바로 최하단으로 스크롤하도록 할 수 있다.
       height: 160px;
       border-radius: 8px;
+      border: 1px solid var(--border-base);
       cursor: pointer;
     }
 
