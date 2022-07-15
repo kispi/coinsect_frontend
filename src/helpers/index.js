@@ -164,7 +164,7 @@ const helpers = {
   
     return nonExistNewToken
   },
-  acceptableFileSize: (file, maxFileSize = 5) => {
+  acceptableFileSize: (file, maxFileSize = 2) => {
     const fileSizeAsMB = file.size / 1000000
     if (fileSizeAsMB > maxFileSize) {
       toast.error(`${maxFileSize}MB 이하 용량의 이미지를 사용해주세요`)

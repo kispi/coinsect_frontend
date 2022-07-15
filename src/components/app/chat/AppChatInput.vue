@@ -1,16 +1,16 @@
 <template>
   <div class="app-chat-input">
-    <!-- <div class="functions">
-      <i @click="chatFunctions.image" class="fa fa-image"/>
-    </div> -->
     <div class="textarea-wrapper">
+      <div class="functions">
+        <i @click="chatFunctions.image" class="fa fa-image"/>
+      </div>
       <textarea
         ref="refTextarea"
         v-model="text"
         @keydown="onKeydown"
         @paste="onPaste"
         :maxlength="120"
-        placeholder="이미지를 첨부하려면 스크린샷 후 Ctrl + V"
+        placeholder="이미지를 첨부하려면 왼쪽 버튼 클릭 / 또는 스크린샷 후 Ctrl + V"
         class="no-scrollbar"
       />
       <i
@@ -40,16 +40,19 @@ export default {
     const refTextarea = ref(null)
 
     const chatFunctions = {
-      image: async () => {
-        try {
-          const url = await plugins.$modal.custom({
-            component: 'ModalImageUploader',
-            options: {
-              noupload: true,
-            },
-          })
-          if (url) console.log(url)
-        } catch (e) {}
+      image: () => {
+        plugins.$modal.custom({
+          component: 'ModalSendImage',
+          options: {
+            noupload: true,
+          },
+        }).then(url => {
+          if (!url) return
+
+          sendTextMessage(url, 'image')
+        }).finally(() => {
+          setTimeout(() => refTextarea.value.focus())
+        })
       },
     }
 
@@ -85,19 +88,20 @@ export default {
       })
     }
 
-    const onPaste = e => {
-      const items = (e.clipboardData || event.originalEvent.clipboardData).items
+    const onPaste = pasteEvent => {
+      const items = (pasteEvent.clipboardData || pasteEvent.originalEvent.clipboardData).items
       const img = items[0]
       if (!img.type.includes('image')) return
 
       const file = img.getAsFile()
       const reader = new FileReader()
-      reader.onload = e => {
+      reader.onload = onloadEvent => {
+        pasteEvent.target.blur()
         plugins.$modal.custom({
           component: 'ModalSendImage',
           options: {
             file,
-            url: e.target.result,
+            src: onloadEvent.target.result,
           },
         }).then(url => {
           if (!url) return
@@ -131,7 +135,6 @@ export default {
     background: var(--background-light);
     width: 100%;
     display: flex;
-    align-items: center;
     padding: 8px;
 
     textarea {
@@ -147,16 +150,20 @@ export default {
     }
   }
 
-  .functions {
-    padding: 8px;
+  .fa-image {
+    margin-right: 8px;
+    cursor: pointer;
 
-    i {
-      cursor: pointer;
-
-      &:hover {
-        color: var(--brand-primary);
-      }
+    &:hover {
+      color: var(--brand-primary);
     }
+  }
+
+  .functions {
+    border-right: 1px solid var(--border-base);
+    margin: -8px 0;
+    padding: 8px 0;
+    margin-right: 8px;
   }
 }
 </style>

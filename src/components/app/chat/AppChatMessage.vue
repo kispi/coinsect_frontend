@@ -13,7 +13,7 @@
           :src="message.text"
         />
         <div
-          v-if="message.type === 'text'"
+          v-if="['text', 'alert'].indexOf(message.type) >= 0"
           class="text"
           v-html="$helpers.dom.linkify(message.text)"
         />
