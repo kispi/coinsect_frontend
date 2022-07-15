@@ -6,9 +6,7 @@
       <AppChatProfile v-if="showProfile" :user="message"/>
       <div class="text-and-timestamp">
         <AppImg
-          @click="$modal.images({
-            images: [message.text],
-          })"
+          @click="onClickImage(message.text)"
           v-if="message.type === 'image'"
           :src="message.text"
         />
@@ -38,6 +36,8 @@ export default {
 
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
+    const onClickImage = url => window.open(url, '_blank', 'noopener')
+
     const showProfile = computed(() => {
       if (props.message.isMine) return
 
@@ -62,6 +62,7 @@ export default {
     return {
       showProfile,
       showTimestamp,
+      onClickImage,
     }
   },
 }
