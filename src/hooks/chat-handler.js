@@ -72,6 +72,7 @@ const useChatHandler = () => {
 
     switch (message.type) {
       case 'alert':
+      case 'image':
       case 'text': {
         const curMessage = preparedMessage(message)
         const prevMessage = messages.value[messages.value.length - 1]

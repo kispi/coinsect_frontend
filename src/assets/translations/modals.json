@@ -66,5 +66,13 @@
   "INIT_SETTINGS": {
     "en": "Init Settings",
     "kr": "개인화 설정 초기화"
+  },
+  "SEND_IMAGE": {
+    "en": "Send Image",
+    "kr": "이미지 보내기"
+  },
+  "UPLOAD_IMAGE": {
+    "en": "Upload Image",
+    "kr": "이미지 업로드"
   }
 }

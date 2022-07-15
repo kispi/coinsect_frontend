@@ -11,36 +11,7 @@
       class="app-chat-container"
       :class="{'transparent': $store.getters.settings.chatTransparent}">
       <AppChatStats/>
-      <div class="app-chat-header">
-        <div
-          v-if="$store.getters.chatUser"
-          class="profile">
-          <AppImg
-            @click="$modal.images({
-              images: [$store.getters.chatUser.profile.image],
-            })"
-            v-if="$store.getters.chatUser.profile.image"
-            :src="$store.getters.chatUser.profile.image"
-          />
-          <div
-            @click="openModalChatSettings"
-            class="nickname lines-1"
-            v-html="$store.getters.chatUser.profile.nickname"
-          />
-        </div>
-        <div class="chat-settings">
-          <div
-            class="clickable-icon-wrapper"
-            @click="toggleChatFolded">
-            <i class="fal fa-minus"/>
-          </div>
-          <div
-            class="clickable-icon-wrapper"
-            @click="openModalChatSettings">
-            <i class="fal fa-cog"/>
-          </div>
-        </div>
-      </div>
+      <AppChatHeader :toggleChatFolded="toggleChatFolded"/>
       <div
         ref="refAppChatBody"
         class="app-chat-body no-scrollbar"
@@ -76,22 +47,7 @@
           />
         </div>
       </div>
-      <div class="app-chat-input">
-        <div class="textarea-wrapper">
-          <textarea
-            ref="refTextarea"
-            v-model="text"
-            @keydown="onKeydown"
-            :maxlength="120"
-            class="no-scrollbar"
-          />
-          <i
-            v-if="text"
-            @click="sendTextMessage(text, true)"
-            class="fa fa-paper-plane"
-          />
-        </div>
-      </div>
+      <AppChatInput/>
     </div>
     <div
       v-else
@@ -112,7 +68,9 @@
 <script>
 import { ref, computed, getCurrentInstance, nextTick, watch, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
+import AppChatHeader from './AppChatHeader'
 import AppChatMessage from './AppChatMessage'
+import AppChatInput from './AppChatInput'
 import AppChatStats from './AppChatStats'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
@@ -120,7 +78,9 @@ import useModalDraggable from '@/hooks/modal-draggable'
 
 export default {
   components: {
+    AppChatHeader,
     AppChatMessage,
+    AppChatInput,
     AppChatStats,
     DailySeparator,
   },
@@ -147,13 +107,9 @@ export default {
 
     const refFoldedIcon = ref(null)
 
-    const refTextarea = ref(null)
-
     const refAppChatBody = ref(null)
 
     const refAppChat = ref(null)
-
-    const text = ref('')
 
     const incomingMessage = ref(null)
 
@@ -162,59 +118,9 @@ export default {
     const {
       init,
       connected,
-      setAccount,
       filteredMessages: messages,
-      sendWebsocketMessage,
       loadMessages,
     } = useChatHandler()
-
-    const onKeydown = e => {
-      if (e.key === 'Enter') {
-        if (!text.value || e.isComposing) return
-
-        if (e.shiftKey || store.getters.isMobile) {
-          // 커서가 채팅창의 마지막줄에 있을때만 textarea를 끝까지 스크롤함
-          if (e.target.value.length - e.target.selectionStart <= 1) refTextarea.value.scrollTop = refTextarea.value.scrollHeight
-          return
-        }
-
-        e.preventDefault()
-        sendTextMessage(text.value, true)
-      }
-
-      setTimeout(() => {
-        text.value = e.target.value
-      })
-    }
-
-    const openModalChatSettings = () => {
-      plugins.$modal.custom({
-        component: 'ModalChatSettings',
-        options: {
-          setAccount,
-        },
-      }).then(() => {
-        // 바로하면 textarea에서 엔터까지 쳐짐
-        setTimeout(() => {
-          if (!refTextarea.value) return
-
-          refTextarea.value.focus()
-        })
-      })
-    }
-
-    const sendTextMessage = incomingText => {
-      if (!(incomingText || '').trim()) return
-
-      sendWebsocketMessage({
-        type: 'text',
-        text: incomingText,
-      })
-
-      text.value = ''
-
-      if (refTextarea.value) nextTick(() => refTextarea.value.focus())
-    }
 
     const toggleChatFolded = () => {
       store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
@@ -298,7 +204,6 @@ export default {
     }
 
     const onOpenChatContainer = () => nextTick(() => {
-      refTextarea.value.focus()
       scrollToBottom()
       setAppChatPosition()
     })
@@ -354,19 +259,14 @@ export default {
 
     return {
       refFoldedIcon,
-      refTextarea,
       refAppChatBody,
       refAppChat,
       numUnreads,
       connected,
       storedUnreads,
-      text,
       messages,
-      onKeydown,
       incomingMessage,
-      openModalChatSettings,
       onClickIncomingMessageOverlay,
-      sendTextMessage,
       toggleChatFolded,
       autoScrollable,
       scrollToBottom,
@@ -409,52 +309,6 @@ export default {
 
     @media (max-width: 479px) {
       width: calc(100% - 16px);
-    }
-  }
-
-  .app-chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--app-chat-padding);
-    user-select: none;
-    cursor: grab;
-
-    .profile {
-      display: flex;
-
-      .app-img {
-        width: 16px;
-        height: 16px;
-        margin-right: 4px;
-        border-radius: 50%;
-      }
-
-      .nickname {
-        color: var(--text-stress);
-        font-weight: 700;
-        text-decoration: underline;
-      }
-
-      .app-img,
-      .nickname {
-        transition: none;
-        cursor: pointer;
-      }
-    }
-
-    .chat-settings {
-      display: flex;
-      align-items: center;
-
-      .clickable-icon-wrapper {
-        width: 24px;
-        height: 24px;
-
-        &:not(:first-child) {
-          margin-left: 8px;
-        }
-      }
     }
   }
 
@@ -512,31 +366,6 @@ export default {
       .fa-chevron-down {
         flex: 0 0 auto;
         margin-left: 16px;
-      }
-    }
-  }
-
-  .app-chat-input {
-    padding: calc(var(--app-chat-padding) / 2) var(--app-chat-padding);
-
-    .textarea-wrapper {
-      border-radius: 4px;
-      background: var(--background-light);
-      width: 100%;
-      display: flex;
-      align-items: center;
-      padding: 8px;
-
-      textarea {
-        padding-right: 16px;
-        font-size: 12px;
-        line-height: 18px;
-        height: 44px;
-      }
-
-      .fa-paper-plane {
-        font-size: 16px;
-        cursor: pointer;
       }
     }
   }

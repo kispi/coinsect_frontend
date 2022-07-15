@@ -9,7 +9,12 @@ export default {
   ],
   handlers: {
     image: function() {
-      helpers.modal.custom({ component: 'ModalImageUploader' })
+      helpers.modal.custom({
+        component: 'ModalImageUploader',
+        options: {
+          path: 'boards/free_board',
+        },
+      })
         .then(e => {
           if (e) {
             const Delta = Quill.import('delta')

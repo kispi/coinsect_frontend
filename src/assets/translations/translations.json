@@ -11,6 +11,10 @@
     "en": "Close",
     "kr": "닫기"
   },
+  "SEND": {
+    "en": "Send",
+    "kr": "보내기"
+  },
   "CONFIRM": {
     "en": "Confirm",
     "kr": "확인"

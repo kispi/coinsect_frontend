@@ -32,10 +32,17 @@ import { getCurrentInstance, ref } from 'vue'
 import s3Service from '@/services/s3'
 
 export default {
-  setup(_, { emit }) {
+  props: {
+    path: {
+      type: String,
+      default: 'boards/free_board',
+    },
+    noupload: {
+      type: Boolean, // true일 시, 업로드는 하지 않고 파일의 objectURL과 file 객체만 리턴받는다.
+    },
+  },
+  setup(props, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const file = ref(null)
 
     const dragging = ref(null)
 
@@ -44,11 +51,14 @@ export default {
     const doUpload = async file => {
       try {
         uploading.value = true
-        const url = await s3Service.upload(file)
-        emit('upload-file', {
-          url,
+        let url
+        if (!props.noupload) url = await s3Service.upload(file, props.path)
+        const emittable = {
           src: URL.createObjectURL(file),
-        })
+          file,
+        }
+        if (url) emittable['url'] = url
+        emit('upload-file', emittable)
       } catch (e) {
         return Promise.reject(e)
       } finally {
@@ -60,21 +70,17 @@ export default {
       dragging.value = false
       if (!plugins.$helpers.acceptableFileSize(e.dataTransfer.files[0])) return
 
-      file.value = e.dataTransfer.files[0]
-
       try {
-        await doUpload(file.value)
+        await doUpload(e.dataTransfer.files[0])
       } finally {
         e.target.value = null
-        file.value = null
       }
     }
 
     const onChangeFile = e => {
       if (!plugins.$helpers.acceptableFileSize(e.target.files[0])) return
 
-      file.value = e.target.files[0]
-      doUpload(file.value)
+      doUpload(e.target.files[0])
     }
 
     return {
@@ -82,7 +88,6 @@ export default {
       onChangeFile,
       dragging,
       uploading,
-      file,
     }
   },
 }

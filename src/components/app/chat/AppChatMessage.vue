@@ -5,7 +5,18 @@
     <div class="content" :class="{'m-t-12': !(prevMessage ||{}).isMine && (message || {}).isMine}">
       <AppChatProfile v-if="showProfile" :user="message"/>
       <div class="text-and-timestamp">
-        <div class="text" v-html="$helpers.dom.linkify(message.text)"/>
+        <AppImg
+          @click="$modal.images({
+            images: [message.text],
+          })"
+          v-if="message.type === 'image'"
+          :src="message.text"
+        />
+        <div
+          v-if="message.type === 'text'"
+          class="text"
+          v-html="$helpers.dom.linkify(message.text)"
+        />
         <div
           v-if="showTimestamp"
           class="timestamp f-mono"
@@ -56,7 +67,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .app-chat-message {
   font-size: 12px;
   display: flex;
@@ -74,6 +85,13 @@ export default {
     display: flex;
     align-items: flex-end;
     margin: 4px 0;
+
+    img {
+      width: 160px; // 크기를 미리 지정해줘야 cumulative layout shift를 방지해서 scrollToBottom이 올바로 최하단으로 스크롤하도록 할 수 있다.
+      height: 160px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
     .text {
       background: var(--background-light);
