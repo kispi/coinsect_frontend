@@ -209,7 +209,7 @@ export default {
     margin: auto;
     background: var(--border-base);
     width: 320px;
-    height: 400px;
+    height: 480px;
     max-height: calc(100vh - 16px); // 100vh - 2 * bottom padding
     transition: none;
 

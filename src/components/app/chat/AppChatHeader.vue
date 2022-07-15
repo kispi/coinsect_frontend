@@ -4,12 +4,12 @@
       <div
         class="clickable-icon-wrapper chat-folded"
         @click="toggleChatFolded">
-        <i class="fal fa-times"/>
+        <i class="fa fa-times"/>
       </div>
       <div
         class="clickable-icon-wrapper chat-size"
         @click="$store.commit('setSettings', { chatSizeMax: !$store.getters.settings.chatSizeMax })">
-        <i class="fal" :class="$store.getters.settings.chatSizeMax ? 'fa-down-left-and-up-right-to-center' : 'fa-arrow-up-right-and-arrow-down-left-from-center'"/>
+        <i class="fa" :class="$store.getters.settings.chatSizeMax ? 'fa-down-left-and-up-right-to-center' : 'fa-arrow-up-right-and-arrow-down-left-from-center'"/>
       </div>
     </div>
     <div
