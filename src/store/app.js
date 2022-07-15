@@ -18,9 +18,6 @@ const app = {
     loading: {
       global: null,
     },
-    websocketConnections: {
-      chat: null,
-    },
     isMobile: null,
     config: null,
     notifications: null,
@@ -74,7 +71,6 @@ const app = {
     modals: state => state.modals,
     tooltips: state => state.tooltips,
     loading: state => state.loading,
-    websocketConnections: state => state.websocketConnections,
     isMobile: state => state.isMobile,
     config: state => state.config,
     chatStats: state => state.chatStats,
@@ -144,9 +140,6 @@ const app = {
     },
     setLoading(state, payload) {
       Object.keys(payload).forEach(key => state.loading[key] = payload[key])
-    },
-    setWebsocketConnections(state, websocketConnections) {
-      Object.keys(websocketConnections).forEach(key => state.websocketConnections[key] = websocketConnections[key])
     },
     addModal(state, modal) {
       state.modals.push(modal)

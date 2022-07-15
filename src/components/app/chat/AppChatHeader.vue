@@ -32,12 +32,12 @@
       <div
         class="clickable-icon-wrapper"
         @click="$store.commit('setSettings', { chatDing: !$store.getters.settings.chatDing })">
-        <i class="fal" :class="$store.getters.settings.chatDing ? 'fa-bell-slash' : 'fa-bell'"/>
+        <i class="fal" :class="$store.getters.settings.chatDing ? 'fa-bell' : 'fa-bell-slash'"/>
       </div>
       <div
         class="clickable-icon-wrapper"
         @click="$store.commit('setSettings', { chatTransparent: !$store.getters.settings.chatTransparent })">
-        <i class="fal" :class="$store.getters.settings.chatTransparent ? 'fa-eye-slash' : 'fa-eye'"/>
+        <i class="fal" :class="$store.getters.settings.chatTransparent ? 'fa-eye' : 'fa-eye-slash'"/>
       </div>
     </div>
   </div>

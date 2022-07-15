@@ -9,7 +9,7 @@ const useChatHandler = () => {
 
   const router = useRouter()
 
-  const messages = ref([])
+  const messages = computed(() => store.getters.chat.messages)
 
   const filteredMessages = computed(() => messages.value.filter(m => !store.getters.settings.blockedUsers[m.token]))
 
@@ -134,7 +134,7 @@ const useChatHandler = () => {
       connected.value = true
       pingInterv.value = setInterval(ping, 1000 * 30)
 
-      messages.value = []
+      store.commit('setChat', { messages: [] })
       loadMessages()
     }
 

@@ -130,6 +130,11 @@ export default {
       },
     )
 
+    watch(
+      () => selectedTab.value,
+      () => plugins.$helpers.modal.center(refModalChatUsers.value),
+    )
+
     watch([
       () => store.getters.chatStats.numConnections,
       () => store.getters.chatStats.numBulls,

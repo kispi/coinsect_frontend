@@ -1,0 +1,118 @@
+<template>
+  <div
+    v-if="incomingMessage"
+    @click="onClickIncomingMessageOverlay"
+    class="app-chat-incoming-message-overlay">
+    <div class="flex-row items-center flex-fill lines-1">
+      <AppChatProfile :user="incomingMessage" class="no-touch flex-wrap"/>
+      <div class="text lines-1" v-html="incomingMessage.text"/>
+    </div>
+    <i class="fa fa-chevron-down"/>
+  </div>
+</template>
+
+<script>
+import { computed, getCurrentInstance, onMounted, onUnmounted } from 'vue'
+import { useStore } from 'vuex'
+import useChatHandler from '@/hooks/chat-handler'
+
+export default {
+  props: {
+    refFoldedIcon: null,
+    scrollToBottom: Function,
+  },
+  setup(props) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const store = useStore()
+
+    const incomingMessage = computed(() => store.getters.chat.incomingMessage)
+
+    const { filteredMessages: messages } = useChatHandler()
+
+    const showIncomingMessageOverlay = () => {
+      if (messages.value.length === 0) return
+
+      store.commit('setChat', { incomingMessage: messages.value[messages.value.length - 1] })
+    }
+
+    const onIncomingMessage = async () => {
+      if (store.getters.settings.chatFolded) {
+        plugins.$helpers.animate.shake(props.refFoldedIcon.$el)
+        if (store.getters.chat.ding && store.getters.settings.chatDing) {
+          try {
+            await store.getters.chat.ding.play() // 유저가 페이지에서 상호작용하지 않아 오류가 있더라도 무시
+          } catch (e) {}
+        }
+        return
+      }
+
+      // 채팅창이 열려있는 경우의 처리
+      if (store.getters.chat.autoScrollable) {
+        props.scrollToBottom()
+      } else {
+        showIncomingMessageOverlay()
+      }
+      store.commit('setChat', { lastReadMessage: messages.value[messages.value.length - 1] })
+    }
+
+    const onClickIncomingMessageOverlay = () => {
+      store.commit('setChat', { incomingMessage: null })
+      props.scrollToBottom()
+    }
+
+    onMounted(() => {
+      plugins.$bus.$on('incoming-message', onIncomingMessage)
+    })
+
+    onUnmounted(() => {
+      plugins.$bus.$off('incoming-message', onIncomingMessage)
+    })
+
+    return {
+      incomingMessage,
+      onClickIncomingMessageOverlay,
+    }
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.app-chat-incoming-message-overlay {
+  position: absolute;
+  color: var(--text-stress);
+  background: var(--border-base);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  padding: 0 12px;
+  height: 36px;
+  bottom: 88px;
+  left: 12px;
+  right: 12px;
+  z-index: 1;
+  cursor: pointer;
+
+  .app-chat-profile {
+    white-space: nowrap;
+    margin-right: 8px;
+
+    .badge-token {
+      background: none;
+      border: 1px solid var(--gs-bb);
+      color: var(--gs-bb);
+    }
+  }
+
+  .text {
+    flex: 1 1 0;
+  }
+
+  .fa-chevron-down {
+    flex: 0 0 auto;
+    margin-left: 16px;
+  }
+}
+</style>
