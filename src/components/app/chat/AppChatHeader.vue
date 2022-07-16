@@ -1,15 +1,15 @@
 <template>
   <div class="app-chat-header">
-    <div class="chat-settings left">
+    <div class="chat-settings">
       <div
-        class="clickable-icon-wrapper chat-folded"
-        @click="toggleChatFolded">
-        <i class="fa fa-times"/>
+        class="clickable-icon-wrapper"
+        @click="$store.commit('setSettings', { chatDing: !$store.getters.settings.chatDing })">
+        <i class="fal" :class="$store.getters.settings.chatDing ? 'fa-bell' : 'fa-bell-slash'"/>
       </div>
       <div
-        class="clickable-icon-wrapper chat-size"
-        @click="$store.commit('setSettings', { chatSizeMax: !$store.getters.settings.chatSizeMax })">
-        <i class="fa" :class="$store.getters.settings.chatSizeMax ? 'fa-down-left-and-up-right-to-center' : 'fa-arrow-up-right-and-arrow-down-left-from-center'"/>
+        class="clickable-icon-wrapper"
+        @click="$store.commit('setSettings', { chatTransparent: !$store.getters.settings.chatTransparent })">
+        <i class="fal" :class="$store.getters.settings.chatTransparent ? 'fa-eye' : 'fa-eye-slash'"/>
       </div>
     </div>
     <div
@@ -30,14 +30,14 @@
     </div>
     <div class="chat-settings">
       <div
-        class="clickable-icon-wrapper"
-        @click="$store.commit('setSettings', { chatDing: !$store.getters.settings.chatDing })">
-        <i class="fal" :class="$store.getters.settings.chatDing ? 'fa-bell' : 'fa-bell-slash'"/>
+        class="clickable-icon-wrapper chat-folded"
+        @click="toggleChatFolded">
+        <i class="fal fa-minus"/>
       </div>
       <div
-        class="clickable-icon-wrapper"
-        @click="$store.commit('setSettings', { chatTransparent: !$store.getters.settings.chatTransparent })">
-        <i class="fal" :class="$store.getters.settings.chatTransparent ? 'fa-eye' : 'fa-eye-slash'"/>
+        class="clickable-icon-wrapper chat-size"
+        @click="$store.commit('setSettings', { chatSizeMax: !$store.getters.settings.chatSizeMax })">
+        <i class="fal" :class="$store.getters.settings.chatSizeMax ? 'fa-clone' : 'fa-square'"/>
       </div>
     </div>
   </div>
@@ -115,34 +115,6 @@ export default {
       &:not(:first-child) {
         margin-left: 8px;
       }
-    }
-
-    &.left {
-      .clickable-icon-wrapper {
-        border-radius: 50%;
-        width: 14px;
-        height: 14px;
-
-        i {
-          font-size: 16px;
-          color: var(--black);
-          transform: scale(0.5) rotate(90deg);
-        }
-
-        &:not(:hover) {
-          i {
-            display: none;
-          }
-        }
-      }
-    }
-
-    .chat-folded {
-      background: #F26053;
-    }
-
-    .chat-size {
-      background: #4EBC4B;
     }
   }
 }
