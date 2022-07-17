@@ -1,4 +1,4 @@
-import { onServerPrefetch, watch } from 'vue'
+import { onMounted, onServerPrefetch, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import helpers from '@/helpers'
 import useChatHandler from '../chat-handler'
@@ -22,6 +22,10 @@ const useRouteWatcher = () => {
       ping()
     },
   )
+
+  onMounted(() => {
+    appendMetaTags(router.currentRoute.value)
+  })
 
   onServerPrefetch(() => {
     appendMetaTags(router.currentRoute.value)

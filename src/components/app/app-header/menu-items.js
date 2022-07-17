@@ -47,6 +47,7 @@ const useMenuItems = () => {
     subPages: [
       { path: '/markets/crypto', title: 'CRYPTO' },
       { path: '/markets/nasdaq', title: 'NASDAQ' },
+      { path: '/markets/assets-including-metal', title: 'ASSETS_INCLUDING_METAL' },
     ],
   }, {
     title: 'NEWS_AND_CONTENTS',

@@ -7,6 +7,7 @@ const marketInfo = {
     indices: null,
     crypto: null,
     nasdaq: null,
+    assetsIncludingMetal: null,
     markets: {
       upbit: [],
       bithumb: [],
@@ -35,6 +36,7 @@ const marketInfo = {
     indices: state => state.indices,
     crypto: state => state.crypto,
     nasdaq: state => state.nasdaq,
+    assetsIncludingMetal: state => state.assetsIncludingMetal,
     markets: state => state.markets,
     orderbooks: state => state.orderbooks,
     instruments: state => state.instruments,
@@ -52,6 +54,9 @@ const marketInfo = {
     },
     setNasdaq(state, nasdaq) {
       state.nasdaq = nasdaq
+    },
+    setAssetsIncludingMetal(state, assetsIncludingMetal) {
+      state.assetsIncludingMetal = assetsIncludingMetal
     },
     setMarkets(state, markets) {
       Object.keys(markets).forEach(key => state.markets[key] = markets[key])
@@ -86,6 +91,13 @@ const marketInfo = {
     async loadNasdaq({ commit }) {
       try {
         commit('setNasdaq', await marketInfoService.nasdaq())
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    async loadAssetsIncludingMetal({ commit }) {
+      try {
+        commit('setAssetsIncludingMetal', await marketInfoService.assetsIncludingMetal())
       } catch (e) {
         return Promise.reject(e)
       }

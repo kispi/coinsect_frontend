@@ -47,6 +47,13 @@ const markets = [{
     title: '나스닥 - 코인충',
     description: '나스닥 100 시황',
   },
+}, {
+  path: '/markets/assets-including-metal',
+  component: () => import(/* webpackChunkName: 'view-markets' */ '@/components/views/markets/ViewMarkets'),
+  meta: {
+    title: '귀금속 포함 시가총액 - 코인충',
+    description: '금, 은, 팔라듐 등의 귀금속 및 비트코인, 이더리움 등을 포함한 시총 상위권 자산들의 목록',
+  },
 }]
 
 const contents = [{

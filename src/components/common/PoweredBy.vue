@@ -16,6 +16,7 @@ export default {
   setup(props) {
     const rendered = computed(() => {
       if (props.by === 'coinmarketcap') return { title: 'Coinmarketcap', src: 'coinmarketcap.png', link: 'https://coinmarketcap.com' }
+      if (props.by === 'companiesmarketcap') return { title: 'Companiesmarketcap', src: 'companiesmarketcap.png', link: 'https://companiesmarketcap.com' }
       if (props.by === 'upbit') return { title: 'Upbit', src: 'upbit.svg', link: 'https://upbit.com' }
       if (props.by === 'bitcointreasuries') return { title: 'Bitcointreasuries', src: 'bitcointreasuries.png', link: 'https://bitcointreasuries.net' }
       if (props.by === 'coinness') return { title: 'CoinNess', src: 'coinness.svg', link: 'https://coinness.live' }

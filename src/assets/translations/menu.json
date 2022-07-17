@@ -107,6 +107,10 @@
     "en": "Nasdaq",
     "kr": "나스닥"
   },
+  "ASSETS_INCLUDING_METAL": {
+    "en": "Assets Including Metal",
+    "kr": "귀금속 포함 시가총액"
+  },
   "LEADERBOARD": {
     "en": "Leaderboard",
     "kr": "리더보드"

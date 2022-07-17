@@ -24,6 +24,9 @@
         <loc>https://coinsect.io/apps/games</loc>
     </url>
     <url>
+        <loc>https://coinsect.io/apps/lottery</loc>
+    </url>
+    <url>
         <loc>https://coinsect.io/apps/voice-recorder</loc>
     </url>
     <url>
@@ -43,6 +46,9 @@
     </url>
     <url>
         <loc>https://coinsect.io/markets/nasdaq</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/markets/assets-including-metal</loc>
     </url>
     <url>
         <loc>https://coinsect.io/onchain/richlist</loc>

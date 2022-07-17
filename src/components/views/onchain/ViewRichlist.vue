@@ -33,16 +33,19 @@
         </div>
       </a>
     </div>
-    <TableRichlist
-      v-if="(data || {}).link"
-      :symbol="selected.symbol"
-      :data="data.data">
-      <PoweredBy
-        :by="'BitInfoCharts'"
-        :link="data.link"
-        :imgUrl="'https://bitinfocharts.com/logo-1200.jpg'"
-      />
-    </TableRichlist>
+    <div class="p-relative">
+      <TableRichlist
+        v-if="(data || {}).link"
+        :symbol="selected.symbol"
+        :data="data.data">
+        <PoweredBy
+          :by="'BitInfoCharts'"
+          :link="data.link"
+          :imgUrl="'https://bitinfocharts.com/logo-1200.jpg'"
+        />
+      </TableRichlist>
+      <AppLoading :loading="loading"/>
+    </div>
   </div>
 </template>
 
@@ -55,6 +58,8 @@ export default {
   components: { TableRichlist },
   setup() {
     const store = useStore()
+
+    const loading = ref(null)
 
     const legends = [
       { type: 'Shrimp', max: 1, icon: '🦐' },
@@ -78,14 +83,20 @@ export default {
       { symbol: 'LTC', name: 'litecoin' },
     ])
 
-    const onClickSymbol = symbol => {
-      store.dispatch('loadRichlist', symbol.name)
-      symbols.value.forEach(o => o.$$selected = o.symbol === symbol.symbol)
+    const onClickSymbol = async symbol => {
+      try {
+        loading.value = true
+        await store.dispatch('loadRichlist', symbol.name)
+        symbols.value.forEach(o => o.$$selected = o.symbol === symbol.symbol)
+      } finally {
+        loading.value = false
+      }
     }
 
     onMounted(() => onClickSymbol(symbols.value[0]))
 
     return {
+      loading,
       legends,
       symbols,
       data,
