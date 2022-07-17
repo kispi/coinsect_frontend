@@ -46,6 +46,7 @@ const useChatHandler = () => {
     text: message.text,
     timestamp: message.ts,
     type: message.type,
+    meta: message.meta,
   })
 
   const sendWebsocketMessage = message => {
@@ -80,7 +81,7 @@ const useChatHandler = () => {
 
         // 여기서는 배열의 끝에 넣는 것이므로 Array.push가 맞음
         messages.value.push(curMessage)
-        plugins.$bus.$emit('incoming-message', curMessage)
+        store.commit('setChat', { lastWebsocketMessage: curMessage })
         break
       }
       case 'auth':

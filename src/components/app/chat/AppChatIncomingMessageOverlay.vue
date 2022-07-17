@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onUnmounted } from 'vue'
+import { computed, getCurrentInstance, onMounted, onUnmounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
@@ -61,13 +61,10 @@ export default {
       props.scrollToBottom()
     }
 
-    onMounted(() => {
-      plugins.$bus.$on('incoming-message', onIncomingMessage)
-    })
-
-    onUnmounted(() => {
-      plugins.$bus.$off('incoming-message', onIncomingMessage)
-    })
+    watch(
+      () => store.getters.chat.lastWebsocketMessage,
+      onIncomingMessage,
+    )
 
     return {
       incomingMessage,

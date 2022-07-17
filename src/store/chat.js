@@ -4,6 +4,7 @@ const chat = {
       messages: [],
       autoScrollable: null,
       incomingMessage: null,
+      lastWebsocketMessage: null,
       lastReadMessage: null,
       ding: null,
     },
