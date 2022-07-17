@@ -1,8 +1,6 @@
 <template>
   <div
-    @click="$modal.custom({
-      component: 'ModalChatUsers',
-    })"
+    @click="$modal.custom({ component: 'ModalChatUsers' })"
     class="app-chat-stats">
     <div class="num-users f-mono">
       <i class="fa fa-user-group m-r-4"/>

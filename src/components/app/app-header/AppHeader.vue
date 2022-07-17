@@ -3,7 +3,9 @@
     <div class="top">
       <!-- <CoinnessIssues v-show="$store.getters.windowInnerWidth >= 480"/> -->
       <BannerMarketIndices/>
-      <div class="num-users f-mono">
+      <div
+        @click="$modal.custom({ component: 'ModalChatUsers' })"
+        class="num-users f-mono">
         <i class="fa fa-user-group m-r-4"/>
         {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
       </div>
@@ -156,6 +158,7 @@ export default {
     .num-users {
       font-size: 12px;
       padding: var(--app-default-page-padding) 0;
+      cursor: pointer;
     }
 
     .coinness-issues,
