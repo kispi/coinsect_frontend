@@ -39,7 +39,12 @@
             :message="message"
             :nextMessage="messages[idx + 1]"
           />
-          <AppChatMessageMetaTags :message="message" :scrollToBottom="scrollToBottom"/>
+          <!-- 이미지 메시지는 아래 컴포넌트 렌더링할 필요 없음 -->
+          <AppChatMessageMetaTags
+            v-if="message.type === 'image'"
+            :message="message"
+            :scrollToBottom="scrollToBottom"
+          />
         </div>
       </div>
       <AppChatInput/>
