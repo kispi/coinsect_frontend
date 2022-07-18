@@ -27,7 +27,7 @@
         </div>
         <div
           class="app-chat-message-wrapper"
-          :class="{'m-t-12': !(messages[idx - 1] ||{}).isMine && (messages[idx + 1] || {}).isMine}"
+          :class="{'m-t-12': !(messages[idx - 1] ||{}).isMine && (message || {}).isMine}"
           :key="idx"
           v-for="(message, idx) in messages">
           <DailySeparator
