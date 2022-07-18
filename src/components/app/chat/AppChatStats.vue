@@ -13,6 +13,7 @@
 <style lang="scss">
 .app-chat-stats {
   position: absolute;
+  z-index: 1;
   top: 49px;
   height: 72px;
   left: 0;
