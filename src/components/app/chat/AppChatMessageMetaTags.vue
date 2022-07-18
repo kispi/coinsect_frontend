@@ -50,6 +50,11 @@ export default {
     const tryMetaTags = async () => {
       if (!link.value) return
 
+      if (['.jpg', '.jpeg', '.png', '.svg', '.gif'].some(ext => link.value.endsWith(ext))) {
+        meta.value.image = link.value
+        return
+      }
+
       try {
         const data = await helperService.crawlMetaTags(link.value)
         data.forEach(t => {
@@ -105,10 +110,6 @@ export default {
 
   &.mine {
     margin-left: auto;
-  }
-
-  &:hover {
-    border: 1px solid var(--brand-primary-hover);
   }
 }
 </style>
