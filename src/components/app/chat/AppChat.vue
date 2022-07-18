@@ -27,6 +27,7 @@
         </div>
         <div
           class="app-chat-message-wrapper"
+          :class="{'m-t-12': !(messages[idx - 1] ||{}).isMine && (messages[idx + 1] || {}).isMine}"
           :key="idx"
           v-for="(message, idx) in messages">
           <DailySeparator
@@ -38,6 +39,7 @@
             :message="message"
             :nextMessage="messages[idx + 1]"
           />
+          <AppChatMessageMetaTags :message="message" :scrollToBottom="scrollToBottom"/>
         </div>
       </div>
       <AppChatInput/>
@@ -51,6 +53,7 @@ import { ref, getCurrentInstance, nextTick, watch, onMounted, onUnmounted } from
 import { useStore } from 'vuex'
 import AppChatHeader from './AppChatHeader'
 import AppChatMessage from './AppChatMessage'
+import AppChatMessageMetaTags from './AppChatMessageMetaTags'
 import AppChatIncomingMessageOverlay from './AppChatIncomingMessageOverlay'
 import AppChatInput from './AppChatInput'
 import AppChatToggler from './AppChatToggler'
@@ -63,6 +66,7 @@ export default {
   components: {
     AppChatHeader,
     AppChatMessage,
+    AppChatMessageMetaTags,
     AppChatIncomingMessageOverlay,
     AppChatInput,
     AppChatToggler,

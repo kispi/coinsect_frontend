@@ -8,6 +8,7 @@ const regex = {
 
 // DOM을 직접 건드리는 함수들을 이쪽으로 분리
 const dom = {
+  regex,
   headerHeight: () => {
     if (process.env.VUE_APP_SSR) return 56
 

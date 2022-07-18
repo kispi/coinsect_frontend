@@ -2,7 +2,7 @@
   <div
     class="app-chat-message"
     :class="{'mine': message.isMine}">
-    <div class="content" :class="{'m-t-12': !(prevMessage ||{}).isMine && (message || {}).isMine}">
+    <div class="content">
       <AppChatProfile v-if="showProfile" :user="message"/>
       <div class="text-and-timestamp">
         <AppImg

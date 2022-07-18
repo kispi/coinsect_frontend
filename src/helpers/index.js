@@ -91,6 +91,7 @@ const helpers = {
 
     return symbols[$store.getters.settings.currency]
   },
+  retrieveUrlFromString: url => ((url || '').match(dom.regex.url) || [])[0],
   retrieveNumbersOnly: str => str.replace(/[^0-9]+/g, ''),
   retrieveLettersOnly: str => str.replace(/[^a-zA-Z]+/g, ''),
   retrieveInstagramIdFromUrlOnPaste: e => {
