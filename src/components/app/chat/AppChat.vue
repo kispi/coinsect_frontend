@@ -41,7 +41,7 @@
           />
           <!-- 이미지 메시지는 아래 컴포넌트 렌더링할 필요 없음 -->
           <AppChatMessageMetaTags
-            v-if="message.type === 'image'"
+            v-if="message.type !== 'image'"
             :message="message"
             :scrollToBottom="scrollToBottom"
           />
