@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="meta.image || meta.title || meta.description"
+    v-if="link && (meta.image || meta.title || meta.description)"
     class="app-chat-message-meta-tags"
     :class="{'mine': message.isMine}"
     @click="onClickCard">
