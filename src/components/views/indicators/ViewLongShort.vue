@@ -41,13 +41,11 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref, watch, getCurrentInstance } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import marketInfoService from '@/services/market-info'
-import LongShortRatio from './LongShortRatio'
 
 export default {
-  components: { LongShortRatio },
   setup() {
     const store = useStore()
 
@@ -173,14 +171,6 @@ export default {
       overflow: hidden;
       border-radius: 4px;
       border: 1px solid var(--border-base);
-
-      .ratio-chunk:first-child {
-        background: var(--price-up-bg);
-      }
-
-      .ratio-chunk:last-child {
-        background: var(--price-down-bg);
-      }
     }
   }
 

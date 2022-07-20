@@ -3,21 +3,35 @@
     <div
       class="ratio-chunk long"
       :style="{ width: `${long}%` }"
-      v-html="`${long}%`"
+      v-html="`${pretty.l}%`"
     />
     <div
       class="ratio-chunk short"
       :style="{ width: `${short}%` }"
-      v-html="`${short}%`"
+      v-html="`${pretty.s}%`"
     />
   </div>
 </template>
 
 <script>
+import { computed } from 'vue'
+
 export default {
   props: {
     long: Number,
     short: Number,
+  },
+  setup(props) {
+    const p = val => (Math.round(val * 100) / 100).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+
+    const pretty = computed(() => ({ l: p(props.long), s: p(props.short) }))
+
+    return {
+      pretty,
+    }
   },
 }
 </script>
@@ -36,11 +50,11 @@ export default {
     white-space: nowrap;
 
     &.long {
-      background: var(--price-up-bg);
+      background: var(--price-up-bybit-bg-20);
     }
 
     &.short {
-      background: var(--price-down-bg);
+      background: var(--price-down-bybit-bg-20);
     }
   }
 }
