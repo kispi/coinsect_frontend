@@ -5,11 +5,11 @@
     :class="{
       'folded': $store.getters.settings.chatFolded,
       'max-size': $store.getters.settings.chatSizeMax,
+      'transparent': $store.getters.settings.chatTransparent,
     }">
     <div
       class="app-chat-container"
       :class="{
-        'transparent': $store.getters.settings.chatTransparent,
         'o-0 no-touch': $store.getters.settings.chatFolded,
       }">
       <AppChatStats/>
@@ -196,6 +196,10 @@ export default {
   --app-chat-padding: 12px;
   transition: none;
 
+  &.transparent {
+    opacity: 0.5;
+  }
+
   .fa-paper-plane {
     cursor: pointer;
 
@@ -269,10 +273,6 @@ export default {
     .app-chat-container {
       background: var(--white);
 
-      &.transparent {
-        background: rgba(255, 255, 255, 0.75);
-      }
-
       .app-chat-body {
         border-top: 1px solid var(--border-base);
         border-bottom: 1px solid var(--border-base);
@@ -283,10 +283,6 @@ export default {
   &.dark {
     .app-chat-container {
       background: var(--gs-22);
-
-      &.transparent {
-        background: rgba(34, 34, 34, 0.75);
-      }
 
       .app-chat-body {
         border-top: 1px solid var(--gs-44);

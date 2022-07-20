@@ -159,6 +159,10 @@ export default {
       font-size: 12px;
       padding: var(--app-default-page-padding) 0;
       cursor: pointer;
+
+      &:hover {
+        color: var(--text-stress);
+      }
     }
 
     .coinness-issues,

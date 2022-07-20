@@ -2,12 +2,12 @@
   <div
     v-if="$store.getters.chatStats"
     class="chat-stats-long-short f-mono">
-    <div class="sentiment long">
+    <div class="sentiment long" @click="$emit('click-position', 'long')">
       <i class="fa fa-arrow-trend-up"/>
       <span v-if="useText" class="m-r-4">Bulls:</span>
       <span>{{ $store.getters.chatStats.numBulls }}</span>
     </div>
-    <div class="sentiment short">
+    <div class="sentiment short" @click="$emit('click-position', 'short')">
       <i class="fa fa-arrow-trend-down"/>
       <span v-if="useText" class="m-r-4">Bears:</span>
       <span>{{ $store.getters.chatStats.numBears }}</span>
@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  emits: ['click-position'],
   props: {
     useText: Boolean,
   },

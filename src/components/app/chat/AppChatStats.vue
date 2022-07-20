@@ -1,19 +1,27 @@
 <template>
-  <div
-    @click="$modal.custom({ component: 'ModalChatUsers' })"
-    class="app-chat-stats">
-    <LongShortRatio :long="ratio.long" :short="ratio.short" class="m-b-8"/>
-    <ChatStatsLongShort/>
+  <div class="app-chat-stats">
+    <LongShortRatio
+      @click-position="updateSentiment"
+      :long="ratio.long"
+      :short="ratio.short"
+      class="m-b-8"
+    />
+    <ChatStatsLongShort @click-position="updateSentiment"/>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
+import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const store = useStore()
+
+    const { setAccount } = useChatHandler()
 
     const ratio = computed(() => {
       const l = store.getters.chatStats.numBulls
@@ -25,8 +33,18 @@ export default {
       }
     })
 
+    const updateSentiment = async type => {
+      const p = store.getters.chatUser.profile
+      p.sentiment = { type }
+      try {
+        await setAccount(p)
+        plugins.$toast.success(`${type === 'long' ? '롱' : '숏'}으로 가보자!`)
+      } catch (e) {}
+    }
+
     return {
       ratio,
+      updateSentiment,
     }
   },
 }
@@ -44,7 +62,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  cursor: pointer;
+  pointer-events: none;
 
   .long-short-ratio {
     width: 120px;
@@ -54,10 +72,26 @@ export default {
     overflow: hidden;
     color: var(--text-stress);
     font-weight: 700;
+
+    .ratio-chunk {
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
   }
 
-  &:hover {
-    background: linear-gradient(to bottom, var(--brand-primary-hover-bg), transparent);
+  .long-short-ratio,
+  .chat-stats-long-short {
+    pointer-events: auto;
+    cursor: pointer;
+
+    .sentiment {
+      &:hover {
+        opacity: 0.5;
+      }
+    }
   }
 }
 </style>

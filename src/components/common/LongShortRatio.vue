@@ -1,11 +1,13 @@
 <template>
   <div class="long-short-ratio f-mono">
     <div
+      @click="$emit('click-position', 'long')"
       class="ratio-chunk long"
       :style="{ width: `${long}%` }"
       v-html="`${pretty.l}%`"
     />
     <div
+      @click="$emit('click-position', 'short')"
       class="ratio-chunk short"
       :style="{ width: `${short}%` }"
       v-html="`${pretty.s}%`"
@@ -17,6 +19,7 @@
 import { computed } from 'vue'
 
 export default {
+  emits: ['click-position'],
   props: {
     long: Number,
     short: Number,

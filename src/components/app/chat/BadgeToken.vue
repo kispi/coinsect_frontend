@@ -16,10 +16,11 @@ export default {
 
 <style lang="scss" scoped>
 .badge-token {
-  border: 1px solid var(--border-base);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   padding: 0 4px;
   border-radius: 8px;
   font-size: 10px;
   font-weight: 300;
+  background: var(--background-light);
 }
 </style>

@@ -135,6 +135,7 @@ export default {
     background: var(--background-light);
     width: 100%;
     display: flex;
+    align-items: center;
     padding: 8px;
 
     textarea {
