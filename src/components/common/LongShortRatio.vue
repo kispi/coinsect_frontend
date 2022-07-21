@@ -1,12 +1,14 @@
 <template>
   <div class="long-short-ratio f-mono">
     <div
+      v-if="long > 0"
       @click="$emit('click-position', 'long')"
       class="ratio-chunk long"
       :style="{ width: `${long}%` }"
       v-html="`${pretty.l}%`"
     />
     <div
+      v-if="short > 0"
       @click="$emit('click-position', 'short')"
       class="ratio-chunk short"
       :style="{ width: `${short}%` }"

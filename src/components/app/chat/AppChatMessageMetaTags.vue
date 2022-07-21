@@ -93,12 +93,12 @@ export default {
 
   .meta-info {
     background: var(--white);
-    padding: 8px 16px;
+    padding: 8px 12px;
     color: var(--black);
 
     .meta-title {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 500;
     }
 
     .meta-description {
