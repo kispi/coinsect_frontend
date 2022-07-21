@@ -12,15 +12,27 @@
         />
         <div
           v-if="['text', 'alert'].indexOf(message.type) >= 0"
-          class="text"
-          v-html="$helpers.dom.linkify(message.text)"
-        />
-        <div
-          v-if="showTimestamp"
-          class="timestamp f-mono"
-          :class="message.isMine ? 'm-r-8' : 'm-l-8'"
-          v-html="$helpers.dayjs(message.timestamp).format('HH:mm')"
-        />
+          class="text">
+          <div
+            v-if="(meta || {}).replyTo"
+            class="meta-reply-to">
+            <div class="mrt-nickname">To: {{ meta.replyTo.nickname }}</div>
+            <div class="mrt-text lines-1">{{ meta.replyTo.text }}</div>
+          </div>
+          <div v-html="$helpers.dom.linkify(message.text)"/>
+        </div>
+        <div class="additional">
+          <div
+            v-if="showTimestamp"
+            class="timestamp f-mono"
+            :class="message.isMine ? 'm-r-8' : 'm-l-8'"
+            v-html="$helpers.dayjs(message.timestamp).format('HH:mm')"
+          />
+          <div class="functions">
+            <i class="far fa-reply" @click="$emit('click-function', { type: 'reply', message })"/>
+            <!-- <i class="fa fa-heart" @click="$emit('click-function', { type: 'reaction', message })"/> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -30,6 +42,7 @@
 import { computed, getCurrentInstance } from 'vue'
 
 export default {
+  emits: ['click-function'],
   props: ['prevMessage', 'message', 'nextMessage'],
   setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
@@ -37,6 +50,13 @@ export default {
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
     const onClickImage = url => window.open(url, '_blank', 'noopener')
+
+    const meta = computed(() => {
+      try {
+        const parsed = JSON.parse(props.message.meta)
+        return parsed
+      } catch (e) {}
+    })
 
     const showProfile = computed(() => {
       if (props.message.isMine) return
@@ -60,6 +80,7 @@ export default {
     })
 
     return {
+      meta,
       showProfile,
       showTimestamp,
       onClickImage,
@@ -72,6 +93,12 @@ export default {
 .app-chat-message {
   font-size: 12px;
   display: flex;
+
+  &:not(:hover) {
+    .functions {
+      display: none;
+    }
+  }
 
   .content {
     width: 100%;
@@ -99,23 +126,73 @@ export default {
       background: var(--background-light);
       padding: 4px 8px;
       border-radius: 4px;
-      max-width: 80%;
+      max-width: 200px;
       color: var(--text-stress);
       white-space: pre-line;
     }
 
-    .timestamp {
+    .additional {
       flex: 0 0 auto;
       font-size: 10px;
-      margin-bottom: 2px;
+      display: flex;
+      align-items: flex-end;
+    }
+  }
+
+  .meta-reply-to {
+    font-size: 10px;
+    border-bottom: 1px solid var(--border-base);
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+
+    .mrt-text {
+      opacity: 0.5;
+      margin-top: 4px;
+    }
+  }
+
+  .functions {
+    display: flex;
+    align-items: center;
+    background: var(--background-light);
+    border-radius: 4px;
+    margin: 0 0 0 8px;
+
+    i {
+      padding: 4px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      &:not(:last-child) {
+        border-left: 1px solid var(--border-base);
+      }
+
+      &:hover {
+        color: var(--brand-primary-hover);
+      }
+    }
+
+    .fa-reply {
+      transform: rotate(180deg);
     }
   }
 
   &.mine {
     justify-content: flex-end;
 
+    .functions {
+      margin: 0 8px 0 0;
+    }
+
     .text-and-timestamp {
       flex-direction: row-reverse;
+
+      .additional {
+        flex-direction: row-reverse;
+      }
     }
   }
 }

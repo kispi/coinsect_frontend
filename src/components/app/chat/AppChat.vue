@@ -35,6 +35,7 @@
             :message="message"
           />
           <AppChatMessage
+            @click-function="onClickMessageFunction"
             :prevMessage="messages[idx - 1]"
             :message="message"
             :nextMessage="messages[idx + 1]"
@@ -47,7 +48,7 @@
           />
         </div>
       </div>
-      <AppChatInput/>
+      <AppChatInput ref="refAppChatInput"/>
     </div>
     <AppChatToggler ref="refFoldedIcon" :scrollToBottom="scrollToBottom"/>
   </div>
@@ -86,6 +87,8 @@ export default {
     const refFoldedIcon = ref(null)
 
     const refAppChatBody = ref(null)
+
+    const refAppChatInput = ref(null)
 
     const refAppChat = ref(null)
 
@@ -136,6 +139,16 @@ export default {
       makeDraggable(refAppChat.value, { toMove: 'app-chat-container', toGrab: 'app-chat-header' })
     }
 
+    const onClickMessageFunction = async ({ type, message }) => {
+      if (type === 'reply') {
+        store.commit('setChat', { writingReplyTo: message })
+        setTimeout(() => {
+          if (refAppChatInput.value) refAppChatInput.value.refTextarea.focus()
+        })
+      }
+      if (type === 'reaction') {}
+    }
+
     const onOpenChatContainer = () => nextTick(() => {
       scrollToBottom()
       setAppChatPosition()
@@ -181,9 +194,11 @@ export default {
     return {
       refFoldedIcon,
       refAppChatBody,
+      refAppChatInput,
       refAppChat,
       connected,
       messages,
+      onClickMessageFunction,
       scrollToBottom,
       onScroll,
     }

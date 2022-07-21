@@ -51,6 +51,17 @@ const useChatHandler = () => {
 
   const sendWebsocketMessage = message => {
     message.user = { token: store.getters.chatUser.token } // 보낸 사람의 토큰만 채팅서버로 알려줌 (기존에는 프로필 다보냄)
+    const replyTo = store.getters.chat.writingReplyTo
+    if (replyTo) {
+      message.meta = JSON.stringify({
+        replyTo: {
+          id: replyTo.id,
+          text: replyTo.text,
+          nickname: replyTo.profile.nickname,
+        },
+      })
+      store.commit('setChat', { writingReplyTo: null })
+    }
     connection.value.send(JSON.stringify(message))
   }
 

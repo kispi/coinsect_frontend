@@ -1,5 +1,17 @@
 <template>
   <div class="app-chat-input">
+    <div
+      v-if="$store.getters.chat.writingReplyTo"
+      class="writing-reply-to">
+      <div class="left">
+        <div class="nickname">To: {{ $store.getters.chat.writingReplyTo.profile.nickname }}</div>
+        <div class="text lines-1" v-html="$store.getters.chat.writingReplyTo.text"/>
+      </div>
+      <i
+        @click="$store.commit('setChat', { writingReplyTo: null })"
+        class="fal fa-times flex-wrap"
+      />
+    </div>
     <div class="textarea-wrapper">
       <div class="functions">
         <i @click="chatFunctions.image" class="fa fa-image"/>
@@ -165,6 +177,42 @@ export default {
     margin: -8px 0;
     padding: 8px 0;
     margin-right: 8px;
+  }
+
+  .writing-reply-to {
+    background: var(--background-base);
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 76px;
+    right: var(--app-chat-padding);
+    left: var(--app-chat-padding);
+
+    .left {
+      min-width: 0;
+      margin-right: 8px;
+      flex: 1 1 0;
+
+      .nickname {
+        margin-bottom: 4px;
+        color: var(--text-stress);
+      }
+    }
+
+    .fa-times {
+      font-size: 14px;
+      color: var(--text-stress);
+      cursor: pointer;
+
+      &:hover {
+        color: var(--brand-primary);
+      }
+    }
   }
 }
 </style>
