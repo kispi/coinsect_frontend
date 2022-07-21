@@ -10,7 +10,7 @@
     <div
       class="app-chat-container"
       :class="{
-        'o-0 no-touch': $store.getters.settings.chatFolded,
+        'display-none': $store.getters.settings.chatFolded,
       }">
       <AppChatStats/>
       <AppChatHeader :toggleChatFolded="(refFoldedIcon || {}).toggleChatFolded"/> <!-- 다른 컴포넌트의 함수를 참조하는게 안티패턴같긴 하지만 ... -->

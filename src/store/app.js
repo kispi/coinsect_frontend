@@ -51,7 +51,7 @@ const app = {
         numFamily: 1,
         nonTax: 1200000,
       },
-      newsProvider: 'upbit', // 'upbit' || 'coinness_feed' || 'coinness_article'
+      newsProvider: 'upbit', // 'upbit' || 'cobak_feed' || 'cobak_article'
       chatFolded: false,
       chatSizeMax: false,
       chatDing: false,

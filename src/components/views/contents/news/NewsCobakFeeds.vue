@@ -1,35 +1,34 @@
 <template>
-  <div class="news-coinness-feeds">
+  <div class="news-cobak-feeds">
     <div class="feed-list">
       <div
+        @click="onClickFeed(feed)"
         class="feed-item"
-        :class="{'important': feed.isImportant}"
+        :class="{'important': feed.is_best}"
         :key="feed.id"
         v-for="feed in data">
         <div class="feed-header">
-          <div class="feed-publish-at" v-html="$helpers.dayjs(feed.publishAt).format('YYYY-MM-DD HH:mm:ss')"/>
+          <div class="feed-publish-at" v-html="$helpers.dayjs(feed.updated_time).format('YYYY-MM-DD HH:mm:ss')"/>
           <div class="feed-title" v-html="feed.title"/>
         </div>
-        <div class="feed-content" v-html="feed.content"/>
+        <!-- 내용이나 이미지를 게제하면 저작권법 위반 -->
+        <!-- <div class="feed-content" v-html="feed.contents"/>
         <img
           v-if="feed.contentImage"
           :src="feed.contentImage"
           class="feed-content-image"
-        >
-        <div class="sentiment">
-          <div class="bull c-price-up"><i class="fa fa-arrow-trend-up"/>Bull {{ feed.bull }}</div>
-          <div class="bear c-price-down"><i class="fa fa-arrow-trend-down"/>Bear {{ feed.bear }}</div>
-        </div>
+        > -->
       </div>
       <AppLoader v-if="loading" class="m-a"/>
     </div>
-    <PoweredBy :by="'coinness'" :link="'https://coinness.live'" class="m-t-24"/>
+    <PoweredBy :by="'cobak'" :link="'https://cobak.co.kr/news/breaking_news'" class="m-t-24"/>
   </div>
 </template>
 
 <script>
 import { getCurrentInstance, ref, onMounted, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
+import contentService from '@/services/content'
 
 export default {
   setup() {
@@ -39,20 +38,21 @@ export default {
 
     const interv = ref(null)
 
-    const lastId = ref(null)
+    const params = ref({
+      page: 0,
+      current_time: plugins.$helpers.dayjs().format('YYYY-MM-DD'),
+    })
 
     const loading = ref(null)
 
     const data = ref([])
-
-    const endpoint = 'contents/news/coinness/feeds'
 
     const loadRecent = async () => {
       if (data.value.length === 0) return
 
       const recentId = data.value[0].id
       try {
-        const respData = await plugins.$http.get(endpoint)
+        const respData = await contentService.news.feeds()
         const newFeeds = respData.slice(0, respData.findIndex(o => o.id === recentId))
         data.value = newFeeds.concat(data.value)
       } catch (e) {
@@ -65,14 +65,24 @@ export default {
 
       try {
         loading.value = true
-        const respData = await plugins.$http.get(endpoint, { params: { lastId: lastId.value } })
+        const respData = await contentService.news.feeds(params.value)
+        if (respData.length === 0) {
+          params.value.page = 0
+          params.value.current_time = plugins.$helpers.dayjs(params.value.current_time).add(-1, 'days').format('YYYY-MM-DD')
+          return
+        }
+
         data.value = data.value.concat(respData)
-        lastId.value = data.value[data.value.length - 1].id
+        params.value.page++
       } catch (e) {
         plugins.$toast.error(e.data.message)
       } finally {
         loading.value = false
       }
+    }
+
+    const onClickFeed = feed => {
+      window.open(`https://cobak.co.kr/news/9/post/${feed.id}`, '_blank', 'noreferrer onopener')
     }
 
     onMounted(() => {
@@ -105,13 +115,14 @@ export default {
     return {
       data,
       loading,
+      onClickFeed,
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.news-coinness-feeds {
+.news-cobak-feeds {
   position: relative;
 
   .feed-list {
@@ -121,6 +132,11 @@ export default {
   .feed-item {
     position: relative;
     padding: 16px;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--background-light);
+    }
 
     &.important {
       .feed-title {
@@ -136,7 +152,7 @@ export default {
     }
 
     .feed-header {
-      margin-bottom: 12px;
+      /* margin-bottom: 12px; */
 
       .feed-publish-at {
         margin-right: 8px;
@@ -165,20 +181,6 @@ export default {
     .feed-content-image {
       margin-top: 16px;
       max-width: 100%;
-    }
-
-    .sentiment {
-      display: flex;
-      margin-top: 16px;
-      font-size: 12px;
-
-      .bull {
-        margin-right: 24px;
-      }
-
-      i {
-        margin-right: 4px;
-      }
     }
 
     &:not(:last-child) {

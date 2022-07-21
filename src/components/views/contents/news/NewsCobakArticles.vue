@@ -1,16 +1,16 @@
 <template>
-  <div class="news-coinness-articles">
+  <div class="news-cobak-articles">
     <div class="filters">
       <button
         class="btn"
-        :class="section === 'latest' ? 'btn-primary' : 'btn-default'"
-        @click="section = 'latest'">
+        :class="params.news_type === 'recent_news' ? 'btn-primary' : 'btn-default'"
+        @click="params.news_type = 'recent_news'">
         최신뉴스
       </button>
       <button
         class="btn"
-        :class="section === 'popularity' ? 'btn-primary' : 'btn-default'"
-        @click="section = 'popularity'">
+        :class="params.news_type === 'best_news' ? 'btn-primary' : 'btn-default'"
+        @click="params.news_type = 'best_news'">
         많이 본 뉴스
       </button>
     </div>
@@ -18,34 +18,35 @@
       <a
         class="article-item"
         target="_blank"
-        rel="noreferrer"
-        :href="article.link"
+        rel="noreferrer noopener"
+        :href="`https://cobak.co.kr/news/9/post/${article.id}`"
         :key="article.id"
         v-for="article in data">
         <article>
           <div class="article-body">
             <div class="article-header">
               <div class="flex-row items-center m-b-8">
-                <div class="article-publish-at flex-wrap" v-html="$helpers.dayjs(article.publishAt).format('YYYY-MM-DD HH:mm:ss')"/>
+                <div class="article-publish-at flex-wrap" v-html="$helpers.dayjs(article.updated_time).format('YYYY-MM-DD HH:mm:ss')"/>
                 <div
-                  v-if="article.source"
+                  v-if="article.user"
                   class="article-source m-l-8"
-                  v-html="$store.getters.settings.locale === 'en' ? article.source.nameEn : article.source.nameKo"
+                  v-html="article.user.nickname"
                 />
               </div>
               <div class="article-title" v-html="article.title"/>
             </div>
-            <div class="article-description lines-1" v-html="article.description"/>
+            <div class="article-contents lines-1" v-html="article.contents"/>
           </div>
-          <img
-            v-if="article.thumbnailImage"
-            :src="article.thumbnailImage"
-          >
+          <AppImg
+            v-if="(article.photos || []).length > 0"
+            :src="article.photos[0].photo_url"
+            :alt="article.title"
+          />
         </article>
       </a>
       <AppLoader v-if="loading" class="m-a"/>
     </div>
-    <PoweredBy :by="'coinness'" :link="'https://coinness.live'" class="m-t-24"/>
+    <PoweredBy :by="'cobak'" :link="'https://cobak.co.kr/news/home'" class="m-t-24"/>
   </div>
 </template>
 
@@ -62,13 +63,15 @@ export default {
 
     const interv = ref(null)
 
-    const lastId = ref(null)
+    const params = ref({
+      news_type: 'recent_news',
+      page: 0,
+      current_time: plugins.$helpers.dayjs().format('YYYY-MM-DD'),
+    })
 
     const loading = ref(null)
 
     const data = ref([])
-
-    const section = ref('latest')
 
     const loadRecent = async () => {
       if (data.value.length === 0) return
@@ -88,12 +91,15 @@ export default {
 
       try {
         loading.value = true
-        const respData = await contentService.news.articles({
-          lastId: lastId.value,
-          section: section.value,
-        })
+        const respData = await contentService.news.articles(params.value)
+        if (respData.length === 0) {
+          params.value.page = 0
+          params.value.current_time = plugins.$helpers.dayjs(params.value.current_time).add(-1, 'days').format('YYYY-MM-DD')
+          return
+        }
+
         data.value = data.value.concat(respData)
-        lastId.value = data.value[data.value.length - 1].id
+        params.value.page++
       } catch (e) {
         plugins.$toast.error(e.data.message)
       } finally {
@@ -129,11 +135,10 @@ export default {
     )
 
     watch(
-      () => section.value,
+      () => params.value.news_type,
       (newVal, oldVal) => {
         if (newVal === oldVal) return
 
-        lastId.value = null
         data.value = []
         loadNext()
       },
@@ -141,7 +146,7 @@ export default {
 
     return {
       data,
-      section,
+      params,
       loading,
     }
   },
@@ -149,7 +154,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.news-coinness-articles {
+.news-cobak-articles {
   position: relative;
 
   .filters {
@@ -176,7 +181,7 @@ export default {
     cursor: pointer;
 
     &:hover {
-      background: var(--brand-primary-hover-bg);
+      background: var(--background-light);
     }
 
     .article-header {
@@ -217,7 +222,7 @@ export default {
       color: var(--text-stress);
     }
 
-    .article-description {
+    .article-contents {
       line-height: 22px;
       color: var(--text-stress);
     }

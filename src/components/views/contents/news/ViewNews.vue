@@ -10,45 +10,34 @@
         </div>
         <!-- <div
           class="provider"
-          :class="{'selected': $store.getters.settings.newsProvider === 'coinness_feed'}"
-          @click="$store.commit('setSettings', { newsProvider: 'coinness_feed' })">
-          <img src="@/assets/images/coinness.svg">속보
-        </div>
+          :class="{'selected': $store.getters.settings.newsProvider === 'cobak_feed'}"
+          @click="$store.commit('setSettings', { newsProvider: 'cobak_feed' })">
+          <img src="@/assets/images/cobak.png">속보
+        </div> -->
         <div
           class="provider"
-          :class="{'selected': $store.getters.settings.newsProvider === 'coinness_article'}"
-          @click="$store.commit('setSettings', { newsProvider: 'coinness_article' })">
-          <img src="@/assets/images/coinness.svg">뉴스룸
-        </div> -->
+          :class="{'selected': $store.getters.settings.newsProvider === 'cobak_article'}"
+          @click="$store.commit('setSettings', { newsProvider: 'cobak_article' })">
+          <img src="@/assets/images/cobak.png">뉴스룸
+        </div>
       </div>
     </div>
     <NewsUpbit v-if="$store.getters.settings.newsProvider === 'upbit'"/>
-    <!-- <NewsCoinnessFeeds v-if="$store.getters.settings.newsProvider === 'coinness_feed'"/>
-    <NewsCoinnessArticles v-if="$store.getters.settings.newsProvider === 'coinness_article'"/> -->
+    <NewsCobakFeeds v-if="$store.getters.settings.newsProvider === 'cobak_feed'"/>
+    <NewsCobakArticles v-if="$store.getters.settings.newsProvider === 'cobak_article'"/>
   </div>
 </template>
 
 <script>
-import { onMounted } from 'vue'
-import { useStore } from 'vuex'
-// import NewsCoinnessArticles from './NewsCoinnessArticles'
-// import NewsCoinnessFeeds from './NewsCoinnessFeeds'
+import NewsCobakArticles from './NewsCobakArticles'
+import NewsCobakFeeds from './NewsCobakFeeds'
 import NewsUpbit from './NewsUpbit'
 
 export default {
   components: {
-    // NewsCoinnessArticles,
-    // NewsCoinnessFeeds,
+    NewsCobakArticles,
+    NewsCobakFeeds,
     NewsUpbit,
-  },
-  setup() {
-    const store = useStore()
-
-    onMounted(() => {
-      if (['upbit'].indexOf(store.getters.settings.newsProvider) < 0) {
-        store.commit('setSettings', { newsProvider: 'upbit' })
-      }
-    })
   },
 }
 </script>

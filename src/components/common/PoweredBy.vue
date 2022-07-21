@@ -19,9 +19,9 @@ export default {
       if (props.by === 'companiesmarketcap') return { title: 'Companiesmarketcap', src: 'companiesmarketcap.png', link: 'https://companiesmarketcap.com' }
       if (props.by === 'upbit') return { title: 'Upbit', src: 'upbit.svg', link: 'https://upbit.com' }
       if (props.by === 'bitcointreasuries') return { title: 'Bitcointreasuries', src: 'bitcointreasuries.png', link: 'https://bitcointreasuries.net' }
-      if (props.by === 'coinness') return { title: 'CoinNess', src: 'coinness.svg', link: 'https://coinness.live' }
       if (props.by === 'coinglass') return { title: 'Coinglass', src: 'coinglass.png', link: 'https://coinglass.com' }
       if (props.by === 'naver') return { title: 'Naver', src: 'naver.png', link: 'https://finance.naver.com' }
+      if (props.by === 'cobak') return { title: 'Cobak', src: 'cobak.png', link: 'https://cobak.co.kr' }
     })
 
     return {
