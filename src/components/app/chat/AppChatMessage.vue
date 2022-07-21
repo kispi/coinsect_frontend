@@ -15,7 +15,8 @@
           class="text">
           <div
             v-if="(meta || {}).replyTo"
-            class="meta-reply-to">
+            class="meta-reply-to"
+            @click="$emit('click-replied-message', meta.replyTo)">
             <div class="mrt-nickname">To: {{ meta.replyTo.nickname }}</div>
             <div class="mrt-text lines-1">{{ meta.replyTo.text }}</div>
           </div>
@@ -42,7 +43,7 @@
 import { computed, getCurrentInstance } from 'vue'
 
 export default {
-  emits: ['click-function'],
+  emits: ['click-function', 'click-replied-message'],
   props: ['prevMessage', 'message', 'nextMessage'],
   setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
@@ -144,6 +145,7 @@ export default {
     border-bottom: 1px solid var(--border-base);
     margin-bottom: 4px;
     padding-bottom: 4px;
+    cursor: pointer;
 
     .mrt-text {
       opacity: 0.5;

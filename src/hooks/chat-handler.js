@@ -157,13 +157,13 @@ const useChatHandler = () => {
     }
   }
 
-  const loadMessages = async () => {
+  const loadMessages = async limit => {
     if (loadingMessages.value || fullyLoaded.value) return
 
     const firstMessageId = (messages.value[0] || {}).id
     try {
       loadingMessages.value = true
-      const data = await plugins.$http.get('webchat/messages', { params: { firstMessageId } })
+      const data = await plugins.$http.get('webchat/messages', { params: { firstMessageId, limit } })
       if ((data || []).length === 0) {
         fullyLoaded.value = true
         return
@@ -179,6 +179,8 @@ const useChatHandler = () => {
       if (!firstMessageId) {
         plugins.$bus.$emit('first-load-messages')
       }
+    } catch (e) {
+      return Promise.reject(e)
     } finally {
       loadingMessages.value = false
     }
@@ -198,6 +200,7 @@ const useChatHandler = () => {
     connected,
     messages,
     filteredMessages,
+    loadingMessages,
     ping,
     loadMessages,
     setAccount,
