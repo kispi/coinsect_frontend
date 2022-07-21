@@ -5,6 +5,7 @@
       'short': position.size < 0,
       'long': position.size > 0,
       'on-air': position.onAir,
+      'danger': isDanger(position),
     }">
     <div
       v-if="!position.onAir"
@@ -81,6 +82,12 @@ export default {
       return '-'
     }
 
+    const isDanger = position => {
+      if (!position.liqPrice) return
+
+      return Math.abs(position.liqPrice - position.markPrice)  / position.markPrice < 0.005
+    }
+
     const display = key => {
       const v = props.position[key]
       if (!v) return '-'
@@ -93,6 +100,7 @@ export default {
     }
 
     return {
+      isDanger,
       badgeSummary,
       display,
     }
@@ -119,6 +127,14 @@ export default {
 
   &:hover {
     border: 1px solid var(--border-light);
+  }
+
+  &.danger {
+    animation: position-flashing-border 0.5s linear infinite;
+
+    .mark .value {
+      animation: position-flashing-color 0.5s linear infinite;
+    }
   }
 
   &.on-air {

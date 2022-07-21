@@ -151,7 +151,7 @@ export default {
         found = messages.value.find(o => o.id === message.id)
         if (found) break
 
-        await loadMessages(100)
+        await loadMessages(200)
       }
 
       if (!found) {

@@ -58,3 +58,31 @@
   60% { transform: translateY(2px); }
   80% { transform: translateY(-2px); }
 }
+
+@keyframes position-flashing-border {
+  0% {
+    border: 1px solid var(--border-base);
+  }
+
+  50% {
+    border: 1px solid var(--danger);
+  }
+
+  100% {
+    border: 1px solid var(--border-base);
+  }
+}
+
+@keyframes position-flashing-color {
+  0% {
+    color: var(--white);
+  }
+
+  50% {
+    color: var(--danger);
+  }
+
+  100% {
+    color: var(--white);
+  }
+}
