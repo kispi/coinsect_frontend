@@ -83,6 +83,10 @@
     "en": "Upbit (BTC)",
     "kr": "업비트 (BTC)"
   },
+  "BINANCE_USDT": {
+    "en": "Binance (USDT)",
+    "kr": "바이낸스 (USDT)"
+  },
   "BINANCE": {
     "en": "Binance",
     "kr": "바이낸스"

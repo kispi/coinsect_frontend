@@ -39,6 +39,7 @@ export default {
 
     const targets = ref([{
       key: 'binance',
+      name: 'BINANCE_USDT',
       img: require('@/assets/images/binance.svg'),
     }].map(o => ({
       ...o,
