@@ -192,6 +192,7 @@ export default {
     bottom: 76px;
     right: var(--app-chat-padding);
     left: var(--app-chat-padding);
+    z-index: 1;
 
     .left {
       min-width: 0;
