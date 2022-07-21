@@ -37,11 +37,12 @@
             </div>
             <div class="article-contents lines-1" v-html="article.contents"/>
           </div>
-          <AppImg
+          <!-- 이미지 게제시 저작권 침해 -->
+          <!-- <AppImg
             v-if="(article.photos || []).length > 0"
             :src="article.photos[0].photo_url"
             :alt="article.title"
-          />
+          /> -->
         </article>
       </a>
       <AppLoader v-if="loading" class="m-a"/>
