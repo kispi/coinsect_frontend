@@ -33,23 +33,17 @@ export default {
 
     const storedUnreads = ref(null)
 
-    const numUnreads = computed(() => {
-      if (storedUnreads.value) return storedUnreads.value
+    const numUnreads = computed(() => (messages.value || []).filter(message => {
+      if (!store.getters.chat.lastReadMessage) return
 
-      if ((messages.value || []).length === 0) return 0
-
-      return messages.value.filter(message => {
-        if (!store.getters.chat.lastReadMessage) return
-
-        return message.timestamp > store.getters.chat.lastReadMessage.timestamp
-      }).length
-    })
+      return message.timestamp > store.getters.chat.lastReadMessage.timestamp
+    }).length + (storedUnreads.value || 0))
 
     const toggleChatFolded = () => {
       store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
       if (!store.getters.settings.chatFolded) {
         storedUnreads.value = 0
-        plugins.$helpers.localStorage.setMeta('numUnreads')
+        plugins.$helpers.localStorage.setMeta('numUnreads', storedUnreads.value)
       }
 
       nextTick(() => {
@@ -63,11 +57,7 @@ export default {
 
     watch(
       () => numUnreads.value,
-      newVal => {
-        if (newVal > 0) {
-          plugins.$helpers.localStorage.setMeta('numUnreads', newVal)
-        }
-      },
+      newVal => plugins.$helpers.localStorage.setMeta('numUnreads', newVal),
     )
 
     return {
