@@ -169,16 +169,26 @@ const useChatHandler = () => {
         return
       }
 
-      data.forEach(message => messages.value.unshift(preparedMessage(message)))
-      messages.value.forEach((_, idx) => {
-        const prevMessage = messages.value[idx - 1]
-        const curMessage = messages.value[idx]
+      // 새로 온 메시지들에 대해 $$showSeparator 계산. 매번 messages.value를 직접 바꾸지 않고 msgBuf를 둠으로 '메시지 개수'회 렌더링이 아닌 한번만 렌더링함.
+      let msgBuf = []
+      data.forEach((_, idx) => {
+        const prevMessage = data[idx - 1] ? preparedMessage(data[idx - 1]) : null
+        const curMessage = data[idx] ? preparedMessage(data[idx]) : null
         if (prevMessage && curMessage) curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
+        msgBuf.unshift(curMessage)
       })
 
-      if (!firstMessageId) {
-        plugins.$bus.$emit('first-load-messages')
+      // 존재하던 메시지 중 가장 오래된 것과 새로 온 메시지 
+      const oldestMessageBeforeConcat = messages.value[0]
+      if (msgBuf[msgBuf.length - 1] && oldestMessageBeforeConcat) {
+        oldestMessageBeforeConcat.$$showSeparator = showSeparator(oldestMessageBeforeConcat, msgBuf[msgBuf.length - 1])
       }
+
+      store.commit('setChat', { messages: msgBuf.concat(messages.value) })
+      msgBuf = []
+
+      if (!firstMessageId) plugins.$bus.$emit('first-load-messages')
+      return data
     } catch (e) {
       return Promise.reject(e)
     } finally {

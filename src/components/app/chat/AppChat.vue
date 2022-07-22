@@ -18,7 +18,7 @@
         ref="refAppChatBody"
         class="app-chat-body no-scrollbar"
         @scroll="onScroll">
-        <AppLoading :loading="loadingMessages"/>
+        <AppLoading :loading="loadingReplyTarget"/>
         <AppChatIncomingMessageOverlay :scrollToBottom="scrollToBottom" :refFoldedIcon="refFoldedIcon"/>
         <div
           @click="scrollToBottom"
@@ -32,7 +32,7 @@
             (!(messages[idx - 1] ||{}).isMine && (message || {}).isMine) ? 'm-t-12' : '',
             `mid-${message.id}`
           ]"
-          :key="message"
+          :key="message.id"
           v-for="(message, idx) in messages">
           <DailySeparator
             v-if="message.$$showSeparator"
@@ -97,12 +97,13 @@ export default {
 
     const refAppChat = ref(null)
 
+    const loadingReplyTarget = ref(null)
+
     const { makeDraggable } = useModalDraggable()
 
     const {
       init,
       connected,
-      loadingMessages,
       filteredMessages: messages,
       loadMessages,
     } = useChatHandler()
@@ -146,13 +147,15 @@ export default {
     }
 
     const onClickRepliedMessage = async message => {
-      let found
-      for (let i = 0; i < 50; i++) {
-        found = messages.value.find(o => o.id === message.id)
-        if (found) break
-
-        await loadMessages(200)
+      loadingReplyTarget.value = true
+      let found = messages.value.find(o => o.id === message.id)
+      if (!found) {
+        for (let i = 0; i < 50; i++) {
+          found = (await loadMessages(500) || []).find(o => o.id === message.id)
+          if (found) break
+        }
       }
+      loadingReplyTarget.value = false
 
       if (!found) {
         plugins.$toast.error('너무 오래된 메시지라 찾지 못했습니다 :(')
@@ -160,7 +163,10 @@ export default {
       }
 
       const dom = refAppChatBody.value.getElementsByClassName(`mid-${found.id}`)[0]
-      if (dom) dom.scrollIntoView({ behavior: 'smooth' })
+      if (dom) {
+        dom.scrollIntoView()
+        setTimeout(() => refAppChatBody.value.scrollTop -= 64)
+      }
     }
 
     const onClickMessageFunction = async ({ type, message }) => {
@@ -222,7 +228,7 @@ export default {
       refAppChat,
       connected,
       messages,
-      loadingMessages,
+      loadingReplyTarget,
       onClickMessageFunction,
       onClickRepliedMessage,
       scrollToBottom,
