@@ -8,6 +8,7 @@
         <div class="input-wrapper">
           <i class="fal fa-search"/>
           <input
+            ref="refInput"
             v-model="keyword"
             @keydown="onKeydown"
             placeholder="ㅂㅌ, 비트, btc, bit"
@@ -87,6 +88,8 @@ export default {
     const store = useStore()
 
     const refNotConnected = ref(null)
+
+    const refInput = ref(null)
 
     const { subscribe: subscribeUpbit, setAsBasePrice } = useUpbit()
 
@@ -243,9 +246,28 @@ export default {
       }
     }
 
-    onMounted(init)
+    const onShortcut = e => {
+      if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault()
+        refInput.value.focus()
+        return
+      }
+
+      if (e.key === 'Escape') {
+        keyword.value = null
+        refInput.value.blur()
+        return
+      }
+    }
+
+    onMounted(() => {
+      init()
+
+      document.addEventListener('keydown', onShortcut)
+    })
 
     onUnmounted(() => {
+      document.removeEventListener('keydown', onShortcut)
       Object.keys(connections.value).forEach(key => {
         if (connections.value[key]) connections.value[key].close()
       })
@@ -268,6 +290,7 @@ export default {
 
     return {
       refNotConnected,
+      refInput,
       init,
       calculating,
       connected,

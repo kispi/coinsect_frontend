@@ -27,20 +27,18 @@ export default {
 
 <style lang="scss" scoped>
 .sub-header {
-  position: absolute;
+  position: fixed;
   background: var(--background-base);
-  top: calc(var(--app-header-height));
-  width: 240px;
-  border-left: 1px double var(--border-base);
-  border-bottom: 1px double var(--border-base);
-  border-right: 1px double var(--border-base);
-  border-radius: 0 0 8px 8px;
-  box-shadow: 1px 2px 4px var(--brand-primary-hover-bg);
+  top: calc(var(--app-header-height) - 8px);
+  min-width: 160px;
+  border: 1px double var(--border-base);
+  border-radius: 4px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
   z-index: 5;
 
   .sub-header-item {
     color: var(--text-stress);
-    padding: 12px 16px;
+    padding: 12px;
     display: block;
     white-space: nowrap;
     transition: none;
@@ -58,6 +56,12 @@ export default {
     &:not(:last-child) {
       border-bottom: 1px solid var(--border-base);
     }
+  }
+}
+
+#app.dark {
+  .sub-header {
+    box-shadow: 1px 2px 4px rgba(255, 255, 255, 0.24);
   }
 }
 </style>

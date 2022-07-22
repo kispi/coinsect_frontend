@@ -132,6 +132,9 @@ const apps = [{
     image: useS3('og-images/og-image-lottery.png'),
   },
 }, {
+  path: '/apps/seo',
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
+}, {
   path: '/apps/games',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
 }, {

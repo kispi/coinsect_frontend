@@ -3,7 +3,7 @@
     v-if="link && (meta.image || meta.title || meta.description)"
     class="app-chat-message-meta-tags"
     :class="{'mine': message.isMine}"
-    @click="onClickCard">
+    @click="onClickMetaCard(link)">
     <div
       v-if="meta.image"
       class="meta-image">
@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref, onMounted, computed } from 'vue'
+import { getCurrentInstance, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
-import helperService from '@/services/helper'
+import useSeo from '@/hooks/seo'
 
 export default {
   props: {
@@ -33,45 +33,23 @@ export default {
 
     const store = useStore()
 
-    const meta = ref({
-      image: null,
-      title: null,
-      description: null,
-    })
-
-    const onClickCard = () => {
-      if (!link.value) return
-
-      window.open(link.value, '_blank', 'noreferrer noopener')
-    }
+    const { meta, tryMetaTags, onClickMetaCard } = useSeo()
 
     const link = computed(() => plugins.$helpers.retrieveUrlFromString(props.message.text))
 
-    const tryMetaTags = async () => {
-      if (!link.value) return
-
-      if (['.jpg', '.jpeg', '.png', '.svg', '.gif'].some(ext => link.value.endsWith(ext))) {
-        meta.value.image = link.value
-        return
-      }
-
+    const init = async () => {
       try {
-        const data = await helperService.crawlMetaTags(link.value)
-        data.forEach(t => {
-          if ((t.property || '').endsWith(':image')) meta.value.image = t.content
-          if ((t.property || '').endsWith(':title')) meta.value.title = t.content
-          if ((t.property || '').endsWith(':description')) meta.value.description = t.content
-        })
+        await tryMetaTags(link.value)
         if (store.getters.chat.autoScrollable) props.scrollToBottom()
       } catch (e) {}
     }
 
-    onMounted(tryMetaTags)
+    onMounted(init)
 
     return {
       meta,
       link,
-      onClickCard,
+      onClickMetaCard,
     }
   },
 }

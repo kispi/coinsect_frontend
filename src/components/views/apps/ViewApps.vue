@@ -13,6 +13,7 @@ export default {
     ViewPortfolio: defineAsyncComponent(() => import('./ViewPortfolio')),
     ViewGames: defineAsyncComponent(() => import('./ViewGames')),
     ViewLottery: defineAsyncComponent(() => import('./lottery/ViewLottery')),
+    ViewSeo: defineAsyncComponent(() => import('./ViewSeo')),
     ViewSalary: defineAsyncComponent(() => import('./ViewSalary')),
     ViewVoiceRecorder: defineAsyncComponent(() => import('./ViewVoiceRecorder')),
   },
@@ -24,6 +25,7 @@ export default {
       if (p === '/apps/portfolio') return 'ViewPortfolio'
       if (p === '/apps/salary') return 'ViewSalary'
       if (p === '/apps/lottery') return 'ViewLottery'
+      if (p === '/apps/seo') return 'ViewSeo'
       if (p === '/apps/games') return 'ViewGames'
       if (p === '/apps/voice-recorder') return 'ViewVoiceRecorder'
     })

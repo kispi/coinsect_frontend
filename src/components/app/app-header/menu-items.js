@@ -1,14 +1,19 @@
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 const useMenuItems = () => {
+  const plugins = getCurrentInstance().appContext.config.globalProperties
+
   const router = useRouter()
+
+  const store = useStore()
 
   const subPages = ref(null)
 
   const lastClick = ref(null)
 
-  const onClickMenuItem = menuItem => {
+  const onClickMenuItem = async (e, menuItem) => {
     lastClick.value = menuItem
 
     if (menuItem.path) {
@@ -16,7 +21,24 @@ const useMenuItems = () => {
       return
     }
 
-    if (menuItem.subPages) subPages.value = menuItem.subPages
+    if (menuItem.subPages) {
+      subPages.value = null
+      await plugins.$helpers.sleep(0)
+      subPages.value = menuItem.subPages
+      await plugins.$helpers.sleep(0)
+      const dom = document.getElementsByClassName('sub-header')[0]
+      if (!dom) return
+
+      const rectClickedAnchorTag = e.target.getBoundingClientRect()
+      const rectDom = dom.getBoundingClientRect()
+
+      const baseWidth = window.innerWidth > 992 ? 992 : window.innerWidth
+      if (baseWidth >= rectClickedAnchorTag.left + rectDom.width) {
+        dom.style.left = `${rectClickedAnchorTag.left}px`
+      } else {
+        dom.style.right = `${(baseWidth - rectClickedAnchorTag.right)}px`
+      }
+    }
   }
 
   const onClickDocument = e => {
@@ -72,6 +94,7 @@ const useMenuItems = () => {
       { path: '/apps/portfolio', title: 'PORTFOLIO', },
       { path: '/apps/salary', title: 'SALARY' },
       { path: '/apps/lottery', title: 'LOTTERY' },
+      { path: '/apps/seo', title: 'SEO' },
       // { path: '/apps/games', title: 'GAMES' },
       // { path: '/apps/voice-recorder', title: 'VOICE_RECORDER' }
     ],
@@ -93,6 +116,11 @@ const useMenuItems = () => {
       })()
     }
   }))
+
+  watch(
+    () => store.getters.windowInnerWidth,
+    () => subPages.value = null,
+  )
 
   onMounted(() => {
     document.addEventListener('click', onClickDocument)

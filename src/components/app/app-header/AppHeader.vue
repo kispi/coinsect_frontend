@@ -68,7 +68,7 @@
       :class="{'pretty-scrollbar': !$store.getters.isMobile}">
       <a
         draggable="false"
-        @click.prevent="onClickMenuItem(menuItem)"
+        @click.prevent="e => onClickMenuItem(e, menuItem)"
         :href="menuItem.path"
         class="ah-menu-item"
         :class="{
@@ -77,7 +77,7 @@
         }"
         :key="menuItem.title"
         v-for="menuItem in menuItems">
-        {{ $translate(menuItem.title) }}<i v-if="menuItem.subPages" class="fal fa-chevron-down"/>
+        {{ $translate(menuItem.title) }}<i v-if="menuItem.subPages" class="fal fa-chevron-down no-touch"/>
       </a>
     </nav>
     <SubHeader v-model="subPages"/>

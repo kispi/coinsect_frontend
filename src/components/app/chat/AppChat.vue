@@ -163,10 +163,7 @@ export default {
       }
 
       const dom = refAppChatBody.value.getElementsByClassName(`mid-${found.id}`)[0]
-      if (dom) {
-        dom.scrollIntoView()
-        setTimeout(() => refAppChatBody.value.scrollTop -= 64)
-      }
+      if (dom) dom.scrollIntoView({ behavior: 'smooth' })
     }
 
     const onClickMessageFunction = async ({ type, message }) => {
@@ -182,6 +179,7 @@ export default {
     const onOpenChatContainer = () => nextTick(() => {
       scrollToBottom()
       setAppChatPosition()
+      if (refAppChatInput.value) refAppChatInput.value.refTextarea.focus()
     })
 
     watch(
