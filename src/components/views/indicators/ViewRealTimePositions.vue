@@ -147,15 +147,17 @@ export default {
       class: null,
     })
 
-    const markets = computed(() => {
+    const markets = ref([])
+
+    const reloadMarkets = () => {
       if (!store.getters.realTimePositions) return []
 
       const o = {}
       store.getters.realTimePositions.data.forEach(position => {
         if (position.contract) o[position.contract] = true
       })
-      return Object.keys(o)
-    })
+      markets.value = Object.keys(o)
+    }
 
     const callApi = async () => {
       try {
@@ -170,6 +172,7 @@ export default {
     }
 
     const openWebsocket = () => {
+      reloadMarkets()
       if (markets.value.length === 0) return
 
       subscribe({ type: 'instrument_info.100ms', markets: markets.value }).then(conn => connection.value = conn)
@@ -184,6 +187,10 @@ export default {
 
       const keys = ['size', 'entryPrice', 'liqPrice', 'markPrice', 'contract', '$$value', '$$unrealized', 'onAir', 'tracking', 'editable']
       keys.forEach(key => updateTarget[key] = newPosition[key])
+
+      reloadMarkets()
+      if (connection.value) connection.value.close()
+      openWebsocket()
     }
 
     const toggleTradingview = () => {
