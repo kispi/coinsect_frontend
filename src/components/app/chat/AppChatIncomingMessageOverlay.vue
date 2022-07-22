@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onUnmounted, watch } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
@@ -28,6 +28,8 @@ export default {
 
     const incomingMessage = computed(() => store.getters.chat.incomingMessage)
 
+    const ding = ref(null)
+
     const { filteredMessages: messages } = useChatHandler()
 
     const showIncomingMessageOverlay = () => {
@@ -39,9 +41,9 @@ export default {
     const onIncomingMessage = async () => {
       if (store.getters.settings.chatFolded) {
         plugins.$helpers.animate.shake(props.refFoldedIcon.$el)
-        if (store.getters.chat.ding && store.getters.settings.chatDing) {
+        if (ding.value && store.getters.settings.chatDing) {
           try {
-            await store.getters.chat.ding.play() // 유저가 페이지에서 상호작용하지 않아 오류가 있더라도 무시
+            await ding.value.play() // 유저가 페이지에서 상호작용하지 않아 오류가 있더라도 무시
           } catch (e) {}
         }
         return
@@ -60,6 +62,15 @@ export default {
       store.commit('setChat', { incomingMessage: null })
       props.scrollToBottom()
     }
+
+    const loadDing = () => {
+      if (typeof Audio === 'undefined') return
+
+      ding.value = new Audio(plugins.$helpers.useS3('files/ding.mp3'))
+      ding.value.volume = 0.2
+    }
+
+    onMounted(loadDing)
 
     watch(
       () => store.getters.chat.lastWebsocketMessage,

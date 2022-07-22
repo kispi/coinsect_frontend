@@ -209,12 +209,6 @@ export default {
 
       init()
       setAppChatPosition()
-
-      if (typeof Audio === 'undefined') return
-
-      const ding = new Audio(plugins.$helpers.useS3('files/ding.mp3'))
-      ding.volume = 0.2
-      store.commit('setChat', { ding })
     })
 
     onUnmounted(() => {

@@ -9,8 +9,8 @@
     <i class="fal fa-comment-dots"/>
     <div
       v-if="numUnreads"
-      class="badge-unreads center">
-      {{ numUnreads > 999 ? '999+' : numUnreads }}
+      class="badge-unreads center f-mono">
+      {{ numUnreads > 99 ? '99+' : numUnreads }}
     </div>
   </div>
 </template>

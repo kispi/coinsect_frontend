@@ -35,6 +35,8 @@ export default {
 
     const updateSentiment = async type => {
       const p = store.getters.chatUser.profile
+      if ((p.sentiment || {}).type === type) return
+
       p.sentiment = { type }
       try {
         await setAccount(p)
