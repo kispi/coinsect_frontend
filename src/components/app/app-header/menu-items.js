@@ -32,11 +32,10 @@ const useMenuItems = () => {
       const rectClickedAnchorTag = e.target.getBoundingClientRect()
       const rectDom = dom.getBoundingClientRect()
 
-      const baseWidth = window.innerWidth > 992 ? 992 : window.innerWidth
-      if (baseWidth >= rectClickedAnchorTag.left + rectDom.width) {
+      if (window.innerWidth >= rectClickedAnchorTag.left + rectDom.width) {
         dom.style.left = `${rectClickedAnchorTag.left}px`
       } else {
-        dom.style.right = `${(baseWidth - rectClickedAnchorTag.right)}px`
+        dom.style.right = `${(window.innerWidth - rectClickedAnchorTag.right)}px`
       }
     }
   }
