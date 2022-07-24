@@ -5,6 +5,8 @@ import { useRouter } from 'vue-router'
 const useSeo = () => {
   const router = useRouter()
 
+  const numTrial = ref(0)
+
   const meta = ref({
     image: null,
     title: null,
@@ -33,7 +35,10 @@ const useSeo = () => {
   const useExamples = helperService.crawlExampleUrls
 
   const tryMetaTags = async link => {
-    if (!link) return
+    if (!link || numTrial.value >= 5) {
+      numTrial.value = 0
+      return
+    }
 
     if (['.jpg', '.jpeg', '.png', '.svg', '.gif'].some(ext => link.endsWith(ext))) {
       meta.value.image = link
@@ -42,6 +47,11 @@ const useSeo = () => {
 
     try {
       const data = await helperService.crawlMetaTags(link)
+      if (data.status === 'crawling') {
+        numTrial.value++
+        setTimeout(() => tryMetaTags(link), 1000)
+        return
+      }
       meta.value = data.meta
     } catch (e) {
       return Promise.reject(e)
