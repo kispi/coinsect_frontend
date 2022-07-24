@@ -17,11 +17,11 @@ import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
 export default {
+  emits: ['scroll-to-bottom'],
   props: {
     refFoldedIcon: null,
-    scrollToBottom: Function,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
@@ -51,7 +51,7 @@ export default {
 
       // 채팅창이 열려있는 경우의 처리
       if (store.getters.chat.autoScrollable) {
-        props.scrollToBottom()
+        emit('scroll-to-bottom')
       } else {
         showIncomingMessageOverlay()
       }
@@ -60,7 +60,7 @@ export default {
 
     const onClickIncomingMessageOverlay = () => {
       store.commit('setChat', { incomingMessage: null })
-      props.scrollToBottom()
+      emit('scroll-to-bottom')
     }
 
     const loadDing = () => {

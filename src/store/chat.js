@@ -1,3 +1,5 @@
+import helpers from "@/helpers"
+
 const chat = {
   state: () => ({
     chat: {
@@ -18,7 +20,10 @@ const chat = {
   },
   mutations: {
     setChat(state, chat) {
-      Object.keys(chat).forEach(key => state.chat[key] = chat[key])
+      Object.keys(chat).forEach(key => {
+        state.chat[key] = chat[key]
+        if (key === 'lastReadMessage') helpers.localStorage.setMeta('lastReadMessage', chat[key])
+      })
     },
     setWebsocketConnections(state, websocketConnections) {
       Object.keys(websocketConnections).forEach(key => state.websocketConnections[key] = websocketConnections[key])

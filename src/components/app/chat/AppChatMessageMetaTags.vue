@@ -24,11 +24,11 @@ import { useStore } from 'vuex'
 import useSeo from '@/hooks/seo'
 
 export default {
+  emits: ['scroll-to-bottom'],
   props: {
     message: null,
-    scrollToBottom: Function,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
@@ -40,7 +40,7 @@ export default {
     const init = async () => {
       try {
         await tryMetaTags(link.value)
-        if (store.getters.chat.autoScrollable) props.scrollToBottom()
+        if (store.getters.chat.autoScrollable) emit('scroll-to-bottom')
       } catch (e) {}
     }
 

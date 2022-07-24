@@ -19,7 +19,7 @@
         class="app-chat-body no-scrollbar"
         @scroll="onScroll">
         <AppLoading :loading="loadingReplyTarget"/>
-        <AppChatIncomingMessageOverlay :scrollToBottom="scrollToBottom" :refFoldedIcon="refFoldedIcon"/>
+        <AppChatIncomingMessageOverlay @scroll-to-bottom="scrollToBottom" :refFoldedIcon="refFoldedIcon"/>
         <div
           @click="scrollToBottom"
           class="clickable-icon-wrapper scroll-to-bottom"
@@ -49,13 +49,13 @@
           <AppChatMessageMetaTags
             v-if="message.type !== 'image'"
             :message="message"
-            :scrollToBottom="scrollToBottom"
+            @scroll-to-bottom="scrollToBottom"
           />
         </div>
       </div>
       <AppChatInput ref="refAppChatInput"/>
     </div>
-    <AppChatToggler ref="refFoldedIcon" :scrollToBottom="scrollToBottom"/>
+    <AppChatToggler ref="refFoldedIcon" @scroll-to-bottom="scrollToBottom"/>
   </div>
 </template>
 
@@ -124,7 +124,7 @@ export default {
 
     const scrollToBottom = () => {
       // 바닥까지 스크롤된 경우 당연히 마지막 메시지가 최종 읽은 메시지이다.
-      store.commit('setChat', { lastReadMessage: messages.value[messages.value.length - 1] })
+      if (!store.getters.settings.chatFolded) store.commit('setChat', { lastReadMessage: messages.value[messages.value.length - 1] })
 
       const dom = refAppChatBody.value
       if (!dom) return

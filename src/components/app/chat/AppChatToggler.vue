@@ -16,49 +16,40 @@
 </template>
 
 <script>
-import { ref, computed, getCurrentInstance, watch, onMounted, nextTick } from 'vue'
+import { computed, getCurrentInstance, onMounted, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
 export default {
-  props: {
-    scrollToBottom: Function,
-  },
-  setup(props) {
+  emits: ['scroll-to-bottom'],
+  setup(_, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
 
     const { filteredMessages: messages } = useChatHandler()
 
-    const storedUnreads = ref(null)
+    const numUnreads = computed(() => {
+      return (messages.value || []).filter(message => {
+        if (!store.getters.chat.lastReadMessage) return
 
-    const numUnreads = computed(() => (messages.value || []).filter(message => {
-      if (!store.getters.chat.lastReadMessage) return
-
-      return message.timestamp > store.getters.chat.lastReadMessage.timestamp
-    }).length + (storedUnreads.value || 0))
+        return message.timestamp > store.getters.chat.lastReadMessage.timestamp
+      }).length
+    })
 
     const toggleChatFolded = () => {
       store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
-      if (!store.getters.settings.chatFolded) {
-        storedUnreads.value = 0
-        plugins.$helpers.localStorage.setMeta('numUnreads', storedUnreads.value)
-      }
+      // 펼쳐진 경우, 현재 로드된 마지막 메시지가 lastReadMessage가 되어야한다.
+      if (!store.getters.settings.chatFolded) store.commit('setChat', { lastReadMessage: messages.value[messages.value.length - 1] })
 
       nextTick(() => {
-        if (!store.getters.settings.chatFolded) props.scrollToBottom()
+        if (!store.getters.settings.chatFolded) emit('scroll-to-bottom')
       })
     }
 
     onMounted(() => {
-      storedUnreads.value = plugins.$helpers.localStorage.getMeta('numUnreads')
+      store.commit('setChat', { lastReadMessage: plugins.$helpers.localStorage.getMeta('lastReadMessage') })
     })
-
-    watch(
-      () => numUnreads.value,
-      newVal => plugins.$helpers.localStorage.setMeta('numUnreads', newVal),
-    )
 
     return {
       numUnreads,
