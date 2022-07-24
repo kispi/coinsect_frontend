@@ -20,7 +20,10 @@
       <i
         v-if="link"
         class="fal fa-times cursor-pointer m-l-16"
-        @click="link = null"
+        @click="() => {
+          link = null
+          refInput.focus()
+        }"
       />
     </div>
     <div v-if="error" class="validation-error width-limiter" v-html="error"/>
