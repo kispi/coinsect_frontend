@@ -29,6 +29,8 @@ const useSeo = () => {
     window.open(link, '_blank', 'noreferrer noopener')
   }
 
+  const useExamples = helperService.crawlExampleUrls
+
   const tryMetaTags = async link => {
     if (!link) return
 
@@ -39,11 +41,7 @@ const useSeo = () => {
 
     try {
       const data = await helperService.crawlMetaTags(link)
-      data.forEach(t => {
-        if ((t.property || '').endsWith(':image')) meta.value.image = t.content
-        if ((t.property || '').endsWith(':title')) meta.value.title = t.content
-        if ((t.property || '').endsWith(':description')) meta.value.description = t.content
-      })
+      meta.value = data.meta
     } catch (e) {
       return Promise.reject(e)
     }
@@ -52,6 +50,7 @@ const useSeo = () => {
   return {
     meta,
     reset,
+    useExamples,
     tryMetaTags,
     onClickMetaCard,
   }

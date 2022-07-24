@@ -1,11 +1,13 @@
 <template>
   <div class="view-seo">
     <AppLoading :loading="loading"/>
+    <div class="description">여러분이 좋아하는 사이트의 주소를 넣고, 메타 데이터를 확인해보세요!</div>
+    <div v-if="tried" class="btn btn-primary" @click="onClickRecommend" v-html="$translate('랜덤 URL 추천받기')"/>
     <div
       class="input-wrapper width-limiter"
       :class="{'error': error}">
       <i
-        @click="callApi"
+        @click="onEnter"
         class="fal fa-search m-r-16"
       />
       <input
@@ -15,7 +17,6 @@
         @keydown.enter="onEnter"
         @paste="onPaste"
       >
-      <div v-if="tried" class="recommend" @click="onClickRecommend" v-html="$translate('NEW')"/>
       <i
         v-if="link"
         class="fal fa-times cursor-pointer m-l-16"
@@ -37,7 +38,7 @@
       </div>
       <i
         class="fal fa-times center"
-        @click.stop="init"
+        @click.stop="initParams"
       />
       <div
         v-if="meta.image"
@@ -57,7 +58,6 @@
 <script>
 import { onMounted, ref, watch } from 'vue'
 import useSeo from '@/hooks/seo'
-import sites from './sites.json'
 
 export default {
   setup() {
@@ -75,9 +75,11 @@ export default {
 
     const tried = ref(null)
 
-    const { meta, onClickMetaCard, reset, tryMetaTags } = useSeo()
+    const sites = ref(null)
 
-    const init = () => {
+    const { meta, onClickMetaCard, reset, tryMetaTags, useExamples } = useSeo()
+
+    const initParams = () => {
       link.value = null
       submitted.value = null
       error.value = null
@@ -89,7 +91,7 @@ export default {
       if (!link.value || loading.value) return
 
       // 아래 regex를 helpers.dom에서 export해서 쓰면 이상하게 작동함... 브라우저 버그인가?
-      if (!/\b(?:https?|ftp):\/\/[a-z0-9-+&@#/%?=~_|!:,.;]*[a-z0-9-+&@#/%=~_|]/gim.test(link.value)) {
+      if (!link.value.includes('.')) {
         error.value = '입력하신 url이 유효하지 않습니다 :('
         return
       }
@@ -114,7 +116,9 @@ export default {
       })
     }
 
-    const onEnter = () => {
+    const onEnter = e => {
+      if (e) e.target.blur()
+
       if (!link.value) link.value = placeholder.value
 
       callApi()
@@ -129,13 +133,20 @@ export default {
     }
 
     const recommend = () => {
-      const newOne = sites[Math.floor(Math.random() * sites.length)]
+      const newOne = sites.value[Math.floor(Math.random() * sites.value.length)]
       if (newOne === placeholder.value) return recommend()
 
       placeholder.value = newOne
     }
 
-    onMounted(recommend)
+    const init = async () => {
+      try {
+        sites.value = await useExamples()
+        recommend()
+      } catch (e) {}
+    }
+
+    onMounted(init)
 
     watch(
       () => link.value,
@@ -153,7 +164,7 @@ export default {
       placeholder,
       error,
       loading,
-      init,
+      initParams,
       reset,
       recommend,
       onEnter,
@@ -167,6 +178,18 @@ export default {
 
 <style lang="scss" scoped>
 .view-seo {
+  .description {
+    font-size: 14px;
+    margin: 16px 0;
+    text-align: center;
+  }
+
+  .btn-primary {
+    display: table;
+    margin: 16px auto;
+    border-radius: 0;
+  }
+
   .input-wrapper {
     display: flex;
     align-items: center;
@@ -178,20 +201,16 @@ export default {
       font-size: 14px;
     }
 
-    &.error {
-      border: 1px solid var(--danger);
-    }
-
-    .recommend {
-      white-space: nowrap;
-      margin-left: 16px;
-      user-select: none;
+    i {
+      cursor: pointer;
 
       &:hover {
         color: var(--text-stress);
-        text-decoration: underline;
-        cursor: pointer;
       }
+    }
+
+    &.error {
+      border: 1px solid var(--danger);
     }
   }
 
@@ -207,6 +226,7 @@ export default {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     border: 1px solid var(--border-base);
     position: relative;
+    min-height: 80px;
     cursor: pointer;
 
     .empty-meta {
