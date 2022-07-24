@@ -26,7 +26,7 @@
         }"
       />
     </div>
-    <div v-if="error" class="validation-error width-limiter" v-html="error"/>
+    <div v-if="error" class="validation-error width-limiter m-t-8" v-html="error"/>
     <div
       v-if="tried && !error && !loading"
       class="meta-card width-limiter m-t-40"
@@ -39,8 +39,7 @@
         v-if="!meta.title && !meta.image && !meta.description"
         class="empty-meta center">
         <div>
-          웹사이트 {{ submitted }}에는<br>
-          유의미한 메타 정보(타이틀, 설명, 이미지)가 없네요 :)
+          웹사이트 {{ submitted }}에서 유의미한 메타 정보(타이틀, 설명, 이미지)를 찾지 못했습니다 :(
         </div>
       </div>
       <div
@@ -48,7 +47,7 @@
         class="meta-image"
         :class="{'has-image': meta.image}">
         <AppImg v-if="meta.image" :src="meta.image" class="overlay"/>
-        <div v-else class="center p-t-24 p-b-24">웹사이트 {{ submitted }}에는 메타 이미지가 없네요 :)</div>
+        <div v-else class="center p-t-24 p-b-24">웹사이트 {{ submitted }}에서 메타 이미지를 찾지 못했습니다 :(</div>
       </div>
       <div
         v-if="meta.title || meta.description"
