@@ -37,17 +37,15 @@
       />
       <div
         v-if="!meta.title && !meta.image && !meta.description"
-        class="empty-meta center">
-        <div>
-          웹사이트 {{ submitted }}에서 유의미한 메타 정보(타이틀, 설명, 이미지)를 찾지 못했습니다 :(
-        </div>
+        class="empty-meta center p-16">
+        웹사이트 {{ submitted }}에서 유의미한 메타 정보(타이틀, 설명, 이미지)를 찾지 못했습니다 :(
       </div>
       <div
         v-else
         class="meta-image"
         :class="{'has-image': meta.image}">
         <AppImg v-if="meta.image" :src="meta.image" class="overlay"/>
-        <div v-else class="center p-t-24 p-b-24">웹사이트 {{ submitted }}에서 메타 이미지를 찾지 못했습니다 :(</div>
+        <div v-else class="center p-16">웹사이트 {{ submitted }}에서 메타 이미지를 찾지 못했습니다 :(</div>
       </div>
       <div
         v-if="meta.title || meta.description"
