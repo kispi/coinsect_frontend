@@ -20,7 +20,7 @@
             <div class="mrt-nickname">To: {{ meta.replyTo.nickname }}</div>
             <div class="mrt-text lines-1">{{ meta.replyTo.text }}</div>
           </div>
-          <div v-html="$helpers.dom.linkify(message.text)"/>
+          <div v-html="$helpers.dom.linkify(message.text)" @click.prevent="onClickMessage"/>
         </div>
         <div class="additional">
           <div
@@ -41,6 +41,7 @@
 
 <script>
 import { computed, getCurrentInstance } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
   emits: ['click-function', 'click-replied-message'],
@@ -48,9 +49,24 @@ export default {
   setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
+    const router = useRouter()
+
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
     const onClickImage = url => window.open(url, '_blank', 'noopener')
+
+    const onClickMessage = e => {
+      const link = e.target.attributes['href'].value
+      if (!link) return
+
+      if (link.includes('coinsect.io')) {
+        const path = link.split('coinsect.io')[1]
+        if (path) router.push(path)
+        return
+      }
+
+      window.open(link, '_blank', 'noreferrer noopener')
+    }
 
     const meta = computed(() => {
       try {
@@ -84,6 +100,7 @@ export default {
       meta,
       showProfile,
       showTimestamp,
+      onClickMessage,
       onClickImage,
     }
   },

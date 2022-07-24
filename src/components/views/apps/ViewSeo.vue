@@ -2,7 +2,7 @@
   <div class="view-seo">
     <AppLoading :loading="loading"/>
     <div class="description">여러분이 좋아하는 사이트의 주소를 넣고, 메타 데이터를 확인해보세요!</div>
-    <div v-if="tried" class="btn btn-primary" @click="onClickRecommend" v-html="$translate('랜덤 URL 추천받기')"/>
+    <div class="btn btn-primary" @click="onClickRecommend" v-html="$translate('랜덤 URL 추천받기')"/>
     <div
       class="input-wrapper width-limiter"
       :class="{'error': error}">
@@ -23,7 +23,7 @@
         @click="link = null"
       />
     </div>
-    <div v-if="error" class="validation-error width-limiter m-t-8" v-html="error"/>
+    <div v-if="error" class="validation-error width-limiter" v-html="error"/>
     <div
       v-if="tried && !error && !loading"
       class="meta-card width-limiter m-t-40"
@@ -40,10 +40,9 @@
         class="fal fa-times center"
         @click.stop="initParams"
       />
-      <div
-        v-if="meta.image"
-        class="meta-image">
-        <AppImg :src="meta.image" class="overlay"/>
+      <div class="meta-image" :class="{'has-image': meta.image}">
+        <AppImg v-if="meta.image" :src="meta.image" class="overlay"/>
+        <div v-else class="center p-t-24 p-b-24">웹사이트 {{ submitted }}에는 메타 이미지가 없네요 :)</div>
       </div>
       <div
         v-if="meta.title || meta.description"
@@ -126,10 +125,8 @@ export default {
 
     const onClickRecommend = () => {
       recommend()
-      if (link.value) {
-        link.value = placeholder.value
-        callApi()
-      }
+      link.value = placeholder.value
+      callApi()
     }
 
     const recommend = () => {
@@ -257,12 +254,14 @@ export default {
 
     .app-loading {
       position: initial;
-      padding-top: 56.25%;
     }
 
     .meta-image {
-      padding-top: 56.25%;
       position: relative;
+
+      &.has-image {
+        padding-top: 56.25%;
+      }
     }
 
     .meta-info {
@@ -279,7 +278,10 @@ export default {
       .meta-description {
         font-size: 10px;
         line-height: 16px;
-        margin-top: 8px;
+      }
+
+      > div:not(:last-child) {
+        margin-bottom: 8px;
       }
     }
   }
