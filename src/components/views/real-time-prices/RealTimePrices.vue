@@ -63,7 +63,7 @@
     <div
       v-if="displayedList.length === 0 && !calculating && connected"
       class="empty">
-      <div class="m-b-8">검색된 코인이 없네요 :(</div>
+      <div class="m-b-8">검색된 코인이 없네요 🤔</div>
       <div>혹시 즐겨찾기한 코인이 없는 상태인데 설정에서 필터를 '즐겨찾기'로 하신건 아닌지, 혹은 검색되지 않는 코인을 검색어로 입력하신 건 아닌지 확인해보세요!</div>
     </div>
   </div>

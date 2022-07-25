@@ -45,6 +45,11 @@
           /> -->
         </article>
       </a>
+      <div
+        v-if="data.length === 0"
+        class="news-empty center">
+        아직 오늘자({{ params.current_time }}) 뉴스가 올라오지 않았어요 😅
+      </div>
       <AppLoader v-if="loading" class="m-a"/>
     </div>
     <PoweredBy :by="'cobak'" :link="'https://cobak.co.kr/news/home'" class="m-t-24"/>
@@ -173,6 +178,12 @@ export default {
 
   .article-list {
     border: 1px solid var(--border-base);
+  }
+
+  .news-empty {
+    padding: 80px 0;
+    color: var(--text-stress);
+    font-size: 16px;
   }
 
   .article-item {

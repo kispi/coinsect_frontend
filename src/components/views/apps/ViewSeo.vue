@@ -38,14 +38,14 @@
       <div
         v-if="!meta.title && !meta.image && !meta.description"
         class="empty-meta center p-16">
-        웹사이트 {{ submitted }}에서 유의미한 메타 정보(타이틀, 설명, 이미지)를 찾지 못했습니다 :(
+        웹사이트 {{ submitted }}에서 유의미한 메타 정보(타이틀, 설명, 이미지)를 찾지 못했습니다 😥
       </div>
       <div
         v-else
         class="meta-image"
         :class="{'has-image': meta.image}">
         <AppImg v-if="meta.image" :src="meta.image" class="overlay"/>
-        <div v-else class="center p-16">웹사이트 {{ submitted }}에서 메타 이미지를 찾지 못했습니다 :(</div>
+        <div v-else class="center p-16">웹사이트 {{ submitted }}에서 메타 이미지를 찾지 못했습니다 😥</div>
       </div>
       <div
         v-if="meta.title || meta.description"
@@ -94,7 +94,7 @@ export default {
 
       // 아래 regex를 helpers.dom에서 export해서 쓰면 이상하게 작동함... 브라우저 버그인가?
       if (!link.value.includes('.')) {
-        error.value = '입력하신 url이 유효하지 않습니다 :('
+        error.value = '입력하신 url이 유효하지 않습니다 😥'
         return
       }
 
