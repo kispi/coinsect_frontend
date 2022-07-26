@@ -41,7 +41,7 @@
       class="position-group"
       :key="idx"
       v-for="(positionGroup, idx) in [positions.tracked, positions.nonTracked]">
-      <div v-if="idx === 1" class="group-title" @click="showUntracked = !showUntracked">모니터링하고 있지 않은 스트리머들<i class="fal m-l-4" :class="showUntracked ? 'fa-chevron-up' : 'fa-chevron-down'"/></div>
+      <div v-if="idx === 1" class="group-title" @click="showUntracked = !showUntracked">모니터링하고 있지 않은 트레이더들<i class="fal m-l-4" :class="showUntracked ? 'fa-chevron-up' : 'fa-chevron-down'"/></div>
       <transition name="slide-down">
         <div
           v-if="showUntracked || idx === 0"
@@ -57,12 +57,12 @@
     <div
       v-if="($store.getters.realTimePositions.data || []).filter(o => o.editable).length === 0"
       class="empty">
-      유의미한 크기의 포지션을 갖고 있거나 포지션을 알 수 있는 관심 스트리머가 없는 것 같네요 ㅜ.ㅜ
+      유의미한 크기의 포지션을 갖고 있거나 포지션을 알 수 있는 관심 트레이더가 없는 것 같네요 ㅜ.ㅜ
     </div>
     <div class="description">
       <div>* 운영자가 각 방송을 모니터링하며 입력하므로 약간의 지연이 있을 수 있으며, 최신정보임을 보장할 수 없습니다. 업데이트된지 오래된 경우 신뢰하지 마십시오. 어떤 경우이든 재미로만 보시고, 호반꿀이든 짭반꿀이든 <b>절대로 타인의 매매를 참고하여 매매하지 마십시오</b>.</div>
-      <div>* 포지션을 클릭하시면 해당 스트리머의 방송국으로 가거나, 포지션 업데이트를 요청하실 수 있습니다.</div>
-      <div>* 가능하다면 해당 스트리머의 방송을 실제 시청하여 확인하시기 바랍니다.</div>
+      <div>* 포지션을 클릭하시면 해당 트레이더의 방송국으로 가거나, 포지션 업데이트를 요청하실 수 있습니다.</div>
+      <div>* 가능하다면 해당 트레이더의 방송을 실제 시청하여 확인하시기 바랍니다.</div>
       <div>* 포지션 정보는 운영자가 업데이트하면 즉시 반영되고, 5분 간격으로 새로 가져옵니다. 만약 현재 방송으로 보고 있는 포지션과 다른 경우 새로고침을 해보십시오.</div>
       <div>* 포지션의 규모가 너무 작거나(정찰병같은) 거미줄이 체결되는 상황등 포지션 변동이 잦은 경우 모니터링 대상에서 제외될 수 있습니다.</div>
       <div>* 사용되는 시장평균가는 Bybit USDT 마켓 기준이며, Binance, Bitget 또는 MEXC등 타 거래소들에서 산정한 시장평균가와는 차이가 있을 수 있습니다.</div>
@@ -111,11 +111,16 @@ export default {
     const showUntracked = ref(null)
 
     const sorter = (a, b) => {
-      if (a.onAir && b.onAir) return Math.abs(a.$$value) > Math.abs(b.$$value) ? -1 : 1
+      if (
+        (a.onAir && b.onAir) ||
+        (!a.onAir && !b.onAir)
+      ) {
+        if (a.entryPrice && !b.entryPrice) return -1
+
+        return Math.abs(a.$$value) > Math.abs(b.$$value) ? -1 : 1
+      }
 
       if (a.onAir) return -1
-
-      if (!a.onAir && !b.onAir) return a.entryPrice ? -1 : 1
     }
 
     const positions = computed(() => {
