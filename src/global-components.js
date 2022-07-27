@@ -15,7 +15,7 @@ import AppSlider from '@/components/app/AppSlider'
 import AppToggler from '@/components/app/AppToggler'
 import AppTooltip from '@/components/app/AppTooltip'
 import AudioRecorder from '@/components/app/AudioRecorder'
-import Quill from '@/components/app/quill/Quill'
+import ToastUIEditor from '@/components/app/ToastUIEditor'
 import ImageUploader from '@/components/app/ImageUploader'
 import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 
@@ -66,7 +66,7 @@ const useGlobalComponents = app => {
     .component('AppToggler', AppToggler)
     .component('AppTooltip', AppTooltip)
     .component('AudioRecorder', AudioRecorder)
-    .component('Quill', Quill)
+    .component('ToastUIEditor', ToastUIEditor)
     .component('ImageUploader', ImageUploader)
     .component('WrapperDropdownOverlay', WrapperDropdownOverlay)
 

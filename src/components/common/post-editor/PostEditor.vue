@@ -1,11 +1,27 @@
 <template>
   <div class="post-editor">
     <form class="nickname-and-password" @submit.prevent>
-      <input v-model="payload.nickname" class="nickname" :placeholder="$translate('PLACEHOLDER_NICKNAME')" :maxlength="(($store.getters.config || {}).maxlength || {}).nickname">
-      <input v-model="payload.password" class="password" :placeholder="$translate('PLACEHOLDER_PASSWORD')" type="password" autocomplete="post-password">
+      <input
+        v-model="payload.nickname"
+        class="nickname bg-white c-black"
+        :placeholder="$translate('PLACEHOLDER_NICKNAME')"
+        :maxlength="(($store.getters.config || {}).maxlength || {}).nickname"
+      >
+      <input
+        v-model="payload.password"
+        class="password bg-white c-black"
+        :placeholder="$translate('PLACEHOLDER_PASSWORD')"
+        type="password"
+        autocomplete="post-password"
+      >
     </form>
-    <input v-model="payload.title" class="title" :placeholder="$translate('PLACEHOLDER_TITLE')" :maxlength="(($store.getters.config || {}).maxlength || {}).title">
-    <Quill v-model="payload.content"/>
+    <input
+      v-model="payload.title"
+      class="title bg-white c-black"
+      :placeholder="$translate('PLACEHOLDER_TITLE')"
+      :maxlength="(($store.getters.config || {}).maxlength || {}).title"
+    >
+    <ToastUIEditor v-model="payload.content"/>
     <div class="buttons">
       <button
         @click="$router.push('/community')"
@@ -111,9 +127,8 @@ export default {
     margin-bottom: var(--editor-gap);
   }
 
-  textarea {
-    height: 320px;
-    resize: vertical;
+  input {
+    border-radius: 4px;
   }
 
   .buttons {

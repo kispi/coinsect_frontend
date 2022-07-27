@@ -66,8 +66,7 @@ textarea {
 #app.dark {
   input,
   textarea,
-  select,
-  .quill {
+  select {
     color: var(--text-stress);
     background: var(--background-light);
   }

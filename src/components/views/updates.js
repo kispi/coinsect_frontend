@@ -6,6 +6,7 @@ export default [{
     '채팅에 사진 첨부 기능 추가',
     '채팅에서 다른 사람에게 답장하는 기능 추가',
     '앱 > 검색 엔진 최적화 페이지 추가',
+    'WYSIWYG 에디터를 Quill > ToastUIEditor로 교환',
   ],
 }, {
   date: '2022-05',

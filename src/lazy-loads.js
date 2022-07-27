@@ -9,9 +9,33 @@ const useLazyLoads = async () => {
     helpers.dom.loadScript({ url: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3069752836489386' })
   }
 
-  const loadQuill = async () => {
-    await helpers.dom.loadScript({ url: '//cdn.quilljs.com/1.3.7/quill.min.js'})
-  }
+  // 스크립트 로딩 순서 중요
+  const loadToastUIEditor = () => Promise.all([
+    helpers.dom.loadScript({ url: '//uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js' }),
+    helpers.dom.loadScript({ url: '//uicdn.toast.com/editor/latest/toastui-editor-all.min.js' }),
+    helpers.dom.loadScript({ url: '//uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js' }),
+    helpers.dom.loadLink({
+      url: '//uicdn.toast.com/editor/latest/toastui-editor.min.css',
+      attributes: [{
+        key: 'rel',
+        value: 'stylesheet',
+      }],
+    }),
+    helpers.dom.loadLink({
+      url: '//uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css',
+      attributes: [{
+        key: 'rel',
+        value: 'stylesheet',
+      }],
+    }),
+    helpers.dom.loadLink({
+      url: '//uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css',
+      attributes: [{
+        key: 'rel',
+        value: 'stylesheet',
+      }],
+    }),
+  ])
 
   const loadVendors = async () => {
     await Promise.all([
@@ -21,7 +45,7 @@ const useLazyLoads = async () => {
   }
 
   await Promise.all([
-    loadQuill(),
+    loadToastUIEditor(),
     loadGooglePlugins(),
     loadVendors(),
   ])

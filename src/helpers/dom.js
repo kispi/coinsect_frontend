@@ -70,6 +70,19 @@ const dom = {
     document.head.appendChild(scriptTag)
     $store.commit('addLazyLoadedScriptUrl', url)
   }),
+  loadLink: ({ url, attributes }) => new Promise(resolve => {
+    if ($store.getters.lazyLoadedScriptUrls.includes(url)) {
+      resolve()
+      return
+    }
+
+    const linkTag = document.createElement('link')
+    if (attributes) attributes.forEach(attr => linkTag.setAttribute(attr.key, attr.value))
+    linkTag.href = url
+    linkTag.onload = resolve
+    document.head.appendChild(linkTag)
+    $store.commit('addLazyLoadedScriptUrl', url)
+  }),
   linkify: text => text
     .replace(regex.url, `<a href="$&" class='text-underline c-brand-primary' rel='noopener noreferrer' target="_blank">$&</a>`)
     .replace(regex.pseudoUrl, `$1<a href="http://$2" class='text-underline c-brand-primary' rel='noopener noreferrer' target="_blank">$2</a>`)

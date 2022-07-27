@@ -1,6 +1,6 @@
 <template>
   <div class="view-post-edit">
-    <template v-if="post">
+    <template v-if="editable">
       <ButtonCommunity/>
       <PostEditor :post="post"/>
       <TablePosts/>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import communityService from '@/services/community'
@@ -23,6 +23,8 @@ export default {
     const router = useRouter()
 
     const post = computed(() => store.getters.post)
+
+    const editable = ref(null)
 
     const sharingKey = router.currentRoute.value.params.sharingKey
 
@@ -38,6 +40,7 @@ export default {
         await communityService.checkPassword.post({ sharingKey, password: value })
         await store.dispatch('loadPost', sharingKey)
         post.value.$$originalPassword = value
+        editable.value = true
       } catch (e) {
         plugins.$toast.error(plugins.$translate('INCORRECT_PASSWORD'))
         router.push(`/community/${sharingKey}`)
@@ -48,6 +51,7 @@ export default {
 
     return {
       post,
+      editable,
     }
   },
 }
