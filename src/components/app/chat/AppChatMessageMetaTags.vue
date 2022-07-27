@@ -40,7 +40,7 @@ export default {
     const init = async () => {
       try {
         await tryMetaTags(link.value)
-        if (store.getters.chat.autoScrollable) emit('scroll-to-bottom')
+        setTimeout(() => store.getters.chat.autoScrollable ? emit('scroll-to-bottom') : null)
       } catch (e) {}
     }
 

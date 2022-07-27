@@ -37,7 +37,7 @@ const useSeo = () => {
   const tryMetaTags = async link => {
     if (!link || numTrial.value >= 5) {
       numTrial.value = 0
-      return
+      return Promise.reject(e)
     }
 
     if (['.jpg', '.jpeg', '.png', '.svg', '.gif'].some(ext => link.endsWith(ext))) {
