@@ -75,12 +75,23 @@ export default {
 
 <style lang="scss">
 .toast-ui-editor {
-  .toastui-editor-mode-switch {
+  .toastui-editor-mode-switch,
+  label[for=toastuiAltTextInput],
+  input#toastuiAltTextInput {
     display: none !important;
   }
 
   .toastui-editor-contents {
     z-index: 0;
+  }
+
+  .toastui-editor-popup,
+  .toastui-editor-dropdown-toolbar {
+    z-index: 1;
+  }
+
+  .toastui-editor-defaultUI .ProseMirror {
+    padding: 16px;
   }
 
   input {
