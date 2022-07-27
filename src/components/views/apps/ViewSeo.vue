@@ -178,6 +178,10 @@ export default {
 
 <style lang="scss" scoped>
 .view-seo {
+  .app-loading {
+    position: fixed;
+  }
+
   .description {
     font-size: 14px;
     margin: 16px 0;
@@ -253,10 +257,6 @@ export default {
       &:hover {
         background: var(--brand-primary-hover-bg);
       }
-    }
-
-    .app-loading {
-      position: initial;
     }
 
     .meta-image {
