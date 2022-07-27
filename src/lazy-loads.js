@@ -1,6 +1,6 @@
 import helpers from '@/helpers'
 
-const useLazyLoads = async () => {
+const useLazyLoads = () => {
   const loadGooglePlugins = async () => {
     if (process.env.NODE_ENV !== 'production') return
 
@@ -9,33 +9,36 @@ const useLazyLoads = async () => {
     helpers.dom.loadScript({ url: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3069752836489386' })
   }
 
-  // 스크립트 로딩 순서 중요
-  const loadToastUIEditor = () => Promise.all([
-    helpers.dom.loadScript({ url: '//uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js' }),
-    helpers.dom.loadScript({ url: '//uicdn.toast.com/editor/latest/toastui-editor-all.min.js' }),
-    helpers.dom.loadScript({ url: '//uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js' }),
-    helpers.dom.loadLink({
-      url: '//uicdn.toast.com/editor/latest/toastui-editor.min.css',
-      attributes: [{
-        key: 'rel',
-        value: 'stylesheet',
-      }],
-    }),
-    helpers.dom.loadLink({
-      url: '//uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css',
-      attributes: [{
-        key: 'rel',
-        value: 'stylesheet',
-      }],
-    }),
-    helpers.dom.loadLink({
-      url: '//uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css',
-      attributes: [{
-        key: 'rel',
-        value: 'stylesheet',
-      }],
-    }),
-  ])
+  const loadToastUIEditor = async () => {
+    // 스크립트 로딩 순서 중요 (await 생략 불가)
+    await helpers.dom.loadScript({ url: '//uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js' })
+    await helpers.dom.loadScript({ url: '//uicdn.toast.com/editor/latest/toastui-editor-all.min.js' })
+    await helpers.dom.loadScript({ url: '//uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js' })
+
+    return Promise.all([
+      helpers.dom.loadLink({
+        url: '//uicdn.toast.com/editor/latest/toastui-editor.min.css',
+        attributes: [{
+          key: 'rel',
+          value: 'stylesheet',
+        }],
+      }),
+      helpers.dom.loadLink({
+        url: '//uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css',
+        attributes: [{
+          key: 'rel',
+          value: 'stylesheet',
+        }],
+      }),
+      helpers.dom.loadLink({
+        url: '//uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css',
+        attributes: [{
+          key: 'rel',
+          value: 'stylesheet',
+        }],
+      }),
+    ])
+  }
 
   const loadVendors = async () => {
     await Promise.all([
@@ -44,11 +47,15 @@ const useLazyLoads = async () => {
     ])
   }
 
-  await Promise.all([
-    loadToastUIEditor(),
+  const loadDefaults = () => Promise.all([
     loadGooglePlugins(),
     loadVendors(),
   ])
+
+  return {
+    loadDefaults,
+    loadToastUIEditor,
+  }
 }
 
 export default useLazyLoads

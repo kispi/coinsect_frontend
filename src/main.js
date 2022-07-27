@@ -19,7 +19,7 @@ export default () => {
   const app = (isSSR ? createSSRApp : createApp)(App)
   app.use(store).use(router)
   Object.values(plugins).forEach(app.use)
-  if (!isSSR) useLazyLoads()
+  if (!isSSR) useLazyLoads().loadDefaults()
   useGlobalComponents(app)
 
   return {

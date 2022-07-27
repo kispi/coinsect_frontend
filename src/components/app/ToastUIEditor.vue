@@ -8,6 +8,7 @@
 <script>
 import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
 import s3Service from '@/services/s3'
+import useLazyLoads from '@/lazy-loads'
 
 export default {
   emits: ['update:modelValue'],
@@ -21,8 +22,13 @@ export default {
 
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
-    const init = () => {
-      if (typeof toastui === 'undefined') return
+    const { loadToastUIEditor } = useLazyLoads()
+
+    const init = async () => {
+      if (typeof toastui === 'undefined') {
+        await loadToastUIEditor()
+        return init()
+      }
 
       const { Editor } = toastui
 
@@ -53,7 +59,7 @@ export default {
     }
 
     onMounted(() => {
-      setTimeout(init, 50)
+      setTimeout(init)
     })
 
     onUnmounted(() => {
