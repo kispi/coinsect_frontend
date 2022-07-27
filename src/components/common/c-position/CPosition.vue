@@ -85,7 +85,7 @@ export default {
     const isDanger = position => {
       if (!position.liqPrice) return
 
-      return Math.abs(position.liqPrice - position.markPrice)  / position.markPrice < 0.005
+      return position.$$unrealized < 0 && ((Math.abs(position.liqPrice - position.markPrice)  / position.markPrice) < 0.005)
     }
 
     const display = key => {
