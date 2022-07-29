@@ -40,6 +40,7 @@ const post = {
       if (params.limit) o.limit(params.limit)
       if (params.offset) o.offset(params.offset)
       if (params.keyword) o.query(`keyword=${params.keyword}`)
+      o.where('post_type = "normal"')
 
       try {
         commit('setLoading', { posts: true })
