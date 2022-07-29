@@ -64,12 +64,16 @@
       @page="onPage"
     />
     <div
+      @click="() => {
+        focus = true
+        refInput.focus()
+      }"
       class="input-wrapper search-bar"
       :class="{'focus': focus}">
       <i
         class="fal fa-search"
         :class="{'disabled': !payload.keyword}"
-        @click="loadPosts"
+        @click.stop="loadPosts"
       />
       <input
         ref="refInput"
@@ -82,7 +86,7 @@
       <i
         v-if="payload.keyword"
         class="fal fa-times"
-        @click="() => {
+        @click.stop="() => {
           payload.keyword = null
           refInput.focus()
         }"
