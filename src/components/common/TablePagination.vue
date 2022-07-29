@@ -6,7 +6,7 @@
         :key="page"
         v-for="page in displayPages"
         class="page-icon center lines-1 flex-wrap"
-        :class="{'selected': currentIndex === page}">
+        :class="{'selected': parseInt(currentIndex) === parseInt(page)}">
         {{ page + 1 }}
       </div>
     </div>
