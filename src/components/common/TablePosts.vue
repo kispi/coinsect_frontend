@@ -42,15 +42,15 @@
               v-html="$helpers.template.writer(row)"
             />
             <div
-              class="cell date">
+              class="cell date f-mono">
               {{ $helpers.template.prettyTime(row.createdAt, true) }}
             </div>
             <div
-              class="cell number">
+              class="cell number f-mono">
               <span v-if="$store.getters.isMobile">조회</span> {{ row.views }}
             </div>
             <div
-              class="cell number">
+              class="cell number f-mono">
               <span v-if="$store.getters.isMobile">추천</span> {{ (row.reactions || []).filter(o => o.type === 'up').length }}
             </div>
           </div>
@@ -58,11 +58,36 @@
       </a>
     </div>
     <TablePagination
-      :limit="limit"
+      :limit="payload.limit"
       :total="$store.getters.posts.total"
-      :currentIndex="page"
-      @page="loadPosts"
+      :currentIndex="payload.page"
+      @page="onPage"
     />
+    <div
+      class="input-wrapper search-bar"
+      :class="{'focus': focus}">
+      <i
+        class="fal fa-search"
+        :class="{'disabled': !payload.keyword}"
+        @click="loadPosts"
+      />
+      <input
+        ref="refInput"
+        placeholder="작성자, 글 제목, 내용 등"
+        v-model="payload.keyword"
+        @keydown="onKeydown"
+        @click="focus = true"
+        @blur="focus = false"
+      >
+      <i
+        v-if="payload.keyword"
+        class="fal fa-times"
+        @click="() => {
+          payload.keyword = null
+          refInput.focus()
+        }"
+      />
+    </div>
   </div>
 </template>
 
@@ -81,13 +106,30 @@ export default {
 
     const router = useRouter()
 
-    const page = ref(0)
+    const refInput = ref(null)
 
-    const limit = ref(20)
+    const focus = ref(null)
+
+    const payload = ref({
+      page: router.currentRoute.value.query.page || 0,
+      limit: router.currentRoute.value.query.limit || 20,
+      keyword: router.currentRoute.value.query.keyword,
+    })
 
     const posts = computed(() => store.getters.posts)
 
     const notices = computed(() => store.getters.notices)
+
+    const onKeydown = e => {
+      setTimeout(() => {
+        payload.value.keyword = (e.target.value || '').trim()
+        if (e.key === 'Enter' && !e.isComposing) {
+          payload.value.page = 0
+          if (!payload.value.keyword) payload.value.limit = 20
+          onPage(payload.value.page)
+        }
+      })
+    }
 
     const iconPostType = row => {
       if (row.postType === 'notice') return 'fa-exclamation-circle'
@@ -105,16 +147,24 @@ export default {
       return row.id
     }
 
+    const queryString = () => `${Object.keys(payload.value).filter(key => payload.value[key]).map(key => `${key}=${payload.value[key]}`).join('&')}`
+
     const onClickRow = row => {
-      router.push(`/community/${row.sharingKey}`)
+      router.push(`/community/${row.sharingKey}?${queryString()}`)
+      setTimeout(loadPosts)
     }
 
-    const loadPosts = async p => {
-      if (typeof p === 'number') page.value = p
+    const onPage = page => {
+      payload.value.page = page
+      router.push(`/community?${queryString()}`)
+      setTimeout(loadPosts)
+    }
 
+    const loadPosts = async () => {
       await store.dispatch('loadPosts', {
-        limit: limit.value,
-        offset: page.value * limit.value,
+        limit: payload.value.limit,
+        offset: payload.value.page * payload.value.limit,
+        keyword: payload.value.keyword,
       })
       plugins.$helpers.dom.scrollToTop()
     }
@@ -128,23 +178,21 @@ export default {
 
     onMounted(callApi)
 
-    watch(
-      () => (store.getters.post || {}).id,
-      () => loadPosts(),
-    )
-
     onServerPrefetch(callApi)
 
     return {
-      page,
-      limit,
+      refInput,
+      focus,
+      payload,
       notices,
       posts,
       iconPostType,
       isActivePost,
       postNumber,
+      onPage,
       loadPosts,
       onClickRow,
+      onKeydown,
     }
   },
 }
@@ -240,6 +288,44 @@ export default {
 
   .id-title {
     flex: 1;
+  }
+
+  .search-bar {
+    padding: 8px;
+    border-radius: 4px;
+    width: 240px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+
+    input {
+      margin: 0 8px;
+      font-size: 16px;
+    }
+
+    .fa-search {
+      &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
+
+    i {
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-stress);
+      border-radius: 50%;
+      cursor: pointer;
+
+      &:hover {
+        background: var(--brand-primary-hover-bg);
+      }
+    }
   }
 
   .content {

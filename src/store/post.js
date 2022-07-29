@@ -39,7 +39,7 @@ const post = {
       const o = helpers.qb().base()
       if (params.limit) o.limit(params.limit)
       if (params.offset) o.offset(params.offset)
-      o.where('post_type = "normal"')
+      if (params.keyword) o.query(`keyword=${params.keyword}`)
 
       try {
         commit('setLoading', { posts: true })

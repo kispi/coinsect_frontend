@@ -11,6 +11,11 @@ const queryBuilder = () => ({
     return this
   },
 
+  query: function(query) {
+    this.queryParams.query = query
+    return this
+  },
+
   // 일단은 exp 직접사용하도록 구현
   where: function(exp) {
     this.queryParams.where = encodeURI(exp)
