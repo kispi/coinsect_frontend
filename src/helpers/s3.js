@@ -1,1 +1,1 @@
-export default key => `https://coinsect-production.s3.ap-northeast-2.amazonaws.com/${key}`
+export default key => `${process.env.VUE_APP_CDN}/${key}`

@@ -48,10 +48,10 @@ export default {
         hooks: {
           addImageBlobHook: async (file, callback) => {
             try {
-              const url = await s3Service.upload(file, props.path)
+              const url = await s3Service.upload(file, 'boards/free_board')
               callback(url)
             } catch (e) {
-              plugins.$toast.error('이미지 업로드에 실패하였습니다. 다시 시도해주세요.')
+              plugins.$toast.error(e.data.message)
             }
           },
         },
