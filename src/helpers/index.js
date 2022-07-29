@@ -11,7 +11,7 @@ import modal from './modal'
 import number from './number'
 import querybuilder from './querybuilder'
 import social from './social'
-import useS3 from './s3'
+import withCdn from './s3'
 import template from './template'
 import toast from './toast'
 import tooltip from './tooltip'
@@ -65,7 +65,7 @@ const helpers = {
 
     return `${d}초 전`
   },
-  useS3,
+  withCdn,
   canSkipApiCall,
   qb: querybuilder,
   translate,

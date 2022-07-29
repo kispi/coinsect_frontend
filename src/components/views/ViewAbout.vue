@@ -2,9 +2,9 @@
   <div class="view-about">
     <div class="description">
       <a
-        :href="$helpers.useS3('og-images/og-image.png')"
+        :href="$helpers.withCdn('og-images/og-image.png')"
         target="_blank">
-        <AppImg :src="$helpers.useS3('og-images/og-image.png')" class="og-image"/>
+        <AppImg :src="$helpers.withCdn('og-images/og-image.png')" class="og-image"/>
       </a>
       <div class="m-b-8"><b>coinsect.io</b>에 오신 것을 환영합니다. coinsect는 coin(코인) + insect(충)에서 유래하였으며, 투자자들이 필요로 하는 대부분의 정보를 제공할 수 있는 올인원 성격의 사이트가 되는 것이 목표입니다.</div>
       <div class="m-b-8">항상 '굳이 다른 유명한 사이트들을 두고 이곳을 이용할 메리트가 있는가?'를 생각하며, 방문자분들의 편의성과 필요성을 최대한으로 고려합니다.</div>

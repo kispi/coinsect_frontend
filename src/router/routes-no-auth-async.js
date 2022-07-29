@@ -1,5 +1,5 @@
 import helpers from '@/helpers'
-import useS3 from '@/helpers/s3'
+import withCdn from '@/helpers/s3'
 
 const indicators = [{
   path: '/indicators/leaderboard',
@@ -7,7 +7,7 @@ const indicators = [{
   meta: {
     title: '비트멕스 리더보드 - 코인충',
     description: '워뇨띠, Mercury-Wood-Sprite, Skitter-Peridot-Raven, Bog-Pear-Weasel 등 유명 트레이더들의 포지션 등',
-    image: useS3('og-images/og-image-leaderboard.png'),
+    image: withCdn('og-images/og-image-leaderboard.png'),
   },
 }, {
   path: '/indicators/real-time-positions',
@@ -15,7 +15,7 @@ const indicators = [{
   meta: {
     title: '실시간 포지션 - 코인충',
     description: '박호두, 짭구 등 방송인들의 실시간 포지션',
-    image: useS3('og-images/og-image-streamer-positions.png'),
+    image: withCdn('og-images/og-image-streamer-positions.png'),
   },
 }, {
   path: '/indicators/long-short',
@@ -83,7 +83,7 @@ const contents = [{
   meta: {
     title: '크립토 인플루언서 - 코인충',
     description: '유튜브나 트위터를 통해 활발하게 활동하는 크립토 / 경제 인플루언서들',
-    image: useS3('og-images/og-image-influencers.png'),
+    image: withCdn('og-images/og-image-influencers.png'),
   },
 }, {
   path: '/contents/public-treasury',
@@ -91,7 +91,7 @@ const contents = [{
   meta: {
     title: '비트코인 보유단체 - 코인충',
     description: '비트코인을 보유한 상장사들의 목록 및 보유 현황. 갈수록 많은 회사들이 현금 가치 하락에 대한 헤지로 비트코인을 자사의 재무재표에 추가할 것이다.',
-    image: useS3('og-images/og-image-treasuries.png'),
+    image: withCdn('og-images/og-image-treasuries.png'),
   },
 }, {
   path: '/contents/:a/:b',
@@ -104,7 +104,7 @@ const onchain = [{
   meta: {
     title: '리치리스트 - 코인충',
     description: '암호화폐의 분포를 보여줍니다.',
-    image: useS3('og-images/og-image-richlist.png'),
+    image: withCdn('og-images/og-image-richlist.png'),
   },
 }]
 
@@ -121,7 +121,7 @@ const apps = [{
   meta: {
     title: '연봉 실수령 계산기 - 코인충',
     description: '내 연봉 실수령액은 얼마일까? 비트코인으로 환산한 내 월급은?',
-    image: useS3('og-images/og-image-salary.png'),
+    image: withCdn('og-images/og-image-salary.png'),
   },
 }, {
   path: '/apps/lottery',
@@ -129,7 +129,7 @@ const apps = [{
   meta: {
     title: '로또 시뮬레이터 - 코인충',
     description: '통계적으로 볼 때 로또를 사는건 비합리적이라는 사실을 체험해봅니다.',
-    image: useS3('og-images/og-image-lottery.png'),
+    image: withCdn('og-images/og-image-lottery.png'),
   },
 }, {
   path: '/apps/seo',

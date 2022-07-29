@@ -2,7 +2,7 @@
   <div
     v-if="profile"
     class="view-account">
-    <AppImg :src="$helpers.useS3(profile.image)" class="profile-image"/>
+    <AppImg :src="$helpers.withCdn(profile.image)" class="profile-image"/>
     <div class="form-control">
       <label>{{ $translate('NICKNAME') }}</label>
       <div class="flex-row">

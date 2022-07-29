@@ -1,6 +1,6 @@
 <template>
   <div class="view-not-found">
-    <AppImg :src="$helpers.useS3('og-images/og-image.png')"/>
+    <AppImg :src="$helpers.withCdn('og-images/og-image.png')"/>
     <div class="error-404">어떻게 여기 들어오셨어요?</div>
     <button @click="onClickBack" class="btn btn-primary m-a m-t-16">
       김프 보러가기

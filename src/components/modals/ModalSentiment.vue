@@ -1,6 +1,6 @@
 <template>
   <div class="modal-sentiment">
-    <AppImg :src="$helpers.useS3('influencers/hodu_park.jpg')" class="hodu"/>
+    <AppImg :src="$helpers.withCdn('influencers/hodu_park.jpg')" class="hodu"/>
     <div class="title" v-html="$translate('IS_IT_TIME')"/>
     <div class="flex-row">
       <button

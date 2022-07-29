@@ -24,7 +24,7 @@ const s3Service = {
       const s3Url = url.split('?')[0]
       const withoutProtocol = s3Url.split('https://')[1]
       const key = withoutProtocol.split('/').slice(1).join('/')
-      return helpers.useS3(key)
+      return helpers.withCdn(key)
     } catch (e) {
       return Promise.reject(e)
     }

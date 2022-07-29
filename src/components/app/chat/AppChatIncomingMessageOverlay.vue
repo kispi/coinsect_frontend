@@ -66,7 +66,7 @@ export default {
     const loadDing = () => {
       if (typeof Audio === 'undefined') return
 
-      ding.value = new Audio(plugins.$helpers.useS3('files/ding.mp3'))
+      ding.value = new Audio(plugins.$helpers.withCdn('files/ding.mp3'))
       ding.value.volume = 0.2
     }
 

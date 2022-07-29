@@ -7,7 +7,7 @@
         :key="item.id"
         v-for="item in items">
         <div class="image-container">
-          <AppImg v-if="(item.images || []).length > 0" :src="$helpers.useS3(item.images[0].key)" class="overlay"/>
+          <AppImg v-if="(item.images || []).length > 0" :src="$helpers.withCdn(item.images[0].key)" class="overlay"/>
         </div>
         <div class="influencer-name">{{ item.name }}</div>
       </RouterLink>

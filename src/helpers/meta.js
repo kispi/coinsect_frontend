@@ -1,6 +1,6 @@
 import { store as $store } from '@/store'
 import { router } from '@/router'
-import useS3 from './s3'
+import withCdn from './s3'
 
 const sanitize = html => {
   if (!html) return ''
@@ -12,7 +12,7 @@ const sanitize = html => {
 const defaults = {
   title: '김치 프리미엄, 김프, 역프 및 암호화폐 실시간 시세 - 코인충',
   description: '김프, 역프, 암호화폐, 비트코인 실시간 시세, 호가창, 뉴스, 비트멕스 리더보드(워뇨띠 포지션), 박호두 포지션 등을 제공하는 김프 사이트입니다.',
-  image: useS3('og-images/og-image.png'),
+  image: withCdn('og-images/og-image.png'),
 }
 
 const removeExisting = id => {
