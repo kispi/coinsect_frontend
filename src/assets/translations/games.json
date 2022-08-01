@@ -1,11 +1,11 @@
 {
-  "GAME_PICK_COIN": {
-    "en": "Pick Coin",
-    "kr": "코인 뽑기"
-  },
   "GAME_FLIP_COIN": {
     "en": "Flip Coin",
     "kr": "코인 뒤집기"
+  },
+  "GAME_LOTS": {
+    "en": "Lottery",
+    "kr": "제비뽑기"
   },
   "GAME_COLOR_SENSE": {
     "en": "Color Sense Test",

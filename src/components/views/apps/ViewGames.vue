@@ -24,6 +24,9 @@
 export default {
   setup() {
     const games = [{
+      title: 'GAME_LOTS',
+      component: 'GameLots',
+    }, {
       title: 'GAME_FLIP_COIN',
       component: 'GameFlipCoin',
     }, {

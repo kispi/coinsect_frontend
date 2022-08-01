@@ -16,11 +16,13 @@
 import { ref } from 'vue'
 import GameColorSense from '@/components/common/games/GameColorSense'
 import GameFlipCoin from '@/components/common/games/GameFlipCoin'
+import GameLots from '@/components/common/games/GameLots'
 
 export default {
   components: {
     GameColorSense,
     GameFlipCoin,
+    GameLots,
   },
   props: ['options'],
   setup() {

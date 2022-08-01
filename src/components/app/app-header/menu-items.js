@@ -60,7 +60,7 @@ const useMenuItems = () => {
       { path: '/indicators/real-time-positions', title: 'REAL_TIME_POSITIONS' },
       { path: '/indicators/leaderboard', title: 'LEADERBOARD' },
       { path: '/indicators/long-short', title: 'LONG_SHORT' },
-      { path: '/indicators/general', title: 'GENERAL' }
+      { path: '/indicators/general', title: 'GENERAL' },
     ],
   }, {
     title: 'MARKETS',
@@ -78,7 +78,7 @@ const useMenuItems = () => {
       // { path: '/contents/twitter', title: 'TWITTER' },
       { path: '/contents/influencers', title: 'INFLUENCERS' },
       { path: '/contents/public-treasury', title: 'PUBLIC_TREASURY' },
-      { path: '/contents/bitcoin-halving', title: 'BITCOIN_HALVING' }
+      { path: '/contents/bitcoin-halving', title: 'BITCOIN_HALVING' },
     ],
   }, {
     title: 'ONCHAIN',
@@ -94,8 +94,8 @@ const useMenuItems = () => {
       { path: '/apps/salary', title: 'SALARY' },
       { path: '/apps/lottery', title: 'LOTTERY' },
       { path: '/apps/seo', title: 'SEO' },
-      // { path: '/apps/games', title: 'GAMES' },
-      // { path: '/apps/voice-recorder', title: 'VOICE_RECORDER' }
+      { path: '/apps/games', title: 'GAMES' },
+      { path: '/apps/voice-recorder', title: 'VOICE_RECORDER' },
     ],
   }, {
     title: 'COMMUNITY',
