@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
@@ -33,6 +33,29 @@ export default {
       }
     })
 
+    const sounds = ref([
+      { type: 'long', audio: null, path: 'files/filled_hodu_1.mp3' },
+      { type: 'short', audio: null, path: 'files/filled_hodu_short_1.mp3' },
+      { type: 'short', audio: null, path: 'files/filled_hodu_short_2.mp3' },
+    ])
+
+    const play = type => {
+      const arr = sounds.value.filter(s => s.type === type)
+      const randIdx = Math.floor(Math.random() * arr.length)
+      const audio = arr[randIdx].audio
+      if (audio) audio.play()
+    }
+
+    const populateSounds = () => {
+      if (store.getters.isSSR || typeof Audio === 'undefined') return
+
+      sounds.value.forEach(sound => {
+        const audio = new Audio(plugins.$helpers.withCdn(path))
+        audio.volume = 0.2
+        sound.audio = audio
+      })
+    }
+
     const updateSentiment = async type => {
       const p = store.getters.chatUser.profile
       if ((p.sentiment || {}).type === type) return
@@ -41,8 +64,11 @@ export default {
       try {
         await setAccount(p)
         plugins.$toast.success(`${type === 'long' ? '롱' : '숏'}으로 가보자!`)
+        play(type)
       } catch (e) {}
     }
+
+    onMounted(populateSounds)
 
     return {
       ratio,
