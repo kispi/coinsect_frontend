@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance, onUnmounted, computed } from 'vue'
+import { ref, getCurrentInstance, onUnmounted, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -26,6 +26,29 @@ const useChatHandler = () => {
   const pingInterv = ref(null)
 
   const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
+
+  const sounds = ref([
+    { type: 'long', audio: null, path: 'files/filled_hodu_1.mp3' },
+    { type: 'short', audio: null, path: 'files/filled_hodu_short_1.mp3' },
+    { type: 'short', audio: null, path: 'files/filled_hodu_short_2.mp3' },
+  ])
+
+  const play = type => {
+    const arr = sounds.value.filter(s => s.type === type)
+    const randIdx = Math.floor(Math.random() * arr.length)
+    const audio = arr[randIdx].audio
+    if (audio) audio.play()
+  }
+
+  const populateSounds = () => {
+    if (store.getters.isSSR || typeof Audio === 'undefined' || sounds.value.some(sound => sound.audio)) return
+
+    sounds.value.forEach(sound => {
+      const audio = new Audio(plugins.$helpers.withCdn(sound.path))
+      audio.volume = 0.2
+      sound.audio = audio
+    })
+  }
 
   const showSeparator = (curMessage, prevMessage) => {
     if (!curMessage || !curMessage.timestamp) return false
@@ -78,6 +101,7 @@ const useChatHandler = () => {
       store.getters.chatUser.profile.sentiment = { type }
       setAccount(store.getters.chatUser.profile)
       plugins.$toast.success(`참여해주셔서 감사합니다. ${type === 'long' ? '떡상' : '떡락'}을 기원합니다.`)
+      play(type)
     })
   }
 
@@ -203,6 +227,8 @@ const useChatHandler = () => {
     connect()
   }
 
+  onMounted(populateSounds)
+
   onUnmounted(() => {
     clearInterval(pingInterv.value)
   })
@@ -218,6 +244,7 @@ const useChatHandler = () => {
     setAccount,
     sendWebsocketMessage,
     init,
+    play,
   }
 }
 

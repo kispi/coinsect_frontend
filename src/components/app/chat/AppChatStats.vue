@@ -21,7 +21,7 @@ export default {
 
     const store = useStore()
 
-    const { setAccount } = useChatHandler()
+    const { setAccount, play } = useChatHandler()
 
     const ratio = computed(() => {
       const l = store.getters.chatStats.numBulls
@@ -32,29 +32,6 @@ export default {
         short: s * 100 / (l + s),
       }
     })
-
-    const sounds = ref([
-      { type: 'long', audio: null, path: 'files/filled_hodu_1.mp3' },
-      { type: 'short', audio: null, path: 'files/filled_hodu_short_1.mp3' },
-      { type: 'short', audio: null, path: 'files/filled_hodu_short_2.mp3' },
-    ])
-
-    const play = type => {
-      const arr = sounds.value.filter(s => s.type === type)
-      const randIdx = Math.floor(Math.random() * arr.length)
-      const audio = arr[randIdx].audio
-      if (audio) audio.play()
-    }
-
-    const populateSounds = () => {
-      if (store.getters.isSSR || typeof Audio === 'undefined') return
-
-      sounds.value.forEach(sound => {
-        const audio = new Audio(plugins.$helpers.withCdn(sound.path))
-        audio.volume = 0.2
-        sound.audio = audio
-      })
-    }
 
     const updateSentiment = async type => {
       const p = store.getters.chatUser.profile
