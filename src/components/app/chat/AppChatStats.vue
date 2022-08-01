@@ -50,7 +50,7 @@ export default {
       if (store.getters.isSSR || typeof Audio === 'undefined') return
 
       sounds.value.forEach(sound => {
-        const audio = new Audio(plugins.$helpers.withCdn(path))
+        const audio = new Audio(plugins.$helpers.withCdn(sound.path))
         audio.volume = 0.2
         sound.audio = audio
       })
