@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
@@ -44,8 +44,6 @@ export default {
         play(type)
       } catch (e) {}
     }
-
-    onMounted(populateSounds)
 
     return {
       ratio,

@@ -227,7 +227,7 @@ const useChatHandler = () => {
     connect()
   }
 
-  // onMounted(populateSounds)
+  onMounted(populateSounds)
 
   onUnmounted(() => {
     clearInterval(pingInterv.value)
