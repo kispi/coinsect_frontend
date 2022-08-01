@@ -108,7 +108,10 @@ export default {
 
     const gameFinished = computed(() => shuffled.value && lots.value.every(lot => !lot.$$flipped))
 
-    const remove = idx => lots.value.splice(idx, 1)
+    const remove = idx => {
+      lots.value.splice(idx, 1)
+      refInputA.value.focus()
+    }
     
     const onEnter = e => {
       if (!lotName.value || e.isComposing) return
