@@ -61,7 +61,7 @@ export default {
     cursor: pointer;
 
     &:hover {
-      background: var(--brand-primary-hover);
+      background: var(--background-light);
     }
 
     .overlay {

@@ -11,12 +11,12 @@
           {{ symbol[$store.getters.settings.locale] || symbol.en }}
         </div>
         <div v-if="ticker.$$caution === 'CAUTION'" class="badge-caution">유</div>
-        <i @click.stop="openModalTradingView" class="fa fa-chart-line"/>
+        <i @click.stop="openModalTradingView" class="fal fa-chart-line"/>
       </div>
       <div class="functions">
         <i
           @click.stop="toggleFavorite"
-          class="fa-star c-bitcoin"
+          class="fa-star"
           :class="$store.getters.settings.favorites[ticker.$$symbol] ? 'fa' : 'fal'"
         />
         <div v-html="ticker.$$symbol" class="symbol"/>
@@ -174,8 +174,24 @@ export default {
 .real-time-price-row {
   cursor: pointer;
 
+  .fa-star,
+  .fa-chart-line,
+  .exchange-logo {
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
   .ticker-symbol {
     padding: 8px 0;
+
+    .fa-star {
+      color: var(--bitcoin);
+
+      &:hover {
+        font-weight: 500;
+      }
+    }
 
     .image-name {
       display: flex;
@@ -187,10 +203,9 @@ export default {
 
       .fa-chart-line {
         margin-left: 8px;
-        transition: none;
 
         &:hover {
-          color: var(--price-up);
+          font-weight: 700;
         }
       }
     }
@@ -207,7 +222,7 @@ export default {
       .exchange-logo {
         width: 16px;
         height: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid var(--border-base);
         border-radius: 50%;
 
         &:not(:last-child) {
@@ -216,6 +231,10 @@ export default {
 
         &.bybit {
           background: var(--gs-14);
+        }
+
+        &:hover {
+          border: 1px solid var(--border-light);
         }
       }
     }
