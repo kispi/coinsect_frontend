@@ -99,7 +99,7 @@ export default {
       prepared.value = true
     }
 
-    const slideLeave = () => {
+    const slideLeave = e => {
       if (
         !e ||
         (e.type !== 'resize' && !e.target.classList.contains('wrapper-dropdown-overlay'))
