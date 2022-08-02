@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, watch, getCurrentInstance, onServerPrefetch } from 'vue'
+import { ref, computed, onMounted, getCurrentInstance, onServerPrefetch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import TablePagination from './TablePagination'
