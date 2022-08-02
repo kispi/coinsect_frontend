@@ -100,6 +100,11 @@ export default {
     }
 
     const slideLeave = () => {
+      if (
+        !e ||
+        (e.type !== 'resize' && !e.target.classList.contains('wrapper-dropdown-overlay'))
+      ) return
+
       prepared.value = false
       setTimeout(() => emit('close'), 200)
     }
