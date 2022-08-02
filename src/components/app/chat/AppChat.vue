@@ -150,7 +150,7 @@ export default {
       loadingReplyTarget.value = true
       let found = messages.value.find(o => o.id === message.id)
       if (!found) {
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 4; i++) {
           found = (await loadMessages(500) || []).find(o => o.id === message.id)
           if (found) break
         }
