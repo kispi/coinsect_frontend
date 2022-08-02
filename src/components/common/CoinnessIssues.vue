@@ -10,7 +10,8 @@
       <div class="title lines-1">{{ issues[currentIdx].title }}</div>
     </div>
     <WrapperDropdownOverlay
-      v-model="showAllIssues"
+      v-if="showAllIssues"
+      @close="showAllIssues = false"
       :align="'left'"
       :mountBelow="refIssueContainer">
       <div class="all-issues">

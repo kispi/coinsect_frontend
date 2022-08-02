@@ -1,7 +1,6 @@
 <template>
   <div
     class="wrapper-dropdown-overlay"
-    :class="displayNoneClassWhen"
     @mousedown="slideLeave">
     <transition name="fade">
       <div
@@ -9,7 +8,7 @@
         v-show="prepared"
         class="p-absolute"
         :style="{ top, bottom, left, right }">
-        <slot/> <!-- 이 slot에 들어올 element는 가급적 같은 modelValue를 이용하여 v-if로 항상 re-render해주는게 좋다 -->
+        <slot/>
       </div>
     </transition>
   </div>
@@ -22,7 +21,7 @@
  * 
  * 사용법:)
  * <WrapperDropdownOverlay
- *   v-model="showDropdown"
+ *   v-if="showDropdown"
  *   :mountBelow="domYouWantToUseAsToggleButton">
  *   ANY CONTENT FOR <slot/>
  * </WrapperDropdownOverlay>
@@ -32,10 +31,6 @@ import { useStore } from 'vuex'
 
 export default {
   props: {
-    /**
-     * 드롭다운이 열렸는지의 여부. 반드시 부모가 변경해야한다.
-     */
-    modelValue: Boolean,
     /**
      * 아래에 드롭다운이 그려지기를 원하는 HTMLElement를 넘겨준다.
      */
@@ -49,7 +44,6 @@ export default {
       default: 'left',
     },
   },
-  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const store = useStore()
 
@@ -67,20 +61,15 @@ export default {
 
     const right = ref(null)
 
-    const observer = ref(null)
-
-    const displayNoneClassWhen = ref('display-none')
-
     const tryToGetMyDirectChildDOM = ref(null)
 
     const slotDOM = ref(null)
 
     const slideEnter = () => {
-      if (!props.modelValue) return
+      if (!props.mountBelow) return
 
       const rectMountBelow = props.mountBelow.getBoundingClientRect()
-
-      displayNoneClassWhen.value = ''
+      slotDOM.value = tryToGetMyDirectChildDOM.value.children[0]
       if (slotDOM.value) {
         if (props.align === 'left') {
           // 오른쪽 창 끝까지의 거리가 모자르다면, 현재 보이는 영역을 넘어가지 않도록 left값을 설정해준다.
@@ -116,27 +105,10 @@ export default {
       slideLeave()
     }
 
-    const slideLeave = e => {
-      if (
-        e &&
-        e.type !== 'resize' &&
-        !e.target.classList.contains('wrapper-dropdown-overlay')
-      ) return
-
+    const slideLeave = () => {
       prepared.value = false
-      setTimeout(() => {
-        emit('update:modelValue', false)
-        displayNoneClassWhen.value = 'display-none'
-        slotDOM.value = null
-      }, 200)
+      setTimeout(() => emit('close'), 200)
     }
-
-    watch(
-      () => props.modelValue,
-      newVal => {
-        setTimeout(() => newVal ? slideEnter() : slideLeave())
-      },
-    )
 
     watch(
       () => store.getters.scrollTop,
@@ -146,30 +118,13 @@ export default {
     onMounted(() => {
       if (process.env.VUE_APP_SSR) return
 
-      observer.value = new MutationObserver(mutations => {
-        mutations.forEach(m => slotDOM.value = m.target.children[0])
-
-        // <slot/>이 사라지면 top, left도 리셋해준다. (안그러면 트랜지션이 먼저 있던곳에서 날아오는 애니메이션이 됨)
-        if (!slotDOM.value) {
-          top.value = null
-          bottom.value = null
-          left.value = null
-          right.value = null
-        } else {
-          slideEnter()
-        }
-      })
-
-      // slot에 v-if가 걸려있는 않은 경우의 처리
-      observer.value.observe(
-        tryToGetMyDirectChildDOM.value,
-        { childList: true, attributes: true },
-      )
+      slideEnter()
       window.addEventListener('resize', slideLeaveOnResize, { capture: true })
     })
 
     onUnmounted(() => {
-      observer.value.disconnect()
+      if (process.env.VUE_APP_SSR) return
+
       window.removeEventListener('resize', slideLeaveOnResize)
     })
 
@@ -179,7 +134,6 @@ export default {
       left,
       right,
       prepared,
-      displayNoneClassWhen,
       tryToGetMyDirectChildDOM,
       slideLeave,
     }

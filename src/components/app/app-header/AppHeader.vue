@@ -50,13 +50,15 @@
           </div> -->
         </div>
         <WrapperDropdownOverlay
-          v-model="showNotifications"
+          v-if="showNotifications"
+          @close="showNotifications = null"
           :align="'right'"
           :mountBelow="refIconNotifications">
-          <AppNotifications v-if="showNotifications" @close="showNotifications = false"/>
+          <AppNotifications @close="showNotifications = false"/>
         </WrapperDropdownOverlay>
         <WrapperDropdownOverlay
-          v-model="showSettings"
+          v-if="showSettings"
+          @close="showSettings = null"
           :align="'right'"
           :mountBelow="refIconSettings">
           <SettingsPanel/>

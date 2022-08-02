@@ -16,7 +16,8 @@
       </div>
     </div>
     <WrapperDropdownOverlay
-      v-model="dropdownOpened"
+      v-if="dropdownOpened"
+      @close="dropdownOpened = false"
       :mountBelow="dropdownButton"
       :align="align">
       <div class="list-container">
