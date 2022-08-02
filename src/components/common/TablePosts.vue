@@ -126,7 +126,7 @@ export default {
 
     const onKeydown = e => {
       setTimeout(() => {
-        payload.value.keyword = (e.target.value || '').trim()
+        payload.value.keyword = e.target.value
         if (e.key === 'Enter' && !e.isComposing) {
           payload.value.page = 0
           if (!payload.value.keyword) payload.value.limit = 20
