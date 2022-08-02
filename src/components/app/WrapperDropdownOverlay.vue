@@ -99,12 +99,6 @@ export default {
       prepared.value = true
     }
 
-    const slideLeaveOnResize = () => {
-      if (window.innerWidth < 768) return
-
-      slideLeave()
-    }
-
     const slideLeave = () => {
       prepared.value = false
       setTimeout(() => emit('close'), 200)
@@ -119,13 +113,13 @@ export default {
       if (process.env.VUE_APP_SSR) return
 
       slideEnter()
-      window.addEventListener('resize', slideLeaveOnResize, { capture: true })
+      window.addEventListener('resize', slideLeave, { capture: true })
     })
 
     onUnmounted(() => {
       if (process.env.VUE_APP_SSR) return
 
-      window.removeEventListener('resize', slideLeaveOnResize)
+      window.removeEventListener('resize', slideLeave)
     })
 
     return {
