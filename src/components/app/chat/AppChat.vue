@@ -158,7 +158,7 @@ export default {
       loadingReplyTarget.value = false
 
       if (!found) {
-        plugins.$toast.error('너무 오래된 메시지라 찾지 못했습니다 😥')
+        plugins.$toast.error('차단한 유저의 메시지이거나 너무 오래된 메시지인 것 같아요 😥')
         return
       }
 
