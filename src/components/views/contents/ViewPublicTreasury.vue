@@ -111,7 +111,7 @@ export default {
   }
 
   .list {
-    margin: 24px 0 40px;
+    margin: 24px 0;
 
     .entity-category {
       font-size: 14px;
