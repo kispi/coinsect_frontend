@@ -1,7 +1,7 @@
 <template>
   <div
     ref="refModalDonation"
-    class="modal-donation">
+    class="modal-donation scrollable-body">
     <AppLoading :loading="drawing"/>
     <ModalHeader :title="$translate('MODAL_DONATION')" @close="$emit('close')"/>
     <div class="body pre-line">

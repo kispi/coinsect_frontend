@@ -65,9 +65,7 @@
         </WrapperDropdownOverlay>
       </div>
     </div>
-    <nav
-      class="ah-menu-items"
-      :class="{'pretty-scrollbar': !$store.getters.isMobile}">
+    <nav class="ah-menu-items pretty-scrollbar">
       <a
         draggable="false"
         @click.prevent="e => onClickMenuItem(e, menuItem)"
