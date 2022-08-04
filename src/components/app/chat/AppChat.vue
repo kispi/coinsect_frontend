@@ -104,6 +104,7 @@ export default {
     const {
       init,
       connected,
+      messages: originalMessages,
       filteredMessages: messages,
       loadMessages,
     } = useChatHandler()
@@ -148,7 +149,7 @@ export default {
 
     const onClickRepliedMessage = async message => {
       loadingReplyTarget.value = true
-      let found = messages.value.find(o => o.id === message.id)
+      let found = originalMessages.value.find(o => o.id === message.id)
       if (!found) {
         for (let i = 0; i < 4; i++) {
           found = (await loadMessages(500) || []).find(o => o.id === message.id)
@@ -158,12 +159,13 @@ export default {
       loadingReplyTarget.value = false
 
       if (!found) {
-        plugins.$toast.error('차단한 유저의 메시지이거나 너무 오래된 메시지인 것 같아요 😥')
+        plugins.$toast.error('너무 오래된 메시지인 것 같아요 😥')
         return
       }
 
       const dom = refAppChatBody.value.getElementsByClassName(`mid-${found.id}`)[0]
       if (dom) dom.scrollIntoView({ behavior: 'smooth' })
+      else plugins.$toast.error(`차단한 유저(${message.nickname})의 메시지입니다`)
     }
 
     const onClickMessageFunction = async ({ type, message }) => {
