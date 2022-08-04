@@ -26,7 +26,7 @@ export const createHttpClient = () => {
     res => res.data,
     err => {
       if (err.code === 'ECONNABORTED') {
-        helpers.toast.error('서버로부터의 응답에 너무 오랜 시간이 걸리네요 ㅜ.ㅜ<br>일시적 문제인 것 같으니 다시 시도해주세요!')
+        helpers.toast.error('서버로부터의 응답에 너무 오랜 시간이 걸리네요 😢<br>일시적 문제인 것 같으니 다시 시도해주세요!')
         throw { data: {} }
       }
 

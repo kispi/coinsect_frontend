@@ -29,7 +29,9 @@
             :class="message.isMine ? 'm-r-8' : 'm-l-8'"
             v-html="$helpers.dayjs(message.timestamp).format('HH:mm')"
           />
-          <div class="functions">
+          <div
+            v-if="message.type !== 'alert'"
+            class="functions">
             <i class="far fa-reply" @click="$emit('click-function', { type: 'reply', message })"/>
             <!-- <i class="fa fa-heart" @click="$emit('click-function', { type: 'reaction', message })"/> -->
           </div>

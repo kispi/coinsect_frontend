@@ -77,7 +77,7 @@ export default {
         connection.value = conn
         populateMarkets()
       } catch (e) {
-        plugins.$toast.error('문제가 발생했습니다 ㅜ.ㅜ 새로고침해주세요')
+        plugins.$toast.error('문제가 발생했습니다 😢 새로고침해주세요')
       }
     }
 

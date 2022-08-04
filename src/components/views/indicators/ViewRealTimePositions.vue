@@ -38,6 +38,18 @@
       </div>
     </div>
     <div
+      v-if="positions.tracked.length === 0"
+      class="not-monitoring">
+      현재 모니터링중인 트레이더가 없습니다 😢<br>
+      보통 트레이더들이 실시간 매매를 진행하는 시간대인 22:00 ~ 02:00까지 모니터링을 진행하고 있습니다.<br>
+      그동안 업비트 / 빗썸 / 바이낸스 시세 및 프리미엄, 실시간 호가창까지도 제공하는 코인충 김프 페이지를 이용해보시는건 어떠세요?
+      <RouterLink
+        to="/"
+        class="btn btn-primary">
+        김프 / 실시간 시세도 역시 코인충<i class="fal fa-arrow-right m-l-8"/>
+      </RouterLink>
+    </div>
+    <div
       class="position-group"
       :key="idx"
       v-for="(positionGroup, idx) in [positions.tracked, positions.nonTracked]">
@@ -57,7 +69,7 @@
     <div
       v-if="($store.getters.realTimePositions.data || []).filter(o => o.editable).length === 0"
       class="empty">
-      유의미한 크기의 포지션을 갖고 있거나 포지션을 알 수 있는 관심 트레이더가 없는 것 같네요 ㅜ.ㅜ
+      유의미한 크기의 포지션을 갖고 있거나 포지션을 알 수 있는 관심 트레이더가 없는 것 같네요 😢
     </div>
     <div class="description">
       <div>* 운영자가 각 방송을 모니터링하며 입력하므로 약간의 지연이 있을 수 있으며, 최신정보임을 보장할 수 없습니다. 업데이트된지 오래된 경우 신뢰하지 마십시오. 어떤 경우이든 재미로만 보시고, 호반꿀이든 짭반꿀이든 <b>절대로 타인의 매매를 참고하여 매매하지 마십시오</b>.</div>
@@ -84,6 +96,7 @@
       </div>
     </div>
     <RouterLink
+      v-if="positions.tracked.length > 0"
       to="/"
       class="btn btn-primary bottom">
       김프 보러가기
@@ -265,6 +278,22 @@ export default {
 
 <style lang="scss" scoped>
 .view-real-time-positions {
+  .btn-primary {
+    border-radius: 0;
+  }
+
+  .not-monitoring {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 18px;
+
+    .btn-primary {
+      display: table;
+      margin: 16px auto;
+    }
+  }
+
   .positions {
     display: grid;
     grid-gap: 8px;
