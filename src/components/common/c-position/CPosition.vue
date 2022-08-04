@@ -90,7 +90,7 @@ export default {
 
     const display = key => {
       const v = props.position[key]
-      if (v === null || v === undefined) return '-'
+      if (!props.position.entryPrice || v === null || v === undefined) return '-'
 
       const frac = Math.abs(v) >= 1 ? 2 : 4
       return v.toLocaleString(undefined, {
