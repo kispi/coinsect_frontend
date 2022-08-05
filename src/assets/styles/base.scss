@@ -131,6 +131,13 @@ h4 {
   }
 }
 
+.modal-header + * {
+  flex: 1 1 auto;
+  overflow-y: auto;
+
+  @extend .pretty-scrollbar;
+}
+
 .hr {
   width: 100%;
   height: 1px;

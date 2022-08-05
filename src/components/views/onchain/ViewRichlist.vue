@@ -39,6 +39,7 @@
         :symbol="selected.symbol"
         :data="data.data">
         <PoweredBy
+          class="m-t-24"
           :by="'BitInfoCharts'"
           :link="data.link"
           :imgUrl="'https://bitinfocharts.com/logo-1200.jpg'"
@@ -110,7 +111,6 @@ export default {
 <style lang="scss" scoped>
 .view-richlist {
   .powered-by {
-    margin-top: 8px;
     justify-content: flex-end;
   }
 
