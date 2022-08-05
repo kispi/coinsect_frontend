@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance, onUnmounted, computed, onMounted } from 'vue'
+import { ref, getCurrentInstance, onUnmounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -41,7 +41,7 @@ const useChatHandler = () => {
   }
 
   const populateSounds = () => {
-    if (store.getters.isSSR || typeof Audio === 'undefined' || sounds.value.some(sound => sound.audio)) return
+    if (store.getters.isSSR || typeof Audio === 'undefined') return
 
     sounds.value.forEach(sound => {
       const audio = new Audio(plugins.$helpers.withCdn(sound.path))
@@ -227,8 +227,6 @@ const useChatHandler = () => {
     connect()
   }
 
-  onMounted(populateSounds)
-
   onUnmounted(() => {
     clearInterval(pingInterv.value)
   })
@@ -240,6 +238,7 @@ const useChatHandler = () => {
     filteredMessages,
     loadingMessages,
     ping,
+    populateSounds,
     loadMessages,
     setAccount,
     sendWebsocketMessage,
