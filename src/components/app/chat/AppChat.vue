@@ -107,7 +107,6 @@ export default {
       messages: originalMessages,
       filteredMessages: messages,
       loadMessages,
-      populateSounds,
     } = useChatHandler()
 
     const onScroll = async e => {
@@ -210,7 +209,6 @@ export default {
 
       init()
       setAppChatPosition()
-      populateSounds()
     })
 
     onUnmounted(() => {

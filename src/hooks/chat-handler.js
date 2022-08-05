@@ -224,6 +224,7 @@ const useChatHandler = () => {
 
   const init = () => {
     token.value = (plugins.$helpers.localStorage.getMeta('user') || {}).token
+    populateSounds()
     connect()
   }
 
@@ -238,7 +239,6 @@ const useChatHandler = () => {
     filteredMessages,
     loadingMessages,
     ping,
-    populateSounds,
     loadMessages,
     setAccount,
     sendWebsocketMessage,
