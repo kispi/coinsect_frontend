@@ -4,7 +4,7 @@
     class="real-time-price-row">
     <td class="ticker-symbol">
       <div class="image-name">
-        <AppImg :src="symbol.thumb" class="flex-wrap m-r-8"/>
+        <AppImg :src="symbol.thumb" class="flex-wrap m-r-8" :alt="ticker.$$symbol"/>
         <div
           class="name lines-1"
           :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''">
@@ -25,14 +25,14 @@
           class="exchange-logo"
           @click.stop="openModalOrderbook('upbit', `${$store.getters.settings.baseExchangeMarket.toUpperCase()}-${ticker.$$symbol}`)"
           src="@/assets/images/upbit.svg"
-          :alt="ticker.$$symbol"
+          alt="upbit"
         >
         <img
           v-if="bybitMarket(ticker.$$symbol)"
           class="exchange-logo bybit"
           @click.stop="openModalOrderbook('bybit', bybitMarket(ticker.$$symbol))"
           src="@/assets/images/bybit.svg"
-          :alt="ticker.$$symbol"
+          alt="bybit"
         >
       </div>
     </td>

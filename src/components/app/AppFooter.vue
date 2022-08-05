@@ -12,7 +12,7 @@
               v-for="contact in contacts"
               target="_blank"
               rel="noreferrer noopener">
-              <AppImg :src="contact.img"/>
+              <AppImg :src="contact.img" :alt="contact.key"/>
             </a>
           </div>
           <div class="flex-row items-center cursor-pointer m-t-24">
