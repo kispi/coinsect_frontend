@@ -2,6 +2,13 @@ import { ref, getCurrentInstance, onUnmounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
+// 훅 바깥에 있어야 전역으로 계속 메모리에 남음.
+let sounds = [
+  { type: 'long', audio: null, path: 'files/filled_hodu_1.mp3' },
+  { type: 'short', audio: null, path: 'files/filled_hodu_short_1.mp3' },
+  { type: 'short', audio: null, path: 'files/filled_hodu_short_2.mp3' },
+]
+
 const useChatHandler = () => {
   const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -27,14 +34,8 @@ const useChatHandler = () => {
 
   const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
 
-  const sounds = ref([
-    { type: 'long', audio: null, path: 'files/filled_hodu_1.mp3' },
-    { type: 'short', audio: null, path: 'files/filled_hodu_short_1.mp3' },
-    { type: 'short', audio: null, path: 'files/filled_hodu_short_2.mp3' },
-  ])
-
   const play = type => {
-    const arr = sounds.value.filter(s => s.type === type)
+    const arr = sounds.filter(s => s.type === type)
     const randIdx = Math.floor(Math.random() * arr.length)
     const audio = arr[randIdx].audio
     if (audio) audio.play()
@@ -43,7 +44,7 @@ const useChatHandler = () => {
   const populateSounds = () => {
     if (store.getters.isSSR || typeof Audio === 'undefined') return
 
-    sounds.value.forEach(sound => {
+    sounds.forEach(sound => {
       const audio = new Audio(plugins.$helpers.withCdn(sound.path))
       audio.volume = 0.2
       sound.audio = audio
