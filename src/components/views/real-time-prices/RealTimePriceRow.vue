@@ -174,23 +174,11 @@ export default {
 .real-time-price-row {
   cursor: pointer;
 
-  .fa-star,
-  .fa-chart-line,
-  .exchange-logo {
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-
   .ticker-symbol {
     padding: 8px 0;
 
     .fa-star {
       color: var(--bitcoin);
-
-      &:hover {
-        font-weight: 500;
-      }
     }
 
     .image-name {
@@ -278,6 +266,16 @@ export default {
 
     &:not(:first-child) {
       @extend .f-mono;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .fa-star,
+    .fa-chart-line,
+    .exchange-logo {
+      &:hover {
+        transform: scale(1.2);
+      }
     }
   }
 }
