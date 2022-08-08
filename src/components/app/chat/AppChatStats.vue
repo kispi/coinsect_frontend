@@ -33,15 +33,19 @@ export default {
       }
     })
 
+    const afterUpdate = type => {
+      play(type)
+      plugins.$toast.success(`${type === 'long' ? '롱' : '숏'}으로 가보자!`)
+    }
+
     const updateSentiment = async type => {
       const p = store.getters.chatUser.profile
-      if ((p.sentiment || {}).type === type) return
+      if ((p.sentiment || {}).type === type) return afterUpdate(type)
 
       p.sentiment = { type }
       try {
         await setAccount(p)
-        plugins.$toast.success(`${type === 'long' ? '롱' : '숏'}으로 가보자!`)
-        play(type)
+        afterUpdate(type)
       } catch (e) {}
     }
 
@@ -74,7 +78,6 @@ export default {
     border-radius: 8px;
     overflow: hidden;
     color: var(--text-stress);
-    font-weight: 700;
 
     .ratio-chunk {
       cursor: pointer;

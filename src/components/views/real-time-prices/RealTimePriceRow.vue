@@ -269,7 +269,7 @@ export default {
     }
   }
 
-  @media (max-width: 767px) {
+  @media (min-width: 768px) {
     .fa-star,
     .fa-chart-line,
     .exchange-logo {
