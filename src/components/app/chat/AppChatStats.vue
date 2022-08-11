@@ -60,7 +60,6 @@ export default {
     border-radius: 8px;
     overflow: hidden;
     color: var(--text-stress);
-    font-weight: 700;
 
     .ratio-chunk {
       cursor: pointer;

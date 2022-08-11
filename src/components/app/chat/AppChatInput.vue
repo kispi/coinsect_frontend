@@ -181,6 +181,7 @@ export default {
 
   .writing-reply-to {
     background: var(--background-base);
+    border: 1px solid var(--border-base);
     margin-bottom: 8px;
     padding: 8px 12px;
     border-radius: 8px;
