@@ -123,11 +123,13 @@ const useChatHandler = () => {
       case 'image':
       case 'text': {
         const curMessage = preparedMessage(message)
-        const prevMessage = messages.value[messages.value.length - 1]
-        curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
+        if (curMessage.text) {
+          const prevMessage = messages.value[messages.value.length - 1]
+          curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
 
-        // 여기서는 배열의 끝에 넣는 것이므로 Array.push가 맞음
-        messages.value.push(curMessage)
+          // 여기서는 배열의 끝에 넣는 것이므로 Array.push가 맞음
+          messages.value.push(curMessage)
+        }
         store.commit('setChat', { lastWebsocketMessage: curMessage })
         break
       }
