@@ -11,17 +11,15 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
     const store = useStore()
 
-    const { setAccount, play } = useChatHandler()
+    const { updateSentiment } = useChatHandler()
 
     const ratio = computed(() => {
       const l = store.getters.chatStats.numBulls
@@ -32,18 +30,6 @@ export default {
         short: s * 100 / (l + s),
       }
     })
-
-    const updateSentiment = async type => {
-      const p = store.getters.chatUser.profile
-      if ((p.sentiment || {}).type === type) return
-
-      p.sentiment = { type }
-      try {
-        await setAccount(p)
-        plugins.$toast.success(`${type === 'long' ? '롱' : '숏'}으로 가보자!`)
-        play(type)
-      } catch (e) {}
-    }
 
     return {
       ratio,

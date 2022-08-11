@@ -1,4 +1,9 @@
 export default [{
+  date: '2022-08',
+  jobsDone: [
+    '프로필 세팅 기능 개선',
+  ],
+}, {
   date: '2022-07',
   jobsDone: [
     '온체인 > 리치리스트 페이지 추가',

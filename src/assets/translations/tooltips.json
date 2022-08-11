@@ -1,8 +1,4 @@
 {
-  "TOOLTIP_PROFILE_IMAGE": {
-    "en": "Profile image shown to another people",
-    "kr": "다른 사람들에게 보여지는 프로필 이미지입니다"
-  },
   "TOOLTIP_CHAT_DING": {
     "en": "Notify an incoming message when chat is minimized.",
     "kr": "채팅창이 닫혀있는 상태에서 새 메시지가 올 경우, 알림음을 재생합니다."

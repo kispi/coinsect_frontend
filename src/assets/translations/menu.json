@@ -11,14 +11,6 @@
     "en": "Theme",
     "kr": "테마"
   },
-  "SETTING_CHAT_GENERAL": {
-    "en": "General Setting",
-    "kr": "일반 설정"
-  },
-  "SETTING_CHAT_PROFILE": {
-    "en": "Profile Setting",
-    "kr": "프로필 설정"
-  },
   "CHAT_DING": {
     "en": "Ring",
     "kr": "알림"

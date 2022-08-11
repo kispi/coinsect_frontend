@@ -16,19 +16,17 @@
       v-if="$store.getters.chatUser"
       class="profile">
       <AppImg
-        @click="$modal.images({
-          images: [$store.getters.chatUser.profile.image],
-        })"
         v-if="$store.getters.chatUser.profile.image"
         :src="$store.getters.chatUser.profile.image"
+        @click="$modal.custom({ component: 'ModalChatSettings' })"
       />
       <div
-        @click="openModalChatSettings"
         class="nickname lines-1"
         :class="{
           'c-price-up-bybit': (($store.getters.chatUser.profile || {}).sentiment || {}).type === 'long',
           'c-price-down-bybit': (($store.getters.chatUser.profile || {}).sentiment || {}).type === 'short',
         }"
+        @click="$modal.custom({ component: 'ModalChatSettings' })"
         v-html="$store.getters.chatUser.profile.nickname"
       />
     </div>
@@ -48,30 +46,9 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
-import useChatHandler from '@/hooks/chat-handler'
-
 export default {
   props: {
     toggleChatFolded: Function,
-  },
-  setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const { setAccount } = useChatHandler()
-
-    const openModalChatSettings = () => {
-      plugins.$modal.custom({
-        component: 'ModalChatSettings',
-        options: {
-          setAccount,
-        },
-      })
-    }
-
-    return {
-      openModalChatSettings,
-    }
   },
 }
 </script>

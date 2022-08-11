@@ -89,6 +89,18 @@ const useChatHandler = () => {
     connection.value.send(JSON.stringify(message))
   }
 
+  const updateSentiment = async type => {
+    const p = store.getters.chatUser.profile
+    if ((p.sentiment || {}).type === type) return
+
+    p.sentiment = { type }
+    try {
+      await setAccount(p)
+      plugins.$toast.success(`${type === 'long' ? '롱' : '숏'}으로 가보자!`)
+      play(type)
+    } catch (e) {}
+  }
+
   const openModalSentiment = user => {
     if (process.env.NODE_ENV !== 'production') return
 
@@ -99,10 +111,7 @@ const useChatHandler = () => {
     }).then(type => {
       if (!type) return
 
-      store.getters.chatUser.profile.sentiment = { type }
-      setAccount(store.getters.chatUser.profile)
-      plugins.$toast.success(`참여해주셔서 감사합니다. ${type === 'long' ? '떡상' : '떡락'}을 기원합니다.`)
-      play(type)
+      updateSentiment(type)
     })
   }
 
@@ -239,6 +248,7 @@ const useChatHandler = () => {
     messages,
     filteredMessages,
     loadingMessages,
+    updateSentiment,
     ping,
     loadMessages,
     setAccount,

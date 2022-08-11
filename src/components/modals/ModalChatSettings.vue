@@ -3,7 +3,52 @@
     <ModalHeader :title="$translate('MODAL_CHAT_SETTINGS')" @close="$emit('close')"/>
     <div class="body">
       <div class="section">
-        <div class="title">{{ $translate('SETTING_CHAT_GENERAL') }}</div>
+        <div class="profile">
+          <div class="image-container">
+            <i
+              @click="image.delete"
+              v-if="profile.image"
+              class="fal fa-times center"
+            />
+            <AppImg
+              :src="profile.image || require('@/assets/images/no-image.png')"
+              @click="image.upload"
+            />
+          </div>
+          <div
+            class="input-wrapper"
+            :class="{'editing': editing}">
+            <input
+              ref="refInputNickname"
+              :placeholder="`최대 ${$store.getters.config.maxlength.nickname} 글자`"
+              :maxlength="$store.getters.config.maxlength.nickname"
+              :readonly="!editing"
+              @keydown.enter="toggleEditProfile"
+              @keydown="e => onKeydown(e, 'nickname')"
+              v-model="profile.nickname"
+            >
+            <i @click="toggleEditProfile" class="fal" :class="editing ? 'fa-save' : 'fa-edit'"/>
+          </div>
+        </div>
+        <div class="chat-setting-item sentiment">
+          <div class="field-name" v-html="$translate('SENTIMENT')"/>
+          <div class="buttons">
+            <button
+              class="btn long"
+              :class="{'selected': (profile.sentiment || {}).type === 'long'}"
+              @click="setSentiment('long')">
+              <i v-if="profile.sentiment.type === 'long'" class="fa fa-check"/>{{ $translate('LONG') }}
+            </button>
+            <button
+              class="btn short"
+              :class="{'selected': (profile.sentiment || {}).type === 'short'}"
+              @click="setSentiment('short')">
+              <i v-if="profile.sentiment.type === 'short'" class="fa fa-check"/>{{ $translate('SHORT') }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="section">
         <div class="chat-setting-item">
           <div class="field-name">{{ $translate('CHAT_TRANSPARENT') }}</div>
           <AppToggler
@@ -48,66 +93,35 @@
         </div>
       </div>
       <div class="section">
-        <div class="title">{{ $translate('SETTING_CHAT_PROFILE') }}</div>
-        <div class="chat-setting-item">
-          <div class="field-name" v-html="$translate('NICKNAME')"/>
-          <input
-            ref="refInputNickname"
-            :placeholder="`최대 ${$store.getters.config.maxlength.nickname} 글자`"
-            :maxlength="$store.getters.config.maxlength.nickname"
-            @keydown.enter="onConfirm"
-            @keydown="e => onKeydown(e, 'nickname')"
-            v-model="profile.nickname"
-          >
-        </div>
-        <div class="chat-setting-item">
-          <div class="field-name">{{ $translate('PROFILE_IMAGE_URL') }}</div>
-          <input
-            :placeholder="'https://static.upbit.com/logos/BTC.png'"
-            @keydown.enter="onConfirm"
-            @keydown="e => onKeydown(e, 'image')"
-            v-model="profile.image"
-          >
-        </div>
-        <div class="chat-setting-item sentiment">
-          <div class="field-name" v-html="$translate('SENTIMENT')"/>
-          <div class="buttons">
-            <button class="btn long" :class="{'selected': (profile.sentiment || {}).type === 'long'}" @click="profile.sentiment.type = 'long'">
-              <i v-if="profile.sentiment.type === 'long'" class="fa fa-check"/>{{ $translate('LONG') }}
-            </button>
-            <button class="btn short" :class="{'selected': (profile.sentiment || {}).type === 'short'}" @click="profile.sentiment.type = 'short'">
-              <i v-if="profile.sentiment.type === 'short'" class="fa fa-check"/>{{ $translate('SHORT') }}
-            </button>
-          </div>
-        </div>
+        <div class="f-12 text-center c-bitcoin">* 48시간동안 접속하지 않으면 프로필이 초기화됩니다.</div>
       </div>
     </div>
-    <button
-      @click="onConfirm"
-      class="btn btn-primary"
-      v-html="$translate('CONFIRM')"
-    />
   </div>
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
+import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   props: ['options'],
-  setup(props, { emit }) {
+  setup() {
     const refChatDing = ref(null)
 
     const refChatTransparent = ref(null)
 
     const refChatSizeMax = ref(null)
 
+    const refInputNickname = ref(null)
+
+    const { updateSentiment, setAccount } = useChatHandler()
+
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
 
-    const refInputNickname = ref(null)
+    const editing = ref(null)
 
     const profile = ref({
       nickname: store.getters.chatUser.profile.nickname,
@@ -115,19 +129,9 @@ export default {
       sentiment: store.getters.chatUser.profile.sentiment || {},
     })
 
-    const onConfirm = async () => {
-      if (!profile.value) return
-
-      profile.value.nickname = (profile.value.nickname || '').slice(0, store.getters.config.maxlength.nickname)
-      profile.value.image = (profile.value.image || '').trim()
-
-      try {
-        await props.options.setAccount(profile.value)
-        plugins.$toast.success('닉네임과 이미지, 기분을 설정했습니다.')
-        emit('close')
-      } catch (e) {
-        plugins.$toast.error(e.data.message)
-      }
+    const setSentiment = async type => {
+      await updateSentiment(type)
+      profile.value.sentiment = { type }
     }
 
     const onKeydown = (e, field) => {
@@ -136,18 +140,66 @@ export default {
       })
     }
 
-    onMounted(() => {
-      if (refInputNickname.value) refInputNickname.value.focus()
-    })
+    const image = {
+      upload: () => {
+        plugins.$modal.custom({
+          component: 'ModalImageUploader',
+          options: {
+            path: 'chat/profile',
+          },
+        }).then(result => {
+          if (!result) return
+
+          if (result.url) profile.value.image = result.url
+          update()
+        })
+      },
+      delete: () => {
+        plugins.$modal.confirm({
+          body: plugins.$translate('MODAL_CONFIRM_DELETE_IMAGE'),
+        }).then(idx => {
+          if (idx === 1) {
+            profile.value.image = null
+            update()
+          }
+        })
+      },
+    }
+
+    const update = async () => {
+      try {
+        await setAccount(profile.value)
+        editing.value = false
+      } catch (e) {
+        plugins.$toast.error(e.data.message)
+
+        if (!(profile.value.nickname || '').trim()) {
+          refInputNickname.value.focus()
+        }
+      }
+    }
+
+    const toggleEditProfile = async () => {
+      if (!editing.value) {
+        refInputNickname.value.focus()
+        editing.value = true
+        return
+      }
+
+      update()
+    }
 
     return {
       refChatDing,
       refChatTransparent,
       refChatSizeMax,
       refInputNickname,
+      editing,
       profile,
+      image,
       onKeydown,
-      onConfirm,
+      setSentiment,
+      toggleEditProfile,
     }
   },
 }
@@ -162,7 +214,6 @@ export default {
     padding: 16px;
 
     .chat-setting-item {
-      padding-left: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -225,6 +276,65 @@ export default {
         margin-bottom: 24px;
         padding-bottom: 24px;
         border-bottom: 1px solid var(--border-base);
+      }
+    }
+  }
+
+  .profile {
+    i {
+      cursor: pointer;
+
+      &:hover {
+        color: var(--brand-primary);
+      }
+    }
+
+    .image-container {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 16px;
+      position: relative;
+      cursor: pointer;
+
+      .fa-times {
+        width: 24px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+        color: var(--black);
+        border-radius: 50%;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+      }
+
+      .app-img {
+        border-radius: 50%;
+      }
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      border: 0;
+      width: 160px;
+      margin: 0 auto 24px;
+      position: relative;
+      border-bottom: 1px solid transparent;
+
+      input {
+        padding: 4px;
+        margin-right: 8px;
+        text-align: center;
+      }
+
+      &.editing {
+        border-bottom: 1px solid var(--border-base);
+      }
+
+      i {
+        position: absolute;
+        right: 0;
       }
     }
   }
