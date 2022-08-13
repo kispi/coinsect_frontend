@@ -34,3 +34,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.global-loading {
+  z-index: 10 !important;
+  position: fixed;
+}
+</style>

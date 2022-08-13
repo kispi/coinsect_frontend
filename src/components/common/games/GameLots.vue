@@ -5,6 +5,7 @@
         @click="() => {
           focus.a = true
           refInputA.focus()
+          trigger++
         }"
         class="input-wrapper"
         :class="{'focus': focus.a}">
@@ -55,7 +56,7 @@
           class="lot-container"
           :class="{
             'flipped': lot.$$flipped,
-            'selected': (slotNumber - 1 === idx) && gameFinished,
+            'selected': (slotNumber - 1 === idx) && !lot.$$flipped,
           }"
           :key="lot.id"
           v-for="(lot, idx) in lots">
@@ -71,7 +72,7 @@
     </div>
     <div class="buttons">
       <button
-        @click="shuffle"
+        @click="shuffle(10)"
         class="btn btn-primary m-r-8"
         :disabled="lots.length === 0"
         v-html="$translate('SHUFFLE')"
@@ -86,7 +87,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref, watch } from 'vue'
 
 export default {
   setup(_, { emit }) {
@@ -106,7 +107,7 @@ export default {
 
     const shuffled = ref(null)
 
-    const gameFinished = computed(() => shuffled.value && lots.value.every(lot => !lot.$$flipped))
+    const trigger = ref(0)
 
     const remove = idx => {
       lots.value.splice(idx, 1)
@@ -141,24 +142,50 @@ export default {
       lot.$$flipped = !lot.$$flipped
     }
 
-    const shuffle = () => {
+    const shuffle = num => {
+      if (num <= 0) return
+
       const p = parseInt(slotNumber.value)
       if (isNaN(p) || p > lots.value.length || p < 1) return plugins.$toast.error(`${lots.value.length} 이하의 올바른 당첨칸 번호를 적어주세요 🤔`)
 
       lots.value.forEach(lot => lot.$$flipped = true)
       lots.value = plugins.$helpers.shuffle(lots.value)
       shuffled.value = true
+
+      setTimeout(() => shuffle(num - 1), 250)
     }
 
     onMounted(() => refInputA.value.focus())
+
+    watch(
+      () => trigger.value,
+      newVal => {
+        if (newVal >= 5) {
+          trigger.value = 0
+          lots.value = [
+            { id: 1, name: 'Chaeil' },
+            { id: 2, name: 'Chris' },
+            { id: 3, name: 'Emily' },
+            { id: 4, name: 'Emma' },
+            { id: 5, name: 'Gilbert' },
+            { id: 6, name: 'Henry' },
+            { id: 7, name: 'Lumi' },
+            { id: 8, name: 'Marv' },
+            { id: 9, name: 'MJ' },
+            { id: 10, name: 'Will' },
+          ]
+          emit('next-state')
+        }
+      },
+    )
 
     return {
       refInputA,
       refInputB,
       focus,
       lotName,
+      trigger,
       slotNumber,
-      gameFinished,
       lots,
       shuffled,
       remove,
@@ -235,7 +262,7 @@ export default {
 
         .card-front,
         .card-back {
-          border-radius: 8px;
+          border-radius: 16px;
           position: absolute;
           backface-visibility: hidden;
         }
@@ -274,7 +301,7 @@ export default {
   }
 
   .cell-move {
-    transition: transform 1s;
+    transition: transform 0.25s cubic-bezier(1, 0, 0, 1);
   }
 
   .buttons {

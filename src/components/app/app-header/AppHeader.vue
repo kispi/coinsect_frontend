@@ -5,7 +5,8 @@
       <BannerMarketIndices/>
       <div
         @click="$modal.custom({ component: 'ModalChatUsers' })"
-        class="num-users f-mono">
+        class="num-users f-mono"
+        :class="numConnectionsColorClass">
         <i class="fa fa-user-group m-r-4"/>
         {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
       </div>
@@ -85,7 +86,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, ref } from 'vue'
+import { computed, getCurrentInstance, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import useMenuItems from './menu-items'
@@ -114,6 +115,8 @@ export default {
 
     const showNotifications = ref(null)
 
+    const numConnectionsColorClass = ref(null)
+
     const { menuItems, subPages, onClickMenuItem } = useMenuItems()
 
     const numNewNotifications = computed(() => {
@@ -130,11 +133,20 @@ export default {
       else plugins.$modal.custom({ component: 'ModalSignIn' })
     }
 
+    watch(
+      () => store.getters.chatStats.numConnections,
+      (newVal, oldVal) => {
+        if (newVal > oldVal) numConnectionsColorClass.value = 'c-price-up'
+        if (newVal < oldVal) numConnectionsColorClass.value = 'c-price-down'
+      },
+    )
+
     return {
       refIconNotifications,
       refIconSettings,
       showNotifications,
       showSettings,
+      numConnectionsColorClass,
       numNewNotifications,
       menuItems,
       subPages,

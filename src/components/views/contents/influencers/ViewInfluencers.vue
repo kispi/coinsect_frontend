@@ -47,6 +47,8 @@ export default {
     grid-template-columns: repeat(2, 1fr);
 
     .influencer {
+      filter: grayscale(1);
+
       .image-container {
         transition: all 0.3s ease;
         padding-top: 100%;
@@ -59,10 +61,7 @@ export default {
 
       &:hover {
         transition: all 0.3s ease;
-
-        .image-container {
-          opacity: 0.5;
-        }
+        filter: none;
       }
 
       .influencer-name {

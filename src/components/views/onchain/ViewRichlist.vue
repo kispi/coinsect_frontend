@@ -85,13 +85,12 @@ export default {
     ])
 
     const onClickSymbol = async symbol => {
+      symbols.value.forEach(o => o.$$selected = o.symbol === symbol.symbol)
       try {
         loading.value = true
         await store.dispatch('loadRichlist', symbol.name)
-        symbols.value.forEach(o => o.$$selected = o.symbol === symbol.symbol)
-      } finally {
-        loading.value = false
-      }
+      } catch (e) {}
+      loading.value = false
     }
 
     onMounted(() => onClickSymbol(symbols.value[0]))
