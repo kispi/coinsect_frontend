@@ -29,7 +29,10 @@ import { computed, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  setup() {
+  props: {
+    indices: null,
+  },
+  setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
@@ -67,16 +70,27 @@ export default {
     }, {
       key: 'TRADINGVIEW',
       values: [
-        { title: 'SHOW', value: true },
-        { title: 'HIDE', value: false },
+        { title: 'ON', value: true },
+        { title: 'OFF', value: false },
       ].map(o => ({ ...o, $$selected: store.getters.settings.tradingview.home === o.value })),
-    }])
+    }, {
+      key: 'MULTICHART',
+      values: [
+        { title: 'ON', value: true },
+        { title: 'OFF', value: false },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.tradingviewHomeDoubleChart === o.value })),
+    }].filter((_, idx) => (props.indices || []).includes(idx)))
 
     const onClickValue = (key, setting) => {
       if (key === 'TRADINGVIEW') {
         const tradingview = store.getters.settings.tradingview
         tradingview.home = setting.value
         store.commit('setSettings', { tradingview })
+        return
+      }
+
+      if (key === 'MULTICHART') {
+        store.commit('setSettings', { tradingviewHomeDoubleChart: !store.getters.settings.tradingviewHomeDoubleChart })
         return
       }
 
@@ -115,7 +129,6 @@ export default {
   background: var(--background-base);
   border: 1px solid var(--border-base);
   border-radius: 4px;
-  width: 320px;
   padding: 16px;
   color: var(--text-stress);
 

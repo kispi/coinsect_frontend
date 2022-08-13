@@ -22,5 +22,6 @@ export default {
   font-size: 10px;
   font-weight: 300;
   background: var(--background-light);
+  white-space: nowrap;
 }
 </style>

@@ -55,15 +55,16 @@ const helpers = {
   animate,
   dataSetter,
   social,
-  passedTime: timestamp => {
+  elapsedTime: timestamp => {
+    const en = $store.getters.settings.locale === 'en'
     const d = helpers.dayjs().diff(helpers.dayjs(timestamp), 'seconds')
-    if (d > 60 * 60 * 24) return `${Math.floor(d / 86400)}일 전`
+    if (d > 60 * 60 * 24) return `${Math.floor(d / 86400)}${en ? 'd ago' : '일 전'}`
 
-    if (d > 60 * 60) return `${Math.floor(d / 3600)}시간 전`
+    if (d > 60 * 60) return `${Math.floor(d / 3600)}${en ? 'h ago' : '시간 전'}`
 
-    if (d > 60) return `${Math.floor(d / 60)}분 전`
+    if (d > 60) return `${Math.floor(d / 60)}${en ? 'm ago' : '분 전'}`
 
-    return `${d}초 전`
+    return `${d}${en ? 's ago' : '초 전'}`
   },
   withCdn,
   canSkipApiCall,

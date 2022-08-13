@@ -163,9 +163,53 @@
     "en": "Size",
     "kr": "규모"
   },
-  "STREAMER_NOT_ON_AIR": {
-    "en": "Streamer is not on air",
-    "kr": "스트리머가 현재 방송중이지 않습니다"
+  "TRADER_NOT_ON_AIR": {
+    "en": "Trader is not on air",
+    "kr": "트레이더가 현재 방송중이지 않습니다"
+  },
+  "TRADERS_NOT_MONITORED": {
+    "en": "Traders not monitored",
+    "kr": "모니터링하고 있지 않은 트레이더들"
+  },
+  "RTP_EMPTY": {
+    "en": "No traders are under insterest to be monitored 😢",
+    "kr": "포지션을 알 수 있는 관심 트레이더가 없는 것 같네요 😢"
+  },
+  "RTP_OPERATION": {
+    "en": "No traders are being monitored at the moment 😢<br>The admin usually monitors during 22:00 ~ 02:00(KST), when many Korean traders are live on their streaming.<br>How about hanging around with Kimp page which provides Upbit / Bithumb / Binance real-time prices, chart, orderbook, ... etc?",
+    "kr": "현재 모니터링중인 트레이더가 없습니다 😢<br>보통 트레이더들이 실시간 매매를 진행하는 시간대인 22:00 ~ 02:00(KST)까지 모니터링을 진행하고 있습니다.<br>그동안 업비트 / 빗썸 / 바이낸스 시세, 차트, 프리미엄, 호가창까지도 제공하는 코인충 김프 페이지를 이용해보시는건 어떠세요?"
+  },
+  "RTP_DISCLAIMER_1": {
+    "en": "There could be a bit of delay for it's manually served by the admin, so cannot be guaranteed to be the latest. Don't trust if it's updated quite ago. Just have some fun and never make your trade based on this.",
+    "kr": "운영자가 각 방송을 모니터링하며 입력하므로 약간의 지연이 있을 수 있으며, 최신정보임을 보장할 수 없습니다. 업데이트된지 오래된 경우 신뢰하지 마십시오. 어떤 경우이든 재미로만 보시고, 호반꿀이든 짭반꿀이든 절대로 타인의 매매를 참고하여 매매하지 마십시오."
+  },
+  "RTP_DISCLAIMER_2": {
+    "en": "You can visit the streaming of the trader, or request update by clicking the position.",
+    "kr": "포지션을 클릭하시면 해당 트레이더의 방송국으로 가거나, 포지션 업데이트를 요청하실 수 있습니다."
+  },
+  "RTP_DISCLAIMER_3": {
+    "en": "Please watch the streaming of the trader if possible to make sure you have the absolute right information.",
+    "kr": "가능하다면 해당 트레이더의 방송을 실제 시청하여 확인하시기 바랍니다."
+  },
+  "BIG_ENTITIES": {
+    "en": "Big Entities",
+    "kr": "기관들"
+  },
+  "GO_TO_KIMP": {
+    "en": "Go to Korean Premium / Realtime Prices",
+    "kr": "김프 / 실시간 시세 보러가기"
+  },
+  "RTP_DISCLAIMER_4": {
+    "en": "Position update applies immediately when the admin updates it, and refreshes every 5 minutes. If you think it isn't correct, click the refresh button.",
+    "kr": "포지션 정보는 운영자가 업데이트하면 즉시 반영되고, 5분 간격으로 새로 가져옵니다. 만약 현재 방송으로 보고 있는 포지션과 다른 경우 새로고침을 해보십시오."
+  },
+  "RTP_DISCLAIMER_5": {
+    "en": "If the size of the position is too small or changes too frequently, the admin is likely to exclude the trader from monitoring.",
+    "kr": "포지션의 규모가 너무 작거나(정찰병같은) 거미줄이 체결되는 상황등 포지션 변동이 잦은 경우 모니터링 대상에서 제외될 수 있습니다."
+  },
+  "RTP_DISCLAIMER_6": {
+    "en": "Mark price is from Bybit USDT, so it could be different with that of Binance, Bitget or MEXC, ... ETC.",
+    "kr": "사용되는 시장평균가는 Bybit USDT 마켓 기준이며, Binance, Bitget 또는 MEXC등 타 거래소들에서 산정한 시장평균가와는 차이가 있을 수 있습니다."
   },
   "SIZE_DESC": {
     "en": "(negative if short)",

@@ -20,15 +20,18 @@
         :src="$store.getters.chatUser.profile.image"
         @click="$modal.custom({ component: 'ModalChatSettings' })"
       />
-      <div
-        class="nickname lines-1"
-        :class="{
-          'c-price-up-bybit': (($store.getters.chatUser.profile || {}).sentiment || {}).type === 'long',
-          'c-price-down-bybit': (($store.getters.chatUser.profile || {}).sentiment || {}).type === 'short',
-        }"
-        @click="$modal.custom({ component: 'ModalChatSettings' })"
-        v-html="$store.getters.chatUser.profile.nickname"
-      />
+      <div class="flex-row items-center">
+        <div
+          class="nickname lines-1"
+          :class="{
+            'c-price-up-bybit': (($store.getters.chatUser.profile || {}).sentiment || {}).type === 'long',
+            'c-price-down-bybit': (($store.getters.chatUser.profile || {}).sentiment || {}).type === 'short',
+          }"
+          @click="$modal.custom({ component: 'ModalChatSettings' })"
+          v-html="$store.getters.chatUser.profile.nickname"
+        />
+        <BadgeToken :token="$store.getters.chatUser.token" class="m-l-4"/>
+      </div>
     </div>
     <div class="chat-settings">
       <div
@@ -75,6 +78,7 @@ export default {
     .nickname {
       color: var(--text-stress);
       font-weight: 700;
+      font-size: 12px;
       text-decoration: underline;
     }
 
@@ -90,8 +94,12 @@ export default {
     align-items: center;
 
     .clickable-icon-wrapper {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
+
+      i {
+        font-size: 12px;
+      }
 
       &:not(:first-child) {
         margin-left: 8px;

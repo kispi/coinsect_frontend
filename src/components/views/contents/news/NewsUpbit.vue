@@ -16,7 +16,7 @@
             v-for="news in section.list">
             <div class="news-header">
               <div class="news-company" v-html="news.company"/>
-              <div class="news-timestamp" v-html="$helpers.passedTime(news.created_at)"/>
+              <div class="news-timestamp" v-html="$helpers.elapsedTime(news.created_at)"/>
             </div>
             <div class="news-title" v-html="news.title"/>
           </a>

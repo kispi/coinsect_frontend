@@ -62,7 +62,7 @@
           @close="showSettings = null"
           :align="'right'"
           :mountBelow="refIconSettings">
-          <SettingsPanel/>
+          <SettingsPanel :indices="[0, 1, 2]"/>
         </WrapperDropdownOverlay>
       </div>
     </div>
@@ -273,6 +273,10 @@ export default {
         margin-left: 4px;
       }
     }
+  }
+
+  .settings-panel {
+    width: 320px;
   }
 }
 </style>

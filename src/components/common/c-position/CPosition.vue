@@ -9,8 +9,8 @@
     }">
     <div
       v-if="!position.onAir"
-      class="streamer-off overlay center">
-      {{ $translate('STREAMER_NOT_ON_AIR') }}
+      class="trader-off overlay center">
+      {{ $translate('TRADER_NOT_ON_AIR') }}
     </div>
     <div
       v-if="position.image"
@@ -21,7 +21,13 @@
       <div class="ratio-container">
         <AppImg :src="position.image" v-if="position.image" class="overlay"/>
       </div>
-      <div class="dark overlay" v-html="position.name"/>
+      <div v-if="position.lastUpdate" class="dark overlay upper f-mono">
+        <div class="flex-row items-center">
+          <i class="fal fa-clock"/>
+          <div>{{ $helpers.elapsedTime(position.lastUpdate) }}</div>
+        </div>
+      </div>
+      <div class="dark overlay lower" v-html="position.name"/>
     </div>
     <div class="position-info">
       <div class="base">
@@ -143,7 +149,7 @@ export default {
     }
   }
 
-  .streamer-off {
+  .trader-off {
     color: var(--white);
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
@@ -175,13 +181,28 @@ export default {
     }
 
     .dark.overlay {
-      top: initial;
-      height: 24px;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
       display: flex;
-      align-items: flex-end;
+      height: 32px;
       color: var(--white);
       padding: 4px;
+
+      &.upper {
+        bottom: initial;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+        align-items: flex-start;
+        font-size: 10px;
+        justify-content: flex-end;
+
+        .fa-clock {
+          margin-right: 4px;
+        }
+      }
+
+      &.lower {
+        top: initial;
+        align-items: flex-end;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+      }
     }
   }
 

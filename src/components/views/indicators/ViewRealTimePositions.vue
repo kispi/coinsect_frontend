@@ -10,22 +10,12 @@
       <TradingView :symbol="'FOREXCOM:NSXUSD'" :interval="1"/>
     </AdaptiveLayout>
     <div class="header">
-      <div class="timestamp">
-        <button
-          @click="callApi"
-          class="btn btn-primary m-r-8">
-          <i class="fal fa-sync"/>
-        </button>
-        최종:
-        <span v-if="$store.getters.realTimePositions.lastUpdate" class="m-l-4">
-          {{
-            $store.getters.realTimePositions.lastUpdate ?
-            $helpers.dayjs($store.getters.realTimePositions.lastUpdate).format('MM-DD HH:mm') :
-            ''
-          }}
-          <span class="m-l-4 diff" :class="diff.class" v-if="diff.string">({{ diff.string }})</span>
-        </span>
-      </div>
+      <button
+        @click="callApi"
+        class="btn btn-primary f-12 p-8">
+        <i class="fal fa-sync m-r-8"/>
+        {{ $translate('REFRESH') }}
+      </button>
       <div
         @click="toggleTradingview"
         class="toggle-tradingview">
@@ -40,24 +30,23 @@
     <div
       v-if="positions.tracked.length === 0"
       class="not-monitoring">
-      현재 모니터링중인 트레이더가 없습니다 😢<br>
-      보통 트레이더들이 실시간 매매를 진행하는 시간대인 22:00 ~ 02:00까지 모니터링을 진행하고 있습니다.<br>
-      그동안 업비트 / 빗썸 / 바이낸스 시세, 차트, 프리미엄, 호가창까지도 제공하는 코인충 김프 페이지를 이용해보시는건 어떠세요?
+      <div v-html="$translate('RTP_OPERATION')"/>
       <RouterLink
         to="/"
         class="btn btn-primary">
-        김프 / 실시간 시세 보러가기<i class="fal fa-arrow-right m-l-8"/>
+        {{ $translate('GO_TO_KIMP') }}<i class="fal fa-arrow-right m-l-8"/>
       </RouterLink>
     </div>
     <div
       class="position-group"
       :key="idx"
       v-for="(positionGroup, idx) in [positions.tracked, positions.nonTracked]">
-      <div v-if="idx === 1" class="group-title" @click="showUntracked = !showUntracked">모니터링하고 있지 않은 트레이더들<i class="fal m-l-4" :class="showUntracked ? 'fa-chevron-up' : 'fa-chevron-down'"/></div>
+      <div v-if="idx === 1" class="group-title" @click="showUntracked = !showUntracked">{{ $translate('TRADERS_NOT_MONITORED') }}<i class="fal m-l-4" :class="showUntracked ? 'fa-chevron-up' : 'fa-chevron-down'"/></div>
       <transition name="slide-down">
         <div
           v-if="showUntracked || idx === 0"
           class="positions">
+
           <CPosition
             :position="position"
             :key="idx"
@@ -69,15 +58,10 @@
     <div
       v-if="($store.getters.realTimePositions.data || []).filter(o => o.editable).length === 0"
       class="empty">
-      유의미한 크기의 포지션을 갖고 있거나 포지션을 알 수 있는 관심 트레이더가 없는 것 같네요 😢
+      {{ $translate('RTP_EMPTY') }}
     </div>
     <div class="description">
-      <div>* 운영자가 각 방송을 모니터링하며 입력하므로 약간의 지연이 있을 수 있으며, 최신정보임을 보장할 수 없습니다. 업데이트된지 오래된 경우 신뢰하지 마십시오. 어떤 경우이든 재미로만 보시고, 호반꿀이든 짭반꿀이든 <b>절대로 타인의 매매를 참고하여 매매하지 마십시오</b>.</div>
-      <div>* 포지션을 클릭하시면 해당 트레이더의 방송국으로 가거나, 포지션 업데이트를 요청하실 수 있습니다.</div>
-      <div>* 가능하다면 해당 트레이더의 방송을 실제 시청하여 확인하시기 바랍니다.</div>
-      <div>* 포지션 정보는 운영자가 업데이트하면 즉시 반영되고, 5분 간격으로 새로 가져옵니다. 만약 현재 방송으로 보고 있는 포지션과 다른 경우 새로고침을 해보십시오.</div>
-      <div>* 포지션의 규모가 너무 작거나(정찰병같은) 거미줄이 체결되는 상황등 포지션 변동이 잦은 경우 모니터링 대상에서 제외될 수 있습니다.</div>
-      <div>* 사용되는 시장평균가는 Bybit USDT 마켓 기준이며, Binance, Bitget 또는 MEXC등 타 거래소들에서 산정한 시장평균가와는 차이가 있을 수 있습니다.</div>
+      <div :key="num" v-for="num in $helpers.numArray(6)">* {{ $translate(`RTP_DISCLAIMER_${num + 1}`)}}</div>
     </div>
     <div
       v-if="positions.nonEditable.length > 0"
@@ -85,7 +69,7 @@
       <RouterLink
         to="/contents/public-treasury"
         class="text-underline c-brand-primary display-block m-b-8">
-        기관들
+        {{ $translate('BIG_ENTITIES') }}
       </RouterLink>
       <div class="positions">
         <CPosition
@@ -99,7 +83,7 @@
       v-if="positions.tracked.length > 0"
       to="/"
       class="btn btn-primary bottom">
-      김프 보러가기
+      {{ $translate('GO_TO_KIMP') }}
     </RouterLink>
   </div>
 </template>
@@ -160,11 +144,6 @@ export default {
       }
     })
 
-    const diff = ref({
-      string: null,
-      class: null,
-    })
-
     const markets = ref([])
 
     const reloadMarkets = () => {
@@ -181,10 +160,6 @@ export default {
       try {
         if (connection.value) connection.value.close()
         await store.dispatch('loadRealTimePositions')
-        diff.value.string = plugins.$helpers.passedTime(store.getters.realTimePositions.lastUpdate) || ''
-        if (plugins.$helpers.dayjs().diff(store.getters.realTimePositions.lastUpdate, 'second') >= 3600) {
-          diff.value.class = 'c-danger'
-        }
         openWebsocket()
       } catch (e) {}
     }
@@ -203,7 +178,7 @@ export default {
       const updateTarget = (store.getters.realTimePositions.data || []).find(p => p.id === newPosition.id)
       if (!updateTarget) return
 
-      const keys = ['size', 'entryPrice', 'liqPrice', 'markPrice', 'contract', '$$value', '$$unrealized', 'onAir', 'tracking', 'editable']
+      const keys = ['size', 'entryPrice', 'liqPrice', 'markPrice', 'contract', '$$value', '$$unrealized', 'onAir', 'tracking', 'editable', 'lastUpdate']
       keys.forEach(key => updateTarget[key] = newPosition[key])
 
       reloadMarkets()
@@ -266,7 +241,6 @@ export default {
     )
 
     return {
-      diff,
       positions,
       showUntracked,
       callApi,
@@ -312,16 +286,6 @@ export default {
       align-items: center;
       color: var(--text-stress);
       cursor: pointer;
-    }
-  }
-
-  .timestamp {
-    color: var(--text-stress);
-    display: flex;
-    align-items: center;
-
-    .btn-primary {
-      padding: 8px;
     }
   }
 

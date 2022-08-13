@@ -1,37 +1,40 @@
 <template>
   <div class="view-home">
-    <template v-if="$store.getters.settings.tradingview.home">
-      <div class="row">
-        <TradingViewSymbols/>
-        <div
-          @click="$store.commit('setSettings', {
-            tradingviewHomeDoubleChart: !$store.getters.settings.tradingviewHomeDoubleChart,
-          })"
-          class="toggle-tradingview-double-chart">
-          <AppToggler
-            :modelValue="$store.getters.settings.tradingviewHomeDoubleChart"
-            class="no-touch m-r-8"
-          />
-          나스닥이랑 같이보기
-        </div>
-      </div>
-      <TradingViewTicker class="m-t-8 m-b-8"/>
-      <AdaptiveLayout
-        class="trading-view-double" :gap="8">
-        <TradingView
-          :symbol="$store.getters.settings.tradingviewSymbol"
-          :interval="$store.getters.settings.tradingviewTimeframe"
-        />
-        <TradingView
-          v-if="$store.getters.settings.tradingviewHomeDoubleChart"
-          :symbol="'FOREXCOM:NSXUSD'"
-          :interval="$store.getters.settings.tradingviewTimeframe"
-        />
-      </AdaptiveLayout>
-    </template>
-    <div class="row">
+    <TradingViewSymbols v-if="$store.getters.settings.tradingview.home"/>
+    <TradingViewTicker
+      v-if="$store.getters.settings.tradingview.home"
+      class="m-t-8 m-b-8"
+    />
+    <AdaptiveLayout
+      v-if="$store.getters.settings.tradingview.home"
+      class="m-b-8" :gap="8">
+      <TradingView
+        :symbol="$store.getters.settings.tradingviewSymbol"
+        :interval="$store.getters.settings.tradingviewTimeframe"
+      />
+      <TradingView
+        v-if="$store.getters.settings.tradingviewHomeDoubleChart"
+        :symbol="'FOREXCOM:NSXUSD'"
+        :interval="$store.getters.settings.tradingviewTimeframe"
+      />
+    </AdaptiveLayout>
+    <div class="row p-b-8">
       <BaseAndTarget/>
+      <div
+        @click="showPersonalSettings = !showPersonalSettings"
+        class="toggle-settings"
+        :class="{'active': showPersonalSettings}">
+        <i
+          class="fa-cog"
+          :class="showPersonalSettings ? 'fa' : 'fal'"
+        />
+        <div v-if="$store.getters.windowInnerWidth >= 480" class="m-l-4">{{ $translate('SETTINGS') }}</div>
+      </div>
     </div>
+    <SettingsPanel
+      v-if="showPersonalSettings"
+      :indices="[3, 4, 5, 6]"
+    />
     <RealTimePrices v-if="prepared && !$store.getters.isSSR"/>
   </div>
 </template>
@@ -41,16 +44,20 @@ import { onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import BaseAndTarget from './real-time-prices//BaseAndTarget'
 import RealTimePrices from './real-time-prices/RealTimePrices'
+import SettingsPanel from '@/components/app/app-header/SettingsPanel'
 
 export default {
   components: {
     BaseAndTarget,
     RealTimePrices,
+    SettingsPanel,
   },
   setup() {
     const store = useStore()
 
     const prepared = ref(null)
+
+    const showPersonalSettings = ref(null)
 
     watch([
       () => store.getters.settings.baseExchange,
@@ -67,6 +74,7 @@ export default {
     })
 
     return {
+      showPersonalSettings,
       prepared,
     }
   },
@@ -80,24 +88,37 @@ export default {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--border-base);
-    padding: 8px 0;
   }
 
-  .toggle-tradingview-double-chart {
-    flex: 0 0 auto;
+  .settings-panel {
+    max-width: 480px;
+    margin: 8px auto 0;
+  }
+
+  .toggle-settings {
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid var(--border-base);
+    padding: 8px;
+    border-radius: 4px;
+    white-space: nowrap;
     color: var(--text-stress);
     cursor: pointer;
 
-    .app-checkbox {
-      margin-right: 8px;
+    &:hover {
+      background: var(--background-light);
+    }
+
+    &.active {
+      background: var(--brand-primary-hover-bg);
     }
   }
 
-  @media (max-width: 479px) {
-    .base-and-target {
-      width: 100%;
+  .clickable-icon-wrapper {
+    .fa-cog {
+      font-size: 14px;
     }
   }
 }

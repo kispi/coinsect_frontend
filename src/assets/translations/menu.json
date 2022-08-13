@@ -59,6 +59,10 @@
     "en": "Tradingview",
     "kr": "트레이딩뷰"
   },
+  "MULTICHART": {
+    "en": "Multichart",
+    "kr": "멀티차트"
+  },
   "SHOW": {
     "en": "Show",
     "kr": "보기"

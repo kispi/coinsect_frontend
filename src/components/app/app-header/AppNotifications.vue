@@ -8,7 +8,7 @@
         :key="notification.id"
         v-for="notification in ($store.getters.notifications ||{}).data">
         <div class="notification-text" v-html="notification.text"/>
-        <div class="passed-time" v-html="$helpers.passedTime(notification.createdAt)"/>
+        <div class="passed-time" v-html="$helpers.elapsedTime(notification.createdAt)"/>
       </div>
     </div>
     <div
