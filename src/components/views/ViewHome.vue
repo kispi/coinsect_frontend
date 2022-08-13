@@ -4,7 +4,6 @@
       <div class="row">
         <TradingViewSymbols/>
         <div
-          v-if="!$store.getters.isMobile"
           @click="$store.commit('setSettings', {
             tradingviewHomeDoubleChart: !$store.getters.settings.tradingviewHomeDoubleChart,
           })"
