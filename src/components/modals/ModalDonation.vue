@@ -38,7 +38,8 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   props: ['options'],
@@ -47,9 +48,11 @@ export default {
 
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
+    const store = useStore()
+
     const drawing = ref(null)
 
-    const wallets = ref(null)
+    const wallets = computed(() => store.getters.wallets)
 
     const selectedWallet = ref(null)
 
@@ -64,12 +67,6 @@ export default {
       if (!selectedWallet.value.blockchain.exploreUrl) return
 
       window.open(`${selectedWallet.value.blockchain.exploreUrl}${selectedWallet.value.address}`, '_blank', 'noopener')      
-    }
-
-    const callApi = async () => {
-      try {
-        wallets.value = await plugins.$http.get('wallets')
-      } catch (e) {}
     }
 
     const selectWallet = async wallet => {
@@ -103,7 +100,7 @@ export default {
       try {
         await Promise.all([
           plugins.$helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' }),
-          callApi(),
+          store.dispatch('loadWallets'),
         ])
 
         // 왜인지는 모르겠으나 이 찌꺼기가 남아있는 경우가 있음

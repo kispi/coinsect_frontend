@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import app from './app'
 import chat from './chat'
+import constant from './constant'
 import content from './content'
 import marketInfo from './market-info'
 import onchain from './onchain'
@@ -11,6 +12,7 @@ import user from './user'
 const initialState = {
   app: app.state,
   chat: chat.state,
+  constant: constant.state,
   content: content.state,
   marketInfo: marketInfo.state,
   onchain: onchain.state,
@@ -23,6 +25,7 @@ export const newStore = () => createStore({
   modules: {
     app,
     chat,
+    constant,
     content,
     marketInfo,
     onchain,

@@ -106,6 +106,13 @@ const onchain = [{
     description: '암호화폐의 분포를 보여줍니다.',
     image: withCdn('og-images/og-image-richlist.png'),
   },
+}, {
+  path: '/onchain/whale-alert',
+  component: () => import(/* webpackChunkName: 'view-onchain' */ '@/components/views/onchain/ViewWhaleAlert'),
+  meta: {
+    title: '고래 입금, 출금 - 코인충',
+    description: 'Whale Alert API에 기반하여 최근에 일어난 큰 규모의 이체건들을 보여줍니다.',
+  },
 }]
 
 const apps = [{

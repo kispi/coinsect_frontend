@@ -7,6 +7,7 @@ const onchain = {
     dogecoin: () => $http.get('onchain/richlist/dogecoin'),
     litecoin: () => $http.get('onchain/richlist/litecoin'),
   },
+  whaleAlert: params => $http.get('onchain/whale_alert', { params }),
 }
 
 export default onchain
