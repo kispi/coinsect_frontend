@@ -14,9 +14,9 @@
     </div>
     <div class="hr"/>
     <div class="form-control">
-      <div class="filter-boolean" @click="params.excludeBetweenUnknown = !params.excludeBetweenUnknown">
-        <AppCheckbox :modelValue="params.excludeBetweenUnknown" class="no-touch"/>
-        <div>{{ $translate('WA_EXCLUDE_BETWEEN_UNKNOWN') }}</div>
+      <div class="filter-boolean" @click="params.excludeBetweenSameExchange = !params.excludeBetweenSameExchange">
+        <AppCheckbox :modelValue="params.excludeBetweenSameExchange" class="no-touch"/>
+        <div>{{ $translate('WA_EXCLUDE_BETWEEN_SAME_EXCHANGE') }}</div>
       </div>
     </div>
     <div class="hr"/>
@@ -66,7 +66,7 @@ export default {
       amount: 0,
       amountUsd: 3000000,
       symbols: availableSymbols.value,
-      excludeBetweenUnknown: true,
+      excludeBetweenSameExchange: true,
     })
 
     const onClickSymbol = symbol => {
@@ -155,6 +155,10 @@ export default {
 
     .app-checkbox {
       margin-right: 8px;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 8px;
     }
   }
 }

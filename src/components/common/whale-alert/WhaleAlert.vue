@@ -14,10 +14,11 @@
         :listStable="listStable"
       />
     </transition>
-    <AppLoader v-if="loading" class="m-a m-t-16 m-b-16"/>
-    <div
+    <transition-group
       v-if="resp"
-      class="alert-items">
+      name="cell"
+      class="alert-items"
+      tag="div">
       <div
         class="alert-item f-mono"
         :class="bullOrBear(t)"
@@ -54,7 +55,7 @@
           {{ t.hash }}
         </div>
       </div>
-    </div>
+    </transition-group>
     <div
       v-if="resp && (resp.data || []).length === 0"
       class="empty">
@@ -90,8 +91,6 @@ export default {
     const timeout = ref(null)
 
     const showFilters = ref(null)
-
-    const loading = ref(null)
 
     const params = ref()
 
@@ -140,19 +139,16 @@ export default {
       if (params.value.amount) conds.push(`amount >= ${params.value.amount}`)
       if (params.value.amountUsd) conds.push(`amount_usd >= ${params.value.amountUsd}`)
       if ((params.value.symbols || []).filter(s => s.$$selected).length > 0) conds.push(`symbol in (${params.value.symbols.filter(s => s.$$selected).map(s => `"${s.symbol}"`).join(', ')})`)
-      if (params.value.excludeBetweenUnknown) conds.push('(from_owner_type = "exchange" OR to_owner_type = "exchange")')
+      if (params.value.excludeBetweenSameExchange) conds.push('(from_owner_type != "unknown" XOR to_owner_type != "unknown")')
       if (conds.length > 0) o.where(conds.join(' AND '))
       return o
     }
 
     const search = async () => {
       try {
-        loading.value = true
         resp.value = await onchainService.whaleAlert(createQuery().build())
       } catch (e) {
         plugins.$toast.error(e.data.message)
-      } finally {
-        loading.value = false
       }
       timeout.value = setTimeout(search, 1000 * 60)
     }
@@ -174,7 +170,6 @@ export default {
 
     return {
       resp,
-      loading,
       listStable,
       showFilters,
       getUrl,
@@ -286,6 +281,10 @@ export default {
     color: var(--text-stress);
     padding: 120px 16px;
     font-size: 16px;
+  }
+
+  .cell-move {
+    transition: transform 0.25s cubic-bezier(1, 0, 0, 1);
   }
 
   @media (min-width: 768px) {

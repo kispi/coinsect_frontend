@@ -423,9 +423,9 @@
     "en": "Deselect Coin Filter (See All)",
     "kr": "특정 코인 필터 해제 (모두보기)"
   },
-  "WA_EXCLUDE_BETWEEN_UNKNOWN": {
-    "en": "Only interested in exchanges",
-    "kr": "거래소를 낀 이체만 보기"
+  "WA_EXCLUDE_BETWEEN_SAME_EXCHANGE": {
+    "en": "Exclude tx between the same owner type (Same Ex, or ? => ?)",
+    "kr": "동일 타입 지갑간의 이체 제외 (같은 거래소, 또는 ? => ? 등)"
   },
   "NO_SEARCH_RESULT": {
     "en": "No Search Result 😢",
