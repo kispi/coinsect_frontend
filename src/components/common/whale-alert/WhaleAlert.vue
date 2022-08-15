@@ -36,14 +36,14 @@
           <div class="from address">
             <AppImg
               v-if="t.fromOwnerType !== 'unknown'"
-              :src="$helpers.withCdn(`images/exchanges/${(t.fromOwner || '').toUpperCase().replace(/ /g, '_')}.png`)"
+              :src="$helpers.withCdn(`images/exchanges/${(t.fromOwner || '').toUpperCase().replace(/ ./g, '_')}.png`)"
             />
             {{ displayAddressName(t, 'from') }}</div>
           <i class="fal fa-chevron-right flex-wrap"/>
           <div class="to address">
             <AppImg
               v-if="t.toOwnerType !== 'unknown'"
-              :src="$helpers.withCdn(`images/exchanges/${(t.toOwner || '').toUpperCase().replace(/ /g, '_')}.png`)"
+              :src="$helpers.withCdn(`images/exchanges/${(t.toOwner || '').toUpperCase().replace(/ ./g, '_')}.png`)"
             />
             {{ displayAddressName(t, 'to') }}
           </div>
