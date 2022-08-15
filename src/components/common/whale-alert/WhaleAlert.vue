@@ -101,8 +101,13 @@ export default {
         bitcoin: 'https://www.blockchain.com/btc/tx/',
         ethereum: 'https://etherscan.io/tx/0x',
         tron: 'https://tronscan.org/#/transaction/',
+        ripple: 'https://xrpscan.com/ledger/'
       }
-      return urls[transaction.blockchain] + transaction.hash
+
+      const exploreUrl = urls[transaction.blockchain]
+      if (!exploreUrl) return
+
+      return exploreUrl + transaction.hash
     }
 
     const bullOrBear = t => {
