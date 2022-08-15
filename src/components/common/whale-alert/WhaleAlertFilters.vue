@@ -64,7 +64,7 @@ export default {
 
     const params = ref({
       amount: 0,
-      amountUsd: 5000000,
+      amountUsd: 3000000,
       symbols: availableSymbols.value,
       excludeBetweenUnknown: true,
     })
