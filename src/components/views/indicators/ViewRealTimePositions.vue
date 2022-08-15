@@ -337,7 +337,7 @@ export default {
 
   @media (min-width: 768px) {
     .trading-view {
-      height: 280px;
+      height: 336px;
     }
 
     .positions {
