@@ -26,7 +26,7 @@
         <div class="alert-item-header">
           <div class="alert-item-symbol">
             <AppImg :src="($store.getters.symbols[t.symbol.toUpperCase()] || {}).thumb"/>
-            <div class="name">{{ (t.amount || 0).toLocaleString() }} {{ t.symbol }}</div>
+            <div class="name">{{ displayAmount(t) }} {{ t.symbol }}</div>
             <div class="amount m-l-4">({{ $helpers.currency() }} {{ $helpers.number.pretty.price({ price: t.amountUsd, baseCurrency: 'usd' }) }})</div>
           </div>
           <div class="timestamp">{{ $helpers.elapsedTime($helpers.dayjs.unix(t.timestamp)) }}</div>
@@ -123,6 +123,17 @@ export default {
       return transaction[target + 'Owner'] || (transaction[target + 'OwnerType'] === 'unknown' ? '?' : transaction[target + 'OwnerType'])
     }
 
+    const displayAmount = transaction => {
+      const parsed = parseFloat(transaction.amount) || 0
+      if (!parsed) return '?'
+
+      const isStable = listStable.includes(transaction.symbol)
+      return isStable ? Math.round(parsed).toLocaleString() : parsed.toLocaleString(undefined, {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4,
+      })
+    }
+
     const createQuery = () => {
       const o = plugins.$helpers.qb().limit(100)
       const conds = []
@@ -171,6 +182,7 @@ export default {
       onClickHash,
       bullOrBear,
       displayAddressName,
+      displayAmount,
     }
   },
 }
@@ -267,6 +279,13 @@ export default {
         transform: rotate(180deg);
       }
     }
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--text-stress);
+    padding: 120px 16px;
+    font-size: 16px;
   }
 
   @media (min-width: 768px) {
