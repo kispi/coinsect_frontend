@@ -41,7 +41,7 @@ import TradingView from '@/components/common/TradingView'
 import TradingViewSymbols from '@/components/common/TradingViewSymbols'
 import TradingViewTicker from '@/components/common/TradingViewTicker'
 import TwitterTimeline from '@/components/common/TwitterTimeline'
-import WhaleAlert from '@/components/common/WhaleAlert'
+import WhaleAlert from '@/components/common/whale-alert/WhaleAlert'
 
 // community components
 import CommunityButtons from '@/components/views/community/CommunityButtons'

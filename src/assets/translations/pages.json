@@ -406,5 +406,29 @@
   "HUMPBACK": {
     "en": "Humpback",
     "kr": "혹등고래"
+  },
+  "WA_AMOUNT_ABOVE": {
+    "en": "Amount (Above)",
+    "kr": "수량 (이상)"
+  },
+  "WA_AMOUNT_USD_ABOVE": {
+    "en": "Amount USD (Above)",
+    "kr": "USD 기준 (이상)"
+  },
+  "WA_SYMBOLS": {
+    "en": "Target Coins",
+    "kr": "검색대상코인"
+  },
+  "WA_DESELECT_COIN_FILTERS": {
+    "en": "Deselect Coin Filter (See All)",
+    "kr": "특정 코인 필터 해제 (모두보기)"
+  },
+  "WA_EXCLUDE_BETWEEN_UNKNOWN": {
+    "en": "Only interested in exchanges",
+    "kr": "거래소를 낀 이체만 보기"
+  },
+  "NO_SEARCH_RESULT": {
+    "en": "No Search Result 😢",
+    "kr": "검색 결과가 없습니다 😢"
   }
 }

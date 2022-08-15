@@ -6,13 +6,15 @@
         <div class="profile">
           <div class="image-container">
             <i
-              @click="image.delete"
               v-if="profile.image"
+              @click="image.delete"
               class="fal fa-times center"
             />
             <AppImg
-              :src="profile.image || require('@/assets/images/no-image.png')"
-              @click="image.upload"
+              :src="profile.image || require('@/assets/images/no-image-person.png')"
+              @click="profile.image ? $modal.images({
+                images: [profile.image],
+              }) : image.upload()"
             />
           </div>
           <div
@@ -93,7 +95,7 @@
         </div>
       </div>
       <div class="section">
-        <div class="f-12 text-center c-bitcoin">* 48시간동안 접속하지 않으면 프로필이 초기화됩니다.</div>
+        <div class="f-12 text-center c-bitcoin p-b-8">* 48시간동안 접속하지 않으면 프로필이 초기화됩니다.</div>
       </div>
     </div>
   </div>
@@ -294,6 +296,8 @@ export default {
       height: 96px;
       margin: 0 auto 16px;
       position: relative;
+      background: var(--white);
+      border-radius: 50%;
       cursor: pointer;
 
       .fa-times {

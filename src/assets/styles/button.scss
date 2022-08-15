@@ -12,7 +12,7 @@
   align-items: center;
   border: none;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
   white-space: nowrap;
 
@@ -65,4 +65,15 @@
 .btn-danger {
   background: var(--danger);
   color: var(--white);
+}
+
+.btn-small {
+  font-size: 12px;
+  padding: 4px 12px;
+}
+
+.btn-brd {
+  background: none;
+  border: 1px solid var(--text-stress);
+  color: var(--text-stress);
 }

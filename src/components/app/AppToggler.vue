@@ -50,6 +50,7 @@ export default {
     top: var(--app-toggler-gap);
     left: var(--app-toggler-gap);
     transition: all 0.1s ease-in-out;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
   }
 
   &.checked {

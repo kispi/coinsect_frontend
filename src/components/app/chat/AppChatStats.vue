@@ -43,7 +43,7 @@ export default {
 .app-chat-stats {
   position: absolute;
   z-index: 1;
-  top: 49px;
+  top: 45px;
   left: 0;
   right: 0;
   padding: 8px;
