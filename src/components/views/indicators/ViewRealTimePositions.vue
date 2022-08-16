@@ -159,7 +159,7 @@ export default {
     const callApi = async () => {
       const chatCon = store.getters.chat.connection
       if (chatCon) chatCon.send(JSON.stringify({ type: 'rtp' }))
-      rtpTimeout.value = setTimeout(callApi, 1000 * 5)
+      rtpTimeout.value = setTimeout(callApi, 1000 * 60 * 5)
     }
 
     const openWebsocket = () => {
