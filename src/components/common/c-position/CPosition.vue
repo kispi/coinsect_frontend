@@ -32,7 +32,7 @@
     <div class="position-info">
       <div class="base">
         <div class="contract">
-          <div class="key c-white" :class="{'f-16': $store.getters.windowInnerWidth >= 480}">{{ position.contract ? position.contract.toLocaleString() : '' }}</div>
+          <div class="key c-white">{{ position.contract ? position.contract.toLocaleString() : '' }}</div>
           <div class="value">
             <div class="badge-summary" v-html="position.contract ? badgeSummary(position) : ''"/>
           </div>
@@ -222,7 +222,6 @@ export default {
 
         &:last-child {
           text-align: right;
-          white-space: nowrap;
         }
       }
     }
@@ -231,12 +230,12 @@ export default {
       font-size: 11px;
       margin-bottom: 4px;
       color: var(--gs-bb);
-      white-space: nowrap;
     }
 
     .value {
       font-size: 14px;
       font-weight: 500;
+      white-space: nowrap;
       color: var(--white);
     }
   }
@@ -284,6 +283,14 @@ export default {
   @media (max-width: 479px) {
     .image-container {
       max-width: 80px;
+    }
+  }
+
+  @media (min-width: 480px) {
+    .position-info {
+      .contract .key {
+        font-size: 16px;
+      }
     }
   }
 }
