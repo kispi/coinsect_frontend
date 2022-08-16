@@ -191,6 +191,8 @@ export default {
     }
 
     onMounted(() => {
+      if (store.getters.chat.connected) callApi()
+
       if (store.getters.isSSR) return
 
       plugins.$bus.$on('call-api', callApi)
