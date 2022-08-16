@@ -21,9 +21,9 @@ const useChatHandler = () => {
 
   const filteredMessages = computed(() => messages.value.filter(m => !store.getters.settings.blockedUsers[m.token]))
 
-  const connection = computed(() => store.getters.websocketConnections.chat)
+  const connection = computed(() => store.getters.chat.connection)
 
-  const connected = ref(null)
+  const connected = computed(() => store.getters.chat.connected)
 
   const loadingMessages = ref(null)
 
@@ -143,6 +143,9 @@ const useChatHandler = () => {
       case 'connections':
         store.commit('setChatConnections', message)
         break
+      case 'rtp':
+        store.commit('setRealTimePositions', message.meta)
+        break
     }
   }
 
@@ -170,8 +173,8 @@ const useChatHandler = () => {
     const endpoint = process.env.VUE_APP_API_DOMAIN.replace('http', 'ws')
 
     // 나중엔 endpoint가 채팅서버로 바뀌어야함
-    store.commit('setWebsocketConnections', {
-      chat: new WebSocket(`${endpoint}/webchat${token.value ? `?token=${token.value}` : ''}`),
+    store.commit('setChat', {
+      connection: new WebSocket(`${endpoint}/webchat${token.value ? `?token=${token.value}` : ''}`),
     })
 
     connection.value.onmessage = event => {
@@ -182,7 +185,7 @@ const useChatHandler = () => {
     }
 
     connection.value.onopen = () => {
-      connected.value = true
+      store.commit('setChat', { connected: true })
       pingInterv.value = setInterval(ping, 1000 * 30)
 
       store.commit('setChat', { messages: [] })
@@ -190,7 +193,7 @@ const useChatHandler = () => {
     }
 
     connection.value.onclose = () => {
-      connected.value = false
+      store.commit('setChat', { connected: false })
       clearInterval(pingInterv.value)
       setTimeout(connect, 5000)
     }
@@ -247,7 +250,6 @@ const useChatHandler = () => {
 
   return {
     connection,
-    connected,
     messages,
     filteredMessages,
     loadingMessages,

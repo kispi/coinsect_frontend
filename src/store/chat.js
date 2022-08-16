@@ -3,6 +3,8 @@ import helpers from '@/helpers'
 const chat = {
   state: () => ({
     chat: {
+      connection: null,
+      connected: null,
       messages: [],
       autoScrollable: null,
       incomingMessage: null,
@@ -10,13 +12,9 @@ const chat = {
       lastReadMessage: null,
       writingReplyTo: null, // 값이 존재한다면, 이 메시지에 답장을 쓰고있는 것이다.
     },
-    websocketConnections: {
-      chat: null,
-    },
   }),
   getters: {
     chat: state => state.chat,
-    websocketConnections: state => state.websocketConnections,
   },
   mutations: {
     setChat(state, chat) {
@@ -24,9 +22,6 @@ const chat = {
         state.chat[key] = chat[key]
         if (key === 'lastReadMessage') helpers.localStorage.setMeta('lastReadMessage', chat[key])
       })
-    },
-    setWebsocketConnections(state, websocketConnections) {
-      Object.keys(websocketConnections).forEach(key => state.websocketConnections[key] = websocketConnections[key])
     },
   },
 }

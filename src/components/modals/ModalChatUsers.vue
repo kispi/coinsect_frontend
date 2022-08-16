@@ -57,7 +57,7 @@ export default {
 
     const centered = ref(null) // 모달이 로드된 직후 한번만 true로 설정하고 그 뒤로는 바뀔 일 없음
 
-    const connection = computed(() => store.getters.websocketConnections.chat)
+    const connection = computed(() => store.getters.chat.connection)
 
     const connections = computed(() => store.getters.chatConnections || [])
 

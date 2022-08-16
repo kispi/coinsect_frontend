@@ -53,6 +53,7 @@ const content = {
         commit('setLoading', { global: false })
       }
     },
+    // MAYBE will be deprecated
     async loadRealTimePositions({ commit }) {
       try {
         const data = await contentService.realTimePositions()

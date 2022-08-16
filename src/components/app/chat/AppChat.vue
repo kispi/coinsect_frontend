@@ -103,7 +103,6 @@ export default {
 
     const {
       init,
-      connected,
       messages: originalMessages,
       filteredMessages: messages,
       loadMessages,
@@ -220,7 +219,6 @@ export default {
       refAppChatBody,
       refAppChatInput,
       refAppChat,
-      connected,
       messages,
       loadingReplyTarget,
       onClickMessageFunction,

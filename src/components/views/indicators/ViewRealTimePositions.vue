@@ -101,7 +101,7 @@ export default {
 
     const store = useStore()
 
-    const apiInterv = ref(null)
+    const rtpTimeout = ref(null)
 
     const connection = ref(null)
 
@@ -157,11 +157,9 @@ export default {
     }
 
     const callApi = async () => {
-      try {
-        if (connection.value) connection.value.close()
-        await store.dispatch('loadRealTimePositions')
-        openWebsocket()
-      } catch (e) {}
+      const chatCon = store.getters.chat.connection
+      if (chatCon) chatCon.send(JSON.stringify({ type: 'rtp' }))
+      rtpTimeout.value = setTimeout(callApi, 1000 * 5)
     }
 
     const openWebsocket = () => {
@@ -193,11 +191,7 @@ export default {
     }
 
     onMounted(() => {
-      callApi()
-
       if (store.getters.isSSR) return
-
-      apiInterv.value = setInterval(callApi, 1000 * 60 * 5)
 
       plugins.$bus.$on('call-api', callApi)
     })
@@ -205,16 +199,34 @@ export default {
     onUnmounted(() => {
       if (store.getters.isSSR) return
 
-      clearInterval(apiInterv.value)
+      plugins.$bus.$off('call-api', callApi)
+
+      clearTimeout(rtpTimeout.value)
 
       if (connection.value) connection.value.close()
-
-      plugins.$bus.$off('call-api', callApi)
     })
 
     watch(
       () => store.getters.chat.lastWebsocketMessage,
       onPositionChange,
+    )
+
+    watch(
+      () => store.getters.chat.connected,
+      newVal => {
+        // timeout이 세팅되기 전에만 실행
+        if (newVal && !rtpTimeout.value) callApi()
+      },
+    )
+
+    watch(
+      () => store.getters.realTimePositions,
+      newVal => {
+        if (!newVal) return
+
+        if (connection.value) connection.value.close()
+        openWebsocket()
+      },
     )
 
     watch(
