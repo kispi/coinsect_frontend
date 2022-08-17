@@ -12,7 +12,7 @@ const createLogger = () => {
 const logger = (req, res, next) => {
   const url = req.url
 
-  const extensions = ['.js', '.css', '.png', '.gif', 'jpg', './jpeg', '.svg', '.woff2', '.ico']
+  const extensions = ['.js', '.css', '.png', '.gif', 'jpg', '.jpeg', '.svg', '.woff2', '.ico']
 
   if (extensions.some(ext => url.endsWith(ext))) {
     next()
