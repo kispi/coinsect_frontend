@@ -5,22 +5,27 @@
     <div class="content">
       <AppChatProfile v-if="showProfile" :user="message"/>
       <div class="text-and-timestamp">
-        <AppImg
-          @click="onClickImage(message.text)"
-          v-if="message.type === 'image'"
-          :src="message.text"
-        />
-        <div
-          v-if="['text', 'alert'].indexOf(message.type) >= 0"
-          class="text">
+        <template v-if="!message.$$hide">
+          <AppImg
+            v-if="message.type === 'image'"
+            :src="message.text"
+            @click="onClickImage(message.text)"
+          />
           <div
-            v-if="(meta || {}).replyTo"
-            class="meta-reply-to"
-            @click="$emit('click-replied-message', meta.replyTo)">
-            <div class="mrt-nickname">To: {{ meta.replyTo.nickname }}</div>
-            <div class="mrt-text lines-1">{{ meta.replyTo.text }}</div>
+            v-if="['text', 'alert'].indexOf(message.type) >= 0 && (message.text || '').length > 0"
+            class="text">
+            <div
+              v-if="(meta || {}).replyTo"
+              class="meta-reply-to"
+              @click="$emit('click-replied-message', meta.replyTo)">
+              <div class="mrt-nickname">To: {{ meta.replyTo.nickname }}</div>
+              <div class="mrt-text lines-1">{{ meta.replyTo.text }}</div>
+            </div>
+            <div v-html="$helpers.dom.linkify(message.text)" @click.prevent="onClickMessage"/>
           </div>
-          <div v-html="$helpers.dom.linkify(message.text)" @click.prevent="onClickMessage"/>
+        </template>
+        <div v-else class="text hidden">
+          {{ $translate('DELETED_BY_ADMIN') }}
         </div>
         <div class="additional">
           <div
@@ -58,7 +63,7 @@ export default {
     const onClickImage = url => window.open(url, '_blank', 'noopener')
 
     const onClickMessage = e => {
-      const link = e.target.attributes['href'].value
+      const link = (e.target.attributes['href'] || {}).value
       if (!link) return
 
       if (link.includes('coinsect.io')) {
@@ -149,6 +154,10 @@ export default {
       max-width: 200px;
       color: var(--text-stress);
       white-space: pre-line;
+
+      &.hidden {
+        background: rgba(255, 0, 0, 0.5);
+      }
     }
 
     .additional {

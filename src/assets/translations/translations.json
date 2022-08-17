@@ -107,12 +107,8 @@
     "en": "Bearish",
     "kr": "떡락각"
   },
-  "GENERATE": {
-    "en": "Generate",
-    "kr": "생성"
-  },
-  "CUSTOM_PICK": {
-    "en": "Custom Picker",
-    "kr": "수동 뽑기"
+  "DELETED_BY_ADMIN": {
+    "en": "Deleted by the admin.",
+    "kr": "관리자에 의해 삭제되었습니다."
   }
 }

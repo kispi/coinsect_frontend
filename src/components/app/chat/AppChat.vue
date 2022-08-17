@@ -34,10 +34,6 @@
           ]"
           :key="message.id"
           v-for="(message, idx) in messages">
-          <DailySeparator
-            v-if="message.$$showSeparator"
-            :message="message"
-          />
           <AppChatMessage
             @click-function="onClickMessageFunction"
             @click-replied-message="onClickRepliedMessage"
@@ -47,9 +43,13 @@
           />
           <!-- 이미지 메시지는 아래 컴포넌트 렌더링할 필요 없음 -->
           <AppChatMessageMetaTags
-            v-if="message.type !== 'image'"
+            v-if="message.type !== 'image' && !message.$$hide"
             :message="message"
             @scroll-to-bottom="scrollToBottom"
+          />
+          <DailySeparator
+            v-if="message.$$showSeparator"
+            :message="message"
           />
         </div>
       </div>

@@ -407,6 +407,14 @@
     "en": "Humpback",
     "kr": "혹등고래"
   },
+  "GENERATE": {
+    "en": "Generate",
+    "kr": "생성"
+  },
+  "CUSTOM_PICK": {
+    "en": "Custom Picker",
+    "kr": "수동 뽑기"
+  },
   "WA_AMOUNT_ABOVE": {
     "en": "Amount (Above)",
     "kr": "수량 (이상)"

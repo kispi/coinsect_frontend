@@ -23,8 +23,6 @@ const useChatHandler = () => {
 
   const connection = computed(() => store.getters.chat.connection)
 
-  const connected = computed(() => store.getters.chat.connected)
-
   const loadingMessages = ref(null)
 
   const fullyLoaded = ref(null)
@@ -125,7 +123,7 @@ const useChatHandler = () => {
       case 'text': {
         const curMessage = preparedMessage(message)
         if (curMessage.text) {
-          const prevMessage = messages.value[messages.value.length - 1]
+          const prevMessage = filteredMessages.value[filteredMessages.value.length - 1]
           curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
 
           // 여기서는 배열의 끝에 넣는 것이므로 Array.push가 맞음
@@ -143,6 +141,13 @@ const useChatHandler = () => {
       case 'connections':
         store.commit('setChatConnections', message)
         break
+      case 'hideMessage': {
+        const targetMessageId = (message.meta || {}).messageId
+        if (!targetMessageId) return
+
+        const targetMessage = (messages.value || []).find(m => m.id === targetMessageId)
+        if (targetMessage) targetMessage.$$hide = true
+      }
     }
   }
 
