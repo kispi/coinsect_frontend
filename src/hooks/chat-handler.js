@@ -143,9 +143,6 @@ const useChatHandler = () => {
       case 'connections':
         store.commit('setChatConnections', message)
         break
-      case 'rtp':
-        store.commit('setRealTimePositions', message.meta)
-        break
     }
   }
 
