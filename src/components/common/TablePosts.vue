@@ -31,7 +31,7 @@
               v-html="postNumber(row)"
             />
             <article class="cell title">
-              <i v-if="iconPostType(row)" class="post-type far" :class="iconPostType(row)"/>
+              <i v-if="iconPostType(row)" class="post-type fa" :class="iconPostType(row)"/>
               <span v-html="row.title"/>
               <span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
             </article>
