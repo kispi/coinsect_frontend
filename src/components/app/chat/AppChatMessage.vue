@@ -3,7 +3,7 @@
     class="app-chat-message"
     :class="{'mine': message.isMine}">
     <div class="content">
-      <AppChatProfile v-if="showProfile" :user="message" :useSentiment="true"/>
+      <AppChatProfile v-if="showProfile" :user="message"/>
       <div class="text-and-timestamp">
         <template v-if="!message.$$hide">
           <AppImg
