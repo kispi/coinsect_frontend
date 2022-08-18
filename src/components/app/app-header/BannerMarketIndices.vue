@@ -2,23 +2,18 @@
   <div
     v-if="$store.getters.indices"
     class="banner-market-indices">
-    <div
-      class="marquee-unit"
-      :key="num"
-      v-for="num in $helpers.numArray($store.getters.isMobile ? 1 : 2)">
-      <AdaptiveLayout
-        :key="index.key"
-        v-for="index in indices"
-        :gap="$store.getters.isMobile ? 0 : 8">
-        <div class="key" v-html="$translate(index.key)"/>
-        <div class="value f-mono" v-html="index.value"/>
-        <div
-          class="changes f-mono"
-          :class="index.changes > 0 ? 'c-price-up' : 'c-price-down'"
-          v-html="`${index.changes > 0 ? '+' : ''}${index.changes}%`"
-        />
-      </AdaptiveLayout>
-    </div>
+    <AdaptiveLayout
+      :key="index.key"
+      v-for="index in indices"
+      :gap="$store.getters.isMobile ? 0 : 8">
+      <div class="key" v-html="$translate(index.key)"/>
+      <div class="value f-mono" v-html="index.value"/>
+      <div
+        class="changes f-mono"
+        :class="index.changes > 0 ? 'c-price-up' : 'c-price-down'"
+        v-html="`${index.changes > 0 ? '+' : ''}${index.changes}%`"
+      />
+    </AdaptiveLayout>
   </div>
 </template>
 
@@ -78,11 +73,7 @@ export default {
 
 <style lang="scss">
 .banner-market-indices {
-  position: relative;
-
-  .marquee-unit {
-    display: flex;
-  }
+  display: flex;
 
   .adaptive-layout {
     white-space: nowrap;
@@ -109,16 +100,6 @@ export default {
     .changes {
       font-weight: 300;
     }
-  }
-
-  @media (min-width: 768px) {
-    max-width: 480px;
-    overflow: hidden;
-    display: flex;
-  }
-
-  @media (min-width: 992px) {
-    max-width: 720px;
   }
 }
 </style>
