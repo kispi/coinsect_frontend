@@ -31,8 +31,6 @@ const useChatHandler = () => {
 
   const pingInterv = ref(null)
 
-  const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
-
   const play = type => {
     const arr = sounds.filter(s => s.type === type)
     const randIdx = Math.floor(Math.random() * arr.length)
@@ -48,12 +46,6 @@ const useChatHandler = () => {
       audio.volume = 0.2
       sound.audio = audio
     })
-  }
-
-  const showSeparator = (curMessage, prevMessage) => {
-    if (!curMessage || !curMessage.timestamp) return false
-
-    return prevMessage && curMessage && (d(prevMessage.timestamp) !== d(curMessage.timestamp))
   }
 
   const alertProfile = {
@@ -123,9 +115,6 @@ const useChatHandler = () => {
       case 'text': {
         const curMessage = preparedMessage(message)
         if (curMessage.text) {
-          const prevMessage = filteredMessages.value[filteredMessages.value.length - 1]
-          curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
-
           // 여기서는 배열의 끝에 넣는 것이므로 Array.push가 맞음
           messages.value.push(curMessage)
         }
@@ -218,22 +207,9 @@ const useChatHandler = () => {
       }
 
       // 새로 온 메시지들에 대해 $$showSeparator 계산. 매번 messages.value를 직접 바꾸지 않고 msgBuf를 둠으로 '메시지 개수'회 렌더링이 아닌 한번만 렌더링함.
-      let msgBuf = []
-      data.forEach((_, idx) => {
-        const prevMessage = data[idx - 1] ? preparedMessage(data[idx - 1]) : null
-        const curMessage = data[idx] ? preparedMessage(data[idx]) : null
-        if (prevMessage && curMessage) curMessage.$$showSeparator = showSeparator(curMessage, prevMessage)
-        msgBuf.unshift(curMessage)
-      })
-
-      // 존재하던 메시지 중 가장 오래된 것과 새로 온 메시지 
-      const oldestMessageBeforeConcat = messages.value[0]
-      if (msgBuf[msgBuf.length - 1] && oldestMessageBeforeConcat) {
-        oldestMessageBeforeConcat.$$showSeparator = showSeparator(oldestMessageBeforeConcat, msgBuf[msgBuf.length - 1])
-      }
-
+      const msgBuf = []
+      data.forEach(msg => msgBuf.unshift(preparedMessage(msg)))
       store.commit('setChat', { messages: msgBuf.concat(messages.value) })
-      msgBuf = []
 
       if (!firstMessageId) plugins.$bus.$emit('first-load-messages')
       return data

@@ -34,6 +34,10 @@
           ]"
           :key="message.id"
           v-for="(message, idx) in messages">
+          <DailySeparator
+            :prevMessage="messages[idx - 1]"
+            :message="message"
+          />
           <AppChatMessage
             @click-function="onClickMessageFunction"
             @click-replied-message="onClickRepliedMessage"
@@ -46,10 +50,6 @@
             v-if="message.type !== 'image' && !message.$$hide"
             :message="message"
             @scroll-to-bottom="scrollToBottom"
-          />
-          <DailySeparator
-            v-if="message.$$showSeparator"
-            :message="message"
           />
         </div>
       </div>

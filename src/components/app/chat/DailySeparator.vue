@@ -1,12 +1,33 @@
 <template>
-  <div class="daily-separator flex-row items-center">
+  <div
+    v-if="showSeparator"
+    class="daily-separator flex-row items-center">
     <div class="timestamp flex-wrap"><i class="fal fa-calendar-alt m-r-8"/>{{ $helpers.dayjs(message.timestamp).format('YYYY-MM-DD') }}</div>
   </div>
 </template>
 
 <script>
+import { computed, getCurrentInstance } from 'vue'
+
 export default {
-  props: ['message'],
+  props: ['prevMessage', 'message'],
+  setup(props) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
+
+    const showSeparator = computed(() => {
+      if (!props.prevMessage) return true
+
+      if (!(props.message || {}).timestamp) return false
+
+      return d(props.prevMessage.timestamp) !== d(props.message.timestamp)
+    })
+
+    return {
+      showSeparator,
+    }
+  },
 }
 </script>
 
