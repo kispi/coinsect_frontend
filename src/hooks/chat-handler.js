@@ -147,7 +147,11 @@ const useChatHandler = () => {
 
         const targetMessage = (messages.value || []).find(m => m.id === targetMessageId)
         if (targetMessage) targetMessage.$$hide = true
+        break
       }
+      case 'forceRefresh':
+        plugins.$helpers.forceRefresh()
+        break
     }
   }
 

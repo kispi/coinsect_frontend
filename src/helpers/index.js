@@ -55,6 +55,16 @@ const helpers = {
   animate,
   dataSetter,
   social,
+  forceRefresh: () => {
+    helpers.modal.alert(`
+      더이상 제공되지 않는 API를 호출하고 있으므로 재접속을 부탁드립니다.
+      아마 최신 버전의 코인충 사이트를 이용중이시지 않은 것 같습니다.
+      필수 업데이트이므로 60초 후 강제로 새로고침됩니다.
+
+      재접속했는데도 계속 이 메시지가 보인다면 <a href="mailto:coinsect.io@gmail.com" class="text-underline f-700">관리자</a>에게 문의 부탁드립니다.`
+    )
+    setTimeout(() => location.reload(), 1000 * 60)
+  },
   elapsedTime: timestamp => {
     const en = $store.getters.settings.locale === 'en'
     const d = helpers.dayjs().diff(helpers.dayjs(timestamp), 'seconds')
