@@ -52,6 +52,7 @@ const app = {
         nonTax: 1200000,
       },
       newsProvider: 'upbit', // 'upbit' || 'cobak_feed' || 'cobak_article'
+      cleanChatAgreed: null,
       chatFolded: false,
       chatSizeMax: false,
       chatDing: false,

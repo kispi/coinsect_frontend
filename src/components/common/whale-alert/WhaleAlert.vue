@@ -2,7 +2,7 @@
   <div class="whale-alert">
     <div
       @click="showFilters = !showFilters"
-      class="toggle-filters">
+      class="btn btn-brd">
       <i class="far fa-chevron-down" :class="{'show-filters': showFilters}"/>
       {{ $translate('FILTER') }}
     </div>
@@ -26,7 +26,7 @@
         v-for="t in resp.data">
         <div class="alert-item-header">
           <div class="alert-item-symbol">
-            <AppImg :src="($store.getters.symbols[t.symbol.toUpperCase()] || {}).thumb"/>
+            <AppImg :src="($store.getters.symbols[t.symbol.toUpperCase()] || {}).thumb" :alt="t.symbol"/>
             <div class="name">{{ displayAmount(t) }} {{ t.symbol }}</div>
             <div class="amount m-l-4">({{ $helpers.currency() }} {{ $helpers.number.pretty.price({ price: t.amountUsd, baseCurrency: 'usd' }) }})</div>
           </div>
@@ -37,6 +37,7 @@
             <AppImg
               v-if="t.fromOwnerType !== 'unknown'"
               :src="$helpers.withCdn(`images/exchanges/${(t.fromOwner || '').toUpperCase().replace(/[ .]/g, '_')}.png`)"
+              :alt="t.fromOwner"
             />
             {{ displayAddressName(t, 'from') }}</div>
           <i class="fal fa-chevron-right flex-wrap"/>
@@ -44,6 +45,7 @@
             <AppImg
               v-if="t.toOwnerType !== 'unknown'"
               :src="$helpers.withCdn(`images/exchanges/${(t.toOwner || '').toUpperCase().replace(/[ .]/g, '_')}.png`)"
+              :alt="t.toOwner"
             />
             {{ displayAddressName(t, 'to') }}
           </div>
@@ -263,11 +265,10 @@ export default {
     }
   }
 
-  .toggle-filters {
-    margin: 0 auto 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .btn-brd {
+    margin-bottom: 16px;
+    margin-left: auto;
+    display: table;
     user-select: none;
     cursor: pointer;
 

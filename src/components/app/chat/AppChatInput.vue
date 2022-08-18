@@ -13,6 +13,18 @@
       />
     </div>
     <div class="textarea-wrapper">
+      <div
+        v-if="!$store.getters.settings.cleanChatAgreed"
+        class="disclaimer overlay">
+        <div class="text">
+          광고, 지나친 비방, 욕설 없는 클린한 채팅 부탁드립니다 🙂
+        </div>
+        <button
+          @click="$store.commit('setSettings', { cleanChatAgreed: true })"
+          class="btn btn-brd">
+          {{ $translate('AGREE') }}
+        </button>
+      </div>
       <div class="functions">
         <i @click="chatFunctions.image" class="fa fa-image"/>
       </div>
@@ -149,6 +161,29 @@ export default {
     display: flex;
     align-items: center;
     padding: 8px;
+
+    .disclaimer {
+      line-height: 22px;
+      color: var(--text-stress);
+      padding: 4px 12px;
+      border: 1px solid var(--border-base);
+      background: var(--brand-primary-hover-bg);
+      backdrop-filter: blur(4px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      top: 45px;
+
+      .text {
+        text-align: center;
+      }
+
+      .btn-brd {
+        margin-top: 16px;
+      }
+    }
 
     textarea {
       padding-right: 16px;

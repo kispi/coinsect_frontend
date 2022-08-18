@@ -23,6 +23,10 @@
     "en": "Confirm",
     "kr": "확인"
   },
+  "AGREE": {
+    "en": "Agree",
+    "kr": "동의"
+  },
   "SUBMIT": {
     "en": "Submit",
     "kr": "제출"

@@ -84,8 +84,8 @@ const useMenuItems = () => {
     title: 'ONCHAIN',
     pathPrefix: '/onchain/',
     subPages: [
-      { path: '/onchain/richlist', title: 'RICHLIST' },
       { path: '/onchain/whale-alert', title: 'WHALE_ALERT' },
+      { path: '/onchain/richlist', title: 'RICHLIST' },
     ],
   }, {
     title: 'APPS',

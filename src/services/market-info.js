@@ -1,6 +1,6 @@
 import { $http, $httpNoAuth } from '@/modules/axios'
 
-const cacheTime = 1000 * 60
+const cacheTime = 1000 * 60 * 30 // 이건 자주 바뀌는게 아니라 30분에 한번씩만 땡겨와도 됨.
 
 const cached = {
   base: {

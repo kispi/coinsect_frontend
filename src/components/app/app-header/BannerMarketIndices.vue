@@ -1,10 +1,7 @@
 <template>
   <div
     v-if="$store.getters.indices"
-    ref="refBannerMarketIndices"
     class="banner-market-indices">
-    <div class="overlay-left"/>
-    <div class="overlay-right"/>
     <div
       class="marquee-unit"
       :key="num"
@@ -26,7 +23,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { computed, getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -35,7 +32,7 @@ export default {
 
     const store = useStore()
 
-    const refBannerMarketIndices = ref(null)
+    const interv = ref(null)
 
     const indices = computed(() => {
       const o = store.getters.indices
@@ -55,38 +52,24 @@ export default {
         key: 'TOTAL_MARKET_CAP',
         value: plugins.$helpers.number.pretty.cap({ cap: o.totalMarketCap, baseCurrency: 'usd' }),
         changes: o.totalMarketCap24hChangePercent,
-      }, {
-        key: 'VOL_24',
-        value: plugins.$helpers.number.pretty.cap({ cap: o.totalVolume, baseCurrency: 'usd' }),
-        changes: o.totalVolume24hChangePercent,
       }]
     })
 
-    const loadIndices = () => {
-      store.dispatch('loadIndices').then(checkMarqueeSize)
-      setTimeout(loadIndices, 60 * 1000)
-    }
+    onMounted(() => {
+      store.dispatch('loadIndices')
 
-    const checkMarqueeSize = () => {
       if (store.getters.isSSR) return
 
-      setTimeout(() => {
-        const dom = document.getElementsByClassName('marquee-unit')[0]
-        if (dom && refBannerMarketIndices.value) {
-          refBannerMarketIndices.value.style.setProperty('--marquee-width', `${dom.clientWidth}px`)
-        }
-      })
-    }
+      interv.value = setInterval(() => store.dispatch('loadIndices'), 60 * 1000 * 5)
+    })
 
-    onMounted(loadIndices)
+    onUnmounted(() => {
+      if (store.getters.isSSR) return
 
-    watch([
-      () => store.getters.windowInnerWidth,
-      () => store.getters.settings.locale,
-    ], checkMarqueeSize)
+      clearInterval(interv.value)
+    })
 
     return {
-      refBannerMarketIndices,
       indices,
     }
   },
@@ -128,50 +111,10 @@ export default {
     }
   }
 
-  .overlay-left,
-  .overlay-right {
-    display: none;
-  }
-
   @media (min-width: 768px) {
     max-width: 480px;
     overflow: hidden;
     display: flex;
-
-    .overlay-left,
-    .overlay-right {
-      position: absolute;
-      width: 40px;
-      top: 0;
-      bottom: 0;
-      display: initial;
-      z-index: 1;
-
-      &.overlay-left {
-        left: 0;
-        background: linear-gradient(to right, var(--background-base), transparent);
-      }
-
-      &.overlay-right {
-        right: 0;
-        background: linear-gradient(to left, var(--background-base), transparent);
-      }
-    }
-
-    @keyframes marqueeX {
-      from {
-        transform: translateX(0); // 밴드 1개 길이 + 마진 한 단위
-      }
-
-      to {
-        transform: translateX(calc(-1 * (var(--marquee-width) + 16px)));
-      }
-    }
-
-    .marquee-unit {
-      animation: marqueeX 16s linear infinite;
-      margin-right: 16px;
-    }
   }
 
   @media (min-width: 992px) {
