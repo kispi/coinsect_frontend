@@ -43,7 +43,7 @@ const useChatHandler = () => {
 
     sounds.forEach(sound => {
       const audio = new Audio(plugins.$helpers.withCdn(sound.path))
-      audio.volume = 0.2
+      audio.volume = 0.1
       sound.audio = audio
     })
   }
