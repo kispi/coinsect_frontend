@@ -2,7 +2,10 @@
   <div
     v-if="user"
     class="app-chat-profile lines-1"
-    :class="user.type">
+    :class="[
+      user.type,
+      $store.getters.config.adminToken === user.token ? 'admin' : '',
+    ]">
     <AppImg
       v-if="(user.profile || {}).image"
       class="profile-img"
@@ -107,6 +110,17 @@ export default {
     .nickname {
       color: var(--brand-primary);
       font-weight: 700;
+    }
+  }
+
+  &.admin {
+    .nickname {
+      font-weight: 700;
+      color: var(--brand-primary);
+    }
+
+    .badge-token {
+      display: none;
     }
   }
 }
