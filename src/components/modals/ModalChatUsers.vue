@@ -26,12 +26,12 @@
       </div>
       <div
         v-if="tabs[selectedTab].length > 0"
-        class="connections pretty-scrollbar">
+        class="users pretty-scrollbar">
         <div
-          class="connection"
+          class="user"
           :key="idx"
-          v-for="(connection, idx) in tabs[selectedTab]">
-          <AppChatProfile :user="connection.user" :useSentiment="true"/>
+          v-for="(user, idx) in tabs[selectedTab]">
+          <AppChatProfile :user="user" :useSentiment="true"/>
         </div>
       </div>
       <div
@@ -59,7 +59,7 @@ export default {
 
     const connection = computed(() => store.getters.chat.connection)
 
-    const connections = computed(() => store.getters.chatConnections || [])
+    const users = computed(() => store.getters.chatUsers || [])
 
     const sorted = ref([])
 
@@ -70,7 +70,7 @@ export default {
       const blocked = []
 
       sorted.value.forEach(c => {
-        (store.getters.settings.blockedUsers[c.user.token] ? blocked : nonBlocked).push(c)
+        (store.getters.settings.blockedUsers[c.token] ? blocked : nonBlocked).push(c)
       })
 
       return {
@@ -83,10 +83,10 @@ export default {
 
     const interv = ref(null)
 
-    const loadConnections = () => {
+    const loadUsers = () => {
       loading.value = true
       connection.value.send(JSON.stringify({
-        type: 'connections',
+        type: 'users',
         user: {
           token: store.getters.chatUser.token,
         },
@@ -95,25 +95,25 @@ export default {
 
     const init = () => {
       loading.value = false
-      const arr = JSON.parse(JSON.stringify(connections.value))
+      const arr = JSON.parse(JSON.stringify(users.value))
       arr.sort((a, b) => {
-        if (a.user.profile.image && b.user.profile.image) {
-          return a.user.profile.nickname > b.user.profile.nickname ? 1 : -1
+        if (a.profile.image && b.profile.image) {
+          return a.profile.nickname > b.profile.nickname ? 1 : -1
         }
 
-        if (a.user.profile.image) return -1
+        if (a.profile.image) return -1
 
-        if (b.user.profile.image) return 1
+        if (b.profile.image) return 1
 
-        return a.user.profile.nickname > b.user.profile.nickname ? 1 : -1
+        return a.profile.nickname > b.profile.nickname ? 1 : -1
       })
 
       sorted.value = arr
     }
 
     onMounted(() => {
-      loadConnections()
-      interv.value = setInterval(loadConnections, 1000 * 60)
+      loadUsers()
+      interv.value = setInterval(loadUsers, 1000 * 60)
     })
 
     onUnmounted(() => {
@@ -141,13 +141,13 @@ export default {
       () => store.getters.chatStats.numBears,
     ],
       () => {
-        loadConnections()
+        loadUsers()
         init()
       },
     )
 
     watch(
-      () => store.getters.chatConnections,
+      () => store.getters.chatUsers,
       init,
     )
 
@@ -156,7 +156,7 @@ export default {
       selectedTab,
       loading,
       tabs,
-      connections,
+      users,
     }
   },
 }
@@ -222,14 +222,14 @@ export default {
       margin: 40px auto;
     }
 
-    .connections {
+    .users {
       padding: 16px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       overflow-y: auto;
       overscroll-behavior: contain;
 
-      .connection {
+      .user {
         padding: 0 4px;
         font-size: 12px;
         display: flex;
@@ -241,7 +241,7 @@ export default {
 
   @media (max-width: 767px) {
     .body {
-      .connections {
+      .users {
         grid-template-columns: repeat(2, 1fr);
       }
     }

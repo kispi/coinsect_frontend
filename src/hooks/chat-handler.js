@@ -127,8 +127,8 @@ const useChatHandler = () => {
         store.commit('setChatUser', message.user)
         ping()
         break
-      case 'connections':
-        store.commit('setChatConnections', message)
+      case 'users':
+        store.commit('setChatUsers', message)
         break
       case 'hideMessage': {
         const targetMessageId = (message.meta || {}).messageId

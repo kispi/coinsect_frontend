@@ -3,8 +3,8 @@
     <div class="top">
       <!-- <CoinnessIssues v-show="$store.getters.windowInnerWidth >= 480"/> -->
       <BannerMarketIndices/>
+      <!-- @click="$modal.custom({ component: 'ModalChatUsers' })" -->
       <div
-        @click="$modal.custom({ component: 'ModalChatUsers' })"
         class="num-users f-mono"
         :class="numConnectionsColorClass">
         <i class="fa fa-user-group m-r-4"/>

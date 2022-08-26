@@ -59,7 +59,7 @@ const app = {
       chatTransparent: false,
     },
     chatStats: {},
-    chatConnections: null, // 웹소켓 커넥션이 아니고 접속자 정보임
+    chatUsers: null, // 웹소켓 커넥션이 아니고 접속자 정보임
     windowInnerWidth: null,
     windowInnerHeight: null,
     lastApiCall: {},
@@ -75,7 +75,7 @@ const app = {
     isMobile: state => state.isMobile,
     config: state => state.config,
     chatStats: state => state.chatStats,
-    chatConnections: state => state.chatConnections,
+    chatUsers: state => state.chatUsers,
     notifications: state => state.notifications,
     settings: state => state.settings,
     windowInnerWidth: state => state.windowInnerWidth,
@@ -109,8 +109,8 @@ const app = {
     setChatStats(state, chatStats) {
       state.chatStats = chatStats
     },
-    setChatConnections(state, message) {
-      state.chatConnections = (message || {}).meta
+    setChatUsers(state, message) {
+      state.chatUsers = (message || {}).meta
     },
     setNotifications(state, notifications) {
       state.notifications = notifications
