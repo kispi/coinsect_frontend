@@ -1,10 +1,9 @@
 <template>
   <header class="app-header layout-centered">
     <div class="top">
-      <!-- <CoinnessIssues v-show="$store.getters.windowInnerWidth >= 480"/> -->
       <BannerMarketIndices/>
-      <!-- @click="$modal.custom({ component: 'ModalChatUsers' })" -->
       <div
+        @click="$modal.custom({ component: 'ModalChatUsers' })"
         class="num-users f-mono"
         :class="numConnectionsColorClass">
         <i class="fa fa-user-group m-r-4"/>
@@ -177,7 +176,6 @@ export default {
       }
     }
 
-    .coinness-issues,
     .banner-market-indices {
       padding: var(--app-default-page-padding) 0;
     }
