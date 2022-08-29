@@ -183,7 +183,7 @@ export default {
 
     const toggleEditProfile = async () => {
       if (!editing.value) {
-        refInputNickname.value.focus()
+        refInputNickname.value.select()
         editing.value = true
         return
       }

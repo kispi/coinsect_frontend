@@ -444,8 +444,8 @@
     "kr": "비트코인 채굴 시뮬레이터"
   },
   "WHAT_IS_MINING": {
-    "en": "What is mining?",
-    "kr": "채굴이란?"
+    "en": "What is mining",
+    "kr": "채굴이란"
   },
   "DIFFICULTY": {
     "en": "Difficulty",
@@ -454,5 +454,17 @@
   "TEST_MINING": {
     "en": "Test Mining",
     "kr": "채굴 테스트"
+  },
+  "WARNING_MINING": {
+    "en": "Mining won't stop until you leave the page or click the stop button.",
+    "kr": "정지 버튼을 누르거나 다른 페이지로 이동하기 전까지는 계속 채굴을 수행합니다."
+  },
+  "ELAPSED_TIME": {
+    "en": "Elapsed Time",
+    "kr": "경과 시간"
+  },
+  "MINED": {
+    "en": "Mined",
+    "kr": "채굴됨"
   }
 }

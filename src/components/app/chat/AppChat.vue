@@ -162,6 +162,7 @@ export default {
         return
       }
 
+      await plugins.$helpers.sleep(100)
       const dom = refAppChatBody.value.getElementsByClassName(`mid-${found.id}`)[0]
       if (dom) dom.scrollIntoView({ behavior: 'smooth' })
       else plugins.$toast.error(`차단한 유저(${message.nickname})의 메시지입니다`)
