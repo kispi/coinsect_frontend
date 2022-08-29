@@ -64,6 +64,13 @@ const contents = [{
     description: '다음 비트코인 반감기까지 남은 시간을 카운트다운으로 보여줍니다.',
   },
 }, {
+  path: '/contents/bitcoin-mining',
+  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
+  meta: {
+    title: '비트코인 채굴 / PoW 이해 - 코인충',
+    description: '비트코인 채굴이란 무엇이며, 난이도란 무엇인지 알아봅니다.',
+  },
+}, {
   path: '/contents/news',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {

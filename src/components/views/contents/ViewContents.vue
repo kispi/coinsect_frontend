@@ -11,6 +11,7 @@ import { useRouter } from 'vue-router'
 export default {
   components: {
     ViewBitcoinHalving: defineAsyncComponent(() => import('./ViewBitcoinHalving')),
+    ViewBitcoinMining: defineAsyncComponent(() => import('./ViewBitcoinMining')),
     ViewNews: defineAsyncComponent(() => import('./news/ViewNews')),
     ViewTwitter: defineAsyncComponent(() => import('./ViewTwitter')),
     ViewInfluencers: defineAsyncComponent(() => import('./influencers/ViewInfluencers')),
@@ -28,6 +29,7 @@ export default {
       if (p.startsWith('/contents/influencers/')) return 'ViewInfluencerDetail'
       if (p === '/contents/public-treasury') return 'ViewPublicTreasury'
       if (p === '/contents/bitcoin-halving') return 'ViewBitcoinHalving'
+      if (p === '/contents/bitcoin-mining') return 'ViewBitcoinMining'
     })
 
     return {

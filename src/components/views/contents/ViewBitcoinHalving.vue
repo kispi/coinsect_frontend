@@ -242,20 +242,20 @@ export default {
     }
   }
 
-   @media (max-width: 767px) {
-     .countdown {
-       .box {
-         width: 64px;
+  @media (max-width: 767px) {
+    .countdown {
+      .box {
+        width: 64px;
 
-         b {
-           font-size: 16px;
-         }
+        b {
+          font-size: 16px;
+        }
 
-         &:not(:last-child) {
-           margin-right: 8px;
-         }
-       }
-     }
-   }
+        &:not(:last-child) {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
 }
 </style>

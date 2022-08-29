@@ -438,5 +438,21 @@
   "NO_SEARCH_RESULT": {
     "en": "No Search Result 😢",
     "kr": "검색 결과가 없습니다 😢"
+  },
+  "BITCOIN_MINING": {
+    "en": "Bitcoin Mining Simulator",
+    "kr": "비트코인 채굴 시뮬레이터"
+  },
+  "WHAT_IS_MINING": {
+    "en": "What is mining?",
+    "kr": "채굴이란?"
+  },
+  "DIFFICULTY": {
+    "en": "Difficulty",
+    "kr": "난이도"
+  },
+  "TEST_MINING": {
+    "en": "Test Mining",
+    "kr": "채굴 테스트"
   }
 }
