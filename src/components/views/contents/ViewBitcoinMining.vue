@@ -3,7 +3,7 @@
     <div
       @click="showExplanation = !showExplanation"
       class="c-brand-primary cursor-pointer text-underline display-table m-b-8">
-      {{ $translate('WHAT_IS_MINING') }}
+      {{ $translate('WHAT_IS_MINING') }}<i class="fal fa-question-circle m-l-8"/>
     </div>
     <div
       v-if="showExplanation"
@@ -12,15 +12,9 @@
         class="description">
         - 비트코인 채굴은 <span>작업증명</span>(PoW: proof of work) 이라는 방식을 통해 이루어지는데, 먼저 <a href="https://namu.wiki/w/%ED%95%B4%EC%8B%9C" target="_blank">해시 함수</a>가 무엇인지에 대한 이해가 필요하다.<br>
         - 해시 함수란, <span>임의의 길이를 갖는 데이터</span>를 <span>고정된 길이의 데이터</span>로 매핑하는 함수를 말한다. 간단한 테스트로, 아래 텍스트 영역에 아무 데이터나 집어 넣어보면 그에 맞는 16진수 64자리의 해시값이 출력되는 것을 확인할 수 있다.<br>
-        - 하나 눈여겨볼점은, '함수'이기 때문에 <span>동일한 입력이</span> 주어진 경우 항상 <span>동일한 결과</span>를 얻게 된다는 점이다. 이를테면 'hello world'를 치면 'b94d27b99...'을 얻는다. 결과가 'b94d27b99...'인데도 자기는 'hello world'를 입력했던게 아니라고 주장한다면 거짓임을 알 수 있다. (물론 이론적으로 가능은 하며, 이것을 해시 충돌이라고 한다.)
-      </div>
-      <div class="m-t-16 m-b-16">
-        <textarea v-model="message" @keydown="doDigest" @paste="doDigest"/>
-        <div class="sha-256">해시값: {{ digested }}</div>
-      </div>
-      <div class="description">
+        - 하나 눈여겨볼점은, '함수'이기 때문에 <span>동일한 입력이</span> 주어진 경우 항상 <span>동일한 결과</span>를 얻게 된다는 점이다. 이를테면 'hello world'를 치면 'b94d27b99...'을 얻는다. 결과가 'b94d27b99...'인데도 자기는 'hello world'를 입력했던게 아니라고 주장한다면 거짓임을 알 수 있다. (물론 이론적으로 가능은 하며, 이것을 해시 충돌이라고 한다.)<br><br>
         비트코인 채굴은 바로 위의 <a href="https://namu.wiki/w/SHA" target="_blank">SHA256</a> 해시 함수를 통해 계산된 결과가 특정 조건을 만족하는 경우 완료된다. 이를테면 다음과 같다.<br>
-        1. 위 텍스트 박스에 '이전 블록의 해시값', '블록 생성 시각', '임의의 난수' 등 몇 가지 요소가 조합된 데이터를 넣고 해시값을 계산해본다.<br>
+        1. 아래 텍스트 박스에 '이전 블록의 해시값', '블록 생성 시각', '임의의 난수' 등 몇 가지 요소가 조합된 데이터를 넣고 해시값을 계산해본다.<br>
         2. 그 결과가 특정한 값보다 <span>작다면</span> 성공이다. 쉽게 얘기하면 '해시값의 맨 앞에 연속된 0이 n개 이상이어야 한다'로 생각할 수도 있다. 이를테면 10진수를 여덟 자리로 표기할 경우 가장 큰 값은 99999999인데, 만약 계산결과가 12345라면 00012345으로 표기할 수 있고, 맨 앞에 연속한 0이 3개이므로 10만보다 작다는 것을 알 수 있다.<br>
         3. 이런식으로 특정 조건을 만족하는 1의 구성요소들을 갖고 주변 블록체인들에 전파해서 동의를 얻으면 블록 생성 권한을 얻고 비트코인을 보상으로 받는다.<br>
         4. 정확한 표현은 아니나, 대중적 이해의 수준에서는 보통 해시값 '맨 앞에 연속한 0의 개수' = '난이도' 정도로 설명하는 수준으로 족하다. (사실은 좀 더 복잡하다.)
@@ -33,20 +27,57 @@
       </div>
     </div>
     <div class="simulator m-t-8">
+      <div class="m-t-16 m-b-16">
+        <textarea
+          v-model="message"
+          @keydown="doDigest"
+          @paste="doDigest"
+          placeholder="해시값을 구할 데이터를 적어주세요"
+        />
+        <div class="sha-256">해시값: {{ digested }}</div>
+      </div>
       <div class="flex-row items-center m-t-16">
         <div class="flex-wrap">{{ $translate('DIFFICULTY') }}</div>
         <input v-model="difficulty" type="number" min="1" max="64" class="m-l-8 m-r-8">
-        <button @click="onClickMine" class="btn btn-primary">{{ $translate('TEST_MINING') }}</button>
+        <button
+          @click="onClickMine"
+          class="btn btn-primary">
+          {{ $translate(mining ? 'STOP' : 'TEST_MINING') }}
+        </button>
       </div>
+      <div class="c-danger f-12 m-t-8" :class="{'no-touch o-0': !mining}">* {{ $translate('WARNING_MINING') }}</div>
+      <div class="result-box f-mono pretty-scrollbar">
+        <AppLoading :loading="mining"/>
+        <div v-if="elapsedTime" class="stats">
+          <div class="elapsed-time">{{ $translate('ELAPSED_TIME') }}: {{ elapsedTimeHuman }}</div>
+          <div class="m-l-8 m-r-8">/</div>
+          <div class="num-found">{{ $translate('MINED') }}: {{ rows.length }}</div>
+        </div>
+        <div
+          class="result-row"
+          :key="row.nonce"
+          v-for="row in rows">
+          <div class="input">NONCE: {{ row.nonce }}</div>
+          <div class="hash">HASH: {{ row.hash }}</div>
+        </div>
+      </div>
+      <button
+        @click="rows = []"
+        class="btn btn-primary btn-block m-t-8"
+        :disabled="mining">
+        {{ $translate('CLEAR') }}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
 
 export default {
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const showExplanation = ref(null)
 
     const difficulty = ref(4)
@@ -54,6 +85,23 @@ export default {
     const message = ref('hello world')
 
     const digested = ref(null)
+
+    const mining = ref(null)
+
+    const rows = ref([])
+
+    const interv = ref(null)
+
+    const $l = val => plugins.$helpers.template.withLeadingZero(val, 2)
+
+    const elapsedTime = ref(0)
+
+    const elapsedTimeHuman = computed(() => {
+      const h = Math.floor(elapsedTime.value / 3600)
+      const m = Math.floor(elapsedTime.value / 60)
+      const s = elapsedTime.value - 60 * m
+      return `${$l(h)}:${$l(m)}:${$l(s)}`
+    })
 
     const digest = async message => {
       const msgUint8 = new TextEncoder().encode(message)
@@ -73,8 +121,31 @@ export default {
       })
     }
 
+    const mine = async () => {
+      rows.value = []
+      elapsedTime.value = 0
+      interv.value = setInterval(() => elapsedTime.value++, 1000)
+      for (let nonce = 0;; nonce++) {
+        if (!mining.value) {
+          clearInterval(interv.value)
+          return
+        }
+
+        const msg = message.value + nonce
+        const hash = await digest(msg)
+        if (hash.startsWith('0'.repeat(difficulty.value))) {
+          rows.value.push({
+            hash,
+            nonce,
+            message: msg,
+          })
+        }
+      }
+    }
+
     const onClickMine = () => {
-      
+      mining.value = !mining.value
+      if (mining.value) mine()
     }
 
     onMounted(() => digest(message.value).then(result => digested.value = result))
@@ -85,6 +156,10 @@ export default {
       difficulty,
       digested,
       digest,
+      mining,
+      elapsedTime,
+      elapsedTimeHuman,
+      rows,
       doDigest,
       onClickMine,
     }
@@ -113,7 +188,34 @@ export default {
 
   .explanation {
     border: 1px solid var(--border-base);
-    padding: 16px;
+    padding: 12px;
+  }
+
+  .btn:not(.btn-block) {
+    width: 120px;
+  }
+
+  .result-box {
+    margin-top: 24px;
+    padding: 12px;
+    border-radius: 4px;
+    height: 240px;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid var(--border-base);
+
+    .stats {
+      display: flex;
+      margin-bottom: 8px;
+    }
+
+    .result-row {
+      font-size: 12px;
+
+      &:not(:last-child) {
+        margin-bottom: 8px;
+      }
+    }
   }
 }
 </style>

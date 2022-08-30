@@ -27,6 +27,14 @@
     "en": "Agree",
     "kr": "동의"
   },
+  "STOP": {
+    "en": "Stop",
+    "kr": "정지"
+  },
+  "CLEAR": {
+    "en": "Clear",
+    "kr": "초기화"
+  },
   "SUBMIT": {
     "en": "Submit",
     "kr": "제출"

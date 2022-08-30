@@ -79,7 +79,7 @@ const useMenuItems = () => {
       { path: '/contents/influencers', title: 'INFLUENCERS' },
       { path: '/contents/public-treasury', title: 'PUBLIC_TREASURY' },
       { path: '/contents/bitcoin-halving', title: 'BITCOIN_HALVING' },
-      // { path: '/contents/bitcoin-mining', title: 'BITCOIN_MINING' },
+      { path: '/contents/bitcoin-mining', title: 'BITCOIN_MINING' },
     ],
   }, {
     title: 'ONCHAIN',
