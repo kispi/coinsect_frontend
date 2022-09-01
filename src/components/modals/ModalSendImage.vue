@@ -10,6 +10,7 @@
         @upload-file="e => payload = e"
         :path="(options || {}).path"
         :noupload="(options || {}).noupload"
+        :resizeWidth="1920"
       />
       <div
         v-if="payload.src"
@@ -59,7 +60,7 @@ export default {
         return
       }
 
-      if (!plugins.$helpers.acceptableFileSize(payload.value.file, 1)) return
+      if (!plugins.$helpers.acceptableFileSize(payload.value.file)) return
 
       try {
         const uploadedUrl = await s3Service.upload(payload.value.file, 'chat')

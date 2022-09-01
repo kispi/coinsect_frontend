@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 import s3Service from '@/services/s3'
 
 export default {
@@ -40,6 +40,7 @@ export default {
     noupload: {
       type: Boolean, // true일 시, 업로드는 하지 않고 파일의 objectURL과 file 객체만 리턴받는다.
     },
+    resizeWidth: null,
   },
   setup(props, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
@@ -48,7 +49,26 @@ export default {
 
     const uploading = ref(null)
 
-    const doUpload = async file => {
+    const resize = async file => {
+      if (typeof ImageResize === 'undefined') return file
+
+      const o = new ImageResize({
+        format: 'jpg',
+        width: props.resizeWidth,
+      })
+
+      try {
+        const dataUrl = await o.play(file)
+        const blob = await plugins.$helpers.dataURLToBlob(dataUrl)
+        return new File([blob], file.name, { type: 'image/jpg' })
+      } catch (e) {
+        return file
+      }
+    }
+
+    const doUpload = async originalFile => {
+      const file = props.resizeWidth ? await resize(originalFile) : originalFile
+
       try {
         uploading.value = true
         let url
@@ -82,6 +102,10 @@ export default {
 
       doUpload(e.target.files[0])
     }
+
+    onMounted(() => {
+      plugins.$helpers.dom.loadScript({ url: '/scripts/image-resize.min.js' })
+    })
 
     return {
       onDrop,
