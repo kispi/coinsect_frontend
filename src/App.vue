@@ -131,7 +131,6 @@ export default {
       display: block;
       margin-bottom: 8px;
       max-width: 992px;
-      height: 160px;
     }
   }
 }
