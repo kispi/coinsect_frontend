@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-chat-profile">
+  <div class="modal-chat-settings">
     <ModalHeader :title="$translate('MODAL_CHAT_SETTINGS')" @close="$emit('close')"/>
     <div class="body">
       <div class="section">
@@ -208,7 +208,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal-chat-profile {
+.modal-chat-settings {
   border-radius: 4px;
   width: 360px;
 
@@ -296,7 +296,6 @@ export default {
       height: 96px;
       margin: 0 auto 16px;
       position: relative;
-      background: var(--white);
       border-radius: 50%;
       cursor: pointer;
 
