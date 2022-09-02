@@ -7,11 +7,11 @@
     @dragleave="dragging = false">
     <div class="container">
       <div
-        v-if="uploading"
+        v-if="processing"
         class="centered-overlay loader-container">
         <AppLoader/>
       </div>
-      <div class="centered-overlay" :class="{'dragging-over': dragging && !uploading}">
+      <div class="centered-overlay" :class="{'dragging-over': dragging && !processing}">
         <i class="fal fa-image"/>
         <div class="guide">
           <div>이미지를 여기 끌어다 놓거나<br>클릭해서 내 컴퓨터에서 찾기</div>
@@ -47,11 +47,12 @@ export default {
 
     const dragging = ref(null)
 
-    const uploading = ref(null)
+    const processing = ref(null)
 
     const resize = async file => {
       if (typeof ImageResize === 'undefined') return file
 
+      processing.value = true
       const o = new ImageResize({
         format: 'jpg',
         width: props.resizeWidth,
@@ -63,6 +64,8 @@ export default {
         return new File([blob], file.name, { type: 'image/jpg' })
       } catch (e) {
         return file
+      } finally {
+        processing.value = false
       }
     }
 
@@ -70,7 +73,7 @@ export default {
       const file = props.resizeWidth ? await resize(originalFile) : originalFile
 
       try {
-        uploading.value = true
+        processing.value = true
         let url
         if (!props.noupload) url = await s3Service.upload(file, props.path)
         const emittable = {
@@ -82,7 +85,7 @@ export default {
       } catch (e) {
         return Promise.reject(e)
       } finally {
-        uploading.value = false
+        processing.value = false
       }
     }
 
@@ -111,7 +114,7 @@ export default {
       onDrop,
       onChangeFile,
       dragging,
-      uploading,
+      processing,
     }
   },
 }
