@@ -35,9 +35,9 @@ const useSeo = () => {
   const useExamples = helperService.crawlExampleUrls
 
   const tryMetaTags = async link => {
-    if (!link || numTrial.value >= 5) {
+    if (!link || numTrial.value >= 3) {
       numTrial.value = 0
-      return Promise.reject(e)
+      return Promise.reject()
     }
 
     if (['.jpg', '.jpeg', '.png', '.svg', '.gif'].some(ext => link.endsWith(ext))) {
@@ -49,7 +49,7 @@ const useSeo = () => {
       const data = await helperService.crawlMetaTags(link)
       if (data.status === 'crawling') {
         numTrial.value++
-        setTimeout(() => tryMetaTags(link), 1000)
+        setTimeout(() => tryMetaTags(link), 2000)
         return
       }
       meta.value = data.meta
