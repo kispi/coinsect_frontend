@@ -44,6 +44,7 @@ const useLazyLoads = () => {
     await Promise.all([
       helpers.dom.loadScript({ url: 'https://cdn.jsdelivr.net/npm/hangul-js@0.2.6/hangul.min.js' }),
       helpers.dom.loadScript({ url: 'https://s3.tradingview.com/tv.js' }),
+      helpers.dom.loadScript({ url: '/scripts/image-resize.min.js' }),
     ])
   }
 

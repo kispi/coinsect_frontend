@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
 import s3Service from '@/services/s3'
 
 export default {
@@ -49,28 +49,14 @@ export default {
 
     const processing = ref(null)
 
-    const resize = async file => {
-      if (typeof ImageResize === 'undefined') return file
-
-      processing.value = true
-      const o = new ImageResize({
-        format: 'jpg',
-        width: props.resizeWidth,
-      })
-
+    const doUpload = async originalFile => {
+      let file = originalFile
       try {
-        const dataUrl = await o.play(file)
-        const blob = await plugins.$helpers.dataURLToBlob(dataUrl)
-        return new File([blob], file.name, { type: 'image/jpg' })
-      } catch (e) {
-        return file
+        processing.value = true
+        file = (props.resizeWidth && originalFile.size >= 1048576) ? await plugins.$helpers.resizeImage(originalFile, props.resizeWidth) : originalFile
       } finally {
         processing.value = false
       }
-    }
-
-    const doUpload = async originalFile => {
-      const file = (props.resizeWidth && originalFile.size >= 1048576) ? await resize(originalFile) : originalFile
 
       try {
         processing.value = true
@@ -105,10 +91,6 @@ export default {
 
       doUpload(e.target.files[0])
     }
-
-    onMounted(() => {
-      plugins.$helpers.dom.loadScript({ url: '/scripts/image-resize.min.js' })
-    })
 
     return {
       onDrop,

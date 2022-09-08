@@ -189,6 +189,23 @@ const helpers = {
 
     return true
   },
+  resizeImage: async (file, width) => {
+    if (typeof ImageResize === 'undefined') return file
+
+    const o = new ImageResize({
+      format: 'jpg',
+      width,
+    })
+
+    try {
+      const dataUrl = await o.play(file)
+      const result = await fetch(dataUrl)
+      const blob = await result.blob()
+      return new File([blob], file.name, { type: 'image/jpg' })
+    } catch (e) {
+      return file
+    }
+  },
   retrieveImagesFromHTML: html => {
     const imgRex = /<img.*?src="(.*?)"[^>]+>/g
     const images = []

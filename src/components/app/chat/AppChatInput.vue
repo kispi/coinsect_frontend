@@ -112,7 +112,7 @@ export default {
       })
     }
 
-    const onPaste = pasteEvent => {
+    const onPaste = async pasteEvent => {
       const items = (pasteEvent.clipboardData || pasteEvent.originalEvent.clipboardData).items
       const img = items[0]
       if (!img.type.includes('image')) return
@@ -133,7 +133,9 @@ export default {
           sendTextMessage(url, 'image')
         })
       }
-      reader.readAsDataURL(file)
+
+      const target = file.size > 1048576 ? await plugins.$helpers.resizeImage(file, 1920) : file
+      reader.readAsDataURL(target)
     }
 
     onMounted(() => refTextarea.value.focus())
