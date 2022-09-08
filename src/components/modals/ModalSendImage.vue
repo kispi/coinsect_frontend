@@ -87,7 +87,7 @@ export default {
     watch(
       () => payload.value,
       () => {
-        setTimeout(() => plugins.$modal.center(refModalSendImage.value))
+        setTimeout(() => plugins.$modal.center(refModalSendImage.value), 50)
       },
       { deep: true },
     )

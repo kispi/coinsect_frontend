@@ -70,7 +70,7 @@ export default {
     }
 
     const doUpload = async originalFile => {
-      const file = props.resizeWidth ? await resize(originalFile) : originalFile
+      const file = (props.resizeWidth && originalFile.size >= 1048576) ? await resize(originalFile) : originalFile
 
       try {
         processing.value = true
