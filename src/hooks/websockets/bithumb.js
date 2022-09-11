@@ -1,12 +1,16 @@
 import { getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
+import useWebsocketCommon from './websocket-common'
 
 const useBithumb = () => {
   const store = useStore()
 
   const plugins = getCurrentInstance().appContext.config.globalProperties
 
+  const { tickDirection } = useWebsocketCommon()
+
   const setAsBasePriceFromWebSocket = ({ symbol, json }) => {
+    const $$tickDirection = tickDirection(symbol, json.closePrice)
     plugins.$helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$tradePriceBase: json.closePrice,
@@ -15,6 +19,7 @@ const useBithumb = () => {
       $$vol24HBase: json.tickType === '24H' ? json.value : 0,
       $$code: json.symbol,
       $$prevClosingPrice: json.prevClosePrice,
+      $$tickDirection,
     })
   }
 

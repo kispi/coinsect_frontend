@@ -86,3 +86,15 @@
     color: var(--white);
   }
 }
+
+@keyframes price-flashing-up {
+  0% {
+    box-shadow: 0 0 4px var(--price-up) inset;
+  }
+}
+
+@keyframes price-flashing-down {
+  0% {
+    box-shadow: 0 0 4px var(--price-down) inset;
+  }
+}

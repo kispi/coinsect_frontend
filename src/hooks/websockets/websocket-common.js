@@ -12,8 +12,16 @@ const useWebsocketCommon = () => {
     document.title = `${!isNaN(ticker.$$premiumRate) ? `${plugins.$helpers.number.pretty.percent(ticker.$$premiumRate)}%, ` : 'Waiting... '}${priceString} ${ticker.$$symbol}/${suffix}`
   }
 
+  const tickDirection = (symbol, newPrice) => {
+    const p = (store.getters.realTimeTickers[symbol] || {}).$$tradePriceBase
+    if (p < newPrice) return 'up'
+    if (p > newPrice) return 'down'
+    return 'same'
+  }
+
   return {
     setTickerSummaryInTitle,
+    tickDirection,
   }
 }
 

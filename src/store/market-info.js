@@ -1,6 +1,6 @@
 import helpers from '@/helpers'
 import marketInfoService from '@/services/market-info'
-import { $http } from '@/modules/axios'
+import { $http, $httpNoAuth } from '@/modules/axios'
 
 const marketInfo = {
   state: () => ({
@@ -13,6 +13,10 @@ const marketInfo = {
       bithumb: [],
       binance: [],
       bybit: [],
+    },
+    walletStatus: {
+      upbit: {},
+      bithumb: {},
     },
     orderbooks: {
       upbit: {},
@@ -38,6 +42,7 @@ const marketInfo = {
     nasdaq: state => state.nasdaq,
     assetsIncludingMetal: state => state.assetsIncludingMetal,
     markets: state => state.markets,
+    walletStatus: state => state.walletStatus,
     orderbooks: state => state.orderbooks,
     instruments: state => state.instruments,
     leaderboard: state => state.leaderboard,
@@ -60,6 +65,9 @@ const marketInfo = {
     },
     setMarkets(state, markets) {
       Object.keys(markets).forEach(key => state.markets[key] = markets[key])
+    },
+    setWalletStatus(state, walletStatus) {
+      state.walletStatus = walletStatus
     },
     setOrderbook(state, { exchange, market, orderbook }) {
       state.orderbooks[exchange][market] = orderbook
@@ -133,7 +141,7 @@ const marketInfo = {
         commit('setLoading', { global: false })
       }
     },
-    async loadBaseMarkets({ commit, getters }) {
+    async loadBaseMarkets({ commit, getters, dispatch }) {
       try {
         const data = await marketInfoService.base({
           baseExchange: getters.settings.baseExchange,
@@ -141,9 +149,31 @@ const marketInfo = {
         })
         if (getters.settings.baseExchange === 'upbit') commit('setMarkets', { upbit: data })
         if (getters.settings.baseExchange === 'bithumb') commit('setMarkets', { bithumb: data })
+        dispatch('loadWalletStatus')
       } catch (e) {
         return Promise.reject(e)
       }
+    },
+    async loadWalletStatus({ commit, getters }) {
+      const bEx = getters.settings.baseExchange
+      const o = {}
+      try {
+        if (bEx === 'upbit') {
+          const data = await $httpNoAuth.get('https://ccx.upbit.com/api/v1/status/wallet')
+          data.forEach(w => o[w.currency] = { d: w.wallet_state !== 'paused' })
+        }
+
+        if (bEx === 'bithumb') {
+          const { data } = await $httpNoAuth.get('https://api.bithumb.com/public/assetsstatus/ALL')
+          Object.keys(data).forEach(key => o[key] = {
+            d: data[key].deposit_status === 1,
+            w: data[key].withdrawal_status === 1,
+          })
+        }
+      } catch (e) {
+        return Promise.reject(e)
+      }
+      commit('setWalletStatus', { [bEx]: o })
     },
     async loadTargetMarkets({ commit }) {
       if (helpers.canSkipApiCall('loadTargetMarkets')) return

@@ -11,6 +11,8 @@
           {{ symbol[$store.getters.settings.locale] || symbol.en }}
         </div>
         <div v-if="ticker.$$caution === 'CAUTION'" class="badge-caution">유</div>
+        <div v-if="$store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol].d === false" class="badge-caution no-wallet">입</div>
+        <div v-if="$store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol].w === false" class="badge-caution no-wallet">출</div>
         <i @click.stop="openModalTradingView" class="fal fa-chart-line"/>
       </div>
       <div class="functions">
@@ -43,6 +45,7 @@
           $helpers.template.priceColor(ticker.$$changeRate1D),
           ticker.$$tradePriceBase ? '' : 'o-0',
           $store.getters.settings.theme === 'light' ? 'f-500' : '',
+          ticker.$$tickDirection,
         ]"
         v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: $store.getters.settings.baseExchangeMarket })"
       />
@@ -189,9 +192,11 @@ export default {
         width: 16px;
       }
 
-      .fa-chart-line {
+      i {
         margin-left: 8px;
+      }
 
+      .fa-chart-line {
         &:hover {
           font-weight: 700;
         }
@@ -241,15 +246,20 @@ export default {
     }
 
     .badge-caution {
+      color: var(--white);
       background: orange;
       font-size: 10px;
-      width: 12px;
       height: 12px;
-      margin-left: 8px;
+      margin-left: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex: 0 0 auto;
+      padding: 2px;
+
+      &.no-wallet {
+        background: red;
+      }
     }
   }
 
@@ -266,6 +276,19 @@ export default {
 
     &:not(:first-child) {
       @extend .f-mono;
+    }
+  }
+
+  .ticker-current-price-base {
+    display: table;
+    margin-left: auto;
+
+    &.up {
+      animation: price-flashing-up 1s;
+    }
+
+    &.down {
+      animation: price-flashing-down 1s;
     }
   }
 

@@ -14,6 +14,7 @@ export default {
     $$code,
     $$caution,
     $$prevClosingPrice,
+    $$tickDirection,
   }) => {
     if (!$$symbol) return
 
@@ -32,6 +33,7 @@ export default {
     o.$$code = $$code
     o.$$caution = $$caution
     o.$$prevClosingPrice = parseFloat($$prevClosingPrice)
+    o.$$tickDirection = $$tickDirection
     $store.getters.realTimeTickers[$$symbol] = o
   },
   calculateKimp: ({

@@ -25,14 +25,9 @@ const marketInfo = {
     const o = cached.base[cacheKey]
     if (o) return o
 
-    const endpoint = (() => {
-      if (bEx === 'upbit') return 'https://api.upbit.com/v1/market/all'
-      if (bEx === 'bithumb') return 'https://api.bithumb.com/public/ticker/all_krw'
-    })()
-
     try {
-      const data = await $httpNoAuth.get(endpoint)
       if (bEx === 'upbit') {
+        const data = await $httpNoAuth.get('https://api.upbit.com/v1/market/all')
         const upbit = data.filter(o => o.market.startsWith(`${bExMarket.toUpperCase()}-`)).map(o => ({
           ...o,
           $$symbol: o.market.split('-')[1]
@@ -42,6 +37,7 @@ const marketInfo = {
         return cached.base[cacheKey]
       }
       if (bEx === 'bithumb') {
+        const data = await $httpNoAuth.get('https://api.bithumb.com/public/ticker/all_krw')
         const bithumb = Object.keys(data['data']).filter(symbol => symbol !== 'date').map($$symbol => ({
           $$symbol,
           ...data['data'][$$symbol]

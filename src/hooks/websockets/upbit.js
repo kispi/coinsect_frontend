@@ -1,16 +1,20 @@
 import { getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
+import useWebsocketCommon from './websocket-common'
 
 const useUpbit = () => {
   const store = useStore()
 
   const plugins = getCurrentInstance().appContext.config.globalProperties
 
+  const { tickDirection } = useWebsocketCommon()
+
   const dec = new TextDecoder('utf-8')
 
   const eventAsJSON = event => JSON.parse(dec.decode(new Uint8Array(event.data)))
 
   const setAsBasePrice = ({ symbol, json }) => {
+    const $$tickDirection = tickDirection(symbol, json.tp)
     plugins.$helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$tradePriceBase: json.tp,
@@ -24,6 +28,7 @@ const useUpbit = () => {
       $$code: json.cd,
       $$caution: json.mw,
       $$prevClosingPrice: json.pcp,
+      $$tickDirection,
     })
   }
 
