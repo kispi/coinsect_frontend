@@ -11,8 +11,22 @@
           {{ symbol[$store.getters.settings.locale] || symbol.en }}
         </div>
         <div v-if="ticker.$$caution === 'CAUTION'" class="badge-caution">유</div>
-        <div v-if="$store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol].d === false" class="badge-caution no-wallet">입</div>
-        <div v-if="$store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol].w === false" class="badge-caution no-wallet">출</div>
+        <div
+          :ref="el => w.$$el = el"
+          @mouseover="$tooltip.show({
+            id: 'tooltipWallet',
+            showAbove: w.$$el,
+            text: `TOOLTIP_BLOCKED_${w.type}`,
+          })"
+          @mouseleave="$tooltip.hide('tooltipWallet')"
+          class="badge-caution no-wallet"
+          :key="w"
+          v-for="w in [
+            { v: $store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol].d, text: '입', type: 'DEPOSIT' },
+            { v: $store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol].w, text: '출', type: 'WITHDRAWL' },
+          ].filter(w => w.v === false)"
+          v-html="w.text">
+        </div>
         <i @click.stop="openModalTradingView" class="fal fa-chart-line"/>
       </div>
       <div class="functions">

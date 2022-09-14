@@ -10,5 +10,13 @@
   "TOOLTIP_CHAT_SIZE_MAX": {
     "en": "Toggle chat size along Base/Max.",
     "kr": "채팅창 크기를 기본/최대 사이로 전환합니다."
+  },
+  "TOOLTIP_BLOCKED_DEPOSIT": {
+    "en": "Deopsit Unavailable",
+    "kr": "입금 불가"
+  },
+  "TOOLTIP_BLOCKED_WITHDRAWL": {
+    "en": "Withdrawl Unavailable",
+    "kr": "출금 불가"
   }
 }

@@ -28,8 +28,6 @@ const useBithumb = () => {
     plugins.$helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$tradePriceBase: json.closing_price,
-      $$changePrice24H: json.fluctate_24H,
-      $$changeRate1D: (json.fluctate_rate_24H * 100) / 100,
       $$vol24HBase: json.acc_trade_value_24H,
       $$code: symbol,
       $$prevClosingPrice: json.prev_closing_price,
@@ -80,7 +78,7 @@ const useBithumb = () => {
       connection.send(JSON.stringify({
         type: 'ticker',
         symbols,
-        tickTypes: ['30M', '1H', '12H', '24H', 'MID'],
+        tickTypes: ['24H', 'MID'],
       }))
 
       resolve(connection)
