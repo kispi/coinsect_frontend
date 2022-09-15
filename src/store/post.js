@@ -53,8 +53,6 @@ const post = {
       }
     },
     async loadNotices({ commit }) {
-      if (helpers.canSkipApiCall('loadNotices', 60)) return
-
       const o = helpers.qb().base()
       o.where('post_type = "notice"')
 
