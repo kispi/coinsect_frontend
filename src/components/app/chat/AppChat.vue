@@ -255,7 +255,7 @@ export default {
   }
 
   .app-chat-container {
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--text-stress);
     border-radius: 4px;
     display: flex;
     flex-direction: column;

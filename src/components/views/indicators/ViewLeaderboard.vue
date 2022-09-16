@@ -1,6 +1,6 @@
 <template>
   <div class="view-leaderboard">
-    <div class="last-update">btctools와의 최종 동기화: {{ lastUpdate }}</div>
+    <div class="last-update">최종 업데이트: {{ lastUpdate }}</div>
     <table class="f-mono">
       <thead>
         <tr>

@@ -203,10 +203,6 @@ export default {
   .fa-image {
     margin-right: 8px;
     cursor: pointer;
-
-    &:hover {
-      color: var(--brand-primary);
-    }
   }
 
   .functions {

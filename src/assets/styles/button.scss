@@ -39,6 +39,10 @@
   background: var(--black);
   color: var(--white);
 
+  &:not(.no-shadow) {
+    box-shadow: 0 0 1px var(--white);
+  }
+
   &:not(.disabled):not(:disabled) {
     &:hover {
       background: var(--gs-44);

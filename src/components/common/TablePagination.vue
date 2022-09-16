@@ -52,14 +52,13 @@ export default {
   overflow-x: auto;
 
   .page-icon {
-    cursor: pointer;
     color: var(--white);
-    background: var(--brand-primary-hover-bg);
     padding: 4px;
     width: $page-icon-size;
     height: $page-icon-size;
     font-size: 12px;
     text-align: center;
+    cursor: pointer;
 
     &:not(:last-child) {
       margin-right: 4px;
