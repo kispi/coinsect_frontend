@@ -1,9 +1,7 @@
 :root {
-  --brand-primary:          rgba(45, 192, 152, 1);
-  --brand-primary-50:       rgba(45, 192, 152, 0.5);
-  --brand-primary-bg:       rgba(65, 212, 172, 1);
-  --brand-primary-hover:    rgba(85, 232, 192, 1);
-  --brand-primary-hover-bg: rgba(85, 232, 192, 0.1);
+  --brand-primary:          rgb(255, 222, 116, 1);
+  --brand-primary-hover:    rgba(235, 202, 96, 1);
+  --brand-primary-hover-bg: rgba(235, 202, 96, 0.1);
 
   --bitcoin:             #ffbb11;
   --white:               #ffffff;
@@ -16,7 +14,7 @@
   --gs-bb:               #bbbbbb;
   --gs-e0:               #e0e0e0;
   --gs-bybit:            #17181e;
-  --text-bybit:          rgba(255, 255, 255, 0.8);
+  --text-bybit:          rgba(255, 255, 255, 0.9);
   --danger:              rgba(255, 32, 32, 1);
   --price-up-upbit:      #d60000;
   --price-down-upbit:    #0051c7;

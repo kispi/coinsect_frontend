@@ -225,10 +225,6 @@ export default {
 
     .ticker {
       .symbol-code {
-        span {
-          color: var(--brand-primary);
-        }
-
         i {
           margin-left: 8px;
           transition: none;

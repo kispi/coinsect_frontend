@@ -18,7 +18,7 @@
     </div>
     <button
       @click="onClickInitSettings"
-      class="btn btn-primary"
+      class="btn btn-brd"
       v-html="$translate('INIT_SETTINGS')"
     />
   </div>
@@ -132,7 +132,7 @@ export default {
   padding: 16px;
   color: var(--text-stress);
 
-  .btn-primary {
+  .btn-brd {
     width: 100%;
     margin-top: 16px;
   }

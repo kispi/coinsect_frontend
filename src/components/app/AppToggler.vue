@@ -41,15 +41,16 @@ export default {
   background: var(--gs-bb);
   cursor: pointer;
 
+  --handle-size: calc(var(--app-toggler-width) / 2 - var(--app-toggler-gap) * 2);
   .handle {
-    width: calc(var(--app-toggler-width) / 2 - var(--app-toggler-gap) * 2);
-    height: calc(var(--app-toggler-width) / 2 - var(--app-toggler-gap) * 2);
+    width: var(--handle-size);
+    height: var(--handle-size);
     border-radius: 50%;
     background: var(--white);
     position: absolute;
     top: var(--app-toggler-gap);
     left: var(--app-toggler-gap);
-    transition: all 0.1s ease-in-out;
+    transition: all 0.25s ease-in-out;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
   }
 
@@ -62,7 +63,6 @@ export default {
     }
 
     .handle {
-      transition: all 0.1s ease-in-out;
       transform: translateX(calc(var(--app-toggler-width) / 2));
     }
   }

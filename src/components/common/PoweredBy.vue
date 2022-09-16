@@ -37,7 +37,6 @@ export default {
 
   a {
     text-decoration: underline;
-    color: var(--brand-primary);
     display: flex;
     align-items: center;
     margin-left: 8px;

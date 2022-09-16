@@ -89,7 +89,7 @@ export default {
     }
 
     &:hover {
-      background: var(--brand-primary-hover-bg);
+      background: var(--background-light);
     }
 
     &:not(:last-child) {

@@ -37,21 +37,21 @@ const markets = [{
   path: '/markets/crypto',
   component: () => import(/* webpackChunkName: 'view-markets' */ '@/components/views/markets/ViewMarkets'),
   meta: {
-    title: '크립토 마켓 - 코인충',
-    description: '비트코인, 이더리움, 리플, 솔라나 등 코인, 크립토 시황',
+    title: '암호화폐 시총 - 코인충',
+    description: '비트코인, 이더리움, 리플, 솔라나 등 코인, 암호화폐 시총',
   },
 }, {
   path: '/markets/nasdaq',
   component: () => import(/* webpackChunkName: 'view-markets' */ '@/components/views/markets/ViewMarkets'),
   meta: {
-    title: '나스닥 - 코인충',
-    description: '나스닥 100 시황',
+    title: '나스닥 시총 - 코인충',
+    description: '애플, 테슬라, 마이크로소프트 등 나스닥 종목들의 시총',
   },
 }, {
   path: '/markets/assets-including-metal',
   component: () => import(/* webpackChunkName: 'view-markets' */ '@/components/views/markets/ViewMarkets'),
   meta: {
-    title: '귀금속 포함 시가총액 - 코인충',
+    title: '귀금속 포함 시총 - 코인충',
     description: '금, 은, 팔라듐 등의 귀금속 및 비트코인, 이더리움 등을 포함한 시총 상위권 자산들의 목록',
   },
 }]

@@ -220,7 +220,7 @@ export default {
       background: var(--background-light);
 
       .title {
-        text-decoration: underline;
+        font-weight: 700;
       }
     }
 
@@ -228,8 +228,8 @@ export default {
       font-weight: 700;
     }
 
-    &:hover:not(.active) {
-      background: var(--brand-primary-hover-bg);
+    &:hover {
+      background: var(--background-light);
     }
 
     &:not(:last-child) {
@@ -261,6 +261,7 @@ export default {
 
     .title {
       flex: 1;
+      line-height: 1.5;
       color: var(--text-stress);
 
       .post-type {
@@ -325,10 +326,6 @@ export default {
       color: var(--text-stress);
       border-radius: 50%;
       cursor: pointer;
-
-      &:hover {
-        background: var(--brand-primary-hover-bg);
-      }
     }
   }
 

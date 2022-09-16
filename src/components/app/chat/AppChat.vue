@@ -23,7 +23,7 @@
         <div
           @click="scrollToBottom"
           class="clickable-icon-wrapper scroll-to-bottom"
-          :class="{'o-0 no-touch': $store.getters.chat.autoScrollable}">
+          :class="{'hide': $store.getters.chat.autoScrollable}">
           <i class="fa fa-chevron-down"/>
         </div>
         <div
@@ -274,6 +274,8 @@ export default {
   .app-chat-body {
     overflow-y: auto;
     overscroll-behavior: contain;
+    border-top: 1px solid var(--border-base);
+    border-bottom: 1px solid var(--border-base);
     padding: var(--app-chat-padding);
     flex: 1;
 
@@ -288,6 +290,12 @@ export default {
       background: var(--background-base);
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.24);
       transition: all 0.2s ease;
+
+      &.hide {
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0);
+      }
     }
   }
 
@@ -312,22 +320,12 @@ export default {
   &.light {
     .app-chat-container {
       background: var(--white);
-
-      .app-chat-body {
-        border-top: 1px solid var(--border-base);
-        border-bottom: 1px solid var(--border-base);
-      }
     }
   }
 
   &.dark {
     .app-chat-container {
       background: var(--gs-22);
-
-      .app-chat-body {
-        border-top: 1px solid var(--gs-44);
-        border-bottom: 1px solid var(--gs-44);
-      }
     }
   }
 }

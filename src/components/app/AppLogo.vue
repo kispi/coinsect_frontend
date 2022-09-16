@@ -2,7 +2,7 @@
   <RouterLink
     :to="'/'"
     class="app-logo">
-    coinsect.io
+    코인忠
   </RouterLink>
 </template>
 

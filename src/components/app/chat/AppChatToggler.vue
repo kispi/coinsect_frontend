@@ -66,7 +66,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--brand-primary-50);
+  background: var(--brand-primary);
+  opacity: 0.5;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
   border-radius: 50%;
   right: 8px;

@@ -129,7 +129,6 @@ export default {
       border-radius: calc(var(--bar-height) / 2);
 
       .fill {
-        background: var(--brand-primary-bg);
         width: 0;
         height: 100%;
         transition: none;

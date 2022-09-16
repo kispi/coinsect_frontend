@@ -33,12 +33,11 @@ export default {
   min-width: 160px;
   border: 1px double var(--border-base);
   border-radius: 4px;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
   z-index: 5;
 
   .sub-header-item {
     color: var(--text-stress);
-    padding: 12px;
+    padding: 8px 12px;
     display: block;
     white-space: nowrap;
     transition: none;
@@ -46,22 +45,17 @@ export default {
     cursor: pointer;
 
     &.selected {
-      color: var(--brand-primary);
+      font-weight: 700;
+      background: var(--background-light);
     }
 
     &:hover {
-      background: var(--brand-primary-hover-bg);
+      background: var(--background-light);
     }
 
     &:not(:last-child) {
       border-bottom: 1px solid var(--border-base);
     }
-  }
-}
-
-#app.dark {
-  .sub-header {
-    box-shadow: 1px 2px 4px rgba(255, 255, 255, 0.24);
   }
 }
 </style>

@@ -120,6 +120,7 @@ export default {
   .post-content {
     padding: 32px 0;
     max-width: 100%;
+    line-height: 1.5;
 
     img {
       max-width: 100%;

@@ -212,12 +212,12 @@ export default {
       cursor: pointer;
 
       &:hover {
-        background: var(--brand-primary-hover-bg);
+        background: var(--background-light);
       }
 
       &:active,
       &.selected {
-        color: var(--brand-primary);
+        font-weight: 700;
       }
     }
   }

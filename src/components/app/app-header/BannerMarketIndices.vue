@@ -96,10 +96,6 @@ export default {
       flex: 0 0 auto;
       line-height: 16px;
     }
-
-    .changes {
-      font-weight: 300;
-    }
   }
 }
 </style>

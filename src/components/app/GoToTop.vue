@@ -53,6 +53,7 @@ export default {
 
   &.no-show {
     opacity: 0;
+    transform: scale(0);
     pointer-events: none;
   }
 
