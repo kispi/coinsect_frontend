@@ -163,8 +163,8 @@ export default {
     word-wrap: break-word;
     transition: all .2s ease;
     max-width: calc(100vw - 32px);
-    background: var(--white);
-    border: 1px solid var(--border-base);
+    background: var(--background-base);
+    border: 1px solid var(--border-light);
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
     position: absolute;
@@ -235,12 +235,6 @@ export default {
     .modal-base-style {
       position: initial;
     }
-  }
-}
-
-#app.dark {
-  .modal-base-style {
-    background: var(--gs-bybit);
   }
 }
 </style>

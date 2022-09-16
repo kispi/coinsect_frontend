@@ -4,7 +4,7 @@
     class="app-chat-toggler"
     :class="{
       'chat-ding': $store.getters.settings.chatDing,
-      'o-0 no-touch': !$store.getters.settings.chatFolded,
+      'folded': !$store.getters.settings.chatFolded,
     }">
     <i class="fal fa-comment-dots"/>
     <div
@@ -67,16 +67,11 @@ export default {
   align-items: center;
   justify-content: center;
   background: var(--brand-primary);
-  opacity: 0.5;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
   border-radius: 50%;
   right: 8px;
   bottom: 8px;
   cursor: pointer;
-
-  &.chat-ding {
-    background: var(--brand-primary);
-  }
 
   .fa-comment-dots {
     font-size: 24px;
@@ -97,6 +92,16 @@ export default {
 
   &:hover {
     background: var(--brand-primary-hover);
+  }
+
+  &:not(.chat-ding) {
+    background: var(--brand-primary);
+    opacity: 0.5;
+  }
+
+  &.folded {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 </style>

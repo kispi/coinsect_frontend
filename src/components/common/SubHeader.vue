@@ -31,7 +31,7 @@ export default {
   background: var(--background-base);
   top: calc(var(--app-header-height) - 8px);
   min-width: 160px;
-  border: 1px double var(--border-base);
+  border: 1px solid var(--text-stress);
   border-radius: 4px;
   z-index: 5;
 

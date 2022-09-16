@@ -37,7 +37,7 @@
   --text-base:           var(--gs-44);
   --text-light:          var(--gs-bb);
   --border-base:         var(--gs-e0);
-  --border-light:        var(--gs-bb);
+  --border-light:        rgba(0, 0, 0, 0.25);
   --background-base:     var(--white);
   --background-light:    rgba(0, 0, 0, 0.1);
   --price-up:            var(--price-up-upbit);
@@ -50,7 +50,7 @@
     --text-base:         var(--text-bybit);
     --text-light:        var(--gs-44);
     --border-base:       var(--gs-44);
-    --border-light:      var(--gs-e0);
+    --border-light:      rgba(255, 255, 255, 0.25);
     --background-base:   var(--gs-bybit);
     --background-light:  rgba(255, 255, 255, 0.1);
 

@@ -5,7 +5,11 @@
       class="far fa-chevron-left"
       @click="$emit('back')"/>
     <div class="title" v-html="$translate(title)" :class="titleClass"/>
-    <i @click="$emit('close')" class="fal fa-times"/>
+    <div
+      @click="$emit('close')"
+      class="closer-container center">
+      <i class="fal fa-times"/>
+    </div>
   </div>
 </template>
 
@@ -38,14 +42,16 @@ export default {
     pointer-events: none;
   }
 
-  .fa-chevron-left,
-  .fa-times {
-    position: absolute;
+  i {
     font-size: 20px;
+    color: var(--white);
+    cursor: pointer;
+  }
+
+  .fa-chevron-left {
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--gs-bb);
-    cursor: pointer;
 
     &:hover {
       color: var(--text-stress);
@@ -56,8 +62,18 @@ export default {
     left: 16px;
   }
 
-  .fa-times {
-    right: 16px;
+  .closer-container {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 40px;
+    background: var(--gs-44);
+    position: absolute;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--gs-66);
+    }
   }
 }
 </style>
