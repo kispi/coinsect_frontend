@@ -11,5 +11,9 @@
   color: var(--brand-primary);
   font-size: 24px;
   font-weight: 700;
+  letter-spacing: 2px;
+  font-family: Gowun Dodum;
+  display: flex;
+  align-items: center;
 }
 </style>

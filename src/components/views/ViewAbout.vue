@@ -122,7 +122,7 @@ export default {
       color: var(--text-stress);
       margin-bottom: 4px;
       background: var(--border-base);
-      padding: 2px 6px;
+      padding: 0px 4px;
       font-size: 12px;
       display: table;
     }
