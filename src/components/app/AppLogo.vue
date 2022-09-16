@@ -2,7 +2,7 @@
   <RouterLink
     :to="'/'"
     class="app-logo">
-    코인忠
+    coinsect.io
   </RouterLink>
 </template>
 
@@ -11,9 +11,6 @@
   color: var(--brand-primary);
   font-size: 24px;
   font-weight: 700;
-  letter-spacing: 2px;
-  font-family: Gowun Dodum;
-  display: flex;
-  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>
