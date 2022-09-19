@@ -132,7 +132,7 @@ export default {
   }
 
   &:hover {
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--white);
   }
 
   &.danger {
