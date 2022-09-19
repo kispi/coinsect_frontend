@@ -59,6 +59,7 @@ export default {
   box-shadow: none;
   width: 640px;
   overflow: hidden;
+  border: 0;
 
   .image {
     min-height: 480px;
