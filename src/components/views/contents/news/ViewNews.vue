@@ -8,12 +8,12 @@
           @click="$store.commit('setSettings', { newsProvider: 'upbit' })">
           <img src="@/assets/images/upbit.svg">뉴스룸
         </div>
-        <!-- <div
+        <div
           class="provider"
           :class="{'selected': $store.getters.settings.newsProvider === 'cobak_feed'}"
           @click="$store.commit('setSettings', { newsProvider: 'cobak_feed' })">
           <img src="@/assets/images/cobak.png">속보
-        </div> -->
+        </div>
         <div
           class="provider"
           :class="{'selected': $store.getters.settings.newsProvider === 'cobak_article'}"

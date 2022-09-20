@@ -78,6 +78,13 @@ const contents = [{
     description: '각종 암호화폐 / 코인 뉴스',
   },
 }, {
+  path: '/contents/economic-calendar',
+  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
+  meta: {
+    title: '경제 캘린더 - 코인충',
+    description: 'FOMC, 금리 결정, 원유 재고 등 매매에 영향을 줄 수 있는 일정들을 모아둔 캘린더입니다.'
+  },
+}, {
   path: '/contents/twitter',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {

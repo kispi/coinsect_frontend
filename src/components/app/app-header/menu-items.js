@@ -76,6 +76,7 @@ const useMenuItems = () => {
     subPages: [
       { path: '/contents/news', title: 'NEWS' },
       // { path: '/contents/twitter', title: 'TWITTER' },
+      { path: '/contents/economic-calendar', title: 'ECONOMIC_CALENDAR' },
       { path: '/contents/influencers', title: 'INFLUENCERS' },
       { path: '/contents/public-treasury', title: 'PUBLIC_TREASURY' },
       { path: '/contents/bitcoin-halving', title: 'BITCOIN_HALVING' },

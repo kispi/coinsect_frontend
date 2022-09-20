@@ -65,7 +65,7 @@
         </WrapperDropdownOverlay>
       </div>
     </div>
-    <nav class="ah-menu-items pretty-scrollbar">
+    <nav class="ah-menu-items">
       <a
         draggable="false"
         @click.prevent="e => onClickMenuItem(e, menuItem)"

@@ -64,13 +64,12 @@
       class="empty">
       {{ $translate('NO_SEARCH_RESULT') }}
     </div>
-    <div class="display-table m-t-24 m-l-a">
-      <PoweredBy
-        :by="'WhaleAlert'"
-        :imgUrl="'https://whale-alert.io/assets/images/logo-small-35.png'"
-        :link="'https://whale-alert.io'"
-      />
-    </div>
+    <PoweredBy
+      :by="'WhaleAlert'"
+      :imgUrl="'https://whale-alert.io/assets/images/logo-small-35.png'"
+      :link="'https://whale-alert.io'"
+      class="m-t-24"
+    />
   </div>
 </template>
 

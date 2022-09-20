@@ -34,6 +34,7 @@ export default {
   border: 1px solid var(--text-stress);
   border-radius: 4px;
   z-index: 5;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.24);
 
   .sub-header-item {
     color: var(--text-stress);

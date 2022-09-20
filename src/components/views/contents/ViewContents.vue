@@ -14,6 +14,7 @@ export default {
     ViewBitcoinMining: defineAsyncComponent(() => import('./ViewBitcoinMining')),
     ViewNews: defineAsyncComponent(() => import('./news/ViewNews')),
     ViewTwitter: defineAsyncComponent(() => import('./ViewTwitter')),
+    ViewEconomicCalendar: defineAsyncComponent(() => import('./ViewEconomicCalendar')),
     ViewInfluencers: defineAsyncComponent(() => import('./influencers/ViewInfluencers')),
     ViewInfluencerDetail: defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail')),
     ViewPublicTreasury: defineAsyncComponent(() => import('./ViewPublicTreasury')),
@@ -25,6 +26,7 @@ export default {
       const p = router.currentRoute.value.path
       if (p === '/contents/news') return 'ViewNews'
       if (p === '/contents/twitter') return 'ViewTwitter'
+      if (p === '/contents/economic-calendar') return 'ViewEconomicCalendar'
       if (p === '/contents/influencers') return 'ViewInfluencers'
       if (p.startsWith('/contents/influencers/')) return 'ViewInfluencerDetail'
       if (p === '/contents/public-treasury') return 'ViewPublicTreasury'
