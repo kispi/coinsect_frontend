@@ -15,9 +15,7 @@
               <AppImg :src="contact.img" :alt="contact.key"/>
             </a>
           </div>
-          <div class="flex-row items-center cursor-pointer m-t-24">
-            <a class="cursor-pointer text-underline" @click="$modal.custom({ component: 'ModalDonation' })" v-html="$translate('MODAL_DONATION')"/>
-          </div>
+          <a class="m-t-24 display-block cursor-pointer text-underline" @click="$modal.custom({ component: 'ModalDonation' })" v-html="$translate('MODAL_DONATION')"/>
         </div>
         <div v-if="($store.getters.config || {}).version">
           <div v-if="$store.getters.config.version.backend">Backend: {{ $store.getters.config.version.backend }}</div>
@@ -58,7 +56,7 @@ export default {
   font-size: 12px;
   line-height: 24px;
   padding-top: 32px;
-  padding-bottom: 32px;
+  padding-bottom: 120px;
 
   .contact-sns {
     display: flex;

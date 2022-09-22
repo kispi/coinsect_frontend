@@ -36,8 +36,8 @@ export default {
 
 <style lang="scss" scoped>
 .go-to-top {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,7 +58,7 @@ export default {
   }
 
   i {
-    font-size: 24px;
+    font-size: 20px;
   }
 }
 </style>

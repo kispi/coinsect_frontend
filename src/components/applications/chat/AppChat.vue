@@ -13,13 +13,13 @@
         'display-none': $store.getters.settings.chatFolded,
       }">
       <AppChatStats/>
-      <AppChatHeader :toggleChatFolded="(refFoldedIcon || {}).toggleChatFolded"/> <!-- 다른 컴포넌트의 함수를 참조하는게 안티패턴같긴 하지만 ... -->
+      <AppChatHeader/> <!-- 다른 컴포넌트의 함수를 참조하는게 안티패턴같긴 하지만 ... -->
       <div
         ref="refAppChatBody"
         class="app-chat-body no-scrollbar"
         @scroll="onScroll">
         <AppLoading :loading="loadingReplyTarget"/>
-        <AppChatIncomingMessageOverlay @scroll-to-bottom="scrollToBottom" :refFoldedIcon="refFoldedIcon"/>
+        <AppChatIncomingMessageOverlay @scroll-to-bottom="scrollToBottom"/>
         <div
           @click="scrollToBottom"
           class="clickable-icon-wrapper scroll-to-bottom"
@@ -89,8 +89,6 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
-
-    const refFoldedIcon = ref(null)
 
     const refAppChatBody = ref(null)
 
@@ -217,7 +215,6 @@ export default {
     })
 
     return {
-      refFoldedIcon,
       refAppChatBody,
       refAppChatInput,
       refAppChat,

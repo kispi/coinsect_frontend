@@ -30,7 +30,7 @@
     border-radius: 8px;
     border: 8px double var(--border-base);
     background: var(--white);
-    padding: 40px;
+    padding: 16px;
     max-width: 640px;
 
     .title {

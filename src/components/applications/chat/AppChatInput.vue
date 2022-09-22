@@ -33,6 +33,7 @@
         v-model="text"
         @keydown="onKeydown"
         @paste="onPaste"
+        :disabled="!$store.getters.settings.cleanChatAgreed"
         :maxlength="120"
         placeholder="이미지를 첨부하려면 왼쪽 아이콘 클릭 / 또는 스크린샷 후 Ctrl + V"
         class="no-scrollbar"

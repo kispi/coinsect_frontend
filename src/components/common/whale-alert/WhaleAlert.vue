@@ -1,6 +1,5 @@
 <template>
   <div class="whale-alert">
-    <AppLoading :loading="loading"/>
     <div
       @click="showFilters = !showFilters"
       class="btn btn-brd">
@@ -92,8 +91,6 @@ export default {
 
     const timeout = ref(null)
 
-    const loading = ref(null)
-
     const showFilters = ref(null)
 
     const params = ref()
@@ -155,12 +152,9 @@ export default {
 
     const search = async () => {
       try {
-        loading.value = true
         resp.value = await onchainService.whaleAlert(createQuery().build())
       } catch (e) {
         plugins.$toast.error(e.data.message)
-      } finally {
-        loading.value = false
       }
       timeout.value = setTimeout(search, 1000 * 60)
     }
@@ -182,7 +176,6 @@ export default {
 
     return {
       resp,
-      loading,
       listStable,
       showFilters,
       getUrl,
@@ -298,10 +291,6 @@ export default {
 
   .cell-move {
     transition: transform 0.25s cubic-bezier(1, 0, 0, 1);
-  }
-
-  .app-loading {
-    position: fixed;
   }
 }
 </style>

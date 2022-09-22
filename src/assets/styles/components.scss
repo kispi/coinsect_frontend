@@ -64,7 +64,7 @@ table {
   align-items: center;
   justify-content: center;
   background: var(--white);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
   position: relative;
   cursor: pointer;
 
@@ -75,6 +75,11 @@ table {
 
   img {
     border-radius: 16px;
+    transition: all 1s ease;
+
+    &:not(.show) {
+      opacity: 0;
+    }
   }
 
   .badge-unreads {
@@ -90,11 +95,20 @@ table {
   }
 
   &:hover {
-    animation: hover-icon infinite 0.5s;
+    animation: hover-icon infinite 1s;
     opacity: 0.75;
   }
 
   &:not(:last-child) {
     margin-right: 16px;
+  }
+
+  @media (min-width: 768px) {
+    width: 56px;
+    height: 56px;
+
+    i {
+      font-size: 32px;
+    }
   }
 }

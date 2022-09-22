@@ -18,10 +18,7 @@ import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   emits: ['scroll-to-bottom'],
-  props: {
-    refFoldedIcon: null,
-  },
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
@@ -32,16 +29,22 @@ export default {
 
     const { filteredMessages: messages } = useChatHandler()
 
+    const debouncedMessageRemover = plugins.$helpers.debounce(() => {
+      store.commit('setChat', { incomingMessage: null })
+    }, 10000)
+
     const showIncomingMessageOverlay = () => {
       if (messages.value.length === 0) return
 
       store.commit('setChat', { incomingMessage: messages.value[messages.value.length - 1] })
+
+      // 채팅창이 접혀있는 상태인 경우 incomingMessage를 일정시간 후 지워주는게 UX적으로 좋을듯
+      if (store.getters.settings.chatFolded) debouncedMessageRemover()
     }
 
     const onIncomingMessage = async () => {
       showIncomingMessageOverlay()
       if (store.getters.settings.chatFolded) {
-        if (props.refFoldedIcon) plugins.$helpers.animate.shake(props.refFoldedIcon.$el)
         if (ding.value && store.getters.settings.chatDing) {
           try {
             await ding.value.play() // 유저가 페이지에서 상호작용하지 않아 오류가 있더라도 무시
@@ -129,9 +132,14 @@ export default {
     top: 16px;
     right: 16px;
     left: initial;
-    width: 320px;
-    max-width: calc(100% - 32px);
+    width: calc(100% - 32px);
     z-index: 5;
+  }
+
+  @media (min-width: 480px) {
+    &.outside {
+      width: 320px;
+    }
   }
 }
 </style>
