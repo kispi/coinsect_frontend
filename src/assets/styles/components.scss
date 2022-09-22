@@ -76,7 +76,7 @@ table {
 
   img {
     border-radius: 16px;
-    transition: all 1s ease;
+    transition: opacity 1s ease;
 
     &:not(.show) {
       opacity: 0;
