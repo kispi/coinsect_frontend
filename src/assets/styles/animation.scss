@@ -53,10 +53,10 @@
 
 @keyframes shakeY {
   0% { transform: translateY(-2px); }
-  20% { transform: translateY(2px); }
-  40% { transform: translateY(-2px); }
-  60% { transform: translateY(2px); }
-  80% { transform: translateY(-2px); }
+  25% { transform: translateY(2px); }
+  50% { transform: translateY(-2px); }
+  75% { transform: translateY(2px); }
+  100% { transform: translateY(-2px); }
 }
 
 @keyframes position-flashing-border {
@@ -101,14 +101,14 @@
 
 @keyframes hover-icon {
   0% {
-    transform: scale(1) rotate(2deg);
+    transform: scale(1) rotate(4deg);
   }
 
   50% {
-    transform: scale(1) rotate(-2deg);
+    transform: scale(1) rotate(-4deg);
   }
 
   100% {
-    transform: scale(1) rotate(2deg);
+    transform: scale(1) rotate(4deg);
   }
 }

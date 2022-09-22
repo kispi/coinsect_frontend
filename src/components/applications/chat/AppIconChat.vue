@@ -6,7 +6,8 @@
       'chat-ding': $store.getters.settings.chatDing,
       'folded': !$store.getters.settings.chatFolded,
     }">
-    <i class="fal fa-comment-dots"/>
+    <i class="fa fa-comment f-32"/>
+    <div class="overlay center c-brand-primary f-10">TALK</div>
     <div
       v-if="numUnreads"
       class="badge-unreads center f-mono">

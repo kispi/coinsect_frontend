@@ -66,6 +66,7 @@ table {
   background: var(--white);
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
   position: relative;
+  user-select: none;
   cursor: pointer;
 
   i {
@@ -95,20 +96,10 @@ table {
   }
 
   &:hover {
-    animation: hover-icon infinite 1s;
-    opacity: 0.75;
+    animation: hover-icon infinite 0.25s;
   }
 
   &:not(:last-child) {
     margin-right: 16px;
-  }
-
-  @media (min-width: 768px) {
-    width: 56px;
-    height: 56px;
-
-    i {
-      font-size: 32px;
-    }
   }
 }

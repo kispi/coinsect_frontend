@@ -24,6 +24,7 @@ const app = {
     settings: {
       blockedUsers: {},
       locale: 'kr',
+      dockFolded: false,
       sort: {
         column: '$$vol24HBase', // '$$symbol', '$$tradePriceBase', '$$premiumRate', '$$changeRate1D', '$$changeRate52WH', '$$changeRate52WL'
         direction: 'desc',

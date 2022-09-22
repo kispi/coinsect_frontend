@@ -1,12 +1,19 @@
 <template>
-  <div class="app-dock">
+  <div
+    class="app-dock"
+    :class="{'folded': $store.getters.settings.dockFolded}">
+    <div
+      @click="$store.commit('setSettings', { dockFolded: !$store.getters.settings.dockFolded })"
+      class="dock-handle">
+      <i class="fa m-a display-table fa-chevron-down"/>
+    </div>
     <div class="dock-container">
       <div class="app-icons">
         <AppDockIcon
           @click="$router.push('/')"
           :tooltip="'KIMP'"
           :images="[
-            'https://auseinet.com/wp-content/uploads/2022/07/%EC%97%85%EB%B9%84%ED%8A%B8-%EB%A1%9C%EA%B3%A0-3.png',
+            'https://theme.zdassets.com/theme_assets/9190474/3941022f7857ffa2b0ac3cb9165aec2c2e4a4e89.jpg',
           ]"
         />
         <AppDockIcon
@@ -66,32 +73,47 @@ export default {
   padding: 8px;
   z-index: 1;
   overflow-x: auto;
+  transition: all 0.25s ease-in-out;
 
-  .dock-container {
+  .dock-container,
+  .dock-handle {
     backdrop-filter: blur(2px);
     border-radius: 24px;
     margin: auto;
     background: rgba(255, 255, 255, 0.5);
     box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-light);
-    padding: 8px;
     display: table;
+  }
+
+  .dock-container {
+    padding: 8px;
 
     .app-icons {
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+  }
 
-      .app-icon {
-        width: 64px;
-        height: 64px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+  .dock-handle {
+    width: 80px;
+    margin-bottom: 8px;
+    cursor: pointer;
 
-        i {
-          font-size: 32px;
-        }
+    i {
+      transition: all 0.25s ease;
+    }
+  }
+
+  &.folded {
+    bottom: -72px;
+
+    .dock-handle {
+      animation: shakeY 2s ease-in-out infinite;
+
+      i {
+        transform: rotate(180deg);
       }
     }
   }
