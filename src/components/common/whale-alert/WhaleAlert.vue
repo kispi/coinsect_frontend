@@ -206,6 +206,7 @@ export default {
 
   .alert-items {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     grid-gap: 8px;
 
     .alert-item {
@@ -301,12 +302,6 @@ export default {
 
   .app-loading {
     position: fixed;
-  }
-
-  @media (min-width: 768px) {
-    .alert-items {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 }
 </style>

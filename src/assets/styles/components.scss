@@ -55,3 +55,46 @@ table {
     }
   }
 }
+
+.app-dock-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+  position: relative;
+  cursor: pointer;
+
+  i {
+    font-size: 24px;
+    color: var(--white);
+  }
+
+  img {
+    border-radius: 16px;
+  }
+
+  .badge-unreads {
+    min-width: 24px;
+    min-height: 24px;
+    padding: 4px;
+    border-radius: 12px;
+    background: var(--danger);
+    color: var(--white);
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  &:hover {
+    animation: hover-icon infinite 0.5s;
+    opacity: 0.75;
+  }
+
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+}

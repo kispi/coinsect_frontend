@@ -2,24 +2,24 @@
   <div
     ref="refAppTooltip"
     class="app-tooltip"
-    :class="{'below': tooltip.below}"
+    :class="{
+      'below': tooltip.below,
+      'light': !tooltip.dark,
+    }"
     :style="finalStyle">
-    <div v-html="$translate(tooltip.text)"/>
+    <div class="tooltip-body" v-html="$translate(tooltip.text)"/>
     <div class="triangle" :style="trianglePosition"/>
   </div>
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 
 export default {
   props: {
-    tooltip: null,
+    tooltip: null, // { bind, text, showAbove, below }
   },
   setup(props) {
-    const store = useStore()
-
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const refAppTooltip = ref(null)
@@ -60,11 +60,6 @@ export default {
       }
     }
 
-    watch(
-      () => store.getters.scrollTop,
-      setFinalStyle,
-    )
-
     onMounted(setFinalStyle)
 
     return {
@@ -78,8 +73,8 @@ export default {
 
 <style lang="scss" scoped>
 .app-tooltip {
-  color: var(--white);
-  background: var(--gs-66);
+  color: var(--background-base);
+  background: var(--text-base);
   position: absolute;
   border-radius: 4px;
   padding: 8px 12px;
@@ -93,7 +88,7 @@ export default {
     height: 0;
     border-left: var(--triangle-size) solid transparent;
     border-right: var(--triangle-size) solid transparent;
-    border-top: var(--triangle-size) solid var(--gs-66);
+    border-top: var(--triangle-size) solid var(--text-base);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -106,6 +101,10 @@ export default {
       bottom: 0;
       transform: rotate(180deg) translateX(50%) !important;
     }
+  }
+
+  &.light {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
   }
 }
 </style>

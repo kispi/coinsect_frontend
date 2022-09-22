@@ -1,7 +1,20 @@
 import { store as $store } from '@/store'
 
 const tooltip = {
-  show: tooltip => $store.commit('addTooltip', tooltip),
+  show: ({
+    id,
+    text,
+    showAbove,
+    below,
+    dark,
+  }) => $store.commit('addTooltip', {
+    id,
+    text,
+    showAbove,
+    below,
+    dark,
+    bind: true,
+  }),
   hide: id => $store.commit('removeTooltip', id),
 }
 

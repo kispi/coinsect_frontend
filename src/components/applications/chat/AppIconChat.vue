@@ -1,7 +1,7 @@
 <template>
   <div
     @click="toggleChatFolded"
-    class="app-chat-toggler"
+    class="app-icon-chat"
     :class="{
       'chat-ding': $store.getters.settings.chatDing,
       'folded': !$store.getters.settings.chatFolded,
@@ -58,50 +58,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.app-chat-toggler {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--brand-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
-  border-radius: 50%;
-  right: 8px;
-  bottom: 8px;
-  cursor: pointer;
-
-  .fa-comment-dots {
-    font-size: 24px;
-    color: var(--white);
-  }
-
-  .badge-unreads {
-    min-width: 24px;
-    min-height: 24px;
-    padding: 4px;
-    border-radius: 12px;
-    background: var(--danger);
-    color: var(--white);
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  &:hover {
-    background: var(--brand-primary-hover);
-  }
-
-  &:not(.chat-ding) {
-    background: var(--brand-primary);
-    opacity: 0.5;
-  }
-
-  &.folded {
-    opacity: 0;
-    pointer-events: none;
-  }
-}
-</style>

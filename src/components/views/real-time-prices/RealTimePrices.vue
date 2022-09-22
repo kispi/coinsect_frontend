@@ -4,7 +4,7 @@
     class="real-time-prices">
     <div class="settings">
       <div class="total-and-search">
-        <div>총 {{ displayedList.length }} 암호자산</div>
+        <div>검색결과: {{ displayedList.length }}</div>
         <div class="input-wrapper">
           <i class="fal fa-search"/>
           <input

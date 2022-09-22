@@ -37,6 +37,7 @@ export default {
       editor.value = new Editor({
         el: refEditor.value,
         plugins: [colorSyntax],
+        height: '480px',
         initialEditType: 'wysiwyg',
         initialValue: (props.modelValue || ''),
         events: {

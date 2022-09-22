@@ -55,7 +55,6 @@
       </div>
       <AppChatInput ref="refAppChatInput"/>
     </div>
-    <AppChatToggler ref="refFoldedIcon" @scroll-to-bottom="scrollToBottom"/>
     <AppChatIncomingMessageOverlay
       v-if="$store.getters.settings.chatOverlayNewMessage && $store.getters.settings.chatFolded"
       class="outside"
@@ -71,7 +70,6 @@ import AppChatMessage from './AppChatMessage'
 import AppChatMessageMetaTags from './AppChatMessageMetaTags'
 import AppChatIncomingMessageOverlay from './AppChatIncomingMessageOverlay'
 import AppChatInput from './AppChatInput'
-import AppChatToggler from './AppChatToggler'
 import AppChatStats from './AppChatStats'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
@@ -84,7 +82,6 @@ export default {
     AppChatMessageMetaTags,
     AppChatIncomingMessageOverlay,
     AppChatInput,
-    AppChatToggler,
     AppChatStats,
     DailySeparator,
   },
@@ -252,12 +249,6 @@ export default {
     }
   }
 
-  .app-chat-container,
-  .app-chat-toggler {
-    position: fixed;
-    z-index: 5;
-  }
-
   .app-chat-container {
     border: 1px solid var(--text-stress);
     border-radius: 4px;
@@ -269,6 +260,8 @@ export default {
     height: 480px;
     max-height: calc(100vh - 16px); // 100vh - 2 * bottom padding
     transition: none;
+    position: fixed;
+    z-index: 5;
 
     @media (max-width: 479px) {
       width: calc(100% - 16px);

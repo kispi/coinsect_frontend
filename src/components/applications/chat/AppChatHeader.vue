@@ -36,7 +36,7 @@
     <div class="chat-settings">
       <div
         class="clickable-icon-wrapper chat-folded"
-        @click="toggleChatFolded">
+        @click="$store.commit('setSettings', { chatFolded: true })">
         <i class="fal fa-minus"/>
       </div>
       <div
@@ -47,14 +47,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    toggleChatFolded: Function,
-  },
-}
-</script>
 
 <style lang="scss" scoped>
 .app-chat-header {

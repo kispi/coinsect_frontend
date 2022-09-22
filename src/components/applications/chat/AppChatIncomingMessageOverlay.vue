@@ -123,14 +123,15 @@ export default {
   }
 
   &.outside {
-    background: var(--brand-primary-hover-bg);
+    background: var(--brand-primary-hover);
     border: 1px solid rgba(255, 255, 255, 0.24);
     position: fixed;
-    bottom: 16px;
-    right: 64px;
+    top: 16px;
+    right: 16px;
     left: initial;
     width: 320px;
-    max-width: calc(100% - 64px - 8px);
+    max-width: calc(100% - 32px);
+    z-index: 5;
   }
 }
 </style>

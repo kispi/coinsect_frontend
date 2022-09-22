@@ -20,8 +20,8 @@ import ImageUploader from '@/components/app/ImageUploader'
 import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 
 // chat components
-import AppChatProfile from '@/components/app/chat/AppChatProfile'
-import BadgeToken from '@/components/app/chat/BadgeToken'
+import AppChatProfile from '@/components/applications/chat/AppChatProfile'
+import BadgeToken from '@/components/applications/chat/BadgeToken'
 
 // common components
 import ButtonCommunity from '@/components/common/ButtonCommunity'
