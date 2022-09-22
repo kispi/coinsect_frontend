@@ -12,8 +12,12 @@
     "kr": "테마"
   },
   "CHAT_DING": {
-    "en": "Ring",
-    "kr": "알림"
+    "en": "Ring on new message",
+    "kr": "새 메시지 소리 알림"
+  },
+  "CHAT_OVERLAY_NEW_MESSAGE": {
+    "en": "Overlay new message",
+    "kr": "새 메시지 오버레이"
   },
   "CHAT_TRANSPARENT": {
     "en": "Transparent",

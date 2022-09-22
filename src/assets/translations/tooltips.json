@@ -3,6 +3,10 @@
     "en": "Notify an incoming message when chat is minimized.",
     "kr": "채팅창이 닫혀있는 상태에서 새 메시지가 올 경우, 알림음을 재생합니다."
   },
+  "TOOLTIP_CHAT_OVERLAY_NEW_MESSAGE": {
+    "en": "Show incoming message when chat is folded.",
+    "kr": "채팅방이 최소화된 상태에서도 새로 오는 메시지를 확인합니다."
+  },
   "TOOLTIP_CHAT_TRANSPARENT": {
     "en": "Set chat background transparent.",
     "kr": "채팅창의 배경을 투명하게 합니다."

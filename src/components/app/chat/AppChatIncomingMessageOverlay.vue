@@ -39,8 +39,9 @@ export default {
     }
 
     const onIncomingMessage = async () => {
+      showIncomingMessageOverlay()
       if (store.getters.settings.chatFolded) {
-        plugins.$helpers.animate.shake(props.refFoldedIcon.$el)
+        if (props.refFoldedIcon) plugins.$helpers.animate.shake(props.refFoldedIcon.$el)
         if (ding.value && store.getters.settings.chatDing) {
           try {
             await ding.value.play() // 유저가 페이지에서 상호작용하지 않아 오류가 있더라도 무시
@@ -50,15 +51,13 @@ export default {
       }
 
       // 채팅창이 열려있는 경우의 처리
-      if (store.getters.chat.autoScrollable) {
-        emit('scroll-to-bottom')
-      } else {
-        showIncomingMessageOverlay()
-      }
+      if (store.getters.chat.autoScrollable) emit('scroll-to-bottom')
+
       store.commit('setChat', { lastReadMessage: messages.value[messages.value.length - 1] })
     }
 
     const onClickIncomingMessageOverlay = () => {
+      store.commit('setSettings', { chatFolded: false })
       store.commit('setChat', { incomingMessage: null })
       emit('scroll-to-bottom')
     }
@@ -121,6 +120,17 @@ export default {
   .fa-chevron-down {
     flex: 0 0 auto;
     margin-left: 16px;
+  }
+
+  &.outside {
+    background: var(--brand-primary-hover-bg);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    position: fixed;
+    bottom: 16px;
+    right: 64px;
+    left: initial;
+    width: 320px;
+    max-width: calc(100% - 64px - 8px);
   }
 }
 </style>

@@ -56,6 +56,10 @@
       <AppChatInput ref="refAppChatInput"/>
     </div>
     <AppChatToggler ref="refFoldedIcon" @scroll-to-bottom="scrollToBottom"/>
+    <AppChatIncomingMessageOverlay
+      v-if="$store.getters.settings.chatOverlayNewMessage && $store.getters.settings.chatFolded"
+      class="outside"
+    />
   </div>
 </template>
 

@@ -57,6 +57,7 @@ const app = {
       chatSizeMax: false,
       chatDing: false,
       chatTransparent: false,
+      chatOverlayNewMessage: true,
     },
     chatStats: {},
     chatUsers: null, // 웹소켓 커넥션이 아니고 접속자 정보임

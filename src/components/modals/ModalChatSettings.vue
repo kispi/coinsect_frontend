@@ -80,6 +80,20 @@
           />
         </div>
         <div class="chat-setting-item">
+          <div class="field-name">{{ $translate('CHAT_OVERLAY_NEW_MESSAGE') }}</div>
+          <AppToggler
+            ref="refChatOverlayNewMessage"
+            :modelValue="$store.getters.settings.chatOverlayNewMessage"
+            @click="$store.commit('setSettings', { chatOverlayNewMessage: !$store.getters.settings.chatOverlayNewMessage })"
+            @mouseover="$tooltip.show({
+              id: 'tooltipChatOverlayNewMessage',
+              showAbove: refChatOverlayNewMessage.$el,
+              text: 'TOOLTIP_CHAT_OVERLAY_NEW_MESSAGE',
+            })"
+            @mouseleave="$tooltip.hide('tooltipChatOverlayNewMessage')"
+          />
+        </div>
+        <div class="chat-setting-item">
           <div class="field-name">{{ $translate('CHAT_SIZE_MAX') }}</div>
           <AppToggler
             ref="refChatSizeMax"
@@ -114,6 +128,8 @@ export default {
     const refChatTransparent = ref(null)
 
     const refChatSizeMax = ref(null)
+
+    const refChatOverlayNewMessage = ref(null)
 
     const refInputNickname = ref(null)
 
@@ -195,6 +211,7 @@ export default {
       refChatDing,
       refChatTransparent,
       refChatSizeMax,
+      refChatOverlayNewMessage,
       refInputNickname,
       editing,
       profile,
