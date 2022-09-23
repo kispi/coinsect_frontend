@@ -10,7 +10,7 @@
     <transition name="slide-down">
       <div
         v-if="showDropdown"
-        class="app-sharer-container vertical">
+        class="app-sharer-container vertical shadowed">
         <div
           @click="brand.handler"
           class="brand-wrapper"
@@ -153,7 +153,6 @@ export default {
       z-index: 1;
       border-radius: 4px;
       background: var(--white);
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
       border: 1px solid var(--border-base);
       padding: 8px;
       top: 40px;

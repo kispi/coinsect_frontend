@@ -2,7 +2,7 @@
   <transition name="fade">
     <nav
       v-if="modelValue"
-      class="sub-header">
+      class="sub-header shadowed">
       <RouterLink
         draggable="false"
         @click="$emit('update:modelValue', null)"
@@ -31,10 +31,9 @@ export default {
   background: var(--background-base);
   top: calc(var(--app-header-height) - 8px);
   min-width: 160px;
-  border: 1px solid var(--text-stress);
+  border: 1px solid var(--border-light);
   border-radius: 4px;
   z-index: 5;
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.24);
 
   .sub-header-item {
     color: var(--text-stress);

@@ -1,23 +1,18 @@
 <template>
   <div
     @click="toggleChatFolded"
-    class="app-icon-chat"
+    class="app-chat-toggler center"
     :class="{
       'chat-ding': $store.getters.settings.chatDing,
       'folded': !$store.getters.settings.chatFolded,
     }">
     <i class="fa fa-comment f-32"/>
-    <div class="overlay center c-brand-primary f-10">TALK</div>
-    <div
-      v-if="numUnreads"
-      class="badge-unreads center f-mono">
-      {{ numUnreads > 99 ? '99+' : numUnreads }}
-    </div>
+    <div class="overlay center f-10">TALK</div>
   </div>
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, nextTick } from 'vue'
+import { getCurrentInstance, onMounted, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
@@ -29,14 +24,6 @@ export default {
     const store = useStore()
 
     const { filteredMessages: messages } = useChatHandler()
-
-    const numUnreads = computed(() => {
-      return (messages.value || []).filter(message => {
-        if (!store.getters.chat.lastReadMessage) return
-
-        return message.timestamp > store.getters.chat.lastReadMessage.timestamp
-      }).length
-    })
 
     const toggleChatFolded = () => {
       store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
@@ -53,9 +40,23 @@ export default {
     })
 
     return {
-      numUnreads,
       toggleChatFolded,
     }
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.app-chat-toggler {
+  --kakao-yellow: #F7E436;
+  background: var(--kakao-yellow);
+
+  i {
+    color: #3B2323;
+  }
+
+  .overlay {
+    color: var(--kakao-yellow);
+  }
+}
+</style>

@@ -24,6 +24,7 @@ import AppChatProfile from '@/components/applications/chat/AppChatProfile'
 import BadgeToken from '@/components/applications/chat/BadgeToken'
 
 // common components
+import BadgeUnreads from '@/components/common/BadgeUnreads'
 import ButtonCommunity from '@/components/common/ButtonCommunity'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import ChatStatsLongShort from '@/components/common/ChatStatsLongShort'
@@ -75,6 +76,7 @@ const useGlobalComponents = app => {
     .component('BadgeToken', BadgeToken)
 
     // common components
+    .component('BadgeUnreads', BadgeUnreads)
     .component('ButtonCommunity', ButtonCommunity)
     .component('ChatStatsLongShort', ChatStatsLongShort)
     .component('CPortfolio', CPortfolio)

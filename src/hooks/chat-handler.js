@@ -53,6 +53,14 @@ const useChatHandler = () => {
     nickname: '알림',
   }
 
+  const numUnreads = computed(() => {
+    return (messages.value || []).filter(message => {
+      if (!store.getters.chat.lastReadMessage) return
+
+      return message.timestamp > store.getters.chat.lastReadMessage.timestamp
+    }).length
+  })
+
   const preparedMessage = message => ({
     id: message.id,
     profile: message.type === 'alert' ? alertProfile : (message.user || {}).profile,
@@ -235,6 +243,7 @@ const useChatHandler = () => {
     messages,
     filteredMessages,
     loadingMessages,
+    numUnreads,
     updateSentiment,
     ping,
     loadMessages,

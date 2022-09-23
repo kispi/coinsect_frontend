@@ -7,7 +7,7 @@
     :class="{'expanded': customMenu.show}">
     <div
       v-if="customMenu.show"
-      class="custom-menu"
+      class="custom-menu shadowed"
       :style="{
         top: `${customMenu.top}px`,
         left: `${customMenu.left}px`,
@@ -141,7 +141,6 @@ export default {
     position: absolute;
     border-radius: 4px;
     background: var(--white);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     cursor: pointer;
 

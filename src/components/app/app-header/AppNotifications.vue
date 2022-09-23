@@ -1,5 +1,5 @@
 <template>
-  <div class="app-notifications">
+  <div class="app-notifications shadowed">
     <div class="notifications-list pretty-scrollbar">
       <div
         @click="onClickNotificationItem(notification)"
