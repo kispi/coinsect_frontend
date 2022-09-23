@@ -36,11 +36,7 @@
               class="fa-bell"
               :class="showNotifications ? 'fa' : 'fal'"
             />
-            <div
-              v-if="numNewNotifications"
-              class="icon-badge"
-              v-html="numNewNotifications"
-            />
+            <BadgeUnreads :numUnreads="numNewNotifications" :small="true"/>
           </div>
           <!-- <div
             @click="onClickAccount"
@@ -222,21 +218,6 @@ export default {
         justify-content: center;
       }
     }
-
-    .icon-badge {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      color: var(--white);
-      background: var(--danger);
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      top: 4px;
-      right: 4px;
-    }
   }
 
   .ah-menu-items {
@@ -276,6 +257,12 @@ export default {
 
   .settings-panel {
     width: 320px;
+  }
+
+  .badge-unreads {
+    position: absolute;
+    top: 4px;
+    right: 4px;
   }
 }
 </style>

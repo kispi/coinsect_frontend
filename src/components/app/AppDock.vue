@@ -49,7 +49,9 @@
             'https://i.ytimg.com/vi/DUrlNHTxuJM/hqdefault.jpg',
           ]"
         />
-        <AppIconChat class="app-dock-icon bg-brand-primary"/>
+        <AppDockIcon :numUnreads="numUnreads">
+          <AppIconChat class="overlay bg-brand-primary"/>
+        </AppDockIcon>
       </div>
     </div>
   </div>
@@ -58,12 +60,20 @@
 <script>
 import AppIconChat from '@/components/applications/chat/AppIconChat'
 import AppDockIcon from './AppDockIcon'
+import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   components: {
     AppIconChat,
     AppDockIcon,
   },
+  setup() {
+    const { numUnreads } = useChatHandler()
+
+    return {
+      numUnreads,
+    }
+  }
 }
 </script>
 
@@ -121,7 +131,6 @@ export default {
 
     .overlay {
       background: rgba(0, 0, 0, 0.5);
-      border-radius: 16px;
     }
   }
 

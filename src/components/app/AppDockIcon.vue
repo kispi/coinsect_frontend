@@ -9,14 +9,17 @@
       dark: $store.getters.settings.theme === 'light',
     }) : null"
     @mouseleave="$tooltip.hide('tooltipDockIcon')">
-    <AppImg
-      class="overlay"
-      :class="{'show': idx === currentIdx}"
-      :src="image"
-      :key="image"
-      v-for="(image, idx) in images"
-    />
-    <slot/>
+    <div class="icon-container">
+      <AppImg
+        class="overlay"
+        :class="{'show': idx === currentIdx}"
+        :src="image"
+        :key="image"
+        v-for="(image, idx) in images"
+      />
+      <slot/>
+    </div>
+    <BadgeUnreads :numUnreads="numUnreads"/>
   </div>
 </template>
 
@@ -27,6 +30,7 @@ export default {
   props: {
     tooltip: String,
     images: Array,
+    numUnreads: Number,
   },
   setup(props) {
     const refDockIcon = ref(null)
@@ -59,3 +63,52 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.app-dock-icon {
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+
+  .icon-container {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+
+  i {
+    font-size: 24px;
+    color: var(--white);
+  }
+
+  img {
+    border-radius: 16px;
+    transition: opacity 1s ease;
+
+    &:not(.show) {
+      opacity: 0;
+    }
+  }
+
+  &:hover {
+    animation: hover-icon infinite 0.25s;
+  }
+
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+
+  .badge-unreads {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+  }
+}
+</style>

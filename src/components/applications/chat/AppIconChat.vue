@@ -1,23 +1,18 @@
 <template>
   <div
     @click="toggleChatFolded"
-    class="app-icon-chat"
+    class="app-icon-chat center"
     :class="{
       'chat-ding': $store.getters.settings.chatDing,
       'folded': !$store.getters.settings.chatFolded,
     }">
     <i class="fa fa-comment f-32"/>
     <div class="overlay center c-brand-primary f-10">TALK</div>
-    <div
-      v-if="numUnreads"
-      class="badge-unreads center f-mono">
-      {{ numUnreads > 99 ? '99+' : numUnreads }}
-    </div>
   </div>
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, nextTick } from 'vue'
+import { getCurrentInstance, onMounted, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
@@ -29,14 +24,6 @@ export default {
     const store = useStore()
 
     const { filteredMessages: messages } = useChatHandler()
-
-    const numUnreads = computed(() => {
-      return (messages.value || []).filter(message => {
-        if (!store.getters.chat.lastReadMessage) return
-
-        return message.timestamp > store.getters.chat.lastReadMessage.timestamp
-      }).length
-    })
 
     const toggleChatFolded = () => {
       store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
@@ -53,7 +40,6 @@ export default {
     })
 
     return {
-      numUnreads,
       toggleChatFolded,
     }
   },
