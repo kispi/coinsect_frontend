@@ -5,9 +5,11 @@
     <div
       @click="$store.commit('setSettings', { dockFolded: !$store.getters.settings.dockFolded })"
       class="dock-handle">
+      <div class="glass overlay"/>
       <i class="fa m-a display-table fa-chevron-down"/>
     </div>
     <div class="dock-container">
+      <div class="glass overlay"/>
       <div class="app-icons">
         <AppDockIcon
           @click="$router.push('/')"
@@ -26,10 +28,11 @@
           ]"
         />
         <AppDockIcon
-          class="bg-bitcoin f-12"
+          class="icon-leaderboard"
           @click="$router.push('/indicators/leaderboard')"
+          :images="[$helpers.withCdn('images/exchanges/BITMEX.png')]"
           :tooltip="'LEADERBOARD'">
-          워뇨띠
+          <div class="overlay center">워뇨띠</div>
         </AppDockIcon>
         <AppDockIcon
           @click="$router.push('/onchain/whale-alert')"
@@ -75,15 +78,20 @@ export default {
   overflow-x: auto;
   transition: all 0.25s ease-in-out;
 
-  .dock-container,
-  .dock-handle {
+  .glass {
+    background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(2px);
     border-radius: 24px;
+  }
+
+  .dock-container,
+  .dock-handle {
+    border-radius: 24px;
     margin: auto;
-    background: rgba(255, 255, 255, 0.5);
     box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-light);
     display: table;
+    position: relative;
   }
 
   .dock-container {
@@ -103,11 +111,22 @@ export default {
 
     i {
       transition: all 0.25s ease;
+      position: relative;
+    }
+  }
+
+  .icon-leaderboard {
+    font-weight: 700;
+    font-size: 12px;
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 16px;
     }
   }
 
   &.folded {
-    bottom: -72px;
+    bottom: -68px;
 
     .dock-handle {
       animation: shakeY 2s ease-in-out infinite;

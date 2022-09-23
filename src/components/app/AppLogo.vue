@@ -2,8 +2,8 @@
   <RouterLink
     :to="'/'"
     class="app-logo">
-    <i class="fab fa-apple"/>
-    coinsect.io
+    <i class="fab fa-apple f-28"/>
+    COINSECT.IO
   </RouterLink>
 </template>
 
@@ -11,7 +11,6 @@
 .app-logo {
   color: var(--text-stress);
   font-size: 24px;
-  font-weight: 700;
-  font-family: sans-serif;
+  font-family: 'Oxanium', cursive;
 }
 </style>

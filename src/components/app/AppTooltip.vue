@@ -4,7 +4,6 @@
     class="app-tooltip"
     :class="{
       'below': tooltip.below,
-      'light': !tooltip.dark,
     }"
     :style="finalStyle">
     <div class="tooltip-body" v-html="$translate(tooltip.text)"/>
@@ -73,14 +72,16 @@ export default {
 
 <style lang="scss" scoped>
 .app-tooltip {
+  --bg-tooltip: rgba(255, 255, 255, 0.8);
   color: var(--background-base);
-  background: var(--text-base);
+  background: var(--bg-tooltip);
   position: absolute;
   border-radius: 4px;
   padding: 8px 12px;
   max-width: 240px;
   font-size: 12px;
   line-height: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
 
   --triangle-size: 8px;
   .triangle {
@@ -88,7 +89,7 @@ export default {
     height: 0;
     border-left: var(--triangle-size) solid transparent;
     border-right: var(--triangle-size) solid transparent;
-    border-top: var(--triangle-size) solid var(--text-base);
+    border-top: var(--triangle-size) solid var(--bg-tooltip);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -101,10 +102,6 @@ export default {
       bottom: 0;
       transform: rotate(180deg) translateX(50%) !important;
     }
-  }
-
-  &.light {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
   }
 }
 </style>

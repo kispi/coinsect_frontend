@@ -228,7 +228,7 @@ export default {
       height: 16px;
       border-radius: 50%;
       color: var(--white);
-      background: var(--brand-primary);
+      background: var(--danger);
       font-size: 12px;
       display: flex;
       align-items: center;
