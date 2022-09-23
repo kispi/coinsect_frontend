@@ -9,7 +9,7 @@
       dark: $store.getters.settings.theme === 'light',
     }) : null"
     @mouseleave="$tooltip.hide('tooltipDockIcon')">
-    <div class="icon-container">
+    <div class="icon-container shadowed">
       <AppImg
         class="overlay"
         :class="{'show': idx === currentIdx}"
@@ -20,6 +20,7 @@
       <slot/>
     </div>
     <BadgeUnreads :numUnreads="numUnreads"/>
+    <div class="dot" :class="{'o-0': !active}"/>
   </div>
 </template>
 
@@ -31,6 +32,7 @@ export default {
     tooltip: String,
     images: Array,
     numUnreads: Number,
+    active: Boolean,
   },
   setup(props) {
     const refDockIcon = ref(null)
@@ -79,7 +81,6 @@ export default {
     align-items: center;
     justify-content: center;
     background: var(--white);
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
     position: relative;
   }
 
@@ -109,6 +110,15 @@ export default {
     position: absolute;
     top: -4px;
     right: -4px;
+  }
+
+  .dot {
+    width: 4px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: table;
+    margin: 8px auto 0;
   }
 }
 </style>

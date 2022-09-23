@@ -4,15 +4,16 @@
     :class="{'folded': $store.getters.settings.dockFolded}">
     <div
       @click="$store.commit('setSettings', { dockFolded: !$store.getters.settings.dockFolded })"
-      class="dock-handle">
+      class="dock-handle shadowed">
       <div class="glass overlay"/>
       <i class="fa m-a display-table fa-chevron-down"/>
     </div>
-    <div class="dock-container">
+    <div class="dock-container shadowed">
       <div class="glass overlay"/>
       <div class="app-icons">
         <AppDockIcon
           @click="$router.push('/')"
+          :active="$route.path === '/'"
           :tooltip="'KIMP'"
           :images="[
             'https://theme.zdassets.com/theme_assets/9190474/3941022f7857ffa2b0ac3cb9165aec2c2e4a4e89.jpg',
@@ -20,6 +21,7 @@
         />
         <AppDockIcon
           @click="$router.push('/indicators/real-time-positions')"
+          :active="$route.path === '/indicators/real-time-positions'"
           :tooltip="'REAL_TIME_POSITIONS'"
           :images="[
             'https://d1085v6s0hknp1.cloudfront.net/images/influencers/hodu_park.jpg',
@@ -30,17 +32,20 @@
         <AppDockIcon
           class="icon-leaderboard"
           @click="$router.push('/indicators/leaderboard')"
+          :active="$route.path === '/indicators/leaderboard'"
           :images="[$helpers.withCdn('images/exchanges/BITMEX.png')]"
           :tooltip="'LEADERBOARD'">
           <div class="overlay center">워뇨띠</div>
         </AppDockIcon>
         <AppDockIcon
           @click="$router.push('/onchain/whale-alert')"
+          :active="$route.path === '/onchain/whale-alert'"
           :tooltip="'WHALE_ALERT'"
           :images="['https://whale-alert.io/assets/images/logo-small-35.png']"
         />
         <AppDockIcon
           @click="$router.push('/contents/economic-calendar')"
+          :active="$route.path === '/contents/economic-calendar'"
           :tooltip="'ECONOMIC_CALENDAR'"
           :images="[
             'https://cloudfront-eu-central-1.images.arcpublishing.com/irishtimes/6OD6I2HARW7GETZUYOLYMEVMBE.jpg',
@@ -49,8 +54,10 @@
             'https://i.ytimg.com/vi/DUrlNHTxuJM/hqdefault.jpg',
           ]"
         />
-        <AppDockIcon :numUnreads="numUnreads">
-          <AppIconChat class="overlay bg-brand-primary"/>
+        <AppDockIcon
+          :numUnreads="numUnreads"
+          :active="!$store.getters.settings.chatFolded">
+          <AppChatToggler class="overlay"/>
         </AppDockIcon>
       </div>
     </div>
@@ -58,13 +65,13 @@
 </template>
 
 <script>
-import AppIconChat from '@/components/applications/chat/AppIconChat'
+import AppChatToggler from '@/components/applications/chat/AppChatToggler'
 import AppDockIcon from './AppDockIcon'
 import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   components: {
-    AppIconChat,
+    AppChatToggler,
     AppDockIcon,
   },
   setup() {
@@ -98,14 +105,13 @@ export default {
   .dock-handle {
     border-radius: 24px;
     margin: auto;
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-light);
     display: table;
     position: relative;
   }
 
   .dock-container {
-    padding: 8px;
+    padding: 8px 8px 4px;
 
     .app-icons {
       display: flex;
@@ -122,6 +128,7 @@ export default {
     i {
       transition: all 0.25s ease;
       position: relative;
+      color: var(--black);
     }
   }
 
@@ -131,6 +138,7 @@ export default {
 
     .overlay {
       background: rgba(0, 0, 0, 0.5);
+      color: var(--white);
     }
   }
 

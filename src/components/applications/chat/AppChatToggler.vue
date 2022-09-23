@@ -1,13 +1,13 @@
 <template>
   <div
     @click="toggleChatFolded"
-    class="app-icon-chat center"
+    class="app-chat-toggler center"
     :class="{
       'chat-ding': $store.getters.settings.chatDing,
       'folded': !$store.getters.settings.chatFolded,
     }">
     <i class="fa fa-comment f-32"/>
-    <div class="overlay center c-brand-primary f-10">TALK</div>
+    <div class="overlay center f-10">TALK</div>
   </div>
 </template>
 
@@ -45,3 +45,18 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.app-chat-toggler {
+  --kakao-yellow: #F7E436;
+  background: var(--kakao-yellow);
+
+  i {
+    color: #3B2323;
+  }
+
+  .overlay {
+    color: var(--kakao-yellow);
+  }
+}
+</style>

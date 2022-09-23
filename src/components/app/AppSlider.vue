@@ -8,7 +8,7 @@
       <div class="bar">
         <div class="fill" :style="{ width: `calc(${ratio * 100}%)`}"/>
       </div>
-      <div class="handle" :style="handlePos"><div class="vr"/></div>
+      <div class="handle shadowed" :style="handlePos"><div class="vr"/></div>
     </div>
   </div>
 </template>
@@ -144,7 +144,6 @@ export default {
       top: 6px;
       pointer-events: none;
       border: 1px solid rgba(0, 0, 0, 0.08);
-      box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.32);
       display: flex;
       align-items: center;
 

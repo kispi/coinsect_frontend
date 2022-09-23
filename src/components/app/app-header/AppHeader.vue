@@ -57,7 +57,7 @@
           @close="showSettings = null"
           :align="'right'"
           :mountBelow="refIconSettings">
-          <SettingsPanel :indices="[0, 1, 2]"/>
+          <SettingsPanel :indices="[0, 1, 2]" class="shadowed"/>
         </WrapperDropdownOverlay>
       </div>
     </div>
