@@ -73,7 +73,7 @@ export default {
 <style lang="scss" scoped>
 .app-tooltip {
   --bg-tooltip: rgba(255, 255, 255, 0.8);
-  color: var(--background-base);
+  color: var(--black);
   background: var(--bg-tooltip);
   position: absolute;
   border-radius: 4px;
