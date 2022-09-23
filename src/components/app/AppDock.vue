@@ -107,7 +107,7 @@ export default {
   }
 
   &.folded {
-    bottom: -72px;
+    bottom: -84px;
 
     .dock-handle {
       animation: shakeY 2s ease-in-out infinite;
