@@ -5,18 +5,38 @@
     <div class="flex-row">
       <button
         class="btn btn-bullish m-r-8"
-        @click="$emit('close', 'long')">
+        @click="$emit('close', { type: 'long', withSound })">
         {{ $translate('LONG') }} ({{ $translate('BULLISH') }})
       </button>
       <button
         class="btn btn-bearish"
-        @click="$emit('close', 'short')">
+        @click="$emit('close', { type: 'short', withSound })">
         {{ $translate('SHORT') }} ({{ $translate('BEARISH') }})
       </button>
     </div>
     <div class="description" v-html="$translate('MODAL_SENTIMENT_DESCRIPTION')"/>
+    <div
+      @click="withSound = !withSound"
+      class="with-sound">
+      <AppCheckbox :modelValue="withSound" class="m-r-4 no-touch"/>
+      호두or랄로 목소리 듣기
+    </div>
   </div>
 </template>
+
+<script>
+import { ref } from 'vue'
+
+export default {
+  setup() {
+    const withSound = ref(false)
+
+    return {
+      withSound,
+    }
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .modal-sentiment {
@@ -56,6 +76,15 @@
 
   .btn-bearish {
     background: var(--price-down);
+  }
+
+  .with-sound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    font-size: 12px;
+    cursor: pointer;
   }
 }
 </style>

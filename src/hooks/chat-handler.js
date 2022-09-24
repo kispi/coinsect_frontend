@@ -88,7 +88,7 @@ const useChatHandler = () => {
     connection.value.send(JSON.stringify(message))
   }
 
-  const updateSentiment = async type => {
+  const updateSentiment = async ({ type, withSound }) => {
     const p = store.getters.chatUser.profile
     if ((p.sentiment || {}).type === type) return
 
@@ -96,7 +96,7 @@ const useChatHandler = () => {
     try {
       await setAccount(p)
       plugins.$toast.success(`${type === 'long' ? '롱' : '숏'}으로 가보자!`)
-      play(type)
+      if (withSound) play(type)
     } catch (e) {}
   }
 
@@ -107,10 +107,10 @@ const useChatHandler = () => {
 
     plugins.$modal.custom({
       component: 'ModalSentiment',
-    }).then(type => {
-      if (!type) return
+    }).then(result => {
+      if (!result) return
 
-      updateSentiment(type)
+      updateSentiment(result)
     })
   }
 

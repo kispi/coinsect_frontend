@@ -148,7 +148,7 @@ export default {
     })
 
     const setSentiment = async type => {
-      await updateSentiment(type)
+      await updateSentiment({ type, withSound: true })
       profile.value.sentiment = { type }
     }
 

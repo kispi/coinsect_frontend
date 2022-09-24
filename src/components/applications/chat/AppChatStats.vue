@@ -1,12 +1,12 @@
 <template>
   <div class="app-chat-stats">
     <LongShortRatio
-      @click-position="updateSentiment"
+      @click-position="type => updateSentiment({ type, withSound: true })"
       :long="ratio.long"
       :short="ratio.short"
       class="m-b-8"
     />
-    <ChatStatsLongShort @click-position="updateSentiment"/>
+    <ChatStatsLongShort @click-position="type => updateSentiment({ type, withSound: true })"/>
   </div>
 </template>
 
