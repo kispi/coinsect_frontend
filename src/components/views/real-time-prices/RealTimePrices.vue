@@ -335,6 +335,7 @@ export default {
         display: flex;
         align-items: center;
         padding: 8px 12px;
+        width: 160px;
         position: relative;
         background: var(--background-light);
 
