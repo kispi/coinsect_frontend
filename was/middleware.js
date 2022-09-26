@@ -11,6 +11,7 @@ const useStaticServing = server => {
     'naver048dfb4862180b4025eb9bd6e296c6ec.html',
     'manifest.json',
     'firebase-messaging-sw.js',
+    'sw.js',
   ]
   const targets = folders.concat(files)
   targets.forEach(target =>
