@@ -9,6 +9,10 @@ const useLazyLoads = () => {
     helpers.dom.loadScript({ url: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3069752836489386' })
   }
 
+  const loadFirebase = async () => {
+    helpers.dom.loadScript({ url: '/scripts/firebase.js', attributes: [{ key: 'type', value: 'module' }] })
+  }
+
   const loadToastUIEditor = async () => {
     // 스크립트 로딩 순서 중요 (await 생략 불가)
     await helpers.dom.loadScript({ url: '//uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js' })
@@ -50,6 +54,7 @@ const useLazyLoads = () => {
 
   const loadDefaults = () => Promise.all([
     loadGooglePlugins(),
+    loadFirebase(),
     loadVendors(),
   ])
 

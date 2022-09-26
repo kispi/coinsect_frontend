@@ -27,6 +27,10 @@
     "en": "Maximize",
     "kr": "최대화"
   },
+  "POSITION_CHANGE": {
+    "en": "Position change",
+    "kr": "포지션 변경"
+  },
   "PROFILE_IMAGE_URL": {
     "en": "Prof. Img.",
     "kr": "프사 (URL)"

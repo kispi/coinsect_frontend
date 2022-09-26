@@ -32,25 +32,9 @@
             <i @click="toggleEditProfile" class="fal" :class="editing ? 'fa-save' : 'fa-edit'"/>
           </div>
         </div>
-        <div class="chat-setting-item sentiment">
-          <div class="field-name" v-html="$translate('SENTIMENT')"/>
-          <div class="buttons">
-            <button
-              class="btn long"
-              :class="{'selected': (profile.sentiment || {}).type === 'long'}"
-              @click="setSentiment('long')">
-              <i v-if="profile.sentiment.type === 'long'" class="fa fa-check"/>{{ $translate('LONG') }}
-            </button>
-            <button
-              class="btn short"
-              :class="{'selected': (profile.sentiment || {}).type === 'short'}"
-              @click="setSentiment('short')">
-              <i v-if="profile.sentiment.type === 'short'" class="fa fa-check"/>{{ $translate('SHORT') }}
-            </button>
-          </div>
-        </div>
       </div>
       <div class="section">
+        <div class="title">* 채팅</div>
         <div class="chat-setting-item">
           <div class="field-name">{{ $translate('CHAT_TRANSPARENT') }}</div>
           <AppToggler
@@ -108,9 +92,6 @@
           />
         </div>
       </div>
-      <div class="section">
-        <div class="f-12 text-center c-bitcoin p-b-8">* 48시간동안 접속하지 않으면 프로필이 초기화됩니다.</div>
-      </div>
     </div>
   </div>
 </template>
@@ -133,7 +114,7 @@ export default {
 
     const refInputNickname = ref(null)
 
-    const { updateSentiment, setAccount } = useChatHandler()
+    const { setAccount } = useChatHandler()
 
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -146,11 +127,6 @@ export default {
       image: store.getters.chatUser.profile.image,
       sentiment: store.getters.chatUser.profile.sentiment || {},
     })
-
-    const setSentiment = async type => {
-      await updateSentiment({ type, withSound: true })
-      profile.value.sentiment = { type }
-    }
 
     const onKeydown = (e, field) => {
       setTimeout(() => {
@@ -217,7 +193,6 @@ export default {
       profile,
       image,
       onKeydown,
-      setSentiment,
       toggleEditProfile,
     }
   },
@@ -250,37 +225,6 @@ export default {
       input {
         height: 24px;
         padding: 0 8px;
-      }
-
-      &.sentiment {
-        .buttons {
-          display: flex;
-          flex: 1;
-
-          .fa-check {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-          }
-        }
-
-        .btn {
-          flex: 1 1 0;
-          color: var(--white);
-
-          &.long {
-            background: var(--price-up);
-          }
-
-          &.short {
-            background: var(--price-down);
-          }
-
-          &:not(:last-child) {
-            margin-right: 8px;
-          }
-        }
       }
     }
 

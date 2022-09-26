@@ -17,18 +17,35 @@
           </div>
           <a class="m-t-24 display-block cursor-pointer text-underline" @click="$modal.custom({ component: 'ModalDonation' })" v-html="$translate('MODAL_DONATION')"/>
         </div>
-        <div v-if="($store.getters.config || {}).version">
+        <div
+          v-if="($store.getters.config || {}).version"
+          @click="onClickBackendNumber">
           <div v-if="$store.getters.config.version.backend">Backend: {{ $store.getters.config.version.backend }}</div>
           <div v-if="$store.getters.config.version.frontend">Frontend: {{ $store.getters.config.version.frontend }}</div>
         </div>
       </div>
+      <div
+        @click="promptA2HS"
+        class="m-l-a display-table">
+        A2HS
+      </div>
+      <div v-if="token" class="m-t-40">FIREBASE TEST: {{ token }}</div>
     </div>
   </footer>
 </template>
 
 <script>
+import { getCurrentInstance, ref } from 'vue'
+import usePWA from '@/hooks/addons/pwa'
+
 export default {
   setup() {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const { initFirebase, promptA2HS } = usePWA()
+
+    const token = ref(null)
+
     const contacts = [{
       key: 'kakao',
       img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw',
@@ -43,8 +60,20 @@ export default {
       link: 'mailto:admin@coinsect.io',
     }]
 
+    const onClickBackendNumber = async () => {
+      try {
+        token.value = await initFirebase()
+      } catch (e) {
+        console.error(e)
+        plugins.$toast.error(e.data.message)
+      }
+    }
+
     return {
+      token,
       contacts,
+      promptA2HS,
+      onClickBackendNumber,
     }
   },
 }

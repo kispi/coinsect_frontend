@@ -4,8 +4,14 @@ const { outputDir } = require('./helpers')
 
 const useStaticServing = server => {
   const folders = ['img', 'js', 'css', 'font-awesome', 'favicon', 'scripts']
-  const publicFiles = ['ads.txt', 'robots.txt', 'sitemap.xml', 'naver048dfb4862180b4025eb9bd6e296c6ec.html']
-  const targets = folders.concat(publicFiles)
+  const files = [
+    'ads.txt',
+    'robots.txt',
+    'sitemap.xml',
+    'naver048dfb4862180b4025eb9bd6e296c6ec.html',
+    'manifest.json',
+  ]
+  const targets = folders.concat(files)
   targets.forEach(target =>
     server.use(
       `/${target}`,
