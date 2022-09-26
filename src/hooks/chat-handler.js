@@ -49,7 +49,7 @@ const useChatHandler = () => {
   }
 
   const alertProfile = {
-    image: 'https://coinsect.io/favicon/favicon.svg',
+    image: 'https://coinsect.io/favicon/logo.svg',
     nickname: '알림',
   }
 
