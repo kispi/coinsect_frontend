@@ -1,14 +1,4 @@
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open('fox-store').then(cache => cache.addAll([
-      '/',
-      '/index.html',
-    ])),
-  )
-})
+const foo = e => console.log(e)
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then((response) => response || fetch(e.request)),
-  )
-})
+self.addEventListener('install', foo)
+self.addEventListener('fetch', foo)
