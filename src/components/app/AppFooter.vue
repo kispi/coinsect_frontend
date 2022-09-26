@@ -24,11 +24,6 @@
           <div v-if="$store.getters.config.version.frontend">Frontend: {{ $store.getters.config.version.frontend }}</div>
         </div>
       </div>
-      <div
-        @click="promptA2HS"
-        class="m-l-a display-table">
-        A2HS
-      </div>
       <div v-if="token" class="m-t-40">FIREBASE TEST: {{ token }}</div>
     </div>
   </footer>
@@ -42,7 +37,7 @@ export default {
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
-    const { initFirebase, promptA2HS } = usePWA()
+    const { initFirebase } = usePWA()
 
     const token = ref(null)
 
@@ -64,7 +59,6 @@ export default {
       try {
         token.value = await initFirebase()
       } catch (e) {
-        console.error(e)
         plugins.$toast.error(e.data.message)
       }
     }
@@ -72,7 +66,6 @@ export default {
     return {
       token,
       contacts,
-      promptA2HS,
       onClickBackendNumber,
     }
   },

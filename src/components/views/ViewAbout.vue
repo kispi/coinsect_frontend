@@ -1,5 +1,11 @@
 <template>
   <div class="view-about">
+    <button
+      v-if="A2HS.deferredPrompt"
+      class="btn btn-primary a2hs"
+      @click="A2HS.prompt">
+      + 홈 화면에 추가
+    </button>
     <div class="description">
       <a
         :href="$helpers.withCdn('og-images/og-image.png')"
@@ -55,14 +61,18 @@
 <script>
 import { ref } from 'vue'
 import updates from './updates'
+import usePWA from '@/hooks/addons/pwa'
 
 export default {
   setup() {
     const showUpdates = ref(null)
 
+    const { A2HS } = usePWA()
+
     return {
       updates,
       showUpdates,
+      A2HS,
     }
   },
 }
@@ -70,6 +80,11 @@ export default {
 
 <style lang="scss" scoped>
 .view-about {
+  .a2hs {
+    width: 240px;
+    margin: auto;
+  }
+
   .og-image {
     display: block;
     max-width: 640px;

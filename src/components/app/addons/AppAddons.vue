@@ -21,7 +21,6 @@ import AppToast from '@/components/app/AppToast'
 import GoToTop from '@/components/app/GoToTop'
 import useHealthChecker from '@/hooks/addons/health-checker'
 import useRouteWatcher from '@/hooks/addons/route-watcher'
-import usePWA from '@/hooks/addons/pwa'
 
 export default {
   components: {
@@ -36,10 +35,6 @@ export default {
     useHealthChecker()
 
     useRouteWatcher()
-
-    const { A2HS } = usePWA()
-
-    A2HS.listen()
   },
 }
 </script>
