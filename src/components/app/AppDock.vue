@@ -13,6 +13,12 @@
         <div class="glass overlay"/>
         <div class="app-icons">
           <AppDockIcon
+            :numUnreads="numUnreads"
+            :active="!$store.getters.settings.chatFolded"
+            :tooltip="'채팅'">
+            <AppChatToggler class="overlay"/>
+          </AppDockIcon>
+          <AppDockIcon
             @click="$router.push('/')"
             :active="$route.path === '/'"
             :tooltip="'KIMP'"
@@ -60,12 +66,6 @@
             <div class="icon-community center overlay">
               <i class="fa f-30 fa-square-pen c-gs-22"/>
             </div>
-          </AppDockIcon>
-          <AppDockIcon
-            :numUnreads="numUnreads"
-            :active="!$store.getters.settings.chatFolded"
-            :tooltip="'채팅'">
-            <AppChatToggler class="overlay"/>
           </AppDockIcon>
           <AppDockIcon
             @click="$modal.custom({ component: 'ModalChatSettings' })"
