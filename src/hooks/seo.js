@@ -1,8 +1,10 @@
 import helperService from '@/services/helper'
-import { ref } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 
 const useSeo = () => {
+  const plugins = getCurrentInstance().appContext.config.globalProperties
+
   const router = useRouter()
 
   const numTrial = ref(0)
@@ -40,7 +42,7 @@ const useSeo = () => {
       return Promise.reject()
     }
 
-    if (['.jpg', '.jpeg', '.png', '.svg', '.gif'].some(ext => link.endsWith(ext))) {
+    if (plugins.$helpers.isImageUrl(link)) {
       meta.value.image = link
       return
     }

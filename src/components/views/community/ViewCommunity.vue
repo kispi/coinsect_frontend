@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onServerPrefetch, watch } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import CPost from './CPost'
@@ -55,6 +55,12 @@ export default {
     onServerPrefetch(loadPost)
 
     onMounted(loadPost)
+
+    onUnmounted(() => {
+      if (store.getters.isSSR) return
+
+      store.commit('setPost', null)
+    })
   },
 }
 </script>

@@ -19,7 +19,14 @@
               class="meta-reply-to"
               @click="$emit('click-replied-message', meta.replyTo)">
               <div class="mrt-nickname">To: {{ meta.replyTo.nickname }}</div>
-              <div class="mrt-text lines-1">{{ meta.replyTo.text }}</div>
+              <div
+                class="m-t-4 lines-1">
+                <AppImg
+                  v-if="$helpers.isImageUrl(meta.replyTo.text)"
+                  :src="meta.replyTo.text"
+                />
+                <div v-else class="o-50">{{ meta.replyTo.text }}</div>
+              </div>
             </div>
             <div v-html="$helpers.dom.linkify(message.text)" @click.prevent="onClickMessage"/>
           </div>
@@ -174,11 +181,6 @@ export default {
     margin-bottom: 4px;
     padding-bottom: 4px;
     cursor: pointer;
-
-    .mrt-text {
-      opacity: 0.5;
-      margin-top: 4px;
-    }
   }
 
   .functions {

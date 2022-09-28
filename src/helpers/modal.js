@@ -1,20 +1,19 @@
 import { store as $store } from '@/store'
 import translate from './translate'
 
+const isOpened = component => $store.getters.modals.find(modal => modal.component === component) ? true : false
+
 const initModal = (options, component) => new Promise(resolve => {
   if (
     !(options || {}).useMultiOpen &&
-    $store.getters.modals.findIndex(modal => {
-      if (!modal) return
-
-      return modal.component === component
-    }) !== -1
+    isOpened(component)
   ) return
 
   $store.commit('addModal', { component, options, resolve })
 })
 
 const modal = {
+  isOpened,
   basic: options => initModal(options, 'ModalBasic'),
   input: options => initModal(options, 'ModalInput'),
   images: options => initModal(options, 'ModalImages'),

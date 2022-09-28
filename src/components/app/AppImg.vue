@@ -30,6 +30,7 @@ export default {
     },
     alt: {
       type: String,
+      default: '김치 프리미엄, 김프, 역프 및 암호화폐 실시간 시세 - 코인충',
     },
   },
   setup() {

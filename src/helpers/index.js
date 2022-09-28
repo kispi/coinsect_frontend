@@ -105,6 +105,7 @@ const helpers = {
 
     return symbols[$store.getters.settings.currency]
   },
+  isImageUrl: url => ['.jpg', '.jpeg', '.png', '.svg', '.gif'].some(ext => url.endsWith(ext)),
   retrieveUrlFromString: url => ((url || '').match(dom.regex.url) || [])[0],
   retrieveNumbersOnly: str => str.replace(/[^0-9]+/g, ''),
   retrieveLettersOnly: str => str.replace(/[^a-zA-Z]+/g, ''),

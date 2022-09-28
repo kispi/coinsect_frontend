@@ -101,14 +101,14 @@
 
 @keyframes hover-icon {
   0% {
-    transform: scale(1) rotate(4deg);
+    transform: scale(1) rotate(2deg);
   }
 
   50% {
-    transform: scale(1) rotate(-4deg);
+    transform: scale(1) rotate(-2deg);
   }
 
   100% {
-    transform: scale(1) rotate(4deg);
+    transform: scale(1) rotate(2deg);
   }
 }
