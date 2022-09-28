@@ -63,6 +63,9 @@ const helpers = {
 
       재접속했는데도 계속 이 메시지가 보인다면 <a href="mailto:coinsect.io@gmail.com" class="text-underline f-700">관리자</a>에게 문의 부탁드립니다.`
     )
+
+    if (typeof location === 'undefined') return
+
     setTimeout(() => location.reload(), 1000 * 60)
   },
   elapsedTime: timestamp => {

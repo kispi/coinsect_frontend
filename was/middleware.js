@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const { outputDir } = require('./helpers')
+const { log, createHttpLog } = require('./logger')
 
 const useStaticServing = server => {
   const folders = ['img', 'js', 'css', 'font-awesome', 'favicon', 'scripts']
@@ -28,6 +29,7 @@ const useRequestStartTime = (req, res, next) => {
 }
 
 const useInternalErrorHandler = (error, req, res, next) => {
+  log.error(JSON.stringify(createHttpLog(req, res)))
   res.status(500)
   res.send('Internal Server Error During SSR')
   next()
