@@ -1,7 +1,7 @@
 <template>
   <div class="view-post-edit">
     <template v-if="editable">
-      <ButtonCommunity/>
+      <CommunityHeader/>
       <PostEditor :post="post"/>
       <TablePosts/>
     </template>

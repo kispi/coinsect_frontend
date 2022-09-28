@@ -3,7 +3,7 @@
     :to="'/'"
     class="app-logo">
     <i class="fab fa-apple f-28"/>
-    COINSECT.IO
+    coinsect.io
   </RouterLink>
 </template>
 
