@@ -1,28 +1,7 @@
 <template>
   <div class="app-pagination">
-    <div class="custom-page">
-      <input
-        v-model="pageValue"
-        @change="e => $emit('update:modelValue', e.target.value)"
-        type="number"
-        min="1"
-        :max="numTotalPages"
-        @keydown.enter="e => {
-          onPage(pageValue)
-          e.target.blur()
-        }"
-      >
-      <button
-        @click="onPage(pageValue)"
-        class="btn btn-primary"
-        :disabled="!pageValue"
-        v-html="$translate('GO')"
-      />
-    </div>
+    <div class="o-0 no-touch">PLACEHOLDER</div>
     <div class="page-numbers">
-      <i
-        @click="onClickLeft"
-        class="fa fa-chevron-left"/>
       <div
         @click="onPage(1)"
         class="page-number"
@@ -41,9 +20,25 @@
         @click="onPage(numTotalPages)"
         class="page-number"
         :class="{'active': page === numTotalPages}">{{ numTotalPages }}</div>
-      <i
-        @click="onClickRight"
-        class="fa fa-chevron-right"/>
+    </div>
+    <div class="custom-page">
+      <input
+        v-model="pageValue"
+        @change="e => $emit('update:modelValue', e.target.value)"
+        type="number"
+        min="1"
+        :max="numTotalPages"
+        @keydown.enter="e => {
+          onPage(pageValue)
+          e.target.blur()
+        }"
+      >
+      <button
+        @click="onPage(pageValue)"
+        class="btn btn-primary"
+        :disabled="!pageValue">
+        <i class="fa fa-chevron-right c-white"/>
+      </button>
     </div>
   </div>
 </template>
@@ -81,18 +76,6 @@ export default {
       emit('page', pageValue.value)
     }
 
-    const onClickLeft = () => {
-      if (pageValue.value <= 1) return
-
-      onPage(pageValue.value - 1)
-    }
-
-    const onClickRight = () => {
-      if (pageValue.value >= numTotalPages.value) return
-
-      onPage(pageValue.value + 1)
-    }
-
     const shouldShowDots = idx => {
       if (idx === 0 || idx === pageNumbers.value.length - 1) return
 
@@ -126,8 +109,6 @@ export default {
       pageNumbers,
       numTotalPages,
       lastItemIdx,
-      onClickLeft,
-      onClickRight,
       shouldShowDots,
       onPage,
     }
@@ -142,14 +123,19 @@ export default {
     color: var(--text-stress);
     display: flex;
     align-items: center;
+    height: 32px;
 
     input {
-      width: 120px;
+      width: 64px;
+      height: 100%;
+      text-align: right;
     }
 
     .btn-primary {
       flex: 0 0 auto;
-      margin-left: 8px;
+      height: 100%;
+      margin-left: 4px;
+      border-radius: 0;
     }
   }
 
@@ -192,6 +178,8 @@ export default {
     .page-number {
       &.active {
         color: var(--brand-primary);
+        background: var(--brand-primary-hover-bg);
+        font-weight: 700;
       }
 
       &:hover {

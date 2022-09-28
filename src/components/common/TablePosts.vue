@@ -57,10 +57,11 @@
         </AdaptiveLayout>
       </a>
     </div>
-    <TablePagination
+    <AppPagination
+      class="m-t-16 m-b-16"
+      :page="payload.page"
       :limit="payload.limit"
       :total="$store.getters.posts.total"
-      :currentIndex="payload.page"
       @page="onPage"
     />
     <div
@@ -99,10 +100,8 @@
 import { ref, computed, onMounted, getCurrentInstance, onServerPrefetch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import TablePagination from './TablePagination'
 
 export default {
-  components: { TablePagination },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -115,8 +114,8 @@ export default {
     const focus = ref(null)
 
     const payload = ref({
-      page: router.currentRoute.value.query.page || 0,
-      limit: router.currentRoute.value.query.limit || 20,
+      page: parseInt(router.currentRoute.value.query.page || 1),
+      limit: parseInt(router.currentRoute.value.query.limit || 20),
       keyword: router.currentRoute.value.query.keyword,
     })
 
@@ -167,7 +166,7 @@ export default {
     const loadPosts = async () => {
       await store.dispatch('loadPosts', {
         limit: payload.value.limit,
-        offset: payload.value.page * payload.value.limit,
+        offset: (payload.value.page - 1) * payload.value.limit,
         keyword: payload.value.keyword,
       })
       plugins.$helpers.dom.scrollToTop()
