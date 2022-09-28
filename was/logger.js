@@ -15,7 +15,7 @@ const createHttpLog = (req, res) => {
   return {
     env: process.env.NODE_ENV,
     method: req.method,
-    path: url,
+    path: req.url,
     status: res.statusCode,
     country: req.headers['Cloudfront-Viewer-Country'],
     userAgent: req.headers['User-Agent'] || req.headers['user-agent'],
@@ -25,11 +25,9 @@ const createHttpLog = (req, res) => {
 }
 
 const logger = (req, res, next) => {
-  const url = req.url
-
   const extensions = ['.js', '.css', '.png', '.gif', 'jpg', '.jpeg', '.svg', '.woff2', '.ico']
 
-  if (extensions.some(ext => url.endsWith(ext))) {
+  if (extensions.some(ext => req.url.endsWith(ext))) {
     next()
     return
   }
