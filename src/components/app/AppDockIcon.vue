@@ -2,7 +2,7 @@
   <div
     ref="refDockIcon"
     class="app-dock-icon"
-    @mouseover="tooltip ? $tooltip.show({
+    @mouseover="(!$store.getters.isMobile && tooltip) ? $tooltip.show({
       id: 'tooltipDockIcon',
       showAbove: refDockIcon,
       text: $translate(tooltip),
