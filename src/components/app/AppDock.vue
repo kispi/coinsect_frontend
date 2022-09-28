@@ -122,11 +122,12 @@ export default {
   .scrollable-wrapper,
   .dock-handle {
     transition: all 0.25s ease-in-out;
+    z-index: 1;
+    position: fixed;
   }
 
   .scrollable-wrapper {
     overflow-x: auto;
-    position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
@@ -144,7 +145,6 @@ export default {
   }
 
   .dock-handle {
-    position: fixed;
     left: calc(50% - 40px);
     bottom: 88px;
     width: 80px;
