@@ -13,6 +13,10 @@ const useLazyLoads = () => {
     helpers.dom.loadScript({ url: '/scripts/firebase.js', attributes: [{ key: 'type', value: 'module' }] })
   }
 
+  const registerServiceWorker = async () => {
+    helpers.dom.loadScript({ url: '/scripts/register-service-worker.js' })
+  }
+
   const loadToastUIEditor = async () => {
     // 스크립트 로딩 순서 중요 (await 생략 불가)
     await helpers.dom.loadScript({ url: '//uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js' })
@@ -56,6 +60,7 @@ const useLazyLoads = () => {
     loadGooglePlugins(),
     loadFirebase(),
     loadVendors(),
+    registerServiceWorker(),
   ])
 
   return {

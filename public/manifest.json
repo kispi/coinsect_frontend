@@ -1,11 +1,10 @@
 {
   "name": "코인충",
-  "short_name": "코인충",
-  "theme_color": "#16b3fc",
+  "lang": "ko-KR",
+  "theme_color": "#17181e",
   "background_color": "#17181e",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": "/",
   "start_url": "/",
   "icons": [
     {

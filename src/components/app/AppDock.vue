@@ -94,6 +94,7 @@ export default {
   z-index: 1;
   overflow-x: auto;
   transition: all 0.25s ease-in-out;
+  pointer-events: none;
 
   .glass {
     background: rgba(255, 255, 255, 0.5);
@@ -108,6 +109,7 @@ export default {
     border: 1px solid var(--border-light);
     display: table;
     position: relative;
+    pointer-events: auto;
   }
 
   .dock-container {
