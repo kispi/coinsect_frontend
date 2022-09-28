@@ -30,7 +30,9 @@ import { useStore } from 'vuex'
 
 export default {
   props: {
-    indices: null,
+    indices: {
+      default: [],
+    },
   },
   setup(props) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
@@ -79,7 +81,7 @@ export default {
         { title: 'ON', value: true },
         { title: 'OFF', value: false },
       ].map(o => ({ ...o, $$selected: store.getters.settings.tradingviewHomeDoubleChart === o.value })),
-    }].filter((_, idx) => (props.indices || []).includes(idx)))
+    }].filter((_, idx) => props.indices.length === 0 || props.indices.includes(idx)))
 
     const onClickValue = (key, setting) => {
       if (key === 'TRADINGVIEW') {

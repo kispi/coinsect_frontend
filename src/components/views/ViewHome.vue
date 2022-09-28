@@ -44,13 +44,11 @@ import { onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import BaseAndTarget from './real-time-prices//BaseAndTarget'
 import RealTimePrices from './real-time-prices/RealTimePrices'
-import SettingsPanel from '@/components/app/app-header/SettingsPanel'
 
 export default {
   components: {
     BaseAndTarget,
     RealTimePrices,
-    SettingsPanel,
   },
   setup() {
     const store = useStore()

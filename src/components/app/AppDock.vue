@@ -13,12 +13,6 @@
         <div class="glass overlay"/>
         <div class="app-icons">
           <AppDockIcon
-            :numUnreads="numUnreads"
-            :active="!$store.getters.settings.chatFolded"
-            :tooltip="'채팅'">
-            <AppChatToggler class="overlay"/>
-          </AppDockIcon>
-          <AppDockIcon
             @click="$router.push('/')"
             :active="$route.path === '/'"
             :tooltip="'KIMP'"
@@ -59,6 +53,12 @@
               'https://i.ytimg.com/vi/DUrlNHTxuJM/hqdefault.jpg',
             ]"
           />
+          <AppDockIcon
+            :numUnreads="numUnreads"
+            :active="!$store.getters.settings.chatFolded"
+            :tooltip="'채팅'">
+            <AppChatToggler class="overlay"/>
+          </AppDockIcon>
           <AppDockIcon
             @click="$router.push('/community')"
             :active="$route.path.startsWith('/community')"

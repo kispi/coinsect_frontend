@@ -87,13 +87,11 @@ import { useRouter } from 'vue-router'
 import useMenuItems from './menu-items'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
-import SettingsPanel from './SettingsPanel'
 
 export default {
   components: {
     AppNotifications,
     BannerMarketIndices,
-    SettingsPanel,
   },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties

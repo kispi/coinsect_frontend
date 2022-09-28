@@ -45,7 +45,7 @@ export default {
       if ((props.images || []).length <= 1) return
 
       interv.value = setInterval(() => {
-        if (currentIdx.value >= props.images.length - 1) {
+        if (currentIdx.value >= (props.images || []).length - 1) {
           currentIdx.value = 0
           return
         }
