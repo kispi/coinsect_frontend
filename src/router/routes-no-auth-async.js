@@ -174,8 +174,7 @@ const community = [{
   component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewPostEdit'),
 }, {
   path: '/community/:sharingKey',
-  component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewPost'),
-  name: 'ViewPost',
+  component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewCommunity'),
 }]
 
 const andSoOn = [{

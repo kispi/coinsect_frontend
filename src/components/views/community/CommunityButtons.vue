@@ -3,14 +3,14 @@
     <div class="to-list">
       <button
         @click="$router.push('/community')"
-        class="btn btn-default"
+        class="btn btn-brd"
         v-html="$translate('TO_LIST')"
       />
     </div>
     <div class="c-u-d">
       <button
         @click="button.handler"
-        class="btn btn-default"
+        class="btn btn-brd"
         :class="button.class"
         v-html="$translate(button.text)"
         :key="button.text"
