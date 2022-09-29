@@ -78,6 +78,20 @@
           />
         </div>
         <div class="chat-setting-item">
+          <div class="field-name">{{ $translate('CHAT_HIDE_IMAGE') }}</div>
+          <AppToggler
+            ref="refChatHideImage"
+            :modelValue="$store.getters.settings.chatHideImage"
+            @click="$store.commit('setSettings', { chatHideImage: !$store.getters.settings.chatHideImage })"
+            @mouseover="$tooltip.show({
+              id: 'tooltipChatHideImage',
+              showAbove: refChatHideImage.$el,
+              text: 'TOOLTIP_CHAT_HIDE_IMAGE',
+            })"
+            @mouseleave="$tooltip.hide('tooltipChatHideImage')"
+          />
+        </div>
+        <div class="chat-setting-item">
           <div class="field-name">{{ $translate('CHAT_SIZE_MAX') }}</div>
           <AppToggler
             ref="refChatSizeMax"
@@ -111,6 +125,8 @@ export default {
     const refChatSizeMax = ref(null)
 
     const refChatOverlayNewMessage = ref(null)
+
+    const refChatHideImage = ref(null)
 
     const refInputNickname = ref(null)
 
@@ -188,6 +204,7 @@ export default {
       refChatTransparent,
       refChatSizeMax,
       refChatOverlayNewMessage,
+      refChatHideImage,
       refInputNickname,
       editing,
       profile,

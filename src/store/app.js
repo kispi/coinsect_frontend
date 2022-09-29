@@ -56,6 +56,7 @@ const app = {
       cleanChatAgreed: null,
       chatFolded: false,
       chatSizeMax: false,
+      chatHideImage: false,
       chatDing: false,
       chatTransparent: false,
       chatOverlayNewMessage: true,

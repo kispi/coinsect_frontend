@@ -6,11 +6,16 @@
       <AppChatProfile v-if="showProfile" :user="message"/>
       <div class="text-and-timestamp">
         <template v-if="!message.$$hide">
-          <AppImg
-            v-if="message.type === 'image'"
-            :src="message.text"
-            @click="onClickImage(message.text)"
-          />
+          <template v-if="message.type === 'image'">
+            <div
+              v-if="$store.getters.settings.chatHideImage"
+              class="text hidden">이미지를 보지 않습니다.<br>(채팅 설정에서 변경 가능합니다)</div>
+            <AppImg
+              v-else
+              :src="message.text"
+              @click="onClickImage(message.text)"
+            />
+          </template>
           <div
             v-if="['text', 'alert'].indexOf(message.type) >= 0 && (message.text || '').length > 0"
             class="text">
@@ -163,7 +168,7 @@ export default {
       white-space: pre-line;
 
       &.hidden {
-        background: rgba(255, 0, 0, 0.5);
+        background: var(--danger);
       }
     }
 

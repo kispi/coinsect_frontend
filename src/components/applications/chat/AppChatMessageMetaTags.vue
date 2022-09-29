@@ -7,7 +7,8 @@
     <div
       v-if="meta.image"
       class="meta-image">
-      <AppImg :src="meta.image" class="overlay"/>
+      <div v-if="$store.getters.settings.chatHideImage" class="overlay center bg-danger p-16 f-12">이미지를 보지 않습니다.<br>(채팅 설정에서 변경 가능합니다)</div>
+      <AppImg v-else :src="meta.image" class="overlay"/>
     </div>
     <div
       v-if="meta.title || meta.description"
