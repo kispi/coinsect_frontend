@@ -7,7 +7,7 @@
       v-if="$store.getters.isSSR || prepared"
       v-slot="{ Component, route }"
       class="router-view-container">
-      <transition name="fade">
+      <transition name="route-change" mode="out-in">
         <component :is="Component" :key="route.path"/>
       </transition>
     </RouterView>

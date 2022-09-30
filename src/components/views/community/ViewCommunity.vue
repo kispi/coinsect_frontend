@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted, watch } from 'vue'
+import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import CPost from './CPost'
@@ -41,26 +41,11 @@ export default {
       }
     }
 
-    watch(
-      () => sharingKey.value,
-      (newVal, oldVal) => {
-        if (newVal === oldVal || !router.currentRoute.value.path.startsWith('/community')) return
-
-        if (!newVal) store.commit('setPost', null)
-
-        loadPost()
-      },
-    )
-
     onServerPrefetch(loadPost)
 
     onMounted(loadPost)
 
-    onUnmounted(() => {
-      if (store.getters.isSSR) return
-
-      store.commit('setPost', null)
-    })
+    onUnmounted(() => store.commit('setPost', null))
   },
 }
 </script>

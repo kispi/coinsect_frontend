@@ -153,6 +153,8 @@ export default {
     const queryString = () => `${Object.keys(payload.value).filter(key => payload.value[key]).map(key => `${key}=${payload.value[key]}`).join('&')}`
 
     const onClickRow = row => {
+      if (row.sharingKey === router.currentRoute.value.params.sharingKey) return
+
       router.push(`/community/${row.sharingKey}?${queryString()}`)
       setTimeout(loadPosts)
     }
