@@ -24,13 +24,12 @@
           <div v-if="$store.getters.config.version.frontend">Frontend: {{ $store.getters.config.version.frontend }}</div>
         </div>
       </div>
-      <div v-if="token" class="m-t-40">FIREBASE TEST: {{ token }}</div>
     </div>
   </footer>
 </template>
 
 <script>
-import { getCurrentInstance, ref } from 'vue'
+import { getCurrentInstance } from 'vue'
 import usePWA from '@/hooks/addons/pwa'
 
 export default {
@@ -38,8 +37,6 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const { initFirebase } = usePWA()
-
-    const token = ref(null)
 
     const contacts = [{
       key: 'kakao',
@@ -57,14 +54,15 @@ export default {
 
     const onClickBackendNumber = async () => {
       try {
-        token.value = await initFirebase()
+        const token = await initFirebase()
+        plugins.$helpers.dom.copyToClipboard(token)
+        plugins.$toast.success('파이어베이스 토큰 획득')
       } catch (e) {
         plugins.$toast.error(e.data.message)
       }
     }
 
     return {
-      token,
       contacts,
       onClickBackendNumber,
     }
