@@ -9,9 +9,8 @@ const s3Service = {
 
     if (!file.type.startsWith('image')) return Promise.reject(createError('png, jpg, jpeg, gif, svg 등의 이미지 파일을 사용해주세요'))
 
-    const endpoint = 's3/upload_url'
     try {
-      const { url, headers } = await $http.get(endpoint, {
+      const { url, headers } = await $http.get('aws/s3/upload_url', {
         params: {
           key: `${path}/${encodeURI(file.name)}`,
         },

@@ -21,8 +21,6 @@
     </div>
     <ul>
       <li>타인에게 불쾌감을 유발할만한 이미지의 업로드는 자제해주세요.</li>
-      <li>음란물을 업로드하는 경우 <a href="https://namu.wiki/w/통신매체이용음란죄" target="_blank">통신매체이용음란죄</a>로 형사처벌될 수 있습니다.<br>(2년 이하의 징역 / 2천만원 이하의 벌금 / 성범죄자 등록)</li>
-      <li>무심결에 올린 단 1회의 음란물로 성범죄자로 등록될 수 있습니다.</li>
     </ul>
     <div class="bottom">
       <button
@@ -123,6 +121,7 @@ export default {
   }
 
   ul {
+    margin-top: 8px;
     padding: 0 32px;
 
     li {
