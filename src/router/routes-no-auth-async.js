@@ -19,7 +19,7 @@ const indicators = [{
   },
 }, {
   path: '/indicators/long-short',
-  component: () => import(/* webpackChunkName: 'view-long-short' */ '@/components/views/indicators/ViewIndicators'),
+  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
   meta: {
     title: '롱-숏 비율 - 코인충',
     description: '코인의 거래소별 롱-숏 비율',

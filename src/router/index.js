@@ -4,6 +4,13 @@ import routesNoAuth from './routes-no-auth-async'
 import routesAuth from './routes-auth-async'
 import ViewNotFound from '@/components/views/ViewNotFound'
 
+const onFail = () => {
+  const body = document.querySelector('body')
+  body.style.visibility = 'visible'
+  body.innerHTML = 'Site has changed. Reload after 5 seconds...'
+  setTimeout(() => location.reload(), 5000)
+}
+
 const routes = [
   ...routesNoAuth,
   ...routesAuth,
@@ -12,6 +19,21 @@ const routes = [
     component: ViewNotFound,
   },
 ]
+
+routes.forEach(async route => {
+  if (typeof route.component === 'function') {
+    const importPromise = route.component
+    route.component = () => {
+      try {
+        return importPromise()
+      } catch (e) {
+        if (typeof document === 'undefined') return
+
+        onFail()
+      }
+    }
+  }
+})
 
 export const newRouter = () => {
   const r = createRouter({
