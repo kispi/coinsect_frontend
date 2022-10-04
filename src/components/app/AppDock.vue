@@ -172,7 +172,7 @@ export default {
   &.folded {
     .dock-handle {
       animation: shakeY 2s ease-in-out infinite;
-      bottom: 8px;
+      bottom: 4px;
 
       i {
         transform: rotate(180deg);

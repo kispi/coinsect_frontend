@@ -20,7 +20,7 @@
 
 .route-change-enter-from, .route-change-leave-to {
   opacity: 0;
-  transform: translateX(-40px);
+  transform: translateY(40px);
   filter: blur(16px);
 }
 
