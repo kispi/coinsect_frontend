@@ -118,6 +118,10 @@ export default {
 
 <style lang="scss" scoped>
 .app-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   .custom-page {
     font-weight: 500;
     color: var(--text-stress);
@@ -147,10 +151,6 @@ export default {
     display: flex;
     align-items: center;
     flex: 0 0;
-
-    @media (max-width: 767px) {
-      justify-content: flex-end;
-    }
 
     i,
     .page-number,
@@ -186,23 +186,6 @@ export default {
         background: var(--brand-primary-hover-bg);
       }
     }
-  }
-
-  @media (max-width: 767px) {
-    .custom-page,
-    .page-numbers {
-      margin-bottom: 16px;
-    }
-
-    .custom-page input {
-      width: 100%;
-    }
-  }
-
-  @media (min-width: 768px) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 }
 </style>

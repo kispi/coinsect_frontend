@@ -7,6 +7,7 @@ const marketInfo = {
     indices: null,
     crypto: null,
     nasdaq: null,
+    kospi: null,
     assetsIncludingMetal: null,
     markets: {
       upbit: [],
@@ -40,6 +41,7 @@ const marketInfo = {
     indices: state => state.indices,
     crypto: state => state.crypto,
     nasdaq: state => state.nasdaq,
+    kospi: state => state.kospi,
     assetsIncludingMetal: state => state.assetsIncludingMetal,
     markets: state => state.markets,
     walletStatus: state => state.walletStatus,
@@ -59,6 +61,9 @@ const marketInfo = {
     },
     setNasdaq(state, nasdaq) {
       state.nasdaq = nasdaq
+    },
+    setKospi(state, kospi) {
+      state.kospi = kospi
     },
     setAssetsIncludingMetal(state, assetsIncludingMetal) {
       state.assetsIncludingMetal = assetsIncludingMetal
@@ -99,6 +104,13 @@ const marketInfo = {
     async loadNasdaq({ commit }) {
       try {
         commit('setNasdaq', await marketInfoService.nasdaq())
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    async loadKospi({ commit }, params) {
+      try {
+        commit('setKospi', await marketInfoService.kospi(params))
       } catch (e) {
         return Promise.reject(e)
       }

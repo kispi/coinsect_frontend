@@ -55,3 +55,70 @@ table {
     }
   }
 }
+
+.table-stock {
+  width: 100%;
+
+  td,
+  th {
+    padding: 4px;
+    text-align: right;
+
+    &:nth-child(2) {
+      text-align: left;
+    }
+
+    @media (max-width: 767px) {
+      font-size: 12px;
+    }
+  }
+
+  .price {
+    color: var(--text-stress);
+    white-space: nowrap;
+  }
+
+  .ticker {
+    .symbol-code {
+      i {
+        margin-left: 8px;
+        transition: none;
+
+        &:hover {
+          color: var(--price-up);
+        }
+      }
+    }
+
+    .stock-name {
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .vol-24h,
+    .market-cap {
+      letter-spacing: -0.8px;
+    }
+  }
+
+  tr {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--background-light);
+    }
+
+    &.rising {
+      .fluctuation {
+        color: var(--price-up);
+      }
+    }
+
+    &.falling {
+      .fluctuation {
+        color: var(--price-down);
+      }
+    }
+  }
+}

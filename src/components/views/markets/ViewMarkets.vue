@@ -12,6 +12,7 @@ export default {
   components: {
     ViewCrypto: defineAsyncComponent(() => import('./crypto/ViewCrypto')),
     ViewNasdaq: defineAsyncComponent(() => import('./nasdaq/ViewNasdaq')),
+    ViewKospi: defineAsyncComponent(() => import('./kospi/ViewKospi')),
     ViewAssetsIncludingMetal: defineAsyncComponent(() => import('./ViewAssetsIncludingMetal')),
   },
   setup() {
@@ -21,6 +22,7 @@ export default {
       const p = router.currentRoute.value.path
       if (p === '/markets/crypto') return 'ViewCrypto'
       if (p === '/markets/nasdaq') return 'ViewNasdaq'
+      if (p === '/markets/kospi') return 'ViewKospi'
       if (p === '/markets/assets-including-metal') return 'ViewAssetsIncludingMetal'
     })
 

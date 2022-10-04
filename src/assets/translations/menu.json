@@ -116,8 +116,12 @@
     "kr": "크립토"
   },
   "NASDAQ": {
-    "en": "Nasdaq",
-    "kr": "나스닥"
+    "en": "NASDAQ 100",
+    "kr": "나스닥 100"
+  },
+  "KOSPI": {
+    "en": "KOSPI",
+    "kr": "코스피"
   },
   "ASSETS_INCLUDING_METAL": {
     "en": "Assets Including Metal",

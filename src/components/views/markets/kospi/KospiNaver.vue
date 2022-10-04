@@ -1,7 +1,7 @@
 <template>
   <div 
-    v-if="$store.getters.nasdaq"
-    class="nasdaq-naver">
+    v-if="$store.getters.kospi"
+    class="kospi-naver">
     <table class="list table-stock">
       <thead>
         <tr>
@@ -18,7 +18,7 @@
               { column: 'closePrice', title: 'PRICE' },
               { column: 'fluctuationsRatio', title: '24h %' },
               { column: 'marketValueFull', title: 'MARKETCAPS', $$hide: $store.getters.windowInnerWidth < 480 },
-              { column: 'accumulatedTradingVolume', title: 'VOL_24_SHARE', $$hide: $store.getters.windowInnerWidth < 768 },
+              { column: 'accumulatedTradingVolume', title: 'VOL_24', $$hide: $store.getters.windowInnerWidth < 768 },
             ].filter(o => !o.$$hide)">
             {{ $translate(th.title) }}
             <span
@@ -35,9 +35,7 @@
           @click="onClickStock(item)"
           class="marketcap"
           :class="[
-            (item.overMarketPriceInfo ?
-              ((item.overMarketPriceInfo.compareToPreviousPrice || {}).name || '') :
-              ((item.compareToPreviousPrice || {}).name || '')).toLowerCase(),
+            ((item.compareToPreviousPrice || {}).name || '').toLowerCase(),
           ]"
           :key="idx"
           v-for="(item, idx) in displayedList">
@@ -46,18 +44,13 @@
           </td>
           <td class="ticker">
             <div class="symbol-code">
-              <span>{{ item.symbolCode }}</span><i @click.stop="openModalTradingView(item)" class="fa fa-chart-line"/>
+              <span>{{ item.reutersCode }}</span><i @click.stop="openModalTradingView(item)" class="fa fa-chart-line"/>
             </div>
             <div class="stock-name">{{ item.stockName }}</div>
           </td>
           <td class="price">
             <div class="open">{{ displayPrice(item.closePrice).price }}</div>
-            <div v-if="item.overMarketPriceInfo" class="over-market">
-              <div class="badge-pre">PRE</div>
-              <div class="value fluctuation">{{ displayPrice((item.overMarketPriceInfo || {}).overPrice).price }}</div>
-            </div>
             <div
-              v-else
               class="fluctuation"
               :class="$helpers.template.priceColor(item.compareToPreviousClosePrice)">
               {{ displayPrice(item.compareToPreviousClosePrice).price }}
@@ -67,10 +60,10 @@
             {{ item.fluctuationsRatio }}%
           </td>
           <td v-if="$store.getters.windowInnerWidth >= 480" class="market-cap">
-            {{ displayPrice(item.marketValueFull).cap }}
+            {{ displayPrice(item.marketValue).cap }}
           </td>
           <td v-if="$store.getters.windowInnerWidth >= 768" class="vol-24h">
-            {{ displayPrice(item.accumulatedTradingVolume).cap }}주
+            {{ displayPrice(item.accumulatedTradingValue).value }}
           </td>
         </tr>
       </tbody>
@@ -98,10 +91,11 @@ export default {
       if (!parsed) return '?'
 
       const p = plugins.$helpers.number.pretty
-      const baseCurrency = 'usd'
+      const baseCurrency = 'krw'
 
       return {
-        cap: p.cap({ cap: parsed, baseCurrency }),
+        cap: p.cap({ cap: parsed * Math.pow(10, 8), baseCurrency }),
+        value: p.cap({ cap: parsed * Math.pow(10, 6), baseCurrency }),
         price: p.price({ price: parsed, baseCurrency, fracs: store.getters.settings.currency === 'krw' ? 0 : 2 }),
         parsed,
       }
@@ -122,7 +116,7 @@ export default {
 
     const displayedList = computed(() => {
       const arr = []
-      store.getters.nasdaq.forEach(row => arr.push(row))
+      store.getters.kospi.forEach(row => arr.push(row))
       arr.sort((a, b) => {
         let val1 = a[payload.value.column]
         let val2 = b[payload.value.column]
@@ -142,7 +136,7 @@ export default {
       plugins.$modal.custom({
         component: 'ModalTradingView',
         options: {
-          symbol: `NASDAQ:${item.symbolCode}`,
+          symbol: `KRX:${item.reutersCode}`,
           resizable: !store.getters.isMobile,
           noBackdrop: true,
           useMultiOpen: true,
@@ -151,16 +145,16 @@ export default {
     }
 
     const onClickStock = item => {
-      window.open(`https://m.stock.naver.com/worldstock/stock/${item.reutersCode}/total`, '_blank')
+      window.open(`https://m.stock.naver.com/domestic/stock/${item.reutersCode}/total`, '_blank')
     }
 
     const callApi = async () => {
-      store.dispatch('loadNasdaq')
+      store.dispatch('loadKospi')
 
       if (store.getters.isSSR) return
 
       clearInterval(interv.value)
-      interv.value = setInterval(() => store.dispatch('loadNasdaq'), 1000 * 10)
+      interv.value = setInterval(() => store.dispatch('loadKospi'), 1000 * 10)
     }
 
     onMounted(callApi)
@@ -171,7 +165,7 @@ export default {
       clearInterval(interv.value)
     })
 
-    onServerPrefetch(() => store.dispatch('loadNasdaq'))
+    onServerPrefetch(() => store.dispatch('loadKospi'))
 
     return {
       payload,
@@ -184,26 +178,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.nasdaq-naver {
-  .over-market {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    .badge-pre {
-      margin-right: 8px;
-      font-size: 10px;
-      background: var(--border-base);
-      padding: 0 4px;
-      border-radius: 8px;
-      white-space: nowrap;
-    }
-
-    .value {
-      font-size: 12px;
-    }
-  }
-}
-</style>

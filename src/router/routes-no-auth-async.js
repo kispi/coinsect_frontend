@@ -48,6 +48,13 @@ const markets = [{
     description: '애플, 테슬라, 마이크로소프트 등 나스닥 종목들의 시총',
   },
 }, {
+  path: '/markets/kospi',
+  component: () => import(/* webpackChunkName: 'view-markets' */ '@/components/views/markets/ViewMarkets'),
+  meta: {
+    title: '코스피 시총 - 코인충',
+    description: '삼성전자, SK에너지솔루션 등 코스피 종목들의 시총'
+  },
+}, {
   path: '/markets/assets-including-metal',
   component: () => import(/* webpackChunkName: 'view-markets' */ '@/components/views/markets/ViewMarkets'),
   meta: {
