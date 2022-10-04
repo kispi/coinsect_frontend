@@ -15,7 +15,11 @@
           <div class="replies">댓글 {{ post.$$numReplies }}</div>
         </div>
       </div>
-      <div class="post-content" v-html="post.content"/>
+      <div
+        @click="onClickContent"
+        class="post-content"
+        v-html="post.content"
+      />
       <div class="post-reactions">
         <div
           @click="toggleReaction(rType)"
@@ -55,9 +59,15 @@ export default {
       } catch (e) {}
     }
 
+    const onClickContent = e => {
+      const src = e.target.src
+      if (src) window.open(src, '_blank', 'noreferrer noopener')
+    }
+
     return {
       post,
       toggleReaction,
+      onClickContent,
     }
   },
 }
@@ -124,6 +134,7 @@ export default {
 
     img {
       max-width: 100%;
+      cursor: pointer;
     }
   }
 
