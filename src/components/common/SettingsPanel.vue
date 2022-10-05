@@ -58,6 +58,12 @@ export default {
         { title: 'BYBIT', value: 'dark' },
       ].map(o => ({ ...o, $$selected: store.getters.settings.theme === o.value })),
     }, {
+      key: 'CHART_FULL_WIDTH',
+      values: [
+        { title: 'ON', value: true },
+        { title: 'OFF', value: false },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.chartFullWidth === o.value })),
+    }, {
       key: 'FILTER',
       values: [
         { title: 'ALL', value: 'all' },
@@ -133,7 +139,7 @@ export default {
     padding: 4px 12px;
 
     .key {
-      width: 80px;
+      width: 120px;
     }
 
     .values {

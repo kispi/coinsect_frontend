@@ -3,6 +3,7 @@
     <div
       v-if="$store.getters.charts.length > 0"
       class="grid m-b-8"
+      :class="{'block': $store.getters.settings.chartFullWidth}"
       :style="dynamicGrid">
       <div
         :key="chart"
@@ -85,7 +86,7 @@ export default {
 
 <style lang="scss" scoped>
 .multi-charts {
-  .grid {
+  .grid:not(.block) {
     display: grid;
     grid-column-gap: 8px;
     grid-row-gap: 24px;

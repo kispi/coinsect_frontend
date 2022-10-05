@@ -11,6 +11,10 @@
     "en": "Theme",
     "kr": "테마"
   },
+  "CHART_FULL_WIDTH": {
+    "en": "Chart Full Width",
+    "kr": "가로로 긴 차트"
+  },
   "CHAT_DING": {
     "en": "Ring on new message",
     "kr": "새 메시지 소리 알림"

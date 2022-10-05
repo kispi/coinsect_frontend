@@ -38,6 +38,7 @@ const app = {
         home: true,
         realTimePositions: true,
       },
+      chartFullWidth: false,
       baseExchange: 'upbit', // 'upbit' || 'bithumb'
       baseExchangeMarket: 'krw', // 'krw' || 'btc' || 'usdt'...
       targetExchange: 'binance',
