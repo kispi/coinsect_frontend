@@ -74,6 +74,7 @@ export default {
     onMounted(() => {
       prepare()
       store.commit('setSettings', storedSettings())
+      store.commit('setCharts', helpers.localStorage.getMeta('charts') || store.getters.charts)
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })
     })

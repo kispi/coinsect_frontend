@@ -17,7 +17,6 @@ export default {
       required: true,
     },
     interval: {
-      type: Number,
       required: true,
       default: 15,
     },

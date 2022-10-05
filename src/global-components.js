@@ -31,6 +31,7 @@ import ChatStatsLongShort from '@/components/common/ChatStatsLongShort'
 import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
 import CPosition from '@/components/common/c-position/CPosition'
 import LongShortRatio from '@/components/common/LongShortRatio'
+import MultiCharts from '@/components/common/MultiCharts'
 import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
 import OrderbookUpbit from '@/components/common/orderbooks/OrderbookUpbit'
 import PostEditor from '@/components/common/post-editor/PostEditor'
@@ -83,6 +84,7 @@ const useGlobalComponents = app => {
     .component('CPortfolio', CPortfolio)
     .component('CPosition', CPosition)
     .component('LongShortRatio', LongShortRatio)
+    .component('MultiCharts', MultiCharts)
     .component('ModalHeader', ModalHeader)
     .component('OrderbookBybit', OrderbookBybit)
     .component('OrderbookUpbit', OrderbookUpbit)

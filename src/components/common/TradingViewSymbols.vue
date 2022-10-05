@@ -4,40 +4,50 @@
     :gap="8">
     <AppDropdown
       :dropdownItems="tradingviewSymbols"
-      @select-dropdown-item="o => {
-        $store.commit('setSettings', { tradingviewSymbol: o.key })
-      }"
+      @select-dropdown-item="o => onSelectChartSymbol(o, 'symbol')"
     />
     <AppDropdown
       class="timeframe"
       :dropdownItems="defaultTimeframes"
-      @select-dropdown-item="o => {
-        $store.commit('setSettings', { tradingviewTimeframe: o.key })
-      }"
+      @select-dropdown-item="o => onSelectChartSymbol(o, 'interval')"
     />
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  setup() {
+  props: {
+    chartIndex: Number,
+  },
+  setup(props) {
     const store = useStore()
 
+    const chart = computed(() => store.getters.charts[props.chartIndex])
+
+    const onSelectChartSymbol = (o, key) => {
+      chart.value[key] = o.key
+      store.commit('setCharts', store.getters.charts)
+    }
+
     const tradingviewSymbols = ref([{
-      name: 'BTCUSD_BINANCE',
+      name: 'BTCUSDT_BINANCE',
       key: 'BINANCE:BTCUSDT',
       img: require('@/assets/images/binance.svg'),
     }, {
-      name: 'BTCUSD_BYBIT',
+      name: 'BTCUSDT_BYBIT',
       key: 'BYBIT:BTCUSDT',
       img: require('@/assets/images/bybit.svg'),
     }, {
       name: 'BTCUSD_BITSTAMP',
       key: 'BITSTAMP:BTCUSD',
       img: require('@/assets/images/bitstamp.svg'),
+    }, {
+      name: 'DXY',
+      key: 'DXY',
+      img: 'https://s3-symbol-logo.tradingview.com/indices/u-s-dollar-index--600.png',
     }, {
       name: 'NASDAQ',
       key: 'FOREXCOM:NSXUSD',
@@ -72,7 +82,7 @@ export default {
       img: 'https://static.upbit.com/logos/BTC.png',
     }].map(o => ({
       ...o,
-      $$selected: o.key === store.getters.settings.tradingviewSymbol,
+      $$selected: o.key === chart.value.symbol,
     })))
 
     const defaultTimeframes = ref([{
@@ -101,12 +111,14 @@ export default {
       key: 'W',
     }].map(o => ({
       ...o,
-      $$selected: o.key === store.getters.settings.tradingviewTimeframe,
+      $$selected: o.key === chart.value.interval,
     })))
 
     return {
+      chart,
       defaultTimeframes,
       tradingviewSymbols,
+      onSelectChartSymbol,
     }
   },
 }
@@ -116,6 +128,14 @@ export default {
 .trading-view-symbols {
   display: flex;
   align-items: center;
+
+  .app-dropdown {
+    font-size: 12px;
+
+    .clickable-area {
+      padding: 4px 0;
+    }
+  }
 
   .timeframe {
     width: 80px;

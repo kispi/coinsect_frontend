@@ -2,13 +2,7 @@
   <div
     v-if="$store.getters.realTimePositions"
     class="view-real-time-positions">
-    <AdaptiveLayout
-      v-if="$store.getters.settings.tradingview.realTimePositions"
-      class="m-b-24"
-      :gap="8">
-      <TradingView :symbol="'BINANCE:BTCUSDT'" :interval="1"/>
-      <TradingView :symbol="'FOREXCOM:NSXUSD'" :interval="1"/>
-    </AdaptiveLayout>
+    <MultiCharts v-if="$store.getters.settings.tradingview.realTimePositions" class="m-b-24"/>
     <div class="header">
       <button
         @click="callApi"

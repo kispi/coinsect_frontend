@@ -49,6 +49,7 @@ export const newStore = () => createStore({
   actions: {
     initSettings({ commit }) {
       commit('setSettings', initialState.app().settings)
+      commit('setCharts', initialState.app().charts)
     },
   },
 })

@@ -1,23 +1,10 @@
 <template>
   <div class="view-home">
-    <TradingViewSymbols v-if="$store.getters.settings.tradingview.home"/>
     <TradingViewTicker
       v-if="$store.getters.settings.tradingview.home"
       class="m-t-8 m-b-8"
     />
-    <AdaptiveLayout
-      v-if="$store.getters.settings.tradingview.home"
-      class="m-b-8" :gap="8">
-      <TradingView
-        :symbol="$store.getters.settings.tradingviewSymbol"
-        :interval="$store.getters.settings.tradingviewTimeframe"
-      />
-      <TradingView
-        v-if="$store.getters.settings.tradingviewHomeDoubleChart"
-        :symbol="'FOREXCOM:NSXUSD'"
-        :interval="$store.getters.settings.tradingviewTimeframe"
-      />
-    </AdaptiveLayout>
+    <MultiCharts class="m-b-8"/>
     <div class="row p-b-8">
       <BaseAndTarget/>
       <div

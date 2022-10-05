@@ -43,11 +43,11 @@
     "en": "Bitcoin (Bitstamp)",
     "kr": "비트코인 (Bitstamp)"
   },
-  "BTCUSD_BINANCE": {
+  "BTCUSDT_BINANCE": {
     "en": "Bitcoin (Binance)",
     "kr": "비트코인 (Binance)"
   },
-  "BTCUSD_BYBIT": {
+  "BTCUSDT_BYBIT": {
     "en": "Bitcoin (Bybit)",
     "kr": "비트코인 (Bybit)"
   },
@@ -58,6 +58,10 @@
   "BITCOIN_SHORTS": {
     "en": "Bitcoin (Bitfinex)",
     "kr": "비트코인 숏 (Bitfinex)"
+  },
+  "DXY": {
+    "en": "Dollar Index",
+    "kr": "달러 인덱스"
   },
   "GOLD": {
     "en": "Gold",

@@ -38,9 +38,6 @@ const app = {
         home: true,
         realTimePositions: true,
       },
-      tradingviewSymbol: 'BINANCE:BTCUSDT',
-      tradingviewTimeframe: 15,
-      tradingviewHomeDoubleChart: true,
       baseExchange: 'upbit', // 'upbit' || 'bithumb'
       baseExchangeMarket: 'krw', // 'krw' || 'btc' || 'usdt'...
       targetExchange: 'binance',
@@ -61,12 +58,15 @@ const app = {
       chatTransparent: false,
       chatOverlayNewMessage: true,
     },
+    charts: [
+      { symbol: 'BINANCE:BTCUSDT', interval: 15 },
+      { symbol: 'FOREXCOM:NSXUSD', interval: 15 },
+    ],
     chatStats: {},
     chatUsers: null, // 웹소켓 커넥션이 아니고 접속자 정보임
     windowInnerWidth: null,
     windowInnerHeight: null,
     lastApiCall: {},
-    scrollTops: {},  // scrollTop per page
     scrollTop: null, // global scrollTop value
     lazyLoadedScriptUrls: [],
   }),
@@ -81,10 +81,10 @@ const app = {
     chatUsers: state => state.chatUsers,
     notifications: state => state.notifications,
     settings: state => state.settings,
+    charts: state => state.charts,
     windowInnerWidth: state => state.windowInnerWidth,
     windowInnerHeight: state => state.windowInnerHeight,
     lastApiCall: state => state.lastApiCall,
-    scrollTops: state => state.scrollTops,
     scrollTop: state => state.scrollTop,
     lazyLoadedScriptUrls: state => state.lazyLoadedScriptUrls,
   },
@@ -130,14 +130,14 @@ const app = {
       })
       helpers.localStorage.setMeta('settings', state.settings)
     },
+    setCharts(state, charts) {
+      state.charts = charts
+      helpers.localStorage.setMeta('charts', state.charts)
+    },
     setIsMobile(state) {
       state.windowInnerWidth = window.innerWidth
       state.windowInnerHeight = window.innerHeight
       state.isMobile = state.windowInnerWidth < 768
-    },
-    // payload: { routeName, scrollTop }
-    setScrollTops(state, payload) {
-      state.scrollTops[payload.routeName] = payload.scrollTop
     },
     setScrollTop(state, scrollTop) {
       state.scrollTop = scrollTop

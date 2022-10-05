@@ -20,7 +20,7 @@ const routes = [
   },
 ]
 
-routes.forEach(async route => {
+routes.forEach(route => {
   if (typeof route.component === 'function') {
     const importPromise = route.component
     route.component = () => {

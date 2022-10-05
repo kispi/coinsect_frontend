@@ -75,12 +75,6 @@ export default {
         { title: 'ON', value: true },
         { title: 'OFF', value: false },
       ].map(o => ({ ...o, $$selected: store.getters.settings.tradingview.home === o.value })),
-    }, {
-      key: 'MULTICHART',
-      values: [
-        { title: 'ON', value: true },
-        { title: 'OFF', value: false },
-      ].map(o => ({ ...o, $$selected: store.getters.settings.tradingviewHomeDoubleChart === o.value })),
     }].filter((_, idx) => props.indices.length === 0 || props.indices.includes(idx)))
 
     const onClickValue = (key, setting) => {
@@ -88,11 +82,6 @@ export default {
         const tradingview = store.getters.settings.tradingview
         tradingview.home = setting.value
         store.commit('setSettings', { tradingview })
-        return
-      }
-
-      if (key === 'MULTICHART') {
-        store.commit('setSettings', { tradingviewHomeDoubleChart: !store.getters.settings.tradingviewHomeDoubleChart })
         return
       }
 
@@ -109,7 +98,6 @@ export default {
           store.commit('setLoading', { global: true })
           store.dispatch('initSettings')
 
-          // settings.tradingviewHomeDoubleChart 넣고서 리셋하면 트뷰가 전체화면 덮게 렌더링되는 문제가 있어서 (그 버그를 고치는게 이 편보단 나을듯) 강제 새로고침해줌
           setTimeout(() => {
             location.reload()
           }, store.getters.isMobile ? 2000 : 1000)

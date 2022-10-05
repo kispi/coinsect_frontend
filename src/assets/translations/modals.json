@@ -65,7 +65,7 @@
   },
   "MODAL_INIT_SETTINGS": {
     "en": "Reset all personal settings.\n(Including portfolio, blocked users, favorite coins, etc)",
-    "kr": "모든 개인화 설정을 초기화합니다.\n(포트폴리오, 차단 유저, 즐겨찾기 코인 등 포함)"
+    "kr": "모든 개인화 설정을 초기화합니다.\n(차트 세팅, 포트폴리오, 차단 유저, 즐겨찾기 코인 등 포함)"
   },
   "INIT_SETTINGS": {
     "en": "Init Settings",

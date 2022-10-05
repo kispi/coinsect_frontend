@@ -119,6 +119,10 @@
     "en": "Bearish",
     "kr": "떡락각"
   },
+  "ADD_CHART": {
+    "en": "Add Chart",
+    "kr": "차트 추가"
+  },
   "DELETED_BY_ADMIN": {
     "en": "Deleted by the admin.",
     "kr": "관리자에 의해 삭제되었습니다."
