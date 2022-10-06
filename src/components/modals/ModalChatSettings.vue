@@ -227,7 +227,9 @@ export default {
         }
         p.pushPositionChange = !p.pushPositionChange
         updateUserSetting()
-      } catch (e) {}
+      } catch (e) {
+        plugins.$toast.error('푸시 알림이 거부되어 있어요 😢<br>사이트 설정에서 허용해주세요')
+      }
     }
 
     return {
