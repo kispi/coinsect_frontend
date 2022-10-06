@@ -63,14 +63,8 @@ const useMenuItems = () => {
       { path: '/indicators/general', title: 'GENERAL' },
     ],
   }, {
-    title: 'MARKETS',
-    pathPrefix: '/markets/',
-    subPages: [
-      { path: '/markets/crypto', title: 'CRYPTO' },
-      { path: '/markets/nasdaq', title: 'NASDAQ' },
-      { path: '/markets/kospi', title: 'KOSPI' },
-      { path: '/markets/assets-including-metal', title: 'ASSETS_INCLUDING_METAL' },
-    ],
+    title: 'COMMUNITY',
+    path: '/community',
   }, {
     title: 'NEWS_AND_CONTENTS',
     pathPrefix: '/contents/',
@@ -91,6 +85,15 @@ const useMenuItems = () => {
       { path: '/onchain/richlist', title: 'RICHLIST' },
     ],
   }, {
+    title: 'MARKETS',
+    pathPrefix: '/markets/',
+    subPages: [
+      { path: '/markets/crypto', title: 'CRYPTO' },
+      { path: '/markets/nasdaq', title: 'NASDAQ' },
+      { path: '/markets/kospi', title: 'KOSPI' },
+      { path: '/markets/assets-including-metal', title: 'ASSETS_INCLUDING_METAL' },
+    ],
+  }, {
     title: 'APPS',
     pathPrefix: '/apps/',
     subPages: [
@@ -101,9 +104,6 @@ const useMenuItems = () => {
       { path: '/apps/games', title: 'GAMES' },
       { path: '/apps/voice-recorder', title: 'VOICE_RECORDER' },
     ],
-  }, {
-    title: 'COMMUNITY',
-    path: '/community',
   }, {
     title: 'ABOUT',
     path: '/about',

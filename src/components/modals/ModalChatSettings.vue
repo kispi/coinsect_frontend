@@ -106,6 +106,18 @@
           />
         </div>
       </div>
+      <div class="section">
+        <div class="title">* 푸시알림</div>
+        <div class="chat-setting-item">
+          <div class="field-name">{{ $translate('PUSH_POSITION_CHANGE') }}</div>
+          <AppToggler
+            ref="refChatTransparent"
+            :modelValue="$store.getters.chatUserSetting.pushPositionChange"
+            @click="togglePushPositionChange"
+          />
+        </div>
+        <!-- pushChatNewMessage <- 얘도 나중에 넣을까? 과하려나? -->
+      </div>
     </div>
   </div>
 </template>
@@ -114,6 +126,7 @@
 import { getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
+import usePWA from '@/hooks/addons/pwa'
 
 export default {
   props: ['options'],
@@ -130,7 +143,9 @@ export default {
 
     const refInputNickname = ref(null)
 
-    const { setAccount } = useChatHandler()
+    const { setAccount, updateUserSetting } = useChatHandler()
+
+    const { initFirebase } = usePWA()
 
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -199,6 +214,22 @@ export default {
       update()
     }
 
+    const togglePushPositionChange = async () => {
+      try {
+        const p = store.getters.chatUserSetting
+        if (!p.deviceToken && !p.pushPositionChange) {
+          const result = await plugins.$modal.confirm({
+            body: '브라우저에서 푸시 알림을 보낼 수 있도록 물어보는 창이 뜨면 허용해주세요<br>거절했더라도 나중에 브라우저 설정에서 다시 허용할 수 있습니다 🥰',
+          })
+          if (!result) return
+
+          p.deviceToken = await initFirebase()
+        }
+        p.pushPositionChange = !p.pushPositionChange
+        updateUserSetting()
+      } catch (e) {}
+    }
+
     return {
       refChatDing,
       refChatTransparent,
@@ -211,6 +242,7 @@ export default {
       image,
       onKeydown,
       toggleEditProfile,
+      togglePushPositionChange,
     }
   },
 }
@@ -246,6 +278,8 @@ export default {
     }
 
     .section {
+      padding: 24px 0;
+
       .title {
         font-size: 18px;
         margin-bottom: 16px;
@@ -253,8 +287,6 @@ export default {
       }
 
       &:not(:last-child) {
-        margin-bottom: 24px;
-        padding-bottom: 24px;
         border-bottom: 1px solid var(--border-base);
       }
     }
@@ -299,7 +331,7 @@ export default {
       align-items: center;
       border: 0;
       width: 160px;
-      margin: 0 auto 24px;
+      margin: 0 auto;
       position: relative;
       border-bottom: 1px solid transparent;
 

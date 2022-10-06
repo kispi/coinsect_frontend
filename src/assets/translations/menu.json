@@ -35,6 +35,10 @@
     "en": "Hide Image Message",
     "kr": "이미지 메시지 가리기"
   },
+  "PUSH_POSITION_CHANGE": {
+    "en": "Push Position Change",
+    "kr": "포지션 변경 푸시알림"
+  },
   "POSITION_CHANGE": {
     "en": "Position change",
     "kr": "포지션 변경"

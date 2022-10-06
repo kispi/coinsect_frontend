@@ -20,11 +20,13 @@ const user = {
   state: () => ({
     me: null,
     chatUser: null,
+    chatUserSetting: null,
     header: null,
   }),
   getters: {
     me: state => state.me,
     chatUser: state => state.chatUser,
+    chatUserSetting: state => state.chatUserSetting,
     header: state => state.header,
   },
   actions: {
@@ -79,6 +81,9 @@ const user = {
     },
     setChatUser(state, chatUser) {
       state.chatUser = chatUser
+    },
+    setChatUserSetting(state, chatUserSetting) {
+      state.chatUserSetting = chatUserSetting
     },
     setHeader(state, payload) {
       state.header = payload

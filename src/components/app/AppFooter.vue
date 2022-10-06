@@ -29,15 +29,8 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
-import usePWA from '@/hooks/addons/pwa'
-
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const { initFirebase } = usePWA()
-
     const contacts = [{
       key: 'kakao',
       img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw',
@@ -52,19 +45,8 @@ export default {
       link: 'mailto:admin@coinsect.io',
     }]
 
-    const onClickBackendNumber = async () => {
-      try {
-        const token = await initFirebase()
-        plugins.$helpers.dom.copyToClipboard(token)
-        plugins.$toast.success('파이어베이스 토큰 획득')
-      } catch (e) {
-        plugins.$toast.error(e.data.message)
-      }
-    }
-
     return {
       contacts,
-      onClickBackendNumber,
     }
   },
 }

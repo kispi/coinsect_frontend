@@ -135,6 +135,9 @@ const useChatHandler = () => {
         store.commit('setChatUser', message.user)
         ping()
         break
+      case 'userSetting':
+        store.commit('setChatUserSetting', message.meta)
+        break
       case 'users':
         store.commit('setChatUsers', message)
         break
@@ -160,6 +163,15 @@ const useChatHandler = () => {
       store.commit('setChatUser', user)
     } catch (e) {
       return Promise.reject(e)
+    }
+  }
+
+  const updateUserSetting = async () => {
+    try {
+      const userSetting = await plugins.$http.put(`webchat/user_settings/${store.getters.chatUser.token}`, store.getters.chatUserSetting)
+      store.commit('setChatUserSetting', userSetting)
+    } catch (e) {
+      plugins.$toast.error(e.data.message)
     }
   }
 
@@ -248,6 +260,7 @@ const useChatHandler = () => {
     ping,
     loadMessages,
     setAccount,
+    updateUserSetting,
     sendWebsocketMessage,
     init,
     play,

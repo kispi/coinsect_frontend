@@ -6,8 +6,8 @@
     <ModalHeader :title="$translate('MODAL_DONATION')" @close="$emit('close')"/>
     <div class="body pre-line">
       <div class="description m-b-16">
-        <div class="m-b-8">혹시 커피한잔 사주시고 싶으신 형님들이 계시다면 아래 지갑으로 송금해주시면 잘 사용하겠습니다 🥰</div>
-        <div>하단 QRCode는 각 코인별 지갑주소이며, QRCode 하단 지갑주소를 클릭하시면 해당 지갑의 트랜잭션 내역을 블록체인 익스플로어에서 보실 수 있습니다.</div>
+        <div class="m-b-8">운영자는 커피와 휫자와 치킨을 사랑합니다 🥰</div>
+        <div>상식: 리플은 데스티네이션 태그가 없어도 송금이 가능합니다.</div>
       </div>
       <div
         v-if="wallets"
