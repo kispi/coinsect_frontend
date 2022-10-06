@@ -111,7 +111,6 @@
         <div class="chat-setting-item">
           <div class="field-name">{{ $translate('PUSH_POSITION_CHANGE') }}</div>
           <AppToggler
-            ref="refChatTransparent"
             :modelValue="$store.getters.chatUserSetting.pushPositionChange"
             @click="togglePushPositionChange"
           />
