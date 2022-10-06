@@ -217,7 +217,7 @@ export default {
     const togglePushPositionChange = async () => {
       try {
         const p = store.getters.chatUserSetting
-        if (!p.deviceToken && !p.pushPositionChange) {
+        if (!p.pushPositionChange) {
           const result = await plugins.$modal.confirm({
             body: '브라우저에서 푸시 알림을 보낼 수 있도록 물어보는 창이 뜨면 허용해주세요<br>거절했더라도 나중에 브라우저 설정에서 다시 허용할 수 있습니다 🥰',
           })
