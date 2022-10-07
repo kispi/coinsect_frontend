@@ -121,11 +121,8 @@ export default {
       })
     }
 
-    const mine = async () => {
-      rows.value = []
-      elapsedTime.value = 0
-      interv.value = setInterval(() => elapsedTime.value++, 1000)
-      for (let nonce = 0;; nonce++) {
+    const mine = async ({ start, end }) => {
+      for (let nonce = start; nonce < end; nonce++) {
         if (!mining.value) {
           clearInterval(interv.value)
           return
@@ -143,9 +140,19 @@ export default {
       }
     }
 
+    const startMining = ({ nonceSize, concurrency }) => {
+      rows.value = []
+      elapsedTime.value = 0
+      interv.value = setInterval(() => elapsedTime.value++, 1000)
+      const unit = Math.ceil(nonceSize / concurrency)
+      for (let i = 0; i < concurrency; i++) {
+        mine({ start: i * unit, end: (i + 1) * unit })
+      }
+    }
+
     const onClickMine = () => {
       mining.value = !mining.value
-      if (mining.value) mine()
+      if (mining.value) startMining({ nonceSize: Math.pow(10, 7), concurrency: 1})
     }
 
     onMounted(() => digest(message.value).then(result => digested.value = result))
@@ -155,11 +162,11 @@ export default {
       message,
       difficulty,
       digested,
-      digest,
       mining,
       elapsedTime,
       elapsedTimeHuman,
       rows,
+      digest,
       doDigest,
       onClickMine,
     }
