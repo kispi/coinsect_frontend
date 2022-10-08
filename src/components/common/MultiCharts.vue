@@ -3,7 +3,6 @@
     <div
       v-if="$store.getters.charts.length > 0"
       class="grid m-b-8"
-      :class="{'block': $store.getters.settings.chartFullWidth}"
       :style="dynamicGrid">
       <div
         :key="chart"
@@ -40,6 +39,10 @@ export default {
     const store = useStore()
 
     const dynamicGrid = computed(() => {
+      if (store.getters.settings.chartFullWidth) return {
+        'grid-template-columns': 'repeat(1, 1fr)',
+      }
+
       const l = store.getters.charts.length
       const w = store.getters.windowInnerWidth
       if (w < 768 || l === 1) return
@@ -86,7 +89,7 @@ export default {
 
 <style lang="scss" scoped>
 .multi-charts {
-  .grid:not(.block) {
+  .grid {
     display: grid;
     grid-column-gap: 8px;
     grid-row-gap: 24px;
