@@ -40,7 +40,7 @@
             @click="$router.push('/onchain/whale-alert')"
             :active="$route.path === '/onchain/whale-alert'"
             :tooltip="'WHALE_ALERT'"
-            :images="['https://whale-alert.io/assets/images/logo-small-35.png']"
+            :images="['https://play-lh.googleusercontent.com/6sR81DzsDr2BEEY4DSTvc2jnE24LTXNjSlHPfpJdJIOuxAgDMvM7Ky5H4kgg5BuZ8A']"
           />
           <AppDockIcon
             @click="$router.push('/contents/economic-calendar')"
