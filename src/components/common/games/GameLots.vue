@@ -160,20 +160,21 @@ export default {
     watch(
       () => trigger.value,
       newVal => {
-        if (newVal >= 5) {
+        if (newVal >= 3) {
           trigger.value = 0
           lots.value = [
-            { id: 1, name: 'Chaeil' },
-            { id: 2, name: 'Chris' },
-            { id: 3, name: 'Emily' },
-            { id: 4, name: 'Emma' },
-            { id: 5, name: 'Gilbert' },
-            { id: 6, name: 'Henry' },
-            { id: 7, name: 'Lumi' },
-            { id: 8, name: 'Marv' },
-            { id: 9, name: 'MJ' },
-            { id: 10, name: 'Will' },
-          ]
+            'Chaeil',
+            'Chris',
+            'Emily',
+            'Emma',
+            'Gilbert',
+            'Henry',
+            'Juan',
+            'Liam',
+            'Lumi',
+            'Marv',
+            'MJ',
+          ].map(name => ({ name, id: plugins.$helpers.mustToken() }))
           emit('next-state')
         }
       },

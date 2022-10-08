@@ -177,7 +177,7 @@ const helpers = {
       nonExistNewToken = token
       break
     }
-  
+
     return nonExistNewToken
   },
   dataURLToBlob: async dataUrl => {
