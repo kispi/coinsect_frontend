@@ -13,7 +13,7 @@
       />
       <ImageUploader
         v-else
-        @upload-file="onUpload"
+        @upload-file="e => payload = e"
         :noupload="true"
         :resize="{ ...resizeOption, above: 1 }"
       />
@@ -79,11 +79,6 @@ export default {
       reSample: 2,
     })
 
-    const onUpload = e => {
-      payload.value = e
-      console.log(e)
-    }
-
     const onClickImage = () => {
       window.open(payload.value.src, '_blank', 'noreferrer')
     }
@@ -99,7 +94,6 @@ export default {
       formats,
       resizeOption,
       asMB,
-      onUpload,
       onClickImage,
     }
   },
@@ -119,7 +113,10 @@ export default {
 
   .container {
     position: relative;
-    border: 1px solid var(--border-base);
+
+    .app-img {
+      border: 1px solid var(--border-base);
+    }
   }
 
   .options {
