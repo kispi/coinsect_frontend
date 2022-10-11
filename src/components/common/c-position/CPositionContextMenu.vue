@@ -22,7 +22,7 @@
         v-if="position.editable"
         @click="menuHandlers.requestEdit"
         class="menu-item">
-        <i class="fal fa-pencil"/>{{ $translate($store.getters.config.allowDirectPositionEdit ? 'EDIT' : 'REQUEST_EDIT') }}
+        <i class="fal fa-pencil"/>{{ $translate('REQUEST_EDIT') }}
       </div>
     </div>
   </div>

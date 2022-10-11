@@ -1,13 +1,13 @@
 <template>
   <div class="modal-position-notify-change">
     <ModalHeader
-      :title="$translate(allowed ? 'MODAL_POSITION_CHANGE' : 'MODAL_POSITION_NOTIFY_CHANGE').replace('%s', payload.name)"
+      :title="$translate('MODAL_POSITION_NOTIFY_CHANGE').replace('%s', payload.name)"
       @close="$emit('close')"
     />
     <div class="body">
       <div
         class="description"
-        v-html="$translate(allowed ? 'MODAL_POSITION_CHANGE_DESC' : 'MODAL_POSITION_NOTIFY_CHANGE_DESC').replace('%s', payload.name)"
+        v-html="$translate('MODAL_POSITION_NOTIFY_CHANGE_DESC').replace('%s', payload.name)"
       />
       <div class="fields">
         <div class="form-control">
@@ -64,15 +64,13 @@ export default {
 
     const store = useStore()
 
-    const allowed = computed(() => store.getters.config.allowDirectPositionEdit)
-
     const onClickSubmit = async () => {
       const o = JSON.parse(JSON.stringify(payload.value))
       try {
         ['entryPrice', 'liqPrice', 'size'].forEach(key => o[key] = parseFloat(o[key]))
         await plugins.$http.post('contents/real_time_positions/change_notifications', o)
         emit('close')
-        plugins.$toast.success(allowed.value ? 'TOAST_POSITION_EDITED' : 'TOAST_POSITION_EDIT_REQUESTED')
+        plugins.$toast.success('TOAST_POSITION_EDIT_REQUESTED')
         plugins.$bus.$emit('call-api')
       } catch (e) {
         plugins.$toast.error(e.data.message)
@@ -95,7 +93,6 @@ export default {
 
     return {
       payload,
-      allowed,
       onClickSubmit,
     }
   },
