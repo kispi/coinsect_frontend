@@ -6,6 +6,7 @@ $fontPath: '/font-awesome';
     src: url('#{$fontPath}/#{$file}.woff2') format('woff2');
     font-weight: $weight;
     font-style: normal;
+    font-display: swap;
   }
 
   #{$className} {
