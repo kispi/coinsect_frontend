@@ -45,8 +45,8 @@ export default {
       key: 'BITSTAMP:BTCUSD',
       img: require('@/assets/images/bitstamp.svg'),
     }, {
-      name: 'DXY',
-      key: 'DXY',
+      name: 'USDX',
+      key: 'USDX',
       img: 'https://s3-symbol-logo.tradingview.com/indices/u-s-dollar-index--600.png',
     }, {
       name: 'NASDAQ',
