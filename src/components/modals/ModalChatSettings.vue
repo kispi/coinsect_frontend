@@ -1,5 +1,6 @@
 <template>
   <div class="modal-chat-settings">
+    <AppLoading :loading="loading"/>
     <ModalHeader :title="$translate('MODAL_CHAT_SETTINGS')" @close="$emit('close')"/>
     <div class="body">
       <div class="section">
@@ -152,6 +153,8 @@ export default {
 
     const editing = ref(null)
 
+    const loading = ref(null)
+
     const profile = ref({
       nickname: store.getters.chatUser.profile.nickname,
       image: store.getters.chatUser.profile.image,
@@ -222,12 +225,15 @@ export default {
           })
           if (!result) return
 
+          loading.value = true
           p.deviceToken = await initFirebase()
         }
         p.pushPositionChange = !p.pushPositionChange
         updateUserSetting()
       } catch (e) {
         plugins.$toast.error('푸시 알림이 거부되어 있어요 😢<br>사이트 설정에서 허용해주세요')
+      } finally {
+        loading.value = false
       }
     }
 
@@ -239,6 +245,7 @@ export default {
       refChatHideImage,
       refInputNickname,
       editing,
+      loading,
       profile,
       image,
       onKeydown,
@@ -250,9 +257,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal-chat-settings {
+.modal-chat-settings.modal-base-style {
   border-radius: 4px;
   width: 360px;
+  position: relative;
 
   .body {
     padding: 16px;

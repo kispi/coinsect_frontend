@@ -46,12 +46,7 @@
             @click="$router.push('/contents/economic-calendar')"
             :active="$route.path === '/contents/economic-calendar'"
             :tooltip="'ECONOMIC_CALENDAR'"
-            :images="[
-              'https://cloudfront-eu-central-1.images.arcpublishing.com/irishtimes/6OD6I2HARW7GETZUYOLYMEVMBE.jpg',
-              'https://upload.wikimedia.org/wikipedia/commons/f/f4/Janet_Yellen_official_Federal_Reserve_portrait.jpg',
-              'https://pbs.twimg.com/profile_images/1554729553758756864/o0L77J1V_400x400.jpg',
-              'https://i.ytimg.com/vi/DUrlNHTxuJM/hqdefault.jpg',
-            ]"
+            :images="['https://play-lh.googleusercontent.com/9MD3biGQRiYH8NdM6MT4uU9CFEBdeyjwA5OV5Ucab0vjF6O1PD7qIF63FhSk-eqksA=w480-h960-rw']"
           />
           <AppDockIcon
             :numUnreads="numUnreads"

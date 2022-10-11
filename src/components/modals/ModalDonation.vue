@@ -131,7 +131,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal-donation {
+.modal-donation.modal-base-style {
   border-radius: 4px;
   width: 400px;
   min-height: 520px;
