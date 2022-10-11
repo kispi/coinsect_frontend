@@ -39,7 +39,7 @@
       </tbody>
     </table>
     <div class="description">
-      <div>위 트레이더들의 예측 포지션은 말 그대로 '예측' 포지션이며 <a class="c-danger text-underline f-700" href="https://gall.dcinside.com/mgallery/board/view/?id=electronicmoney&no=1372708" rel="noopener" target="_blank">실시간 포지션이 아닙니다.</a></div>
+      <div>위 트레이더들의 예측 포지션은 말 그대로 '예측' 포지션이며 <a class="c-danger text-underline f-700" href="https://gall.dcinside.com/mgallery/board/view/?id=electronicmoney&no=1372708" rel="noreferrer" target="_blank">실시간 포지션이 아닙니다.</a></div>
       <div>BitMEX 리더보드는 보통 하루 단위로 갱신된다고 알려져 있으며, btctools는 5분 단위로 그 정보를 긁어서 최신 상태를 유지합니다.</div>
       <div class="m-t-8">
         최종 업데이트 시점 기준으로 비트코인의 가격이 올랐는데 수익이 증가한 트레이더들은 <b class="long">Long</b>을,

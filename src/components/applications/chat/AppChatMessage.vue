@@ -72,7 +72,7 @@ export default {
 
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
-    const onClickImage = url => window.open(url, '_blank', 'noopener')
+    const onClickImage = url => window.open(url, '_blank', 'noreferrer')
 
     const onClickMessage = e => {
       const link = (e.target.attributes['href'] || {}).value
@@ -84,7 +84,7 @@ export default {
         return
       }
 
-      window.open(link, '_blank', 'noreferrer noopener')
+      window.open(link, '_blank', 'noreferrer')
     }
 
     const meta = computed(() => {

@@ -66,7 +66,7 @@ export default {
     const openBlockExplore = () => {
       if (!selectedWallet.value.blockchain.exploreUrl) return
 
-      window.open(`${selectedWallet.value.blockchain.exploreUrl}${selectedWallet.value.address}`, '_blank', 'noopener')      
+      window.open(`${selectedWallet.value.blockchain.exploreUrl}${selectedWallet.value.address}`, '_blank', 'noreferrer')
     }
 
     const selectWallet = async wallet => {

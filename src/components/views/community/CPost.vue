@@ -61,7 +61,7 @@ export default {
 
     const onClickContent = e => {
       const src = e.target.src
-      if (src) window.open(src, '_blank', 'popup,noreferrer')
+      if (src) window.open(src, '_blank', 'noreferrer')
     }
 
     return {

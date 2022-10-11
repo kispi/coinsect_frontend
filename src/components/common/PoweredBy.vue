@@ -2,7 +2,7 @@
   <div class="powered-by">
     <div class="powered-by-container">
       Powered by
-      <a :href="link || rendered.link" target="_blank" rel="noopener">
+      <a :href="link || rendered.link" target="_blank" rel="noreferrer">
         {{ rendered ? rendered.title : by }}
         <img
           :src="imgUrl || adaptiveSrc(rendered.src)"

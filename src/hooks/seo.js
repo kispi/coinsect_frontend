@@ -31,7 +31,7 @@ const useSeo = () => {
     }
 
     const openable = link.startsWith('http') ? link : `https://${link}`
-    window.open(openable, '_blank', 'noreferrer noopener')
+    window.open(openable, '_blank', 'noreferrer')
   }
 
   const useExamples = helperService.crawlExampleUrls

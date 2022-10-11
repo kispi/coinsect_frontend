@@ -11,7 +11,7 @@
               :key="contact.key"
               v-for="contact in contacts"
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer">
               <AppImg :src="contact.img" :alt="contact.key"/>
             </a>
           </div>

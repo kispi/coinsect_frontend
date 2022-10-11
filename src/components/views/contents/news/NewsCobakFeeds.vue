@@ -1,10 +1,12 @@
 <template>
   <div class="news-cobak-feeds">
     <div class="feed-list">
-      <div
-        @click="onClickFeed(feed)"
+      <a
+        target="_blank"
+        rel="noreferrer"
         class="feed-item"
         :class="{'important': feed.is_best}"
+        :href="`https://cobak.co.kr/news/9/post/${feed.id}`"
         :key="feed.id"
         v-for="feed in data">
         <div class="feed-header">
@@ -18,7 +20,7 @@
           :src="feed.contentImage"
           class="feed-content-image"
         > -->
-      </div>
+        </a>
       <div
         v-if="!loading && data.length === 0"
         class="news-empty center">
@@ -86,10 +88,6 @@ export default {
       }
     }
 
-    const onClickFeed = feed => {
-      window.open(`https://cobak.co.kr/news/9/post/${feed.id}`, '_blank', 'noreferrer onopener')
-    }
-
     onMounted(() => {
       loadNext()
 
@@ -121,7 +119,6 @@ export default {
       data,
       params,
       loading,
-      onClickFeed,
     }
   },
 }
@@ -144,6 +141,7 @@ export default {
   .feed-item {
     position: relative;
     padding: 16px;
+    display: block;
     cursor: pointer;
 
     &:hover {

@@ -105,7 +105,7 @@ export default {
         submitted.value = link.value
         await tryMetaTags(link.value)
       } catch (e) {
-        error.value = `정보를 수집하지 못했습니다. 혹시 입력하신 URL(<a href="${link.value}" target="_blank" rel="noopener noreferrer" class="text-underline">${link.value}</a>)이 잘 열리시나요?`
+        error.value = `정보를 수집하지 못했습니다. 혹시 입력하신 URL(<a href="${link.value}" target="_blank" rel="noreferrer" class="text-underline">${link.value}</a>)이 잘 열리시나요?`
       } finally {
         loading.value = false
       }

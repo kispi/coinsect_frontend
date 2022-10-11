@@ -18,7 +18,7 @@
         class="grid"
         href="https://insights.glassnode.com/bitcoin-supply-distribution"
         target="_blank"
-        rel="noreferrer noopener">
+        rel="noreferrer">
         <div
           class="legend"
           :key="legend.type"

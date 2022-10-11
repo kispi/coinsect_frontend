@@ -18,7 +18,7 @@
       <a
         class="article-item"
         target="_blank"
-        rel="noreferrer noopener"
+        rel="noreferrer"
         :href="`https://cobak.co.kr/news/9/post/${article.id}`"
         :key="article.id"
         v-for="article in data">
