@@ -6,7 +6,7 @@
         @upload-file="e => $emit('close', e)"
         :path="(options || {}).path"
         :noupload="(options || {}).noupload"
-        :resizeWidth="1920"
+        :resize="{ width: 1920, above: 1048576 }"
       />
     </div>
   </div>

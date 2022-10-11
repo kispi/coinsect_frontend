@@ -122,3 +122,23 @@ table {
     }
   }
 }
+
+.image-remover {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  top: 24px;
+  right: 24px;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  cursor: pointer;
+
+  .fa-times {
+    color: var(--white);
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.75);
+  }
+}

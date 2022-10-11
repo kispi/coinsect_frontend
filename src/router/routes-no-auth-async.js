@@ -160,6 +160,13 @@ const apps = [{
     image: withCdn('og-images/og-image-lottery.png'),
   },
 }, {
+  path: '/apps/image-resizer',
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewImageResizer'),
+  meta: {
+    title: 'Image Resizer - 코인충',
+    description: '용량이 큰 이미지를 jpg 형태로 압축하여 작은 용량으로 만들어줍니다.',
+  },
+}, {
   path: '/apps/seo',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
 }, {

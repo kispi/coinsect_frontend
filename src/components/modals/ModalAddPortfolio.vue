@@ -176,6 +176,10 @@ export default {
         color: var(--gs-88);
       }
     }
+
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
   }
 
   .buttons {

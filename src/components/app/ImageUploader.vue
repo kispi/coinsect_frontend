@@ -40,7 +40,9 @@ export default {
     noupload: {
       type: Boolean, // true일 시, 업로드는 하지 않고 파일의 objectURL과 file 객체만 리턴받는다.
     },
-    resizeWidth: null,
+    resize: {
+      default: {},
+    },
   },
   setup(props, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
@@ -49,11 +51,16 @@ export default {
 
     const processing = ref(null)
 
+    const shouldResize = originalFile =>
+      props.resize.width &&
+      props.resize.above &&
+      originalFile.size >= props.resize.above
+
     const doUpload = async originalFile => {
       let file = originalFile
       try {
         processing.value = true
-        file = (props.resizeWidth && originalFile.size >= 1048576) ? await plugins.$helpers.resizeImage(originalFile, props.resizeWidth) : originalFile
+        file = shouldResize(originalFile) ? await plugins.$helpers.resizeImage({ file: originalFile, ...props.resize }) : originalFile
       } finally {
         processing.value = false
       }
@@ -64,6 +71,7 @@ export default {
         if (!props.noupload) url = await s3Service.upload(file, props.path)
         const emittable = {
           src: URL.createObjectURL(file),
+          originalFile,
           file,
         }
         if (url) emittable['url'] = url
@@ -77,7 +85,7 @@ export default {
 
     const onDrop = async e => {
       dragging.value = false
-      if (!plugins.$helpers.acceptableFileSize(e.dataTransfer.files[0])) return
+      if (!shouldResize(e.dataTransfer.files[0]) && !plugins.$helpers.acceptableFileSize(e.dataTransfer.files[0])) return
 
       try {
         await doUpload(e.dataTransfer.files[0])
@@ -87,7 +95,7 @@ export default {
     }
 
     const onChangeFile = e => {
-      if (!plugins.$helpers.acceptableFileSize(e.target.files[0])) return
+      if (!shouldResize(e.target.files[0]) && !plugins.$helpers.acceptableFileSize(e.target.files[0])) return
 
       doUpload(e.target.files[0])
     }

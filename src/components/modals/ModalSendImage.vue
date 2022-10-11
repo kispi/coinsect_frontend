@@ -10,7 +10,7 @@
         @upload-file="e => payload = e"
         :path="(options || {}).path"
         :noupload="(options || {}).noupload"
-        :resizeWidth="1920"
+        :resize="{ width: 1920, above: 1048576 }"
       />
       <div
         v-if="payload.src"
@@ -62,8 +62,6 @@ export default {
         emit('close')
         return
       }
-
-      if (!plugins.$helpers.acceptableFileSize(payload.value.file)) return
 
       try {
         const uploadedUrl = await s3Service.upload(payload.value.file, 'chat')
@@ -136,26 +134,6 @@ export default {
     a {
       text-decoration: underline;
       color: var(--danger);
-    }
-  }
-
-  .image-remover {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    top: 24px;
-    right: 24px;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-    cursor: pointer;
-
-    .fa-times {
-      color: var(--text-stress);
-    }
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.75);
     }
   }
 }

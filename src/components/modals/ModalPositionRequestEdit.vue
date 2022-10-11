@@ -44,7 +44,7 @@
         <button
           class="btn btn-primary"
           @click="onClickSubmit"
-          v-html="$translate(allowed ? 'CONFIRM' : 'SUBMIT')"
+          v-html="$translate('CONFIRM')"
         />
       </div>
     </div>

@@ -185,7 +185,7 @@ const helpers = {
     return result.blob()
   },
   acceptableFileSize: (file, maxFileSize = 5) => {
-    const fileSizeAsMB = file.size / 1000000
+    const fileSizeAsMB = file.size / 1048576
     if (fileSizeAsMB > maxFileSize) {
       toast.error(`${maxFileSize}MB 이하 용량의 이미지를 사용해주세요`)
       return
@@ -193,12 +193,21 @@ const helpers = {
 
     return true
   },
-  resizeImage: async (file, width) => {
+  // https://www.npmjs.com/package/image-resize
+  resizeImage: async ({
+    file,
+    width,
+    format,
+    quality,
+    reSample,
+  }) => {
     if (typeof ImageResize === 'undefined') return file
 
     const o = new ImageResize({
-      format: 'jpg',
+      format,
       width,
+      quality,
+      reSample,
     })
 
     try {

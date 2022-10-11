@@ -207,6 +207,10 @@
     "en": "Games",
     "kr": "게임"
   },
+  "IMAGE_RESIZER": {
+    "en": "Image Resizer",
+    "kr": "이미지 압축기"
+  },
   "VOICE_RECORDER": {
     "en": "Voice Recorder",
     "kr": "녹음기"

@@ -135,7 +135,7 @@ export default {
         })
       }
 
-      const target = file.size > 1048576 ? await plugins.$helpers.resizeImage(file, 1920) : file
+      const target = file.size > 1048576 ? await plugins.$helpers.resizeImage({ file, width: 1920 }) : file
       reader.readAsDataURL(target)
     }
 
