@@ -6,7 +6,7 @@
         rel="noreferrer"
         class="feed-item"
         :class="{'important': feed.is_best}"
-        :href="`https://cobak.co.kr/news/9/post/${feed.id}`"
+        :href="`https://cobak.co.kr/community/9/post/${feed.id}`"
         :key="feed.id"
         v-for="feed in data">
         <div class="feed-header">
