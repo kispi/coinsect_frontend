@@ -53,7 +53,11 @@ export default {
 
     const toggleReaction = async type => {
       try {
-        await communityService.toggleReaction(post.value.id, type)
+        await communityService.toggleReaction({
+          postId: post.value.id,
+          type,
+          nickname: ((store.getters.chatUser || {}).profile || {}).nickname,
+        })
         store.dispatch('loadPost', post.value.sharingKey)
         store.dispatch('loadPosts')
       } catch (e) {}

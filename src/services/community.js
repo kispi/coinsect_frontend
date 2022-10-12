@@ -3,7 +3,7 @@ import crudService from './crud'
 
 const post = crudService.post
 
-const toggleReaction = (postId, type) => $http.post('reactions', { postId, type })
+const toggleReaction = ({ postId, type, nickname }) => $http.post('reactions', { postId, type, nickname })
 
 const checkPassword = {
   post: ({ sharingKey, password }) => $http.post(`posts/${sharingKey}/check_password`, { password }),
