@@ -1,6 +1,12 @@
 <template>
   <div class="view-leaderboard">
     <div class="last-update">최종 업데이트: {{ lastUpdate }}</div>
+    <div class="description">
+      <div>Disclaimer: <a class="c-danger text-underline f-700" href="https://gall.dcinside.com/mgallery/board/view/?id=electronicmoney&no=1372708" rel="noreferrer" target="_blank">실시간 포지션이 아닙니다. (워뇨띠 글)</a></div>
+      <div class="m-t-8">
+        거래소들은 자사 이용 고객의 현재 포지션을 공개하지 않으며, 워뇨띠와 함께 살지 않는 이상 그의 <b>실시간</b> 포지션을 알 수 있는 방법은 없습니다.
+      </div>
+    </div>
     <table class="f-mono">
       <thead>
         <tr>
@@ -38,15 +44,6 @@
         </tr>
       </tbody>
     </table>
-    <div class="description">
-      <div>위 트레이더들의 예측 포지션은 말 그대로 '예측' 포지션이며 <a class="c-danger text-underline f-700" href="https://gall.dcinside.com/mgallery/board/view/?id=electronicmoney&no=1372708" rel="noreferrer" target="_blank">실시간 포지션이 아닙니다.</a></div>
-      <div>BitMEX 리더보드는 보통 하루 단위로 갱신된다고 알려져 있으며, btctools는 5분 단위로 그 정보를 긁어서 최신 상태를 유지합니다.</div>
-      <div class="m-t-8">
-        최종 업데이트 시점 기준으로 비트코인의 가격이 올랐는데 수익이 증가한 트레이더들은 <b class="long">Long</b>을,
-        비트코인의 가격이 떨어졌는데 수익이 증가한 트레이더들은 <b class="short">Short</b> 포지션을 갖고 있었을 것으로 예상합니다.
-        손실을 본 트레이더들은 위 기준으로 산정된 <b>'올바른'</b> 포지션의 반대 방향을 잡고 있었으리라 추측할 수 있습니다.
-      </div>
-    </div>
     <PoweredBy
       :by="'btctools.io'"
       :link="'https://btctools.io/kr/stats/leaderboard'"
@@ -148,7 +145,6 @@ export default {
   }
 
   table {
-    margin-top: 16px;
     width: 100%;
 
     @media (max-width: 767px) {
@@ -185,7 +181,7 @@ export default {
   }
 
   .description {
-    margin-top: 24px;
+    margin: 24px 0;
     font-size: 12px;
     line-height: 20px;
   }

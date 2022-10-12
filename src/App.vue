@@ -1,5 +1,5 @@
 <template>
-  <AppHeader/>
+  <AppHeader :style="folded"/>
   <div class="app-body view-layout-default no-scrollbar">
     <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
@@ -39,6 +39,8 @@ export default {
     const prepared = ref(null)
 
     const showAd = ref(null)
+
+    const folded = ref(null)
 
     const setIsMobile = () => store.commit('setIsMobile')
 
@@ -95,9 +97,19 @@ export default {
       plugins.$helpers.debounce(() => showAd.value = true, 2000),
     )
 
+    watch(
+      () => store.getters.scrollTop,
+      newVal => {
+        folded.value = newVal > 80 ? {
+          'transform': 'translateY(calc(-1 * var(--app-header-height) + 40px))',
+        } : {}
+      },
+    )
+
     return {
       showAd,
       prepared,
+      folded,
     }
   },
 }
@@ -127,6 +139,7 @@ export default {
   right: 0;
   z-index: 5;
   background: var(--background-base);
+  transition: all 0.5s ease-in-out !important;
 }
 
 .app-body {
