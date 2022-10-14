@@ -126,6 +126,15 @@ const useChatHandler = () => {
           // 여기서는 배열의 끝에 넣는 것이므로 Array.push가 맞음
           messages.value.push(curMessage)
         }
+
+        // 메시지가 너무 많아지면 DOM이 많아져서 성능에 문제가 생기므로 500개 초과시 100개로 다시 잘라줌.
+        if (
+          messages.value.length > 500 &&
+          (store.getters.chat.autoScrollable || store.getters.settings.chatFolded)
+        ) {
+          store.commit('setChat', { messages: messages.value.slice(-100) })
+        }
+
         store.commit('setChat', { lastWebsocketMessage: curMessage })
         break
       }
