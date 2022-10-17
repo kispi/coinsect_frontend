@@ -129,7 +129,7 @@ export default {
     background: var(--brand-primary-hover);
     border: 1px solid rgba(255, 255, 255, 0.24);
     position: fixed;
-    top: 16px;
+    top: 24px;
     right: 16px;
     left: initial;
     width: calc(100% - 32px);
