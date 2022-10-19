@@ -127,7 +127,7 @@ export default {
       setTimeout(() => {
         payload.value.keyword = e.target.value
         if (e.key === 'Enter' && !e.isComposing) {
-          payload.value.page = 0
+          payload.value.page = 1
           if (!payload.value.keyword) payload.value.limit = 20
           onPage(payload.value.page)
         }

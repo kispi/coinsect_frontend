@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { ref, computed, getCurrentInstance } from 'vue'
+import { ref, computed, getCurrentInstance, watch } from 'vue'
 
 export default {
   name: 'AppPagination',
@@ -103,6 +103,11 @@ export default {
       const candidate = props.page * props.limit
       return candidate < props.total ? candidate : props.total
     })
+
+    watch(
+      () => props.page,
+      newVal => pageValue.value = newVal,
+    )
 
     return {
       pageValue,
