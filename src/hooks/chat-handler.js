@@ -61,11 +61,19 @@ const useChatHandler = () => {
     }).length
   })
 
+  const isMine = message => {
+    if (!message.user) return
+
+    if (store.getters.me && message.user.id) return store.getters.me.id === message.user.id
+
+    return message.user.token === store.getters.chatUser.token
+  }
+
   const preparedMessage = message => ({
     id: message.id,
     profile: message.type === 'alert' ? alertProfile : (message.user || {}).profile,
     token: (message.user || {}).token,
-    isMine: (message.user || {}).token === store.getters.chatUser.token,
+    isMine: isMine(message),
     text: message.text,
     timestamp: message.ts,
     type: message.type,
@@ -74,6 +82,8 @@ const useChatHandler = () => {
 
   const sendWebsocketMessage = message => {
     message.user = { token: store.getters.chatUser.token } // 보낸 사람의 토큰만 채팅서버로 알려줌 (기존에는 프로필 다보냄)
+    if ((store.getters.header || {}).token) message.user.jwt = store.getters.header.token
+
     const replyTo = store.getters.chat.writingReplyTo
     if (replyTo) {
       message.meta = JSON.stringify({
