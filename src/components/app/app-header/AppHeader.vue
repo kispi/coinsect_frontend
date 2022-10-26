@@ -39,10 +39,10 @@
             <BadgeUnreads :numUnreads="numNewNotifications" :small="true"/>
           </div>
           <!-- <div
-            @click="onClickAccount"
+            @click="$modal.custom({ component: $store.getters.me ? 'ModalChatSettings' : 'ModalSignIn' })"
             class="clickable-icon-wrapper">
-            <i v-if="$store.getters.me" class="fa fa-circle-user"/>
-            <div v-else>로그인</div>
+            <i v-if="$store.getters.me" class="fal fa-circle-user"/>
+            <i v-else class="fal fa-power-off"/>
           </div> -->
         </div>
         <WrapperDropdownOverlay
@@ -83,7 +83,6 @@
 <script>
 import { computed, getCurrentInstance, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import useMenuItems from './menu-items'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
@@ -97,8 +96,6 @@ export default {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
     const store = useStore()
-
-    const router = useRouter()
 
     const refIconSettings = ref(null)
 
@@ -121,11 +118,6 @@ export default {
       return (n.data || []).filter(o => d().diff(o.createdAt, 'hour') < 24).length
     })
 
-    const onClickAccount = () => {
-      if (store.getters.me) router.push('/account')
-      else plugins.$modal.custom({ component: 'ModalSignIn' })
-    }
-
     watch(
       () => store.getters.chatStats.numConnections,
       (newVal, oldVal) => {
@@ -144,7 +136,6 @@ export default {
       menuItems,
       subPages,
       onClickMenuItem,
-      onClickAccount,
     }
   },
 }
