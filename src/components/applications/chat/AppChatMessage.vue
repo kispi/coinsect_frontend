@@ -3,7 +3,7 @@
     class="app-chat-message"
     :class="{'mine': message.isMine}">
     <div class="content">
-      <AppChatProfile v-if="showProfile" :user="message"/>
+      <AppChatProfile v-if="showProfile" :user="message.user"/>
       <div class="text-and-timestamp">
         <template v-if="!message.$$hide">
           <template v-if="message.type === 'image'">
@@ -97,11 +97,11 @@ export default {
     const showProfile = computed(() => {
       if (props.message.isMine) return
 
-      if (!props.message.profile) return
+      if (!props.message.user.profile) return
 
       if (!props.prevMessage) return true
 
-      return props.prevMessage.token !== props.message.token ||
+      return props.prevMessage.user.token !== props.message.user.token ||
         d(props.prevMessage.timestamp) !== d(props.message.timestamp)
     })
 
@@ -109,7 +109,7 @@ export default {
       if (!props.nextMessage) return true
 
       // 직전 메시지와 다음 메시지를 다른 유저가 보낸 경우
-      if (props.nextMessage.token !== props.message.token) return true
+      if (props.nextMessage.user.token !== props.message.user.token) return true
 
       // 직전 메시지와 다음 메시지의 유저가 같으나 타임스탬프도 1분 이상 차이가 나는 경우
       return d(props.nextMessage.timestamp) !== d(props.message.timestamp)

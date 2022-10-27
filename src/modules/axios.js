@@ -60,13 +60,10 @@ export const setRequestHeader = header => {
   })
 }
 
-const clearRequestHeader = () => Object.keys($http.defaults.headers).forEach(key => delete $http.defaults.headers[key])
-
 export default {
   $http,
   $httpNoAuth,
   createHttpClient,
   setHttpClient,
   setRequestHeader,
-  clearRequestHeader,
 }

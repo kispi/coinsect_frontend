@@ -26,5 +26,9 @@
   "TOOLTIP_BLOCKED_WITHDRAWL": {
     "en": "Withdrawl Unavailable",
     "kr": "출금 불가"
+  },
+  "TOOLTIP_FIXED_NICKNAME": {
+    "en": "A fixed nickname, cannot be duplicated, only for those who logged in.",
+    "kr": "로그인한 유저에게만 주어지는 고정 닉네임으로, 중복이 허용되지 않습니다."
   }
 }

@@ -4,7 +4,7 @@
     @click="onClickIncomingMessageOverlay"
     class="app-chat-incoming-message-overlay">
     <div class="flex-row items-center flex-fill lines-1">
-      <AppChatProfile :user="incomingMessage" class="no-touch flex-wrap"/>
+      <AppChatProfile :user="incomingMessage.user" class="no-touch flex-wrap"/>
       <div class="text lines-1" v-html="incomingMessage.type === 'image' ? $translate('IMAGE') : incomingMessage.text"/>
     </div>
     <i class="fa fa-chevron-down"/>

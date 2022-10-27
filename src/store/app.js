@@ -191,7 +191,7 @@ const app = {
     async loadAuthRequired({ getters, dispatch }) {
       if (!getters.header) return
 
-      dispatch('loadMe')
+      await dispatch('loadMe')
     },
     // 앱 뜰 때 필요한 정보들 쭉 콜함
     async bootstrap({ commit, dispatch }) {
@@ -204,7 +204,7 @@ const app = {
 
       $http.get('config').then(data => commit('setConfig', data))
       await dispatch('loadAuthNotRequired')
-      dispatch('loadAuthRequired')
+      await dispatch('loadAuthRequired')
     },
   },
 }

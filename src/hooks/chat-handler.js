@@ -71,8 +71,11 @@ const useChatHandler = () => {
 
   const preparedMessage = message => ({
     id: message.id,
-    profile: message.type === 'alert' ? alertProfile : (message.user || {}).profile,
-    token: (message.user || {}).token,
+    user: {
+      id: (message.user || {}).id,
+      profile: message.type === 'alert' ? alertProfile : (message.user || {}).profile,
+      token: (message.user || {}).token,
+    },
     isMine: isMine(message),
     text: message.text,
     timestamp: message.ts,
@@ -104,7 +107,7 @@ const useChatHandler = () => {
 
     p.sentiment = { type }
     try {
-      await setAccount(p)
+      await store.dispatch('setAccount', p)
       plugins.$toast.success(`${type === 'long' ? '롱' : '숏'}으로 가보자!`)
       if (withSound) play(type)
     } catch (e) {}
@@ -153,6 +156,14 @@ const useChatHandler = () => {
         plugins.$helpers.localStorage.setMeta('user', message.user)
         store.commit('setChatUser', message.user)
         ping()
+
+        if (store.getters.me) {
+          const m = store.getters.me
+          store.dispatch('setAccount', {
+            nickname: m.profile.nickname,
+            image: m.profile.image,
+          }).catch(e => plugins.$toast.error(e.data.message))
+        }
         break
       case 'userSetting':
         store.commit('setChatUserSetting', message.meta)

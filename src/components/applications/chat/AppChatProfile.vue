@@ -3,8 +3,8 @@
     v-if="user"
     class="app-chat-profile lines-1"
     :class="[
-      user.type,
       $store.getters.config.adminToken === user.token ? 'admin' : '',
+      user.id ? 'authenticated' : '',
     ]">
     <AppImg
       v-if="(user.profile || {}).image"
@@ -14,18 +14,25 @@
         images: [(user.profile || {}).image],
       })"
     />
-    <span
-      v-else
-      class="dot"
-      :style="{ background: `#${(user.token || '').slice(0, 6)}` }"
-    />
+    <template v-else>
+      <span
+        v-if="!user.id"
+        class="dot"
+        :style="{ background: `#${(user.token || '').slice(0, 6)}` }"
+      />
+      <i v-else class="fa fa-shield-check c-price-up-bybit m-r-4"/>
+    </template>
     <span
       @click="openModalBlockUser"
       class="nickname"
       :class="useSentiment ? ((user.profile || {}).sentiment || {}).type || '' : ''"
       v-html="(user.profile || {}).nickname"
     />
-    <BadgeToken :token="user.token" @click="openModalBlockUser"/>
+    <BadgeToken
+      v-if="!user.id"
+      :token="user.token"
+      @click="openModalBlockUser"
+    />
   </div>
 </template>
 
@@ -45,7 +52,7 @@ export default {
 
     const $t = plugins.$translate
 
-    const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', props.user.token.toUpperCase().slice(0, 3))
+    const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', props.token.toUpperCase().slice(0, 3))
 
     const openModalBlockUser = () => {
       const u = props.user
@@ -106,13 +113,6 @@ export default {
     cursor: pointer;
   }
 
-  &.alert {
-    .nickname {
-      color: var(--brand-primary);
-      font-weight: 700;
-    }
-  }
-
   &.admin {
     .nickname {
       font-weight: 700;
@@ -122,6 +122,10 @@ export default {
     .badge-token {
       display: none;
     }
+  }
+
+  &.authenticated {
+    font-weight: 700;
   }
 }
 </style>

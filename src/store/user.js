@@ -1,9 +1,9 @@
 import helpers from '@/helpers'
-import axios from '@/modules/axios'
-import { router } from '@/router'
+import axios, { $http } from '@/modules/axios'
 import userService from '@/services/user'
+import { router } from '@/router'
 
-const afterSignIn = async ({ dispatch, token, customRouteTo }) => {
+const afterSignIn = async ({ dispatch, getters, token, customRouteTo }) => {
   window.localStorage.setItem('header', JSON.stringify({ token }))
 
   try {
@@ -11,6 +11,10 @@ const afterSignIn = async ({ dispatch, token, customRouteTo }) => {
     await dispatch('loadAuthRequired')
     const prevFullPath = helpers.localStorage.getMeta('prevFullPath')
     router.push(customRouteTo || prevFullPath || '/')
+    dispatch('setAccount', {
+      nickname: getters.me.profile.nickname,
+      image: getters.me.profile.image,
+    }).catch(e => helpers.toast.error(e.data.message))
   } catch (e) {
     return Promise.reject(e)
   }
@@ -40,6 +44,16 @@ const user = {
       commit('setHeader', JSON.parse(header))
       axios.setRequestHeader(JSON.parse(header))
     },
+    async setAccount({ commit, getters }, profile) {
+      try {
+        const user = await $http.put(`webchat/users/${getters.chatUser.token}`, {
+          profile,
+        })
+        commit('setChatUser', user)
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
     async loadMe({ commit, dispatch }) {
       try {
         const user = await userService.me()
@@ -48,31 +62,26 @@ const user = {
         dispatch('signOut')
       }
     },
-    async signIn({ dispatch }, { email, password, customRouteTo }) {
+    async signIn({ dispatch, getters }, { email, password, customRouteTo }) {
       try {
         const data = await userService.signIn({ email, password })
-        await afterSignIn({ dispatch, token: data.token, customRouteTo })
+        await afterSignIn({ dispatch, getters, token: data.token, customRouteTo })
       } catch (e) {
         return Promise.reject(e)
       }
     },
-    async signInKakao({ dispatch }, { kakaoId, email }) {
+    async signInKakao({ dispatch, getters }, { kakaoId, email }) {
       try {
         const { token } = await userService.signInKakao({ kakaoId, email })
-        await afterSignIn({ dispatch, token })
+        await afterSignIn({ dispatch, getters, token })
       } catch (e) {
         return Promise.reject(e)
       }
     },
-    signOut({ commit, dispatch }) {
+    signOut() {
       const removeTheseKeys = ['header', 'meta']
       removeTheseKeys.forEach(key => window.localStorage.removeItem(key))
-      axios.clearRequestHeader()
-      // pushWithFrom 사용 X
-      router.push('/').then(() => {
-        commit('initAppData')
-        dispatch('bootstrap')
-      })
+      location.reload()
     },
   },
   mutations: {

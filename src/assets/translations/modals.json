@@ -63,6 +63,10 @@
     "en": "Sign In",
     "kr": "로그인"
   },
+  "LOGOUT": {
+    "en": "Logout",
+    "kr": "로그아웃"
+  },
   "INIT_SETTINGS": {
     "en": "Init Settings",
     "kr": "개인화 설정 초기화"

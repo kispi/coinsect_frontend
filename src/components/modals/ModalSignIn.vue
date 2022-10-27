@@ -4,14 +4,20 @@
       :title="$translate('MODAL_SIGN_IN')"
       @close="$emit('close')"
     />
-    <div class="ways-to-login">
-      <div
-        @click="way.handler"
-        class="way"
-        :key="way.title"
-        v-for="way in waysToLogin">
-        <img :src="way.img"/>
-        <div v-html="`${way.title} 로그인`"/>
+    <div class="body">
+      <div class="ways-to-login">
+        <div
+          @click="way.handler"
+          class="way"
+          :key="way.title"
+          v-for="way in waysToLogin">
+          <img :src="way.img"/>
+          <div v-html="`${way.title} 로그인`"/>
+        </div>
+      </div>
+      <div class="description">
+        로그인을 한 상태에서 닉네임을 설정하면, 유일한 고정 닉네임을 가질 수 있습니다.
+        또한, 기기가 바뀌거나 브라우저 캐시가 삭제되어도 프로필 이미지와 닉네임이 유지됩니다.
       </div>
     </div>
   </div>
@@ -26,7 +32,7 @@ export default {
 
     const waysToLogin = [
       { title: '카카오', handler: signIn, img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw' },
-      { title: '네이버', handler: signIn, img: require('@/assets/images/naver.png') },
+      // { title: '네이버', handler: signIn, img: require('@/assets/images/naver.png') },
     ]
 
     return {
@@ -39,6 +45,16 @@ export default {
 
 <style lang="scss" scoped>
 .modal-sign-in {
+  .body {
+    padding: 16px;
+  }
+
+  .description {
+    margin-top: 24px;
+    font-size: 12px;
+    line-height: 20px;
+  }
+
   .ways-to-login {
     padding: 24px 16px;
     margin: auto;
@@ -58,6 +74,10 @@ export default {
 
       &:not(:last-child) {
         margin-bottom: 16px;
+      }
+
+      &:hover {
+        font-weight: 700;
       }
     }
   }

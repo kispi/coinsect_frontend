@@ -22,5 +22,9 @@
   "BAD_REQUEST": {
     "en": "Bad Request",
     "kr": "잘못된 요청입니다"
+  },
+  "EXISTING_NICKNAME": {
+    "en": "Existing nickname",
+    "kr": "이미 존재하는 닉네임입니다"
   }
 }

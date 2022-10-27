@@ -30,6 +30,17 @@
               @keydown="e => onKeydown(e, 'nickname')"
               v-model="profile.nickname"
             >
+            <i
+              ref="refFixedNickname"
+              v-if="$store.getters.me"
+              class="fa fa-shield-check"
+              @mouseover="$tooltip.show({
+                id: 'tooltipFixedNickname',
+                showAbove: refFixedNickname,
+                text: 'TOOLTIP_FIXED_NICKNAME',
+              })"
+              @mouseleave="$tooltip.hide('tooltipFixedNickname')"
+            />
             <i @click="toggleEditProfile" class="fal" :class="editing ? 'fa-save' : 'fa-edit'"/>
           </div>
         </div>
@@ -119,6 +130,11 @@
         <!-- pushChatNewMessage <- 얘도 나중에 넣을까? 과하려나? -->
       </div>
     </div>
+    <button
+      @click="$store.dispatch('signOut')"
+      class="btn btn-primary"
+      v-html="$translate('LOGOUT')"
+    />
   </div>
 </template>
 
@@ -131,6 +147,8 @@ import usePWA from '@/hooks/addons/pwa'
 export default {
   props: ['options'],
   setup() {
+    const refFixedNickname = ref(null)
+
     const refChatDing = ref(null)
 
     const refChatTransparent = ref(null)
@@ -195,7 +213,7 @@ export default {
 
     const update = async () => {
       try {
-        await setAccount(profile.value)
+        await store.dispatch('setAccount', profile.value)
         editing.value = false
       } catch (e) {
         plugins.$toast.error(e.data.message)
@@ -238,6 +256,7 @@ export default {
     }
 
     return {
+      refFixedNickname,
       refChatDing,
       refChatTransparent,
       refChatSizeMax,
@@ -339,7 +358,7 @@ export default {
       display: flex;
       align-items: center;
       border: 0;
-      width: 160px;
+      width: 168px;
       margin: 0 auto;
       position: relative;
       border-bottom: 1px solid transparent;
@@ -358,13 +377,18 @@ export default {
         position: absolute;
         right: 0;
       }
+
+      .fa-shield-check {
+        left: 0;
+        color: var(--price-up-bybit);
+      }
     }
   }
 
   .btn-primary {
     padding: 12px 40px;
     display: table;
-    margin: 24px auto;
+    margin: 0 auto 24px;
   }
 }
 </style>

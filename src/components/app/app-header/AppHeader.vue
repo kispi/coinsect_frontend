@@ -38,12 +38,12 @@
             />
             <BadgeUnreads :numUnreads="numNewNotifications" :small="true"/>
           </div>
-          <!-- <div
+          <div
             @click="$modal.custom({ component: $store.getters.me ? 'ModalChatSettings' : 'ModalSignIn' })"
             class="clickable-icon-wrapper">
             <i v-if="$store.getters.me" class="fal fa-circle-user"/>
             <i v-else class="fal fa-power-off"/>
-          </div> -->
+          </div>
         </div>
         <WrapperDropdownOverlay
           v-if="showNotifications"

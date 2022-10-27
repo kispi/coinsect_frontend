@@ -20,6 +20,10 @@
         :src="$store.getters.chatUser.profile.image"
         @click="$modal.custom({ component: 'ModalChatSettings' })"
       />
+      <i
+        v-if="!$store.getters.chatUser.profile.image && $store.getters.me"
+        class="fa fa-shield-check c-price-up-bybit m-r-4"
+      />
       <div class="flex-row items-center">
         <div
           class="nickname lines-1"
@@ -30,7 +34,7 @@
           @click="$modal.custom({ component: 'ModalChatSettings' })"
           v-html="$store.getters.chatUser.profile.nickname"
         />
-        <BadgeToken :token="$store.getters.chatUser.token" class="m-l-4"/>
+        <BadgeToken v-if="!$store.getters.me" :token="$store.getters.chatUser.token" class="m-l-4"/>
       </div>
     </div>
     <div class="chat-settings">
