@@ -1,10 +1,9 @@
 <template>
   <div class="view-home">
-    <TradingViewTicker
-      v-if="$store.getters.settings.tradingview.home"
-      class="m-t-8 m-b-8"
-    />
-    <MultiCharts class="m-b-8"/>
+    <template v-if="$store.getters.settings.tradingview.home">
+      <TradingViewTicker class="m-t-8 m-b-8"/>
+      <MultiCharts class="m-b-8"/>
+    </template>
     <div class="row p-b-8">
       <BaseAndTarget/>
       <div
