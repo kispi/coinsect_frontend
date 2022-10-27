@@ -21,21 +21,25 @@ const useKakao = () => {
     }))
   })
 
-  const signIn = () => {
+  const signIn = () => new Promise((resolve, reject) => {
     Kakao.Auth.login({
       success: async () => {
-        const user = await loadKakaoMe()
-        store.dispatch('signInKakao', {
-          kakaoId: user.id,
-          email: user.kakao_account.email,
-        })
+        try {
+          const user = await loadKakaoMe()
+          await store.dispatch('signInKakao', {
+            kakaoId: user.id,
+            email: user.kakao_account.email,
+          })
+          resolve()
+        } catch (e) {
+          reject(e)
+        }
       },
       fail: err => {
-        plugins.$toast.error('카카오 로그인에 실패하였습니다')
-        console.error(err)
+        reject(err)
       },
     })
-  }
+  })
 
   // 탈퇴시 이거 먼저 실행하고 서버에서도 탈퇴처리
   const signOut = () => {

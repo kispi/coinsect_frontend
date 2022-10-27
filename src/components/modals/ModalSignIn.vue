@@ -24,14 +24,26 @@
 </template>
 
 <script>
+import { getCurrentInstance } from 'vue'
 import useKakao from '@/hooks/oauth/kakao'
 
 export default {
-  setup() {
+  setup(_, { emit }) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
     const { signIn } = useKakao()
 
+    const wrapper = signInFunction => async () => {
+      try {
+        await signInFunction()
+        emit('close')
+      } catch (e) {
+        plugins.$toast.error('소셜 로그인 과정에서 문제가 발생했습니다 😢')
+      }
+    }
+
     const waysToLogin = [
-      { title: '카카오', handler: signIn, img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw' },
+      { title: '카카오', handler: wrapper(signIn), img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw' },
       // { title: '네이버', handler: signIn, img: require('@/assets/images/naver.png') },
     ]
 

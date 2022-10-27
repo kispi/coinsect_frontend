@@ -1,4 +1,4 @@
-import { $http } from '@/modules/axios'
+import { $httpNoAuth } from '@/modules/axios'
 import helpers from '@/helpers'
 
 const createError = message => ({ data: { message }})
@@ -10,12 +10,12 @@ const s3Service = {
     if (!file.type.startsWith('image')) return Promise.reject(createError('png, jpg, jpeg, gif, svg 등의 이미지 파일을 사용해주세요'))
 
     try {
-      const { url, headers } = await $http.get('aws/s3/upload_url', {
+      const { url, headers } = await $httpNoAuth.get('aws/s3/upload_url', {
         params: {
           key: `${path}/${encodeURI(file.name)}`,
         },
       })
-      await $http.put(url, file, {
+      await $httpNoAuth.put(url, file, {
         // 나중에 할 일이 생기면 해도 될듯
         // onUploadProgress: e => this.progress.value = e.loaded / e.total,
         headers,

@@ -58,6 +58,7 @@ export default {
 
     const init = () => {
       if (props.post) payload.value = props.post
+      else if (store.getters.me) payload.value.nickname = store.getters.me.profile.nickname
       else payload.value.nickname = ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname
     }
 
