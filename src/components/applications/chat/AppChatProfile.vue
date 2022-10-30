@@ -52,7 +52,7 @@ export default {
 
     const $t = plugins.$translate
 
-    const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', props.token.toUpperCase().slice(0, 3))
+    const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', (props.token || '').toUpperCase().slice(0, 3))
 
     const openModalBlockUser = () => {
       const u = props.user
