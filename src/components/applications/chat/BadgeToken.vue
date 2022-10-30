@@ -2,7 +2,7 @@
   <div
     v-if="token"
     class="badge-token">
-    {{ token.substring(0, 3).toUpperCase() }}
+    {{ (token || '').substring(0, 3).toUpperCase() }}
   </div>
 </template>
 
