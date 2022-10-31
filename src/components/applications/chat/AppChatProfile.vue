@@ -55,6 +55,8 @@ export default {
     const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', (props.user.token || '').toUpperCase().slice(0, 3))
 
     const openModalBlockUser = user => {
+      if (!user.token) return
+
       const blockedUsers = store.getters.settings.blockedUsers
       plugins.$modal.confirm({
         body: replacer($t(blockedUsers[user.token] ? 'UNBLOCK_USER' : 'BLOCK_USER'))
@@ -62,7 +64,7 @@ export default {
         if (idx !== 1) return
 
         if (blockedUsers[user.token]) delete blockedUsers[user.token]
-        else  blockedUsers[user.token] = true
+        else blockedUsers[user.token] = true
         store.commit('setSettings', { blockedUsers })
       })
     }
