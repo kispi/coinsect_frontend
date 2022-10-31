@@ -19,7 +19,7 @@ const useChatHandler = () => {
 
   const messages = computed(() => store.getters.chat.messages)
 
-  const filteredMessages = computed(() => messages.value.filter(m => !store.getters.settings.blockedUsers[m.token]))
+  const filteredMessages = computed(() => messages.value.filter(m => !store.getters.settings.blockedUsers[m.user.token]))
 
   const connection = computed(() => store.getters.chat.connection)
 

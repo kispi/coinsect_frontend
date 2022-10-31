@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, getCurrentInstance, onServerPrefetch } from 'vue'
+import { ref, computed, onMounted, getCurrentInstance, onServerPrefetch, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
@@ -195,6 +195,19 @@ export default {
     onMounted(callApi)
 
     onServerPrefetch(callApi)
+
+    watch(
+      () => router.currentRoute.value,
+      newVal => {
+        if (newVal.fullPath === '/community') {
+          // 이건 아닌데...
+          payload.value.page = 1
+          payload.value.limit = 20
+          payload.value.keyword = null
+          loadPosts()
+        }
+      },
+    )
 
     return {
       refInput,

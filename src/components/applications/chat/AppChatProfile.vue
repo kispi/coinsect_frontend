@@ -23,7 +23,7 @@
       <i v-else class="fa fa-shield-check c-price-up-bybit m-r-4"/>
     </template>
     <span
-      @click="openModalBlockUser"
+      @click="openModalAboutUser"
       class="nickname"
       :class="useSentiment ? ((user.profile || {}).sentiment || {}).type || '' : ''"
       v-html="(user.profile || {}).nickname"
@@ -31,7 +31,7 @@
     <BadgeToken
       v-if="!user.id"
       :token="user.token"
-      @click="openModalBlockUser"
+      @click="openModalAboutUser"
     />
   </div>
 </template>
@@ -54,22 +54,31 @@ export default {
 
     const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', (props.user.token || '').toUpperCase().slice(0, 3))
 
-    const openModalBlockUser = () => {
-      const u = props.user
+    const openModalBlockUser = user => {
       const blockedUsers = store.getters.settings.blockedUsers
       plugins.$modal.confirm({
-        body: replacer($t(blockedUsers[u.token] ? 'UNBLOCK_USER' : 'BLOCK_USER'))
+        body: replacer($t(blockedUsers[user.token] ? 'UNBLOCK_USER' : 'BLOCK_USER'))
       }).then(idx => {
         if (idx !== 1) return
 
-        if (blockedUsers[u.token]) delete blockedUsers[u.token]
-        else  blockedUsers[u.token] = true
+        if (blockedUsers[user.token]) delete blockedUsers[user.token]
+        else  blockedUsers[user.token] = true
         store.commit('setSettings', { blockedUsers })
       })
     }
 
+    const openModalAboutUser = () => {
+      const user = props.user
+      if (!user.id) return openModalBlockUser(user)
+
+      plugins.$modal.custom({
+        component: 'ModalUserStats',
+        options: { user },
+      })
+    }
+
     return {
-      openModalBlockUser,
+      openModalAboutUser,
     }
   },
 }

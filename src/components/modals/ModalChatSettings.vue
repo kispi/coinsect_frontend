@@ -210,6 +210,7 @@ export default {
       try {
         await store.dispatch('setAccount', profile.value)
         editing.value = false
+        if (store.getters.me) store.dispatch('loadMe')
       } catch (e) {
         plugins.$toast.error(e.data.message)
 
