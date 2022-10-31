@@ -6,7 +6,9 @@
       <div class="post-header">
         <div class="post-title" v-html="post.title"/>
         <div class="writer-and-created-at">
-          <div class="writer" v-html="$helpers.template.writer(post)"/>
+          <div class="writer">
+            <UserSymbol :user="post.user" class="m-r-4"/>{{ $helpers.template.writer(post) }}
+          </div>
           <div class="created-at" v-html="$helpers.template.prettyTime(post.createdAt)"/>
         </div>
         <div class="numbers">

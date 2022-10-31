@@ -159,7 +159,7 @@ export default {
   .form-control {
     label {
       color: var(--text-stress);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     select {

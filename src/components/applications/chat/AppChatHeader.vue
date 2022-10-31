@@ -15,15 +15,7 @@
     <div
       v-if="$store.getters.chatUser"
       class="profile">
-      <AppImg
-        v-if="$store.getters.chatUser.profile.image"
-        :src="$store.getters.chatUser.profile.image"
-        @click="$modal.custom({ component: 'ModalChatSettings' })"
-      />
-      <i
-        v-if="!$store.getters.chatUser.profile.image && $store.getters.me"
-        class="fa fa-shield-check c-price-up-bybit m-r-4"
-      />
+      <UserSymbol :user="$store.getters.me" class="m-r-4"/>
       <div class="flex-row items-center">
         <div
           class="nickname lines-1"
@@ -63,13 +55,6 @@
 
   .profile {
     display: flex;
-
-    .app-img {
-      width: 16px;
-      height: 16px;
-      margin-right: 4px;
-      border-radius: 50%;
-    }
 
     .nickname {
       color: var(--text-stress);

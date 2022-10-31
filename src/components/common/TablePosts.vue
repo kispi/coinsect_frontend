@@ -38,9 +38,9 @@
           </div>
           <div class="content">
             <div
-              class="cell nickname"
-              v-html="$helpers.template.writer(row)"
-            />
+              class="cell nickname">
+              <UserSymbol :user="row.user" class="flex-wrap m-r-4"/>{{ $helpers.template.writer(row) }}
+            </div>
             <div
               class="cell date f-mono">
               {{ $helpers.template.prettyTime(row.createdAt, true) }}

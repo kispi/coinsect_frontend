@@ -27,6 +27,7 @@ export default {
     const sharingKey = computed(() => router.currentRoute.value.params.sharingKey)
 
     const loadPost = async () => {
+      store.commit('setPost', null)
       if (!sharingKey.value) return
 
       try {

@@ -63,7 +63,7 @@ export default {
 
       if (!post.value) return arr
 
-      if (post.value.postType === 'normal' && plugins.$helpers.canModify(post.value)) {
+      if (post.value.postType === 'normal' && plugins.$helpers.writing.canModify(post.value)) {
         arr.push({
           text: 'EDIT',
           handler: handlers.edit,

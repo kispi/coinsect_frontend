@@ -9,9 +9,11 @@
       v-for="reply in repliesToDisplay">
       <div class="reply-body">
         <div class="reply-header">
-          <div class="writer" v-html="$helpers.template.writer(reply)"/>
+          <div class="reply-user">
+            <UserSymbol :user="reply.user" class="m-r-4"/><span v-html="$helpers.template.writer(reply)"/>
+          </div>
           <div
-            v-if="$helpers.canModify(reply)"
+            v-if="$helpers.writing.canModify(reply)"
             class="reply-functions">
             <!-- <div @click="onClickEdit(reply)" class="reply-edit" v-html="$translate('EDIT')"/> -->
             <div @click="onClickDelete(reply)" class="reply-delete" v-html="$translate('DELETE')"/>
@@ -93,10 +95,6 @@ export default {
       img {
         max-width: 320px !important;
       }
-    }
-
-    .writer {
-      font-weight: 600;
     }
 
     .created-at {
