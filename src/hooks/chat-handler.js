@@ -93,7 +93,7 @@ const useChatHandler = () => {
         replyTo: {
           id: replyTo.id,
           text: replyTo.text,
-          nickname: replyTo.profile.nickname,
+          nickname: replyTo.user.profile.nickname,
         },
       })
       store.commit('setChat', { writingReplyTo: null })

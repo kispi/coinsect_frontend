@@ -105,7 +105,7 @@ const helpers = {
 
     return symbols[$store.getters.settings.currency]
   },
-  isImageUrl: url => ['.jpg', '.jpeg', '.png'].some(ext => url.endsWith(ext)), // AWS Rekognition에서 검사가능한 URL만 남김.
+  isImageUrl: url => ['.jpg', '.jpeg', '.png'].some(ext => (url || '').endsWith(ext)), // AWS Rekognition에서 검사가능한 URL만 남김.
   retrieveUrlFromString: url => ((url || '').match(dom.regex.url) || [])[0],
   retrieveNumbersOnly: str => str.replace(/[^0-9]+/g, ''),
   retrieveLettersOnly: str => str.replace(/[^a-zA-Z]+/g, ''),
