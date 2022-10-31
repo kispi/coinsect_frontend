@@ -39,8 +39,10 @@
           <div class="content">
             <div
               class="cell nickname"
-              v-html="$helpers.template.writer(row)"
-            />
+              :class="{'authorized-clickable-nickname': row.userId}">
+              <UserSymbol :user="row.user" class="flex-wrap m-r-4"/>
+              <span @click.stop.prevent="onClickUserNickname(row)">{{ $helpers.template.writer(row) }}</span>
+            </div>
             <div
               class="cell date f-mono">
               {{ $helpers.template.prettyTime(row.createdAt, true) }}
@@ -97,7 +99,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, getCurrentInstance, onServerPrefetch } from 'vue'
+import { ref, computed, onMounted, getCurrentInstance, onServerPrefetch, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
@@ -159,6 +161,15 @@ export default {
       setTimeout(loadPosts)
     }
 
+    const onClickUserNickname = row => {
+      if (!row.userId) {
+        onClickRow(row)
+        return
+      }
+
+      plugins.$modal.custom({ component: 'ModalUserStats', options: { user: row.user } })
+    }
+
     const onPage = page => {
       payload.value.page = page
       router.push(`/community?${queryString()}`)
@@ -185,6 +196,19 @@ export default {
 
     onServerPrefetch(callApi)
 
+    watch(
+      () => router.currentRoute.value,
+      newVal => {
+        if (newVal.fullPath === '/community') {
+          // 이건 아닌데...
+          payload.value.page = 1
+          payload.value.limit = 20
+          payload.value.keyword = null
+          loadPosts()
+        }
+      },
+    )
+
     return {
       refInput,
       focus,
@@ -197,6 +221,7 @@ export default {
       onPage,
       loadPosts,
       onClickRow,
+      onClickUserNickname,
       onKeydown,
     }
   },
@@ -289,7 +314,7 @@ export default {
   .id-title,
   .content {
     display: flex;
-    align-items: baseline;
+    align-items: center;
   }
 
   .id-title {
@@ -345,6 +370,14 @@ export default {
   .table-pagination {
     margin: 24px auto;
     display: table;
+  }
+
+  @media (min-width: 768px) {
+    .row {
+      height: 40px;
+      line-height: 40px;
+      padding: 0;
+    }
   }
 }
 </style>

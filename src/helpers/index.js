@@ -105,7 +105,7 @@ const helpers = {
 
     return symbols[$store.getters.settings.currency]
   },
-  isImageUrl: url => ['.jpg', '.jpeg', '.png'].some(ext => url.endsWith(ext)), // AWS Rekognition에서 검사가능한 URL만 남김.
+  isImageUrl: url => ['.jpg', '.jpeg', '.png'].some(ext => (url || '').endsWith(ext)), // AWS Rekognition에서 검사가능한 URL만 남김.
   retrieveUrlFromString: url => ((url || '').match(dom.regex.url) || [])[0],
   retrieveNumbersOnly: str => str.replace(/[^0-9]+/g, ''),
   retrieveLettersOnly: str => str.replace(/[^a-zA-Z]+/g, ''),
@@ -159,11 +159,18 @@ const helpers = {
     const orderedIndices = JSON.parse(JSON.stringify(foundIndices)).sort()
     return JSON.stringify(foundIndices) === JSON.stringify(orderedIndices)
   },
-  canModify: postOrReply => {
-    if (!postOrReply || postOrReply.deletedAt) return
-
-    // 게시글 또는 댓글의 작성자가 나이거나, 둘 다 undefined인 경우.
-    return (postOrReply.user || {}).id === ($store.getters.me || {}).id
+  writing: {
+    isMine: writing => {
+      if (!$store.getters.me || !(writing || {}).user) return
+  
+      return (writing.user || {}).id === ($store.getters.me || {}).id
+    },
+    canModify: writing => {
+      if (!writing || writing.deletedAt) return
+  
+      // 게시글 또는 댓글의 작성자가 나이거나, 둘 다 undefined인 경우.
+      return !writing.user || helpers.writing.isMine(writing)
+    },
   },
   mustToken: existingTokens => {
     const o = {}

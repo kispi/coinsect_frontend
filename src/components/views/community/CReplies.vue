@@ -9,9 +9,15 @@
       v-for="reply in repliesToDisplay">
       <div class="reply-body">
         <div class="reply-header">
-          <div class="writer" v-html="$helpers.template.writer(reply)"/>
+          <div class="reply-user" :class="{'authorized-clickable-nickname': reply.userId}">
+            <UserSymbol :user="reply.user" class="m-r-4"/>
+            <span
+              @click="reply.userId ? $modal.custom({ component: 'ModalUserStats', options: { user: reply.user } }) : null"
+              v-html="$helpers.template.writer(reply)"
+            />
+          </div>
           <div
-            v-if="$helpers.canModify(reply)"
+            v-if="$helpers.writing.canModify(reply)"
             class="reply-functions">
             <!-- <div @click="onClickEdit(reply)" class="reply-edit" v-html="$translate('EDIT')"/> -->
             <div @click="onClickDelete(reply)" class="reply-delete" v-html="$translate('DELETE')"/>
@@ -56,19 +62,25 @@ export default {
       return (reply.replies || []).some(child => !child.deletedAt || hasNonDeletedChild(child))
     }
 
-    const onClickDelete = async reply => {
-      plugins.$modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
-        .then(async password => {
-          if (!password) return
+    const onConfirmDelete = async ({ id, password }) => {
+      try {
+        await communityService.remove.reply({ id, password })
+        store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
+        store.dispatch('loadPosts')
+        plugins.$toast.success('댓글을 삭제했습니다')
+      } catch (e) {
+        plugins.$toast.error(e.data.message)
+      }
+    }
 
-          try {
-            await communityService.remove.reply({ id: reply.id, password })
-            store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
-            store.dispatch('loadPosts')
-          } catch (e) {
-            plugins.$toast.error(e.data.message)
-          }
-        })
+    const onClickDelete = async reply => {
+      if (plugins.$helpers.writing.isMine(reply)) {
+        const ok = await plugins.$modal.confirm({ body: '내 댓글을 삭제하시겠습니까?' })
+        if (ok) onConfirmDelete({ id: reply.id })
+      } else {
+        const password = await plugins.$modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+        if (password) onConfirmDelete({ id: reply.id, password })
+      }
     }
 
     return {
@@ -93,10 +105,6 @@ export default {
       img {
         max-width: 320px !important;
       }
-    }
-
-    .writer {
-      font-weight: 600;
     }
 
     .created-at {

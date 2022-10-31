@@ -4,7 +4,7 @@
       v-if="$store.getters.chat.writingReplyTo"
       class="writing-reply-to">
       <div class="left">
-        <div class="nickname">To: {{ $store.getters.chat.writingReplyTo.profile.nickname }}</div>
+        <div class="nickname">To: {{ $store.getters.chat.writingReplyTo.user.profile.nickname }}</div>
         <div class="text lines-1" v-html="$store.getters.chat.writingReplyTo.text"/>
       </div>
       <i

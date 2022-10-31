@@ -63,6 +63,10 @@
     "en": "Sign In",
     "kr": "로그인"
   },
+  "MODAL_USER_STATS": {
+    "en": "User Activity",
+    "kr": "유저 활동내역"
+  },
   "LOGOUT": {
     "en": "Logout",
     "kr": "로그아웃"

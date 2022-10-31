@@ -39,7 +39,8 @@
             <BadgeUnreads :numUnreads="numNewNotifications" :small="true"/>
           </div>
           <div
-            @click="$modal.custom({ component: $store.getters.me ? 'ModalChatSettings' : 'ModalSignIn' })"
+            ref="refIconMenuAccount"
+            @click="onClickMenuAccount"
             class="clickable-icon-wrapper">
             <i v-if="$store.getters.me" class="fal fa-circle-user"/>
             <i v-else class="fal fa-power-off"/>
@@ -58,6 +59,17 @@
           :align="'right'"
           :mountBelow="refIconSettings">
           <SettingsPanel :indices="[0, 1, 2, 3]" class="shadowed"/>
+        </WrapperDropdownOverlay>
+        <WrapperDropdownOverlay
+          v-if="showMenuAccount"
+          @close="showMenuAccount = null"
+          :align="'right'"
+          :mountBelow="refIconMenuAccount">
+          <ul class="my-activity">
+            <li @click="handleClickMyActivity(() => $modal.custom({ component: 'ModalUserStats', options: { user: $store.getters.me } }))">내 활동</li>
+            <li @click="handleClickMyActivity(() => $modal.custom({ component: $store.getters.me ? 'ModalChatSettings' : 'ModalSignIn' }))">계정 설정</li>
+            <li @click="$store.dispatch('signOut')">{{ $translate('LOGOUT') }}</li>
+          </ul>
         </WrapperDropdownOverlay>
       </div>
     </div>
@@ -101,9 +113,13 @@ export default {
 
     const refIconNotifications = ref(null)
 
+    const refIconMenuAccount = ref(null)
+
     const showSettings = ref(null)
 
     const showNotifications = ref(null)
+
+    const showMenuAccount = ref(null)
 
     const numConnectionsColorClass = ref(null)
 
@@ -118,6 +134,20 @@ export default {
       return (n.data || []).filter(o => d().diff(o.createdAt, 'hour') < 24).length
     })
 
+    const handleClickMyActivity = handler => {
+      handler()
+      showMenuAccount.value = false
+    }
+
+    const onClickMenuAccount = () => {
+      if (store.getters.me) {
+        showMenuAccount.value = !showMenuAccount.value
+        return
+      }
+
+      plugins.$modal.custom({ component: 'ModalSignIn' })
+    }
+
     watch(
       () => store.getters.chatStats.numConnections,
       (newVal, oldVal) => {
@@ -129,13 +159,17 @@ export default {
     return {
       refIconNotifications,
       refIconSettings,
+      refIconMenuAccount,
       showNotifications,
       showSettings,
+      showMenuAccount,
       numConnectionsColorClass,
       numNewNotifications,
       menuItems,
       subPages,
       onClickMenuItem,
+      onClickMenuAccount,
+      handleClickMyActivity,
     }
   },
 }
@@ -252,6 +286,26 @@ export default {
     position: absolute;
     top: 4px;
     right: 4px;
+  }
+
+  ul.my-activity {
+    background: var(--background-base);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+
+    li {
+      color: var(--text-stress);
+      padding: 8px 12px;
+      cursor: pointer;
+
+      &:hover {
+        background: var(--background-light);
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--border-base);
+      }
+    }
   }
 }
 </style>

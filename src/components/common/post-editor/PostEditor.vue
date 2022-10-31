@@ -2,16 +2,23 @@
   <div class="post-editor">
     <form class="nickname-and-password" @submit.prevent>
       <input
+        v-if="!$store.getters.me"
         v-model="payload.nickname"
         class="nickname bg-white c-black"
         :placeholder="$translate('PLACEHOLDER_NICKNAME')"
         :maxlength="(($store.getters.config || {}).maxlength || {}).nickname"
       >
+      <div
+        v-else
+        class="authorized-user flex-wrap">
+        <UserSymbol :user="$store.getters.me" class="m-r-4"/><span class="lines-1">{{ ($store.getters.me.profile || {}).nickname }}</span>
+      </div>
       <input
         v-model="payload.password"
         class="password bg-white c-black"
         :placeholder="$translate('PLACEHOLDER_PASSWORD')"
         type="password"
+        maxlength="8"
         autocomplete="post-password"
       >
     </form>
@@ -63,22 +70,20 @@ export default {
     }
 
     const createPost = async () => {
-      if (!store.getters.me) {
-        if (['nickname', 'password', 'title', 'content'].some(key => {
-          if (!(payload.value[key] || '').trim()) {
-            const dom = document.querySelector(`input.${key}`) || document.querySelector('.ql-container')
-            if (dom) {
-              dom.scrollIntoView({ behavior: 'smooth' })
-              dom.focus()
-              plugins.$animate.shake(dom)
-            }
-
-            plugins.$toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
-            return true
+      if (['nickname', 'password', 'title', 'content'].some(key => {
+        if (!(payload.value[key] || '').trim()) {
+          const dom = document.querySelector(`input.${key}`) || document.querySelector('.ql-container')
+          if (dom) {
+            dom.scrollIntoView({ behavior: 'smooth' })
+            dom.focus()
+            plugins.$animate.shake(dom)
           }
-          return !payload.value[key]
-        })) return
-      }
+
+          plugins.$toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
+          return true
+        }
+        return !payload.value[key]
+      })) return
 
       try {
         await crudService.post[payload.value.id ? 'update' : 'create'](payload.value)
@@ -117,10 +122,29 @@ export default {
 
   .nickname-and-password {
     display: flex;
+    align-items: center;
     margin-bottom: var(--editor-gap);
 
     .nickname {
       margin-right: var(--editor-gap);
+    }
+
+    .authorized-user {
+      display: flex;
+      margin-right: var(--editor-gap);
+      background: var(--white);
+      color: var(--black);
+      border-radius: 4px;
+      border: 1px solid var(--brand-primary);
+    }
+
+    .nickname,
+    .authorized-user,
+    .password {
+      width: 160px;
+      height: 36px;
+      line-height: 36px;
+      padding: 0 8px;
     }
   }
 

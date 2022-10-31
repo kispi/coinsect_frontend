@@ -1,53 +1,32 @@
 <template>
-  <div
-    v-if="profile"
-    class="view-account">
-    <AppImg :src="$helpers.withCdn(profile.image)" class="profile-image"/>
-    <div class="form-control">
-      <label>{{ $translate('NICKNAME') }}</label>
-      <div class="flex-row">
-        <input v-model="profile.nickname" class="flex-fill">
-        <button
-          @click="updateNickname"
-          class="btn btn-primary flex-wrap"
-          :disabled="profile.nickname === originalNickname">
-          {{ $translate('CHANGE') }}
-        </button>
-      </div>
-      {{ originalNickname}}
+  <div v-if="data" class="view-account">
+    <div class="card">
+      <div class="card-title">내 활동</div>
+      <ul>
+        <li>채팅: {{ data.stats.numMessages }}</li>
+        <li>글: {{ data.stats.numPosts }}</li>
+        <li>댓글: {{ data.stats.numReplies }}</li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   setup() {
     const store = useStore()
 
-    const profile = ref(null)
+    const data = computed(() => store.getters.accountStats)
 
-    const originalNickname = computed(() => store.getters.me.profile.nickname)
-
-    const updateNickname = async () => {
-      store.dispatch('updateProfile', profile.value)
-    }
-
-    const init = async () => {
-      try {
-        await store.dispatch('loadMe')
-        profile.value = store.getters.me.profile
-      } catch (e) {}
-    }
-
-    onMounted(init)
+    onMounted(() => {
+      store.dispatch('loadAccountStats')
+    })
 
     return {
-      profile,
-      originalNickname,
-      updateNickname,
+      data,
     }
   },
 }
@@ -55,19 +34,19 @@ export default {
 
 <style lang="scss" scoped>
 .view-account {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 240px;
-  margin: auto;
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.24);
+    background: var(--white);
+    border-radius: 8px;
+    color: var(--black);
+    padding: 8px 16px;
+    width: 160px;
 
-  .profile-image {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin: 24px auto;
-    cursor: pointer;
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
   }
 }
 </style>

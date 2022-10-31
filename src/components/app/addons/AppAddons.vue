@@ -1,7 +1,7 @@
 <template v-if="!$store.getters.isSSR">
   <AppLoading :loading="$store.getters.loading.global" class="global-loading"/>
   <AppDock/>
-  <AppChat/>
+  <AppChat v-if="prepared"/>
   <AppToast/>
   <AppTooltips/>
   <AppModal
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import { ref, watch } from 'vue'
+import { useStore } from 'vuex'
 import AppChat from '@/components/applications/chat/AppChat'
 import AppDock from '@/components/app/AppDock'
 import AppModal from '@/components/app/AppModal'
@@ -35,6 +37,22 @@ export default {
     useHealthChecker()
 
     useRouteWatcher()
+
+    const prepared = ref(true)
+
+    const store = useStore()
+
+    watch(
+      () => store.getters.me,
+      () => {
+        prepared.value = false
+        setTimeout(() => prepared.value = true)
+      },
+    )
+
+    return {
+      prepared,
+    }
   },
 }
 </script>

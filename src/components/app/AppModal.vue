@@ -44,6 +44,7 @@ export default {
   props: ['modal'],
   components: {
     ModalBasic: defineAsyncComponent(() => import('@/components/modals/ModalBasic')),
+    ModalUserStats: defineAsyncComponent(() => import('@/components/modals/ModalUserStats')),
     ModalDonation: defineAsyncComponent(() => import('@/components/modals/ModalDonation')),
     ModalInput: defineAsyncComponent(() => import('@/components/modals/ModalInput')),
     ModalTradingView: defineAsyncComponent(() => import('@/components/modals/ModalTradingView')),
