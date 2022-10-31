@@ -5,7 +5,7 @@
     <AppImg
       v-if="img"
       :src="img"
-      @click="$modal.images({ images: [img] })"
+      @click.stop.prevent="$modal.images({ images: [img] })"
     />
     <template v-else>
       <i v-if="(user || {}).id" class="fa fa-shield-check c-price-up-bybit"/>
