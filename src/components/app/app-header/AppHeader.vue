@@ -66,7 +66,7 @@
           :align="'right'"
           :mountBelow="refIconMenuAccount">
           <ul class="my-activity">
-            <li @click="handleClickMyActivity(() => $router.push('/account'))">내 활동</li>
+            <li @click="handleClickMyActivity(() => $modal.custom({ component: 'ModalUserStats', options: { user: $store.getters.me } }))">내 활동</li>
             <li @click="handleClickMyActivity(() => $modal.custom({ component: $store.getters.me ? 'ModalChatSettings' : 'ModalSignIn' }))">계정 설정</li>
             <li @click="$store.dispatch('signOut')">{{ $translate('LOGOUT') }}</li>
           </ul>

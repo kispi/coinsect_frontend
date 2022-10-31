@@ -6,8 +6,15 @@
       <div class="post-header">
         <div class="post-title" v-html="post.title"/>
         <div class="writer-and-created-at">
-          <div class="writer">
-            <UserSymbol :user="post.user" class="m-r-4"/>{{ $helpers.template.writer(post) }}
+          <div class="writer" :class="{'authorized-clickable-nickname': post.userId}">
+            <UserSymbol :user="post.user" class="m-r-4"/>
+            <span
+              @click="post.userId ?
+                $modal.custom({ component: 'ModalUserStats', options: { user: post.user } }) :
+                null
+              ">
+              {{ $helpers.template.writer(post) }}
+            </span>
           </div>
           <div class="created-at" v-html="$helpers.template.prettyTime(post.createdAt)"/>
         </div>
@@ -128,7 +135,7 @@ export default {
     .writer-and-created-at,
     .numbers {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       font-size: 13px;
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="view-account">
+  <div v-if="data" class="view-account">
     <div class="card">
       <div class="card-title">내 활동</div>
       <ul>
@@ -47,6 +47,6 @@ export default {
       font-weight: 700;
       margin-bottom: 8px;
     }
-  }  
+  }
 }
 </style>

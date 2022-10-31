@@ -9,8 +9,12 @@
       v-for="reply in repliesToDisplay">
       <div class="reply-body">
         <div class="reply-header">
-          <div class="reply-user">
-            <UserSymbol :user="reply.user" class="m-r-4"/><span v-html="$helpers.template.writer(reply)"/>
+          <div class="reply-user" :class="{'authorized-clickable-nickname': reply.userId}">
+            <UserSymbol :user="reply.user" class="m-r-4"/>
+            <span
+              @click="reply.userId ? $modal.custom({ component: 'ModalUserStats', options: { user: reply.user } }) : null"
+              v-html="$helpers.template.writer(reply)"
+            />
           </div>
           <div
             v-if="$helpers.writing.canModify(reply)"

@@ -41,8 +41,8 @@ export default {
 <style lang="scss" scoped>
 .user-symbol {
   .app-img {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     vertical-align: middle;
     cursor: pointer;
