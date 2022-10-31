@@ -29,7 +29,12 @@ export default {
     const sharingKey = router.currentRoute.value.params.sharingKey
 
     const init = async () => {
-      store.commit('setPost', null)
+      await store.dispatch('loadPost', sharingKey)
+      if (store.getters.me && post.value.userId === store.getters.me.id) {
+        editable.value = true
+        return
+      }
+
       const value = await plugins.$modal.input({ title: '비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
       if (!value) {
         router.go(-1)
@@ -38,7 +43,6 @@ export default {
 
       try {
         await communityService.checkPassword.post({ sharingKey, password: value })
-        await store.dispatch('loadPost', sharingKey)
         post.value.$$originalPassword = value
         editable.value = true
       } catch (e) {

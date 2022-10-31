@@ -213,7 +213,8 @@ export default {
   }
 
   .row {
-    padding: 8px;
+    height: 36px;
+    line-height: 36px;
     display: block;
     cursor: pointer;
 
