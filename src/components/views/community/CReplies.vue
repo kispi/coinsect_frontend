@@ -58,19 +58,25 @@ export default {
       return (reply.replies || []).some(child => !child.deletedAt || hasNonDeletedChild(child))
     }
 
-    const onClickDelete = async reply => {
-      plugins.$modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
-        .then(async password => {
-          if (!password) return
+    const onConfirmDelete = async ({ id, password }) => {
+      try {
+        await communityService.remove.reply({ id, password })
+        store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
+        store.dispatch('loadPosts')
+        plugins.$toast.success('댓글을 삭제했습니다')
+      } catch (e) {
+        plugins.$toast.error(e.data.message)
+      }
+    }
 
-          try {
-            await communityService.remove.reply({ id: reply.id, password })
-            store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
-            store.dispatch('loadPosts')
-          } catch (e) {
-            plugins.$toast.error(e.data.message)
-          }
-        })
+    const onClickDelete = async reply => {
+      if (plugins.$helpers.writing.isMine(reply)) {
+        const ok = await plugins.$modal.confirm({ body: '내 댓글을 삭제하시겠습니까?' })
+        if (ok) onConfirmDelete({ id: reply.id })
+      } else {
+        const password = await plugins.$modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+        if (password) onConfirmDelete({ id: reply.id, password })
+      }
     }
 
     return {

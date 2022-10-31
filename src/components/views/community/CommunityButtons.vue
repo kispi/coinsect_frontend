@@ -36,22 +36,28 @@ export default {
 
     const post = computed(() => store.getters.post)
 
+    const onConfirmDelete = async ({ sharingKey, password }) => {
+      try {
+        await communityService.remove.post({ sharingKey, password })
+        router.push('/community')
+        store.dispatch('loadPosts')
+        plugins.$toast.success('게시글을 삭제했습니다')
+      } catch (e) {
+        plugins.$toast.error(e.data.message)
+      }
+    }
+
     const handlers = {
       write: () => router.push('/community/write'),
       edit: () => router.push(`/community/edit/${post.value.sharingKey}`),
-      delete: () => {
-        plugins.$modal.input({ title: '게시글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
-          .then(async password => {
-            if (!password) return
-
-            try {
-              await communityService.remove.post({ sharingKey: post.value.sharingKey, password })
-              await store.dispatch('loadPosts')
-              router.push('/community')
-            } catch (e) {
-              plugins.$toast.error(e.data.message)
-            }
-          })
+      delete: async () => {
+        if (plugins.$helpers.writing.isMine(post.value)) {
+          const ok = await plugins.$modal.confirm({ body: '내 게시글을 삭제할까요?' })
+          if (ok) onConfirmDelete({ sharingKey: post.value.sharingKey })
+        } else {
+          const password = await plugins.$modal.input({ title: '게시글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+          if (password) onConfirmDelete({ sharingKey: post.value.sharingKey, password })
+        }
       },
     }
 
