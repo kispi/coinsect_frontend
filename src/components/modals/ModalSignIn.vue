@@ -38,7 +38,7 @@ export default {
         await signInFunction()
         emit('close')
       } catch (e) {
-        plugins.$toast.error('소셜 로그인 과정에서 문제가 발생했습니다 😢')
+        plugins.$toast.error('소셜 로그인 과정에서 문제가 발생했습니다. 아마도 연동 계정에서 이메일 정보를 가져올 수 없는 것 같습니다 😢')
       }
     }
 
