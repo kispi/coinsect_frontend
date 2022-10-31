@@ -1,7 +1,7 @@
 import { createMemoryHistory, createWebHistory, createRouter } from 'vue-router'
 import { store as $store } from '@/store'
 import routesNoAuth from './routes-no-auth-async'
-// import routesAuth from './routes-auth-async'
+import routesAuth from './routes-auth-async'
 import ViewNotFound from '@/components/views/ViewNotFound'
 
 const onFail = () => {
@@ -13,7 +13,7 @@ const onFail = () => {
 
 const routes = [
   ...routesNoAuth,
-  // ...routesAuth,
+  ...routesAuth,
   {
     path: '/:pathMatch(.*)*',
     component: ViewNotFound,

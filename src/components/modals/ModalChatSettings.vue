@@ -130,11 +130,6 @@
         <!-- pushChatNewMessage <- 얘도 나중에 넣을까? 과하려나? -->
       </div>
     </div>
-    <button
-      @click="$store.dispatch('signOut')"
-      class="btn btn-primary"
-      v-html="$translate('LOGOUT')"
-    />
   </div>
 </template>
 

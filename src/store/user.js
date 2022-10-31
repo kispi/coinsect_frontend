@@ -26,12 +26,14 @@ const user = {
     chatUser: null,
     chatUserSetting: null,
     header: null,
+    accountStats: null,
   }),
   getters: {
     me: state => state.me,
     chatUser: state => state.chatUser,
     chatUserSetting: state => state.chatUserSetting,
     header: state => state.header,
+    accountStats: state => state.accountStats,
   },
   actions: {
     async loadAuthToken({ commit }) {
@@ -60,6 +62,14 @@ const user = {
         commit('setMe', user)
       } catch (e) {
         dispatch('signOut')
+      }
+    },
+    async loadAccountStats({ commit }) {
+      try {
+        const stats = await userService.accountStats()
+        commit('setAccountStats', stats)
+      } catch (e) {
+        return Promise.reject(e)
       }
     },
     async signIn({ dispatch, getters }, { email, password, customRouteTo }) {
@@ -96,6 +106,9 @@ const user = {
     },
     setHeader(state, payload) {
       state.header = payload
+    },
+    setAccountStats(state, stats) {
+      state.accountStats = stats
     },
   },
 }
