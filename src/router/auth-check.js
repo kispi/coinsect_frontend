@@ -2,6 +2,11 @@ import helpers from '@/helpers'
 import { store as $store } from '@/store'
 
 export default async (to, from, next) => {
+  if (typeof window === 'undefined') {
+    next('/')
+    return // SSR 환경에서는 auth-check 불필요
+  }
+
   if ((to || {}).fullPath) {
     helpers.localStorage.setMeta('prevFullPath', to.fullPath)
   }
