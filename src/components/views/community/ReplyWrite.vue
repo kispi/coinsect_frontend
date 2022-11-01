@@ -2,8 +2,27 @@
   <div class="reply-write">
     <form>
       <div class="writer-and-password">
-        <input v-model="payload.nickname" :placeholder="$translate('PLACEHOLDER_NICKNAME')" class="nickname" autocomplete="reply-nickname">
-        <input v-model="payload.password" :placeholder="$translate('PLACEHOLDER_PASSWORD')" class="password" type="password" autocomplete="reply-password">
+        <input
+          v-if="!$store.getters.me"
+          v-model="payload.nickname"
+          class="nickname bg-white c-black"
+          autocomplete="reply-nickname"
+          :placeholder="$translate('PLACEHOLDER_NICKNAME')"
+          :maxlength="(($store.getters.config || {}).maxlength || {}).nickname"
+        >
+        <div
+          v-else
+          class="authorized-clickable-nickname p-8">
+          <UserSymbol :user="$store.getters.me" class="m-r-4"/><span class="lines-1">{{ ($store.getters.me.profile || {}).nickname }}</span>
+        </div>
+        <input
+          v-model="payload.password"
+          :placeholder="$translate('PLACEHOLDER_PASSWORD')"
+          class="password"
+          type="password"
+          autocomplete="reply-password"
+          maxlength="8"
+        >
       </div>
       <textarea v-model="payload.content" :placeholder="$translate('PLACEHOLDER_CONTENT')"/>
     </form>
@@ -103,6 +122,12 @@ export default {
 <style lang="scss" scoped>
 .reply-write {
   border: 1px solid var(--border-base);
+
+  .authorized-clickable-nickname,
+  .nickname,
+  .password {
+    width: 160px;
+  }
 
   input,
   textarea {

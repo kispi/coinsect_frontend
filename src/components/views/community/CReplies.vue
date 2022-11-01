@@ -16,12 +16,19 @@
               v-html="$helpers.template.writer(reply)"
             />
           </div>
-          <div
-            v-if="$helpers.writing.canModify(reply)"
-            class="reply-functions">
+          <div class="reply-functions">
             <!-- <div @click="onClickEdit(reply)" class="reply-edit" v-html="$translate('EDIT')"/> -->
-            <div @click="onClickDelete(reply)" class="reply-delete" v-html="$translate('DELETE')"/>
-            <div @click="reply.$$showReply = !reply.$$showReply" class="reply-reply" v-html="$translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY')"/>
+            <div
+              v-if="$helpers.writing.canModify(reply)"
+              @click="onClickDelete(reply)"
+              class="reply-delete"
+              v-html="$translate('DELETE')"
+            />
+            <div
+              @click="reply.$$showReply = !reply.$$showReply"
+              class="reply-reply"
+              v-html="$translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY')"
+            />
           </div>
         </div>
         <div class="content" v-html="reply.deletedAt ? `<b>${$translate('DELETED_REPLY')}</b>` : reply.content"/>
