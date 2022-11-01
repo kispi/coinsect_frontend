@@ -72,14 +72,6 @@ const user = {
         return Promise.reject(e)
       }
     },
-    async signIn({ dispatch, getters }, { email, password, customRouteTo }) {
-      try {
-        const data = await userService.signIn({ email, password })
-        await afterSignIn({ dispatch, getters, token: data.token, customRouteTo })
-      } catch (e) {
-        return Promise.reject(e)
-      }
-    },
     async signInKakao({ dispatch, getters }, { kakaoId, email }) {
       try {
         const { token } = await userService.signInKakao({ kakaoId, email })
