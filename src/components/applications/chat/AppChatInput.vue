@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref, nextTick, onMounted } from 'vue'
+import { getCurrentInstance, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
 
@@ -64,6 +64,12 @@ export default {
 
     const refTextarea = ref(null)
 
+    const focusOnInput = () => {
+      setTimeout(() => {
+        if (refTextarea.value) refTextarea.value.focus()
+      })
+    }
+
     const chatFunctions = {
       image: () => {
         plugins.$modal.custom({
@@ -75,9 +81,7 @@ export default {
           if (!url) return
 
           sendTextMessage(url, 'image')
-        }).finally(() => {
-          setTimeout(() => refTextarea.value.focus())
-        })
+        }).finally(focusOnInput)
       },
     }
 
@@ -91,7 +95,7 @@ export default {
 
       text.value = ''
 
-      if (refTextarea.value) nextTick(() => refTextarea.value.focus())
+      focusOnInput()
     }
 
     const onKeydown = e => {
@@ -139,7 +143,7 @@ export default {
       reader.readAsDataURL(target)
     }
 
-    onMounted(() => refTextarea.value.focus())
+    onMounted(focusOnInput)
 
     return {
       refTextarea,
