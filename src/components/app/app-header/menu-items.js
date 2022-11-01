@@ -66,6 +66,7 @@ const useMenuItems = () => {
     ],
   }, {
     title: 'COMMUNITY',
+    pathPrefix: '/community',
     path: '/community',
   }, {
     title: 'NEWS_AND_CONTENTS',
@@ -119,11 +120,7 @@ const useMenuItems = () => {
 
     return {
       ...o,
-      $$selected: (() => {
-        if (o.subPages) return p.startsWith(o.pathPrefix)
-
-        else return p === o.path
-      })()
+      $$selected: p.startsWith(o.pathPrefix),
     }
   }))
 
