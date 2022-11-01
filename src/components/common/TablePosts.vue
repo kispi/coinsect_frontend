@@ -14,6 +14,7 @@
         <div class="cell number">추천</div>
       </div>
       <a
+        draggable="false"
         class="row"
         :class="{
           'active': isActivePost(row),
@@ -23,17 +24,23 @@
         :href="`/community/${row.sharingKey}`"
         :key="row.id"
         v-for="row in [...notices.data, ...posts.data]">
-        <AdaptiveLayout :gap="4">
-          <div class="id-title">
+        <AdaptiveLayout :gap="4" class="flex-fill">
+          <div class="id-title flex-fill">
             <div
               v-if="!$store.getters.isMobile"
               class="cell number"
               v-html="postNumber(row)"
             />
             <article class="cell title">
-              <i v-if="iconPostType(row)" class="post-type fa" :class="iconPostType(row)"/>
-              <span v-html="row.title"/>
-              <span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
+              <AppImg
+                v-if="(row.$$images || []).length > 0 && !$store.getters.isMobile"
+                :src="row.$$images[0]"
+                class="image-preview m-r-8"
+                @click.stop.prevent="$modal.images({ images: row.$$images })"
+                draggable="false"
+              />
+              <div v-html="row.title" class=""/>
+              <div v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</div>
             </article>
           </div>
           <div class="content">
@@ -57,6 +64,13 @@
             </div>
           </div>
         </AdaptiveLayout>
+        <AppImg
+          v-if="(row.$$images || []).length > 0 && $store.getters.isMobile"
+          :src="row.$$images[0]"
+          class="image-preview"
+          @click.stop.prevent="$modal.images({ images: row.$$images })"
+          draggable="false"
+        />
       </a>
     </div>
     <AppPagination
@@ -136,12 +150,6 @@ export default {
       })
     }
 
-    const iconPostType = row => {
-      if (row.postType === 'notice') return 'fa-exclamation-circle'
-
-      return (row.content || '').includes('<img') ? 'fa-image' : ''
-    }
-
     const isActivePost = row => router.currentRoute.value.params.sharingKey === row.sharingKey
 
     const postNumber = row => {
@@ -158,7 +166,6 @@ export default {
       if (row.sharingKey === router.currentRoute.value.params.sharingKey) return
 
       router.push(`/community/${row.sharingKey}?${queryString()}`)
-      setTimeout(loadPosts)
     }
 
     const onClickUserNickname = row => {
@@ -215,7 +222,6 @@ export default {
       payload,
       notices,
       posts,
-      iconPostType,
       isActivePost,
       postNumber,
       onPage,
@@ -237,9 +243,16 @@ export default {
     border-bottom: 1px solid var(--border-base);
   }
 
+  .image-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
   .row {
     padding: 8px;
-    display: block;
+    display: flex;
     cursor: pointer;
 
     &.active {
@@ -301,6 +314,7 @@ export default {
 
       .num-replies {
         color: var(--gs-88);
+        margin-left: 4px;
       }
     }
 
@@ -319,6 +333,11 @@ export default {
 
   .id-title {
     flex: 1;
+
+    article {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .search-bar {
@@ -359,7 +378,7 @@ export default {
     flex: initial;
 
     @media (max-width: 767px) {
-      > * {
+      > *:not(:last-child) {
         padding-right: 8px;
         margin-right: 8px;
         border-right: 1px solid var(--border-base);
@@ -370,14 +389,6 @@ export default {
   .table-pagination {
     margin: 24px auto;
     display: table;
-  }
-
-  @media (min-width: 768px) {
-    .row {
-      height: 40px;
-      line-height: 40px;
-      padding: 0;
-    }
   }
 }
 </style>

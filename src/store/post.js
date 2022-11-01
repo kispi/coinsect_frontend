@@ -44,8 +44,9 @@ const post = {
 
       try {
         commit('setLoading', { posts: true })
-        const data = await communityService.post.all(o.build())
-        commit('setPosts', data)
+        const resp = await communityService.post.all(o.build())
+        resp.data.forEach(post => post.$$images = helpers.retrieveImagesFromHTML(post.content))
+        commit('setPosts', resp)
       } catch (e) {
         return Promise.reject(e)
       } finally {

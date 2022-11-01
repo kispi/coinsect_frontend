@@ -1,7 +1,10 @@
 <template>
-  <div class="modal-user-stats">
+  <div
+    ref="refModal"
+    class="modal-user-stats">
     <ModalHeader :title="$translate('MODAL_USER_STATS')" @close="$emit('close')"/>
     <div class="body">
+      <AppLoading :loading="loading"/>
       <div
         v-if="options.user"
         class="user">
@@ -22,27 +25,39 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 import userService from '@/services/user'
 
 export default {
   props: ['options'],
   setup(props, { emit }) {
+    const plugins = getCurrentInstance().appContext.config.globalProperties
+
+    const refModal = ref(null)
+
     const data = ref(null)
+
+    const loading = ref(null)
 
     const init = async () => {
       try {
+        loading.value = true
         data.value = await userService.userStats(props.options.user.id)
       } catch (e) {
         plugins.$toast.error('해당 유저의 활동 내역을 가져오는데 실패했습니다')
         emit('close')
+      } finally {
+        loading.value = false
+        plugins.$helpers.modal.center(refModal.value)
       }
     }
 
     onMounted(init)
 
     return {
+      refModal,
       data,
+      loading,
     }
   },
 }
@@ -57,6 +72,7 @@ export default {
   .body {
     line-height: 20px;
     padding: 16px;
+    position: relative;
   }
 
   .user {

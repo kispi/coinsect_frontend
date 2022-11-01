@@ -149,6 +149,10 @@ export default {
       max-width: 100%;
       cursor: pointer;
     }
+
+    a {
+      text-decoration: underline;
+    }
   }
 
   .post-reactions {
