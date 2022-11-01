@@ -6,7 +6,7 @@
         v-if="options.user"
         class="user">
         <UserSymbol :user="options.user" class="m-r-4"/>
-        <div class="nickname">{{ options.user.profile.nickname }}</div>
+        <div class="nickname">{{ (options.user.profile || {}).nickname }}</div>
       </div>
       <div
         v-if="data"

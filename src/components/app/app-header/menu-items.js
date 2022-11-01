@@ -16,11 +16,6 @@ const useMenuItems = () => {
   const onClickMenuItem = async (e, menuItem) => {
     lastClick.value = menuItem
 
-    if (menuItem.path) {
-      router.push(menuItem.path)
-      return
-    }
-
     if (menuItem.subPages) {
       subPages.value = null
       await plugins.$helpers.sleep(0)
@@ -37,6 +32,12 @@ const useMenuItems = () => {
       } else {
         dom.style.right = `${(window.innerWidth - rectClickedAnchorTag.right)}px`
       }
+      return
+    }
+
+    if (menuItem.path) {
+      router.push(menuItem.path)
+      return
     }
   }
 
@@ -56,6 +57,7 @@ const useMenuItems = () => {
   }, {
     title: 'INDICATORS',
     pathPrefix: '/indicators/',
+    path: '/indicators/real-time-positions',
     subPages: [
       { path: '/indicators/real-time-positions', title: 'REAL_TIME_POSITIONS' },
       { path: '/indicators/leaderboard', title: 'LEADERBOARD' },
@@ -68,6 +70,7 @@ const useMenuItems = () => {
   }, {
     title: 'NEWS_AND_CONTENTS',
     pathPrefix: '/contents/',
+    path: '/contents/news',
     subPages: [
       { path: '/contents/news', title: 'NEWS' },
       // { path: '/contents/twitter', title: 'TWITTER' },
@@ -80,6 +83,7 @@ const useMenuItems = () => {
   }, {
     title: 'ONCHAIN',
     pathPrefix: '/onchain/',
+    path: '/onchain/whale-alert',
     subPages: [
       { path: '/onchain/whale-alert', title: 'WHALE_ALERT' },
       { path: '/onchain/richlist', title: 'RICHLIST' },
@@ -87,6 +91,7 @@ const useMenuItems = () => {
   }, {
     title: 'MARKETS',
     pathPrefix: '/markets/',
+    path: '/markets/crypto',
     subPages: [
       { path: '/markets/crypto', title: 'CRYPTO' },
       { path: '/markets/nasdaq', title: 'NASDAQ' },
@@ -96,6 +101,7 @@ const useMenuItems = () => {
   }, {
     title: 'APPS',
     pathPrefix: '/apps/',
+    path: '/apps/portfolio',
     subPages: [
       { path: '/apps/portfolio', title: 'PORTFOLIO', },
       { path: '/apps/salary', title: 'SALARY' },
