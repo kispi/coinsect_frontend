@@ -31,7 +31,7 @@
           class="user"
           :key="idx"
           v-for="(user, idx) in tabs[selectedTab]">
-          <AppChatProfile :user="user" :useSentiment="true"/>
+          <AppChatProfile :user="user" :useSentiment="true" :useBan="true"/>
         </div>
       </div>
       <div
@@ -162,9 +162,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .modal-chat-users {
-  width: 560px;
+  width: 640px;
   max-height: 80vh;
 
   .body {
@@ -225,16 +225,27 @@ export default {
     .users {
       padding: 16px;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       overflow-y: auto;
       overscroll-behavior: contain;
 
       .user {
-        padding: 0 4px;
+        padding: 0;
         font-size: 12px;
         display: flex;
         align-items: center;
         height: 24px;
+
+        .app-chat-profile {
+          .app-img {
+            width: 20px;
+            height: 20px;
+          }
+
+          .fa-ban {
+            padding-right: 2px;
+          }
+        }
       }
     }
   }

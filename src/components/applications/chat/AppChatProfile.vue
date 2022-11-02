@@ -23,15 +23,26 @@
       <i v-else class="fa fa-shield-check c-price-up-bybit m-r-4"/>
     </template>
     <span
-      @click="openModalAboutUser"
+      @click="user.id ? $modal.custom({
+        component: 'ModalUserStats',
+        options: { user },
+      }) : null"
       class="nickname"
-      :class="useSentiment ? ((user.profile || {}).sentiment || {}).type || '' : ''"
+      :class="[
+        useSentiment ? ((user.profile || {}).sentiment || {}).type || '' : '',
+        user.id ? 'cursor-pointer' : '',
+      ]"
       v-html="(user.profile || {}).nickname"
     />
     <BadgeToken
       v-if="!user.id"
       :token="user.token"
-      @click="openModalAboutUser"
+      class="m-l-4"
+    />
+    <i
+      v-if="user.token && useBan"
+      class="fal fa-ban m-l-4 cursor-pointer f-10"
+      @click="openModalBlockUser"
     />
   </div>
 </template>
@@ -43,6 +54,7 @@ import { useStore } from 'vuex'
 export default {
   props: {
     user: null,
+    useBan: null,
     useSentiment: Boolean,
   },
   setup(props) {
@@ -54,33 +66,23 @@ export default {
 
     const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', (props.user.token || '').toUpperCase().slice(0, 3))
 
-    const openModalBlockUser = user => {
-      if (!user.token) return
+    const openModalBlockUser = () => {
+      if (!props.user.token) return
 
       const blockedUsers = store.getters.settings.blockedUsers
       plugins.$modal.confirm({
-        body: replacer($t(blockedUsers[user.token] ? 'UNBLOCK_USER' : 'BLOCK_USER'))
+        body: replacer($t(blockedUsers[props.user.token] ? 'UNBLOCK_USER' : 'BLOCK_USER'))
       }).then(idx => {
         if (idx !== 1) return
 
-        if (blockedUsers[user.token]) delete blockedUsers[user.token]
-        else blockedUsers[user.token] = true
+        if (blockedUsers[props.user.token]) delete blockedUsers[props.user.token]
+        else blockedUsers[props.user.token] = true
         store.commit('setSettings', { blockedUsers })
       })
     }
 
-    const openModalAboutUser = () => {
-      const user = props.user
-      if (!user.id) return openModalBlockUser(user)
-
-      plugins.$modal.custom({
-        component: 'ModalUserStats',
-        options: { user },
-      })
-    }
-
     return {
-      openModalAboutUser,
+      openModalBlockUser,
     }
   },
 }
@@ -108,7 +110,6 @@ export default {
 
   .nickname {
     color: var(--text-stress);
-    margin-right: 8px;
 
     &.long {
       color: var(--price-up);
@@ -117,11 +118,6 @@ export default {
     &.short {
       color: var(--price-down);
     }
-  }
-
-  .nickname,
-  .badge-token {
-    cursor: pointer;
   }
 
   &.admin {

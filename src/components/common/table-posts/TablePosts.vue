@@ -32,13 +32,7 @@
               v-html="postNumber(row)"
             />
             <article class="cell title">
-              <AppImg
-                v-if="(row.$$images || []).length > 0 && !$store.getters.isMobile"
-                :src="row.$$images[0]"
-                class="image-preview m-r-8"
-                @click.stop.prevent="$modal.images({ images: row.$$images })"
-                draggable="false"
-              />
+              <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="m-r-8"/>
               <div v-html="row.title" class=""/>
               <div v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</div>
             </article>
@@ -64,13 +58,7 @@
             </div>
           </div>
         </AdaptiveLayout>
-        <AppImg
-          v-if="(row.$$images || []).length > 0 && $store.getters.isMobile"
-          :src="row.$$images[0]"
-          class="image-preview"
-          @click.stop.prevent="$modal.images({ images: row.$$images })"
-          draggable="false"
-        />
+        <PostImagePreview v-if="$store.getters.isMobile" :post="row"/>
       </a>
     </div>
     <AppPagination
@@ -116,8 +104,10 @@
 import { ref, computed, onMounted, getCurrentInstance, onServerPrefetch, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import PostImagePreview from './PostImagePreview'
 
 export default {
+  components: { PostImagePreview },
   setup() {
     const plugins = getCurrentInstance().appContext.config.globalProperties
 
@@ -243,13 +233,6 @@ export default {
     border-bottom: 1px solid var(--border-base);
   }
 
-  .image-preview {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-  }
-
   .row {
     padding: 8px;
     display: flex;
@@ -265,6 +248,7 @@ export default {
 
     &.notice {
       font-weight: 700;
+      background: var(--background-light);
     }
 
     &:hover {

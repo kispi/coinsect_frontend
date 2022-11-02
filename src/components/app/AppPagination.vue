@@ -135,7 +135,7 @@ export default {
     height: 32px;
 
     input {
-      width: 64px;
+      width: 48px;
       height: 100%;
       text-align: right;
     }
