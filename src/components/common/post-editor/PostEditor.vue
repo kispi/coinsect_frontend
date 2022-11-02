@@ -10,6 +10,7 @@
       >
       <div
         v-else
+        @click="$modal.custom({ component: 'ModalUserStats', options: { user: $store.getters.me } })"
         class="authorized-user flex-wrap">
         <UserSymbol :user="$store.getters.me" class="m-r-4"/><span class="lines-1">{{ ($store.getters.me.profile || {}).nickname }}</span>
       </div>
