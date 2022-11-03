@@ -2,10 +2,9 @@
   <div
     v-if="user"
     class="app-chat-profile lines-1"
-    :class="[
-      $store.getters.config.adminToken === user.token ? 'admin' : '',
-      user.id ? 'authenticated' : '',
-    ]">
+    :class="{
+      'authenticated': user.id,
+    }">
     <AppImg
       v-if="(user.profile || {}).image"
       class="profile-img"
@@ -95,7 +94,7 @@ export default {
 <style lang="scss" scoped>
 .app-chat-profile {
   display: flex;
-  align-items: center;
+  align-items: baseline;
 
   .profile-img {
     width: 24px;
@@ -121,17 +120,6 @@ export default {
 
     &.short {
       color: var(--price-down);
-    }
-  }
-
-  &.admin {
-    .nickname {
-      font-weight: 700;
-      color: var(--brand-primary);
-    }
-
-    .badge-token {
-      display: none;
     }
   }
 
