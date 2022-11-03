@@ -7,53 +7,55 @@
         :key="idx"
         v-for="(posts, idx) in [notices.data, posts.data]"
         class="posts-section"
-        :class="{'notice': idx === 0}"><a
-        draggable="false"
-        class="row"
-        :class="{
-          'active': isActivePost(row),
-          'notice': row.postType === 'notice',
-        }"
-        @click.prevent="onClickRow(row)"
-        :href="`/community/${row.sharingKey}`"
-        :key="row.id"
-        v-for="row in posts">
-        <AdaptiveLayout :gap="4" class="flex-fill">
-          <div class="id-title flex-fill">
-            <div
-              v-if="!$store.getters.isMobile"
-              class="cell number"
-              v-html="postNumber(row)"
-            />
-            <article class="cell title">
-              <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="m-r-8"/>
-              <div v-html="row.title" class=""/>
-              <div v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</div>
-            </article>
-          </div>
-          <div class="content">
-            <div
-              class="cell nickname"
-              :class="{'authorized-clickable-nickname': row.userId}">
-              <UserSymbol :user="row.user" class="flex-wrap m-r-4"/>
-              <span @click.stop.prevent="onClickUserNickname(row)">{{ $helpers.template.writer(row) }}</span>
+        :class="{'notice': idx === 0}">
+        <a
+          draggable="false"
+          class="row"
+          :class="{
+            'active': isActivePost(row),
+            'notice': row.postType === 'notice',
+          }"
+          @click.prevent="onClickRow(row)"
+          :href="`/community/${row.sharingKey}`"
+          :key="row.id"
+          v-for="row in posts">
+          <AdaptiveLayout :gap="4" class="flex-fill">
+            <div class="id-title flex-fill">
+              <div
+                v-if="!$store.getters.isMobile"
+                class="cell number"
+                v-html="postNumber(row)"
+              />
+              <article class="cell title">
+                <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="m-r-8"/>
+                <div v-html="row.title" class=""/>
+                <div v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</div>
+              </article>
             </div>
-            <div
-              class="cell date f-mono">
-              {{ $helpers.template.prettyTime(row.createdAt, true) }}
+            <div class="content">
+              <div
+                class="cell nickname"
+                :class="{'authorized-clickable-nickname': row.userId}">
+                <UserSymbol :user="row.user" class="flex-wrap m-r-4"/>
+                <span @click.stop.prevent="onClickUserNickname(row)">{{ $helpers.template.writer(row) }}</span>
+              </div>
+              <div
+                class="cell date f-mono">
+                {{ $helpers.template.prettyTime(row.createdAt, true) }}
+              </div>
+              <div
+                class="cell number f-mono">
+                <span v-if="$store.getters.isMobile">조회</span> {{ row.views }}
+              </div>
+              <div
+                class="cell number f-mono">
+                <span v-if="$store.getters.isMobile">추천</span> {{ (row.reactions || []).filter(o => o.type === 'up').length }}
+              </div>
             </div>
-            <div
-              class="cell number f-mono">
-              <span v-if="$store.getters.isMobile">조회</span> {{ row.views }}
-            </div>
-            <div
-              class="cell number f-mono">
-              <span v-if="$store.getters.isMobile">추천</span> {{ (row.reactions || []).filter(o => o.type === 'up').length }}
-            </div>
-          </div>
-        </AdaptiveLayout>
-        <PostImagePreview v-if="$store.getters.isMobile" :post="row"/>
-      </a></div>
+          </AdaptiveLayout>
+          <PostImagePreview v-if="$store.getters.isMobile" :post="row"/>
+        </a>
+      </div>
     </div>
     <AppPagination
       class="m-t-16 m-b-16"
