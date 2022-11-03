@@ -196,8 +196,8 @@
     "kr": "가능하다면 해당 트레이더의 방송을 실제 시청하여 확인하시기 바랍니다."
   },
   "BIG_ENTITIES": {
-    "en": "Big Entities",
-    "kr": "기관들"
+    "en": "Big Entities (Spot / Approx. Size)",
+    "kr": "큰손들 (현물 / 규모는 추정)"
   },
   "GO_TO_KIMP": {
     "en": "Go to Korean Premium / Realtime Prices",

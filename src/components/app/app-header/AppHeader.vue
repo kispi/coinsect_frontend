@@ -43,7 +43,7 @@
             @click="onClickMenuAccount"
             class="clickable-icon-wrapper">
             <i v-if="$store.getters.me" class="fal fa-circle-user"/>
-            <i v-else class="fal fa-power-off"/>
+            <div v-else class="f-10">로그인</div>
           </div>
         </div>
         <WrapperDropdownOverlay
@@ -73,7 +73,7 @@
         </WrapperDropdownOverlay>
       </div>
     </div>
-    <nav class="ah-menu-items">
+    <nav class="ah-menu-items pretty-scrollbar">
       <a
         draggable="false"
         @click.prevent="e => onClickMenuItem(e, menuItem)"

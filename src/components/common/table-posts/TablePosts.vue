@@ -4,16 +4,10 @@
     class="table-posts">
     <div class="table">
       <div
-        v-if="!$store.getters.isMobile"
-        class="row header">
-        <div v-if="!$store.getters.isMobile" class="cell number">번호</div>
-        <div class="cell title">제목</div>
-        <div class="cell nickname">글쓴이</div>
-        <div class="cell date">작성일</div>
-        <div class="cell number">조회</div>
-        <div class="cell number">추천</div>
-      </div>
-      <a
+        :key="idx"
+        v-for="(posts, idx) in [notices.data, posts.data]"
+        class="posts-section"
+        :class="{'notice': idx === 0}"><a
         draggable="false"
         class="row"
         :class="{
@@ -23,7 +17,7 @@
         @click.prevent="onClickRow(row)"
         :href="`/community/${row.sharingKey}`"
         :key="row.id"
-        v-for="row in [...notices.data, ...posts.data]">
+        v-for="row in posts">
         <AdaptiveLayout :gap="4" class="flex-fill">
           <div class="id-title flex-fill">
             <div
@@ -59,7 +53,7 @@
           </div>
         </AdaptiveLayout>
         <PostImagePreview v-if="$store.getters.isMobile" :post="row"/>
-      </a>
+      </a></div>
     </div>
     <AppPagination
       class="m-t-16 m-b-16"
@@ -229,8 +223,15 @@ export default {
   font-size: 12px;
 
   .table {
-    border-top: 1px solid var(--border-base);
-    border-bottom: 1px solid var(--border-base);
+    border-top: 1px solid var(--text-stress);
+    border-bottom: 1px solid var(--text-stress);
+  }
+
+  .posts-section {
+    &.notice {
+      border-bottom: 1px solid var(--text-stress);
+      font-weight: 700;
+    }
   }
 
   .row {
@@ -244,11 +245,6 @@ export default {
       .title {
         font-weight: 700;
       }
-    }
-
-    &.notice {
-      font-weight: 700;
-      background: var(--background-light);
     }
 
     &:hover {

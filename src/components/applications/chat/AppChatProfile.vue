@@ -20,7 +20,11 @@
         class="dot"
         :style="{ background: `#${(user.token || '').slice(0, 6)}` }"
       />
-      <i v-else class="fa fa-shield-check c-price-up-bybit m-r-4"/>
+      <i
+        v-else
+        class="fa fa-shield-check m-r-4"
+        :style="{ color: `#${(user.token || '').slice(0, 6)}` }"
+      />
     </template>
     <span
       @click="user.id ? $modal.custom({

@@ -8,7 +8,12 @@
       @click.stop.prevent="$modal.images({ images: [img] })"
     />
     <template v-else>
-      <i v-if="(user || {}).id" class="fa fa-shield-check c-price-up-bybit"/>
+      <i
+        v-if="(user || {}).id"
+        class="fa fa-shield-check"
+        :class="{'c-price-up-bybit': !user.token}"
+        :style="{ color: `#${(user.token || '').slice(0, 6)}` }"
+      />
       <span
         v-else
         class="dot"
