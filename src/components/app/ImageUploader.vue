@@ -37,7 +37,7 @@
           @paste="onEnter"
           placeholder="이미지 링크 붙여넣기"
         />
-        <i class="fal fa-times m-l-16"/>
+        <i v-if="customURL" @click="customURL = null" class="fal fa-times m-l-16"/>
       </div>
     </div>
   </div>

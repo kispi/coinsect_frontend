@@ -1,7 +1,9 @@
 <template>
   <div class="view-image-moderation">
+    <AppLoading :loading="testing"/>
     <div class="description">
-      Amazon Rekognition을 사용하여 민감한 이미지를 분류합니다.
+      Amazon Rekognition을 사용하여 민감한 이미지를 분류합니다.<br>
+      여기서 높은 확률로 문제성이 검출되는 이미지는 채팅으로 업로드할 수 없습니다.
     </div>
     <div class="container">
       <AppImg
@@ -31,7 +33,7 @@
     <div
       v-if="data"
       class="problems">
-      <div v-if="data.length > 0">
+      <div v-if="(data || []).length > 0">
         <div
           class="problem"
           :key="idx"
@@ -42,6 +44,21 @@
         </div>
       </div>
       <div v-else>문제 없는 이미지입니다.</div>
+    </div>
+    <div class="testset pretty-scrollbar">
+      <div
+        class="image-container"
+        :key="o.src"
+        v-for="o in testset">
+        <AppImg
+          @click="onUploadFile({
+            src: o.src,
+            url: o.src,
+          })"
+          :src="o.src"
+          class="overlay"
+        />
+      </div>
     </div>
     <PoweredBy
       :by="'Amazon Rekognition'"
@@ -66,13 +83,28 @@ export default {
 
     const data = ref(null)
 
+    const testing = ref(null)
+
+    const testset = ref([
+      { name: '찐반인가', src: 'https://coinpan.com/files/attach/images/181338187/476/174/249/14fd2ec990bafcac5bfacee54f22c956.jpeg' },
+      { name: '톰 하디', src: 'https://pyxis.nymag.com/v1/imgs/bb3/b19/8af5aabd2330e035c03fa67633b0945fcd-18-tom-hardy.2x.rvertical.w330.jpg' },
+      { name: '두아 리파', src: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Dua_Lipa_with_Warner_Music_3.png' },
+      { name: '살색 의상', src: 'http://thumbnail.10x10.co.kr/webimage/image/add1/201/A002015710_01-12.jpg?cmd=thumb&w=400&h=400&fit=true&ws=false' },
+      { name: '톰 하디 흡연', src: 'https://i.pinimg.com/564x/3e/1b/a2/3e1ba2b8f6ed61c4d1b4349390ecbd19.jpg' },
+      { name: '음주', src: 'https://d1085v6s0hknp1.cloudfront.net/chat/8e246c16-d9de-48fb-a516-f2d92e1ed48f_20220827_223728.jpg' },
+      { name: '포스트 말론 & 도자 캣', src: 'https://stack.com.au/wp-content/uploads/2022/07/postmalonedoja.jpg' },
+    ])
+
     const onUploadFile = async e => {
       url.value = e.url
       try {
+        testing.value = true
         const { ModerationLabels } = await rekognitionService.imageModeration.create(url.value)
         data.value = ModerationLabels
       } catch (e) {
         plugins.$toast.error(e.data.message)
+      } finally {
+        testing.value = false
       }
     }
 
@@ -83,6 +115,8 @@ export default {
     return {
       url,
       data,
+      testing,
+      testset,
       onUploadFile,
       onClickImage,
     }
@@ -122,6 +156,28 @@ export default {
 
     &:not(:last-child) {
       margin-bottom: 24px;
+    }
+  }
+
+  .testset {
+    margin: 40px 0 24px;
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+
+    .image-container {
+      position: relative;
+      min-width: 120px;
+      height: 120px;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+
+      &:not(:hover) {
+        .app-img {
+          filter: blur(8px);
+        }
+      }
     }
   }
 }
