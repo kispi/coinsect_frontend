@@ -18,7 +18,6 @@
         @upload-file="onUploadFile"
         :path="'rekognition'"
         :resize="{ above: 1 }"
-        :accept="['jpg', 'jpeg', 'png']"
         :useURL="true"
         class="overlay"
       />
@@ -113,7 +112,7 @@ export default {
         const { ModerationLabels } = await rekognitionService.imageModeration.create(url.value)
         data.value = ModerationLabels
       } catch (e) {
-        plugins.$toast.error(e.data.message)
+        plugins.$toast.error('jpeg, jpg, png 형식의 이미지만 지원됩니다')
       } finally {
         testing.value = false
       }

@@ -63,7 +63,6 @@ export default {
       },
     },
     useURL: Boolean,
-    accept: Array,
   },
   setup(props, { emit }) {
     const plugins = getCurrentInstance().appContext.config.globalProperties
@@ -75,8 +74,9 @@ export default {
     const customURL = ref(null)
 
     const onEnter = e => {
-      setTimeout(async () => {
+      setTimeout(() => {
         customURL.value = e.target.value
+
         emit('upload-file', {
           src: customURL.value,
           url: customURL.value,
@@ -90,10 +90,6 @@ export default {
       originalFile.size >= props.resize.above
 
     const doUpload = async originalFile => {
-      if (props.accept && props.accept.every(ext => !originalFile.name.endsWith(ext))) {
-        return plugins.$toast.error(`${props.accept.join(', ')}만 지원합니다.`)
-      }
-
       let file = originalFile
       try {
         processing.value = true
