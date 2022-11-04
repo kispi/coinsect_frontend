@@ -5,7 +5,7 @@
         <input
           v-if="!$store.getters.me"
           v-model="payload.nickname"
-          class="nickname bg-white c-black"
+          class="nickname"
           autocomplete="reply-nickname"
           :placeholder="$translate('PLACEHOLDER_NICKNAME')"
           :maxlength="(($store.getters.config || {}).maxlength || {}).nickname"
