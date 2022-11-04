@@ -187,10 +187,6 @@ const helpers = {
 
     return nonExistNewToken
   },
-  dataURLToBlob: async dataUrl => {
-    const result = await fetch(dataUrl)
-    return result.blob()
-  },
   acceptableFileSize: (file, maxFileSize = 5) => {
     const fileSizeAsMB = file.size / 1048576
     if (fileSizeAsMB > maxFileSize) {
@@ -199,6 +195,10 @@ const helpers = {
     }
 
     return true
+  },
+  dataURLToBlob: async dataUrl => {
+    const result = await fetch(dataUrl)
+    return result.blob()
   },
   // https://www.npmjs.com/package/image-resize
   resizeImage: async ({
@@ -219,9 +219,7 @@ const helpers = {
 
     try {
       const dataUrl = await o.play(file)
-      const result = await fetch(dataUrl)
-      const blob = await result.blob()
-      return new File([blob], file.name, { type: 'image/jpg' })
+      return new File([await helpers.dataURLToBlob(dataUrl)], file.name, { type: 'image/jpg' })
     } catch (e) {
       return file
     }

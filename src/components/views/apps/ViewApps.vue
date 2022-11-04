@@ -17,6 +17,7 @@ export default {
     ViewSalary: defineAsyncComponent(() => import('./ViewSalary')),
     ViewVoiceRecorder: defineAsyncComponent(() => import('./ViewVoiceRecorder')),
     ViewImageResizer: defineAsyncComponent(() => import('./ViewImageResizer')),
+    ViewImageModeration: defineAsyncComponent(() => import('./ViewImageModeration')),
   },
   setup() {
     const router = useRouter()
@@ -30,6 +31,7 @@ export default {
       if (p === '/apps/games') return 'ViewGames'
       if (p === '/apps/voice-recorder') return 'ViewVoiceRecorder'
       if (p === '/apps/image-resizer') return 'ViewImageResizer'
+      if (p === '/apps/image-moderation') return 'ViewImageModeration'
     })
 
     return {

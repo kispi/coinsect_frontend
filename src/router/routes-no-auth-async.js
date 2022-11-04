@@ -167,6 +167,13 @@ const apps = [{
     description: '용량이 큰 이미지를 jpg 형태로 압축하여 작은 용량으로 만들어줍니다.',
   },
 }, {
+  path: '/apps/image-moderation',
+  component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewImageModeration'),
+  meta: {
+    title: '민감한 이미지 분류 - 코인충',
+    description: 'AWS Rekognition을 사용하여 부적절한 이미지를 감지해냅니다.',
+  },
+}, {
   path: '/apps/seo',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
 }, {

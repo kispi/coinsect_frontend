@@ -94,7 +94,7 @@ export default {
 <style lang="scss" scoped>
 .app-chat-profile {
   display: flex;
-  align-items: baseline;
+  align-items: center;
 
   .profile-img {
     width: 24px;

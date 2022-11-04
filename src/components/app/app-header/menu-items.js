@@ -110,6 +110,7 @@ const useMenuItems = () => {
       { path: '/apps/seo', title: 'SEO' },
       { path: '/apps/games', title: 'GAMES' },
       { path: '/apps/image-resizer', title: 'IMAGE_RESIZER' },
+      { path: '/apps/image-moderation', title: 'IMAGE_MODERATION' },
       { path: '/apps/voice-recorder', title: 'VOICE_RECORDER' },
     ],
   }, {

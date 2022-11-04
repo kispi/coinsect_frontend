@@ -211,6 +211,10 @@
     "en": "Image Resizer",
     "kr": "이미지 압축기"
   },
+  "IMAGE_MODERATION": {
+    "en": "Image Moderation",
+    "kr": "민감한 이미지 분류"
+  },
   "VOICE_RECORDER": {
     "en": "Voice Recorder",
     "kr": "녹음기"
