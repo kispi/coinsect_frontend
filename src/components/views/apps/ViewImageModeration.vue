@@ -2,15 +2,16 @@
   <div class="view-image-moderation">
     <AppLoading :loading="testing"/>
     <div class="description">
-      Amazon Rekognition을 사용하여 민감한 이미지를 분류합니다.<br>
-      여기서 높은 확률로 문제성이 검출되는 이미지는 채팅으로 업로드할 수 없습니다.
+      Amazon Rekognition을 사용하여 민감한 이미지(폭력, 선정성 등 대체로 청소년 유해물에 해당)를 분류합니다.<br>
+      여기서 검사 결과가 빨간 박스로 뜨는 이미지는 채팅으로 업로드할 수 없습니다.
     </div>
     <div class="container">
       <AppImg
         v-if="url"
         :src="url"
+        :fit="'contain'"
         @click="onClickImage"
-        class="cursor-pointer"
+        class="cursor-pointer overlay"
       />
       <ImageUploader
         v-else
@@ -19,6 +20,7 @@
         :resize="{ above: 1 }"
         :accept="['jpg', 'jpeg', 'png']"
         :useURL="true"
+        class="overlay"
       />
       <div
         v-if="url"
@@ -32,18 +34,20 @@
     </div>
     <div
       v-if="data"
-      class="problems">
-      <div v-if="(data || []).length > 0">
-        <div
-          class="problem"
-          :key="idx"
-          v-for="(row, idx) in data">
-          <div v-if="row.Confidence" class="confidence">확률: {{ Math.round(100 * row.Confidence) / 100 }}%</div>
-          <div v-if="row.Name" class="name">분류: {{ row.Name }}</div>
-          <div v-if="row.ParentName" class="parent-name">대분류: {{ row.ParentName }}</div>
-        </div>
+      class="problems"
+      :class="{
+        'warning': data.length > 0,
+        'danger': data.some(isGraphic),
+      }">
+      <div
+        class="problem"
+        :key="idx"
+        v-for="(row, idx) in data">
+        <div v-if="row.Confidence" class="confidence">확률: {{ Math.round(100 * row.Confidence) / 100 }}%</div>
+        <div v-if="row.Name" class="name">분류: {{ row.Name }}</div>
+        <div v-if="row.ParentName" class="parent-name">대분류: {{ row.ParentName }}</div>
       </div>
-      <div v-else>문제 없는 이미지입니다.</div>
+      <div v-if="data.length === 0">문제 없는 이미지입니다.</div>
     </div>
     <div class="testset pretty-scrollbar">
       <div
@@ -85,6 +89,12 @@ export default {
 
     const testing = ref(null)
 
+    const isGraphic = row => {
+      if (row.Confidence < 90) return
+
+      return ['Nudity', 'Sexual', 'Gore', 'Bodies', 'Corpses'].some(word => (row.Name || row.ParentName || '').includes(word))
+    }
+
     const testset = ref([
       { name: '찐반인가', src: 'https://coinpan.com/files/attach/images/181338187/476/174/249/14fd2ec990bafcac5bfacee54f22c956.jpeg' },
       { name: '톰 하디', src: 'https://pyxis.nymag.com/v1/imgs/bb3/b19/8af5aabd2330e035c03fa67633b0945fcd-18-tom-hardy.2x.rvertical.w330.jpg' },
@@ -97,6 +107,7 @@ export default {
 
     const onUploadFile = async e => {
       url.value = e.url
+      plugins.$helpers.dom.scrollToTop()
       try {
         testing.value = true
         const { ModerationLabels } = await rekognitionService.imageModeration.create(url.value)
@@ -119,6 +130,7 @@ export default {
       testset,
       onUploadFile,
       onClickImage,
+      isGraphic,
     }
   },
 }
@@ -128,6 +140,7 @@ export default {
 .view-image-moderation {
   max-width: 720px;
   margin: auto;
+  position: relative;
 
   .description {
     margin-bottom: 16px;
@@ -137,6 +150,7 @@ export default {
 
   .container {
     position: relative;
+    padding-top: 66%;
 
     .app-img {
       border: 1px solid var(--border-base);
@@ -144,11 +158,19 @@ export default {
   }
 
   .problems {
-    background: var(--border-base);
+    background: var(--success);
     padding: 16px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
     margin-top: 40px;
+
+    &.warning {
+      background: rgb(255, 187, 17, 0.5);
+    }
+
+    &.danger {
+      background: rgba(255, 32, 32, 0.5);
+    }
   }
 
   .problem {
@@ -161,6 +183,7 @@ export default {
 
   .testset {
     margin: 40px 0 24px;
+    padding-bottom: 8px;
     display: flex;
     overflow-x: auto;
     gap: 8px;
