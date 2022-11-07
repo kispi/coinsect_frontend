@@ -80,7 +80,7 @@
       />
       <input
         ref="refInput"
-        placeholder="작성자, 글 제목, 내용, 댓글"
+        placeholder="작성자, 글 제목, 내용"
         v-model="payload.keyword"
         @keydown="onKeydown"
         @click="focus = true"
