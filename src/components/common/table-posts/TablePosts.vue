@@ -27,9 +27,11 @@
                 v-html="postNumber(row)"
               />
               <article class="cell title">
-                <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="m-r-8"/>
-                <div v-html="row.title" class=""/>
-                <div v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</div>
+                <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
+                <div>
+                  <span v-html="row.title"/>
+                  <span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
+                </div>
               </article>
             </div>
             <div class="content">
@@ -78,7 +80,7 @@
       />
       <input
         ref="refInput"
-        placeholder="작성자, 글 제목, 내용 등"
+        placeholder="작성자, 글 제목, 내용, 댓글"
         v-model="payload.keyword"
         @keydown="onKeydown"
         @click="focus = true"
