@@ -9,7 +9,7 @@
         v-html="$translate('WRITE')"
       />
     </div>
-    <div class="boards">
+    <!-- <div class="boards">
       <button
         @click="onClickBoard(board)"
         class="btn btn-brd"
@@ -18,7 +18,7 @@
         v-for="board in boards"
         v-html="board.description"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -46,8 +46,7 @@ export default {
     }
 
     const onClickBoard = board => {
-      router.push(`/community?boardId=${board.id}`)
-      store.dispatch('loadPosts', { boardId: board.id })
+      // router.push(`/community?boardId=${board.id}`)
     }
 
     return {

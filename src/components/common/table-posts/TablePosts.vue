@@ -121,7 +121,7 @@ export default {
       page: parseInt(router.currentRoute.value.query.page || 1),
       limit: parseInt(router.currentRoute.value.query.limit || 20),
       keyword: router.currentRoute.value.query.keyword,
-      boardId: router.currentRoute.value.query.boardId || 1,
+      boardId: parseInt(router.currentRoute.value.query.boardId || 1),
     })
 
     const posts = computed(() => store.getters.posts)
