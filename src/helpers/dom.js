@@ -66,6 +66,7 @@ const dom = {
     if (attributes) attributes.forEach(attr => scriptTag.setAttribute(attr.key, attr.value))
     scriptTag.src = url
     scriptTag.async = true
+    scriptTag.defer = true
     scriptTag.onload = resolve
     document.head.appendChild(scriptTag)
     $store.commit('addLazyLoadedScriptUrl', url)

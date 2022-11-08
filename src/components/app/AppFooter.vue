@@ -15,7 +15,7 @@
               <AppImg :src="contact.img" :alt="contact.key"/>
             </a>
           </div>
-          <a class="m-t-24 display-block cursor-pointer text-underline" @click="$modal.custom({ component: 'ModalDonation' })" v-html="$translate('MODAL_DONATION')"/>
+          <div class="m-t-24 cursor-pointer text-underline" @click="$modal.custom({ component: 'ModalDonation' })" v-html="$translate('MODAL_DONATION')"/>
         </div>
         <div
           v-if="($store.getters.config || {}).version"
