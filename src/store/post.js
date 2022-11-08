@@ -3,16 +3,21 @@ import communityService from '@/services/community'
 
 const post = {
   state: () => ({
+    boards: null,
     post: null,
     posts: null,
     notices: null,
   }),
   getters: {
+    boards: state => state.boards,
     post: state => state.post,
     posts: state => state.posts,
     notices: state => state.notices,
   },
   mutations: {
+    setBoards(state, boards) {
+      state.boards = boards
+    },
     setPost(state, post) {
       state.post = post
     },
@@ -24,6 +29,14 @@ const post = {
     },
   },
   actions: {
+    async loadBoards({ commit }) {
+      try {
+        const resp = await communityService.board.all()
+        commit('setBoards', resp.data)
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
     async loadPost({ commit }, sharingKey) {
       try {
         commit('setLoading', { post: true })
@@ -40,7 +53,7 @@ const post = {
       if (params.limit) o.limit(params.limit)
       if (params.offset) o.offset(params.offset)
       if (params.keyword) o.query(`keyword=${params.keyword}`)
-      o.where('post_type = "normal"')
+      o.where(`post_type = "normal" AND board_id = ${params.boardId || 1}`)
 
       try {
         commit('setLoading', { posts: true })

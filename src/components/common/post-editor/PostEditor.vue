@@ -1,6 +1,6 @@
 <template>
-  <div class="post-editor">
-    <form class="nickname-and-password" @submit.prevent>
+  <form class="post-editor" @submit.prevent>
+    <div class="nickname-password">
       <input
         v-if="!$store.getters.me"
         v-model="payload.nickname"
@@ -22,13 +22,16 @@
         maxlength="8"
         autocomplete="post-password"
       >
-    </form>
-    <input
-      v-model="payload.title"
-      class="title bg-white c-black"
-      :placeholder="$translate('PLACEHOLDER_TITLE')"
-      :maxlength="(($store.getters.config || {}).maxlength || {}).title"
-    >
+    </div>
+    <div class="board-title">
+      <AppDropdown v-if="boards" :dropdownItems="boards" @select-dropdown-item="onSelectBoard"/>
+      <input
+        v-model="payload.title"
+        class="title bg-white c-black"
+        :placeholder="$translate('PLACEHOLDER_TITLE')"
+        :maxlength="(($store.getters.config || {}).maxlength || {}).title"
+      >
+    </div>
     <ToastUIEditor v-model="payload.content"/>
     <div class="buttons">
       <button
@@ -42,11 +45,11 @@
         v-html="$translate('SUBMIT_PAYLOAD')"
       />
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import crudService from '@/services/crud'
@@ -64,10 +67,27 @@ export default {
 
     const payload = ref({})
 
+    const boards = computed(() => {
+      const arr = store.getters.boards
+      if (!arr) return
+
+      return arr.map(o => ({
+        key: o.id,
+        name: o.description,
+        $$selected: o.id === (payload.value.board || {}).id,
+      }))
+    })
+
+    const onSelectBoard = e => {
+      payload.value.board = { id: e.key }
+    }
+
     const init = () => {
       if (props.post) payload.value = props.post
       else if (store.getters.me) payload.value.nickname = store.getters.me.profile.nickname
       else payload.value.nickname = ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname
+
+      if (!payload.value.board) payload.value.board = { id: 1 }
     }
 
     const createPost = async () => {
@@ -110,18 +130,20 @@ export default {
 
     return {
       payload,
+      boards,
+      onSelectBoard,
       createPost
     }
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .post-editor {
   --editor-gap: 8px;
   padding-bottom: 32px;
 
-  .nickname-and-password {
+  .nickname-password {
     display: flex;
     align-items: center;
     margin-bottom: var(--editor-gap);
@@ -149,8 +171,24 @@ export default {
     }
   }
 
-  .title {
+  .board-title {
+    display: flex;
+    align-items: center;
     margin-bottom: var(--editor-gap);
+
+    .app-dropdown {
+      background: var(--white) !important;
+      border-radius: 4px !important;
+      margin-right: var(--editor-gap);
+      width: 160px;
+      flex: 0 0 auto;
+
+      .clickable-area,
+      .list-container {
+        background: var(--white);
+        color: var(--black);
+      }
+    }
   }
 
   input {

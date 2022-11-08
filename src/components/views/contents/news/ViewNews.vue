@@ -71,10 +71,6 @@ export default {
         color: var(--text-stress);
       }
 
-      &:not(.selected) {
-        opacity: 0.5;
-      }
-
       img {
         width: 20px;
         margin-right: 4px;

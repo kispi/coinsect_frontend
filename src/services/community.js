@@ -16,6 +16,9 @@ const remove = {
 }
 
 export default {
+  board: {
+    all: () => $http.get('boards'),
+  },
   post,
   remove,
   checkPassword,

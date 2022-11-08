@@ -121,6 +121,7 @@ export default {
       page: parseInt(router.currentRoute.value.query.page || 1),
       limit: parseInt(router.currentRoute.value.query.limit || 20),
       keyword: router.currentRoute.value.query.keyword,
+      boardId: router.currentRoute.value.query.boardId || 1,
     })
 
     const posts = computed(() => store.getters.posts)
@@ -176,6 +177,7 @@ export default {
         limit: payload.value.limit,
         offset: (payload.value.page - 1) * payload.value.limit,
         keyword: payload.value.keyword,
+        boardId: payload.value.boardId,
       })
       plugins.$helpers.dom.scrollToTop()
     }

@@ -187,6 +187,7 @@ const app = {
       dispatch('loadTargetMarkets')
       dispatch('loadSymbols')
       dispatch('loadNotifications')
+      dispatch('loadBoards')
     },
     async loadAuthRequired({ getters, dispatch }) {
       if (!getters.header) return
