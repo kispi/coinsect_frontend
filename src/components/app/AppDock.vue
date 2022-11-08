@@ -25,9 +25,9 @@
             :active="$route.path === '/indicators/real-time-positions'"
             :tooltip="'REAL_TIME_POSITIONS'"
             :images="[
-              'https://d1085v6s0hknp1.cloudfront.net/images/influencers/hodu_park.jpg',
-              'https://file.mk.co.kr/meet/neds/2019/12/image_readtop_2019_1090982_15774420584030248.jpg',
-              'https://d1085v6s0hknp1.cloudfront.net/images/influencers/saddo.png',
+              $helpers.withCdn('assets/icon-hodu.jpg'),
+              $helpers.withCdn('assets/icon-jg.jpg'),
+              $helpers.withCdn('assets/icon-saddo.jpg'),
             ]"
           />
           <AppDockIcon
@@ -40,13 +40,13 @@
             @click="$router.push('/onchain/whale-alert')"
             :active="$route.path === '/onchain/whale-alert'"
             :tooltip="'WHALE_ALERT'"
-            :images="['https://play-lh.googleusercontent.com/6sR81DzsDr2BEEY4DSTvc2jnE24LTXNjSlHPfpJdJIOuxAgDMvM7Ky5H4kgg5BuZ8A']"
+            :images="[$helpers.withCdn('assets/icon-whalealert.jpg'),]"
           />
           <AppDockIcon
             @click="$router.push('/contents/economic-calendar')"
             :active="$route.path === '/contents/economic-calendar'"
             :tooltip="'ECONOMIC_CALENDAR'"
-            :images="['https://play-lh.googleusercontent.com/9MD3biGQRiYH8NdM6MT4uU9CFEBdeyjwA5OV5Ucab0vjF6O1PD7qIF63FhSk-eqksA=w480-h960-rw']"
+            :images="[$helpers.withCdn('assets/icon-investing.jpg'),]"
           />
           <AppDockIcon
             :numUnreads="numUnreads"
