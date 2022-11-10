@@ -9,16 +9,16 @@
         v-html="$translate('WRITE')"
       />
     </div>
-    <!-- <div class="boards">
+    <div class="boards">
       <button
-        @click="onClickBoard(board)"
+        @click="$router.push(`/community?boardId=${board.id}`)"
         class="btn btn-brd"
         :class="{'selected': selected(board)}"
         :key="board.id"
         v-for="board in boards"
         v-html="board.description"
       />
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -45,14 +45,9 @@ export default {
       return board.id === parseInt(bid)
     }
 
-    const onClickBoard = board => {
-      // router.push(`/community?boardId=${board.id}`)
-    }
-
     return {
       boards,
       selected,
-      onClickBoard,
     }
   }
 }

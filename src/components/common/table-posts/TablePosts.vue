@@ -61,8 +61,8 @@
     </div>
     <AppPagination
       class="m-t-16 m-b-16"
-      :page="payload.page"
-      :limit="payload.limit"
+      :page="$store.getters.posts.page"
+      :limit="$store.getters.posts.limit"
       :total="$store.getters.posts.total"
       @page="onPage"
     />
@@ -75,22 +75,22 @@
       :class="{'focus': focus}">
       <i
         class="fal fa-search"
-        :class="{'disabled': !payload.keyword}"
+        :class="{'disabled': !$store.getters.posts.keyword}"
         @click.stop="loadPosts"
       />
       <input
         ref="refInput"
         placeholder="작성자, 글 제목, 내용"
-        v-model="payload.keyword"
+        :value="$store.getters.posts.keyword"
         @keydown="onKeydown"
         @click="focus = true"
         @blur="focus = false"
       >
       <i
-        v-if="payload.keyword"
+        v-if="$store.getters.posts.keyword"
         class="fal fa-times"
         @click.stop="() => {
-          payload.keyword = null
+          $store.commit('setPosts', { keyword: null })
           refInput.focus()
         }"
       />
@@ -117,24 +117,17 @@ export default {
 
     const focus = ref(null)
 
-    const payload = ref({
-      page: parseInt(router.currentRoute.value.query.page || 1),
-      limit: parseInt(router.currentRoute.value.query.limit || 20),
-      keyword: router.currentRoute.value.query.keyword,
-      boardId: parseInt(router.currentRoute.value.query.boardId || 1),
-    })
-
     const posts = computed(() => store.getters.posts)
 
     const notices = computed(() => store.getters.notices)
 
     const onKeydown = e => {
       setTimeout(() => {
-        payload.value.keyword = e.target.value
+        store.commit('setPosts', { keyword: e.target.value })
         if (e.key === 'Enter' && !e.isComposing) {
-          payload.value.page = 1
-          if (!payload.value.keyword) payload.value.limit = 20
-          onPage(payload.value.page)
+          store.commit('setPosts', { page: 1 })
+          if (!store.getters.posts.keyword) store.commit('setPosts', { limit: 20 })
+          onPage(store.getters.posts.page)
         }
       })
     }
@@ -149,7 +142,9 @@ export default {
       return row.id
     }
 
-    const queryString = () => `${Object.keys(payload.value).filter(key => payload.value[key]).map(key => `${key}=${payload.value[key]}`).join('&')}`
+    const queryString = () => `${Object.keys(store.getters.posts)
+      .filter(key => store.getters.posts[key] && !['data', 'total'].includes(key))
+      .map(key => `${key}=${store.getters.posts[key]}`).join('&')}`
 
     const onClickRow = row => {
       if (row.sharingKey === router.currentRoute.value.params.sharingKey) return
@@ -167,18 +162,12 @@ export default {
     }
 
     const onPage = page => {
-      payload.value.page = page
+      store.commit('setPosts', { page })
       router.push(`/community?${queryString()}`)
-      setTimeout(loadPosts)
     }
 
     const loadPosts = async () => {
-      await store.dispatch('loadPosts', {
-        limit: payload.value.limit,
-        offset: (payload.value.page - 1) * payload.value.limit,
-        keyword: payload.value.keyword,
-        boardId: payload.value.boardId,
-      })
+      await store.dispatch('loadPosts')
       plugins.$helpers.dom.scrollToTop()
     }
 
@@ -196,20 +185,24 @@ export default {
     watch(
       () => router.currentRoute.value,
       newVal => {
+        if (!newVal || !newVal.fullPath.startsWith('/community')) return
+
         if (newVal.fullPath === '/community') {
-          // 이건 아닌데...
-          payload.value.page = 1
-          payload.value.limit = 20
-          payload.value.keyword = null
-          loadPosts()
+          store.commit('setPosts', {
+            page: 1,
+            limit: 20,
+            keyword: null,
+          })
         }
+
+        loadPosts()
       },
+      { deep: true },
     )
 
     return {
       refInput,
       focus,
-      payload,
       notices,
       posts,
       isActivePost,

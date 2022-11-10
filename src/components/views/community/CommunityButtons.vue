@@ -40,7 +40,6 @@ export default {
       try {
         await communityService.remove.post({ sharingKey, password })
         router.push('/community')
-        store.dispatch('loadPosts')
         plugins.$toast.success('게시글을 삭제했습니다')
       } catch (e) {
         plugins.$toast.error(e.data.message)

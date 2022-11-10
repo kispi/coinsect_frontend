@@ -9,6 +9,7 @@ import math from './math'
 import meta from './meta'
 import modal from './modal'
 import number from './number'
+import post from './post'
 import querybuilder from './querybuilder'
 import social from './social'
 import withCdn from './s3'
@@ -141,6 +142,7 @@ const helpers = {
       }, delay)
     }
   },
+  post,
   sleep: ms => new Promise(resolve => setTimeout(resolve, ms)),
   includesChosung: (partial, whole) => {
     const d = Hangul.disassemble

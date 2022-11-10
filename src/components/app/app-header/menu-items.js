@@ -121,7 +121,7 @@ const useMenuItems = () => {
 
     return {
       ...o,
-      $$selected: p.startsWith(o.pathPrefix),
+      $$selected: p.startsWith(o.pathPrefix) || p === o.path,
     }
   }))
 

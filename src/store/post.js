@@ -1,11 +1,19 @@
 import helpers from '@/helpers'
 import communityService from '@/services/community'
+import { router } from '@/router'
 
 const post = {
   state: () => ({
     boards: null,
     post: null,
-    posts: null,
+    posts: {
+      page: 1,
+      limit: 20,
+      boardId: null,
+      keyword: null,
+      total: null,
+      data: [],
+    },
     notices: null,
   }),
   getters: {
@@ -22,7 +30,7 @@ const post = {
       state.post = post
     },
     setPosts(state, posts) {
-      state.posts = posts
+      Object.keys(posts).forEach(key => state.posts[key] = posts[key])
     },
     setNotices(state, notices) {
       state.notices = notices
@@ -48,19 +56,23 @@ const post = {
         commit('setLoading', { post: false })
       }
     },
-    async loadPosts({ commit }, params = {}) {
+    async loadPosts({ commit }) {
+      const params = helpers.post.params.asObject()
+
       const o = helpers.qb().base()
       if (params.limit) o.limit(params.limit)
       if (params.offset) o.offset(params.offset)
       if (params.keyword) o.query(`keyword=${params.keyword}`)
-      o.where(`post_type = "normal"`)
-      // o.where(`post_type = "normal" AND board_id = ${params.boardId || 1}`)
+      o.where(`post_type = "normal" AND board_id = ${params.boardId || 1}`)
 
       try {
         commit('setLoading', { posts: true })
         const resp = await communityService.post.all(o.build())
         resp.data.forEach(post => post.$$images = helpers.retrieveImagesFromHTML(post.content))
-        commit('setPosts', resp)
+        commit('setPosts', {
+          ...resp,
+          ...params,
+        })
       } catch (e) {
         return Promise.reject(e)
       } finally {
