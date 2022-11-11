@@ -34,7 +34,7 @@ export default {
     }, 10000)
 
     const showIncomingMessageOverlay = () => {
-      if (messages.value.length === 0) return
+      if (messages.value.length === 0 || store.getters.settings.autoScrollable) return
 
       store.commit('setChat', { incomingMessage: messages.value[messages.value.length - 1] })
 

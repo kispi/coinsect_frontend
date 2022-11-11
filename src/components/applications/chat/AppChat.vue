@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, nextTick, watch, onMounted, onUnmounted } from 'vue'
+import { ref, getCurrentInstance, watch, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import AppChatHeader from './AppChatHeader'
 import AppChatMessage from './AppChatMessage'
@@ -128,7 +128,7 @@ export default {
       const dom = refAppChatBody.value
       if (!dom) return
 
-      nextTick(() => dom.scrollTop = dom.scrollHeight)
+      setTimeout(() => dom.scrollTop = dom.scrollHeight)
     }
 
     const setAppChatPosition = () => {
@@ -177,7 +177,7 @@ export default {
       if (type === 'reaction') {}
     }
 
-    const onOpenChatContainer = () => nextTick(() => {
+    const onOpenChatContainer = () => setTimeout(() => {
       scrollToBottom()
       setAppChatPosition()
       if (refAppChatInput.value) refAppChatInput.value.refTextarea.focus()
