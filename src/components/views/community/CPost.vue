@@ -25,7 +25,7 @@
         </div>
       </div>
       <div
-        @click="onClickContent"
+        @click.prevent="onClickContent"
         class="post-content"
         v-html="post.content"
       />
@@ -73,8 +73,8 @@ export default {
     }
 
     const onClickContent = e => {
-      const src = e.target.src
-      if (src) window.open(src, '_blank', 'noreferrer')
+      const link = e.target.src || e.target.href
+      if (link) window.open(link, '_blank', 'noreferrer')
     }
 
     return {
