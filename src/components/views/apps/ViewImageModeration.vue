@@ -17,7 +17,7 @@
         v-else
         @upload-file="onUploadFile"
         :path="'rekognition'"
-        :resize="{ above: 1 }"
+        :resize="{ above: 1, width: 1920 }"
         :useURL="true"
         class="overlay"
       />

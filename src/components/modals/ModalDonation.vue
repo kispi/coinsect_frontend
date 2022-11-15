@@ -6,8 +6,8 @@
     <ModalHeader :title="$translate('MODAL_DONATION')" @close="$emit('close')"/>
     <div class="body pre-line">
       <div class="description m-b-16">
-        <div class="m-b-8">운영자는 커피와 휫자와 치킨을 사랑합니다 🥰</div>
-        <div>상식: 리플은 데스티네이션 태그가 없어도 송금이 가능합니다.</div>
+        <div class="m-b-8">- 리플은 데스티네이션 태그가 없어도 송금이 가능합니다.</div>
+        <div>- 비트코인 출금 수수료는 사실 업비트에서나 비쌀 뿐, 개인지갑에서 보내는 경우 전혀 비싸지 않습니다. (심지어 불과 몇백원의 수수료만으로도 송금 가능)</div>
       </div>
       <div
         v-if="wallets"
