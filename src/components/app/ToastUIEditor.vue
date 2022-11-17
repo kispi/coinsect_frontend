@@ -90,6 +90,7 @@ export default {
   .toastui-editor-popup,
   .toastui-editor-dropdown-toolbar {
     z-index: 1;
+    color: var(--black);
   }
 
   .toastui-editor-defaultUI .ProseMirror {
