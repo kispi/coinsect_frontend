@@ -341,12 +341,18 @@ export default {
     }
 
     .app-chat-incoming-message-overlay {
-      color: var(--white);
+      &.outside {
+        color: var(--white);
 
-      .app-chat-profile {
-        .nickname {
-          color: var(--white);
+        .app-chat-profile {
+          .nickname {
+            color: var(--white);
+          }
         }
+      }
+
+      &:not(.outside) {
+        background: var(--white);
       }
     }
 
