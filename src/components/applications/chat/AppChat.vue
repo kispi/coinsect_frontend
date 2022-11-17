@@ -6,6 +6,7 @@
       'folded': $store.getters.settings.chatFolded,
       'max-size': $store.getters.settings.chatSizeMax,
       'transparent': $store.getters.settings.chatTransparent,
+      [$store.getters.settings.chatSkin]: true,
     }">
     <div
       class="app-chat-container"
@@ -252,7 +253,6 @@ export default {
     display: flex;
     flex-direction: column;
     margin: auto;
-    background: var(--border-base);
     width: 320px;
     height: 480px;
     max-height: calc(100vh - 16px); // 100vh - 2 * bottom padding
@@ -320,6 +320,38 @@ export default {
   &.dark {
     .app-chat-container {
       background: var(--gs-22);
+    }
+  }
+
+  .app-chat.kakao {
+    --bg-kakao-chat: #BBCEE0;
+    --background-base: var(--white);
+    --background-light: rgba(255, 255, 255, 0.25);
+    --text-stress: var(--black);
+    --border-base: var(--gs-e0);
+
+    .app-chat-container {
+      background: var(--bg-kakao-chat);
+      border: 1px solid var(--border-base);
+      color: var(--text-stress);
+    }
+
+    .app-chat-stats {
+      background: linear-gradient(to bottom, var(--bg-kakao-chat), transparent);
+    }
+
+    .app-chat-message {
+      .text-and-timestamp {
+        .text {
+          background: var(--white);
+        }
+      }
+    }
+
+    .app-chat-input {
+      .textarea-wrapper {
+        background: var(--white);
+      }
     }
   }
 }

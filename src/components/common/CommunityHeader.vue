@@ -11,12 +11,12 @@
     </div>
     <div class="boards">
       <button
-        @click="$router.push(`/community?boardId=${board.id}`)"
+        @click="$router.push(`/community${board.id ? `?boardId=${board.id}` : ''}`)"
         class="btn btn-brd"
         :class="{'selected': selected(board)}"
         :key="board.id"
         v-for="board in boards"
-        v-html="board.description"
+        v-html="$translate(board.description)"
       />
     </div>
   </div>
@@ -36,11 +36,14 @@ export default {
 
     const router = useRouter()
 
-    const boards = computed(() => store.getters.boards)
+    const boards = computed(() => [
+      { description: 'ALL' },
+      ...(store.getters.boards || []),
+    ])
 
     const selected = board => {
       const bid = router.currentRoute.value.query.boardId
-      if (!bid) return board.id === 1
+      if (!bid) return !board.id
 
       return board.id === parseInt(bid)
     }

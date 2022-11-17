@@ -63,7 +63,9 @@ const post = {
       if (params.limit) o.limit(params.limit)
       if (params.offset) o.offset(params.offset)
       if (params.keyword) o.query(`keyword=${params.keyword}`)
-      o.where(`post_type = "normal" AND board_id = ${params.boardId || 1}`)
+      let whereStmt = 'post_type = "normal"'
+      if (parseInt(params.boardId)) whereStmt += ` AND board_id = ${params.boardId}`
+      o.where(whereStmt)
 
       try {
         commit('setLoading', { posts: true })

@@ -9,7 +9,7 @@ export const postHelpers = {
         limit: parseInt(q.limit || 20),
         offset: parseInt(q.page - 1) * parseInt(q.limit),
         keyword: q.keyword,
-        boardId: parseInt(q.boardId || 1),
+        boardId: parseInt(q.boardId),
       }
     },
     asQueryString: () => {

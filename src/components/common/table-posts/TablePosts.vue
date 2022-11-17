@@ -41,17 +41,15 @@
                 <UserSymbol :user="row.user" class="flex-wrap m-r-4"/>
                 <span @click.stop.prevent="onClickUserNickname(row)">{{ $helpers.template.writer(row) }}</span>
               </div>
-              <div
-                class="cell date f-mono">
-                {{ $helpers.template.prettyTime(row.createdAt, true) }}
+              <div class="cell date f-mono">{{ $helpers.template.prettyTime(row.createdAt, true) }}</div>
+              <div class="cell number f-mono">
+                <span v-if="$store.getters.isMobile" class="m-r-4">조회</span>{{ row.views }}
               </div>
               <div
                 class="cell number f-mono">
-                <span v-if="$store.getters.isMobile">조회</span> {{ row.views }}
-              </div>
-              <div
-                class="cell number f-mono">
-                <span v-if="$store.getters.isMobile">추천</span> {{ (row.reactions || []).filter(o => o.type === 'up').length }}
+                {{ (row.reactions || []).filter(o => o.type === 'up').length }}
+                /
+                {{ (row.reactions || []).filter(o => o.type === 'down').length }}
               </div>
             </div>
           </AdaptiveLayout>

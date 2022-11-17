@@ -19,6 +19,10 @@
     "en": "Ring on new message",
     "kr": "새 메시지 소리 알림"
   },
+  "CHAT_SKIN": {
+    "en": "Chat Skin",
+    "kr": "채팅방 스킨"
+  },
   "CHAT_OVERLAY_NEW_MESSAGE": {
     "en": "Overlay new message",
     "kr": "새 메시지 오버레이"
@@ -34,6 +38,14 @@
   "CHAT_HIDE_IMAGE": {
     "en": "Hide Image Message",
     "kr": "이미지 메시지 가리기"
+  },
+  "SKIN_BASIC": {
+    "en": "Basic",
+    "kr": "기본"
+  },
+  "SKIN_KAKAO": {
+    "en": "Kakao",
+    "kr": "카카오"
   },
   "PUSH_POSITION_CHANGE": {
     "en": "Push Position Change",

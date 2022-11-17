@@ -117,6 +117,19 @@
             @mouseleave="$tooltip.hide('tooltipChatSizeMax')"
           />
         </div>
+        <div class="chat-setting-item">
+          <div class="field-name">{{ $translate('CHAT_SKIN') }}</div>
+          <div class="chat-skins">
+            <div
+              class="chat-skin"
+              :class="{'selected': $store.getters.settings.chatSkin === chatSkin}"
+              @click="$store.commit('setSettings', { chatSkin })"
+              :key="chatSkin"
+              v-for="chatSkin in ['basic', 'kakao']">
+              {{ $translate(`SKIN_${chatSkin}`) }}
+            </div>
+          </div>
+        </div>
       </div>
       <div class="section">
         <div class="title">* 푸시알림</div>
@@ -385,6 +398,23 @@ export default {
     padding: 12px 40px;
     display: table;
     margin: 0 auto 24px;
+  }
+
+  .chat-skins {
+    display: flex;
+    gap: 8px;
+
+    .chat-skin {
+      border: 1px solid var(--border-base);
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+
+      &.selected {
+        color: var(--brand-primary);
+        border: 1px solid var(--brand-primary);
+      }
+    }
   }
 }
 </style>

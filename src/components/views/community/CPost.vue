@@ -36,7 +36,7 @@
           :class="{'activated': ((post.$$reactions || {})[rType] || {}).activated}"
           :key="rType"
           v-for="rType in ['up', 'down']">
-          <div class="reaction-type">{{ rType }}</div>
+          <i :class="`fal fa-thumbs-${rType}`"/>
           <div class="value">{{ ((post.$$reactions || {})[rType] || {}).count || 0 }}</div>
         </div>
       </div>

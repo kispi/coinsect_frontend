@@ -3,13 +3,8 @@
     <div class="chat-settings">
       <div
         class="clickable-icon-wrapper"
-        @click="$store.commit('setSettings', { chatDing: !$store.getters.settings.chatDing })">
-        <i class="fal" :class="$store.getters.settings.chatDing ? 'fa-bell' : 'fa-bell-slash'"/>
-      </div>
-      <div
-        class="clickable-icon-wrapper"
-        @click="$store.commit('setSettings', { chatTransparent: !$store.getters.settings.chatTransparent })">
-        <i class="fal" :class="$store.getters.settings.chatTransparent ? 'fa-eye' : 'fa-eye-slash'"/>
+        @click="$modal.custom({ component: 'ModalChatSettings' })">
+        <i class="fal fa-cog"/>
       </div>
     </div>
     <div
@@ -51,10 +46,15 @@
   align-items: center;
   padding: var(--app-chat-padding);
   user-select: none;
+  position: relative;
   cursor: grab;
 
   .profile {
     display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     .nickname {
       color: var(--text-stress);
