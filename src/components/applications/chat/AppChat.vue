@@ -324,7 +324,8 @@ export default {
   }
 
   .app-chat.kakao {
-    --bg-kakao-chat: #BBCEE0;
+    --bg-kakao-chat: #bacee0;
+    --bg-kakao-my-message: #ffeb33;
     --background-base: var(--white);
     --background-light: rgba(255, 255, 255, 0.25);
     --text-stress: var(--black);
@@ -357,6 +358,14 @@ export default {
     }
 
     .app-chat-message {
+      &.mine {
+        .text-and-timestamp {
+          .text {
+            background: var(--bg-kakao-my-message);
+          }
+        }
+      }
+
       .text-and-timestamp {
         .text {
           background: var(--white);
