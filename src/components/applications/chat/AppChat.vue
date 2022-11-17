@@ -340,6 +340,16 @@ export default {
       background: linear-gradient(to bottom, var(--bg-kakao-chat), transparent);
     }
 
+    .app-chat-incoming-message-overlay {
+      color: var(--white);
+
+      .app-chat-profile {
+        .nickname {
+          color: var(--white);
+        }
+      }
+    }
+
     .app-chat-message {
       .text-and-timestamp {
         .text {
