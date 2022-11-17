@@ -167,6 +167,9 @@ const helpers = {
   
       return (writing.user || {}).id === ($store.getters.me || {}).id
     },
+    nickname: writing => {
+      return (((writing || {}).user || {}).profile || {}).nickname || (writing || {}).nickname
+    },
     canModify: writing => {
       if (!writing || writing.deletedAt) return
   

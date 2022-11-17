@@ -28,7 +28,7 @@
       <textarea v-model="payload.content" :placeholder="$translate('PLACEHOLDER_CONTENT')"/>
     </form>
     <div class="reply-functions">
-      <div>{{ parent ? `${parent.nickname}님의 댓글에 대한 답글` : '' }}</div>
+      <div>{{ parent ? `${$helpers.writing.nickname(parent)}님의 댓글에 대한 답글` : '' }}</div>
       <div class="buttons flex-row">
         <button
           v-if="parent"
@@ -143,6 +143,7 @@ export default {
 
   .password {
     border-left: 1px solid var(--border-base);
+    border-right: 1px solid var(--border-base);
   }
 
   .writer-and-password {
