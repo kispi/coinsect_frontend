@@ -378,6 +378,10 @@ export default {
         background: var(--white);
       }
     }
+
+    .daily-separator .timestamp {
+      color: var(--gs-44);
+    }
   }
 }
 </style>
