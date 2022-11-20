@@ -172,7 +172,7 @@ const marketInfo = {
       try {
         if (bEx === 'upbit') {
           const data = await $httpNoAuth.get('https://ccx.upbit.com/api/v1/status/wallet')
-          data.forEach(w => o[w.currency] = { d: w.wallet_state !== 'paused' })
+          data.forEach(w => o[w.currency] = { d: w.wallet_state === 'working' })
         }
 
         if (bEx === 'bithumb') {
