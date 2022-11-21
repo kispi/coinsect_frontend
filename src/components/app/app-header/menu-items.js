@@ -76,10 +76,11 @@ const useMenuItems = () => {
       { path: '/contents/news', title: 'NEWS' },
       // { path: '/contents/twitter', title: 'TWITTER' },
       { path: '/contents/economic-calendar', title: 'ECONOMIC_CALENDAR' },
-      { path: '/contents/influencers', title: 'INFLUENCERS' },
       { path: '/contents/public-treasury', title: 'PUBLIC_TREASURY' },
       { path: '/contents/bitcoin-halving', title: 'BITCOIN_HALVING' },
       { path: '/contents/bitcoin-mining', title: 'BITCOIN_MINING' },
+      { path: '/contents/influencers', title: 'INFLUENCERS' },
+      { path: '/contents/crypto-referral', title: 'CRYPTO_REFERRAL' },
     ],
   }, {
     title: 'ONCHAIN',

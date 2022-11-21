@@ -447,6 +447,10 @@
     "en": "Bitcoin Mining Simulator",
     "kr": "비트코인 채굴 시뮬레이터"
   },
+  "CRYPTO_REFERRAL": {
+    "en": "Referral Calculator",
+    "kr": "레퍼럴 수익 계산기"
+  },
   "WHAT_IS_MINING": {
     "en": "What is mining",
     "kr": "채굴이란"

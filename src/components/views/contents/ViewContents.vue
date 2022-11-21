@@ -18,6 +18,7 @@ export default {
     ViewInfluencers: defineAsyncComponent(() => import('./influencers/ViewInfluencers')),
     ViewInfluencerDetail: defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail')),
     ViewPublicTreasury: defineAsyncComponent(() => import('./ViewPublicTreasury')),
+    ViewCryptoReferral: defineAsyncComponent(() => import('./ViewCryptoReferral')),
   },
   setup() {
     const router = useRouter()
@@ -32,6 +33,7 @@ export default {
       if (p === '/contents/public-treasury') return 'ViewPublicTreasury'
       if (p === '/contents/bitcoin-halving') return 'ViewBitcoinHalving'
       if (p === '/contents/bitcoin-mining') return 'ViewBitcoinMining'
+      if (p === '/contents/crypto-referral') return 'ViewCryptoReferral'
     })
 
     return {

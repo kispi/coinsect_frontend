@@ -85,6 +85,13 @@ const contents = [{
     description: '각종 암호화폐 / 코인 뉴스',
   },
 }, {
+  path: '/contents/crypto-referral',
+  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
+  meta: {
+    title: '레퍼럴 수익 계산기 - 코인충',
+    description: '레퍼럴 가입 해야할까? 유명 인플루언서들은 레퍼럴로 얼마나 많은 수익을 올릴까?',
+  },
+}, {
   path: '/contents/economic-calendar',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {
