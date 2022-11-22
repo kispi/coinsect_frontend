@@ -133,7 +133,7 @@ export default {
     const onKeydown = e => {
       setTimeout(() => {
         keyword.value = e.target.value
-      })
+      }, 10)
     }
 
     const sorter = (a, b) => {
