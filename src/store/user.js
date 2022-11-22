@@ -80,10 +80,11 @@ const user = {
         return Promise.reject(e)
       }
     },
-    signOut() {
+    signOut({ commit }) {
       const removeTheseKeys = ['header', 'meta']
       removeTheseKeys.forEach(key => window.localStorage.removeItem(key))
-      location.reload()
+      commit('setMe', null)
+      commit('setHeader', null)
     },
   },
   mutations: {

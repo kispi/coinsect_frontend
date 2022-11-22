@@ -102,6 +102,10 @@ const useChatHandler = () => {
     store.commit('setChatStats', message.stats)
 
     switch (message.type) {
+      case 'sessionExpired':
+        plugins.$toast.error('최종 로그인 이후 7일이 경과하여 세션이 만료되었습니다. 다시 로그인해주세요!')
+        setTimeout(() => store.dispatch('signOut'), 3000)
+        break
       case 'alert':
       case 'image':
       case 'text': {
@@ -211,7 +215,10 @@ const useChatHandler = () => {
     connection.value.onclose = () => {
       store.commit('setChat', { connected: false })
       clearInterval(pingInterv.value)
-      setTimeout(connect, 5000)
+
+      if (!store.getters.chat.preventAutoReconnect) setTimeout(connect, 5000)
+
+      store.commit('setChat', { preventAutoReconnect: false })
     }
   }
 
@@ -251,7 +258,6 @@ const useChatHandler = () => {
   })
 
   return {
-    connection,
     messages,
     filteredMessages,
     loadingMessages,

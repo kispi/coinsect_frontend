@@ -213,6 +213,16 @@ export default {
 
     onUnmounted(() => {
       plugins.$bus.$off('first-load-messages', scrollToBottom)
+
+      /*
+        <AppChat/>이 unmount되는 경우는, 로그인/로그아웃 뿐이다. 이 경우 상태관리의 편의를 위해 <AppChat/>을 rerender하기 때문에, connection도 새로 만들어진다.
+        따라서 기존 connection은 dangling상태가 되므로 그것을 인위적으로 없애준다.
+        이렇게 인위로 connection을 close하는 경우는 chat-handler.js에서 접속 끊길 시 5초마다 reconnect시도하는 코드가 돌지 않도록 preventAutoReconnect 플래그를 넣어준다.
+      */
+      if (store.getters.chat.connection) {
+        store.commit('setChat', { preventAutoReconnect: true })
+        store.getters.chat.connection.close()
+      }
     })
 
     return {

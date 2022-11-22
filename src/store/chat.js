@@ -11,6 +11,7 @@ const chat = {
       lastWebsocketMessage: null,
       lastReadMessage: null,
       writingReplyTo: null, // 값이 존재한다면, 이 메시지에 답장을 쓰고있는 것이다.
+      preventAutoReconnect: null,
     },
   }),
   getters: {
