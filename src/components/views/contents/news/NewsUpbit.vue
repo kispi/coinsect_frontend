@@ -28,12 +28,11 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import contentService from '@/services/content'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
     const upbitNews = ref(null)
 
     const sections = computed(() => {
@@ -50,7 +49,7 @@ export default {
 
     const loadNews = async () => {
       try {
-        upbitNews.value = await plugins.$http.get('https://api-manager.upbit.com/api/v1/coin_news')
+        upbitNews.value = await contentService.news.upbit()
       } catch (e) {}
     }
 
