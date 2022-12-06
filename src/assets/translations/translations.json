@@ -126,5 +126,17 @@
   "DELETED_BY_ADMIN": {
     "en": "Deleted by the admin.",
     "kr": "관리자에 의해 삭제되었습니다."
+  },
+  "CONTACT": {
+    "en": "Contact",
+    "kr": "문의"
+  },
+  "DISCLAIMER": {
+    "en": "Disclaimer",
+    "kr": "면책 공고"
+  },
+  "BITCOIN_VS_ALTCOIN": {
+    "en": "Bitcoin vs. Altcoin",
+    "kr": "비트코인 vs. 알트코인"
   }
 }

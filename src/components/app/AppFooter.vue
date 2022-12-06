@@ -1,27 +1,49 @@
 <template>
   <footer class="app-footer">
     <div class="layout-centered">
-      <div>coinsect.io는 가상자산들의 실시간 가격, 호가창, 시가총액 등의 정보들을 제공합니다.</div>
-      <div>이 사이트에서 제공하는 정보들은 투자에 대한 조언이 아니며, 투자에 대한 모든 책임은 본인에게 있습니다.</div>
-      <div class="flex-row flex-between items-end m-t-16">
-        <div class="first">
-          <div class="contact-sns">
-            <a
-              :href="contact.link"
-              :key="contact.key"
-              v-for="contact in contacts"
-              target="_blank"
-              rel="noreferrer">
-              <AppImg :src="contact.img" :alt="contact.key"/>
-            </a>
-          </div>
-          <div class="m-t-24 cursor-pointer text-underline" @click="$modal.custom({ component: 'ModalDonation' })" v-html="$translate('MODAL_DONATION')"/>
-        </div>
+      <div class="sitemap">
         <div
-          v-if="($store.getters.config || {}).version"
-          @click="onClickBackendNumber">
-          <div v-if="$store.getters.config.version.backend">Backend: {{ $store.getters.config.version.backend }}</div>
-          <div v-if="$store.getters.config.version.frontend">Frontend: {{ $store.getters.config.version.frontend }}</div>
+          class="section"
+          :key="section"
+          v-for="section in sections">
+          <div class="section-title" v-html="$translate(section.title)"/>
+          <a
+            @click.prevent="$router.push(page.path)"
+            :href="page.path"
+            :key="page.path"
+            v-for="page in section.subPages"
+            v-html="$translate(page.title)"
+          />
+        </div>
+      </div>
+      <div class="bottom">
+        <div>
+          <div class="section">
+            <div class="section-title" v-html="$translate('CONTACT')"/>
+            <div class="contact-sns">
+              <a
+                :href="contact.link"
+                :key="contact.key"
+                v-for="contact in contacts"
+                target="_blank"
+                rel="noreferrer">
+                <AppImg :src="contact.img" :alt="contact.key"/>
+              </a>
+            </div>
+          </div>
+          <div class="section m-t-24">
+            <div class="section-title m-t-16 cursor-pointer text-underline" @click="$modal.custom({ component: 'ModalDonation' })" v-html="$translate('MODAL_DONATION')"/>
+          </div>
+        </div>
+        <div class="info">
+          <div class="section">
+            <div class="section-title" v-html="$translate('DISCLAIMER')"/>
+            <div v-html="info.disclaimer"/>
+          </div>
+          <div class="section m-t-24">
+            <div class="section-title" v-html="$translate('BITCOIN_VS_ALTCOIN')"/>
+            <div v-html="info.bitcoinVsAltcoin"/>
+          </div>
         </div>
       </div>
     </div>
@@ -29,8 +51,16 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import useMenuItems from './app-header/menu-items'
+
 export default {
   setup() {
+    const { menuItems } = useMenuItems()
+
+    const store = useStore()
+
     const contacts = [{
       key: 'kakao',
       img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw',
@@ -45,7 +75,33 @@ export default {
       link: 'mailto:admin@coinsect.io',
     }]
 
+    const sections = computed(() => [{
+      title: 'MAIN',
+      subPages: [
+        { path: '/', title: 'KIMP' },
+        { path: '/community', title: 'COMMUNITY' },
+        { path: '/about', title: 'ABOUT' },
+      ],
+    }].concat(menuItems.value.filter(o => o.subPages).sort((a, b) => a.title === 'ONCHAIN' ? -1 : 1)))
+
+    const info = computed(() => {
+      const html = {
+        kr: {
+          disclaimer: `<div>코인충(coinsect.io)에서 제공되는 어떤 정보도 투자에 대한 조언이 아니며, 이용자들의 투자 결과에 대해 아무런 책임을 지지 않습니다. 암호자산은 극도의 변동성을 보이므로 투자에 유의하시기 바랍니다.</div>`,
+          bitcoinVsAltcoin: `<div><a href="https://coinsect.io/community/bitcoin-is-the-only-commodity" target="_blank">오직 비트코인만 금과 같은 '상품'이며, 나머지 모든 알트코인(이더리움 포함)은 아직 불명확한 규제의 회색지대를 이용한 미등록 증권으로, 매우 큰 위험성을 지닌 벤처기업들로 볼 수 있습니다.</a></div>`,
+        },
+        en: {
+          disclaimer: `<div>None of the information provided here(coinsect.io) should be considered as a financial advice, thus we are not responsble for loss of users. Cryptocurrency is notorious for it's volatility.</div>`,
+          bitcoinVsAltcoin: `<div><a href="https://coinsect.io/community/bitcoin-is-the-only-commodity" target="_blank">Bitcoin is the only COMMODITY, altcoins(ETH included) are in fact STARTUPS, UNREGISTERED SECURITIES taking advantage of gray area of regulation, involving extreme investment risk.</a></div>`,
+        },
+      }
+
+      return html[store.getters.settings.locale]
+    })
+
     return {
+      info,
+      sections,
       contacts,
     }
   },
@@ -57,6 +113,7 @@ export default {
   background: var(--background-light);
   font-size: 12px;
   line-height: 24px;
+  padding: 16px;
   padding-top: 32px;
   padding-bottom: 120px;
 
@@ -81,6 +138,37 @@ export default {
         opacity: 1;
       }
     }
+  }
+
+  .sitemap {
+    display: grid;
+    grid-gap: 48px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .section {
+    .section-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    a {
+      display: block;
+
+      &:hover {
+        color: var(--brand-primary);
+      }
+    }
+  }
+
+  .bottom {
+    border-top: 1px solid var(--border-base);
+    padding-top: 24px;
+    margin-top: 24px;
+    display: grid;
+    grid-gap: 48px;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   }
 }
 </style>
