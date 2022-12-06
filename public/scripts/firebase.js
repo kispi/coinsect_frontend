@@ -20,7 +20,7 @@ window.__coinsect__firebase__ = {
     const messaging = getMessaging()
 
     // onMessage(messaging, payload => {
-    //   console.log('firebase foreground message:', payload.notification)
+    //   FIREBASE FOREGROUND MESSAGE
     // })
 
     window.__coinsect__firebase__.token = await getToken(

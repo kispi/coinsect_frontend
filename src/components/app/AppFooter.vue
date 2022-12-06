@@ -40,10 +40,15 @@
             <div class="section-title" v-html="$translate('DISCLAIMER')"/>
             <div v-html="info.disclaimer"/>
           </div>
-          <div class="section m-t-24">
-            <div class="section-title" v-html="$translate('BITCOIN_VS_ALTCOIN')"/>
+          <a
+            class="section display-block m-t-24"
+            href="https://coinsect.io/community/bitcoin-is-the-only-commodity"
+            target="_blank">
+            <div class="section-title">
+              <i class="fa fa-external-link m-r-8 f-12"></i>{{ $translate('BITCOIN_VS_ALTCOIN') }}
+            </div>
             <div v-html="info.bitcoinVsAltcoin"/>
-          </div>
+          </a>
         </div>
       </div>
     </div>
@@ -88,11 +93,11 @@ export default {
       const html = {
         kr: {
           disclaimer: `<div>코인충(coinsect.io)에서 제공되는 어떤 정보도 투자에 대한 조언이 아니며, 이용자들의 투자 결과에 대해 아무런 책임을 지지 않습니다. 암호자산은 극도의 변동성을 보이므로 투자에 유의하시기 바랍니다.</div>`,
-          bitcoinVsAltcoin: `<div><a href="https://coinsect.io/community/bitcoin-is-the-only-commodity" target="_blank">오직 비트코인만 금과 같은 '상품'이며, 나머지 모든 알트코인(이더리움 포함)은 아직 불명확한 규제의 회색지대를 이용한 미등록 증권으로, 매우 큰 위험성을 지닌 벤처기업들로 볼 수 있습니다.</a></div>`,
+          bitcoinVsAltcoin: `<div>오직 비트코인만 금과 같은 '상품'이며, 나머지 모든 알트코인(이더리움 포함)은 아직 불명확한 규제의 회색지대를 이용한 미등록 증권으로, 매우 큰 위험성을 지닌 벤처기업들로 볼 수 있습니다.</div>`,
         },
         en: {
           disclaimer: `<div>None of the information provided here(coinsect.io) should be considered as a financial advice, thus we are not responsble for loss of users. Cryptocurrency is notorious for it's volatility.</div>`,
-          bitcoinVsAltcoin: `<div><a href="https://coinsect.io/community/bitcoin-is-the-only-commodity" target="_blank">Bitcoin is the only COMMODITY, altcoins(ETH included) are in fact STARTUPS, UNREGISTERED SECURITIES taking advantage of gray area of regulation, involving extreme investment risk.</a></div>`,
+          bitcoinVsAltcoin: `<div>Bitcoin is the only COMMODITY, whereas altcoins(ETH included) are in fact STARTUPS, UNREGISTERED SECURITIES taking advantage of gray area of regulation, involving extreme investment risk.</div>`,
         },
       }
 
@@ -142,7 +147,7 @@ export default {
 
   .sitemap {
     display: grid;
-    grid-gap: 48px;
+    grid-gap: 24px;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 
@@ -167,7 +172,7 @@ export default {
     padding-top: 24px;
     margin-top: 24px;
     display: grid;
-    grid-gap: 48px;
+    grid-gap: 24px;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   }
 }

@@ -47,12 +47,8 @@ const useKakao = () => {
 
     Kakao.API.request({
       url: '/v1/user/unlink',
-      success: resp => {
-        console.log(resp)
-      },
-      fail: err => {
-        console.log(err)
-      },
+      success: resp => {},
+      fail: err => {},
     })
   }
 
