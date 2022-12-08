@@ -79,7 +79,7 @@
       />
       <input
         ref="refInput"
-        placeholder="작성자, 글 제목, 내용"
+        placeholder="작성자, 글 제목, 내용, 댓글"
         :value="$store.getters.posts.keyword"
         @keydown="onKeydown"
         @click="focus = true"
