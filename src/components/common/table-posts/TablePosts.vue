@@ -29,7 +29,7 @@
               <article class="cell title">
                 <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
                 <div>
-                  <span class="board-description">[{{ row.board.description }}]</span>
+                  <span v-if="row.postType !== 'notice'" class="board-description">[{{ row.board.description }}]</span>
                   <span>{{ row.title }}</span>
                   <span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
                 </div>
@@ -79,7 +79,7 @@
       />
       <input
         ref="refInput"
-        placeholder="작성자, 글 제목, 내용, 댓글"
+        placeholder="작성자, 글 제목, 내용"
         :value="$store.getters.posts.keyword"
         @keydown="onKeydown"
         @click="focus = true"
