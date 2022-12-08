@@ -29,7 +29,8 @@
               <article class="cell title">
                 <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
                 <div>
-                  <span v-html="row.title"/>
+                  <span class="board-description">[{{ row.board.description }}]</span>
+                  <span>{{ row.title }}</span>
                   <span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
                 </div>
               </article>
@@ -47,9 +48,9 @@
               </div>
               <div
                 class="cell number f-mono">
-                {{ (row.reactions || []).filter(o => o.type === 'up').length }}
+                {{ ((row.$$reactions || {}).up || {}).count }}
                 /
-                {{ (row.reactions || []).filter(o => o.type === 'down').length }}
+                {{ ((row.$$reactions || {}).down || {}).count }}
               </div>
             </div>
           </AdaptiveLayout>
@@ -272,6 +273,11 @@ export default {
           width: 144px;
           flex: 0 0 auto;
         }
+      }
+
+      .board-description {
+        margin-right: 4px;
+        font-weight: 300;
       }
     }
 

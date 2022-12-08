@@ -22,8 +22,8 @@
           class="badge-caution no-wallet"
           :key="w"
           v-for="w in [
-            { v: $store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol].d, text: '입', type: 'DEPOSIT' },
-            { v: $store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol].w, text: '출', type: 'WITHDRAWL' },
+            { v: ($store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol] || {}).d, text: '입', type: 'DEPOSIT' },
+            { v: ($store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol] || {}).w, text: '출', type: 'WITHDRAWL' },
           ].filter(w => w.v === false)"
           v-html="w.text">
         </div>

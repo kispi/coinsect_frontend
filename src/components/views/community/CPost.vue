@@ -4,7 +4,10 @@
     class="c-post">
     <div class="post-section-body">
       <div class="post-header">
-        <div class="post-title" v-html="post.title"/>
+        <div class="post-title">
+          <span class="m-r-4 f-300">[{{ post.board.description}}]</span>
+          <span>{{ post.title }}</span>
+        </div>
         <div class="writer-and-created-at">
           <div class="writer" :class="{'authorized-clickable-nickname': post.userId}">
             <UserSymbol :user="post.user" class="m-r-4"/>
