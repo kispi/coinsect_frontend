@@ -60,6 +60,14 @@
         />
       </tbody>
     </table>
+    <table v-if="calculating">
+      <tbody>
+        <AppSkeleton
+          :key="card"
+          v-for="card in 8"
+        />
+      </tbody>
+    </table>
     <div
       v-if="displayedList.length === 0 && !calculating && connected"
       class="empty">
@@ -384,6 +392,12 @@ export default {
     color: var(--text-stress);
     margin: 40px;
     text-align: center;
+  }
+
+  .app-skeleton {
+    width: 100%;
+    height: 60px;
+    margin: 2px 0;
   }
 }
 </style>

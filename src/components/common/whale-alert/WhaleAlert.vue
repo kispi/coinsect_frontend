@@ -59,6 +59,14 @@
       </div>
     </transition-group>
     <div
+      v-if="loading"
+      class="alert-items">
+      <AppSkeleton
+        :key="card"
+        v-for="card in 8"
+      />
+    </div>
+    <div
       v-if="resp && (resp.data || []).length === 0"
       class="empty">
       {{ $translate('NO_SEARCH_RESULT') }}
@@ -90,6 +98,8 @@ export default {
     const resp = ref(null)
 
     const timeout = ref(null)
+
+    const loading = ref(null)
 
     const showFilters = ref(null)
 
@@ -152,9 +162,12 @@ export default {
 
     const search = async () => {
       try {
+        loading.value = true
         resp.value = await onchainService.whaleAlert(createQuery().build())
       } catch (e) {
         plugins.$toast.error(e.data.message)
+      } finally {
+        loading.value = false
       }
       timeout.value = setTimeout(search, 1000 * 60)
     }
@@ -178,8 +191,9 @@ export default {
       resp,
       listStable,
       showFilters,
-      getUrl,
+      loading,
       params,
+      getUrl,
       onClickHash,
       bullOrBear,
       displayAddressName,
@@ -291,6 +305,10 @@ export default {
 
   .cell-move {
     transition: transform 0.25s cubic-bezier(1, 0, 0, 1);
+  }
+
+  .app-skeleton {
+    height: 104px;
   }
 }
 </style>

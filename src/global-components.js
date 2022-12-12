@@ -11,6 +11,7 @@ import AppLoading from '@/components/app/AppLoading'
 import AppLogo from '@/components/app/AppLogo'
 import AppPagination from '@/components/app/AppPagination'
 import AppSharer from '@/components/app/AppSharer'
+import AppSkeleton from '@/components/app/AppSkeleton'
 import AppSlider from '@/components/app/AppSlider'
 import AppToggler from '@/components/app/AppToggler'
 import AppTooltip from '@/components/app/AppTooltip'
@@ -66,6 +67,7 @@ const useGlobalComponents = app => {
     .component('AppLogo', AppLogo)
     .component('AppPagination', AppPagination)
     .component('AppSharer', AppSharer)
+    .component('AppSkeleton', AppSkeleton)
     .component('AppSlider', AppSlider)
     .component('AppToggler', AppToggler)
     .component('AppTooltip', AppTooltip)

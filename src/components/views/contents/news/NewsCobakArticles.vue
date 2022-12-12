@@ -50,7 +50,14 @@
         class="news-empty center">
         아직 오늘자({{ params.current_time }}) 뉴스기사가 올라오지 않았어요 😅
       </div>
-      <AppLoader v-if="loading" class="m-a"/>
+      <div
+        v-if="loading"
+        class="skeleton-container">
+        <AppSkeleton
+          :key="card"
+          v-for="card in 4"
+        />
+      </div>
     </div>
     <PoweredBy :by="'cobak'" :link="'https://cobak.co.kr/news/home'" class="m-t-24"/>
   </div>
@@ -242,6 +249,11 @@ export default {
     &:not(:last-child) {
       border-bottom: 1px solid var(--border-base);
     }
+  }
+
+  .app-skeleton {
+    height: 88px;
+    border-radius: 0;
   }
 
   @media (max-width: 479px) {
