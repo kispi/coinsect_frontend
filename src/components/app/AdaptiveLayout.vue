@@ -31,7 +31,6 @@ export default {
 @mixin createLayout($boundaryWidth) {
   &.#{'boundary-width-' + $boundaryWidth} {
     @media (min-width: #{$boundaryWidth + 'px'}) {
-      display: flex;
       flex-flow: row nowrap;
 
       > * {
