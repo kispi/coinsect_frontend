@@ -1,7 +1,10 @@
 <template>
   <div
     class="adaptive-layout"
-    :class="[`boundary-width-${boundaryWidth}`, `gap-${gap}`]">
+    :class="[`boundary-width-${boundaryWidth}`]"
+    :style="{
+      gap: `${gap}px`,
+    }">
     <slot/>
   </div>
 </template>
@@ -25,22 +28,6 @@ export default {
 </script>
 
 <style lang="scss">
-@mixin gap($gap, $boundaryWidth) {
-  &.#{'gap-' + $gap} {
-    @media (max-width: #{$boundaryWidth - 1 + 'px'}) {
-      > *:not(:last-child) {
-        margin-bottom: #{$gap + 'px'};
-      }
-    }
-
-    @media (min-width: #{$boundaryWidth + 'px'}) {
-      > *:not(:last-child) {
-        margin-right: #{$gap + 'px'}
-      }
-    }
-  }
-}
-
 @mixin createLayout($boundaryWidth) {
   &.#{'boundary-width-' + $boundaryWidth} {
     @media (min-width: #{$boundaryWidth + 'px'}) {
@@ -51,12 +38,6 @@ export default {
         flex: 1 1 0;
         min-width: 0;
       }
-    }
-
-    $i: 0;
-    @while $i <= 80 {
-      @include gap($i, $boundaryWidth);
-      $i: $i + 4;
     }
   }
 }
