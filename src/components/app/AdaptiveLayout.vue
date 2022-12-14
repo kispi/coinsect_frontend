@@ -43,6 +43,9 @@ export default {
 }
 
 .adaptive-layout {
+  display: flex;
+  flex-direction: column;
+
   @include createLayout(0);
   /* @include createLayout(480); */
   @include createLayout(768);
