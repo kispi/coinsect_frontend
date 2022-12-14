@@ -5,7 +5,9 @@
     <AdaptiveLayout
       :key="index.key"
       v-for="index in indices"
-      :gap="$store.getters.isMobile ? 0 : 8">
+      :gap="$store.getters.isMobile ? 0 : 8"
+      :class="{'items-center': !$store.getters.isMobile}"
+    >
       <div class="key" v-html="$translate(index.key)"/>
       <div class="value f-mono" v-html="index.value"/>
       <div
@@ -77,7 +79,6 @@ export default {
 
   .adaptive-layout {
     white-space: nowrap;
-    align-items: center;
     font-size: 12px;
 
     &:not(:last-child) {
