@@ -24,7 +24,7 @@ const useChatHandler = () => {
   const pingInterv = ref(null)
 
   const alertProfile = {
-    image: 'https://coinsect.io/favicon/logo.svg',
+    image: 'https://coinsect.io/favicon/logo.png',
     nickname: '알림',
   }
 

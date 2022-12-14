@@ -1,10 +1,7 @@
 <template>
   <div class="app-loader" :style="style">
     <div class="app-loader-container">
-      <img src="/favicon/logo-light.svg" class="loader-app-logo-light" :style="style"/>
-    </div>
-    <div class="app-loader-container main">
-      <img src="/favicon/logo.svg" class="loader-app-loader-main" :style="style"/>
+      <img src="/favicon/logo.png" :style="style"/>
     </div>
   </div>
 </template>
@@ -35,19 +32,8 @@ export default {
 .app-loader {
   position: relative;
 
-  @keyframes width {
-    0% { width: 0; }
-    50% { width: 50%; }
-    100% { width: 100%; }
-  }
-
   .app-loader-container {
     position: absolute;
-
-    &.main {
-      animation: width 2s infinite forwards cubic-bezier(0.785, 0.135, 0.15, 0.86);
-      overflow: hidden;
-    }
   }
 }
 </style>
