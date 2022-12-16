@@ -1,5 +1,7 @@
 <template>
-  <div class="recent-posts">
+  <div
+    v-if="$store.getters.posts.data.length > 0"
+    class="recent-posts">
     <div class="posts-grid">
       <RouterLink
         class="row"
@@ -28,13 +30,11 @@
 
 <script>
 import useGlobalHooks from '@/hooks/global-hooks'
-import { onMounted, onServerPrefetch, ref } from 'vue'
+import { onMounted } from 'vue'
 
 export default {
   setup() {
     const { store } = useGlobalHooks()
-
-    const prepared = ref(null)
 
     const loadRecentPosts = async () => {
       if (store.getters.posts.data.length > 0) return
@@ -45,12 +45,6 @@ export default {
     }
 
     onMounted(loadRecentPosts)
-
-    onServerPrefetch(loadRecentPosts)
-
-    return {
-      prepared,
-    }
   },
 }
 </script>
