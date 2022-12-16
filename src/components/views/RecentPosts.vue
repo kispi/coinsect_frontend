@@ -8,7 +8,10 @@
         v-for="post in $store.getters.posts.data.slice(0, $store.getters.isMobile ? 5 : 10)">
         <div class="title flex-fill lines-1 m-r-32">
           <span @click.prevent="$router.push(`/community?boardId=${post.board.id}`)" class="post-type m-r-8">{{ post.board.description }}</span>
-          <span class="title-text">{{ post.title }}</span>
+          <span class="title-text">
+            <span v-if="isNew(post)" class="badge-new">N</span>
+            {{ post.title }}
+          </span>
           <span v-if="(post.replies || []).length > 0" class="num-replies"> [{{ (post.replies || []).length }}]</span>
         </div>
         <div class="additional-info">
@@ -25,20 +28,31 @@
 
 <script>
 import useGlobalHooks from '@/hooks/global-hooks'
-import { onMounted, ref } from 'vue'
+import { onMounted, onServerPrefetch, ref } from 'vue'
 
 export default {
   setup() {
-    const { store } = useGlobalHooks()
+    const { plugins, store } = useGlobalHooks()
 
     const prepared = ref(null)
 
-    const loadRecentPosts = () => store.dispatch('loadPosts', { limit: 10 })
+    const isNew = post => {
+      return plugins.$helpers.dayjs().diff(post.createdAt, 'hours') < 24
+    }
+
+    const loadRecentPosts = () => {
+      if (store.getters.posts.data.length > 0) return
+
+      store.dispatch('loadPosts', { limit: 10 })
+    }
 
     onMounted(loadRecentPosts)
 
+    onServerPrefetch(loadRecentPosts)
+
     return {
       prepared,
+      isNew,
     }
   },
 }
@@ -51,6 +65,7 @@ export default {
     display: grid;
     grid-row-gap: 8px;
     grid-column-gap: 32px;
+    font-family: Dotum, sans-serif, 'IBM Plex Sans KR';
   }
 
   .title,
@@ -93,6 +108,13 @@ export default {
         color: var(--text-stress);
         font-weight: 500;
       }
+    }
+
+    .badge-new {
+      background: var(--danger);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 0 2px;
     }
   }
 
