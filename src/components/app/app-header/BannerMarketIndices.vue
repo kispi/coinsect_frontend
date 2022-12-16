@@ -3,10 +3,14 @@
     v-if="$store.getters.indices"
     class="banner-market-indices">
     <AdaptiveLayout
+      @click="onClickIndex(index)"
+      :gap="$store.getters.isMobile ? 0 : 8"
+      :class="{
+        'items-center': !$store.getters.isMobile,
+        'cursor-pointer': index.link,
+      }"
       :key="index.key"
       v-for="index in indices"
-      :gap="$store.getters.isMobile ? 0 : 8"
-      :class="{'items-center': !$store.getters.isMobile}"
     >
       <div class="key" v-html="$translate(index.key)"/>
       <div class="value f-mono" v-html="index.value"/>
@@ -39,10 +43,12 @@ export default {
 
       return [{
         key: 'USD/KRW',
+        link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=USDKRW',
         value: usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }),
         changes: Math.round(o.signedChangeRate * 10000) / 100,
       }, {
         key: 'BTC_DOMINANCE',
+        link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ABTC.D',
         value: `${o.btcDominance}%`,
         changes: o.btcDominance24hChangePercent,
       }, {
@@ -51,6 +57,12 @@ export default {
         changes: o.totalMarketCap24hChangePercent,
       }]
     })
+
+    const onClickIndex = index => {
+      if (!index.link) return
+
+      window.open(index.link, '_blank', 'noreferrer')
+    }
 
     onMounted(() => {
       store.dispatch('loadIndices')
@@ -68,6 +80,7 @@ export default {
 
     return {
       indices,
+      onClickIndex,
     }
   },
 }
