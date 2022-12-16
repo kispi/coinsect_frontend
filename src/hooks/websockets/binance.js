@@ -1,9 +1,9 @@
 import helpers from '@/helpers'
 import useWebsocketCommon from './websocket-common'
-import { useStore } from 'vuex'
+import useGlobalHooks from '../global-hooks'
 
 const useBinance = () => {
-  const store = useStore()
+  const { store } = useGlobalHooks()
 
   const { setTickerSummaryInTitle } = useWebsocketCommon()
 

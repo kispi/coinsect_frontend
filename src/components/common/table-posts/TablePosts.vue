@@ -13,7 +13,6 @@
           class="row"
           :class="{
             'active': isActivePost(row),
-            'notice': row.postType === 'notice',
           }"
           @click.prevent="onClickRow(row)"
           :href="`/community/${row.sharingKey}`"
@@ -22,20 +21,18 @@
           <AdaptiveLayout :gap="4" class="flex-fill">
             <div class="id-title flex-fill">
               <div
-                v-if="!$store.getters.isMobile"
-                class="cell number"
-                v-html="postNumber(row)"
+                class="cell post-type m-r-8"
+                v-html="$translate(row.postType === 'notice' ? 'NOTICE' : row.board.description)"
               />
               <article class="cell title">
                 <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
                 <div>
-                  <span v-if="row.postType !== 'notice'" class="board-description">[{{ row.board.description }}]</span>
                   <span>{{ row.title }}</span>
                   <span v-if="(row.replies || []).length > 0" class="num-replies"> [{{ (row.replies || []).length }}]</span>
                 </div>
               </article>
             </div>
-            <div class="content">
+            <div class="additional-info">
               <div
                 class="cell nickname"
                 :class="{'authorized-clickable-nickname': row.userId}">
@@ -43,11 +40,11 @@
                 <span @click.stop.prevent="onClickUserNickname(row)">{{ $helpers.template.writer(row) }}</span>
               </div>
               <div class="cell date f-mono">{{ $helpers.template.prettyTime(row.createdAt, true) }}</div>
-              <div class="cell number f-mono">
+              <div class="cell short f-mono">
                 <span v-if="$store.getters.isMobile" class="m-r-4">조회</span>{{ row.views }}
               </div>
               <div
-                class="cell number f-mono">
+                class="cell short f-mono">
                 {{ ((row.$$reactions || {}).up || {}).count }}
                 /
                 {{ ((row.$$reactions || {}).down || {}).count }}
@@ -98,19 +95,14 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, getCurrentInstance, onServerPrefetch, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { ref, computed, onMounted, onServerPrefetch, watch } from 'vue'
 import PostImagePreview from './PostImagePreview'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: { PostImagePreview },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
-
-    const router = useRouter()
+    const { plugins, store, router } = useGlobalHooks()
 
     const refInput = ref(null)
 
@@ -132,14 +124,6 @@ export default {
     }
 
     const isActivePost = row => router.currentRoute.value.params.sharingKey === row.sharingKey
-
-    const postNumber = row => {
-      if (row.postType === 'notice') return plugins.$translate('NOTICE')
-
-      if (isActivePost(row)) return '<i class="fa fa-chevron-right"></i>'
-
-      return row.id
-    }
 
     const queryString = () => `${Object.keys(store.getters.posts)
       .filter(key => store.getters.posts[key] && !['data', 'total'].includes(key))
@@ -205,7 +189,6 @@ export default {
       notices,
       posts,
       isActivePost,
-      postNumber,
       onPage,
       loadPosts,
       onClickRow,
@@ -233,7 +216,7 @@ export default {
   }
 
   .row {
-    padding: 8px;
+    padding: 8px 0;
     display: flex;
     cursor: pointer;
 
@@ -258,45 +241,13 @@ export default {
       border-bottom: 1px solid var(--border-base);
     }
 
-    .cell {
-      @media (min-width: 768px) {
-        text-align: center;
-
-        &.number {
-          width: 64px;
-          flex: 0 0 auto;
-          text-align: center;
-        }
-
-        &.nickname,
-        &.date {
-          width: 144px;
-          flex: 0 0 auto;
-        }
-      }
-
-      .board-description {
-        margin-right: 4px;
-        font-weight: 300;
-      }
-    }
-
     .title {
       flex: 1;
       line-height: 1.5;
       color: var(--text-stress);
 
-      .post-type {
-        margin-right: 8px;
-        color: var(--price-up-bybit);
-
-        &.fa-exclamation-circle {
-          color: var(--price-down-bybit);
-        }
-      }
-
       .num-replies {
-        color: var(--gs-88);
+        color: var(--brand-primary);
         margin-left: 4px;
       }
     }
@@ -309,7 +260,7 @@ export default {
   }
 
   .id-title,
-  .content {
+  .additional-info {
     display: flex;
     align-items: center;
   }
@@ -357,10 +308,17 @@ export default {
     }
   }
 
-  .content {
+  .additional-info {
     flex: initial;
+  }
 
-    @media (max-width: 767px) {
+  .table-pagination {
+    margin: 24px auto;
+    display: table;
+  }
+
+  @media (max-width: 767px) {
+    .additional-info {
       > *:not(:last-child) {
         padding-right: 8px;
         margin-right: 8px;
@@ -369,9 +327,22 @@ export default {
     }
   }
 
-  .table-pagination {
-    margin: 24px auto;
-    display: table;
+  @media (min-width: 768px) {
+    .cell {
+      &:not(.title) {
+        text-align: center;
+      }
+
+      &.short {
+        width: 56px;
+      }
+
+      &.nickname,
+      &.date {
+        width: 144px;
+        flex: 0 0 auto;
+      }      
+    }
   }
 }
 </style>

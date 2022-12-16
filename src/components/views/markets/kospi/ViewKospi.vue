@@ -7,7 +7,7 @@
 
 <script>
 import { onMounted } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '@/hooks/global-hooks'
 import KospiNaver from './KospiNaver'
 
 export default {
@@ -15,7 +15,7 @@ export default {
     KospiNaver,
   },
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     onMounted(() => {
       store.commit('setSettings', { currency: 'krw' })

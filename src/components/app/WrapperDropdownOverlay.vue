@@ -26,8 +26,8 @@
  *   ANY CONTENT FOR <slot/>
  * </WrapperDropdownOverlay>
  */
+import useGlobalHooks from '@/hooks/global-hooks'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
 
 export default {
   props: {
@@ -45,7 +45,7 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     /**
      * slide-enter: modelValue = true가 되면서 wrapper-dropdown-overlay가 즉시 펼쳐진 뒤, prepared가 뒤이어 true가 되며 이루어짐

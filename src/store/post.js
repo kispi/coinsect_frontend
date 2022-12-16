@@ -56,8 +56,8 @@ const post = {
         commit('setLoading', { post: false })
       }
     },
-    async loadPosts({ commit }) {
-      const params = helpers.post.params.asObject()
+    async loadPosts({ commit }, incomingParams) {
+      const params = incomingParams || helpers.post.params.asObject()
 
       const o = helpers.qb().base()
       if (params.limit) o.limit(params.limit)

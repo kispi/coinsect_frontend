@@ -7,12 +7,13 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance } from 'vue'
+import { computed } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: ['prevMessage', 'message'],
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
 

@@ -42,12 +42,12 @@
 
 <script>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
 import marketInfoService from '@/services/market-info'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const params = ref({
       timeType: 3,

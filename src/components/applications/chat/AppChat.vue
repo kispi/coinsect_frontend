@@ -64,8 +64,7 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, watch, onMounted, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import AppChatHeader from './AppChatHeader'
 import AppChatMessage from './AppChatMessage'
 import AppChatMessageMetaTags from './AppChatMessageMetaTags'
@@ -75,6 +74,7 @@ import AppChatStats from './AppChatStats'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
 import useModalDraggable from '@/hooks/modal-draggable'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: {
@@ -87,9 +87,7 @@ export default {
     DailySeparator,
   },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const refAppChatBody = ref(null)
 

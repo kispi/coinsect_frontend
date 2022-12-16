@@ -57,14 +57,14 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '@/hooks/global-hooks'
 import useMenuItems from './app-header/menu-items'
 
 export default {
   setup() {
     const { menuItems } = useMenuItems()
 
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const contacts = [{
       key: 'kakao',

@@ -1,13 +1,8 @@
-import { computed, getCurrentInstance, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 const useMenuItems = () => {
-  const plugins = getCurrentInstance().appContext.config.globalProperties
-
-  const router = useRouter()
-
-  const store = useStore()
+  const { plugins, store, router } = useGlobalHooks()
 
   const subPages = ref(null)
 

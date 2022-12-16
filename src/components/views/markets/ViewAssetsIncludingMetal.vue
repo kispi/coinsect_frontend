@@ -63,14 +63,12 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, onServerPrefetch, ref, computed, getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted, onUnmounted, onServerPrefetch, ref, computed } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const payload = ref({
       column: null,

@@ -9,18 +9,13 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { computed, onMounted, ref } from 'vue'
 import communityService from '@/services/community'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
-
-    const router = useRouter()
+    const { plugins, store, router } = useGlobalHooks()
 
     const post = computed(() => store.getters.post)
 

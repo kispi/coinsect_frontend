@@ -5,7 +5,7 @@
     <div class="post-section-body">
       <div class="post-header">
         <div class="post-title">
-          <span class="m-r-4 f-300">[{{ post.board.description}}]</span>
+          <span class="post-type m-r-8">{{ post.board.description}}</span>
           <span>{{ post.title }}</span>
         </div>
         <div class="writer-and-created-at">
@@ -54,12 +54,12 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import communityService from '@/services/community'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const post = computed(() => store.getters.post)
 

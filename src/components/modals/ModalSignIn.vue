@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 import useKakao from '@/hooks/oauth/kakao'
 
 export default {
   setup(_, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const { signIn } = useKakao()
 

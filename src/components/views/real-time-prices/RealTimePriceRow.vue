@@ -109,16 +109,14 @@
 </template>
 
 <script>
-import { getCurrentInstance, computed } from 'vue'
-import { useStore } from 'vuex'
+import { computed } from 'vue'
 import useWebsocketCommon from '@/hooks/websockets/websocket-common'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: ['ticker'],
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const symbol = computed(() => store.getters.symbols[props.ticker.$$symbol] || {})
 

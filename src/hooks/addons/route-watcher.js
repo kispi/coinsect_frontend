@@ -1,10 +1,10 @@
 import { onMounted, onServerPrefetch, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import helpers from '@/helpers'
 import useChatHandler from '../chat-handler'
+import useGlobalHooks from '../global-hooks'
 
 const useRouteWatcher = () => {
-  const router = useRouter()
+  const { router } = useGlobalHooks()
 
   const { ping } = useChatHandler()
 

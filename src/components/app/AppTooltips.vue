@@ -10,16 +10,13 @@
 
 <script>
 import { watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import AppTooltip from './AppTooltip'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: { AppTooltip },
   setup() {
-    const store = useStore()
-
-    const router = useRouter()
+    const { store, router } = useGlobalHooks()
 
     watch([
       () => router.currentRoute.value.path,

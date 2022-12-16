@@ -64,7 +64,7 @@
       <tbody>
         <AppSkeleton
           :key="card"
-          v-for="card in 8"
+          v-for="card in 16"
         />
       </tbody>
     </table>
@@ -78,22 +78,20 @@
 </template>
 
 <script>
-import { onMounted, ref, getCurrentInstance, watch, onUnmounted, computed } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted, ref, watch, onUnmounted, computed } from 'vue'
 import RealTimePriceRow from './RealTimePriceRow'
 import useUpbit from '@/hooks/websockets/upbit'
 import useBithumb from '@/hooks/websockets/bithumb'
 import useBinance from '@/hooks/websockets/binance'
 import useChatHandler from '@/hooks/chat-handler'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: {
     RealTimePriceRow,
   },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const refNotConnected = ref(null)
 

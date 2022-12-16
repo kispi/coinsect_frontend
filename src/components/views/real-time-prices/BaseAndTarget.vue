@@ -17,11 +17,11 @@
 
 <script>
 import { ref } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const bases = ref([{
       key: 'upbit_krw',

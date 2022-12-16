@@ -12,16 +12,14 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, nextTick } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted, nextTick } from 'vue'
 import useChatHandler from '@/hooks/chat-handler'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   emits: ['scroll-to-bottom'],
   setup(_, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const { filteredMessages: messages } = useChatHandler()
 

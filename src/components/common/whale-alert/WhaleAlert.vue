@@ -81,19 +81,17 @@
 </template>
 
 <script>
-import { getCurrentInstance, onUnmounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { onUnmounted, ref, watch } from 'vue'
 import onchainService from '@/services/onchain'
 import WhaleAlertFilters from './WhaleAlertFilters'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: {
     WhaleAlertFilters,
   },
   setup() {
-    const store = useStore()
-
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins, store } = useGlobalHooks()
 
     const resp = ref(null)
 

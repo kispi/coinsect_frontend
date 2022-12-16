@@ -52,17 +52,15 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: ['options'],
   setup(props, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins, store } = useGlobalHooks()
 
     const payload = ref({})
-
-    const store = useStore()
 
     const onClickSubmit = async () => {
       const o = JSON.parse(JSON.stringify(payload.value))

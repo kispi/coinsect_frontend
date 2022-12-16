@@ -73,14 +73,15 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref } from 'vue'
+import { ref } from 'vue'
 import ImageUploader from '@/components/app/ImageUploader'
 import rekognitionService from '@/services/rekognition'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: { ImageUploader },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const url = ref(null)
 

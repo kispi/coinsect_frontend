@@ -55,14 +55,12 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
+import { computed, onMounted, onServerPrefetch, onUnmounted } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const data = computed(() => {
       if (!store.getters.publicTreasuries) return

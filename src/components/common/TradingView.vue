@@ -7,8 +7,8 @@
 </template>
 
 <script>
+import useGlobalHooks from '@/hooks/global-hooks'
 import { onMounted, onUnmounted, watch, ref } from 'vue'
-import { useStore } from 'vuex'
 
 export default {
   props: {
@@ -22,7 +22,7 @@ export default {
     },
   },
   setup(props) {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const timeout = ref(null)
 

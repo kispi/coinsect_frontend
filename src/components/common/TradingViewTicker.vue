@@ -13,11 +13,11 @@
 
 <script>
 import { computed, onMounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const prepared = ref(null)
 

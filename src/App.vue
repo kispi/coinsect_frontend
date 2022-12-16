@@ -1,7 +1,7 @@
 <template>
   <AppHeader/>
   <div class="app-body view-layout-default no-scrollbar">
-    <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
+    <!-- <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/> -->
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView
       v-if="$store.getters.isSSR || prepared"
@@ -17,10 +17,9 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted, defineAsyncComponent, watch, getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, onUnmounted, defineAsyncComponent, watch } from 'vue'
 import helpers from './helpers'
+import useGlobalHooks from './hooks/global-hooks'
 
 export default {
   components: {
@@ -30,11 +29,7 @@ export default {
     AppRowAds: defineAsyncComponent(() => import('@/components/app/AppRowAds')),
   },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
-
-    const router = useRouter()
+    const { plugins, store, router } = useGlobalHooks()
 
     const prepared = ref(null)
 

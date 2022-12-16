@@ -10,19 +10,14 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { computed, onMounted, onServerPrefetch, onUnmounted } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 import CPost from './CPost'
 
 export default {
   components: { CPost },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
-
-    const router = useRouter()
+    const { plugins, store, router } = useGlobalHooks()
 
     const sharingKey = computed(() => router.currentRoute.value.params.sharingKey)
 

@@ -1,7 +1,7 @@
-import { useStore } from 'vuex'
+import useGlobalHooks from '../global-hooks'
 
 const usePWA = () => {
-  const store = useStore()
+  const { store } = useGlobalHooks()
 
   const A2HS = store.getters.isSSR ? {} : (window.__A2HS__ || {})
 

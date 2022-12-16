@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted, onUnmounted } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 import NasdaqNaver from './NasdaqNaver'
 
 export default {
@@ -16,9 +16,7 @@ export default {
     NasdaqNaver,
   },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     onMounted(() => {
       store.commit('setSettings', { currency: 'usd' })

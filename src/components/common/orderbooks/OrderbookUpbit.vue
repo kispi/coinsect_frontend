@@ -2,16 +2,16 @@
   <div
     v-if="orderbook"
     class="orderbook-upbit">
-    <div :key="type" v-for="type in ['$$asks', '$$bids']">
+    <div :key="t" v-for="t in ['$$asks', '$$bids']">
       <div
         class="order"
         :key="idx"
-        v-for="(order, idx) in orderbook[type]">
+        v-for="(order, idx) in orderbook[t]">
         <div
           class="price"
           :class="[
-            type === '$$asks' ? 'down' : 'up',
-            priceColor({ price: order.price, type }),
+            t === '$$asks' ? 'down' : 'up',
+            priceColor({ price: order.price, type: t }),
             lastTradedPrice === order.price ? 'bordered' : '',
           ]">
           <div class="value" v-html="$helpers.number.pretty.price({ price: order.price, baseCurrency: $store.getters.settings.baseExchangeMarket })"/>
@@ -24,7 +24,7 @@
           }) }}
           <div
             class="wall overlay"
-            :class="type === '$$asks' ? 'down' : 'up'"
+            :class="t === '$$asks' ? 'down' : 'up'"
             :style="{ width: relativeWidth(order.size) }"
           />
         </div>
@@ -34,18 +34,16 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted, watch, getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import useUpbit from '@/hooks/websockets/upbit'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
     market: String,
   },
   setup(props, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const orderbook = computed(() => store.getters.orderbooks.upbit[props.market])
 

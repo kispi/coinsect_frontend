@@ -54,18 +54,16 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
-import { useStore } from 'vuex'
+import { computed, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins, store } = useGlobalHooks()
 
     const timeout = ref(null)
 
     const lastUpdate = ref(null)
-
-    const store = useStore()
 
     const sort = ref({
       column: 'rank',

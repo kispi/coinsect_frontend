@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import { defineAsyncComponent, onUnmounted, onMounted, ref, watch, getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
+import { defineAsyncComponent, onUnmounted, onMounted, ref, watch } from 'vue'
 import useModalDraggable from '@/hooks/modal-draggable'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   name: 'AppModal',
@@ -62,17 +62,15 @@ export default {
     ModalChatSettings: defineAsyncComponent(() => import('@/components/modals/ModalChatSettings')),
   },
   setup(props) {
+    const { plugins, store } = useGlobalHooks()
+
+    const { makeDraggable } = useModalDraggable()
+
     const show = ref(false)
-
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
 
     const refModal = ref(null)
 
     const refTargetModal = ref(null)
-
-    const { makeDraggable } = useModalDraggable()
 
     const onClose = e => {
       if (!props.modal) return

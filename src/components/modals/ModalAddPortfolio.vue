@@ -45,14 +45,12 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { computed, onMounted, ref, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup(_, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const exchanges = ref([])
 

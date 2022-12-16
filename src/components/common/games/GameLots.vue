@@ -87,11 +87,12 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup(_, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const refInputA = ref(null)
 

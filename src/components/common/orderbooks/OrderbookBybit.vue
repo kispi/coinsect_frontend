@@ -51,8 +51,8 @@
 
 <script>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import { useStore } from 'vuex'
 import useBybit from '@/hooks/websockets/bybit'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
@@ -63,7 +63,7 @@ export default {
     }
   },
   setup(props, { emit }) {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const orderbook = computed(() => store.getters.orderbooks.bybit[props.market])
 

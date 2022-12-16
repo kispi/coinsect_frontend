@@ -12,12 +12,12 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import useChatHandler from '@/hooks/chat-handler'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const { updateSentiment } = useChatHandler()
 

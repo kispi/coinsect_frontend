@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, computed } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted, computed } from 'vue'
 import useSeo from '@/hooks/seo'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   emits: ['scroll-to-bottom'],
@@ -30,9 +30,7 @@ export default {
     message: null,
   },
   setup(props, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const { meta, tryMetaTags, onClickMetaCard } = useSeo()
 

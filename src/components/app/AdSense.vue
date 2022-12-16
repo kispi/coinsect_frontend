@@ -10,15 +10,15 @@
 </template>
 
 <script>
+import useGlobalHooks from '@/hooks/global-hooks'
 import { onMounted } from 'vue'
-import { useStore } from 'vuex'
 
 export default {
   props: {
     dataAdSlot: String,
   },
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const useGoogleAdSense = process.env.NODE_ENV === 'PRODUCTION' && !store.getters.isSSR
 

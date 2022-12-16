@@ -1,7 +1,7 @@
-import { useStore } from 'vuex'
+import useGlobalHooks from '../global-hooks'
 
 const useBybit = () => {
-  const store = useStore()
+  const { store } = useGlobalHooks()
 
   let $$biggestSize = 0
 

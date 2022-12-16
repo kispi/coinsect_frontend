@@ -14,13 +14,13 @@
 </template>
 
 <script>
+import useGlobalHooks from '@/hooks/global-hooks'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
 
 export default {
   emits: ['change'],
   setup(_, { emit }) {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const refContainer = ref(null)
 

@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
+import { computed } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
@@ -35,9 +35,7 @@ export default {
     },
   },
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const settings = computed(() => [{
       key: 'LOCALE',

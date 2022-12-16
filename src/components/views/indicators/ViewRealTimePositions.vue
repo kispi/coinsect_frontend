@@ -83,17 +83,15 @@
 </template>
 
 <script>
-import { onMounted, ref, onUnmounted, watch, computed, getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted, ref, onUnmounted, watch, computed } from 'vue'
 import useBybit from '@/hooks/websockets/bybit'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
     const { subscribe } = useBybit()
 
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const rtpTimeout = ref(null)
 

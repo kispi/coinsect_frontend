@@ -21,12 +21,12 @@
 </template>
 
 <script>
+import useGlobalHooks from '@/hooks/global-hooks'
 import { computed, onMounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
 
 export default {
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const toastTimeout = ref(null)
 

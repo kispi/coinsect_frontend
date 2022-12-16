@@ -29,15 +29,13 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: ['position'],
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const router = useRouter()
+    const { plugins, router } = useGlobalHooks()
 
     const refContextOverlay = ref(null)
 

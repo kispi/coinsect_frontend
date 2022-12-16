@@ -93,8 +93,8 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { computed, ref, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 import useMenuItems from './menu-items'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
@@ -105,9 +105,7 @@ export default {
     BannerMarketIndices,
   },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const refIconSettings = ref(null)
 

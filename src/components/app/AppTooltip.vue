@@ -12,14 +12,15 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
     tooltip: null, // { bind, text, showAbove, below }
   },
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const refAppTooltip = ref(null)
 

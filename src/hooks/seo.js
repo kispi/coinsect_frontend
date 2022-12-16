@@ -1,11 +1,9 @@
+import { ref } from 'vue'
 import helperService from '@/services/helper'
-import { ref, getCurrentInstance } from 'vue'
-import { useRouter } from 'vue-router'
+import useGlobalHooks from './global-hooks'
 
 const useSeo = () => {
-  const plugins = getCurrentInstance().appContext.config.globalProperties
-
-  const router = useRouter()
+  const { plugins, router } = useGlobalHooks()
 
   const numTrial = ref(0)
 

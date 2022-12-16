@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import useUpbit from '@/hooks/websockets/upbit'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
@@ -33,9 +33,7 @@ export default {
   setup(props, { emit }) {
     const { subscribe } = useUpbit()
 
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const connection = ref(null)
 

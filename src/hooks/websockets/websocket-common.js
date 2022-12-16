@@ -1,10 +1,7 @@
-import { getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '../global-hooks'
 
 const useWebsocketCommon = () => {
-  const plugins = getCurrentInstance().appContext.config.globalProperties
-
-  const store = useStore()
+  const { plugins, store } = useGlobalHooks()
 
   const setTickerSummaryInTitle = ticker => {
     const priceString = plugins.$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: store.getters.settings.baseExchangeMarket })

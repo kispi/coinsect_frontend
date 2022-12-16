@@ -52,8 +52,8 @@
 
 <script>
 // 있는거 사용하려 하지 말고 새로 웹소켓 연결해서 쓰는게 나을듯
-import { ref, computed, getCurrentInstance, onMounted, onUnmounted, watch } from 'vue'
-import { useStore } from 'vuex'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 import useBinance from '@/hooks/websockets/binance'
 import useUpbit from '@/hooks/websockets/upbit'
 import CPortfolioItem from './CPortfolioItem'
@@ -61,9 +61,7 @@ import CPortfolioItem from './CPortfolioItem'
 export default {
   components: { CPortfolioItem },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const { subscribe: sUpbit } = useUpbit()
 

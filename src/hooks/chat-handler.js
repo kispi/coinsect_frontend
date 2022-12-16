@@ -1,13 +1,8 @@
-import { ref, getCurrentInstance, onUnmounted, computed } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { ref, onUnmounted, computed } from 'vue'
+import useGlobalHooks from './global-hooks'
 
 const useChatHandler = () => {
-  const plugins = getCurrentInstance().appContext.config.globalProperties
-
-  const store = useStore()
-
-  const router = useRouter()
+  const { plugins, store, router } = useGlobalHooks()
 
   const messages = computed(() => store.getters.chat.messages)
 

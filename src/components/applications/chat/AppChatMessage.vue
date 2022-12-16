@@ -59,16 +59,14 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   emits: ['click-function', 'click-replied-message'],
   props: ['prevMessage', 'message', 'nextMessage'],
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const router = useRouter()
+    const { plugins, router } = useGlobalHooks()
 
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 

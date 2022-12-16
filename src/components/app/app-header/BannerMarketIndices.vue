@@ -24,14 +24,12 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
-import { useStore } from 'vuex'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const interv = ref(null)
 

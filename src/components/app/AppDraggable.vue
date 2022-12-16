@@ -24,13 +24,13 @@
  *   <아무 HTMLElement/>
  * </AppDraggable>
  */
+import useGlobalHooks from '@/hooks/global-hooks'
 import { ref } from 'vue'
-import { useStore } from 'vuex'
 
 export default {
   emits: ['app-draggable-move'],
   setup(_, { emit }) {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const draggingContainer = ref({
       target: null,

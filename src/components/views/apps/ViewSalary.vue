@@ -76,17 +76,17 @@
 
 <script>
 import { computed, onMounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
 import salaryReport from './salary-report'
 import salary2022 from './salary-2022.json'
 import SalaryAsCrypto from './SalaryAsCrypto'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: {
     SalaryAsCrypto,
   },
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const refInfoNonTax = ref(null)
 

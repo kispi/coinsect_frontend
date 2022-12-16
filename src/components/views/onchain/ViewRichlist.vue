@@ -52,13 +52,13 @@
 
 <script>
 import { computed, onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '@/hooks/global-hooks'
 import TableRichlist from './TableRichlist'
 
 export default {
   components: { TableRichlist },
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const loading = ref(null)
 

@@ -44,7 +44,8 @@
 </template>
 
 <script>
-import { ref, computed, getCurrentInstance, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   name: 'AppPagination',
@@ -60,7 +61,7 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const pageValue = ref(props.page)
 

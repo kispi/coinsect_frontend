@@ -36,13 +36,14 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import CTimer from './CTimer'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: { CTimer },
   setup(_, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const coins = ref(null)
 

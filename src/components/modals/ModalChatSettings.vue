@@ -147,10 +147,10 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref } from 'vue'
-import { useStore } from 'vuex'
+import { ref } from 'vue'
 import useChatHandler from '@/hooks/chat-handler'
 import usePWA from '@/hooks/addons/pwa'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: ['options'],
@@ -169,13 +169,11 @@ export default {
 
     const refInputNickname = ref(null)
 
-    const { setAccount, updateUserSetting } = useChatHandler()
+    const { plugins, store } = useGlobalHooks()
+
+    const { updateUserSetting } = useChatHandler()
 
     const { initFirebase } = usePWA()
-
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
 
     const editing = ref(null)
 

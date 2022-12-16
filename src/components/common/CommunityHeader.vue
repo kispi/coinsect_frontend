@@ -24,17 +24,14 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
     withWriteButton: Boolean,
   },
   setup() {
-    const store = useStore()
-
-    const router = useRouter()
+    const { store, router } = useGlobalHooks()
 
     const boards = computed(() => [
       { description: 'ALL' },

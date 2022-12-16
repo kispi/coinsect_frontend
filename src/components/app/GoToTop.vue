@@ -11,11 +11,11 @@
 
 <script>
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const router = useRouter()
+    const { router } = useGlobalHooks()
 
     const noShow = computed(() => {
       const excludes = [

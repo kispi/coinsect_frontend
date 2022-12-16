@@ -43,10 +43,9 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { computed } from 'vue'
 import communityService from '@/services/community'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
@@ -57,11 +56,7 @@ export default {
     }
   },
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
-
-    const router = useRouter()
+    const { plugins, store, router } = useGlobalHooks()
 
     const repliesToDisplay = computed(() => (props.replies || []).filter(o => !o.deletedAt || hasNonDeletedChild(o)))
 

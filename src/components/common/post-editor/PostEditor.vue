@@ -49,21 +49,16 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, ref, watch } from 'vue'
 import crudService from '@/services/crud'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
     post: Object,
   },
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
-
-    const router = useRouter()
+    const { plugins, store, router } = useGlobalHooks()
 
     const payload = ref({})
 

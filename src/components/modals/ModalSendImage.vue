@@ -34,13 +34,14 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import s3Service from '@/services/s3'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: ['options'],
   setup(props, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const refModalSendImage = ref(null)
 

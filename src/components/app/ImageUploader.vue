@@ -44,8 +44,9 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref } from 'vue'
+import { ref } from 'vue'
 import s3Service from '@/services/s3'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
@@ -65,7 +66,7 @@ export default {
     useURL: Boolean,
   },
   setup(props, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const dragging = ref(null)
 

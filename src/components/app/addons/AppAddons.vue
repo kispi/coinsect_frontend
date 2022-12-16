@@ -14,7 +14,6 @@
 
 <script>
 import { ref, watch } from 'vue'
-import { useStore } from 'vuex'
 import AppChat from '@/components/applications/chat/AppChat'
 import AppDock from '@/components/app/AppDock'
 import AppModal from '@/components/app/AppModal'
@@ -23,6 +22,7 @@ import AppToast from '@/components/app/AppToast'
 import GoToTop from '@/components/app/GoToTop'
 import useHealthChecker from '@/hooks/addons/health-checker'
 import useRouteWatcher from '@/hooks/addons/route-watcher'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: {
@@ -40,7 +40,7 @@ export default {
 
     const prepared = ref(true)
 
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     watch(
       () => store.getters.me,

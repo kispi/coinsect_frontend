@@ -16,12 +16,12 @@
 </template>
 
 <script>
+import useGlobalHooks from '@/hooks/global-hooks'
 import { computed, onMounted, onServerPrefetch } from 'vue'
-import { useStore } from 'vuex'
 
 export default {
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const items = computed(() => (store.getters.influencers || {}).data || [])
 

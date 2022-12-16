@@ -1,11 +1,9 @@
-import { getCurrentInstance, onMounted } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted } from 'vue'
 import helpers from '@/helpers'
+import useGlobalHooks from '../global-hooks'
 
 const useHealthChecker = () => {
-  const plugins = getCurrentInstance().appContext.config.globalProperties
-
-  const store = useStore()
+  const { plugins, store } = useGlobalHooks()
 
   const refreshConfig = () => {
     setTimeout(async () => {

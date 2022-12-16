@@ -38,17 +38,15 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
+import { computed, onMounted, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: ['options'],
   setup(_, { emit }) {
     const refModalDonation = ref(null)
 
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const drawing = ref(null)
 

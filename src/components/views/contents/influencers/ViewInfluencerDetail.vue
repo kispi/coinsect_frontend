@@ -99,17 +99,12 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, onServerPrefetch } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, onServerPrefetch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
-
-    const router = useRouter()
+    const { plugins, store, router } = useGlobalHooks()
 
     const influencer = computed(() => {
       if (!store.getters.influencers) return

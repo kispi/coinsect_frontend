@@ -48,17 +48,15 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref, onMounted } from 'vue'
-import { useStore } from 'vuex'
+import { ref, onMounted } from 'vue'
 import useChatHandler from '@/hooks/chat-handler'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
     const { sendWebsocketMessage } = useChatHandler()
 
-    const store = useStore()
-
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins, store } = useGlobalHooks()
 
     const text = ref(null)
 

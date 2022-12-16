@@ -25,13 +25,14 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import userService from '@/services/user'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: ['options'],
   setup(props, { emit }) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const refModal = ref(null)
 

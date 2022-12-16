@@ -1,11 +1,8 @@
-import { getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '../global-hooks'
 import useWebsocketCommon from './websocket-common'
 
 const useUpbit = () => {
-  const store = useStore()
-
-  const plugins = getCurrentInstance().appContext.config.globalProperties
+  const { plugins, store } = useGlobalHooks()
 
   const { tickDirection } = useWebsocketCommon()
 

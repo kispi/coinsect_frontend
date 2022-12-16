@@ -1,8 +1,8 @@
-import { store } from '@/store'
-import { getCurrentInstance, onMounted } from 'vue'
+import { onMounted } from 'vue'
+import useGlobalHooks from '../global-hooks'
 
 const useKakao = () => {
-  const plugins = getCurrentInstance().appContext.config.globalProperties
+  const { plugins, store } = useGlobalHooks()
 
   const init = async () => {
     await plugins.$helpers.dom.loadScript({ url: 'https://developers.kakao.com/sdk/js/kakao.js' })

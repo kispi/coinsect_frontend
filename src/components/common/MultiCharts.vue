@@ -27,16 +27,14 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
+import { computed } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 import TradingViewSymbols from './TradingViewSymbols'
 
 export default {
   components: { TradingViewSymbols },
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const dynamicGrid = computed(() => {
       if (store.getters.settings.chartFullWidth) return {

@@ -6,9 +6,10 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import s3Service from '@/services/s3'
 import useLazyLoads from '@/lazy-loads'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   emits: ['update:modelValue'],
@@ -20,7 +21,7 @@ export default {
 
     const editor = ref(null)
 
-    const plugins = getCurrentInstance().appContext.config.globalProperties
+    const { plugins } = useGlobalHooks()
 
     const { loadToastUIEditor } = useLazyLoads()
 

@@ -44,15 +44,12 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: ['item', 'exchange'],
   setup(props) {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const removePortfolioItem = () => {
       const portfolio = store.getters.settings.portfolio

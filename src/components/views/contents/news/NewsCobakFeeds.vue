@@ -40,15 +40,13 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref, onMounted, watch, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
+import { ref, onMounted, watch, onUnmounted } from 'vue'
 import contentService from '@/services/content'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const plugins = getCurrentInstance().appContext.config.globalProperties
-
-    const store = useStore()
+    const { plugins, store } = useGlobalHooks()
 
     const interv = ref(null)
 

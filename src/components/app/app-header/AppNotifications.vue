@@ -22,14 +22,11 @@
 
 <script>
 import { onMounted } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup(_, { emit }) {
-    const store = useStore()
-
-    const router = useRouter()
+    const { store, router } = useGlobalHooks()
 
     const onClickNotificationItem = notification => {
       if (!notification.link) return

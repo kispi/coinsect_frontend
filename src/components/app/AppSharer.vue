@@ -28,8 +28,8 @@
 
 <script>
 import { onMounted, onUnmounted, ref } from 'vue'
-import { useStore } from 'vuex'
 import helpers from '@/helpers'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
@@ -37,7 +37,7 @@ export default {
     iconSize: Number,
   },
   setup(props) {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const refSharer = ref(null)
 

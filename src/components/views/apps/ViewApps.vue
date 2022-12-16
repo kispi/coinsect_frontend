@@ -6,7 +6,7 @@
 
 <script>
 import { computed, defineAsyncComponent } from 'vue'
-import { useRouter } from 'vue-router'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: {
@@ -20,7 +20,7 @@ export default {
     ViewImageModeration: defineAsyncComponent(() => import('./ViewImageModeration')),
   },
   setup() {
-    const router = useRouter()
+    const { router } = useGlobalHooks()
 
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path

@@ -1,5 +1,6 @@
 <template>
   <div class="view-home">
+    <RecentPosts class="m-b-24"/>
     <template v-if="$store.getters.settings.tradingview.home">
       <TradingViewTicker class="m-t-8 m-b-8"/>
       <MultiCharts class="m-b-8"/>
@@ -27,17 +28,19 @@
 
 <script>
 import { onMounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '@/hooks/global-hooks'
 import BaseAndTarget from './real-time-prices//BaseAndTarget'
 import RealTimePrices from './real-time-prices/RealTimePrices'
+import RecentPosts from './RecentPosts'
 
 export default {
   components: {
     BaseAndTarget,
     RealTimePrices,
+    RecentPosts,
   },
   setup() {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const prepared = ref(null)
 

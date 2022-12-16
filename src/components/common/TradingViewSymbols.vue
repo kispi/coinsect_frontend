@@ -16,14 +16,14 @@
 
 <script>
 import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
     chartIndex: Number,
   },
   setup(props) {
-    const store = useStore()
+    const { store } = useGlobalHooks()
 
     const chart = computed(() => store.getters.charts[props.chartIndex])
 
