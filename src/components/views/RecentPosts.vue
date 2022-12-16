@@ -1,7 +1,5 @@
 <template>
-  <div
-    v-if="$store.getters.posts.data.length > 0"
-    class="recent-posts">
+  <div class="recent-posts">
     <div class="posts-grid">
       <RouterLink
         class="row"
