@@ -8,7 +8,7 @@
         v-for="post in $store.getters.posts.data.slice(0, $store.getters.isMobile ? 5 : 10)">
         <div class="title flex-fill lines-1 m-r-32">
           <span @click.prevent="$router.push(`/community?boardId=${post.board.id}`)" class="post-type m-r-8">{{ post.board.description }}</span>
-          <span class="lines-1">{{ post.title }}</span>
+          <span class="title-text">{{ post.title }}</span>
           <span v-if="(post.replies || []).length > 0" class="num-replies"> [{{ (post.replies || []).length }}]</span>
         </div>
         <div class="additional-info">
@@ -17,6 +17,9 @@
         </div>
       </RouterLink>
     </div>
+    <RouterLink :to="'/community'" class="to-community">
+      {{ $translate('SEE_MORE') }}<i class="fal fa-chevron-right"/>
+    </RouterLink>
   </div>
 </template>
 
@@ -43,9 +46,6 @@ export default {
 
 <style lang="scss">
 .recent-posts {
-  border: 1px solid var(--border-base);
-  padding: 8px;
-
   .posts-grid {
     font-size: 12px;
     display: grid;
@@ -82,6 +82,30 @@ export default {
     justify-content: space-between;
     transition: none;
     overflow: hidden;
+
+    .title-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:hover {
+      .title-text {
+        color: var(--text-stress);
+        font-weight: 500;
+      }
+    }
+  }
+
+  .to-community {
+    font-size: 12px;
+    margin-left: auto;
+    margin-top: 8px;
+    display: table;
+
+    i {
+      font-size: 10px;
+      margin-left: 4px;
+    }
 
     &:hover {
       color: var(--text-stress);
