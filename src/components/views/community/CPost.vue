@@ -5,7 +5,7 @@
     <div class="post-section-body">
       <div class="post-header">
         <div class="post-title">
-          <span class="post-type m-r-8">{{ post.board.description}}</span>
+          <span class="badge-post-type m-r-8">{{ post.board.description}}</span>
           <span>{{ post.title }}</span>
         </div>
         <div class="writer-and-created-at">

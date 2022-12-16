@@ -1,5 +1,7 @@
 <template>
-  <div class="recent-posts">
+  <div
+    v-if="$store.getters.posts.data.length > 0"
+    class="recent-posts">
     <div class="posts-grid">
       <RouterLink
         class="row"
@@ -7,9 +9,9 @@
         :key="post.id"
         v-for="post in $store.getters.posts.data.slice(0, $store.getters.isMobile ? 5 : 10)">
         <div class="title flex-fill lines-1 m-r-32">
-          <span @click.prevent="$router.push(`/community?boardId=${post.board.id}`)" class="post-type m-r-8">{{ post.board.description }}</span>
+          <span @click.prevent="$router.push(`/community?boardId=${post.board.id}`)" class="badge-post-type m-r-8">{{ post.board.description }}</span>
           <span class="title-text">
-            <span v-if="isNew(post)" class="badge-new">N</span>
+            <span v-if="$helpers.dayjs().diff(post.createdAt, 'hours') < 24" class="badge-new">N</span>
             {{ post.title }}
           </span>
           <span v-if="(post.replies || []).length > 0" class="num-replies"> [{{ (post.replies || []).length }}]</span>
@@ -32,18 +34,16 @@ import { onMounted, onServerPrefetch, ref } from 'vue'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { store } = useGlobalHooks()
 
     const prepared = ref(null)
 
-    const isNew = post => {
-      return plugins.$helpers.dayjs().diff(post.createdAt, 'hours') < 24
-    }
-
-    const loadRecentPosts = () => {
+    const loadRecentPosts = async () => {
       if (store.getters.posts.data.length > 0) return
 
-      store.dispatch('loadPosts', { limit: 10 })
+      try {
+        await store.dispatch('loadPosts', { limit: 10 })
+      } catch (e) {}
     }
 
     onMounted(loadRecentPosts)
@@ -52,7 +52,6 @@ export default {
 
     return {
       prepared,
-      isNew,
     }
   },
 }
@@ -84,8 +83,9 @@ export default {
     color: var(--brand-primary);
   }
 
-  .post-type {
+  .badge-post-type {
     white-space: nowrap;
+    padding: 0 4px;
 
     &:hover {
       background: var(--border-light);

@@ -22,7 +22,7 @@
           <AdaptiveLayout :gap="4" class="flex-fill">
             <div class="id-title flex-fill">
               <div
-                class="cell post-type m-r-8"
+                class="cell badge-post-type m-r-8"
                 v-html="$translate(row.postType === 'notice' ? 'NOTICE' : row.board.description)"
               />
               <article class="cell title">
@@ -40,12 +40,12 @@
                 <UserSymbol :user="row.user" class="flex-wrap m-r-4"/>
                 <span @click.stop.prevent="onClickUserNickname(row)">{{ $helpers.template.writer(row) }}</span>
               </div>
-              <div class="cell date f-mono">{{ $helpers.template.prettyTime(row.createdAt, true) }}</div>
-              <div class="cell short f-mono">
+              <div class="cell date">{{ $helpers.template.prettyTime(row.createdAt, true) }}</div>
+              <div class="cell short">
                 <span v-if="$store.getters.isMobile" class="m-r-4">조회</span>{{ row.views }}
               </div>
               <div
-                class="cell short f-mono">
+                class="cell short">
                 {{ ((row.$$reactions || {}).up || {}).count }}
                 /
                 {{ ((row.$$reactions || {}).down || {}).count }}
@@ -207,6 +207,7 @@ export default {
 <style lang="scss" scoped>
 .table-posts {
   font-size: 12px;
+  font-family: Dotum, sans-serif, 'IBM Plex Sans KR';
 
   .table {
     border-top: 1px solid var(--text-stress);
