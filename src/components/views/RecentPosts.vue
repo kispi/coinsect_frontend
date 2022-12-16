@@ -81,6 +81,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     transition: none;
+    overflow: hidden;
 
     &:hover {
       color: var(--text-stress);
