@@ -2,6 +2,7 @@
   <div
     v-if="notices && posts"
     class="table-posts">
+    <ButtonBoards class="m-t-16"/>
     <div class="table">
       <div
         :key="idx"
@@ -96,11 +97,15 @@
 
 <script>
 import { ref, computed, onMounted, onServerPrefetch, watch } from 'vue'
+import ButtonBoards from './ButtonBoards'
 import PostImagePreview from './PostImagePreview'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
-  components: { PostImagePreview },
+  components: {
+    ButtonBoards,
+    PostImagePreview,
+  },
   setup() {
     const { plugins, store, router } = useGlobalHooks()
 

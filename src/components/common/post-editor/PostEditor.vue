@@ -50,6 +50,7 @@
 
 <script>
 import { computed, onMounted, ref, watch } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import crudService from '@/services/crud'
 import useGlobalHooks from '@/hooks/global-hooks'
 
@@ -121,6 +122,12 @@ export default {
     )
 
     onMounted(init)
+
+    onBeforeRouteLeave((to, from, next) => {
+      plugins.$modal.confirm({
+        body: plugins.$translate('MODAL_CONFIRM_QUIT_WRITING'),
+      }).then(result => result === 1 ? next() : null)
+    })
 
     return {
       payload,

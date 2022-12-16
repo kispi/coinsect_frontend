@@ -55,6 +55,10 @@
     "en": "Delete Profile Image.",
     "kr": "프로필 이미지를 삭제합니다."
   },
+  "MODAL_CONFIRM_QUIT_WRITING": {
+    "en": "Your post won't be saved if you leave. Are you sure?",
+    "kr": "작성중인 글은 저장되지 않습니다. 정말 페이지를 벗어날까요?"
+  },
   "MODAL_INIT_SETTINGS": {
     "en": "Reset all personal settings.\n(Including portfolio, blocked users, favorite coins, etc)",
     "kr": "모든 개인화 설정을 초기화합니다.\n(차트 세팅, 포트폴리오, 차단 유저, 즐겨찾기 코인 등 포함)"
