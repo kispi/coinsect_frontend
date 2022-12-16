@@ -60,12 +60,13 @@ export default {
 
 <style lang="scss">
 .recent-posts {
+  font-family: Dotum, sans-serif, 'IBM Plex Sans KR';
+
   .posts-grid {
     font-size: 12px;
     display: grid;
     grid-row-gap: 8px;
     grid-column-gap: 32px;
-    font-family: Dotum, sans-serif, 'IBM Plex Sans KR';
   }
 
   .title,
