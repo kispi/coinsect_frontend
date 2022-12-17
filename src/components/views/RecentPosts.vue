@@ -114,7 +114,7 @@ export default {
   .to-community {
     font-size: 12px;
     margin-left: auto;
-    margin-top: 8px;
+    margin-top: 12px;
     display: table;
 
     i {
@@ -130,7 +130,9 @@ export default {
 
   @media (min-width: 768px) {
     .posts-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-columns: 1fr;
+      grid-template-rows: repeat(5, 1fr);
+      grid-auto-flow: column;
     }
   }
 }
