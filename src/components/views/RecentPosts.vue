@@ -37,8 +37,6 @@ export default {
     const { store } = useGlobalHooks()
 
     const loadRecentPosts = async () => {
-      if (store.getters.posts.data.length > 0) return
-
       try {
         await store.dispatch('loadPosts', { limit: 10 })
       } catch (e) {}
