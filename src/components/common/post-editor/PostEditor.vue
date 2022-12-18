@@ -127,7 +127,7 @@ export default {
     onMounted(init)
 
     onBeforeRouteLeave((to, from, next) => {
-      if (noAskRouteLeave.value) return
+      if (noAskRouteLeave.value) return next()
 
       plugins.$modal.confirm({
         body: plugins.$translate('MODAL_CONFIRM_QUIT_WRITING'),
