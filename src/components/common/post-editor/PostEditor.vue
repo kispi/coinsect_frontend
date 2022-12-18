@@ -61,6 +61,8 @@ export default {
   setup(props) {
     const { plugins, store, router } = useGlobalHooks()
 
+    const noAskRouteLeave = ref(null) // 글을 작성해서 라우트를 벗어나는 경우는 물어보지 않도록
+
     const payload = ref({})
 
     const boards = computed(() => {
@@ -104,6 +106,7 @@ export default {
 
       try {
         await crudService.post[payload.value.id ? 'update' : 'create'](payload.value)
+        noAskRouteLeave.value = true
         router.push(
           payload.value.sharingKey ?
           `/community/${payload.value.sharingKey}` :
@@ -124,6 +127,8 @@ export default {
     onMounted(init)
 
     onBeforeRouteLeave((to, from, next) => {
+      if (noAskRouteLeave.value) return
+
       plugins.$modal.confirm({
         body: plugins.$translate('MODAL_CONFIRM_QUIT_WRITING'),
       }).then(result => result === 1 ? next() : null)
