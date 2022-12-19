@@ -30,7 +30,7 @@
 
 <script>
 import useGlobalHooks from '@/hooks/global-hooks'
-import { onMounted } from 'vue'
+import { onMounted, onServerPrefetch } from 'vue'
 
 export default {
   setup() {
@@ -38,11 +38,13 @@ export default {
 
     const loadRecentPosts = async () => {
       try {
-        await store.dispatch('loadPosts', { limit: 10 })
+        await store.dispatch('loadPosts')
       } catch (e) {}
     }
 
     onMounted(loadRecentPosts)
+
+    onServerPrefetch(loadRecentPosts)
   },
 }
 </script>

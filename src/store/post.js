@@ -1,6 +1,5 @@
 import helpers from '@/helpers'
 import communityService from '@/services/community'
-import { router } from '@/router'
 
 const post = {
   state: () => ({
