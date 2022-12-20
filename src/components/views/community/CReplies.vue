@@ -139,7 +139,7 @@ export default {
 
   .reply-write-container {
     padding: 8px 0;
-    border-bottom: 1px solid var(--border-base);
+    border: 1px solid var(--brand-primary);
   }
 
   @mixin depths() {
