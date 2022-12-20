@@ -12,7 +12,8 @@
           <span @click.prevent="$router.push(`/community?boardId=${post.board.id}`)" class="badge-post-type m-r-8">{{ post.board.description }}</span>
           <span class="title-text">
             <span v-if="$helpers.dayjs().diff(post.createdAt, 'hours') < 24" class="badge-new">N</span>
-            {{ post.title }}
+            <i v-if="(post.$$images || []).length > 0" class="fa fa-image c-price-up-bybit"/>
+            <div class="lines-1">{{ post.title }}</div>
           </span>
           <span v-if="(post.replies || []).length > 0" class="num-replies"> [{{ (post.replies || []).length }}]</span>
         </div>
@@ -94,6 +95,9 @@ export default {
     .title-text {
       overflow: hidden;
       text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     &:hover {
