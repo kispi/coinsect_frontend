@@ -1,6 +1,7 @@
 // app components
 import AdSense from '@/components/app/AdSense'
 import AdaptiveLayout from '@/components/app/AdaptiveLayout'
+import AppBackground from '@/components/app/AppBackground'
 import AppBanner from '@/components/app/AppBanner'
 import AppCheckbox from '@/components/app/AppCheckbox'
 import AppDraggable from '@/components/app/AppDraggable'
@@ -57,6 +58,7 @@ const useGlobalComponents = app => {
   // app components
     .component('AdSense', AdSense)
     .component('AdaptiveLayout', AdaptiveLayout)
+    .component('AppBackground', AppBackground)
     .component('AppBanner', AppBanner)
     .component('AppCheckbox', AppCheckbox)
     .component('AppDraggable', AppDraggable)

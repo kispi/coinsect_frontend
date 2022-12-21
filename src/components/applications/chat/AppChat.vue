@@ -20,6 +20,7 @@
         class="app-chat-body no-scrollbar"
         @scroll="onScroll">
         <AppLoading :loading="loadingReplyTarget"/>
+        <AppBackground class="overlay" :numFlakes="10"/>
         <AppChatIncomingMessageOverlay @scroll-to-bottom="scrollToBottom"/>
         <div
           @click="scrollToBottom"
@@ -280,6 +281,12 @@ export default {
     border-bottom: 1px solid var(--border-base);
     padding: var(--app-chat-padding);
     flex: 1;
+
+    .app-background {
+      top: 44px;
+      bottom: 74px;
+      opacity: 0.5;
+    }
 
     .scroll-to-bottom {
       position: absolute;
