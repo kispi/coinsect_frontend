@@ -20,7 +20,7 @@
         class="app-chat-body no-scrollbar"
         @scroll="onScroll">
         <AppLoading :loading="loadingReplyTarget"/>
-        <AppBackground class="overlay" :numFlakes="10"/>
+        <ChatBackgroundWeatherOverlay/>
         <AppChatIncomingMessageOverlay @scroll-to-bottom="scrollToBottom"/>
         <div
           @click="scrollToBottom"
@@ -72,6 +72,7 @@ import AppChatMessageMetaTags from './AppChatMessageMetaTags'
 import AppChatIncomingMessageOverlay from './AppChatIncomingMessageOverlay'
 import AppChatInput from './AppChatInput'
 import AppChatStats from './AppChatStats'
+import ChatBackgroundWeatherOverlay from './ChatBackgroundWeatherOverlay'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
 import useModalDraggable from '@/hooks/modal-draggable'
@@ -85,6 +86,7 @@ export default {
     AppChatIncomingMessageOverlay,
     AppChatInput,
     AppChatStats,
+    ChatBackgroundWeatherOverlay,
     DailySeparator,
   },
   setup() {
@@ -281,12 +283,6 @@ export default {
     border-bottom: 1px solid var(--border-base);
     padding: var(--app-chat-padding);
     flex: 1;
-
-    .app-background {
-      top: 44px;
-      bottom: 74px;
-      opacity: 0.5;
-    }
 
     .scroll-to-bottom {
       position: absolute;

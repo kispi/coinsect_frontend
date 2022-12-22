@@ -108,6 +108,7 @@ export default {
     }
 
     .badge-new {
+      color: var(--white);
       background: var(--danger);
       font-size: 10px;
       font-weight: 700;

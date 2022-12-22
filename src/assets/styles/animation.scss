@@ -145,3 +145,10 @@
     opacity: 0;
   }
 }
+
+@keyframes raining {
+  100% {
+    transform: translate(-8px, 100%);
+    opacity: 0;
+  }
+}
