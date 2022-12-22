@@ -1,7 +1,7 @@
 <template>
   <AppHeader/>
   <div class="app-body view-layout-default no-scrollbar">
-    <!-- <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/> -->
+    <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView
       v-if="$store.getters.isSSR || prepared"
@@ -125,7 +125,7 @@ export default {
       display: block;
       margin-bottom: 8px;
       max-width: 992px;
-      height: 280px;
+      height: 160px;
     }
   }
 }
