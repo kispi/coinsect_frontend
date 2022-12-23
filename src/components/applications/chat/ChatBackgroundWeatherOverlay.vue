@@ -55,10 +55,8 @@ export default {
     const onClickWeather = weather => selectedWeather.value = selectedWeather.value.theme === weather.theme ? {} : weather
 
     const onClickBgImage = () => {
-      if (chatBg.value) return plugins.$modal.confirm({ body: '채팅방 배경 이미지를 제거할까요?' }).then(idx => idx === 1 ? chatBg.value = null : null)
-
       plugins.$modal.input({
-        title: '배경 이미지로 사용할 URL을 입력하세요',
+        title: '배경 이미지로 사용할 URL을 입력하세요 (없애려면 공백을 입력)',
         inputValue: chatBg,
         placeholder: 'https://',
       }).then(url => chatBg.value = url)
