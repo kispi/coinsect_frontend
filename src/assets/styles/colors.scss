@@ -46,6 +46,7 @@
   --price-down:          var(--price-down-upbit);
   --price-up-bg:         var(--price-up-upbit-bg);
   --price-down-bg:       var(--price-down-upbit-bg);
+  --bg-chat-message:     rgba(240, 240, 240, 1);
 
   &.dark {
     --text-stress:       var(--white);
@@ -60,5 +61,6 @@
     --price-down:        var(--price-down-bybit);
     --price-up-bg:       var(--price-up-bybit-bg);
     --price-down-bg:     var(--price-down-bybit-bg);
+    --bg-chat-message:   rgba(57, 57, 57, 1);
   }
 }

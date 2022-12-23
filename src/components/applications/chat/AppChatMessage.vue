@@ -158,7 +158,7 @@ export default {
     }
 
     .text {
-      background: var(--background-light);
+      background: var(--bg-chat-message);
       padding: 4px 8px;
       border-radius: 4px;
       max-width: 200px;
