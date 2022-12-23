@@ -90,7 +90,7 @@ export default {
 
     const recommendChatBg = () => {
       const arr = (store.getters.config || {}).chatBgImages || []
-      if (!arr.find(bgUrl => bgUrl == chatBg.value)) return // 사용자가 정한 url이 코인충에 없는 이미지인 경우
+      if (chatBg.value && !arr.find(bgUrl => bgUrl == chatBg.value)) return // 사용자가 정한 url이 코인충에 없는 이미지인 경우
 
       store.commit('setSettings', { chatBg: arr[Math.floor(Math.random() * arr.length)] })
     }
