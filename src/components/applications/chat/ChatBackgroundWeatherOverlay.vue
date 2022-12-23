@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
     const { plugins, store } = useGlobalHooks()
 
-    const chatBg = ref(null)
+    const chatBg = computed(() => store.getters.settings.chatBg)
 
     const selectedWeather = ref({})
 
@@ -55,13 +55,23 @@ export default {
     const onClickWeather = weather => selectedWeather.value = selectedWeather.value.theme === weather.theme ? {} : weather
 
     const onClickBgImage = () => {
-      if (chatBg.value) return plugins.$modal.confirm({ body: '채팅방 배경 이미지를 제거할까요?' }).then(idx => idx === 1 ? chatBg.value = null : null)
+      if (chatBg.value) {
+        plugins.$modal.confirm({ body: '채팅방 배경 이미지를 제거할까요?' })
+          .then(idx => {
+            if (!idx) return
+
+            store.commit('setSettings', { chatBg: null })
+          })
+        return
+      }
 
       plugins.$modal.input({
         title: '배경 이미지로 사용할 URL을 입력하세요',
-        inputValue: chatBg,
+        inputValue: store.getters.settings.chatBg,
         placeholder: 'https://',
-      }).then(url => chatBg.value = url)
+      }).then(url => {
+        store.commit('setSettings', { chatBg: url })
+      })
     }
 
     const loadWeather = async () => {
@@ -78,14 +88,16 @@ export default {
       }
     }
 
-    const setChatBg = () => {
+    const recommendChatBg = () => {
       const arr = (store.getters.config || {}).chatBgImages || []
-      chatBg.value = arr[Math.floor(Math.random() * arr.length)]
+      if (!arr.find(bgUrl => bgUrl == chatBg.value)) return // 사용자가 정한 url이 코인충에 없는 이미지인 경우
+
+      store.commit('setSettings', { chatBg: arr[Math.floor(Math.random() * arr.length)] })
     }
 
     onMounted(() => {
       loadWeather()
-      setChatBg()
+      recommendChatBg()
       weatherInterv.value = setInterval(loadWeather, 1000 * 60 * 60) // 날씨는 1시간에 한번만 땡겨와도 족함
     })
 

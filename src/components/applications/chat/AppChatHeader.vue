@@ -32,12 +32,32 @@
       </div>
       <div
         class="clickable-icon-wrapper chat-size"
-        @click="$store.commit('setSettings', { chatSizeMax: !$store.getters.settings.chatSizeMax })">
+        @click="toggleChatSizeMax">
         <i class="fal" :class="$store.getters.settings.chatSizeMax ? 'fa-clone' : 'fa-square'"/>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+export default {
+  setup() {
+    const { store } = useGlobalHooks()
+
+    const toggleChatSizeMax = () => {
+      const appChatContainer = document.querySelector('.app-chat-container')
+      if (appChatContainer) appChatContainer.style.height = ''
+      store.commit('setSettings', { chatSizeMax: !store.getters.settings.chatSizeMax })
+    }
+
+    return {
+      toggleChatSizeMax,
+    }
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .app-chat-header {

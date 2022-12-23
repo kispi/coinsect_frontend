@@ -268,6 +268,8 @@ export default {
     height: 480px;
     max-height: calc(100vh - 16px); // 100vh - 2 * bottom padding
     transition: none;
+    resize: both;
+    overflow: hidden;
     position: fixed;
     z-index: 5;
 
