@@ -1,6 +1,6 @@
 <template>
   <div class="view-home">
-    <RecentPosts class="m-b-24"/>
+    <RecentPosts class="m-t-16 m-b-24"/>
     <template v-if="$store.getters.settings.tradingview.home">
       <TradingViewTicker class="m-t-8 m-b-8"/>
       <MultiCharts class="m-b-8"/>
