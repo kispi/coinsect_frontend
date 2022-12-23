@@ -86,7 +86,6 @@ export default {
     onMounted(() => {
       loadWeather()
       setChatBg()
-      console.log(store.getters.config, chatBg.value)
       weatherInterv.value = setInterval(loadWeather, 1000 * 60 * 60) // 날씨는 1시간에 한번만 땡겨와도 족함
     })
 
