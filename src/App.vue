@@ -125,7 +125,7 @@ export default {
       display: block;
       margin-bottom: 8px;
       max-width: 992px;
-      height: 60px;
+      height: 280px;
     }
   }
 }
