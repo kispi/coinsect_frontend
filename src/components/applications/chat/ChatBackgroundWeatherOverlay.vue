@@ -1,16 +1,6 @@
 <template>
   <div class="chat-background-weather-overlay">
-    <AppImg
-      v-if="chatBg"
-      :src="chatBg"
-      class="bg-url overlay"
-    />
     <div class="bg-functions">
-      <i
-        @click="onClickBgImage"
-        class="fal fa-image"
-        :class="{'selected': chatBg}"
-      />
       <i
         @click="onClickWeather(weather)"
         class="fal"
@@ -39,8 +29,6 @@ export default {
   setup() {
     const { plugins, store } = useGlobalHooks()
 
-    const chatBg = computed(() => store.getters.settings.chatBg)
-
     const selectedWeather = ref({})
 
     const weatherInterv = ref(null)
@@ -53,26 +41,6 @@ export default {
     ]
 
     const onClickWeather = weather => selectedWeather.value = selectedWeather.value.theme === weather.theme ? {} : weather
-
-    const onClickBgImage = () => {
-      if (chatBg.value) {
-        plugins.$modal.confirm({ body: '채팅방 배경 이미지를 제거할까요?' })
-          .then(idx => {
-            if (!idx) return
-
-            store.commit('setSettings', { chatBg: null })
-          })
-        return
-      }
-
-      plugins.$modal.input({
-        title: '배경 이미지로 사용할 URL을 입력하세요',
-        inputValue: store.getters.settings.chatBg,
-        placeholder: 'https://',
-      }).then(url => {
-        store.commit('setSettings', { chatBg: url })
-      })
-    }
 
     const loadWeather = async () => {
       if (store.getters.loading.weather) return
@@ -88,16 +56,8 @@ export default {
       }
     }
 
-    const recommendChatBg = () => {
-      const arr = (store.getters.config || {}).chatBgImages || []
-      if (!arr.find(bgUrl => bgUrl == chatBg.value)) return // 사용자가 정한 url이 코인충에 없는 이미지인 경우
-
-      store.commit('setSettings', { chatBg: arr[Math.floor(Math.random() * arr.length)] })
-    }
-
     onMounted(() => {
       loadWeather()
-      recommendChatBg()
       weatherInterv.value = setInterval(loadWeather, 1000 * 60 * 60) // 날씨는 1시간에 한번만 땡겨와도 족함
     })
 
@@ -106,11 +66,9 @@ export default {
     })
 
     return {
-      chatBg,
       selectedWeather,
       weathers,
       onClickWeather,
-      onClickBgImage,
     }
   },
 }

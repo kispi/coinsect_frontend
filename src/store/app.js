@@ -59,7 +59,6 @@ const app = {
       chatTransparent: false,
       chatOverlayNewMessage: true,
       chatSkin: 'basic',
-      chatBg: null,
     },
     charts: [
       { symbol: 'BINANCE:BTCUSDT', interval: 15 },
