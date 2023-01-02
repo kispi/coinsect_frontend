@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
@@ -105,11 +105,6 @@ export default {
 
   .app-background {
     opacity: 0.5;
-  }
-
-  .bg-url {
-    z-index: -1;
-    opacity: 0.25;
   }
 }
 </style>
