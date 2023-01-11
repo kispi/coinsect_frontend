@@ -20,19 +20,17 @@
             </div>
           </div>
           <div class="tbody">
-            <a
-              :href="entity.source"
+            <div
               target="_blank"
               rel="noreferrer"
               class="row"
               :class="{
                 'in-profit': entity.valuation > entity.costBasis,
                 'in-loss': entity.valuation < entity.costBasis,
-                'cursor-pointer': entity.source,
               }"
               :key="entity.name"
-              v-for="(entity, idx) in data[key]">
-              <div class="td">{{ idx + 1}} [{{ entity.country }}] {{ entity.name }} ({{ entity.symbol }})</div>
+              v-for="entity in data[key]">
+              <div class="td">{{ entity.name }} ({{ entity.symbol }})</div>
               <div class="td">
                 <div><i class="fab fa-btc" v-if="entity.holdings"/>{{ entity.holdings ? entity.holdings.toLocaleString() : '-' }}</div>
                 <div>{{ entity.dominance ? `${entity.dominance}%` : '-' }}</div>
@@ -45,7 +43,7 @@
                 <div>{{ entity.profit ? $helpers.number.pretty.price({ price: entity.avgPrice, baseCurrency: 'usd' }) : '-' }}</div>
                 <div class="profit">{{ entity.profit ? `${entity.profit}%` : '-' }}</div>
               </div>
-            </a>
+            </div>
           </div>
         </div>
       </div>
@@ -65,8 +63,8 @@ export default {
     const data = computed(() => {
       if (!store.getters.publicTreasuries) return
 
-      const group = { public_company: [], private_company: [], etf: [], gov: [], etc: [] }
-      store.getters.publicTreasuries.forEach(pt => group[pt.type].push(pt))
+      const group = {}
+      store.getters.publicTreasuries.forEach(pt => group[pt.type] ? group[pt.type].push(pt) : group[pt.type] = [pt])
       Object.keys(group).forEach(key => {
         if (group[key].length === 0) delete group[key]
       })
@@ -129,12 +127,6 @@ export default {
 
     .thead {
       border-top: 1px solid var(--border-base);
-    }
-
-    .tbody {
-      .row:not(.cursor-pointer) .td:first-child {
-        opacity: 0.5;
-      }
     }
 
     .row {
