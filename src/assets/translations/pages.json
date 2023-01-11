@@ -335,22 +335,6 @@
     "en": "Quotes",
     "kr": "말말말"
   },
-  "PUBLIC_COMPANY": {
-    "en": "Public Company",
-    "kr": "상장기업"
-  },
-  "PRIVATE_COMPANY": {
-    "en": "Private Company",
-    "kr": "비상장기업"
-  },
-  "ETF": {
-    "en": "ETF Like",
-    "kr": "상장지수펀드류"
-  },
-  "GOV": {
-    "en": "Government",
-    "kr": "정부"
-  },
   "ESTIMATED_NEXT_HALVING": {
     "en": "Estimated Next Halving",
     "kr": "예상 다음 반감일"

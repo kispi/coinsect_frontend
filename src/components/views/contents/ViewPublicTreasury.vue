@@ -1,9 +1,5 @@
 <template>
   <div class="view-public-treasury">
-    <div class="description">
-      국가 / 상장 회사들 / 비공개 기업 / 펀드 등 비트코인을 보유한 단체들의 목록.<br>
-      클릭시 해당 내역의 근거자료 링크로 이동합니다.
-    </div>
     <template v-if="data">
       <div
         class="list pretty-scrollbar"
@@ -96,11 +92,6 @@ export default {
 
 <style lang="scss" scoped>
 .view-public-treasury {
-  .description {
-    font-size: 14px;
-    line-height: 22px;
-  }
-
   .fa-btc {
     color: var(--bitcoin);
     margin-right: 4px;
