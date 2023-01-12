@@ -69,6 +69,7 @@ const contents = [{
   meta: {
     title: '다음 비트코인 반감기 - 코인충',
     description: '다음 비트코인 반감기까지 남은 시간을 카운트다운으로 보여줍니다.',
+    image: withCdn('og-images/og-image-bitcoin-halving.png')
   },
 }, {
   path: '/contents/bitcoin-mining',
