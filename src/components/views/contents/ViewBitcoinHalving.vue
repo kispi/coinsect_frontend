@@ -1,6 +1,12 @@
 <template>
   <div v-if="!$store.getters.loading.global" class="view-bitcoin-halving">
-    <div class="title" v-html="$translate('BITCOIN_HALVING_TITLE')"/>
+    <div
+      class="title"
+      v-html="
+        $translate('BITCOIN_HALVING_TITLE')
+          .replace('%s', 50 / Math.pow(2, currentHalving))
+          .replace('%s', 50 / Math.pow(2, currentHalving + 1))
+      "/>
     <div class="description" v-html="$translate('BITCOIN_HALVING_DESCRIPTION')"/>
     <div v-if="nextHalving" class="estimated-next-halving">
       {{ $translate('ESTIMATED_NEXT_HALVING') }}<br><b>{{ nextHalving.format('YYYY-MM-DD') }}</b>
@@ -20,9 +26,16 @@
             width: left,
           }"/>
       </div>
-      <div class="badge start">셋째 반감기<br>12.5 > 6.25<br>630,000 블록<div class="triangle"/></div>
-      <div class="badge end">넷째 반감기<br>6.25 > 3.125<br>840,000 블록<div class="triangle"/></div>
+      <div class="badge start">{{ (currentHalving * 210000).toLocaleString() }}<div class="triangle"/></div>
+      <div class="badge end">{{ ((currentHalving + 1) * 210000).toLocaleString() }}<div class="triangle"/></div>
       <div ref="refCurrentBadge" class="badge current" :style="currentBlockBadgeStyle">최근 블록<br>{{ currentBlock.toLocaleString() }}<div class="triangle"/></div>
+    </div>
+    <div class="halving-plan">
+      <div class="title">
+        {{ $translate('BITCOIN_HALVING_PLAN') }}
+        <span class="f-14 m-l-8 c-text-light">({{ currentHalving }} / 32)</span>
+      </div>
+      <HalvingTable :currentHalving="currentHalving"/>
     </div>
   </div>
 </template>
@@ -30,14 +43,22 @@
 <script>
 import { computed, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
+import HalvingTable from './HalvingTable'
 
 export default {
+  components: { HalvingTable },
   setup() {
     const { plugins, store } = useGlobalHooks()
 
     const refCurrentBadge = ref(null)
 
     const currentBlock = ref(0)
+
+    const currentHalving = computed(() => {
+      for (let i = 0;; i++) {
+        if (currentBlock.value >= 210000 * i && currentBlock.value < 210000 * (i + 1)) return i
+      }
+    })
 
     const interv = ref(null)
 
@@ -53,7 +74,7 @@ export default {
       const { width } = refCurrentBadge.value.getBoundingClientRect()
 
       return {
-        left: `calc(${left.value} - ${width / 2 - 1}px)`,
+        left: `calc(${left.value} - ${width / 2 + 4}px)`,
       }
     })
 
@@ -103,6 +124,7 @@ export default {
 
     return {
       refCurrentBadge,
+      currentHalving,
       currentBlock,
       currentBlockBadgeStyle,
       t,
@@ -127,7 +149,6 @@ export default {
     font-size: 20px;
     line-height: 28px;
     font-weight: 700;
-    margin-top: 40px;
     color: var(--text-stress);
   }
 
@@ -183,7 +204,6 @@ export default {
     .gauge {
       background: rgba(255, 187, 17, 0.5);
       width: calc(100% - 24px);
-      // border-radius: 12px;
       height: 24px;
       overflow: hidden;
       margin: 0 auto;
@@ -237,6 +257,16 @@ export default {
           transform: translateX(-50%) rotate(45deg);
         }
       }
+    }
+  }
+
+  .halving-plan {
+    font-size: 12px;
+    margin-top: 120px;
+    width: 100%;
+
+    .title {
+      margin-bottom: 16px;
     }
   }
 
