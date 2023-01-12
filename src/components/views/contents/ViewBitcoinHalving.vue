@@ -33,7 +33,7 @@
     <div class="halving-plan">
       <div class="title">
         {{ $translate('BITCOIN_HALVING_PLAN') }}
-        <span class="f-14 m-l-8 c-text-light">({{ currentHalving }} / 32)</span>
+        <span class="f-14 m-l-8">({{ currentHalving }} in 32)</span>
       </div>
       <HalvingTable :currentHalving="currentHalving"/>
     </div>
