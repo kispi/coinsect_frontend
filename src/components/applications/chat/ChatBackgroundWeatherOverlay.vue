@@ -15,7 +15,7 @@
     <AppBackground
       v-if="selectedWeather.theme"
       class="overlay"
-      :numFallingObjects="selectedWeather.numFallingObjects"
+      :numFallingObjects="20"
       :theme="selectedWeather.theme"
     />
   </div>
@@ -36,8 +36,8 @@ export default {
     const base = '서울'
 
     const weathers = [
-      { theme: 'rain', numFallingObjects: 100, icon: 'fa-umbrella' },
-      { theme: 'snow', numFallingObjects: 20, icon: 'fa-snowflake' },
+      { theme: 'rain', icon: 'fa-umbrella' },
+      { theme: 'snow', icon: 'fa-snowflake' },
     ]
 
     const onClickWeather = weather => selectedWeather.value = selectedWeather.value.theme === weather.theme ? {} : weather
@@ -49,6 +49,7 @@ export default {
         store.commit('setLoading', { weather: true })
         const { data } = await plugins.$http.post('helpers/proxy', { url: 'https://www.weather.go.kr/w//renew2021/rest/main/current-weather-obs.do' })
         const targetWeather = ((data.find(o => o.stnKo === base) || {}).ww || '').toLowerCase()
+        console.log(targetWeather)
         if (targetWeather.includes('rain')) selectedWeather.value = weathers[0]
         if (targetWeather.includes('snow')) selectedWeather.value = weathers[1]
       } finally {
