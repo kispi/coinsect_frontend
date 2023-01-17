@@ -82,7 +82,7 @@ const useChatHandler = () => {
   const openModalSentiment = user => {
     if ((user.profile || {}).sentiment && plugins.$helpers.dayjs(user.profile.sentiment.expireAt).isAfter(plugins.$helpers.dayjs())) return
 
-    plugins.$toast.success('VOTE_LONG_SHORT')
+    plugins.$toast.success('TOAST_ASK_LONG_SHORT')
   }
 
   const handleMessage = message => {
