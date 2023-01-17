@@ -1,23 +1,31 @@
 <template>
   <div class="whale-alert">
-    <div
-      @click="showFilters = !showFilters"
-      class="btn btn-brd">
-      <i class="far fa-chevron-down" :class="{'show-filters': showFilters}"/>
-      {{ $translate('FILTER') }}
+    <div class="flex-row flex-between items-center m-b-16">
+      <div
+        @click="oneColumn = !oneColumn"
+        class="flex-row items-center cursor-pointer ul-on-hover">
+        <AppCheckbox v-model="oneColumn" class="no-touch flex-wrap m-r-8"/>
+        <div class="f-12">{{ $translate('ONE_COLUMN') }}</div>
+      </div>
+      <div
+        @click="showFilters = !showFilters"
+        class="btn btn-brd">
+        <i class="far fa-chevron-down" :class="{'show-filters': showFilters}"/>
+        {{ $translate('FILTER') }}
+      </div>
+      <transition name="slide-down">
+        <WhaleAlertFilters
+          v-show="showFilters"
+          @change-params="p => params = p"
+          :listStable="listStable"
+        />
+      </transition>
     </div>
-    <transition name="slide-down">
-      <WhaleAlertFilters
-        v-show="showFilters"
-        @change-params="p => params = p"
-        class="m-b-16"
-        :listStable="listStable"
-      />
-    </transition>
     <transition-group
       v-if="resp"
       name="cell"
       class="alert-items"
+      :class="{'one-column': oneColumn}"
       tag="div">
       <div
         class="alert-item f-mono"
@@ -94,6 +102,8 @@ export default {
     const { plugins, store } = useGlobalHooks()
 
     const resp = ref(null)
+
+    const oneColumn = ref(null)
 
     const timeout = ref(null)
 
@@ -188,6 +198,7 @@ export default {
     return {
       resp,
       listStable,
+      oneColumn,
       showFilters,
       loading,
       params,
@@ -212,7 +223,11 @@ export default {
   .alert-items {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    grid-gap: 8px;
+    gap: 8px;
+
+    &.one-column {
+      grid-template-columns: repeat(1, 1fr);
+    }
 
     .alert-item {
       padding: 8px;
@@ -278,9 +293,6 @@ export default {
   }
 
   .btn-brd {
-    margin-bottom: 16px;
-    margin-left: auto;
-    display: table;
     user-select: none;
     cursor: pointer;
 

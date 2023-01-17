@@ -14,5 +14,9 @@
   "TOAST_POSITION_EDITED": {
     "en": "You just edited the position of the BJ",
     "kr": "스트리머의 포지션을 수정하였습니다"
+  },
+  "TOAST_ASK_LONG_SHORT": {
+    "en": "Please vote long/short on right-upper side on trollbox when you can! 🥰",
+    "kr": "시간나실때 채팅창 우상단 롱/숏 투표한번만 부탁드립니다! 🥰"
   }
 }

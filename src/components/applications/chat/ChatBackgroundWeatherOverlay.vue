@@ -49,7 +49,6 @@ export default {
         store.commit('setLoading', { weather: true })
         const { data } = await plugins.$http.post('helpers/proxy', { url: 'https://www.weather.go.kr/w//renew2021/rest/main/current-weather-obs.do' })
         const targetWeather = ((data.find(o => o.stnKo === base) || {}).ww || '').toLowerCase()
-        console.log(targetWeather)
         if (targetWeather.includes('rain')) selectedWeather.value = weathers[0]
         if (targetWeather.includes('snow')) selectedWeather.value = weathers[1]
       } finally {

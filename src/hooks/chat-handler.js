@@ -80,17 +80,9 @@ const useChatHandler = () => {
   }
 
   const openModalSentiment = user => {
-    if (process.env.NODE_ENV !== 'production') return
-
     if ((user.profile || {}).sentiment && plugins.$helpers.dayjs(user.profile.sentiment.expireAt).isAfter(plugins.$helpers.dayjs())) return
 
-    plugins.$modal.custom({
-      component: 'ModalSentiment',
-    }).then(result => {
-      if (!result) return
-
-      updateSentiment(result)
-    })
+    plugins.$toast.success('VOTE_LONG_SHORT')
   }
 
   const handleMessage = message => {
