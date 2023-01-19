@@ -156,6 +156,9 @@ export default {
       padding: 4px 8px;
       flex: 1 1 0;
       user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       img {
         width: 24px;
