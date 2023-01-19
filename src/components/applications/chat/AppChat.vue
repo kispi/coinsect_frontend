@@ -257,6 +257,7 @@ export default {
 
   .app-chat-container {
     border: 1px solid var(--text-stress);
+    background: var(--app-chat-background);
     border-radius: 4px;
     display: flex;
     flex-direction: column;
@@ -322,15 +323,11 @@ export default {
 
 #app {
   &.light {
-    .app-chat-container {
-      background: var(--white);
-    }
+    --app-chat-background: var(--white);
   }
 
   &.dark {
-    .app-chat-container {
-      background: var(--gs-22);
-    }
+    --app-chat-background: var(--gs-22);
   }
 
   .app-chat.kakao {
@@ -342,7 +339,7 @@ export default {
     --border-base: var(--gs-e0);
 
     .app-chat-container {
-      background: var(--bg-kakao-chat);
+      --app-chat-background: var(--bg-kakao-chat);
       border: 1px solid var(--border-base);
       color: var(--text-stress);
     }

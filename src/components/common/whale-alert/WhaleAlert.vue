@@ -28,8 +28,12 @@
       :class="{'one-column': oneColumn}"
       tag="div">
       <div
+        @click="onClickHash(t)"
         class="alert-item f-mono"
-        :class="bullOrBear(t)"
+        :class="[
+          bullOrBear(t),
+          getUrl(t) ? 'cursor-pointer' : ''
+        ]"
         :key="t.hash"
         v-for="t in resp.data">
         <div class="alert-item-header">
@@ -37,8 +41,9 @@
             <AppImg :src="($store.getters.symbols[t.symbol.toUpperCase()] || {}).thumb" :alt="t.symbol"/>
             <div class="name">{{ displayAmount(t) }} {{ t.symbol }}</div>
             <div class="amount m-l-4">({{ $helpers.currency() }} {{ $helpers.number.pretty.price({ price: t.amountUsd, baseCurrency: 'usd' }) }})</div>
+            <div class="m-l-8 m-r-8 c-text-light">|</div>
+            <div class="timestamp">{{ $helpers.elapsedTime($helpers.dayjs.unix(t.timestamp)) }}</div>
           </div>
-          <div class="timestamp">{{ $helpers.elapsedTime($helpers.dayjs.unix(t.timestamp)) }}</div>
         </div>
         <div class="alert-item-from-to">
           <div class="from address">
@@ -57,12 +62,6 @@
             />
             {{ displayAddressName(t, 'to') }}
           </div>
-        </div>
-        <div
-          @click="onClickHash(t)"
-          class="alert-item-hash"
-          :class="{'text-underline': getUrl(t)}">
-          {{ t.hash }}
         </div>
       </div>
     </transition-group>
@@ -281,13 +280,6 @@ export default {
         .fa-chevron-right {
           margin: 0 8px;
         }
-      }
-
-      .alert-item-hash {
-        text-decoration: underline;
-        margin-top: 8px;
-        display: table;
-        cursor: pointer;
       }
     }
   }

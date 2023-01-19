@@ -85,15 +85,19 @@ export default {
 
   .bg-functions {
     position: absolute;
-    top: 0;
+    top: 1px;
+    left: 0;
+    right: 0;
+    height: 64px;
     z-index: 1;
     display: flex;
     padding: 12px;
     gap: 8px;
-    pointer-events: auto;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0), var(--app-chat-background));
 
     i {
       color: var(--text-stress);
+      pointer-events: auto;
       cursor: pointer;
 
       &:hover,
