@@ -157,6 +157,7 @@ export default {
       flex: 1 1 0;
       user-select: none;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
 
