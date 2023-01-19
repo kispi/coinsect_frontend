@@ -13,7 +13,6 @@
       :class="{
         'display-none': $store.getters.settings.chatFolded,
       }">
-      <AppChatStats/>
       <AppChatHeader/> <!-- 다른 컴포넌트의 함수를 참조하는게 안티패턴같긴 하지만 ... -->
       <div
         ref="refAppChatBody"
@@ -71,7 +70,6 @@ import AppChatMessage from './AppChatMessage'
 import AppChatMessageMetaTags from './AppChatMessageMetaTags'
 import AppChatIncomingMessageOverlay from './AppChatIncomingMessageOverlay'
 import AppChatInput from './AppChatInput'
-import AppChatStats from './AppChatStats'
 import ChatBackgroundWeatherOverlay from './ChatBackgroundWeatherOverlay'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
@@ -85,7 +83,6 @@ export default {
     AppChatMessageMetaTags,
     AppChatIncomingMessageOverlay,
     AppChatInput,
-    AppChatStats,
     ChatBackgroundWeatherOverlay,
     DailySeparator,
   },

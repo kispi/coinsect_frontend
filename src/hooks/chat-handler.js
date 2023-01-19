@@ -71,20 +71,6 @@ const useChatHandler = () => {
     connection.value.send(JSON.stringify(message))
   }
 
-  const updateSentiment = async type => {
-    const p = store.getters.chatUser.profile
-    if ((p.sentiment || {}).type === type) return
-
-    p.sentiment = { type }
-    store.dispatch('setAccount', p)
-  }
-
-  const openModalSentiment = user => {
-    if ((user.profile || {}).sentiment && plugins.$helpers.dayjs(user.profile.sentiment.expireAt).isAfter(plugins.$helpers.dayjs())) return
-
-    plugins.$toast.success('TOAST_ASK_LONG_SHORT')
-  }
-
   const handleMessage = message => {
     store.commit('setChatStats', message.stats)
 
@@ -114,7 +100,6 @@ const useChatHandler = () => {
         break
       }
       case 'auth':
-        openModalSentiment(message.user)
         plugins.$helpers.localStorage.setMeta('user', message.user)
         store.commit('setChatUser', message.user)
         ping()
@@ -249,7 +234,6 @@ const useChatHandler = () => {
     filteredMessages,
     loadingMessages,
     numUnreads,
-    updateSentiment,
     ping,
     loadMessages,
     setAccount,

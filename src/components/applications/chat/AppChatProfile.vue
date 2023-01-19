@@ -32,7 +32,6 @@
       }) : null"
       class="nickname"
       :class="[
-        useSentiment ? ((user.profile || {}).sentiment || {}).type || '' : '',
         user.id ? 'cursor-pointer' : '',
       ]"
       v-html="(user.profile || {}).nickname"
@@ -57,7 +56,6 @@ export default {
   props: {
     user: null,
     useBan: null,
-    useSentiment: Boolean,
   },
   setup(props) {
     const { plugins, store } = useGlobalHooks()
@@ -110,14 +108,6 @@ export default {
 
   .nickname {
     color: var(--text-stress);
-
-    &.long {
-      color: var(--price-up);
-    }
-
-    &.short {
-      color: var(--price-down);
-    }
   }
 
   &.authenticated {

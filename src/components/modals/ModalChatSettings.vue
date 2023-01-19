@@ -182,7 +182,6 @@ export default {
     const profile = ref({
       nickname: store.getters.chatUser.profile.nickname,
       image: store.getters.chatUser.profile.image,
-      sentiment: store.getters.chatUser.profile.sentiment || {},
     })
 
     const onKeydown = (e, field) => {

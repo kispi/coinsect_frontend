@@ -4,7 +4,6 @@
     class="modal-chat-users scrollable-body">
     <ModalHeader :title="`${$translate('MODAL_CHAT_USERS')} (${$store.getters.chatStats.numConnections})`" @close="$emit('close')"/>
     <div class="body">
-      <ChatStatsLongShort :useText="true"/>
       <div class="tabs">
         <div
           class="tab"
@@ -31,7 +30,7 @@
           class="user"
           :key="idx"
           v-for="(user, idx) in tabs[selectedTab]">
-          <AppChatProfile :user="user" :useSentiment="true" :useBan="true"/>
+          <AppChatProfile :user="user" :useBan="true"/>
         </div>
       </div>
       <div

@@ -29,7 +29,6 @@ import BadgeToken from '@/components/applications/chat/BadgeToken'
 import BadgeUnreads from '@/components/common/BadgeUnreads'
 import CommunityHeader from '@/components/common/CommunityHeader'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
-import ChatStatsLongShort from '@/components/common/ChatStatsLongShort'
 import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
 import CPosition from '@/components/common/c-position/CPosition'
 import LongShortRatio from '@/components/common/LongShortRatio'
@@ -85,7 +84,6 @@ const useGlobalComponents = app => {
     // common components
     .component('BadgeUnreads', BadgeUnreads)
     .component('CommunityHeader', CommunityHeader)
-    .component('ChatStatsLongShort', ChatStatsLongShort)
     .component('CPortfolio', CPortfolio)
     .component('CPosition', CPosition)
     .component('LongShortRatio', LongShortRatio)
