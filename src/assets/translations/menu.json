@@ -127,6 +127,10 @@
     "en": "Whale Alert",
     "kr": "고래 입출금"
   },
+  "ONE_COLUMN": {
+    "en": "One column",
+    "kr": "1열 고정"
+  },
   "MARKETS": {
     "en": "Markets",
     "kr": "시가총액"

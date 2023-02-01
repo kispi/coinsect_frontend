@@ -51,7 +51,6 @@ export default {
     ModalOrderbook: defineAsyncComponent(() => import('@/components/modals/ModalOrderbook')),
     ModalGame: defineAsyncComponent(() => import('@/components/modals/ModalGame')),
     ModalAddPortfolio: defineAsyncComponent(() => import('@/components/modals/ModalAddPortfolio')),
-    ModalSentiment: defineAsyncComponent(() => import('@/components/modals/ModalSentiment')),
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
     ModalImageUploader: defineAsyncComponent(() => import('@/components/modals/ModalImageUploader')),

@@ -13,7 +13,6 @@
       :class="{
         'display-none': $store.getters.settings.chatFolded,
       }">
-      <AppChatStats/>
       <AppChatHeader/> <!-- 다른 컴포넌트의 함수를 참조하는게 안티패턴같긴 하지만 ... -->
       <div
         ref="refAppChatBody"
@@ -71,7 +70,6 @@ import AppChatMessage from './AppChatMessage'
 import AppChatMessageMetaTags from './AppChatMessageMetaTags'
 import AppChatIncomingMessageOverlay from './AppChatIncomingMessageOverlay'
 import AppChatInput from './AppChatInput'
-import AppChatStats from './AppChatStats'
 import ChatBackgroundWeatherOverlay from './ChatBackgroundWeatherOverlay'
 import DailySeparator from './DailySeparator'
 import useChatHandler from '@/hooks/chat-handler'
@@ -85,7 +83,6 @@ export default {
     AppChatMessageMetaTags,
     AppChatIncomingMessageOverlay,
     AppChatInput,
-    AppChatStats,
     ChatBackgroundWeatherOverlay,
     DailySeparator,
   },
@@ -260,6 +257,7 @@ export default {
 
   .app-chat-container {
     border: 1px solid var(--text-stress);
+    background: var(--app-chat-background);
     border-radius: 4px;
     display: flex;
     flex-direction: column;
@@ -325,15 +323,11 @@ export default {
 
 #app {
   &.light {
-    .app-chat-container {
-      background: var(--white);
-    }
+    --app-chat-background: var(--white);
   }
 
   &.dark {
-    .app-chat-container {
-      background: var(--gs-22);
-    }
+    --app-chat-background: var(--gs-22);
   }
 
   .app-chat.kakao {
@@ -345,7 +339,7 @@ export default {
     --border-base: var(--gs-e0);
 
     .app-chat-container {
-      background: var(--bg-kakao-chat);
+      --app-chat-background: var(--bg-kakao-chat);
       border: 1px solid var(--border-base);
       color: var(--text-stress);
     }

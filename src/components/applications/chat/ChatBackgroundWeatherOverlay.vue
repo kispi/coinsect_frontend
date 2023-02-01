@@ -49,7 +49,6 @@ export default {
         store.commit('setLoading', { weather: true })
         const { data } = await plugins.$http.post('helpers/proxy', { url: 'https://www.weather.go.kr/w//renew2021/rest/main/current-weather-obs.do' })
         const targetWeather = ((data.find(o => o.stnKo === base) || {}).ww || '').toLowerCase()
-        console.log(targetWeather)
         if (targetWeather.includes('rain')) selectedWeather.value = weathers[0]
         if (targetWeather.includes('snow')) selectedWeather.value = weathers[1]
       } finally {
@@ -86,15 +85,19 @@ export default {
 
   .bg-functions {
     position: absolute;
-    top: 0;
+    top: 1px;
+    left: 0;
+    right: 0;
+    height: 64px;
     z-index: 1;
     display: flex;
     padding: 12px;
     gap: 8px;
-    pointer-events: auto;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0), var(--app-chat-background));
 
     i {
       color: var(--text-stress);
+      pointer-events: auto;
       cursor: pointer;
 
       &:hover,

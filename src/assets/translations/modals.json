@@ -39,18 +39,6 @@
     "en": "Unblock All",
     "kr": "모든 차단 해제"
   },
-  "IS_IT_TIME": {
-    "en": "Is it THE time?",
-    "kr": "취금이니!"
-  },
-  "SENTIMENT": {
-    "en": "Sentiment",
-    "kr": "기분"
-  },
-  "MODAL_SENTIMENT_DESCRIPTION": {
-    "en": "We ask your sentiment to know how you feel, and it expires in 24 hours after the last time you set.<br><br>You can always update it in chat setting.",
-    "kr": "방문자님의 현재 기분을 알고 싶어 여쭈어보는 것이며, 최종 설정시각을 기준으로 24시간동안 유지됩니다.<br><br>또한 언제든 프로필 수정에서 수정이 가능합니다."
-  },
   "MODAL_CONFIRM_DELETE_IMAGE": {
     "en": "Delete Profile Image.",
     "kr": "프로필 이미지를 삭제합니다."

@@ -144,7 +144,8 @@ h4 {
   background: var(--border-base);
 }
 
-u {
+u,
+.ul-on-hover:hover {
   text-decoration: underline;
 }
 
