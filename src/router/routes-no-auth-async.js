@@ -86,6 +86,13 @@ const contents = [{
     description: '각종 암호화폐 / 코인 뉴스',
   },
 }, {
+  path: '/contents/orange-pill',
+  component: () => import(/* webpackChunkName: 'view-orange-pill' */ '@/components/views/contents/ViewOrangePill'),
+  meta: {
+    title: 'Orange Pill - 코인충',
+    description: '비트코인에 대해 흔히 하는 질문 / 답변 - 코인충',
+  },
+}, {
   path: '/contents/crypto-referral',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {

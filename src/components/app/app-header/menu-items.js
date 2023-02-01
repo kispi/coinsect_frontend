@@ -71,6 +71,7 @@ const useMenuItems = () => {
       { path: '/contents/news', title: 'NEWS' },
       // { path: '/contents/twitter', title: 'TWITTER' },
       { path: '/contents/economic-calendar', title: 'ECONOMIC_CALENDAR' },
+      { path: '/contents/orange-pill', title: 'ORANGE_PILL' },
       { path: '/contents/public-treasury', title: 'PUBLIC_TREASURY' },
       { path: '/contents/bitcoin-halving', title: 'BITCOIN_HALVING' },
       { path: '/contents/bitcoin-mining', title: 'BITCOIN_MINING' },
