@@ -28,7 +28,7 @@ const useRoutes = server => {
   const router = createRouter(server)
   router.get('*', (req, res) => {
     const existingRoutePaths = server._router.stack.filter(r => r.route).map(r => r.route.path)
-    if (existingRoutePaths.includes(req.url)) return
+    if (existingRoutePaths.includes(req.url.split('?')[0])) return
 
     return handleSSRRequest(req, res)
   })

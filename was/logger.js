@@ -26,7 +26,6 @@ const createHttpLog = (req, res) => {
 
 const logger = (req, res, next) => {
   const extensions = ['.js', '.css', '.png', '.gif', 'jpg', '.jpeg', '.svg', '.woff2', '.ico']
-
   if (extensions.some(ext => req.url.endsWith(ext))) {
     next()
     return
