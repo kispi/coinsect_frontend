@@ -17,6 +17,7 @@
             :active="icon.active"
             :tooltip="icon.tooltip"
             :images="icon.images"
+            :numUnreads="icon.numUnreads"
             :key="idx"
             v-for="(icon, idx) in icons">
             <component v-if="icon.component" :is="icon.component" class="overlay"/>
