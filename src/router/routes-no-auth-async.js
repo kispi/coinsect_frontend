@@ -91,6 +91,7 @@ const contents = [{
   meta: {
     title: 'Orange Pill - 코인충',
     description: '비트코인에 대해 흔히 하는 질문 / 답변 - 코인충',
+    image: 'https://i0.wp.com/armantheparman.com/wp-content/uploads/2021/07/1_AYiMl87vPeipby9H3l6jxg.png?fit=1200%2C579&ssl=1',
   },
 }, {
   path: '/contents/crypto-referral',
