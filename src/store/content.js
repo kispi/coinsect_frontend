@@ -4,17 +4,22 @@ import helpers from '@/helpers'
 
 const content = {
   state: () => ({
+    orangePill: null,
     publicTreasuries: null,
     influencers: null,
     realTimePositions: null,
   }),
   getters: {
+    orangePill: state => state.orangePill,
     publicTreasuries: state => state.publicTreasuries,
     influencers: state => state.influencers,
     news: state => state.news,
     realTimePositions: state => state.realTimePositions,
   },
   mutations: {
+    setOrangePill(state, orangePill) {
+      state.orangePill = orangePill
+    },
     setPublicTreasuries(state, publicTreasuries) {
       state.publicTreasuries = publicTreasuries
     },
@@ -38,6 +43,14 @@ const content = {
           } catch (e) {}
         })
         commit('setInfluencers', resp)
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    async loadOrangePill({ commit }) {
+      try {
+        const data = await contentService.orangePill()
+        commit('setOrangePill', data)
       } catch (e) {
         return Promise.reject(e)
       }

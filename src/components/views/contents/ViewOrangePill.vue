@@ -18,73 +18,63 @@
         class="qna-item"
         :class="{'expanded': item.$$expanded}"
         :key="item.q"
-        v-for="item in items">
+        v-for="item in $store.getters.orangePill">
         <div
           @click="item.$$expanded = !item.$$expanded"
           class="question">{{ item.q }}<i class="fal" :class="item.$$expanded ? 'fa-chevron-up' : 'fa-chevron-down'"/>
         </div>
         <div
-          v-if="item.$$expanded"
+          v-show="item.$$expanded"
+          @click="onClickAnswer"
           class="answer"
           v-html="item.a"
         />
+      </div>
+    </div>
+    <div class="m-t-40">
+      <div class="description">
+        비트코인에 대한 조금 더 심도있는 공부를 원한다면, 엘 살바도르의 공식 비트코인 교재인
+        <a href="https://d1085v6s0hknp1.cloudfront.net/files/bitcoin-diploma.pdf" target="_blank">비트코인 디플로마</a>
+        (번역: <a href="https://twitter.com/atomicbtc/status/1576635586927947777" target="_blank">@atomicBTC</a>) 를 읽어보세요!
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted, onServerPrefetch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const items = ref([{
-      q: '돈은 무엇인가요? 신용화폐는 좋은 돈인가요?',
-      a: `
-        돈은\n1. 교환의 매개체 (medium of exchange)\n2. 가치 저장 수단 (store of value)\n3. 가치 측정 수단 (unit of account)\n입니다.
+    const { store } = useGlobalHooks()
 
-        신용화폐는 1, 3의 역할은 잘 수행하고 있지만, 2의 역할은 제대로 수행하고 있지 못합니다. 현재 인류가 가장 신뢰하고 있는 신용화폐인 달러도, 닉슨이 금본위제를 폐지한 1971년 이래로 90%의 구매력을 잃었습니다.
+    const items = ref(null)
 
-        <img src="https://www.visualcapitalist.com/wp-content/uploads/2021/03/Purchasing-Power-of-the-U.S.-Dollar-Over-Time.jpg">
+    const onClickAnswer = e => {
+      const target = e.target
+      if (target.src) {
+        window.open(target.src, '_blank', 'noreferrer')
+        return
+      }
+    }
 
-        이는, 만약 당신이 1971년에 $10,000를 통장에 두고 지금까지 그대로 둔 상태라면, 현재 그 구매력은 $1,000에 불과한 수준으로 줄어있다는 뜻입니다.
-        물론 이자가 있지만, 1971년 금본위제 폐지 이래로, 2008년 양적완화를 시작한 이래로 시작된 통화가치의 절하 속도는 은행 이자로 극복할 수 있는 수준이 아닙니다.
-        나머지 $9,000만큼의 구매력은 어디로 갔을까요? 방만한 정부재정지출과 '올바른 가치저장' 역할을 수행하는 자산들을 소지한 사람들의 구매력으로 흘러들어간 것입니다.
-        거꾸로 이야기하면, 1971년도에 당신이 $10,000를 올바르게 투자해서 최소 구매력을 '보존'하는데는 성공했다면(부동산, 금 등의 실물자산) 현재 $100,000로 불어나 있었어야 한다는 뜻입니다.
+    const callApi = async () => {
+      try {
+        await store.dispatch('loadOrangePill')
+        items.value = store.getters.orangePill.map(o => ({ ...o, $$expanded: false }))
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    }
 
-        달러정도면 그래도 양반입니다. 우리는 이미 조선시대의 당백전, 베네수엘라, 짐바브웨, 아르헨티나, 페루, 터키, 독일 등 수많은 극심한 인플레이션 ~ 하이퍼인플레이션의 사례들을 알고 있습니다.
+    onMounted(callApi)
 
-        모든 신용화폐의 구매력은 중앙은행과 국가가 얼마나 빠른 속도로 더 찍어내는지, 신뢰를 잃는지 속도의 차이일 뿐, 장기적으로 봤을 때 반드시 그 본질적 가치인 <b>0</b>에 수렴합니다.
-      `,
-    }, {
-      q: '비트코인은 무엇인가요? 내재가치가 있나요? 누가 가치를 보증해주나요?',
-      a: `
-        비트코인은 사토시 나카모토라는 익명의 그룹(으로 추측됩니다.)이 개발한 Peer-to-peer electronic cash로, 중앙은행등의 '중앙화'된 기관의 보증 없이 개인간 온라인을 돈을 직접 거래할수 있도록 하기 위해 개발된 최초의 탈중앙화된 암호화폐입니다.
-
-        심볼은 BTC이며, 이를 하드포크(비트코인 코드를 복사하여 일부 수정한 블록체인들)한 알트코인들인 BCH, BSV, BTG등과는 구분되어 2009년부터 단 한번도 정지되지 않고 동작하고 있는 오리지널 블록체인입니다.
-
-        우리가 프로그램을 다운받을 때 중앙 서버에서 다운받을 수도 있지만, 토렌트를 통해서 중앙 서버 없이 Peer-to-peer로 파일을 공유받는 방식으로 다운로드 할 수 있는 것과 비슷한 원리, 즉 전세계에 분산된 노드들이 사용자들의 거래를 처리하는 방식으로 동작합니다.
-
-        비트코인의 작동 원리에 대해서는 컴퓨터공학 및 암호학에 대한 어느정도 이상의 지식이 필요하므로(hash, PoW, blockchain) 관련 서적이나 일반인을 대상으로 쉽게 설명한 유튜브 영상 등을 참고하시기 바랍니다.
-
-        '돈'에는 왜 가치가 있나요? '돈'의 가치는 본질적으로 여러 명이 구성한 사회에서 구성원들이 물물 교환을 위해서 중개물을 사용하자는 합의를 한데서 비롯됩니다. 만약 나 혼자 무인도에서 살고 있는 경우라면 '돈'에는 아무런 가치가 없을 것입니다. 물, 식품, 은신처 등 당장 사용할 수 있는 재화들에 가치가 있지요.
-
-        다시 말해 '돈'이 얼마만큼의 가치를 갖는지는 사회적 합의에 의해 결정됩니다. '1온스의 금 = 35달러로 교환 보장'을 하던 1971년까지는, 달러의 가치가 저 합의만큼으로 고정되어 있었던 것이지요. 그러나, 닉슨이 금본위제를 깬 뒤로부터 미국은 달러를 무한히 발행할 수 있게 되었으며, 이 대 사기극을 인지한 시장은 달러의 평가절하를 금 값에 반영하기 시작합니다.
-        그 이후로 온스당 35달러이든 금은 2023년 현재 온스당 1920달러에 이르기까지 무려 50배 이상 폭등합니다. 금의 가치가 50년간 50배가 폭등한것일까요? 금 1oz = 지금도 여전히 금 1oz 일 뿐, 사실은 달러의 가치가 50분의 1로 줄어든 것입니다.
-        그러나 이런 통화가치의 절하는 아주 느리게 진행되는 것처럼 보이기 때문에, 단기간에 인플레이션이 빠르게 일어나는 상황이 아니면 사람들은 서서히 구매력을 잃어갈 뿐 바로 신용화폐에 대한 신뢰를 잃어버리지는 않습니다.
-        그러다가 어느 임계점을 넘어 '신용화폐를 계속 들고 있으면 결국 모든 것을 잃게 된다'라는 것을 그 화폐를 사용했던 사람들이 폭발적으로 인지하기 시작하면 신용화폐는 '신용'을 잃고 순식간에 휴지조각으로 전락하게 됩니다.
-        그 시점이 정확히 언제가 될지는 알 수 없지만, 반드시 그런 상황은 온다는 것을 역사는 보여주고 있습니다.
-
-        비트코인은 금과 비슷합니다. 수요가 늘어난다고 공급을 맘대로 늘릴 수(찍어낼 수) 없습니다. 2022년 7월 경 우간다에서 3100만톤의 금광이 발견되었는데, 이런식으로 금은 공급량이 늘어날 수 있는 여지가 얼마든지 있습니다.
-        그러나 '총 공급량 21,000,000개, 10분당 생성되는 코인 수 6.25개'라는 프로토콜은 네트워크 참여자 다수의 합의를 거쳐 하드포크를 하지 않는 이상 절대로 바뀔 수 없습니다.
-
-        컨센서스 없이 저 프로토콜을 고쳐서 채굴하는 채굴자가 생긴다면, 그 채굴자는 BTC가 아닌 다른 코인을 채굴하는 것일 뿐이며(BCH, BTG, BSV...), 여전히 BTC는 전세계 모든 슈퍼컴퓨터의 연산량을 합친 것을 아득하게 초월하는 해시레이트로 '일'(Proof-of-Work)하는 채굴자들에 의해 보안성 및 프로토콜의 불변성이 보장됩니다.
-        오히려 저 아득한 컴퓨팅 파워로 보장받는 비트코인 네트워크의 안정성을 고려한다면, 현재 가격인 $20,000는 아직 네트워크가 충분히 성장하지 못해 제대로 평가받지 못하고 있는 매우 저렴한 가격이라고 보는게 합리적일 것입니다.
-      `
-    }].map(o => ({ q: o.q, a: o.a.trim(), $$expanded: false })))
+    onServerPrefetch(callApi)
 
     return {
       items,
+      onClickAnswer,
     }
   },
 }
@@ -125,6 +115,7 @@ export default {
 
   .qna-items {
     display: grid;
+    align-items: flex-start;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 16px;
 
@@ -151,11 +142,30 @@ export default {
         border-top: 1px solid var(--border-base);
         padding: 8px;
         white-space: pre-line;
+
+        img {
+          cursor: pointer;
+        }
       }
 
       &.expanded {
         .question {
           font-weight: 700;
+        }
+      }
+    }
+  }
+
+  a {
+    text-decoration: underline;
+    color: var(--brand-primary);
+  }
+
+  @media (max-width: 767px) {
+    .qna-items {
+      .qna-item {
+        .answer {
+          font-size: 12px;
         }
       }
     }

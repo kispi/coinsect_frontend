@@ -21,7 +21,8 @@ const useStaticServing = server => {
       express.static(
         path.join(__dirname, `../${outputDir}/client`, target),
         process.env.NODE_ENV === 'production' ? { maxAge: 3600 * 1000 } : null,
-      ))
+      ),
+    ),
   )
 }
 
