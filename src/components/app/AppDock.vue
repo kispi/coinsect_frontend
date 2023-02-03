@@ -74,7 +74,7 @@ export default {
         tooltip: 'ECONOMIC_CALENDAR',
         images: [plugins.$helpers.withCdn('assets/icon-investing.jpg')],
       }, {
-        numUnreads,
+        numUnreads: numUnreads.value,
         active: !store.getters.settings.chatFolded,
         component: 'AppChatToggler',
       }, {
