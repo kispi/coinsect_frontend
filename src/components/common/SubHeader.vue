@@ -10,9 +10,9 @@
         class="sub-header-item"
         :class="{'selected': $router.currentRoute.value.path.includes(item.path)}"
         :key="item.path"
-        v-for="item in modelValue">
-        {{ $translate(item.title) }}
-      </RouterLink>
+        v-for="item in modelValue"
+        v-html="$translate(item.title)"
+      />
     </nav>
   </transition>
 </template>

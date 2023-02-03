@@ -86,11 +86,11 @@ const contents = [{
     description: '각종 암호화폐 / 코인 뉴스',
   },
 }, {
-  path: '/contents/orange-pill',
-  component: () => import(/* webpackChunkName: 'view-orange-pill' */ '@/components/views/contents/ViewOrangePill'),
+  path: '/contents/bitcoin',
+  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {
-    title: 'Orange Pill - 코인충',
-    description: '비트코인에 대해 흔히 하는 질문 / 답변 - 코인충',
+    title: '비트코인 이해하기 - 코인충',
+    description: '비트코인에 대해 흔히 하는 질문과 답변 - 코인충',
     image: 'https://i0.wp.com/armantheparman.com/wp-content/uploads/2021/07/1_AYiMl87vPeipby9H3l6jxg.png?fit=1200%2C579&ssl=1',
   },
 }, {

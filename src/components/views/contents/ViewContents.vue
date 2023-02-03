@@ -12,6 +12,7 @@ export default {
   components: {
     ViewBitcoinHalving: defineAsyncComponent(() => import('./ViewBitcoinHalving')),
     ViewBitcoinMining: defineAsyncComponent(() => import('./ViewBitcoinMining')),
+    ViewBitcoinFaq: defineAsyncComponent(() => import('./ViewBitcoinFaq')),
     ViewNews: defineAsyncComponent(() => import('./news/ViewNews')),
     ViewTwitter: defineAsyncComponent(() => import('./ViewTwitter')),
     ViewEconomicCalendar: defineAsyncComponent(() => import('./ViewEconomicCalendar')),
@@ -33,6 +34,7 @@ export default {
       if (p === '/contents/public-treasury') return 'ViewPublicTreasury'
       if (p === '/contents/bitcoin-halving') return 'ViewBitcoinHalving'
       if (p === '/contents/bitcoin-mining') return 'ViewBitcoinMining'
+      if (p === '/contents/bitcoin') return 'ViewBitcoinFaq'
       if (p === '/contents/crypto-referral') return 'ViewCryptoReferral'
     })
 

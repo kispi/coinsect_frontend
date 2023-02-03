@@ -2,8 +2,7 @@
   <RouterLink
     :to="'/'"
     class="app-logo">
-    <i class="fab fa-apple f-28"/>
-    coinsect.io
+    <i class="fab fa-bitcoin c-bitcoin f-20 m-r-4"/>coinsect
   </RouterLink>
 </template>
 
@@ -11,6 +10,6 @@
 .app-logo {
   color: var(--text-stress);
   font-size: 24px;
-  font-family: 'Oxanium', cursive;
+  font-family: 'Ubuntu', sans-serif;
 }
 </style>

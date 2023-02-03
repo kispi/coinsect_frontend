@@ -38,9 +38,9 @@
           <td>{{ row.rank }}</td>
           <td><div class="lines-1" v-html="row.name"/></td>
           <td :class="(row.side || '').toLowerCase()">{{ row.side }}</td>
-          <td v-if="!$store.getters.isMobile" :class="{'long': row.profit > 0, 'short': row.profit < 0}"><i class="fab fa-btc"/>{{ asBTC(row.profit) }}</td>
-          <td :class="{'long': row.dailyChange > 0, 'short': row.dailyChange < 0}"><i class="fab fa-btc"/>{{ asBTC(row.dailyChange) }}</td>
-          <td :class="{'long': row.weeklyChange > 0, 'short': row.weeklyChange < 0}"><i class="fab fa-btc"/>{{ asBTC(row.weeklyChange) }}</td>
+          <td v-if="!$store.getters.isMobile" :class="{'long': row.profit > 0, 'short': row.profit < 0}"><i class="fab fa-bitcoin"/>{{ asBTC(row.profit) }}</td>
+          <td :class="{'long': row.dailyChange > 0, 'short': row.dailyChange < 0}"><i class="fab fa-bitcoin"/>{{ asBTC(row.dailyChange) }}</td>
+          <td :class="{'long': row.weeklyChange > 0, 'short': row.weeklyChange < 0}"><i class="fab fa-bitcoin"/>{{ asBTC(row.weeklyChange) }}</td>
         </tr>
       </tbody>
     </table>
@@ -184,7 +184,7 @@ export default {
     line-height: 20px;
   }
 
-  .fa-btc {
+  .fa-bitcoin {
     color: var(--bitcoin);
   }
 }

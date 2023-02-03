@@ -166,6 +166,7 @@ export default {
           lots.value = [
             'Chaeil',
             'Chris',
+            'Eli',
             'Emily',
             'Emma',
             'Gilbert',

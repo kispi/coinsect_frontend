@@ -28,7 +28,7 @@
               v-for="entity in data[key]">
               <div class="td">{{ entity.name }} ({{ entity.symbol }})</div>
               <div class="td">
-                <div><i class="fab fa-btc" v-if="entity.holdings"/>{{ entity.holdings ? entity.holdings.toLocaleString() : '-' }}</div>
+                <div><i class="fab fa-bitcoin" v-if="entity.holdings"/>{{ entity.holdings ? entity.holdings.toLocaleString() : '-' }}</div>
                 <div>{{ entity.dominance ? `${entity.dominance}%` : '-' }}</div>
               </div>
               <div class="td">
@@ -92,7 +92,7 @@ export default {
 
 <style lang="scss" scoped>
 .view-public-treasury {
-  .fa-btc {
+  .fa-bitcoin {
     color: var(--bitcoin);
     margin-right: 4px;
   }

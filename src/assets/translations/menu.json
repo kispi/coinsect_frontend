@@ -140,8 +140,8 @@
     "kr": "크립토"
   },
   "NASDAQ": {
-    "en": "NASDAQ 100",
-    "kr": "나스닥 100"
+    "en": "NASDAQ",
+    "kr": "나스닥"
   },
   "KOSPI": {
     "en": "KOSPI",
@@ -195,9 +195,9 @@
     "en": "Public Treasury",
     "kr": "비트코인 보유단체"
   },
-  "ORANGE_PILL": {
-    "en": "Orange Pill",
-    "kr": "오렌지 필"
+  "UNDERSTANDING_BITCOIN": {
+    "en": "Understanding Bitcoin",
+    "kr": "비트코인 이해하기"
   },
   "BITCOIN_HALVING": {
     "en": "Bitcoin Halving",
