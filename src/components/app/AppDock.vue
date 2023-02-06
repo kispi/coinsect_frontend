@@ -17,6 +17,7 @@
             :active="icon.active"
             :tooltip="icon.tooltip"
             :images="icon.images"
+            :numUnreads="icon.numUnreads"
             :key="idx"
             v-for="(icon, idx) in icons">
             <component v-if="icon.component" :is="icon.component" class="overlay"/>
@@ -73,7 +74,7 @@ export default {
         tooltip: 'ECONOMIC_CALENDAR',
         images: [plugins.$helpers.withCdn('assets/icon-investing.jpg')],
       }, {
-        numUnreads,
+        numUnreads: numUnreads.value,
         active: !store.getters.settings.chatFolded,
         component: 'AppChatToggler',
       }, {
