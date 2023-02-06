@@ -81,7 +81,7 @@ export default {
         active: p === '/contents/bitcoin',
         tooltip: 'UNDERSTANDING_BITCOIN',
         html: `<div class="icon-bitcoin center overlay">
-          <img src="https://static.upbit.com/logos/BTC.png">
+          <img src="https://static.upbit.com/logos/BTC.png" alt="Understanding Bitcoin">
         </div>`
       }, {
         handler: () => plugins.$modal.custom({ component: 'ModalChatSettings' }),

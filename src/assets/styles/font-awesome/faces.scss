@@ -1,4 +1,5 @@
-$fontPath: '/font-awesome';
+// 이렇게 하는건 좀 아닌 것 같긴 한데...
+$fontPath: 'https://d1085v6s0hknp1.cloudfront.net/fonts/font-awesome';
 
 @mixin fontFace($name, $file, $weight: normal, $className) {
   @font-face {

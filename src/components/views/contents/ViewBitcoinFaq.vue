@@ -23,7 +23,7 @@
     </div>
     <div class="section">
       비트코인에 대한 더 심도있는 공부를 원한다면, <span class="orange">Orange Pill 💊</span>을 복용해보고 싶다면 엘 살바도르의 공식 비트코인 교재인
-      <a href="https://d1085v6s0hknp1.cloudfront.net/files/bitcoin-diploma.pdf" target="_blank"><i class="fa fa-file-pdf m-r-4"/>비트코인 디플로마</a>
+      <a :href="bitcoinDiplomaUrl" target="_blank"><i class="fa fa-file-pdf m-r-4"/>비트코인 디플로마</a>
       (번역: <a href="https://twitter.com/atomicbtc/status/1576635586927947777" target="_blank"><i class="fab fa-twitter m-r-4"/>atomicBTC</a>) 를 읽어보세요!
     </div>
     <div class="section">
@@ -59,6 +59,8 @@ export default {
 
     const items = ref(null)
 
+    const bitcoinDiplomaUrl = `${process.env.VUE_APP_CDN}/files/bitcoin-diploma.pdf`
+
     const onClickAnswer = e => {
       const target = e.target
       if (target.src) {
@@ -81,6 +83,7 @@ export default {
     onServerPrefetch(callApi)
 
     return {
+      bitcoinDiplomaUrl,
       items,
       showOrangePill,
       onClickAnswer,

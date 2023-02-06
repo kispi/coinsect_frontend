@@ -20,8 +20,6 @@ module.exports = {
       )
     }
     if (!process.env.VUE_APP_SSR) {
-      // This is required for repl.it to play nicely with the Dev Server
-      webpackConfig.devServer.disableHostCheck(true)
       webpackConfig
         .entry('app')
         .clear()

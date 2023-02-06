@@ -101,7 +101,7 @@ export default {
       { name: '두아 리파', src: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Dua_Lipa_with_Warner_Music_3.png' },
       { name: '살색 의상', src: 'http://thumbnail.10x10.co.kr/webimage/image/add1/201/A002015710_01-12.jpg?cmd=thumb&w=400&h=400&fit=true&ws=false' },
       { name: '톰 하디 흡연', src: 'https://i.pinimg.com/564x/3e/1b/a2/3e1ba2b8f6ed61c4d1b4349390ecbd19.jpg' },
-      { name: '음주', src: 'https://d1085v6s0hknp1.cloudfront.net/chat/8e246c16-d9de-48fb-a516-f2d92e1ed48f_20220827_223728.jpg' },
+      { name: '음주', src: `${process.env.VUE_APP_CDN}/chat/8e246c16-d9de-48fb-a516-f2d92e1ed48f_20220827_223728.jpg` },
       { name: '포스트 말론 & 도자 캣', src: 'https://stack.com.au/wp-content/uploads/2022/07/postmalonedoja.jpg' },
     ])
 
