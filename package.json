@@ -1,7 +1,7 @@
 {
   "author": "chris",
   "email": "kispi@naver.com",
-  "name": "coinsect_web",
+  "name": "coinsect_frontend",
   "version": "0.2.0",
   "private": true,
   "scripts": {
