@@ -124,12 +124,15 @@ export default {
     const { menuItems, subPages, onClickMenuItem } = useMenuItems()
 
     const numNewNotifications = computed(() => {
-      const n = store.getters.notifications
-      if (!n) return
+      const list = (store.getters.notifications || {}).data || []
+      if (list.length === 0) return
 
       const d = plugins.$helpers.dayjs
 
-      return (n.data || []).filter(o => d().diff(o.createdAt, 'hour') < 24).length
+      const lastId = plugins.$helpers.localStorage.getMeta('lastNotificationId')
+      if (lastId) return list.filter(o => o.id > lastId).length
+
+      return list.filter(o => d().diff(o.createdAt, 'hour') < 24).length
     })
 
     const handleClickMyActivity = handler => {

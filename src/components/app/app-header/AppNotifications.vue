@@ -26,7 +26,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup(_, { emit }) {
-    const { store, router } = useGlobalHooks()
+    const { plugins, store, router } = useGlobalHooks()
 
     const onClickNotificationItem = notification => {
       if (!notification.link) return
@@ -41,9 +41,15 @@ export default {
       emit('close')
     }
 
-    onMounted(() => {
+    const init = async () => {
+      const list = (store.getters.notifications || {}).data || []
+      if (list.length > 0) {
+        plugins.$helpers.localStorage.setMeta('lastNotificationId', (list[0]).id)
+      }
       store.dispatch('loadNotifications')
-    })
+    }
+
+    onMounted(init)
 
     return {
       onClickNotificationItem,
