@@ -17,6 +17,7 @@
           <UserSymbol :user="$store.getters.me" class="m-r-4"/><span class="lines-1">{{ ($store.getters.me.profile || {}).nickname }}</span>
         </div>
         <input
+          v-if="!$store.getters.me"
           v-model="payload.password"
           :placeholder="$translate('PLACEHOLDER_PASSWORD')"
           class="password"
@@ -77,7 +78,10 @@ export default {
     }
 
     const onClickCreateReply = async () => {
-      if (['nickname', 'password', 'content'].some(key => {
+      const required = ['nickname', 'content']
+      if (!store.getters.me) required.push('password')
+
+      if (required.some(key => {
         if (!payload.value[key]) {
           plugins.$toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
           return true

@@ -15,6 +15,7 @@
         <UserSymbol :user="$store.getters.me" class="m-r-4"/><span class="lines-1">{{ ($store.getters.me.profile || {}).nickname }}</span>
       </div>
       <input
+        v-if="!$store.getters.me"
         v-model="payload.password"
         class="password bg-white c-black"
         :placeholder="$translate('PLACEHOLDER_PASSWORD')"
@@ -89,7 +90,10 @@ export default {
     }
 
     const createPost = async () => {
-      if (['nickname', 'password', 'title', 'content'].some(key => {
+      const required = ['nickname', 'title', 'content']
+      if (!store.getters.me) required.push('password')
+
+      if (required.some(key => {
         if (!(payload.value[key] || '').trim()) {
           const dom = document.querySelector(`input.${key}`) || document.querySelector('.ql-container')
           if (dom) {
