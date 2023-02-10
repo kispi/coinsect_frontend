@@ -287,6 +287,8 @@ export default {
     }
 
     &:not(:first-child) {
+      width: 120px;
+
       @extend .f-mono;
     }
   }

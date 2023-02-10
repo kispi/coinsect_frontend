@@ -14,15 +14,6 @@
   transform: translateY(40px);
 }
 
-.route-change-enter-active, .route-change-leave-active {
-  transition: all 0.1s ease-in-out;
-}
-
-.route-change-enter-from, .route-change-leave-to {
-  opacity: 0;
-  filter: blur(16px);
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
