@@ -15,8 +15,8 @@
         <div
           class="nickname lines-1"
           :class="{
-            'c-price-up-bybit': $store.getters.chatUser.profile.sentiment.type === 'long',
-            'c-price-down-bybit': $store.getters.chatUser.profile.sentiment.type === 'short',
+            'c-price-up-bybit': ($store.getters.chatUser.profile.sentiment || {}).type === 'long',
+            'c-price-down-bybit': ($store.getters.chatUser.profile.sentiment || {}).type === 'short',
           }"
           @click="$modal.custom({ component: 'ModalChatSettings' })"
           v-html="$store.getters.chatUser.profile.nickname"
