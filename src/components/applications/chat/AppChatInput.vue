@@ -14,16 +14,25 @@
     </div>
     <div class="textarea-wrapper">
       <div
-        v-if="!$store.getters.settings.cleanChatAgreed"
-        class="disclaimer overlay">
-        <div class="text">
-          광고, 지나친 비방, 욕설 없는 클린한 채팅 부탁드립니다 🙂
+        v-if="!$store.getters.settings.sentimentVoted"
+        class="vote-long-short overlay">
+        <AppImg :src="$helpers.withCdn('images/influencers/hodu_park.jpg')"/>
+        <div class="buttons">
+          <button
+            @click="updateSentiment('long')"
+            class="btn btn-long">
+            {{ $translate('LONG') }}
+          </button>
+          <button
+            @click="updateSentiment('short')"
+            class="btn btn-short">
+            {{ $translate('SHORT') }}
+          </button>
         </div>
-        <button
-          @click="$store.commit('setSettings', { cleanChatAgreed: true })"
-          class="btn btn-brd">
-          {{ $translate('AGREE') }}
-        </button>
+        <div class="m-t-24">
+          - 방문자님의 관점을 알기 위함입니다<br>
+          - 클릭 후 24시간동안은 물어보지 않습니다
+        </div>
       </div>
       <div class="functions">
         <i @click="chatFunctions.image" class="fa fa-image"/>
@@ -33,7 +42,7 @@
         v-model="text"
         @keydown="onKeydown"
         @paste="onPaste"
-        :disabled="!$store.getters.settings.cleanChatAgreed"
+        :disabled="!$store.getters.settings.sentimentVoted"
         :maxlength="255"
         placeholder="이미지를 첨부하려면 왼쪽 아이콘 클릭 / 또는 스크린샷 후 Ctrl + V"
         class="no-scrollbar"
@@ -54,7 +63,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { sendWebsocketMessage } = useChatHandler()
+    const { sendWebsocketMessage, updateSentiment } = useChatHandler()
 
     const { plugins, store } = useGlobalHooks()
 
@@ -147,6 +156,7 @@ export default {
       refTextarea,
       text,
       chatFunctions,
+      updateSentiment,
       sendTextMessage,
       onKeydown,
       onPaste,
@@ -167,8 +177,7 @@ export default {
     align-items: center;
     padding: 8px;
 
-    .disclaimer {
-      line-height: 22px;
+    .vote-long-short {
       color: var(--text-stress);
       padding: 4px 12px;
       border: 1px solid var(--border-base);
@@ -180,13 +189,38 @@ export default {
       justify-content: center;
       z-index: 1;
       top: 45px;
+      font-size: 12px;
+      text-align: center;
 
-      .text {
-        text-align: center;
+      .app-img {
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
       }
 
-      .btn-brd {
-        margin-top: 16px;
+      .buttons {
+        margin-top: 24px;
+        display: flex;
+        gap: 8px;
+        width: 100%;
+
+        button {
+          width: 100%;
+          font-size: 16px;
+          border-radius: 4px;
+
+          &:hover {
+            opacity: 0.5;
+          }
+        }
+
+        .btn-long {
+          background: var(--price-up-bybit);
+        }
+
+        .btn-short {
+          background: var(--price-down-bybit);
+        }
       }
     }
 

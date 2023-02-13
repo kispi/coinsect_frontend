@@ -1,16 +1,32 @@
 <template>
   <div class="chat-background-weather-overlay">
-    <div class="bg-functions">
-      <i
-        @click="onClickWeather(weather)"
-        class="fal"
-        :class="{
-          'selected': weather.theme === selectedWeather.theme,
-          [weather.icon]: true,
-        }"
-        :key="weather.theme"
-        v-for="weather in weathers"
-      />
+    <div class="top">
+      <div class="icons-area weather">
+        <i
+          @click="onClickWeather(weather)"
+          class="fal clickable"
+          :class="{
+            'selected': weather.theme === selectedWeather.theme,
+            [weather.icon]: true,
+          }"
+          :key="weather.theme"
+          v-for="weather in weathers"
+        />
+      </div>
+      <div class="icons-area vote">
+        <div
+          @click="updateSentiment('long')"
+          class="long clickable">
+          <i class="fal fa-arrow-trend-up"/>
+          {{ $store.getters.chatStats.numBulls }}
+        </div>
+        <div
+          @click="updateSentiment('short')"
+          class="short clickable">
+          <i class="fal fa-arrow-trend-down"/>
+          {{ $store.getters.chatStats.numBears }}
+        </div>
+      </div>
     </div>
     <AppBackground
       v-if="selectedWeather.theme"
@@ -24,10 +40,13 @@
 <script>
 import { ref, onMounted, onUnmounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
+import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   setup() {
     const { plugins, store } = useGlobalHooks()
+
+    const { updateSentiment } = useChatHandler()
 
     const selectedWeather = ref({})
 
@@ -68,6 +87,7 @@ export default {
     return {
       selectedWeather,
       weathers,
+      updateSentiment,
       onClickWeather,
     }
   },
@@ -83,7 +103,7 @@ export default {
   left: 0;
   pointer-events: none;
 
-  .bg-functions {
+  .top {
     position: absolute;
     top: 1px;
     left: 0;
@@ -91,20 +111,39 @@ export default {
     height: 64px;
     z-index: 1;
     display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0), var(--app-chat-background));
+    font-size: 12px;
+    user-select: none;
+  }
+
+  .icons-area {
+    display: flex;
     padding: 12px;
     gap: 8px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0), var(--app-chat-background));
 
-    i {
+    &.weather {
       color: var(--text-stress);
+    }
+
+    .clickable {
       pointer-events: auto;
       cursor: pointer;
 
-      &:hover,
+      /* &:hover,
       &.selected {
-        color: var(--brand-primary);
-      }
+        opacity: 0.5;
+      } */
     }
+  }
+
+  .long {
+    color: var(--price-up-bybit);
+  }
+
+  .short {
+    color: var(--price-down-bybit);
   }
 
   .app-background {

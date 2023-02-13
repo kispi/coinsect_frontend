@@ -9,9 +9,7 @@
       v-if="(user.profile || {}).image"
       class="profile-img"
       :src="user.profile.image"
-      @click="$modal.images({
-        images: [(user.profile || {}).image],
-      })"
+      @click="magnifyUserImage"
     />
     <template v-else>
       <span
@@ -31,9 +29,11 @@
         options: { user },
       }) : null"
       class="nickname"
-      :class="[
-        user.id ? 'cursor-pointer' : '',
-      ]"
+      :class="{
+        'cursor-pointer': user.id,
+        'c-price-up-bybit': useSentiment && ((user.profile || {}).sentiment || {}).type === 'long',
+        'c-price-down-bybit': useSentiment && ((user.profile || {}).sentiment || {}).type === 'short',
+      }"
       v-html="(user.profile || {}).nickname"
     />
     <BadgeToken
@@ -56,6 +56,7 @@ export default {
   props: {
     user: null,
     useBan: null,
+    useSentiment: null,
   },
   setup(props) {
     const { plugins, store } = useGlobalHooks()
@@ -63,6 +64,10 @@ export default {
     const $t = plugins.$translate
 
     const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', (props.user.token || '').toUpperCase().slice(0, 3))
+
+    const magnifyUserImage = () => plugins.$modal.images({
+      images: [(props.user.profile || {}).image],
+    })
 
     const openModalBlockUser = () => {
       if (!props.user.token) return
@@ -81,6 +86,7 @@ export default {
 
     return {
       openModalBlockUser,
+      magnifyUserImage,
     }
   },
 }

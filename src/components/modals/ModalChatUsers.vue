@@ -30,7 +30,7 @@
           class="user"
           :key="idx"
           v-for="(user, idx) in tabs[selectedTab]">
-          <AppChatProfile :user="user" :useBan="true"/>
+          <AppChatProfile :user="user" :useBan="true" :useSentiment="true"/>
         </div>
       </div>
       <div
