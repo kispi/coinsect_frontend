@@ -72,13 +72,13 @@ const helpers = {
   elapsedTime: timestamp => {
     const en = $store.getters.settings.locale === 'en'
     const d = helpers.dayjs().diff(helpers.dayjs(timestamp), 'seconds')
-    if (d > 60 * 60 * 24) return `${Math.floor(d / 86400)}${en ? 'd ago' : '일 전'}`
+    if (d > 60 * 60 * 24) return `${Math.floor(d / 86400)}${en ? 'd' : '일'}`
 
-    if (d > 60 * 60) return `${Math.floor(d / 3600)}${en ? 'h ago' : '시간 전'}`
+    if (d > 60 * 60) return `${Math.floor(d / 3600)}${en ? 'h' : '시간'}`
 
-    if (d > 60) return `${Math.floor(d / 60)}${en ? 'm ago' : '분 전'}`
+    if (d > 60) return `${Math.floor(d / 60)}${en ? 'm' : '분'}`
 
-    return `${d}${en ? 's ago' : '초 전'}`
+    return `${d}${en ? 's' : '초'}`
   },
   withCdn,
   canSkipApiCall,

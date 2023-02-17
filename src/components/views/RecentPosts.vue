@@ -91,10 +91,10 @@ export default {
     overflow: hidden;
 
     .elapsed-time {
-      font-size: 10px;
-      border: 1px solid var(--border-base);
-      border-radius: 4px;
-      padding: 0 4px;
+      font-size: 11px;
+      opacity: 0.64;
+      border-right: 1px solid var(--border-base);
+      padding-right: 8px;
     }
 
     .title-text {
@@ -102,7 +102,7 @@ export default {
       text-overflow: ellipsis;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 8px;
     }
 
     &:hover {
