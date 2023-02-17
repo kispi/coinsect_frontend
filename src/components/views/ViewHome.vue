@@ -20,7 +20,7 @@
     </div>
     <SettingsPanel
       v-if="showPersonalSettings"
-      :indices="[4, 5, 6]"
+      :indices="[5, 6, 7]"
     />
     <RealTimePrices v-if="prepared && !$store.getters.isSSR"/>
   </div>

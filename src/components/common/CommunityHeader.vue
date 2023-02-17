@@ -27,11 +27,10 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    height: 40px;
   }
 
   .button-community {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--text-stress);
     display: block;

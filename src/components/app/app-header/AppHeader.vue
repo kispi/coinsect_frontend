@@ -58,7 +58,7 @@
           @close="showSettings = null"
           :align="'right'"
           :mountBelow="refIconSettings">
-          <SettingsPanel :indices="[0, 1, 2, 3]" class="shadowed"/>
+          <SettingsPanel :indices="[0, 1, 2, 3, 4]" class="shadowed"/>
         </WrapperDropdownOverlay>
         <WrapperDropdownOverlay
           v-if="showMenuAccount"
@@ -178,7 +178,6 @@ export default {
 
 <style lang="scss">
 .app-header {
-  transition: all 0.2s ease;
   width: 100%;
   padding: 0 var(--app-default-page-padding);
 
