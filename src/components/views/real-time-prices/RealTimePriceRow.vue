@@ -58,7 +58,6 @@
         :class="[
           $helpers.template.priceColor(ticker.$$changeRate1D),
           ticker.$$tradePriceBase ? '' : 'o-0',
-          $store.getters.settings.theme === 'light' ? 'f-500' : '',
           ticker.$$tickDirection,
         ]"
         v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: $store.getters.settings.baseExchangeMarket })"

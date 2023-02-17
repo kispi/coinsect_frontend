@@ -21,14 +21,14 @@
             <div
               v-if="$helpers.writing.canModify(reply)"
               @click="onClickDelete(reply)"
-              class="reply-delete"
-              v-html="$translate('DELETE')"
-            />
+              class="reply-delete">
+              {{ $translate('DELETE') }}
+            </div>
             <div
               @click="reply.$$showReply = !reply.$$showReply"
-              class="reply-reply"
-              v-html="$translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY')"
-            />
+              class="reply-reply">
+              {{ $translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY') }}
+            </div>
           </div>
         </div>
         <div class="content" v-html="reply.deletedAt ? `<b>${$translate('DELETED_REPLY')}</b>` : reply.content"/>
@@ -127,10 +127,15 @@ export default {
         display: flex;
 
         div {
-          cursor: pointer;
-
           &:not(:last-child) {
             margin-right: 8px;
+            padding-right: 8px;
+            border-right: 1px solid var(--border-light);
+          }
+
+          &:hover {
+            text-decoration: underline;
+            cursor: pointer;
           }
         }
       }

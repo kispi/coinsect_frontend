@@ -207,7 +207,6 @@ export default {
 <style lang="scss" scoped>
 .table-posts {
   font-size: 12px;
-  font-family: Dotum, sans-serif, 'IBM Plex Sans KR';
 
   .table {
     border-top: 1px solid var(--text-stress);

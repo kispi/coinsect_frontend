@@ -11,7 +11,7 @@
         <div class="title flex-fill lines-1 m-r-32">
           <span @click.prevent="$router.push(`/community?boardId=${post.board.id}`)" class="badge-post-type m-r-8">{{ post.board.description }}</span>
           <span class="title-text">
-            <span v-if="$helpers.dayjs().diff(post.createdAt, 'hours') < 24" class="badge-new">N</span>
+            <span class="elapsed-time">{{ $helpers.elapsedTime(post.createdAt) }}</span>
             <i v-if="(post.$$images || []).length > 0" class="fa fa-image c-price-up-bybit"/>
             <div class="lines-1">{{ post.title }}</div>
           </span>
@@ -52,13 +52,11 @@ export default {
 
 <style lang="scss">
 .recent-posts {
-  font-family: Dotum, sans-serif, 'IBM Plex Sans KR';
-
   .posts-grid {
     font-size: 12px;
     display: grid;
-    grid-row-gap: 8px;
-    grid-column-gap: 32px;
+    row-gap: 8px;
+    column-gap: 40px;
   }
 
   .title,
@@ -92,6 +90,13 @@ export default {
     transition: none;
     overflow: hidden;
 
+    .elapsed-time {
+      font-size: 10px;
+      border: 1px solid var(--border-base);
+      border-radius: 4px;
+      padding: 0 4px;
+    }
+
     .title-text {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -105,14 +110,6 @@ export default {
         color: var(--text-stress);
         font-weight: 500;
       }
-    }
-
-    .badge-new {
-      color: var(--white);
-      background: var(--danger);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 0 2px;
     }
   }
 

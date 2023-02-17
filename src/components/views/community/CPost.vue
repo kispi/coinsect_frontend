@@ -186,6 +186,7 @@ export default {
 
       .value {
         font-weight: 700;
+        margin-top: 4px;
       }
     }
   }
