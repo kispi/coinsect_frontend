@@ -62,6 +62,12 @@ export default {
         { title: 'OFF', value: false },
       ].map(o => ({ ...o, $$selected: store.getters.settings.chartFullWidth === o.value })),
     }, {
+      key: 'HEADER_FOLDED',
+      values: [
+        { title: 'ON', value: true },
+        { title: 'OFF', value: false },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.headerFolded === o.value })),
+    }, {
       key: 'FILTER',
       values: [
         { title: 'ALL', value: 'all' },

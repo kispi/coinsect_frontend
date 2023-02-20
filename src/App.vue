@@ -1,6 +1,8 @@
 <template>
-  <AppHeader/>
-  <div class="app-body view-layout-default no-scrollbar">
+  <AppHeader :class="{'folded': $store.getters.settings.headerFolded}"/>
+  <div
+    class="app-body view-layout-default no-scrollbar"
+    :class="{'folded': $store.getters.settings.headerFolded}">
     <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView
@@ -101,7 +103,7 @@ export default {
 .view-layout-default {
   @extend .layout-centered;
 
-  padding-top: calc(var(--app-header-height) + var(--app-default-page-padding) * 3);
+  padding-top: calc(var(--app-header-height) + var(--app-default-page-padding) * 2);
   padding-bottom: 80px;
 }
 
@@ -111,6 +113,18 @@ export default {
   right: 0;
   z-index: 5;
   background: var(--background-base);
+
+  &.folded {
+    .logo-and-settings {
+      padding-top: 0;
+      border-bottom: 1px solid var(--border-base);
+    }
+
+    .ah-menu-items,
+    .top {
+      display: none;
+    }
+  }
 }
 
 .app-body {
@@ -125,6 +139,10 @@ export default {
       max-width: 992px;
       height: 280px;
     }
+  }
+
+  &.folded {
+    --app-header-height: 40px;
   }
 }
 </style>

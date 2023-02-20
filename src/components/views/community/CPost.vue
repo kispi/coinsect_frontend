@@ -91,6 +91,8 @@ export default {
 
 <style lang="scss">
 .c-post {
+  font-size: 13px;
+
   @mixin drawRightBorder {
     margin-right: 8px;
     padding-right: 8px;
