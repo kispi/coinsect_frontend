@@ -44,11 +44,7 @@ export const createHttpClient = () => {
 }
 
 // 다른 사이트들의 API를 호출할 때 사용할 클라이언트
-export let $httpNoAuth = (() => {
-  const client = createHttpClient()
-  client.defaults.headers.Authorization
-  return client
-})()
+export const $httpNoAuth = createHttpClient()
 
 export const setRequestHeader = header => {
   if (header.token) $http.defaults.headers['Authorization'] = `Bearer ${header.token}`
