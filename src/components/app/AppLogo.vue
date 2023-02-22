@@ -2,7 +2,7 @@
   <RouterLink
     :to="'/'"
     class="app-logo">
-    <i class="fab fa-bitcoin c-bitcoin f-20 m-r-4"/>coinsect
+    coinsect
   </RouterLink>
 </template>
 

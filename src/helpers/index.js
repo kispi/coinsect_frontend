@@ -11,7 +11,6 @@ import modal from './modal'
 import number from './number'
 import post from './post'
 import querybuilder from './querybuilder'
-import social from './social'
 import withCdn from './s3'
 import template from './template'
 import toast from './toast'
@@ -55,7 +54,6 @@ const helpers = {
   meta,
   animate,
   dataSetter,
-  social,
   forceRefresh: () => {
     helpers.modal.alert(`
       더이상 제공되지 않는 API를 호출하고 있으므로 재접속을 부탁드립니다.
@@ -74,7 +72,7 @@ const helpers = {
     const d = helpers.dayjs().diff(helpers.dayjs(timestamp), 'seconds')
     if (d > 60 * 60 * 24) return `${Math.floor(d / 86400)}${en ? 'd' : '일'}`
 
-    if (d > 60 * 60) return `${Math.floor(d / 3600)}${en ? 'h' : '시간'}`
+    if (d > 60 * 60) return `${Math.floor(d / 3600)}${en ? 'h' : '시'}`
 
     if (d > 60) return `${Math.floor(d / 60)}${en ? 'm' : '분'}`
 

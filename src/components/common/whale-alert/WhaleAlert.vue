@@ -310,7 +310,7 @@ export default {
   }
 
   .app-skeleton {
-    height: 104px;
+    height: 72px;
   }
 }
 </style>

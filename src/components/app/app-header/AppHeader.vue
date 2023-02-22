@@ -4,7 +4,7 @@
       <BannerMarketIndices/>
       <div
         @click="$modal.custom({ component: 'ModalChatUsers' })"
-        class="num-users f-mono"
+        class="num-users f-mono f-12 cursor-pointer"
         :class="numConnectionsColorClass">
         <i class="fa fa-user-group m-r-4"/>
         {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
@@ -17,7 +17,10 @@
         <AppLogo/>
         <div class="icons">
           <div class="clickable-icon-wrapper">
-            <AppSharer/>
+            <a href="https://btc.coinsect.io" target="_blank" class="center"><i class="fab fa-bitcoin c-bitcoin"/></a>
+          </div>
+          <div class="clickable-icon-wrapper">
+            <i class="fal fa-share-alt icon-sharer" @click="onClickShare"/>
           </div>
           <div
             ref="refIconSettings"
@@ -135,6 +138,12 @@ export default {
       return list.filter(o => d().diff(o.createdAt, 'hour') < 24).length
     })
 
+    const onClickShare = () => {
+      const url = window.location.origin + window.location.pathname
+      plugins.$helpers.dom.copyToClipboard(encodeURI(url))
+      plugins.$toast.success('현재 페이지 주소가 복사되었습니다. 카카오톡 등의 SNS로 붙여넣기해서 공유해보세요 🥰')
+    }
+
     const handleClickMyActivity = handler => {
       handler()
       showMenuAccount.value = false
@@ -170,6 +179,7 @@ export default {
       subPages,
       onClickMenuItem,
       onClickMenuAccount,
+      onClickShare,
       handleClickMyActivity,
     }
   },
@@ -184,20 +194,7 @@ export default {
   .top {
     display: flex;
     justify-content: space-between;
-
-    .num-users {
-      font-size: 12px;
-      padding: var(--app-default-page-padding) 0;
-      cursor: pointer;
-
-      &:hover {
-        color: var(--text-stress);
-      }
-    }
-
-    .banner-market-indices {
-      padding: var(--app-default-page-padding) 0;
-    }
+    padding: 8px 0;
   }
 
   .logo-and-settings {
@@ -218,11 +215,12 @@ export default {
 
     .icons {
       display: flex;
+      gap: 4px;
     }
 
     .clickable-icon-wrapper {
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
       position: relative;
 
       i {

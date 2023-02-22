@@ -1,11 +1,11 @@
 @import 'colors';
 
 :root {
-  --app-header-height: 138px;
+  --app-header-height: 122px;
   --app-default-page-padding: 12px;
 
   @media (max-width: 767px) {
     --app-default-page-padding: 8px;
-    --app-header-height: 170px;
+    --app-header-height: 162px;
   }
 }
