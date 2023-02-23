@@ -228,10 +228,10 @@ const helpers = {
     }
   },
   retrieveImagesFromHTML: html => {
-    const imgRex = /<img.*?src="(.*?)"[^>]+>/g
+    const imgRegex = /<img[^>]*src="([^"]+)"[^>]*>/g
     const images = []
     let img
-    while ((img = imgRex.exec(html))) images.push(img[1])
+    while ((img = imgRegex.exec(html))) images.push(img[1])
 
     return images
   },
