@@ -1,6 +1,8 @@
 import helpers from '@/helpers'
 import communityService from '@/services/community'
 
+const coinsectBoardIds = [1, 2] // 일단은 1, 2번 게시판만 노출
+
 const post = {
   state: () => ({
     boards: null,
@@ -37,7 +39,6 @@ const post = {
   },
   actions: {
     async loadBoards({ commit }) {
-      const coinsectBoardIds = [1, 2] // 일단은 1, 2번 게시판만 노출
       try {
         const resp = await communityService.board.all()
         commit('setBoards', (resp.data || []).filter(b => coinsectBoardIds.includes(b.id)))
@@ -65,6 +66,7 @@ const post = {
       if (params.keyword) o.query(`keyword=${params.keyword}`)
       let whereStmt = 'post_type = "normal"'
       if (parseInt(params.boardId)) whereStmt += ` AND board_id = ${params.boardId}`
+      else whereStmt += ` AND board_id IN (${coinsectBoardIds.join(',')})`
       o.where(whereStmt)
 
       try {
