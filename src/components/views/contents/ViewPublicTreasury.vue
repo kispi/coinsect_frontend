@@ -44,7 +44,7 @@
         </div>
       </div>
     </template>
-    <PoweredBy :by="'bitcointreasuries'" class="f-14"/>
+    <PoweredBy :by="'bitcointreasuries'" class="f-14 m-t-24"/>
   </div>
 </template>
 
@@ -98,7 +98,9 @@ export default {
   }
 
   .list {
-    margin: 24px 0;
+    &:not(:first-child) {
+      margin-top: 40px;
+    }
 
     .entity-category {
       font-size: 14px;

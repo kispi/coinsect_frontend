@@ -24,13 +24,6 @@ const indicators = [{
     title: '롱-숏 비율 - 코인충',
     description: '코인의 거래소별 롱-숏 비율',
   },
-}, {
-  path: '/indicators/general',
-  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
-  meta: {
-    title: '비트코인 지표 - 코인충',
-    description: 'fear & greed, s2f, nlb price 등의 비트코인 가격 추이 예상에 사용되는 지표들',
-  },
 }]
 
 const markets = [{
@@ -64,34 +57,11 @@ const markets = [{
 }]
 
 const contents = [{
-  path: '/contents/bitcoin-halving',
-  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
-  meta: {
-    title: '다음 비트코인 반감기 - 코인충',
-    description: '다음 비트코인 반감기까지 남은 시간을 카운트다운으로 보여줍니다.',
-    image: withCdn('og-images/og-image-bitcoin-halving.png')
-  },
-}, {
-  path: '/contents/bitcoin-mining',
-  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
-  meta: {
-    title: '비트코인 채굴 / PoW 이해 - 코인충',
-    description: '비트코인 채굴이란 무엇이며, 난이도란 무엇인지 알아봅니다.',
-  },
-}, {
   path: '/contents/news',
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {
     title: '코인 뉴스 - 코인충',
     description: '각종 암호화폐 / 코인 뉴스',
-  },
-}, {
-  path: '/contents/bitcoin',
-  component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
-  meta: {
-    title: '비트코인 이해하기 - 코인충',
-    description: '비트코인에 대해 흔히 하는 질문과 답변 - 코인충',
-    image: 'https://i0.wp.com/armantheparman.com/wp-content/uploads/2021/07/1_AYiMl87vPeipby9H3l6jxg.png?fit=1200%2C579&ssl=1',
   },
 }, {
   path: '/contents/crypto-referral',

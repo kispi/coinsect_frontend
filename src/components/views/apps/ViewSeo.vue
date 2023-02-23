@@ -184,7 +184,6 @@ export default {
 
   .description {
     font-size: 14px;
-    margin: 16px 0;
     text-align: center;
   }
 

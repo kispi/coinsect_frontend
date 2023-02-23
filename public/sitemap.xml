@@ -51,9 +51,6 @@
         <loc>https://coinsect.io/indicators/long-short</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/indicators/general</loc>
-    </url>
-    <url>
         <loc>https://coinsect.io/markets/crypto</loc>
     </url>
     <url>
@@ -67,15 +64,6 @@
     </url>
     <url>
         <loc>https://coinsect.io/onchain/whale-alert</loc>
-    </url>
-    <url>
-        <loc>https://coinsect.io/contents/bitcoin-halving</loc>
-    </url>
-    <url>
-        <loc>https://coinsect.io/contents/bitcoin-mining</loc>
-    </url>
-    <url>
-        <loc>https://coinsect.io/contents/bitcoin</loc>
     </url>
     <url>
         <loc>https://coinsect.io/contents/news</loc>

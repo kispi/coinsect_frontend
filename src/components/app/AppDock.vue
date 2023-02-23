@@ -78,8 +78,7 @@ export default {
         active: !store.getters.settings.chatFolded,
         component: 'AppChatToggler',
       }, {
-        handler: () => router.push('/contents/bitcoin'),
-        active: p === '/contents/bitcoin',
+        handler: () => window.open('https://btc.coinsect.io'),
         tooltip: 'UNDERSTANDING_BITCOIN',
         html: `<div class="icon-bitcoin center overlay">
           <img src="https://static.upbit.com/logos/BTC.png" alt="Understanding Bitcoin">

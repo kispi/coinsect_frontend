@@ -127,7 +127,7 @@ export default {
     align-items: center;
     justify-content: center;
     color: var(--text-stress);
-    margin: 24px auto 0;
+    margin: auto;
 
     .app-dropdown {
       white-space: nowrap;

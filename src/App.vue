@@ -117,12 +117,21 @@ export default {
   &.folded {
     .logo-and-settings {
       padding-top: 0;
-      border-bottom: 1px solid var(--border-base);
     }
 
     .ah-menu-items,
     .top {
       display: none;
+    }
+
+    @media (max-width: 991px) {
+      border-bottom: 1px solid var(--border-base);
+    }
+
+    @media (min-width: 992px) {
+      .logo-and-settings {
+        border-bottom: 1px solid var(--border-base);
+      }
     }
   }
 }

@@ -58,9 +58,9 @@ export default {
       { name: '5분', key: 3 },
       { name: '15분', key: 10 },
       { name: '30분', key: 11 },
-      { name: '1시간', key: 2 },
-      { name: '4시간', key: 1 },
-      { name: '12시간', key: 4 },
+      { name: '1시', key: 2 },
+      { name: '4시', key: 1 },
+      { name: '12시', key: 4 },
       { name: '1일', key: 5 },
     ].map(o => ({
       ...o,

@@ -57,7 +57,6 @@ const useMenuItems = () => {
       { path: '/indicators/real-time-positions', title: 'REAL_TIME_POSITIONS' },
       { path: '/indicators/leaderboard', title: 'LEADERBOARD' },
       { path: '/indicators/long-short', title: 'LONG_SHORT' },
-      { path: '/indicators/general', title: 'GENERAL' },
     ],
   }, {
     title: 'COMMUNITY',
@@ -71,10 +70,7 @@ const useMenuItems = () => {
       { path: '/contents/news', title: 'NEWS' },
       // { path: '/contents/twitter', title: 'TWITTER' },
       { path: '/contents/economic-calendar', title: 'ECONOMIC_CALENDAR' },
-      { path: '/contents/bitcoin', title: 'UNDERSTANDING_BITCOIN' },
       { path: '/contents/public-treasury', title: 'PUBLIC_TREASURY' },
-      { path: '/contents/bitcoin-halving', title: 'BITCOIN_HALVING' },
-      { path: '/contents/bitcoin-mining', title: 'BITCOIN_MINING' },
       { path: '/contents/influencers', title: 'INFLUENCERS' },
       { path: '/contents/crypto-referral', title: 'CRYPTO_REFERRAL' },
     ],

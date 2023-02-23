@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .view-about {
   .a2hs {
     width: 240px;
