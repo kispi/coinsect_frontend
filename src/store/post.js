@@ -37,9 +37,10 @@ const post = {
   },
   actions: {
     async loadBoards({ commit }) {
+      const coinsectBoardIds = [1, 2] // 일단은 1, 2번 게시판만 노출
       try {
         const resp = await communityService.board.all()
-        commit('setBoards', resp.data)
+        commit('setBoards', (resp.data || []).filter(b => coinsectBoardIds.includes(b.id)))
       } catch (e) {
         return Promise.reject(e)
       }
