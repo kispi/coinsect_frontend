@@ -219,7 +219,6 @@ export default {
 
   .validation-error {
     font-size: 12px;
-    line-height: 18px;
     color: var(--danger);
   }
 
@@ -235,7 +234,6 @@ export default {
     .empty-meta {
       text-align: center;
       font-size: 20px;
-      line-height: 28px;
       color: var(--text-stress);
       height: 120px;
     }
@@ -279,7 +277,6 @@ export default {
 
       .meta-description {
         font-size: 10px;
-        line-height: 16px;
       }
 
       > div:not(:last-child) {
@@ -315,7 +312,6 @@ export default {
 
         .meta-description {
           font-size: 14px;
-          line-height: 22px;
         }
       }
     }

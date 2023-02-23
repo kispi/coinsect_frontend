@@ -181,7 +181,6 @@ export default {
   .description {
     margin: 24px 0;
     font-size: 12px;
-    line-height: 20px;
   }
 
   .fa-bitcoin {

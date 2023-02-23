@@ -99,14 +99,12 @@ export default {
     .key {
       color: var(--text-base);
       flex: 0 0 auto;
-      line-height: 16px;
     }
 
     .value {
       color: var(--text-stress);
       font-weight: 500;
       flex: 0 0 auto;
-      line-height: 16px;
     }
   }
 }

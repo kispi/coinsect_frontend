@@ -185,7 +185,6 @@ export default {
 
   .guide {
     margin: 16px;
-    line-height: 20px;
   }
 
   i {

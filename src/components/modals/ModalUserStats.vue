@@ -71,7 +71,6 @@ export default {
   color: var(--text-stress);
 
   .body {
-    line-height: 20px;
     padding: 16px;
     position: relative;
   }

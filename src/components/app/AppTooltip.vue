@@ -81,7 +81,6 @@ export default {
   padding: 8px 12px;
   max-width: 240px;
   font-size: 12px;
-  line-height: 18px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
 
   --triangle-size: 8px;

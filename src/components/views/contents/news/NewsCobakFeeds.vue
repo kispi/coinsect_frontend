@@ -184,12 +184,10 @@ export default {
     .feed-title {
       font-weight: 700;
       font-size: 16px;
-      line-height: 24px;
       color: var(--text-stress);
     }
 
     .feed-content {
-      line-height: 22px;
       color: var(--text-stress);
     }
 

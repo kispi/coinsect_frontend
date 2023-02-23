@@ -251,13 +251,6 @@ export default {
   .caveats {
     padding-left: 16px;
     font-size: 12px;
-    line-height: 18px;
-
-    li {
-      &:not(:last-child) {
-        margin-bottom: 8px;
-      }
-    }
   }
 
   .reports {

@@ -92,7 +92,6 @@ export default {
 <style lang="scss">
 .c-post {
   font-size: 13px;
-  line-height: 1.5;
 
   @mixin drawRightBorder {
     margin-right: 8px;
@@ -149,7 +148,6 @@ export default {
   .post-content {
     padding: 32px 0;
     max-width: 100%;
-    line-height: 1.5;
     white-space: pre-line;
 
     img {

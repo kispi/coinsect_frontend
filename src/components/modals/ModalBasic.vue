@@ -47,10 +47,6 @@ export default {
   border-radius: 4px;
   width: 480px;
 
-  .body {
-    line-height: 20px;
-  }
-
   .buttons {
     margin: 16px auto;
     display: table;

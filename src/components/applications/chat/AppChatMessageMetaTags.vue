@@ -80,7 +80,6 @@ export default {
 
     .meta-description {
       font-size: 10px;
-      line-height: 16px;
       margin-top: 8px;
     }
   }

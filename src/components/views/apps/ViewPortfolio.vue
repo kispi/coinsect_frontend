@@ -16,7 +16,6 @@
 
   .description {
     font-size: 12px;
-    line-height: 20px;
     margin-bottom: 24px;
     color: var(--text-stress);
   }

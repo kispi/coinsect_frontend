@@ -146,12 +146,10 @@ export default {
 
   .description {
     font-size: 12px;
-    line-height: 20px;
   }
 
   .result {
     font-size: 20px;
-    line-height: 32px;
   }
 
   table {

@@ -113,7 +113,6 @@ export default {
   border: 1px solid var(--border-light);
   padding: 8px;
   border-radius: 4px;
-  line-height: 18px;
   position: relative;
 
   .remove-portfolio {

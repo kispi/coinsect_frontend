@@ -77,10 +77,6 @@ export default {
         font-size: 20px;
         font-weight: 500;
       }
-
-      .description {
-        line-height: 20px;
-      }
     }
   }
 }

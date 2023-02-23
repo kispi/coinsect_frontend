@@ -248,7 +248,6 @@ export default {
 
     .title {
       flex: 1;
-      line-height: 1.5;
       color: var(--text-stress);
 
       .num-replies {

@@ -249,7 +249,6 @@ export default {
     margin-top: 40px;
     text-align: center;
     font-size: 12px;
-    line-height: 18px;
 
     .btn-primary {
       display: table;
@@ -280,7 +279,6 @@ export default {
 
   .description {
     font-size: 12px;
-    line-height: 20px;
     margin-top: 80px;
 
     div {
@@ -320,7 +318,6 @@ export default {
     text-align: center;
     margin: 40px 0;
     font-size: 16px;
-    line-height: 24px;
     color: var(--text-stress);
   }
 

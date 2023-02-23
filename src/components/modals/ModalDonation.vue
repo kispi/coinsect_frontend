@@ -141,7 +141,6 @@ export default {
 
   .description {
     font-size: 12px;
-    line-height: 18px;
     color: var(--text-stress);
   }
 

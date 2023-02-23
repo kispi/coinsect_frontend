@@ -148,7 +148,6 @@ export default {
 
 <style lang="scss" scoped>
 .view-influencer-detail {
-  line-height: 24px;
   white-space: pre-line;
 
   .influencer-image {
@@ -169,7 +168,6 @@ export default {
 
   .influencer-description {
     font-size: 16px;
-    line-height: 28px;
   }
 
   .influencer-bio {

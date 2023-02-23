@@ -79,7 +79,6 @@ export default {
 
     .notification-text {
       font-size: 12px;
-      line-height: 18px;
       color: var(--text-stress);
     }
 

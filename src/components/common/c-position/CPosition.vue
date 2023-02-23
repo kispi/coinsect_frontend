@@ -119,7 +119,6 @@ export default {
   background: var(--gs-14);
   border: 1px solid var(--border-base);
   font-size: 12px;
-  line-height: 18px;
   display: flex;
   align-items: center;
   overflow: hidden;

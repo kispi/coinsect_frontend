@@ -227,7 +227,6 @@ export default {
     textarea {
       padding-right: 16px;
       font-size: 12px;
-      line-height: 18px;
       height: 44px;
     }
 
@@ -256,7 +255,6 @@ export default {
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 12px;
-    line-height: 16px;
     display: flex;
     align-items: center;
     position: absolute;

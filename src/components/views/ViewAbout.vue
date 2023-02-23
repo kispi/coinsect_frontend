@@ -101,8 +101,6 @@ export default {
   }
 
   .description {
-    font-size: 16px;
-    line-height: 28px;
     color: var(--text-stress);
 
     ul {
@@ -111,8 +109,7 @@ export default {
       padding: 16px 32px;
 
       li {
-        font-size: 14px;
-        line-height: 22px;
+        font-size: 12px;
       }
     }
   }
@@ -129,7 +126,6 @@ export default {
 
       li {
         font-size: 12px;
-        line-height: 18px;
       }
     }
 

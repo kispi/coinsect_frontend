@@ -104,7 +104,6 @@ export default {
 
   .body {
     padding: 0 16px;
-    line-height: 20px;
     color: var(--text-stress);
     display: flex;
     flex-direction: column;

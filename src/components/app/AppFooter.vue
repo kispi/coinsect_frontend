@@ -117,7 +117,6 @@ export default {
 .app-footer {
   background: var(--background-light);
   font-size: 12px;
-  line-height: 24px;
   padding: 16px;
   padding-top: 32px;
   padding-bottom: 120px;
@@ -163,6 +162,10 @@ export default {
 
       &:hover {
         color: var(--brand-primary);
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 4px;
       }
     }
   }

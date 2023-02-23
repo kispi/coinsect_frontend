@@ -64,7 +64,6 @@ export default {
   .description {
     margin-top: 24px;
     font-size: 12px;
-    line-height: 20px;
   }
 
   .ways-to-login {
