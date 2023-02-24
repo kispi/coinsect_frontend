@@ -16,11 +16,15 @@
       <div class="flex-row flex-between items-center flex-fill">
         <AppLogo/>
         <div class="icons">
-          <div class="clickable-icon-wrapper">
-            <a href="https://btc.coinsect.io" target="_blank" class="center"><i class="fab fa-bitcoin c-bitcoin"/></a>
+          <div
+            @click="$helpers.openSite('https://btc.coinsect.io')"
+            class="clickable-icon-wrapper">
+            <a @click.prevent.stop href="https://btc.coinsect.io" class="center"><i class="fab fa-bitcoin c-bitcoin"/></a>
           </div>
-          <div class="clickable-icon-wrapper">
-            <i class="fal fa-share-alt icon-sharer" @click="onClickShare"/>
+          <div
+            @click="onClickShare"
+            class="clickable-icon-wrapper">
+            <i class="fal fa-share-alt icon-sharer"/>
           </div>
           <div
             ref="refIconSettings"

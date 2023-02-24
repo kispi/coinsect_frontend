@@ -235,6 +235,7 @@ const helpers = {
 
     return images
   },
+  openSite: url => window.open(url, '_blank', 'noreferrer'),
 }
 
 export default helpers
