@@ -19,7 +19,7 @@
           <div
             @click="$helpers.openSite('https://btc.coinsect.io')"
             class="clickable-icon-wrapper">
-            <a @click.prevent.stop href="https://btc.coinsect.io" class="center"><i class="fab fa-bitcoin c-bitcoin"/></a>
+            <a @click.prevent href="https://btc.coinsect.io" class="center"><i class="fab fa-bitcoin c-bitcoin"/></a>
           </div>
           <div
             @click="onClickShare"
