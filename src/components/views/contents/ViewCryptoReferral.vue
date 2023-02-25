@@ -170,7 +170,7 @@ export default {
   .inputs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 8px;
+    gap: 8px;
 
     input {
       border-radius: 4px;

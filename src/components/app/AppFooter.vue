@@ -146,7 +146,7 @@ export default {
 
   .sitemap {
     display: grid;
-    grid-gap: 24px;
+    gap: 24px;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 
@@ -175,7 +175,7 @@ export default {
     padding-top: 24px;
     margin-top: 24px;
     display: grid;
-    grid-gap: 24px;
+    gap: 24px;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   }
 }

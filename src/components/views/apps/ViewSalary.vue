@@ -283,7 +283,7 @@ export default {
 
   .report-grid {
     display: grid;
-    grid-gap: 8px;
+    gap: 8px;
     grid-template-columns: repeat(2, 1fr);
 
     .report-box {

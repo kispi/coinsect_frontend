@@ -130,7 +130,7 @@ export default {
 .view-lottery {
   .picks {
     display: grid;
-    grid-gap: 16px;
+    gap: 16px;
 
     .lottery-pick {
       font-size: 16px;
@@ -140,7 +140,7 @@ export default {
   .picker {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-gap: 16px;
+    gap: 16px;
 
     .ball-container {
       padding-top: 100%;

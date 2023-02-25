@@ -55,7 +55,7 @@ export default {
   .posts-grid {
     font-size: 12px;
     display: grid;
-    row-gap: 8px;
+    row-gap: 4px;
     column-gap: 40px;
   }
 

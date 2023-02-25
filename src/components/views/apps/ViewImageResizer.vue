@@ -122,7 +122,7 @@ export default {
   .options {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 16px;
+    gap: 16px;
     margin-top: 40px;
 
     label {

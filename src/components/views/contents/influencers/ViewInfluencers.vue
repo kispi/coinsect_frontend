@@ -42,7 +42,7 @@ export default {
 .view-influencers {
   .grid {
     display: grid;
-    grid-gap: 24px;
+    gap: 24px;
     grid-row-gap: 48px;
     grid-template-columns: repeat(2, 1fr);
 

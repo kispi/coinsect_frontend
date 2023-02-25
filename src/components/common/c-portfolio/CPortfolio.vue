@@ -198,8 +198,8 @@ export default {
   .stats {
     font-size: 16px;
     display: grid;
-    grid-gap: 24px;
-    grid-row-gap: 8px;
+    gap: 24px;
+    row-gap: 4px;
     grid-template-columns: repeat(2, 1fr);
     color: var(--text-stress);
 
@@ -239,7 +239,7 @@ export default {
 
     .items {
       display: grid;
-      grid-gap: 8px;
+      gap: 8px;
 
       @media (min-width: 768px) {
         grid-template-columns: repeat(2, 1fr);

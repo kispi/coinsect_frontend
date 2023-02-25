@@ -49,7 +49,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  grid-gap: 16px;
+  gap: 16px;
 
   .square-container {
     border-radius: 8px;

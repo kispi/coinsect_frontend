@@ -117,7 +117,7 @@ export default {
     display: grid;
     margin-bottom: 40px;
     grid-template-columns: repeat(4, 1fr);
-    grid-gap: 8px;
+    gap: 8px;
 
     button {
       flex: 1;

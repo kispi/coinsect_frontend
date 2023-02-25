@@ -258,7 +258,7 @@ export default {
 
   .positions {
     display: grid;
-    grid-gap: 8px;
+    gap: 8px;
   }
 
   .header {

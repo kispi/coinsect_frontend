@@ -46,7 +46,7 @@ export default {
   .list-games {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-gap: 8px;
+    gap: 8px;
 
     @media (max-width: 767px) {
       grid-template-columns: repeat(3, 1fr);

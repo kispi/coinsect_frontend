@@ -175,7 +175,7 @@ export default {
   .colorchips {
     .grid {
       display: grid;
-      grid-gap: 4px;
+      gap: 4px;
     }
 
     .colorchip {

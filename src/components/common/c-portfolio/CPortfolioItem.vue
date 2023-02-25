@@ -109,7 +109,7 @@ export default {
   color: var(--text-stress);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 8px;
+  gap: 8px;
   border: 1px solid var(--border-light);
   padding: 8px;
   border-radius: 4px;
