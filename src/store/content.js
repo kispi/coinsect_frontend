@@ -42,6 +42,7 @@ const content = {
             o.$$bio = JSON.parse(o.bio)
           } catch (e) {}
         })
+        resp.data.reverse()
         commit('setInfluencers', resp)
       } catch (e) {
         return Promise.reject(e)

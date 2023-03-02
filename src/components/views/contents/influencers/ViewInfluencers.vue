@@ -5,7 +5,7 @@
         :to="`/contents/influencers/${item.sharingKey}`"
         class="influencer"
         :key="item.id"
-        v-for="item in items.reverse()">
+        v-for="item in items">
         <div class="image-container">
           <AppImg v-if="(item.images || []).length > 0" :src="$helpers.withCdn(item.images[0].key)" class="overlay"/>
         </div>
