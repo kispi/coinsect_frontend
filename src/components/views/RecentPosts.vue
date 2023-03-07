@@ -23,9 +23,12 @@
         </div>
       </RouterLink>
     </div>
-    <RouterLink :to="'/community'" class="to-community">
-      {{ $translate('SEE_MORE') }}<i class="fal fa-chevron-right"/>
-    </RouterLink>
+    <div class="flex-row flex-between items-center to-community">
+      <BannerBitcoinBlog class="lines-1 flex-fill m-r-24"/>
+      <RouterLink :to="'/community'">
+        {{ $translate('SEE_MORE') }}<i class="fal fa-chevron-right"/>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -117,7 +120,9 @@ export default {
     font-size: 12px;
     margin-left: auto;
     margin-top: 12px;
-    display: table;
+    display: flex;
+    border-top: 1px solid var(--border-base);
+    padding-top: 8px;
 
     i {
       font-size: 10px;
