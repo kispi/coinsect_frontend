@@ -51,6 +51,7 @@ export default {
         changes: o.btcDominance24hChangePercent,
       }, {
         key: 'TOTAL_MARKET_CAP',
+        link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ATOTAL',
         value: plugins.$helpers.number.pretty.cap({ cap: o.totalMarketCap, baseCurrency: 'usd' }),
         changes: o.totalMarketCap24hChangePercent,
       }]
