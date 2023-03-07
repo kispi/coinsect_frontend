@@ -42,7 +42,7 @@
           </div>
           <a
             class="section display-block m-t-24"
-            href="https://coinsect.io/community/bitcoin-is-the-only-commodity"
+            href="https://btc.coinsect.io/posts/commodity-vs-security"
             target="_blank">
             <div class="section-title">
               <i class="fa fa-external-link m-r-8 f-12"></i>{{ $translate('BITCOIN_VS_ALTCOIN') }}
