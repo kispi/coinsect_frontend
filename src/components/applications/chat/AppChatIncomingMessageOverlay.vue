@@ -32,7 +32,11 @@ export default {
     }, 10000)
 
     const showIncomingMessageOverlay = () => {
-      if (messages.value.length === 0 || store.getters.chat.autoScrollable) return
+      if (
+        messages.value.length === 0 ||
+        (!store.getters.settings.chatFolded && store.getters.chat.autoScrollable) ||         // 채팅창이 접혀있고 바닥부근이거나
+        (store.getters.settings.chatFolded && !store.getters.settings.chatOverlayNewMessage) // 채팅창이 열려있고 메시지 띄워주기 옵션이 꺼진 경우
+      ) return
 
       store.commit('setChat', { incomingMessage: messages.value[messages.value.length - 1] })
 
