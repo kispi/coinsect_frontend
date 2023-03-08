@@ -96,6 +96,7 @@
       </a>
     </nav>
     <SubHeader v-model="subPages"/>
+    <BannerBitcoinBlog class="lines-1 m-t-4"/>
   </header>
 </template>
 

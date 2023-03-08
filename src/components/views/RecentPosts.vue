@@ -24,8 +24,7 @@
       </RouterLink>
     </div>
     <div class="flex-row flex-between items-center to-community">
-      <BannerBitcoinBlog class="lines-1 flex-fill m-r-24"/>
-      <RouterLink :to="'/community'">
+      <RouterLink :to="'/community'" class="m-l-a">
         {{ $translate('SEE_MORE') }}<i class="fal fa-chevron-right"/>
       </RouterLink>
     </div>
@@ -33,8 +32,8 @@
 </template>
 
 <script>
-import useGlobalHooks from '@/hooks/global-hooks'
 import { onMounted, onServerPrefetch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {

@@ -151,7 +151,7 @@ export default {
   }
 
   &.folded {
-    --app-header-height: 40px;
+    --app-header-height: 72px;
   }
 }
 </style>

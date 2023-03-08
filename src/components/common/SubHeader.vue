@@ -10,9 +10,9 @@
         class="sub-header-item"
         :class="{'selected': $router.currentRoute.value.path.includes(item.path)}"
         :key="item.path"
-        v-for="item in modelValue"
-        v-html="$translate(item.title)"
-      />
+        v-for="item in modelValue">
+        {{ $translate(item.title) }}
+      </RouterLink>
     </nav>
   </transition>
 </template>
@@ -29,7 +29,7 @@ export default {
 .sub-header {
   position: fixed;
   background: var(--background-base);
-  top: var(--app-header-height);
+  top: calc(var(--app-header-height) - 48px);
   min-width: 160px;
   border: 1px solid var(--border-light);
   border-radius: 4px;

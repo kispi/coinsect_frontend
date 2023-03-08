@@ -1,13 +1,23 @@
 <template>
-  <a
-    v-if="post"
+  <div
     class="banner-bitcoin-blog"
-    :href="`https://btc.coinsect.io/posts/${post.sharingKey}`"
-    target="_blank"
-    rel="noreferrer">
-    <i class="fab fa-bitcoin c-bitcoin f-14"/>
-    <span class="post-title" v-html="$translate(post.title)"/>
-  </a>
+    :class="$store.getters.settings.theme">
+    <a
+      v-if="post"
+      :href="`https://btc.coinsect.io/posts/${post.sharingKey}`"
+      target="_blank"
+      rel="noreferrer"
+      class="lines-1">
+      <span class="post-title" v-html="$translate(post.title)"/>
+    </a>
+    <a
+      class="f-ubuntu m-l-a"
+      href="https://btc.coinsect.io"
+      target="_blank"
+      rel="noreferrer">
+      <i class="fab fa-bitcoin c-bitcoin f-14 m-r-4"/>bitcoinsect
+    </a>
+  </div>
 </template>
 
 <script>
@@ -73,13 +83,21 @@ export default {
 
 <style lang="scss" scoped>
 .banner-bitcoin-blog {
-  position: relative;
   overflow: hidden;
-  display: block;
-  color: var(--text-stress);
+  display: flex;
+  background: rgba(127, 127, 255, 0.1);
+  padding: 8px;
+  font-size: 12px;
 
   .post-title {
     margin-left: 4px;
+    color: var(--text-stress);
+    font-weight: 700;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--text-stress);
   }
 }
 </style>
