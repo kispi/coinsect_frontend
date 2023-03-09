@@ -22,7 +22,6 @@ export default {
     const sharingKey = computed(() => router.currentRoute.value.params.sharingKey)
 
     const loadPost = async () => {
-      store.commit('setPost', null) // <ViewCommunity/>는 단일 게시물 뿐만 아니라 리스트의 역할도 하기 때문에, 이 뷰가 최초 렌더링될 때는 기존에 로드된 게시물(state.post)을 리셋해준다.
       if (!sharingKey.value) return
 
       try {
