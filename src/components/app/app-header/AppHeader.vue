@@ -17,11 +17,6 @@
         <AppLogo/>
         <div class="icons">
           <div
-            @click="$helpers.openSite('https://btc.coinsect.io')"
-            class="clickable-icon-wrapper">
-            <a @click.prevent href="https://btc.coinsect.io" class="center"><i class="fab fa-bitcoin c-bitcoin"/></a>
-          </div>
-          <div
             @click="onClickShare"
             class="clickable-icon-wrapper">
             <i class="fal fa-share-alt icon-sharer"/>

@@ -11,7 +11,7 @@
       <span class="post-title" v-html="$translate(post.title)"/>
     </a>
     <a
-      class="f-ubuntu m-l-a"
+      class="f-ubuntu m-l-a p-l-16"
       href="https://btc.coinsect.io"
       target="_blank"
       rel="noreferrer">
