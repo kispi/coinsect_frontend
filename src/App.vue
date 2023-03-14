@@ -3,7 +3,6 @@
   <div
     class="app-body view-layout-default no-scrollbar"
     :class="{'folded': $store.getters.settings.headerFolded}">
-    <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
     <RouterView
       v-if="$store.getters.isSSR || prepared"
@@ -11,6 +10,7 @@
       class="router-view-container">
       <component :is="Component" :key="route.path"/>
     </RouterView>
+    <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
   </div>
   <AppFooter/>
   <AppAddons/>

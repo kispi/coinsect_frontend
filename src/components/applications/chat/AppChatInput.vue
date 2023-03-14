@@ -19,12 +19,12 @@
         <AppImg :src="$helpers.withCdn('images/influencers/hodu_park.jpg')"/>
         <div class="buttons">
           <button
-            @click="updateSentiment('long')"
+            @click="updateSentiment('long', true)"
             class="btn btn-long">
             {{ $translate('LONG') }}
           </button>
           <button
-            @click="updateSentiment('short')"
+            @click="updateSentiment('short', true)"
             class="btn btn-short">
             {{ $translate('SHORT') }}
           </button>

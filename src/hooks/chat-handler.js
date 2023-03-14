@@ -71,9 +71,9 @@ const useChatHandler = () => {
     connection.value.send(JSON.stringify(message))
   }
 
-  const updateSentiment = async type => {
+  const updateSentiment = async (type, force) => {
     const p = store.getters.chatUser.profile
-    if ((p.sentiment || {}).type === type) return
+    if ((p.sentiment || {}).type === type && !force) return
 
     p.sentiment = { type }
     store.dispatch('setAccount', p)
