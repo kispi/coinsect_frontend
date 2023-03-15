@@ -69,7 +69,6 @@ export default {
         await plugins.$http.post('contents/real_time_positions/change_notifications', o)
         emit('close')
         plugins.$toast.success('TOAST_POSITION_EDIT_REQUESTED')
-        plugins.$bus.$emit('call-api')
       } catch (e) {
         plugins.$toast.error(e.data.message)
       }
