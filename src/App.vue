@@ -57,17 +57,21 @@ export default {
       }
     }
 
+    const onVisibilityChange = () => store.commit('setDocumentVisible', document.visibilityState === 'visible')
+
     onMounted(() => {
       prepare()
       store.commit('setSettings', helpers.localStorage.getMeta('settings') || store.getters.settings)
       store.commit('setCharts', helpers.localStorage.getMeta('charts') || store.getters.charts)
       window.addEventListener('resize', setIsMobile)
       window.addEventListener('scroll', onScroll, { capture: true })
+      document.addEventListener('visibilitychange', onVisibilityChange)
     })
 
     onUnmounted(() => {
       window.removeEventListener('resize', setIsMobile)
       window.removeEventListener('scroll', onScroll)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
     })
 
     // 같은 값에 대한 watcher가 아래도 있는데, showAd.value = false와 initAd에 대한 debounced 실행을 분리하기 위함.

@@ -183,6 +183,13 @@ export default {
     })
 
     watch(
+      () => store.getters.chat.lastWebsocketMessage,
+      () => {
+        if (!store.getters.documentVisible) plugins.$helpers.useFaviconWithUnreads(true)
+      },
+    )
+
+    watch(
       () => store.getters.settings.chatFolded,
       (newVal, oldVal) => {
         if (!newVal && oldVal) onOpenChatContainer()

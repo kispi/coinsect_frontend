@@ -69,6 +69,7 @@ const app = {
     chatUsers: null, // 웹소켓 커넥션이 아니고 접속자 정보임
     windowInnerWidth: null,
     windowInnerHeight: null,
+    documentVisible: true, // 접속 직후에는 true
     lastApiCall: {},
     scrollTop: null, // global scrollTop value
     lazyLoadedScriptUrls: [],
@@ -87,6 +88,7 @@ const app = {
     charts: state => state.charts,
     windowInnerWidth: state => state.windowInnerWidth,
     windowInnerHeight: state => state.windowInnerHeight,
+    documentVisible: state => state.documentVisible,
     lastApiCall: state => state.lastApiCall,
     scrollTop: state => state.scrollTop,
     lazyLoadedScriptUrls: state => state.lazyLoadedScriptUrls,
@@ -141,6 +143,10 @@ const app = {
       state.windowInnerWidth = window.innerWidth
       state.windowInnerHeight = window.innerHeight
       state.isMobile = state.windowInnerWidth < 768
+    },
+    setDocumentVisible(state, visible) {
+      state.documentVisible = visible
+      if (visible) helpers.useFaviconWithUnreads(false)
     },
     setScrollTop(state, scrollTop) {
       state.scrollTop = scrollTop

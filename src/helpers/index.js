@@ -236,6 +236,12 @@ const helpers = {
     return images
   },
   openSite: url => window.open(url, '_blank', 'noreferrer'),
+  useFaviconWithUnreads: active => {
+    const favicon = document.querySelector('link[rel="icon"]')
+    if (!favicon) return
+
+    favicon.href = active ? '/favicon/logo-unreads.png' : '/favicon/logo.png'
+  },
 }
 
 export default helpers
