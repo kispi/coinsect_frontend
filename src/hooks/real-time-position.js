@@ -130,6 +130,7 @@ const useRealTimePosition = () => {
 
   return {
     positions,
+    callApi,
   }
 }
 

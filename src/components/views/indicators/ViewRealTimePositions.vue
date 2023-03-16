@@ -35,7 +35,13 @@
       class="position-group"
       :key="idx"
       v-for="(positionGroup, idx) in [positions.tracked, positions.nonTracked]">
-      <div v-if="idx === 1" class="group-title" @click="showUntracked = !showUntracked">{{ $translate('TRADERS_NOT_MONITORED') }}<i class="fal m-l-4" :class="showUntracked ? 'fa-chevron-up' : 'fa-chevron-down'"/></div>
+      <div
+        v-if="idx === 1"
+        class="group-title"
+        @click="showUntracked = !showUntracked">
+        <span>{{ $translate('TRADERS_NOT_MONITORED') }}</span>
+        <i class="fal m-l-4" :class="showUntracked ? 'fa-chevron-up' : 'fa-chevron-down'"/>
+      </div>
       <transition name="slide-down">
         <div
           v-if="showUntracked || idx === 0"
@@ -90,7 +96,7 @@ export default {
   setup() {
     const { store } = useGlobalHooks()
 
-    const { positions } = useRealTimePosition()
+    const { positions, callApi } = useRealTimePosition()
 
     const showUntracked = ref(null)
 
@@ -103,6 +109,7 @@ export default {
     return {
       positions,
       showUntracked,
+      callApi,
       toggleTradingview,
     }
   },
