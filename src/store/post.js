@@ -50,6 +50,10 @@ const post = {
       try {
         commit('setLoading', { post: true })
         const data = await communityService.post.detail(sharingKey)
+        data.renderable = {
+          reactions: data.$$reactions,
+          numReplies: data.$$numReplies,
+        }
         commit('setPost', data)
       } catch (e) {
         return Promise.reject(e)
