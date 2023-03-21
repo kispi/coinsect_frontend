@@ -11,8 +11,9 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   components: {
     ViewLeaderboard: defineAsyncComponent(() => import('./ViewLeaderboard')),
-    ViewLongShort: defineAsyncComponent(() => import('./ViewLongShort')),
     ViewRealTimePositions: defineAsyncComponent(() => import('./ViewRealTimePositions')),
+    ViewRichlist: defineAsyncComponent(() => import('./ViewRichlist')),
+    ViewWhaleAlert: defineAsyncComponent(() => import('./ViewWhaleAlert')),
   },
   setup() {
     const { router } = useGlobalHooks()
@@ -20,8 +21,9 @@ export default {
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/indicators/leaderboard') return 'ViewLeaderboard'
-      if (p === '/indicators/long-short') return 'ViewLongShort'
       if (p === '/indicators/real-time-positions') return 'ViewRealTimePositions'
+      if (p === '/indicators/richlist') return 'ViewRichlist'
+      if (p === '/indicators/whale-alert') return 'ViewWhaleAlert'
     })
 
     return {

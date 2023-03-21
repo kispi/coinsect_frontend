@@ -87,7 +87,7 @@ export default {
         { path: '/community', title: 'COMMUNITY' },
         { path: '/about', title: 'ABOUT' },
       ],
-    }].concat(menuItems.value.filter(o => o.subPages).sort((a, b) => a.title === 'ONCHAIN' ? -1 : 1)))
+    }].concat(menuItems.value.filter(o => o.subPages)))
 
     const info = computed(() => {
       const html = {

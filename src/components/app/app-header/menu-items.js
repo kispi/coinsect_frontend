@@ -56,7 +56,8 @@ const useMenuItems = () => {
     subPages: [
       { path: '/indicators/real-time-positions', title: 'REAL_TIME_POSITIONS' },
       { path: '/indicators/leaderboard', title: 'LEADERBOARD' },
-      // { path: '/indicators/long-short', title: 'LONG_SHORT' },
+      { path: '/indicators/whale-alert', title: 'WHALE_ALERT' },
+      { path: '/indicators/richlist', title: 'RICHLIST' },
     ],
   }, {
     title: 'COMMUNITY',
@@ -68,19 +69,10 @@ const useMenuItems = () => {
     path: '/contents/news',
     subPages: [
       { path: '/contents/news', title: 'NEWS' },
-      // { path: '/contents/twitter', title: 'TWITTER' },
       { path: '/contents/economic-calendar', title: 'ECONOMIC_CALENDAR' },
       { path: '/contents/public-treasury', title: 'PUBLIC_TREASURY' },
       { path: '/contents/influencers', title: 'INFLUENCERS' },
       { path: '/contents/crypto-referral', title: 'CRYPTO_REFERRAL' },
-    ],
-  }, {
-    title: 'ONCHAIN',
-    pathPrefix: '/onchain/',
-    path: '/onchain/whale-alert',
-    subPages: [
-      { path: '/onchain/whale-alert', title: 'WHALE_ALERT' },
-      { path: '/onchain/richlist', title: 'RICHLIST' },
     ],
   }, {
     title: 'MARKETS',

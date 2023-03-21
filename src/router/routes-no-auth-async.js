@@ -18,11 +18,19 @@ const indicators = [{
     image: withCdn('og-images/og-image-streamer-positions.png'),
   },
 }, {
-  path: '/indicators/long-short',
-  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
+  path: '/indicators/richlist',
+  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewRichlist'),
   meta: {
-    title: '롱-숏 비율 - 코인충',
-    description: '코인의 거래소별 롱-숏 비율',
+    title: '리치리스트 - 코인충',
+    description: '암호화폐의 분포를 보여줍니다.',
+    image: withCdn('og-images/og-image-richlist.png'),
+  },
+}, {
+  path: '/indicators/whale-alert',
+  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewWhaleAlert'),
+  meta: {
+    title: '고래 입금, 출금 - 코인충',
+    description: 'Whale Alert API에 기반하여 최근에 일어난 큰 규모의 이체건들을 보여줍니다.',
   },
 }]
 
@@ -105,23 +113,6 @@ const contents = [{
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
 }]
 
-const onchain = [{
-  path: '/onchain/richlist',
-  component: () => import(/* webpackChunkName: 'view-onchain' */ '@/components/views/onchain/ViewOnchain'),
-  meta: {
-    title: '리치리스트 - 코인충',
-    description: '암호화폐의 분포를 보여줍니다.',
-    image: withCdn('og-images/og-image-richlist.png'),
-  },
-}, {
-  path: '/onchain/whale-alert',
-  component: () => import(/* webpackChunkName: 'view-onchain' */ '@/components/views/onchain/ViewWhaleAlert'),
-  meta: {
-    title: '고래 입금, 출금 - 코인충',
-    description: 'Whale Alert API에 기반하여 최근에 일어난 큰 규모의 이체건들을 보여줍니다.',
-  },
-}]
-
 const apps = [{
   path: '/apps/portfolio',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
@@ -196,7 +187,6 @@ const routesNoAuth = [
   ...indicators,
   ...markets,
   ...contents,
-  ...onchain,
   ...apps,
   ...community,
   ...andSoOn,

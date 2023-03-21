@@ -17,7 +17,6 @@ const marketInfo = {
   nasdaq: () => $http.get('market_info/nasdaq'),
   kospi: params => $http.get('market_info/kospi', { params }),
   assetsIncludingMetal: () => $http.get('market_info/assets_including_metal'),
-  longShort: params => $httpNoAuth.get('https://fapi.coinglass.com/api/futures/longShortRate', { params }),
   symbols: () => $http.get('market_info/symbols'),
   base: async ({ baseExchange, baseExchangeMarket }) => {
     const bEx = baseExchange

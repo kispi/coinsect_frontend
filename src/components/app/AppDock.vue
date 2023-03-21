@@ -64,8 +64,8 @@ export default {
         tooltip: 'LEADERBOARD',
         images: [plugins.$helpers.withCdn('images/exchanges/BITMEX.png')]
       }, {
-        handler: () => router.push('/onchain/whale-alert'),
-        active: p === '/onchain/whale-alert',
+        handler: () => router.push('/indicators/whale-alert'),
+        active: p === '/indicators/whale-alert',
         tooltip: 'WHALE_ALERT',
         images: [plugins.$helpers.withCdn('assets/icon-whalealert.jpg')],
       }, {

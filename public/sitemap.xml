@@ -48,7 +48,10 @@
         <loc>https://coinsect.io/indicators/real-time-positions</loc>
     </url>
     <url>
-        <loc>https://coinsect.io/indicators/long-short</loc>
+        <loc>https://coinsect.io/indicators/richlist</loc>
+    </url>
+    <url>
+        <loc>https://coinsect.io/indicators/whale-alert</loc>
     </url>
     <url>
         <loc>https://coinsect.io/markets/crypto</loc>
@@ -58,12 +61,6 @@
     </url>
     <url>
         <loc>https://coinsect.io/markets/assets-including-metal</loc>
-    </url>
-    <url>
-        <loc>https://coinsect.io/onchain/richlist</loc>
-    </url>
-    <url>
-        <loc>https://coinsect.io/onchain/whale-alert</loc>
     </url>
     <url>
         <loc>https://coinsect.io/contents/news</loc>
