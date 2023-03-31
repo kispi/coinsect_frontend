@@ -31,6 +31,7 @@ import CommunityHeader from '@/components/common/CommunityHeader'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
 import CPosition from '@/components/common/c-position/CPosition'
+import FoolsDayPrank from '@/components/common/prank/FoolsDayPrank'
 import LongShortRatio from '@/components/common/LongShortRatio'
 import MultiCharts from '@/components/common/MultiCharts'
 import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
@@ -85,6 +86,7 @@ const useGlobalComponents = app => {
     .component('CommunityHeader', CommunityHeader)
     .component('CPortfolio', CPortfolio)
     .component('CPosition', CPosition)
+    .component('FoolsDayPrank', FoolsDayPrank)
     .component('LongShortRatio', LongShortRatio)
     .component('MultiCharts', MultiCharts)
     .component('ModalHeader', ModalHeader)

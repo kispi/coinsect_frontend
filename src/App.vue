@@ -1,4 +1,5 @@
 <template>
+  <FoolsDayPrank/>
   <AppHeader :class="{'folded': $store.getters.settings.headerFolded}"/>
   <div
     class="app-body view-layout-default no-scrollbar"
