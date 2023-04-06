@@ -1,18 +1,11 @@
 import { store as $store } from '@/store'
 import { router } from '@/router'
-import withCdn from './s3'
 
 const sanitize = html => {
   if (!html) return ''
 
   const regex = /(&nbsp;|<([^>]+)>)/ig
   return (html || '').replace(regex, '')
-}
-
-const defaults = {
-  title: '김치 프리미엄, 김프, 역프 및 암호화폐 실시간 시세 - 코인충',
-  description: '김프, 역프, 암호화폐, 비트코인 실시간 시세, 호가창, 뉴스, 비트멕스 리더보드(워뇨띠 포지션), 박호두 포지션 등을 제공하는 김프 사이트입니다.',
-  image: withCdn('og-images/og-image.png'),
 }
 
 const removeExisting = id => {
@@ -35,7 +28,9 @@ const appendMetaTags = tags => tags.forEach(tag => {
 
 const meta = {
   setDocumentTitle: title => {
-    const content = sanitize(title || defaults.title)
+    if (!title) return
+
+    const content = sanitize(title)
     if (!process.env.VUE_APP_SSR) document.title = content
 
     appendMetaTags([
@@ -44,7 +39,9 @@ const meta = {
     ], title)
   },
   renderDescription: description => {
-    const content = sanitize(description || defaults.description)
+    if (!description) return
+
+    const content = sanitize(description)
     appendMetaTags([
       { id: 'meta-description', name: 'description', content },
       { id: 'meta-og-description', property: 'og:description', content },
@@ -52,7 +49,9 @@ const meta = {
     ])
   },
   renderOgImage: image => {
-    const content = image || defaults.image
+    if (!image) return
+
+    const content = image
     if (!content.startsWith('http')) return
 
     appendMetaTags([
