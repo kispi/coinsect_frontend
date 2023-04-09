@@ -176,7 +176,12 @@ export default {
     margin-top: 24px;
     display: grid;
     gap: 24px;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  }
+
+  @media (min-width: 768px) {
+    .bottom {
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    }
   }
 }
 </style>
