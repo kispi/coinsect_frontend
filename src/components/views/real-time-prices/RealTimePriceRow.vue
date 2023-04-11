@@ -279,14 +279,13 @@ export default {
   }
 
   td {
-    white-space: nowrap;
-
     > div:not(:last-child) {
       margin-bottom: 4px;
+      white-space: nowrap;
     }
 
     &:not(:first-child) {
-      width: 120px;
+      width: 120px; // 큰 화면에서 글리치를 없애기 위함
 
       @extend .f-mono;
     }

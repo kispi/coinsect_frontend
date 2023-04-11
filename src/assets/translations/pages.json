@@ -8,15 +8,15 @@
     "kr": "전체시가총액"
   },
   "VOL_24": {
-    "en": "Volume(1D)",
-    "kr": "거래액(1일)"
+    "en": "Volume",
+    "kr": "거래액"
   },
   "VOL_24_SHARE": {
-    "en": "Volume(1D)",
-    "kr": "거래량(1일)"
+    "en": "Volume",
+    "kr": "거래량"
   },
   "CHANGE_RATE_1D": {
-    "en": "Change(1D)",
+    "en": "Change",
     "kr": "전일대비"
   },
   "CHANGE_RATE_52W_HIGHEST": {

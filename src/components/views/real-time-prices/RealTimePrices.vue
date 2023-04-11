@@ -397,5 +397,12 @@ export default {
     height: 60px;
     margin: 2px 0;
   }
+
+  @media (max-width: 399px) {
+    th,
+    td {
+      font-size: 11px;
+    }
+  }
 }
 </style>
