@@ -38,6 +38,10 @@ export default {
       editor.value = new Editor({
         el: refEditor.value,
         plugins: [colorSyntax],
+        toolbarItems: [
+          ['bold', 'italic', 'strike'],
+          ['image', 'link'],
+        ],
         height: '480px',
         initialEditType: 'wysiwyg',
         initialValue: (props.modelValue || ''),
