@@ -130,7 +130,6 @@ export default {
 
 <style lang="scss" scoped>
 .view-crypto-referral {
-  max-width: 720px;
   margin: auto;
   color: var(--text-stress);
 
