@@ -31,7 +31,10 @@
             </div>
           </div>
         </div>
-        <div class="content" v-html="reply.deletedAt ? `<b>${$translate('DELETED_REPLY')}</b>` : reply.content"/>
+        <div
+          @click="$helpers.onClickHTMLContent"
+          class="content"
+          v-html="reply.deletedAt ? `<b>${$translate('DELETED_REPLY')}</b>` : reply.content"/>
         <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
       </div>
       <div v-if="reply.$$showReply" class="reply-write-container">
@@ -106,6 +109,7 @@ export default {
 
       img {
         max-width: 320px !important;
+        cursor: pointer;
       }
     }
 
@@ -143,8 +147,8 @@ export default {
   }
 
   .reply-write-container {
-    padding: 8px 0;
-    border: 1px solid var(--brand-primary);
+    padding: 8px;
+    margin-top: 8px;
   }
 
   @mixin depths() {

@@ -29,7 +29,36 @@
       <textarea v-model="payload.content" :placeholder="$translate('PLACEHOLDER_CONTENT')"/>
     </form>
     <div class="reply-functions">
-      <div>{{ parent ? `${$helpers.writing.nickname(parent)}님의 댓글에 대한 답글` : '' }}</div>
+      <div class="reply-images">
+        <div
+          class="reply-image"
+          :key="image"
+          v-for="(image, idx) in images">
+          <div
+            @click="onClickDeleteImage(idx)"
+            class="clickable-icon-wrapper center">
+            <i class="fal fa-times"/>
+          </div>
+          <AppImg
+            @click="$modal.images({ images })"
+            :src="image"
+          />
+        </div>
+        <button
+          v-if="images.length === 0"
+          class="btn btn-primary btn-upload-image"
+          @click="refUploader.click"
+          :disabled="processing">
+          <i class="far fa-image m-r-8"/>{{ $translate('ADD_IMAGE') }}
+          <input
+            ref="refUploader"
+            class="overlay"
+            type="file"
+            @change="onChangeFile"
+            accept="image/*"
+          >
+        </button>
+      </div>
       <div class="buttons flex-row">
         <button
           v-if="parent"
@@ -50,6 +79,7 @@
 <script>
 import { onMounted, ref, watch } from 'vue'
 import crudService from '@/services/crud'
+import s3Service from '@/services/s3'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
@@ -64,9 +94,16 @@ export default {
   setup(props) {
     const { plugins, store, router } = useGlobalHooks()
 
+    const refUploader = ref(null)
+
     const payload = ref({})
 
+    const processing = ref(null)
+
+    const images = ref([]) // payload와 별개로 관리
+
     const initPayload = () => {
+      images.value = []
       payload.value = {
         nickname: ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname,
         password: null,
@@ -77,9 +114,37 @@ export default {
       }
     }
 
+    const onChangeFile = async e => {
+      const file = e.target.files[0]
+      const shouldResize = file > 1048576
+      try {
+        processing.value = true
+        const resized = shouldResize ? await plugins.$helpers.resizeImage({ file, width: 400 }) : file
+        // 이미지는 한장만 올릴 수 있도록 구현하되, 여러장 올리는 경우도 고려하기 위해 배열로 관리
+        images.value[0] = await s3Service.upload(resized, 'boards/replies')
+      } catch (e) {
+        return Promise.reject(e)
+      } finally {
+        e.target.value = null
+        processing.value = false
+      }
+    }
+
+    const onClickDeleteImage = idx => {
+      plugins.$modal.confirm({ body: plugins.$translate('MODAL_CONFIRM_DELETE_REPLY_IMAGE') })
+        .then(ok => ok ? images.value.splice(idx, 1) : null)
+    }
+
     const onClickCreateReply = async () => {
       const required = ['nickname', 'content']
       if (!store.getters.me) required.push('password')
+
+      // 이미지가 있으면 content 앞에 붙여넣기
+      if (images.value.length > 0) {
+        const imgTag = `<img src="${images.value[0]}">`
+        if (!payload.value.content) payload.value.content = imgTag
+        else payload.value.content = `${imgTag}\n\n${payload.value.content}`
+      }
 
       if (required.some(key => {
         if (!payload.value[key]) {
@@ -112,7 +177,12 @@ export default {
     onMounted(initPayload)
 
     return {
+      refUploader,
+      processing,
       payload,
+      images,
+      onChangeFile,
+      onClickDeleteImage,
       onClickCreateReply,
     }
   }
@@ -122,6 +192,7 @@ export default {
 <style lang="scss" scoped>
 .reply-write {
   border: 1px solid var(--border-base);
+  border-radius: 8px;
 
   .authorized-clickable-nickname,
   .nickname,
@@ -163,6 +234,36 @@ export default {
 
     button:not(:last-child) {
       margin-right: 8px;
+    }
+
+    .btn-upload-image {
+      input[type=file] {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+
+    .reply-images {
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      .clickable-icon-wrapper {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+      }
+
+      .reply-image {
+        width: 80px;
+        height: 80px;
+        border: 1px solid var(--border-base);
+        border-radius: 4px;
+        cursor: pointer;
+      }
     }
   }
 }

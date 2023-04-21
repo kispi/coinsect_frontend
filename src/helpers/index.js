@@ -242,6 +242,10 @@ const helpers = {
 
     favicon.href = active ? '/favicon/logo-unreads.png' : '/favicon/logo.png'
   },
+  onClickHTMLContent: e => {
+    const link = e.target.src || e.target.href
+    if (link) window.open(link, '_blank', 'noreferrer')
+  },
 }
 
 export default helpers

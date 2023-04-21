@@ -28,7 +28,7 @@
         </div>
       </div>
       <div
-        @click.prevent="onClickContent"
+        @click.prevent="$helpers.onClickHTMLContent"
         class="post-content"
         v-html="post.content"
       />
@@ -75,15 +75,9 @@ export default {
       } catch (e) {}
     }
 
-    const onClickContent = e => {
-      const link = e.target.src || e.target.href
-      if (link) window.open(link, '_blank', 'noreferrer')
-    }
-
     return {
       post,
       toggleReaction,
-      onClickContent,
     }
   },
 }
