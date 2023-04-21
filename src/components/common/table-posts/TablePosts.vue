@@ -28,7 +28,7 @@
               <article class="cell title">
                 <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
                 <div>
-                  <span v-html="row.title"/>
+                  <span>{{ row.title }}</span>
                   <span v-if="(row.replies || []).length > 0" class="num-replies">[{{ (row.replies || []).length }}]</span>
                 </div>
               </article>
