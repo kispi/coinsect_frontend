@@ -186,9 +186,5 @@ export default {
       }
     }
   }
-
-  .reply-write {
-    margin: 8px 0;
-  }
 }
 </style>

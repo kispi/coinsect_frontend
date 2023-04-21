@@ -1,13 +1,14 @@
 <template>
   <div
     v-if="repliesToDisplay.length > 0"
-    class="c-replies"
-    :class="`depth-${depth}`">
+    class="c-replies">
     <div
       class="reply"
       :key="reply.id"
       v-for="reply in repliesToDisplay">
-      <div class="reply-body">
+      <div
+        class="reply-body"
+        :style="paddingLeft">
         <div class="reply-header">
           <div class="reply-user" :class="{'authorized-clickable-nickname': reply.userId}">
             <UserSymbol :user="reply.user" class="m-r-4"/>
@@ -34,10 +35,14 @@
         <div
           @click="$helpers.onClickHTMLContent"
           class="content"
-          v-html="reply.deletedAt ? `<b>${$translate('DELETED_REPLY')}</b>` : reply.content"/>
+          :class="{'deleted': reply.deletedAt}"
+          v-html="reply.deletedAt ? $translate('DELETED_REPLY') : reply.content"/>
         <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
       </div>
-      <div v-if="reply.$$showReply" class="reply-write-container">
+      <div
+        v-if="reply.$$showReply"
+        class="reply-write-container"
+        :style="paddingLeft">
         <ReplyWrite :post="$store.getters.post" :parent="reply" @cancel="reply.$$showReply = false"/>
       </div>
       <CReplies :replies="reply.replies" :depth="depth + 1"/>
@@ -62,6 +67,8 @@ export default {
     const { plugins, store, router } = useGlobalHooks()
 
     const repliesToDisplay = computed(() => (props.replies || []).filter(o => !o.deletedAt || hasNonDeletedChild(o)))
+
+    const paddingLeft = computed(() => ({'padding-left': `${props.depth * 24}px`}))
 
     const hasNonDeletedChild = reply => {
       return (reply.replies || []).some(child => !child.deletedAt || hasNonDeletedChild(child))
@@ -90,6 +97,7 @@ export default {
 
     return {
       repliesToDisplay,
+      paddingLeft,
       hasNonDeletedChild,
       onClickDelete,
     }
@@ -106,6 +114,11 @@ export default {
       padding: 8px 0;
       color: var(--text-stress);
       white-space: pre-line;
+
+      &.deleted {
+        color: var(--gs-88);
+        font-style: italic;
+      }
 
       img {
         max-width: 320px !important;
@@ -145,24 +158,5 @@ export default {
       }
     }
   }
-
-  .reply-write-container {
-    padding: 8px;
-    margin-top: 8px;
-  }
-
-  @mixin depths() {
-    $i: 1;
-    @while $i <= 10 {
-      &.depth-#{$i} {
-        .reply-body {
-          padding-left: #{$i * 12} + 'px';
-        }
-      }
-      $i: $i + 1;
-    }
-  }
-
-  @include depths();
 }
 </style>

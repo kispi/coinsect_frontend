@@ -193,6 +193,7 @@ export default {
 .reply-write {
   border: 1px solid var(--border-base);
   border-radius: 8px;
+  margin: 8px 0;
 
   .authorized-clickable-nickname,
   .nickname,
