@@ -92,10 +92,15 @@ export default {
     z-index: 0;
   }
 
-  .toastui-editor-popup,
-  .toastui-editor-dropdown-toolbar {
+  .toastui-editor-popup {
     z-index: 1;
     color: var(--black);
+    width: 320px;
+    margin-left: 0;
+
+    .toastui-editor-file-select-button {
+      white-space: nowrap;
+    }
   }
 
   .toastui-editor-defaultUI .ProseMirror {
