@@ -13,14 +13,15 @@
         <i class="far fa-chevron-down" :class="{'show-filters': showFilters}"/>
         {{ $translate('FILTER') }}
       </div>
-      <transition name="slide-down">
-        <WhaleAlertFilters
-          v-show="showFilters"
-          @change-params="p => params = p"
-          :listStable="listStable"
-        />
-      </transition>
     </div>
+    <transition name="slide-down">
+      <WhaleAlertFilters
+        v-show="showFilters"
+        @change-params="p => params = p"
+        :listStable="listStable"
+        class="m-b-16"
+      />
+    </transition>
     <transition-group
       v-if="resp"
       name="cell"
