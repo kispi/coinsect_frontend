@@ -2,7 +2,6 @@
   <div
     v-if="$store.getters.realTimePositions"
     class="view-real-time-positions">
-    <MultiCharts v-if="$store.getters.settings.tradingview.realTimePositions" class="m-b-24"/>
     <div class="header">
       <button
         @click="callApi"
@@ -10,16 +9,6 @@
         <i class="fal fa-sync m-r-8"/>
         {{ $translate('REFRESH') }}
       </button>
-      <div
-        @click="toggleTradingview"
-        class="toggle-tradingview">
-        <AppToggler
-          :modelValue="$store.getters.settings.tradingview.realTimePositions"
-          class="no-touch m-r-8"
-          :small="$store.getters.isMobile"
-        />
-        BTC / NASDAQ
-      </div>
     </div>
     <div
       v-if="positions.tracked.length === 0"
@@ -28,7 +17,7 @@
       <RouterLink
         to="/"
         class="btn btn-primary">
-        {{ $translate('GO_TO_KIMP') }}<i class="fal fa-arrow-right m-l-8"/>
+        {{ $translate('GO_TO_MAIN') }}<i class="fal fa-arrow-right m-l-8"/>
       </RouterLink>
     </div>
     <div
@@ -82,35 +71,27 @@
       v-if="positions.tracked.length > 0"
       to="/"
       class="btn btn-primary bottom">
-      {{ $translate('GO_TO_KIMP') }}
+      {{ $translate('GO_TO_MAIN') }}
     </RouterLink>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import useGlobalHooks from '@/hooks/global-hooks'
+import { ref, onMounted } from 'vue'
 import useRealTimePosition from '@/hooks/real-time-position'
 
 export default {
   setup() {
-    const { store } = useGlobalHooks()
-
     const { positions, callApi } = useRealTimePosition()
 
     const showUntracked = ref(null)
 
-    const toggleTradingview = () => {
-      const o = store.getters.settings.tradingview
-      o.realTimePositions = !o.realTimePositions
-      store.commit('setSettings', { tradingview: o })
-    }
+    onMounted(callApi)
 
     return {
       positions,
       showUntracked,
       callApi,
-      toggleTradingview,
     }
   },
 }

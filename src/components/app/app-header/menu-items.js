@@ -47,15 +47,18 @@ const useMenuItems = () => {
   }
 
   const menuItems = computed(() => [{
-    title: 'KIMP',
+    title: 'HOME',
     path: '/',
+  }, {
+    title: 'KIMP',
+    path: '/prices',
   }, {
     title: 'INDICATORS',
     pathPrefix: '/indicators/',
     path: '/indicators/real-time-positions',
     subPages: [
       { path: '/indicators/real-time-positions', title: 'REAL_TIME_POSITIONS' },
-      { path: '/indicators/leaderboard', title: 'LEADERBOARD' },
+      { path: '/indicators/leaderboard', title: 'BITMEX_LEADERBOARD' },
       { path: '/indicators/whale-alert', title: 'WHALE_ALERT' },
       { path: '/indicators/richlist', title: 'RICHLIST' },
     ],

@@ -131,7 +131,7 @@ export default {
   }
 
   &:hover {
-    border: 1px solid var(--white);
+    border: 1px solid var(--text-stress);
   }
 
   &.danger {

@@ -30,5 +30,9 @@
   "TOOLTIP_FIXED_NICKNAME": {
     "en": "A fixed nickname, cannot be duplicated, only for those who logged in.",
     "kr": "로그인한 유저에게만 주어지는 고정 닉네임으로, 중복이 허용되지 않습니다."
+  },
+  "TOOLTIP_REAL_TIME_POSITIONS": {
+    "en": "You can notify the admin of position change if you think it's wrong.",
+    "kr": "포지션이 맞지 않는 것 같다면 실제 방송으로 확인 후 수정을 요청하실 수 있습니다."
   }
 }

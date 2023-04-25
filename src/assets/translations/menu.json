@@ -151,9 +151,9 @@
     "en": "Assets Including Metal",
     "kr": "귀금속 포함 시가총액"
   },
-  "LEADERBOARD": {
-    "en": "Leaderboard",
-    "kr": "리더보드"
+  "BITMEX_LEADERBOARD": {
+    "en": "BitMEX Leaderboard",
+    "kr": "비트멕스 리더보드"
   },
   "REAL_TIME_POSITIONS": {
     "en": "Realtime Positions",

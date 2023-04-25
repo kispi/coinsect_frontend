@@ -177,7 +177,10 @@ const community = [{
 
 const andSoOn = [{
   path: '/',
-  component: () => import(/* webpackChunkName: 'view-home' */ '@/components/views/ViewHome'),
+  component: () => import(/* webpackChunkName: 'view-main' */ '@/components/views/main/ViewMain'),
+}, {
+  path: '/prices',
+  component: () => import(/* webpackChunkName: 'view-home' */ '@/components/views/real-time-prices/ViewRealTimePrices'),
 }, {
   path: '/about',
   component: () => import(/* webpackChunkName: 'view-about' */ '@/components/views/ViewAbout'),

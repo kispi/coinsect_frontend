@@ -83,7 +83,8 @@ export default {
     const sections = computed(() => [{
       title: 'MAIN',
       subPages: [
-        { path: '/', title: 'KIMP' },
+        { path: '/', title: 'HOME' },
+        { path: '/prices', title: 'KIMP' },
         { path: '/community', title: 'COMMUNITY' },
         { path: '/about', title: 'ABOUT' },
       ],

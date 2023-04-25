@@ -38,9 +38,9 @@
           <td>{{ row.rank }}</td>
           <td><div class="lines-1" v-html="row.name"/></td>
           <td :class="(row.side || '').toLowerCase()">{{ row.side }}</td>
-          <td v-if="!$store.getters.isMobile" :class="{'long': row.profit > 0, 'short': row.profit < 0}"><i class="fab fa-bitcoin"/>{{ asBTC(row.profit) }}</td>
-          <td :class="{'long': row.dailyChange > 0, 'short': row.dailyChange < 0}"><i class="fab fa-bitcoin"/>{{ asBTC(row.dailyChange) }}</td>
-          <td :class="{'long': row.weeklyChange > 0, 'short': row.weeklyChange < 0}"><i class="fab fa-bitcoin"/>{{ asBTC(row.weeklyChange) }}</td>
+          <td v-if="!$store.getters.isMobile" :class="{'long': row.profit > 0, 'short': row.profit < 0}"><i class="fab fa-bitcoin"/>{{ $helpers.template.asBTC(row.profit) }}</td>
+          <td :class="{'long': row.dailyChange > 0, 'short': row.dailyChange < 0}"><i class="fab fa-bitcoin"/>{{ $helpers.template.asBTC(row.dailyChange) }}</td>
+          <td :class="{'long': row.weeklyChange > 0, 'short': row.weeklyChange < 0}"><i class="fab fa-bitcoin"/>{{ $helpers.template.asBTC(row.weeklyChange) }}</td>
         </tr>
       </tbody>
     </table>
@@ -69,15 +69,6 @@ export default {
       column: 'rank',
       direction: 'asc',
     })
-
-    const asBTC = sats => {
-      return ((sats || 0) / 100000000).toLocaleString(
-        undefined, {
-          maximumFractionDigits: 4,
-          minimumFractionDigits: 4,
-        },
-      )
-    }
 
     const setSort = column => {
       if (sort.value.column !== column) {
@@ -127,7 +118,6 @@ export default {
       sort,
       sorted,
       setSort,
-      asBTC,
     }
   },
 }

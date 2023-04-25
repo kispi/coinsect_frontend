@@ -45,7 +45,7 @@ import TradingView from '@/components/common/TradingView'
 import TradingViewSymbols from '@/components/common/TradingViewSymbols'
 import TradingViewTicker from '@/components/common/TradingViewTicker'
 import UserSymbol from '@/components/common/UserSymbol'
-import WhaleAlert from '@/components/common/whale-alert/WhaleAlert'
+import WhaleAlertItem from '@/components/common/whale-alert/WhaleAlertItem'
 
 // community components
 import CommunityButtons from '@/components/views/community/CommunityButtons'
@@ -101,7 +101,7 @@ const useGlobalComponents = app => {
     .component('TradingViewSymbols', TradingViewSymbols)
     .component('TradingViewTicker', TradingViewTicker)
     .component('UserSymbol', UserSymbol)
-    .component('WhaleAlert', WhaleAlert)
+    .component('WhaleAlertItem', WhaleAlertItem)
 
     // community components
     .component('CommunityButtons', CommunityButtons)

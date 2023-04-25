@@ -61,7 +61,7 @@ export default {
       }, {
         handler: () => router.push('/indicators/leaderboard'),
         active: p === '/indicators/leaderboard',
-        tooltip: 'LEADERBOARD',
+        tooltip: 'BITMEX_LEADERBOARD',
         images: [plugins.$helpers.withCdn('images/exchanges/BITMEX.png')]
       }, {
         handler: () => router.push('/indicators/whale-alert'),

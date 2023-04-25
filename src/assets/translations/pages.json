@@ -203,9 +203,9 @@
     "en": "Big Entities (Spot / Approx. Size)",
     "kr": "큰손들 (현물 / 규모는 추정)"
   },
-  "GO_TO_KIMP": {
-    "en": "Go to Korean Premium / Realtime Prices",
-    "kr": "김프 / 실시간 시세 보러가기"
+  "GO_TO_MAIN": {
+    "en": "Go to main",
+    "kr": "메인으로"
   },
   "RTP_DISCLAIMER_4": {
     "en": "Position update applies immediately when the admin updates it, and refreshes every 5 minutes. If you think it isn't correct, click the refresh button.",
