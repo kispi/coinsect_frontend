@@ -81,7 +81,7 @@ export default {
     const params = ref()
 
     const createQuery = () => {
-      const o = plugins.$helpers.qb().limit(100)
+      const o = plugins.$helpers.qb().limit(20)
       const conds = []
       if (params.value.amount) conds.push(`amount >= ${params.value.amount}`)
       if (params.value.amountUsd) conds.push(`amount_usd >= ${params.value.amountUsd}`)
