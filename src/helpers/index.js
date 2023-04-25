@@ -119,6 +119,8 @@ const helpers = {
   // Vue 2시절 filter로 사용하던, 템플릿에 주로 사용하는 기능들을 이곳에 모으기로 한다.
   template,
   hexToRgba: (hex, alpha = 1) => {
+    if (!hex) return
+
     const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16))
     return `rgba(${r},${g},${b},${alpha})`
   },
@@ -245,6 +247,17 @@ const helpers = {
   onClickHTMLContent: e => {
     const link = e.target.src || e.target.href
     if (link) window.open(link, '_blank', 'noreferrer')
+  },
+  crypto: {
+    hash: {
+      sha256: async message => {
+        const msgUint8 = new TextEncoder().encode(message)
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8)
+        const hashArray = Array.from(new Uint8Array(hashBuffer))
+        const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+        return hashHex
+      },
+    },
   },
 }
 

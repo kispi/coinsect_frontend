@@ -46,11 +46,9 @@
 
 <script>
 import { onMounted, ref, watch } from 'vue'
+import constants from '@/assets/constants'
 
 export default {
-  props: {
-    listStable: Object,
-  },
   emits: ['change-params'],
   setup(props, { emit }) {
     const availableSymbols = ref(
@@ -58,7 +56,7 @@ export default {
         .map(symbol => ({
           symbol,
           $$selected: false,
-          isStable: props.listStable.includes(symbol),
+          isStable: constants.stableCoins.includes(symbol),
         }))
     )
 

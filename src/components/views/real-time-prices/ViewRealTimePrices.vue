@@ -1,10 +1,5 @@
 <template>
   <div class="view-home">
-    <RecentPosts class="m-b-24"/>
-    <template v-if="$store.getters.settings.tradingview.home">
-      <TradingViewTicker class="m-b-8"/>
-      <MultiCharts class="m-b-8"/>
-    </template>
     <div class="row p-b-8">
       <BaseAndTarget/>
       <div
@@ -20,7 +15,7 @@
     </div>
     <SettingsPanel
       v-if="showPersonalSettings"
-      :indices="[5, 6, 7]"
+      :indices="[6, 7]"
     />
     <RealTimePrices v-if="prepared && !$store.getters.isSSR"/>
   </div>
@@ -29,15 +24,13 @@
 <script>
 import { onMounted, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
-import BaseAndTarget from './real-time-prices//BaseAndTarget'
-import RealTimePrices from './real-time-prices/RealTimePrices'
-import RecentPosts from './RecentPosts'
+import BaseAndTarget from './BaseAndTarget'
+import RealTimePrices from './RealTimePrices'
 
 export default {
   components: {
     BaseAndTarget,
     RealTimePrices,
-    RecentPosts,
   },
   setup() {
     const { store } = useGlobalHooks()

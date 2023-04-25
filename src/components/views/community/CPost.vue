@@ -160,7 +160,7 @@ export default {
 
     .reaction-box {
       width: 64px;
-      height: 48px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;

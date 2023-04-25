@@ -61,6 +61,10 @@ const template = {
     if (value < 0) return 'c-price-down'
     return ''
   },
+  asBTC: sats => ((sats || 0) / 100000000).toLocaleString(undefined, {
+    maximumFractionDigits: 4,
+    minimumFractionDigits: 4,
+  }),
 }
 
 export default template

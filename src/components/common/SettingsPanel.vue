@@ -68,6 +68,12 @@ export default {
         { title: 'OFF', value: false },
       ].map(o => ({ ...o, $$selected: store.getters.settings.headerFolded === o.value })),
     }, {
+      key: 'TRADINGVIEW',
+      values: [
+        { title: 'ON', value: true },
+        { title: 'OFF', value: false },
+      ].map(o => ({ ...o, $$selected: store.getters.settings.tradingview === o.value })),
+    }, {
       key: 'FILTER',
       values: [
         { title: 'ALL', value: 'all' },
@@ -79,19 +85,11 @@ export default {
         { title: 'REAL_TIME', value: 50 },
         { title: `5 ${plugins.$translate('SECONDS')}`, value: 5000 },
       ].map(o => ({ ...o, $$selected: store.getters.settings.sortInterval === o.value })),
-    }, {
-      key: 'TRADINGVIEW',
-      values: [
-        { title: 'ON', value: true },
-        { title: 'OFF', value: false },
-      ].map(o => ({ ...o, $$selected: store.getters.settings.tradingview.home === o.value })),
     }].filter((_, idx) => props.indices.length === 0 || props.indices.includes(idx)))
 
     const onClickValue = (key, setting) => {
       if (key === 'TRADINGVIEW') {
-        const tradingview = store.getters.settings.tradingview
-        tradingview.home = setting.value
-        store.commit('setSettings', { tradingview })
+        store.commit('setSettings', { tradingview: setting.value })
         return
       }
 

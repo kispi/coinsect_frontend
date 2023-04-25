@@ -34,10 +34,7 @@ const app = {
       documentTitleTicker: 'BTC',
       currency: 'krw',
       filter: 'all', // 'favorites'
-      tradingview: {
-        home: true,
-        realTimePositions: true,
-      },
+      tradingview: true,
       chartFullWidth: false,
       baseExchange: 'upbit', // 'upbit' || 'bithumb'
       baseExchangeMarket: 'krw', // 'krw' || 'btc' || 'usdt'...

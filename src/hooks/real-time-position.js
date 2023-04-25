@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
+import { onUnmounted, ref, computed, watch } from 'vue'
 import useGlobalHooks from './global-hooks'
 import useBybit from './websockets/bybit'
 
@@ -60,6 +60,7 @@ const useRealTimePosition = () => {
     markets.value = Object.keys(o)
   }
 
+  // 바이빗과의 웹소켓을 열고, 클라이언트가 갖고있는 store.state.realTimePositions에 현재 시세를 채워넣어 포지션의 손익을 계산한다.
   const openWebsocket = () => {
     reloadMarkets()
     if (markets.value.length === 0) return
@@ -89,8 +90,6 @@ const useRealTimePosition = () => {
     if (connection.value) connection.value.close()
     openWebsocket()
   }
-
-  onMounted(callApi)
 
   onUnmounted(() => {
     if (store.getters.isSSR) return
@@ -130,6 +129,7 @@ const useRealTimePosition = () => {
 
   return {
     positions,
+    openWebsocket,
     callApi,
   }
 }

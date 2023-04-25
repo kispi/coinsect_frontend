@@ -28,43 +28,11 @@
       class="alert-items"
       :class="{'one-column': oneColumn}"
       tag="div">
-      <div
-        @click="onClickHash(t)"
-        class="alert-item f-mono"
-        :class="[
-          bullOrBear(t),
-          getUrl(t) ? 'cursor-pointer' : ''
-        ]"
+      <WhaleAlertItem
+        :whaleAlert="t"
         :key="t.hash"
-        v-for="t in resp.data">
-        <div class="alert-item-header">
-          <div class="alert-item-symbol">
-            <AppImg :src="($store.getters.symbols[t.symbol.toUpperCase()] || {}).thumb" :alt="t.symbol"/>
-            <div class="name">{{ displayAmount(t) }} {{ t.symbol }}</div>
-            <div class="amount m-l-4">({{ $helpers.currency() }} {{ $helpers.number.pretty.price({ price: t.amountUsd, baseCurrency: 'usd' }) }})</div>
-            <div class="m-l-8 m-r-8 c-text-light">|</div>
-            <div class="timestamp">{{ $helpers.elapsedTime($helpers.dayjs.unix(t.timestamp)) }}</div>
-          </div>
-        </div>
-        <div class="alert-item-from-to">
-          <div class="from address">
-            <AppImg
-              v-if="t.fromOwnerType !== 'unknown'"
-              :src="$helpers.withCdn(`images/exchanges/${(t.fromOwner || '').toUpperCase().replace(/[ .]/g, '_')}.png`)"
-              :alt="t.fromOwner"
-            />
-            {{ displayAddressName(t, 'from') }}</div>
-          <i class="fal fa-chevron-right flex-wrap"/>
-          <div class="to address">
-            <AppImg
-              v-if="t.toOwnerType !== 'unknown'"
-              :src="$helpers.withCdn(`images/exchanges/${(t.toOwner || '').toUpperCase().replace(/[ .]/g, '_')}.png`)"
-              :alt="t.toOwner"
-            />
-            {{ displayAddressName(t, 'to') }}
-          </div>
-        </div>
-      </div>
+        v-for="t in resp.data"
+      />
     </transition-group>
     <div
       v-if="loading"
@@ -113,50 +81,6 @@ export default {
 
     const params = ref()
 
-    const listStable = ['usdt', 'usdc', 'busd', 'pax', 'gusd']
-
-    const getUrl = transaction => {
-      const urls = {
-        bitcoin: 'https://www.blockchain.com/btc/tx/',
-        ethereum: 'https://etherscan.io/tx/0x',
-        tron: 'https://tronscan.org/#/transaction/',
-        ripple: 'https://xrpscan.com/tx/'
-      }
-
-      const exploreUrl = urls[transaction.blockchain]
-      if (!exploreUrl) return
-
-      return exploreUrl + transaction.hash
-    }
-
-    const bullOrBear = t => {
-      const isStable = listStable.includes(t.symbol)
-      if (t.fromOwnerType === 'exchange' && t.toOwnerType === 'unknown') return isStable ? 'bear' : 'bull'
-      if (t.fromOwnerType === 'unknown' && t.toOwnerType === 'exchange') return isStable ? 'bull' : 'bear'
-    }
-
-    const onClickHash = t => {
-      const url = getUrl(t)
-      if (!url) return
-
-      window.open(url, '_blank')
-    }
-
-    const displayAddressName = (transaction, target) => {
-      return transaction[target + 'Owner'] || (transaction[target + 'OwnerType'] === 'unknown' ? '?' : transaction[target + 'OwnerType'])
-    }
-
-    const displayAmount = transaction => {
-      const parsed = parseFloat(transaction.amount) || 0
-      if (!parsed) return '?'
-
-      const isStable = listStable.includes(transaction.symbol)
-      return isStable ? Math.round(parsed).toLocaleString() : parsed.toLocaleString(undefined, {
-        minimumFractionDigits: 4,
-        maximumFractionDigits: 4,
-      })
-    }
-
     const createQuery = () => {
       const o = plugins.$helpers.qb().limit(100)
       const conds = []
@@ -197,16 +121,10 @@ export default {
 
     return {
       resp,
-      listStable,
       oneColumn,
       showFilters,
       loading,
       params,
-      getUrl,
-      onClickHash,
-      bullOrBear,
-      displayAddressName,
-      displayAmount,
     }
   },
 }
@@ -214,12 +132,6 @@ export default {
 
 <style lang="scss" scoped>
 .whale-alert {
-  .app-img {
-    width: 16px;
-    height: 16px;
-    margin-right: 8px;
-  }
-
   .alert-items {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -227,61 +139,6 @@ export default {
 
     &.one-column {
       grid-template-columns: repeat(1, 1fr);
-    }
-
-    .alert-item {
-      padding: 8px;
-      font-size: 12px;
-      border-radius: 4px;
-      border: 1px solid var(--border-base);
-      color: var(--text-stress);
-
-      &.bull {
-        background: var(--price-up-bg);
-        border: 1px solid var(--price-up);
-      }
-
-      &.bear {
-        background: var(--price-down-bg);
-        border: 1px solid var(--price-down);
-      }
-
-      .alert-item-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .alert-item-symbol {
-          display: flex;
-          align-items: center;
-
-          .name {
-            text-transform: uppercase;
-          }
-        }
-      }
-
-      .alert-item-from-to {
-        display: flex;
-        align-items: center;
-        margin-top: 8px;
-
-        .address {
-          max-width: 144px;
-          border: 1px solid var(--border-base);
-          border-radius: 16px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 4px;
-          text-transform: uppercase;
-          flex: 1;
-        }
-
-        .fa-chevron-right {
-          margin: 0 8px;
-        }
-      }
     }
   }
 

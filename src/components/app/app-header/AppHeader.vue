@@ -60,7 +60,7 @@
           @close="showSettings = null"
           :align="'right'"
           :mountBelow="refIconSettings">
-          <SettingsPanel :indices="[0, 1, 2, 3, 4]" class="shadowed"/>
+          <SettingsPanel :indices="[0, 1, 2, 3, 4, 5]" class="shadowed"/>
         </WrapperDropdownOverlay>
         <WrapperDropdownOverlay
           v-if="showMenuAccount"
