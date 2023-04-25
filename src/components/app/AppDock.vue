@@ -49,8 +49,8 @@ export default {
     const icons = computed(() => {
       const p = router.currentRoute.value.path
       return [{
-        handler: () => router.push('/'),
-        active: p === '/',
+        handler: () => router.push('/prices'),
+        active: p === '/prices',
         tooltip: 'KIMP',
         images: ['https://theme.zdassets.com/theme_assets/9190474/3941022f7857ffa2b0ac3cb9165aec2c2e4a4e89.jpg'],
       }, {
