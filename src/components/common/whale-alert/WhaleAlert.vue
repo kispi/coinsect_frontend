@@ -18,7 +18,6 @@
       <WhaleAlertFilters
         v-show="showFilters"
         @change-params="p => params = p"
-        :listStable="listStable"
         class="m-b-16"
       />
     </transition>
