@@ -78,12 +78,6 @@ export default {
         active: !store.getters.settings.chatFolded,
         component: 'AppChatToggler',
       }, {
-        handler: () => window.open('https://btc.coinsect.io'),
-        tooltip: 'UNDERSTANDING_BITCOIN',
-        html: `<div class="icon-bitcoin center overlay">
-          <img src="https://static.upbit.com/logos/BTC.png" alt="Understanding Bitcoin">
-        </div>`
-      }, {
         handler: () => plugins.$modal.custom({ component: 'ModalChatSettings' }),
         active: plugins.$modal.isOpened('ModalChatSettings'),
         tooltip: 'MODAL_CHAT_SETTINGS',

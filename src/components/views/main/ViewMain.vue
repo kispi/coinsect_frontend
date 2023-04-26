@@ -9,6 +9,7 @@
       <MainSection
         :title="'REAL_TIME_POSITIONS'"
         :link="'/indicators/real-time-positions'"
+        :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-hodu.jpg'"
         :tooltip="'TOOLTIP_REAL_TIME_POSITIONS'">
         <div class="grid">
           <CPosition
@@ -18,7 +19,10 @@
           />
         </div>
       </MainSection>
-      <MainSection :title="'WHALE_ALERT'" :link="'/indicators/whale-alert'">
+      <MainSection
+        :title="'WHALE_ALERT'"
+        :link="'/indicators/whale-alert'"
+        :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-whalealert.jpg'">
         <div class="grid">
           <WhaleAlertItem
             :whaleAlert="whaleAlert"
@@ -27,7 +31,10 @@
           />
         </div>
       </MainSection>
-      <MainSection :title="titleBitmexLeaderboard" :link="'/indicators/leaderboard'">
+      <MainSection
+        :title="titleBitmexLeaderboard"
+        :link="'/indicators/leaderboard'"
+        :image="'https://d1085v6s0hknp1.cloudfront.net/images/exchanges/BITMEX.png'">
         <div class="grid bitmex-positions">
           <div
             class="bitmex-position"
@@ -57,7 +64,7 @@ export default {
 
     const { openWebsocket } = useRealTimePosition()
 
-    const dashboards = ref(null)
+    const dashboards = computed(() => store.getters.dashboards.main)
 
     const timeout = ref(null)
 
@@ -79,17 +86,7 @@ export default {
 
     const initDashboards = async () => {
       try {
-        dashboards.value = await plugins.$http.get('dashboards/main')
-
-        // 리더보드에서 '워뇨띠' 찾아넣기
-        const found = (dashboards.value.leaderboards || []).find(o => o.name === 'aoa')
-        if (found) found.name = 'aoa (워뇨띠)'
-
-        // 최근 게시글에서 이미지 추출해서 넣기
-        dashboards.value.posts.data.forEach(async post => {
-          post.$$images = plugins.$helpers.retrieveImagesFromHTML(post.content)
-          post.board.$$color = `#${(await plugins.$helpers.crypto.hash.sha256(post.board.description) || '').substring(0, 6)}`
-        })
+        await store.dispatch('loadDashboardsMain')
 
         // 이하는 SSR에서는 실행하지 않음
         if (store.getters.isSSR) return
@@ -102,11 +99,7 @@ export default {
       }
     }
 
-    const init = async () => {
-      await initDashboards()
-    }
-
-    onMounted(init)
+    onMounted(initDashboards)
 
     onUnmounted(() => {
       if (store.getters.isSSR) return

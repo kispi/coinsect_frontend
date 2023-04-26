@@ -1,6 +1,10 @@
 <template>
   <div class="main-section">
     <div class="section-header">
+      <AppImg
+        v-if="image"
+        :src="image"
+      />
       <div class="section-title">
         <span v-html="$translate(title)"/>
         <i
@@ -37,6 +41,7 @@ export default {
   props: {
     title: String,
     link: String,
+    image: String,
     tooltip: String,
   },
   setup(props) {
@@ -70,8 +75,15 @@ export default {
     border-bottom: 1px solid var(--border-base);
     font-size: 12px;
 
+    .app-img {
+      width: 16px;
+      margin-right: 4px;
+      border-radius: 50%;
+    }
+
     .section-title {
       font-weight: 700;
+      flex: 1;
     }
 
     a {

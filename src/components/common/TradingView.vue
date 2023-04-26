@@ -65,7 +65,7 @@ export default {
 
 <style lang="scss" scoped>
 .trading-view {
-  height: 320px;
+  height: 280px;
   resize: vertical;
 
   .trading-view-container {

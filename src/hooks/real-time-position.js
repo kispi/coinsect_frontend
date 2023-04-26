@@ -76,15 +76,20 @@ const useRealTimePosition = () => {
     rtpTimeout.value = setTimeout(callApi, 1000 * 60 * 5)
   }
 
-  const onPositionChange = message => {
-    if (!message.meta) return
-
-    const newPosition = message.meta
-    const updateTarget = (store.getters.realTimePositions.data || []).find(p => p.id === newPosition.id)
+  const updatePosition = (realTimePositionsArray, newPosition) => {
+    const updateTarget = (realTimePositionsArray || []).find(p => p.id === newPosition.id)
     if (!updateTarget) return
 
     const keys = ['size', 'entryPrice', 'liqPrice', 'markPrice', 'contract', '$$value', '$$unrealized', 'onAir', 'tracking', 'editable', 'lastUpdate']
     keys.forEach(key => updateTarget[key] = newPosition[key])
+  }
+
+  const onPositionChange = message => {
+    if (!message.meta) return
+
+    const newPosition = message.meta
+    updatePosition((store.getters.realTimePositions || {}).data, newPosition)
+    updatePosition(((store.getters.dashboards.main || {}).realTimePositions || {}).data, newPosition)
 
     reloadMarkets()
     if (connection.value) connection.value.close()

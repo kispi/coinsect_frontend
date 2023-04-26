@@ -3,6 +3,7 @@ import app from './app'
 import chat from './chat'
 import constant from './constant'
 import content from './content'
+import dashboard from './dashboard'
 import marketInfo from './market-info'
 import onchain from './onchain'
 import post from './post'
@@ -14,6 +15,7 @@ const initialState = {
   chat: chat.state,
   constant: constant.state,
   content: content.state,
+  dashboard: dashboard.state,
   marketInfo: marketInfo.state,
   onchain: onchain.state,
   post: post.state,
@@ -27,6 +29,7 @@ export const newStore = () => createStore({
     chat,
     constant,
     content,
+    dashboard,
     marketInfo,
     onchain,
     post,
