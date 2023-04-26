@@ -27,10 +27,12 @@ const dashboard = {
         main.leaderboards.sort((a, b) => ['Long', 'Short'].includes(a.side) && b.side === '-' ? -1 : 1)
 
         // 최근 게시글에서 이미지 추출해서 넣기
-        main.posts.data.forEach(async post => {
+        const promises = main.posts.data.map(async post => {
           post.$$images = helpers.retrieveImagesFromHTML(post.content)
-          post.board.$$color = `#${(await helpers.crypto.hash.sha256(post.board.description) || '').substring(0, 6)}`
+          const hash = await helpers.crypto.hash.sha256(post.board.description) || ''
+          post.board.$$color = `#${hash.substring(0, 6)}`
         })
+        await Promise.all(promises)
         commit('setDashboards', { main })
       } catch (e) {
         return Promise.reject(e)

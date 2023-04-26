@@ -85,9 +85,9 @@ const useRealTimePosition = () => {
   }
 
   const onPositionChange = message => {
-    if (!message.meta) return
-
     const newPosition = message.meta
+    if (!newPosition) return
+
     updatePosition((store.getters.realTimePositions || {}).data, newPosition)
     updatePosition(((store.getters.dashboards.main || {}).realTimePositions || {}).data, newPosition)
 
