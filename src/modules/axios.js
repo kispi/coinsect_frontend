@@ -9,7 +9,7 @@ export const setHttpClient = o => $http = o
 export const createHttpClient = () => {
   const httpClient = axios.create({
     baseURL: `${process.env.VUE_APP_API_DOMAIN}`,
-    timeout: 5000,
+    timeout: 10000,
   })
 
   httpClient.interceptors.request.use(req => {
