@@ -64,7 +64,7 @@ export default {
 
     const { openWebsocket } = useRealTimePosition()
 
-    const dashboards = computed(() => store.getters.dashboards.main)
+    const dashboards = computed(() => store.getters.dashboardsMain)
 
     const timeout = ref(null)
 
@@ -93,7 +93,7 @@ export default {
 
         store.commit('setRealTimePositions', dashboards.value.realTimePositions)
         openWebsocket()
-        setTimeout(initDashboards, 1000 * 60)
+        timeout.value = setTimeout(initDashboards, 1000 * 60)
       } catch (e) {
         plugins.$toast.error(e.data.message)
       }

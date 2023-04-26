@@ -89,7 +89,7 @@ const useRealTimePosition = () => {
     if (!newPosition) return
 
     updatePosition((store.getters.realTimePositions || {}).data, newPosition)
-    updatePosition(((store.getters.dashboards.main || {}).realTimePositions || {}).data, newPosition)
+    updatePosition(((store.getters.dashboardsMain || {}).realTimePositions || {}).data, newPosition)
 
     reloadMarkets()
     if (connection.value) connection.value.close()
@@ -112,7 +112,7 @@ const useRealTimePosition = () => {
   watch(
     () => store.getters.instruments.bybit,
     newVal => {
-      if (!newVal) return
+      if (!newVal || !store.getters.realTimePositions) return
 
       store.getters.realTimePositions.data.forEach(position => {
         position.markPrice = parseFloat((newVal[position.contract] || {}).mark_price || 0)

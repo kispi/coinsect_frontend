@@ -1,6 +1,5 @@
 <template>
   <div class="app-pagination">
-    <div class="o-0 no-touch">PLACEHOLDER</div>
     <div class="page-numbers">
       <div
         @click="onPage(1)"

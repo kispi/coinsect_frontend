@@ -76,7 +76,7 @@ const post = {
       try {
         commit('setLoading', { posts: true })
         const resp = await communityService.post.all(o.build())
-        resp.data.forEach(post => post.$$images = helpers.retrieveImagesFromHTML(post.content))
+        await helpers.post.populateRenderablePosts(resp.data)
         commit('setPosts', {
           ...resp,
           ...params,

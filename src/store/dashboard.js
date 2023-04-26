@@ -3,37 +3,29 @@ import helpers from '@/helpers'
 
 const dashboard = {
   state: () => ({
-    dashboards: {
-      main: null,
-    },
+    dashboardsMain: null,
   }),
   getters: {
-    dashboards: state => state.dashboards,
+    dashboardsMain: state => state.dashboardsMain,
   },
   mutations: {
-    setDashboards(state, dashboards) {
-      Object.keys(dashboards).forEach(key => state.dashboards[key] = dashboards[key])
+    setDashboardsMain(state, dashboardsMain) {
+      state.dashboardsMain = dashboardsMain
     },
   },
   actions: {
     async loadDashboardsMain({ commit }) {
       try {
-        const main = await $http.get('dashboards/main')
+        const resp = await $http.get('dashboards/main')
 
         // 리더보드에서 '워뇨띠' 찾아넣기
-        const found = (main.leaderboards || []).find(o => o.name === 'aoa')
+        const found = (resp.leaderboards || []).find(o => o.name === 'aoa')
         if (found) found.name = 'aoa (워뇨띠)'
 
-        main.leaderboards.sort((a, b) => ['Long', 'Short'].includes(a.side) && b.side === '-' ? -1 : 1)
+        resp.leaderboards.sort((a, b) => ['Long', 'Short'].includes(a.side) && b.side === '-' ? -1 : 1)
 
-        // 최근 게시글에서 이미지 추출해서 넣기
-        const promises = main.posts.data.map(async post => {
-          post.$$images = helpers.retrieveImagesFromHTML(post.content)
-          const hash = await helpers.crypto.hash.sha256(post.board.description) || ''
-          post.board.$$color = `#${hash.substring(0, 6)}`
-        })
-        await Promise.all(promises)
-        commit('setDashboards', { main })
+        await helpers.post.populateRenderablePosts(resp.posts.data)
+        commit('setDashboardsMain', resp)
       } catch (e) {
         return Promise.reject(e)
       }
