@@ -123,6 +123,14 @@
     "en": "Add Chart",
     "kr": "차트 추가"
   },
+  "CHART_HIDE": {
+    "en": "Hide Charts",
+    "kr": "차트 접기"
+  },
+  "CHART_SHOW": {
+    "en": "Show Charts",
+    "kr": "차트 보기"
+  },
   "DELETED_BY_ADMIN": {
     "en": "Deleted by the admin.",
     "kr": "관리자에 의해 삭제되었습니다."

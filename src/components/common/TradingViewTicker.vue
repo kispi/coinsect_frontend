@@ -23,23 +23,17 @@ export default {
 
     const options = computed(() => ({
       symbols: [{
+        title: 'Bitcoin',
+        proName: 'INDEX:BTCUSD',
+      }, {
         title: 'S&P 500',
         proName: 'FOREXCOM:SPXUSD',
       }, {
         title: 'NASDAQ 100',
         proName: 'FOREXCOM:NSXUSD',
       }, {
-        title: 'KOSPI',
-        proName: 'KRX:KOSPI'
-      }, {
-        title: 'KOSDAQ',
-        proName: 'KRX:KOSDAQ'
-      }, {
         title: 'GOLD',
         proName: 'GOLD',
-      }, {
-        title: 'SILVER',
-        proName: 'SILVER',
       }],
       colorTheme: store.getters.settings.theme,
       isTransparent: false,

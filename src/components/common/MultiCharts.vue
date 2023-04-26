@@ -1,7 +1,10 @@
 <template>
-  <div class="multi-charts">
+  <div
+    v-if="shouldShowCharts"
+    class="multi-charts">
+    <TradingViewTicker class="m-b-8"/>
     <div
-      v-if="$store.getters.charts.length > 0"
+      v-if="$store.getters.charts.length > 0 && $store.getters.settings.tradingview"
       class="grid m-b-8"
       :style="dynamicGrid">
       <div
@@ -17,12 +20,21 @@
         />
       </div>
     </div>
-    <button
-      v-if="$store.getters.charts.length < 6"
-      class="btn btn-primary btn-block"
-      @click="onClickAddChart">
-      + {{ $translate('ADD_CHART') }}
-    </button>
+    <div class="buttons">
+      <button
+        v-if="$store.getters.charts.length < 6"
+        class="btn btn-primary"
+        @click="onClickAddChart">
+        <i class="fal fa-plus m-r-8"/>
+        {{ $translate('ADD_CHART') }}
+      </button>
+      <button
+        @click="$store.commit('setSettings', { tradingview: !$store.getters.settings.tradingview })"
+        class="btn btn-brd">
+        <i class="fal m-r-8" :class="$store.getters.settings.tradingview ? 'fa-chevron-up' : 'fa-chevron-down'"/>
+        {{ $translate($store.getters.settings.tradingview ? 'CHART_HIDE' : 'CHART_SHOW') }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -34,7 +46,12 @@ import TradingViewSymbols from './TradingViewSymbols'
 export default {
   components: { TradingViewSymbols },
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { plugins, store, router } = useGlobalHooks()
+
+    const shouldShowCharts = computed(() => {
+      const p = router.currentRoute.value.path
+      return !['/community', '/apps'].some(path => p.startsWith(path)) && !['/about'].includes(p)
+    })
 
     const dynamicGrid = computed(() => {
       if (store.getters.settings.chartFullWidth) return {
@@ -78,6 +95,7 @@ export default {
 
     return {
       dynamicGrid,
+      shouldShowCharts,
       onClickAddChart,
       onClickRemoveChart,
     }
@@ -91,6 +109,16 @@ export default {
     display: grid;
     grid-column-gap: 8px;
     grid-row-gap: 24px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+
+    button {
+      flex: 1;
+    }
   }
 
   .chart-header {

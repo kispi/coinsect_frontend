@@ -1,6 +1,5 @@
 <template>
   <div class="view-nasdaq">
-    <MultiCharts class="m-b-8"/>
     <NasdaqNaver/>
     <PoweredBy :by="'naver'" class="m-t-24"/>
   </div>

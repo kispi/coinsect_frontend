@@ -4,15 +4,7 @@
     class="app-body view-layout-default no-scrollbar"
     :class="{'folded': $store.getters.settings.headerFolded}">
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
-    <div
-      v-if="
-        $store.getters.settings.tradingview &&
-        !$router.currentRoute.value.path.startsWith('/community')
-      "
-      class="m-b-24">
-      <TradingViewTicker class="m-b-8"/>
-      <MultiCharts/>
-    </div>
+    <MultiCharts class="m-b-24"/>
     <RouterView
       v-if="$store.getters.isSSR || prepared"
       v-slot="{ Component, route }"
