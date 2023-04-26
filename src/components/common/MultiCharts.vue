@@ -86,6 +86,8 @@ export default {
           return true
         }
       })
+      // 유저가 차트 추가를 눌렀다는 것은 차트를 보고 싶어한다는 것이므로 차트를 보여준다.
+      store.commit('setSettings', { tradingview: true })
     }
 
     const onClickRemoveChart = idx => {
