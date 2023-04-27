@@ -189,7 +189,7 @@ export default {
   cursor: pointer;
 
   .ticker-symbol {
-    padding: 8px 0;
+    padding: 8px 4px;
 
     .fa-star {
       color: var(--bitcoin);
