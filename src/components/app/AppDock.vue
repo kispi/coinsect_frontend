@@ -57,7 +57,7 @@ export default {
         handler: () => router.push('/indicators/real-time-positions'),
         active: p === '/indicators/real-time-positions',
         tooltip: 'REAL_TIME_POSITIONS',
-        images: ['icon-hodu', 'icon-jg', 'icon-saddo'].map(f => plugins.$helpers.withCdn(`assets/${f}.jpg`)),
+        images: ['icon-jg', 'icon-saddo'].map(f => plugins.$helpers.withCdn(`assets/${f}.jpg`)),
       }, {
         handler: () => router.push('/indicators/leaderboard'),
         active: p === '/indicators/leaderboard',

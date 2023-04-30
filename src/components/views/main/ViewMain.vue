@@ -9,7 +9,7 @@
       <MainSection
         :title="'REAL_TIME_POSITIONS'"
         :link="'/indicators/real-time-positions'"
-        :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-hodu.jpg'"
+        :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-jg.jpg'"
         :tooltip="'TOOLTIP_REAL_TIME_POSITIONS'">
         <div class="grid">
           <CPosition

@@ -16,7 +16,7 @@
       <div
         v-if="!$store.getters.settings.sentimentVoted"
         class="vote-long-short overlay">
-        <AppImg :src="$helpers.withCdn('images/influencers/hodu_park.jpg')"/>
+        <AppImg :src="$helpers.withCdn('images/influencers/zzapgu_monkey.png')"/>
         <div class="buttons">
           <button
             @click="updateSentiment('long', true)"
