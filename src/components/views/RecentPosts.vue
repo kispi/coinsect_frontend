@@ -16,15 +16,15 @@
             {{ post.board.description }}
           </span>
           <span class="title-text">
-            <span class="elapsed-time">{{ $helpers.elapsedTime(post.createdAt) }}</span>
+            <span class="elapsed-time f-mono">{{ $helpers.elapsedTime(post.createdAt) }}</span>
             <i v-if="(post.$$images || []).length > 0" class="fa fa-image c-price-up-bybit"/>
             <div class="lines-1">{{ post.title }}</div>
           </span>
           <span v-if="(post.replies || []).length > 0" class="num-replies"> [{{ (post.replies || []).length }}]</span>
         </div>
-        <div class="additional-info">
+        <div class="additional-info f-mono">
           <div class="views m-r-16"><i class="fal fa-eye m-r-4"/>{{ post.views }}</div>
-          <div class="reactions"><i class="fal fa-thumbs-up m-r-4"/>{{ ((post.$$reactions || {}).up || {}).count }}</div>
+          <div class="reactions"><i class="fal fa-thumbs-up m-r-4"/>{{ post.summary.reactions.up.count || 0 }}</div>
         </div>
       </RouterLink>
     </div>
