@@ -24,6 +24,7 @@
     width: 300px;
     height: 600px;
     position: absolute;
+    background: red;
 
     &.left {
       right: calc(100% + 16px);

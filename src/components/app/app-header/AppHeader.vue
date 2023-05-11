@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header layout-centered">
+  <header class="app-header">
     <div class="top">
       <BannerMarketIndices/>
       <div
@@ -14,7 +14,14 @@
       class="logo-and-settings"
       :class="{'border-top': $store.getters.indices}">
       <div class="flex-row flex-between items-center flex-fill">
-        <AppLogo/>
+        <div class="flex-row items-center no-select">
+          <i
+            @click="$store.commit('setShowNavigation', !$store.getters.showNavigation)"
+            class="fal menu-icon center m-r-8"
+            :class="$store.getters.showNavigation ? 'fa-times' : 'fa-bars'"
+          />
+          <AppLogo/>
+        </div>
         <div class="icons">
           <div
             @click="onClickShare"
@@ -60,7 +67,7 @@
           @close="showSettings = null"
           :align="'right'"
           :mountBelow="refIconSettings">
-          <SettingsPanel :indices="[0, 1, 2, 3, 4, 5]" class="shadowed"/>
+          <SettingsPanel :indices="[0, 1, 2, 3, 4]" class="shadowed"/>
         </WrapperDropdownOverlay>
         <WrapperDropdownOverlay
           v-if="showMenuAccount"
@@ -75,22 +82,6 @@
         </WrapperDropdownOverlay>
       </div>
     </div>
-    <nav class="ah-menu-items pretty-scrollbar">
-      <a
-        draggable="false"
-        @click.prevent="e => onClickMenuItem(e, menuItem)"
-        :href="menuItem.path"
-        class="ah-menu-item"
-        :class="{
-          'selected': menuItem.$$selected,
-          'hover': (subPages || []).some(subPage => subPage.path.includes(menuItem.pathPrefix)),
-        }"
-        :key="menuItem.title"
-        v-for="menuItem in menuItems">
-        {{ $translate(menuItem.title) }}<i v-if="menuItem.subPages" class="fal fa-chevron-down no-touch"/>
-      </a>
-    </nav>
-    <SubHeader v-model="subPages"/>
     <BannerBitcoinBlog class="lines-1 m-t-4"/>
   </header>
 </template>
@@ -197,6 +188,13 @@ export default {
     padding: 8px 0;
   }
 
+  .menu-icon {
+    margin-top: 4px;
+    font-size: 20px;
+    width: 20px;
+    cursor: pointer;
+  }
+
   .logo-and-settings {
     flex: 1;
     display: flex;
@@ -237,41 +235,6 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-      }
-    }
-  }
-
-  .ah-menu-items {
-    display: flex;
-    overflow-x: auto;
-    box-shadow: 0 -1px var(--border-base) inset;
-
-    .ah-menu-item {
-      display: flex;
-      align-items: center;
-      padding: 12px 8px;
-      white-space: nowrap;
-      border-bottom: 2px solid transparent;
-      color: var(--text-stress);
-      position: relative;
-      transition: none;
-      user-select: none;
-      cursor: pointer;
-
-      &.selected {
-        color: var(--brand-primary);
-        border-bottom: 2px solid var(--brand-primary);
-        font-weight: 700;
-      }
-
-      &.hover,
-      &:hover {
-        color: var(--brand-primary-hover);
-      }
-
-      i {
-        font-size: 10px;
-        margin-left: 4px;
       }
     }
   }

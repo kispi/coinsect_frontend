@@ -1,17 +1,17 @@
 <template>
-  <AppHeader :class="{'folded': $store.getters.settings.headerFolded}"/>
-  <div
-    class="app-body view-layout-default no-scrollbar"
-    :class="{'folded': $store.getters.settings.headerFolded}">
-    <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
-    <MultiCharts class="m-b-24"/>
-    <RouterView
-      v-if="$store.getters.isSSR || prepared"
-      v-slot="{ Component, route }"
-      class="router-view-container">
-      <component :is="Component" :key="route.path"/>
-    </RouterView>
-    <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
+  <AppHeader class="layout-centered"/>
+  <div class="app-body view-layout-default no-scrollbar">
+    <!-- <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/> -->
+    <AppNavigation/>
+    <div class="router-view-container w-100">
+      <MultiCharts class="m-b-24"/>
+      <RouterView
+        v-if="$store.getters.isSSR || prepared"
+        v-slot="{ Component, route }">
+        <component :is="Component" :key="route.path"/>
+      </RouterView>
+      <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
+    </div>
   </div>
   <AppFooter/>
   <AppAddons/>
@@ -25,6 +25,7 @@ import useGlobalHooks from './hooks/global-hooks'
 export default {
   components: {
     AppHeader: defineAsyncComponent(() => import('@/components/app/app-header/AppHeader')),
+    AppNavigation: defineAsyncComponent(() => import('@/components/app/AppNavigation')),
     AppAddons: defineAsyncComponent(() => import('@/components/app/addons/AppAddons')),
     AppFooter: defineAsyncComponent(() => import('@/components/app/AppFooter')),
     AppRowAds: defineAsyncComponent(() => import('@/components/app/AppRowAds')),
@@ -118,27 +119,6 @@ export default {
   right: 0;
   z-index: 5;
   background: var(--background-base);
-
-  &.folded {
-    .logo-and-settings {
-      padding-top: 0;
-    }
-
-    .ah-menu-items,
-    .top {
-      display: none;
-    }
-
-    @media (max-width: 991px) {
-      border-bottom: 1px solid var(--border-base);
-    }
-
-    @media (min-width: 992px) {
-      .logo-and-settings {
-        border-bottom: 1px solid var(--border-base);
-      }
-    }
-  }
 }
 
 .app-body {
@@ -153,10 +133,6 @@ export default {
       max-width: 992px;
       height: 280px;
     }
-  }
-
-  &.folded {
-    --app-header-height: 72px;
   }
 }
 </style>

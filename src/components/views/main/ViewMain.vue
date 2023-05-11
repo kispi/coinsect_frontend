@@ -122,7 +122,7 @@ export default {
     gap: 8px;
 
     &.main {
-      gap: 24px;
+      gap: 8px;
     }
   }
 

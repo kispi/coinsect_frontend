@@ -1,50 +1,8 @@
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 const useMenuItems = () => {
-  const { plugins, store, router } = useGlobalHooks()
-
-  const subPages = ref(null)
-
-  const lastClick = ref(null)
-
-  const onClickMenuItem = async (e, menuItem) => {
-    lastClick.value = menuItem
-
-    if (menuItem.subPages) {
-      subPages.value = null
-      await plugins.$helpers.sleep(0)
-      subPages.value = menuItem.subPages
-      await plugins.$helpers.sleep(0)
-      const dom = document.getElementsByClassName('sub-header')[0]
-      if (!dom) return
-
-      const rectClickedAnchorTag = e.target.getBoundingClientRect()
-      const rectDom = dom.getBoundingClientRect()
-
-      if (window.innerWidth >= rectClickedAnchorTag.left + rectDom.width) {
-        dom.style.left = `${rectClickedAnchorTag.left}px`
-      } else {
-        dom.style.right = `${(window.innerWidth - rectClickedAnchorTag.right)}px`
-      }
-      return
-    }
-
-    if (menuItem.path) {
-      router.push(menuItem.path)
-      return
-    }
-  }
-
-  const onClickDocument = e => {
-    if (!subPages.value) return
-
-    const cl = e.target.classList
-    if (
-      (!cl.contains('ah-menu-item') && !cl.contains('sub-header-item') && !cl.contains('fa-chevron-down')) ||
-      !(lastClick.value || {}).subPages
-    ) subPages.value = null
-  }
+  const { router } = useGlobalHooks()
 
   const menuItems = computed(() => [{
     title: 'HOME',
@@ -55,7 +13,6 @@ const useMenuItems = () => {
   }, {
     title: 'INDICATORS',
     pathPrefix: '/indicators/',
-    path: '/indicators/real-time-positions',
     subPages: [
       { path: '/indicators/real-time-positions', title: 'REAL_TIME_POSITIONS' },
       { path: '/indicators/leaderboard', title: 'BITMEX_LEADERBOARD' },
@@ -69,7 +26,6 @@ const useMenuItems = () => {
   }, {
     title: 'NEWS_AND_CONTENTS',
     pathPrefix: '/contents/',
-    path: '/contents/news',
     subPages: [
       { path: '/contents/news', title: 'NEWS' },
       { path: '/contents/economic-calendar', title: 'ECONOMIC_CALENDAR' },
@@ -80,7 +36,6 @@ const useMenuItems = () => {
   }, {
     title: 'MARKETS',
     pathPrefix: '/markets/',
-    path: '/markets/crypto',
     subPages: [
       { path: '/markets/crypto', title: 'CRYPTO' },
       { path: '/markets/nasdaq', title: 'NASDAQ' },
@@ -90,7 +45,6 @@ const useMenuItems = () => {
   }, {
     title: 'APPS',
     pathPrefix: '/apps/',
-    path: '/apps/portfolio',
     subPages: [
       { path: '/apps/portfolio', title: 'PORTFOLIO', },
       { path: '/apps/salary', title: 'SALARY' },
@@ -106,30 +60,21 @@ const useMenuItems = () => {
     path: '/about',
   }].map(o => {
     const p = router.currentRoute.value.path
+    if (o.subPages) {
+      o.subPages = o.subPages.map(o => ({
+        ...o,
+        $$selected: p === o.path,
+      }))
+    }
 
     return {
       ...o,
-      $$selected: p.startsWith(o.pathPrefix) || p === o.path,
+      $$selected: o.path === '/community' ? p.startsWith(o.pathPrefix) : p === o.path,
     }
   }))
 
-  watch(
-    () => store.getters.windowInnerWidth,
-    () => subPages.value = null,
-  )
-
-  onMounted(() => {
-    document.addEventListener('click', onClickDocument)
-  })
-
-  onUnmounted(() => {
-    document.removeEventListener('click', onClickDocument)
-  })
-
   return {
-    subPages,
     menuItems,
-    onClickMenuItem,
   }
 }
 
