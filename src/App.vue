@@ -4,7 +4,7 @@
     class="app-body view-layout-default no-scrollbar"
     :class="{'folded': $store.getters.settings.headerFolded}">
     <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
-    <MultiCharts class="m-b-24"/>
+    <MultiCharts v-if="prepared" class="m-b-24"/>
     <RouterView
       v-if="$store.getters.isSSR || prepared"
       v-slot="{ Component, route }"

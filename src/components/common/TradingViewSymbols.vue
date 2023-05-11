@@ -4,12 +4,12 @@
     :gap="8">
     <AppDropdown
       :dropdownItems="tradingviewSymbols"
-      @select-dropdown-item="o => onSelectChartSymbol(o, 'symbol')"
+      @select-dropdown-item="o => onChange(o, 'symbol')"
     />
     <AppDropdown
       class="timeframe"
       :dropdownItems="defaultTimeframes"
-      @select-dropdown-item="o => onSelectChartSymbol(o, 'interval')"
+      @select-dropdown-item="o => onChange(o, 'interval')"
     />
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
 
     const chart = computed(() => store.getters.charts[props.chartIndex])
 
-    const onSelectChartSymbol = (o, key) => {
+    const onChange = (o, key) => {
       chart.value[key] = o.key
       store.commit('setCharts', store.getters.charts)
     }
@@ -118,7 +118,7 @@ export default {
       chart,
       defaultTimeframes,
       tradingviewSymbols,
-      onSelectChartSymbol,
+      onChange,
     }
   },
 }
