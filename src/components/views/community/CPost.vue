@@ -23,8 +23,8 @@
         </div>
         <div class="numbers">
           <div class="views">조회 {{ post.views }}</div>
-          <div class="ups">추천 {{ ((post.renderable.reactions || {}).up || {}).count || 0 }}</div>
-          <div class="replies">댓글 {{ post.renderable.numReplies }}</div>
+          <div class="ups">추천 {{ post.summary.reactions.up.count || 0 }}</div>
+          <div class="replies">댓글 {{ post.summary.numReplies }}</div>
         </div>
       </div>
       <div
@@ -34,18 +34,21 @@
       />
       <div class="post-reactions">
         <div
-          @click="toggleReaction(rType)"
-          class="reaction-box"
-          :class="{'activated': ((post.renderable.reactions || {})[rType] || {}).activated}"
-          :key="rType"
-          v-for="rType in ['up', 'down']">
-          <i :class="`fal fa-thumbs-${rType}`"/>
-          <div class="value">{{ ((post.renderable.reactions || {})[rType] || {}).count || 0 }}</div>
+          @click="toggleReaction('up')"
+          class="reaction-box">
+          <i class="fa-thumbs-up" :class="post.summary.reactions.up.activated ? 'fa' : 'fal'"/>
+          <div class="value">{{ post.summary.reactions.up.count || 0 }}</div>
+        </div>
+        <div
+          @click="toggleReaction('down')"
+          class="reaction-box">
+          <i class="fa-thumbs-down" :class="post.summary.reactions.down.activated ? 'fa' : 'fal'"/>
+          <div class="value">{{ post.summary.reactions.down.count || 0 }}</div>
         </div>
       </div>
     </div>
     <div class="post-section-replies">
-      <div class="header">댓글 <span class="c-brand-primary f-700">[{{ post.renderable.numReplies }}]</span></div>
+      <div class="header">댓글 <span class="c-brand-primary f-700">[{{ post.summary.numReplies }}]</span></div>
       <CReplies :replies="post.replies"/>
       <ReplyWrite :post="post"/>
     </div>
@@ -174,10 +177,6 @@ export default {
 
       &:hover {
         cursor: pointer;
-      }
-
-      &.activated {
-        border: 1px solid var(--brand-primary);
       }
 
       .value {

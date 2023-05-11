@@ -50,7 +50,7 @@ export default {
 
     const shouldShowCharts = computed(() => {
       const p = router.currentRoute.value.path
-      return !['/community', '/apps'].some(path => p.startsWith(path)) && !['/about'].includes(p)
+      return !['/community', '/apps', '/contents'].some(path => p.startsWith(path)) && !['/about'].includes(p)
     })
 
     const dynamicGrid = computed(() => {
