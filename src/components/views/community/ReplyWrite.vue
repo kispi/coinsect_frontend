@@ -139,23 +139,26 @@ export default {
       const required = ['nickname', 'content']
       if (!store.getters.me) required.push('password')
 
+      // 굳이 복사하는 이유는 이미지를 content 앞에 붙여넣기 위해서인데, payload를 직접 수정하면 순간적으로 textarea에 업로드된 파일의 주소가 번쩍함.
+      const o = {...payload.value}
+
       // 이미지가 있으면 content 앞에 붙여넣기
       if (images.value.length > 0) {
         const imgTag = `<img src="${images.value[0]}">`
-        if (!payload.value.content) payload.value.content = imgTag
-        else payload.value.content = `${imgTag}\n\n${payload.value.content}`
+        if (!o.content) o.content = imgTag
+        else o.content = `${imgTag}\n\n${o.content}`
       }
 
       if (required.some(key => {
-        if (!payload.value[key]) {
+        if (!o[key]) {
           plugins.$toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
           return true
         }
-        return !payload.value[key]
+        return !o[key]
       })) return
 
       try {
-        await crudService.reply.create(payload.value)
+        await crudService.reply.create(o)
         store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
         store.dispatch('loadPosts')
       } catch (e) {

@@ -9,6 +9,7 @@
       <div
         class="reply-body"
         :style="paddingLeft">
+        
         <div class="reply-header">
           <div class="reply-user" :class="{'authorized-clickable-nickname': reply.userId}">
             <UserSymbol :user="reply.user" class="m-r-4"/>
@@ -18,17 +19,16 @@
             />
           </div>
           <div class="reply-functions">
-            <!-- <div @click="onClickEdit(reply)" class="reply-edit" v-html="$translate('EDIT')"/> -->
             <div
-              v-if="$helpers.writing.canModify(reply)"
-              @click="onClickDelete(reply)"
-              class="reply-delete">
-              {{ $translate('DELETE') }}
+              @click="toggleReaction(reply.id, 'up')"
+              class="vote function f-mono">
+              <i class="fa-thumbs-up" :class="reply.summary.reactions.up.activated ? 'fa' : 'fal'"/>{{ reply.summary.reactions.up.count || 0 }}
             </div>
+            <div class="vr"/>
             <div
-              @click="reply.$$showReply = !reply.$$showReply"
-              class="reply-reply">
-              {{ $translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY') }}
+              @click="toggleReaction(reply.id, 'down')"
+              class="vote function f-mono">
+              <i class="fa-thumbs-down" :class="reply.summary.reactions.down.activated ? 'fa' : 'fal'"/>{{ reply.summary.reactions.down.count || 0 }}
             </div>
           </div>
         </div>
@@ -36,8 +36,26 @@
           @click="$helpers.onClickHTMLContent"
           class="content"
           :class="{'deleted': reply.deletedAt}"
-          v-html="reply.deletedAt ? $translate('DELETED_REPLY') : reply.content"/>
-        <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
+          v-html="reply.deletedAt ? $translate('DELETED_REPLY') : reply.content"
+        />
+        <div class="flex-row items-center flex-between">
+          <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
+          <div class="reply-functions">
+            <template v-if="$helpers.writing.canModify(reply)">
+              <div
+                @click="onClickDelete(reply)"
+                class="reply-delete function">
+                {{ $translate('DELETE') }}
+              </div>
+              <div class="vr"/>
+            </template>
+            <div
+              @click="reply.$$showReply = !reply.$$showReply"
+              class="reply-reply function">
+              {{ $translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY') }}
+            </div>
+          </div>
+        </div>
       </div>
       <div
         v-if="reply.$$showReply"
@@ -95,11 +113,23 @@ export default {
       }
     }
 
+    const toggleReaction = async (replyId, type) => {
+      try {
+        await communityService.toggleReaction({
+          replyId,
+          type,
+          nickname: ((store.getters.chatUser || {}).profile || {}).nickname,
+        })
+        store.dispatch('loadPost', store.getters.post.sharingKey)
+      } catch (e) {}
+    }
+
     return {
       repliesToDisplay,
       paddingLeft,
       hasNonDeletedChild,
       onClickDelete,
+      toggleReaction,
     }
   },
 }
@@ -138,22 +168,34 @@ export default {
 
     .reply-header {
       display: flex;
+      align-items: center;
       justify-content: space-between;
+    }
 
-      .reply-functions {
-        display: flex;
+    .reply-functions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
 
-        div {
-          &:not(:last-child) {
-            margin-right: 8px;
-            padding-right: 8px;
-            border-right: 1px solid var(--border-light);
-          }
+      .vr {
+        height: 12px;
+        width: 1px;
+        background: var(--border-base);
+      }
 
-          &:hover {
-            text-decoration: underline;
-            cursor: pointer;
-          }
+      .function {
+        padding: 0 4px;
+        cursor: pointer;
+
+        &:hover {
+          background: var(--background-light);
+          border-radius: 4px;
+        }
+      }
+
+      .vote {
+        i {
+          margin-right: 4px;
         }
       }
     }
