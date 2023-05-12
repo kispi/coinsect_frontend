@@ -165,7 +165,6 @@ export default {
   @media (min-width: 1400px) {
     transform: translateX(calc(-8px - var(--navigation-width)));
     border-right: 0;
-    box-shadow: 2px 2px 8px rgba(64, 64, 64, 0.5);
 
     &.folded {
       opacity: 1;
