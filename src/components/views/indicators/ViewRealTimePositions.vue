@@ -17,7 +17,7 @@
       <RouterLink
         to="/"
         class="btn btn-primary">
-        {{ $translate('GO_TO_MAIN') }}<i class="fal fa-arrow-right m-l-8"/>
+        {{ $translate('GO_TO_MAIN') }}
       </RouterLink>
     </div>
     <div

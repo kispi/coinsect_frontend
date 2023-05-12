@@ -11,10 +11,6 @@
     "en": "Theme",
     "kr": "테마"
   },
-  "HEADER_FOLDED": {
-    "en": "Header Folded",
-    "kr": "헤더 접기"
-  },
   "CHART_FULL_WIDTH": {
     "en": "Chart Full Width",
     "kr": "가로로 긴 차트"
@@ -208,7 +204,7 @@
     "kr": "로또"
   },
   "SEO": {
-    "en": "Search Engine Optimization",
+    "en": "SEO",
     "kr": "검색 엔진 최적화"
   },
   "GAMES": {
@@ -229,7 +225,7 @@
   },
   "COMMUNITY": {
     "en": "Freeboard",
-    "kr": "자유게시판"
+    "kr": "커뮤니티"
   },
   "UPDATES": {
     "en": "Updates",

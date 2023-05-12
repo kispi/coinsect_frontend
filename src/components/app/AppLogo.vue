@@ -1,7 +1,8 @@
 <template>
   <RouterLink
     :to="'/'"
-    class="app-logo">
+    class="app-logo"
+    @click="$store.commit('setShowNavigation', false)">
     coinsect
   </RouterLink>
 </template>

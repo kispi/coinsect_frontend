@@ -11,7 +11,7 @@
             @click.prevent="$router.push(page.path)"
             :href="page.path"
             :key="page.path"
-            v-for="page in section.subPages"
+            v-for="page in section.subItems"
             v-html="$translate(page.title)"
           />
         </div>
@@ -82,13 +82,13 @@ export default {
 
     const sections = computed(() => [{
       title: 'MAIN',
-      subPages: [
+      subItems: [
         { path: '/', title: 'HOME' },
         { path: '/prices', title: 'KIMP' },
         { path: '/community', title: 'COMMUNITY' },
         { path: '/about', title: 'ABOUT' },
       ],
-    }].concat(menuItems.value.filter(o => o.subPages)))
+    }].concat(menuItems.value.filter(o => o.subItems)))
 
     const info = computed(() => {
       const html = {

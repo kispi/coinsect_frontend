@@ -49,7 +49,6 @@ const app = {
       },
       newsProvider: 'upbit', // 'upbit' || 'cobak_feed' || 'cobak_article'
       sentimentVoted: false,
-      headerFolded: false,
       chatFolded: false,
       chatSizeMax: false,
       chatHideImage: false,
@@ -58,6 +57,7 @@ const app = {
       chatOverlayNewMessage: true,
       chatSkin: 'basic',
     },
+    showNavigation: null,
     charts: [
       { symbol: 'BINANCE:BTCUSDT', interval: 15 },
       { symbol: 'FOREXCOM:NSXUSD', interval: 15 },
@@ -82,6 +82,7 @@ const app = {
     chatUsers: state => state.chatUsers,
     notifications: state => state.notifications,
     settings: state => state.settings,
+    showNavigation: state => state.showNavigation,
     charts: state => state.charts,
     windowInnerWidth: state => state.windowInnerWidth,
     windowInnerHeight: state => state.windowInnerHeight,
@@ -131,6 +132,9 @@ const app = {
         }
       })
       helpers.localStorage.setMeta('settings', state.settings)
+    },
+    setShowNavigation(state, showNavigation) {
+      state.showNavigation = showNavigation
     },
     setCharts(state, charts) {
       state.charts = charts

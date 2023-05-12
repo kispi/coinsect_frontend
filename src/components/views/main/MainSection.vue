@@ -25,9 +25,10 @@
       </a>
     </div>
     <div class="section-content">
-      <div class="scrollable pretty-scrollbar">
+      <div @scroll="e => showTopGrad = e.target.scrollTop > 0" class="scrollable pretty-scrollbar">
         <slot/>
       </div>
+      <div class="overlay top" :class="{'o-0': !showTopGrad}"/>
       <div class="overlay bottom"/>
     </div>
   </div>
@@ -49,6 +50,8 @@ export default {
 
     const refTooltip = ref(null)
 
+    const showTopGrad = ref(null)
+
     const tooltipId = computed(() => {
       if (!props.tooltip) return
 
@@ -57,6 +60,7 @@ export default {
 
     return {
       refTooltip,
+      showTopGrad,
       tooltipId,
     }
   },
@@ -65,6 +69,10 @@ export default {
 
 <style lang="scss" scoped>
 .main-section {
+  box-shadow: 0 2px 8px rgba(64, 64, 64, 0.16);
+  padding: 8px;
+  border-radius: 8px;
+
   .section-header {
     display: flex;
     justify-content: space-between;
@@ -109,8 +117,15 @@ export default {
   }
 
   .overlay {
-    height: 24px;
+    height: 32px;
     pointer-events: none;
+    z-index: 1;
+
+    &.top {
+      bottom: initial;
+      background: linear-gradient(to bottom, var(--background-base), rgba(255, 255, 255, 0));
+      transition: all 0.3s ease;
+    }
 
     &.bottom {
       top: initial;

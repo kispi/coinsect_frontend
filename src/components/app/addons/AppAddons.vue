@@ -1,6 +1,6 @@
 <template v-if="!$store.getters.isSSR">
   <AppLoading :loading="$store.getters.loading.global" class="global-loading"/>
-  <AppDock/>
+  <AppChatToggler/>
   <AppChat v-if="prepared"/>
   <AppToast/>
   <AppTooltips/>
@@ -15,7 +15,7 @@
 <script>
 import { ref, watch } from 'vue'
 import AppChat from '@/components/applications/chat/AppChat'
-import AppDock from '@/components/app/AppDock'
+import AppChatToggler from '@/components/applications/chat/AppChatToggler'
 import AppModal from '@/components/app/AppModal'
 import AppTooltips from '@/components/app/AppTooltips'
 import AppToast from '@/components/app/AppToast'
@@ -27,7 +27,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   components: {
     AppChat,
-    AppDock,
+    AppChatToggler,
     AppModal,
     AppTooltips,
     AppToast,

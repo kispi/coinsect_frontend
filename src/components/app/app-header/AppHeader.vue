@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header layout-centered">
+  <header class="app-header">
     <div class="top">
       <BannerMarketIndices/>
       <div
@@ -10,11 +10,20 @@
         {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
       </div>
     </div>
-    <div
-      class="logo-and-settings"
-      :class="{'border-top': $store.getters.indices}">
+    <div class="logo-and-settings">
       <div class="flex-row flex-between items-center flex-fill">
-        <AppLogo/>
+        <div class="flex-row items-center no-select">
+          <div
+            @click="$store.commit('setShowNavigation', !$store.getters.showNavigation)"
+            class="clickable-icon-wrapper m-r-4">
+            <i
+              v-if="$store.getters.windowInnerWidth < 1400"
+              class="fal menu-icon"
+              :class="$store.getters.showNavigation ? 'fa-times' : 'fa-bars'"
+            />
+          </div>
+          <AppLogo/>
+        </div>
         <div class="icons">
           <div
             @click="onClickShare"
@@ -60,7 +69,7 @@
           @close="showSettings = null"
           :align="'right'"
           :mountBelow="refIconSettings">
-          <SettingsPanel :indices="[0, 1, 2, 3, 4, 5]" class="shadowed"/>
+          <SettingsPanel :indices="[0, 1, 2, 3, 4]" class="shadowed"/>
         </WrapperDropdownOverlay>
         <WrapperDropdownOverlay
           v-if="showMenuAccount"
@@ -75,30 +84,12 @@
         </WrapperDropdownOverlay>
       </div>
     </div>
-    <nav class="ah-menu-items pretty-scrollbar">
-      <a
-        draggable="false"
-        @click.prevent="e => onClickMenuItem(e, menuItem)"
-        :href="menuItem.path"
-        class="ah-menu-item"
-        :class="{
-          'selected': menuItem.$$selected,
-          'hover': (subPages || []).some(subPage => subPage.path.includes(menuItem.pathPrefix)),
-        }"
-        :key="menuItem.title"
-        v-for="menuItem in menuItems">
-        {{ $translate(menuItem.title) }}<i v-if="menuItem.subPages" class="fal fa-chevron-down no-touch"/>
-      </a>
-    </nav>
-    <SubHeader v-model="subPages"/>
-    <BannerBitcoinBlog class="lines-1 m-t-4"/>
   </header>
 </template>
 
 <script>
 import { computed, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
-import useMenuItems from './menu-items'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
 
@@ -123,8 +114,6 @@ export default {
     const showMenuAccount = ref(null)
 
     const numConnectionsColorClass = ref(null)
-
-    const { menuItems, subPages, onClickMenuItem } = useMenuItems()
 
     const numNewNotifications = computed(() => {
       const list = (store.getters.notifications || {}).data || []
@@ -175,9 +164,6 @@ export default {
       showMenuAccount,
       numConnectionsColorClass,
       numNewNotifications,
-      menuItems,
-      subPages,
-      onClickMenuItem,
       onClickMenuAccount,
       onClickShare,
       handleClickMyActivity,
@@ -202,15 +188,13 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 8px;
+    padding: 8px 0;
+    border-top: 1px solid var(--border-base);
+    border-bottom: 1px solid var(--border-base);
 
     .section-logo {
       display: flex;
       align-items: baseline;
-    }
-
-    &.border-top {
-      border-top: 1px solid var(--border-base);
     }
 
     .icons {
@@ -237,41 +221,6 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-      }
-    }
-  }
-
-  .ah-menu-items {
-    display: flex;
-    overflow-x: auto;
-    box-shadow: 0 -1px var(--border-base) inset;
-
-    .ah-menu-item {
-      display: flex;
-      align-items: center;
-      padding: 12px 8px;
-      white-space: nowrap;
-      border-bottom: 2px solid transparent;
-      color: var(--text-stress);
-      position: relative;
-      transition: none;
-      user-select: none;
-      cursor: pointer;
-
-      &.selected {
-        color: var(--brand-primary);
-        border-bottom: 2px solid var(--brand-primary);
-        font-weight: 700;
-      }
-
-      &.hover,
-      &:hover {
-        color: var(--brand-primary-hover);
-      }
-
-      i {
-        font-size: 10px;
-        margin-left: 4px;
       }
     }
   }
