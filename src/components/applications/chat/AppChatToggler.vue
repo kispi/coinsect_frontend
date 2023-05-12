@@ -9,6 +9,7 @@
     }">
     <i class="fa fa-comment c-black f-32"/>
     <div class="overlay center f-10 c-white">TALK</div>
+    <BadgeUnreads :numUnreads="numUnreads"/>
   </div>
 </template>
 
@@ -22,7 +23,7 @@ export default {
   setup(_, { emit }) {
     const { plugins, store } = useGlobalHooks()
 
-    const { filteredMessages: messages } = useChatHandler()
+    const { filteredMessages: messages, numUnreads } = useChatHandler()
 
     const toggleChatFolded = () => {
       store.commit('setSettings', { chatFolded: !store.getters.settings.chatFolded })
@@ -39,6 +40,7 @@ export default {
     })
 
     return {
+      numUnreads,
       toggleChatFolded,
     }
   },
@@ -57,6 +59,12 @@ export default {
 
   &:not(:hover) {
     opacity: 0.75;
+  }
+
+  .badge-unreads {
+    position: absolute;
+    top: -4px;
+    right: -4px;
   }
 }
 </style>

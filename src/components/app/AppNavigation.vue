@@ -2,7 +2,7 @@
   <div
     class="app-navigation pretty-scrollbar"
     :class="{'folded': !$store.getters.showNavigation}">
-    <BannerBitcoinBlog class="m-b-8"/>
+    <BannerBitcoinBlog class="p-16 m-b-8"/>
     <nav class="menu-items pretty-scrollbar">
       <div
         class="menu-item"
