@@ -10,12 +10,11 @@
         {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
       </div>
     </div>
-    <div
-      class="logo-and-settings"
-      :class="{'border-top': $store.getters.indices}">
+    <div class="logo-and-settings">
       <div class="flex-row flex-between items-center flex-fill">
         <div class="flex-row items-center no-select">
           <i
+            v-if="$store.getters.windowInnerWidth < 1400"
             @click="$store.commit('setShowNavigation', !$store.getters.showNavigation)"
             class="fal menu-icon center m-r-8"
             :class="$store.getters.showNavigation ? 'fa-times' : 'fa-bars'"
@@ -82,14 +81,12 @@
         </WrapperDropdownOverlay>
       </div>
     </div>
-    <BannerBitcoinBlog class="lines-1 m-t-4"/>
   </header>
 </template>
 
 <script>
 import { computed, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
-import useMenuItems from './menu-items'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
 
@@ -114,8 +111,6 @@ export default {
     const showMenuAccount = ref(null)
 
     const numConnectionsColorClass = ref(null)
-
-    const { menuItems, subPages, onClickMenuItem } = useMenuItems()
 
     const numNewNotifications = computed(() => {
       const list = (store.getters.notifications || {}).data || []
@@ -166,9 +161,6 @@ export default {
       showMenuAccount,
       numConnectionsColorClass,
       numNewNotifications,
-      menuItems,
-      subPages,
-      onClickMenuItem,
       onClickMenuAccount,
       onClickShare,
       handleClickMyActivity,
@@ -200,15 +192,13 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 8px;
+    padding: 8px 0;
+    border-top: 1px solid var(--border-base);
+    border-bottom: 1px solid var(--border-base);
 
     .section-logo {
       display: flex;
       align-items: baseline;
-    }
-
-    &.border-top {
-      border-top: 1px solid var(--border-base);
     }
 
     .icons {

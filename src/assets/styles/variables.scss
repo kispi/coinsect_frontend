@@ -1,12 +1,11 @@
 @import 'colors';
 
 :root {
-  --banner-bitcoin-blog: 40px;
-  --app-header-height: calc(80px + var(--banner-bitcoin-blog));
+  --app-header-height: calc(92px);
   --app-default-page-padding: 12px;
 
   @media (max-width: 767px) {
     --app-default-page-padding: 8px;
-    --app-header-height: calc(118px + var(--banner-bitcoin-blog));
+    --app-header-height: calc(130px);
   }
 }

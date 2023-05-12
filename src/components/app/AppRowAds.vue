@@ -1,7 +1,7 @@
 <template>
   <div class="app-row-ads">
     <div class="relative">
-      <AdSense :dataAdSlot="'1939754740'" class="left"/>
+      <!-- <AdSense :dataAdSlot="'1939754740'" class="left"/> -->
       <AdSense :dataAdSlot="'3927887162'" class="right"/>
     </div>
   </div>
@@ -24,7 +24,6 @@
     width: 300px;
     height: 600px;
     position: absolute;
-    background: red;
 
     &.left {
       right: calc(100% + 16px);

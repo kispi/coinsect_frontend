@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="$store.getters.settings.chatFolded"
     @click="toggleChatFolded"
     class="app-chat-toggler center"
     :class="{
@@ -43,3 +44,19 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.app-chat-toggler {
+  background: linear-gradient(-45deg, var(--bitcoin), var(--brand-primary));
+  right: 16px;
+  bottom: 16px;
+  border-radius: 8px;
+  padding: 8px;
+  position: fixed;
+  cursor: pointer;
+
+  &:not(:hover) {
+    opacity: 0.75;
+  }
+}
+</style>
