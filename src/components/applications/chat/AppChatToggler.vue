@@ -33,6 +33,8 @@ export default {
       nextTick(() => {
         if (!store.getters.settings.chatFolded) emit('scroll-to-bottom')
       })
+
+      if (store.getters.isMobile) store.commit('setShowNavigation', false)
     }
 
     onMounted(() => {
@@ -55,6 +57,7 @@ export default {
   border-radius: 8px;
   padding: 8px;
   position: fixed;
+  z-index: 1;
   cursor: pointer;
 
   &:not(:hover) {

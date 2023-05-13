@@ -69,7 +69,6 @@ export default {
 
 <style lang="scss" scoped>
 .main-section {
-  box-shadow: 0 2px 8px rgba(64, 64, 64, 0.16);
   padding: 8px;
   border-radius: 8px;
 
@@ -117,7 +116,7 @@ export default {
   }
 
   .overlay {
-    height: 32px;
+    height: 24px;
     pointer-events: none;
     z-index: 1;
 

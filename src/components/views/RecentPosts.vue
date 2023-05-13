@@ -28,6 +28,7 @@
         </div>
       </RouterLink>
     </div>
+    <RouterLink class="btn btn-primary btn-write" to="/community/write"><i class="fal fa-pencil m-r-8"/>{{ $translate('WRITE') }}</RouterLink>
   </div>
 </template>
 
@@ -100,6 +101,10 @@ export default {
         font-weight: 500;
       }
     }
+  }
+
+  .btn-write {
+    margin-top: 8px;
   }
 }
 </style>
