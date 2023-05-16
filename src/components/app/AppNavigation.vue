@@ -16,7 +16,6 @@
             <AppImg v-if="menuItem.img" :src="menuItem.img"/>
             <span class="emoji" v-if="menuItem.emoji">{{ menuItem.emoji }}</span>
             {{ $translate(menuItem.title) }}
-            <span v-if="menuItem.$$hot" class="badge-hot">H</span>
           </div>
           <i v-if="menuItem.subItems" class="far m-l-4 center f-10" :class="menuItem.$$expanded ? 'fa-chevron-up' : 'fa-chevron-down'"/>
         </a>
@@ -33,7 +32,6 @@
               <AppImg v-if="subItem.img" :src="subItem.img"/>
               <span class="emoji" v-if="subItem.emoji">{{ subItem.emoji }}</span>
               {{ $translate(subItem.title) }}
-              <span v-if="subItem.$$hot" class="badge-hot">H</span>
             </div>
           </a>
         </div>
@@ -85,7 +83,7 @@ export default {
   overflow-y: auto;
   max-height: calc(100% - var(--app-header-height));
   z-index: 10;
-  top: calc(var(--app-header-height));
+  top: calc(var(--app-header-height) - 1px);
   border-right: 1px solid var(--border-base);
   transform: translateX(-4px);
   transition: all 0.3s ease;
@@ -105,15 +103,6 @@ export default {
     .title {
       display: flex;
       align-items: center;
-
-      .badge-hot {
-        background: rgba(255, 31, 31, 0.5);
-        font-size: 10px;
-        color: var(--white);
-        border-radius: 4px;
-        padding: 0 4px;
-        margin-left: 8px;
-      }
     }
 
     &:hover {
@@ -163,7 +152,7 @@ export default {
   }
 
   @media (min-width: 1400px) {
-    transform: translateX(calc(-8px - var(--navigation-width)));
+    transform: translateX(calc(-24px - var(--navigation-width)));
     border-right: 0;
 
     &.folded {

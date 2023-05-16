@@ -106,7 +106,7 @@ export default {
     .scrollable {
       max-height: 336px;
       overflow-y: auto;
-      padding-bottom: 16px;
+      padding-bottom: 24px;
     }
 
     &.whale-alerts {

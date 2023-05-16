@@ -61,7 +61,7 @@ export default {
   cursor: pointer;
 
   &:not(:hover) {
-    opacity: 0.75;
+    opacity: 0.9;
   }
 
   .badge-unreads {

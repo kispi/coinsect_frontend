@@ -7,6 +7,11 @@
         <RecentPosts :posts="dashboards.posts"/>
       </MainSection>
       <MainSection
+        :title="'KIMP'"
+        :link="'/prices'">
+        <RealTimePrices :simple="true" :predefinedSymbols="['BTC', 'ETH', 'XRP', 'SOL']"/>
+      </MainSection>
+      <MainSection
         :title="'REAL_TIME_POSITIONS'"
         :link="'/indicators/real-time-positions'"
         :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-jg.jpg'"
@@ -16,18 +21,6 @@
             :position="position"
             :key="position.name"
             v-for="position in dashboards.realTimePositions.data.filter(p => p.editable)"
-          />
-        </div>
-      </MainSection>
-      <MainSection
-        :title="'WHALE_ALERT'"
-        :link="'/indicators/whale-alert'"
-        :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-whalealert.jpg'">
-        <div class="grid">
-          <WhaleAlertItem
-            :whaleAlert="whaleAlert"
-            :key="whaleAlert"
-            v-for="whaleAlert in dashboards.whaleAlerts.data"
           />
         </div>
       </MainSection>
@@ -46,6 +39,18 @@
           </div>
         </div>
       </MainSection>
+      <MainSection
+        :title="'WHALE_ALERT'"
+        :link="'/indicators/whale-alert'"
+        :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-whalealert.jpg'">
+        <div class="grid">
+          <WhaleAlertItem
+            :whaleAlert="whaleAlert"
+            :key="whaleAlert"
+            v-for="whaleAlert in dashboards.whaleAlerts.data"
+          />
+        </div>
+      </MainSection>
     </div>
   </div>
 </template>
@@ -55,10 +60,11 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import MainSection from './MainSection'
 import RecentPosts from '../RecentPosts'
+import RealTimePrices from '@/components/views/real-time-prices/RealTimePrices'
 import useRealTimePosition from '@/hooks/real-time-position'
 
 export default {
-  components: { MainSection, RecentPosts },
+  components: { MainSection, RecentPosts, RealTimePrices },
   setup() {
     const { plugins, store } = useGlobalHooks()
 
@@ -115,7 +121,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .view-main {
   .grid {
     display: grid;
@@ -149,6 +155,10 @@ export default {
         background: var(--price-down-bg);
       }
     }
+  }
+
+  .real-time-prices {
+
   }
 
   @media (min-width: 768px) {
