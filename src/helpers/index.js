@@ -1,4 +1,4 @@
-import { store as $store } from '@/store'
+import { store } from '@/store'
 import animate from './animate'
 import coin from './coin'
 import dataSetter from './data-setter'
@@ -25,7 +25,7 @@ import translate from './translate'
 const canSkipApiCall = (apiId, cacheTimeout) => {
   if (process.env.VUE_APP_SSR) return
 
-  const o = $store.state.app.lastApiCall
+  const o = store.state.app.lastApiCall
   const initLastApiCallTime = () => o[apiId] = helpers.dayjs()
 
   // If it's never called, can't skip API call.
@@ -68,7 +68,7 @@ const helpers = {
     setTimeout(() => location.reload(), 1000 * 60)
   },
   elapsedTime: timestamp => {
-    const en = $store.getters.settings.locale === 'en'
+    const en = store.getters.settings.locale === 'en'
     const d = helpers.dayjs().diff(helpers.dayjs(timestamp), 'seconds')
     if (d > 60 * 60 * 24) return `${Math.floor(d / 86400)}${en ? 'd' : '일'}`
 
@@ -102,7 +102,7 @@ const helpers = {
     const symbols = { 'usd': '$', 'gbp': '£', 'eur': '€', 'krw': '₩' }
     if (currency) return symbols[currency]
 
-    return symbols[$store.getters.settings.currency]
+    return symbols[store.getters.settings.currency]
   },
   isImageUrl: url => ['.jpg', '.jpeg', '.png'].some(ext => (url || '').endsWith(ext)), // AWS Rekognition에서 검사가능한 URL만 남김.
   retrieveUrlFromString: url => ((url || '').match(dom.regex.url) || [])[0],
@@ -163,9 +163,9 @@ const helpers = {
   },
   writing: {
     isMine: writing => {
-      if (!$store.getters.me || !(writing || {}).user) return
+      if (!store.getters.me || !(writing || {}).user) return
   
-      return (writing.user || {}).id === ($store.getters.me || {}).id
+      return (writing.user || {}).id === (store.getters.me || {}).id
     },
     nickname: writing => {
       return (((writing || {}).user || {}).profile || {}).nickname || (writing || {}).nickname

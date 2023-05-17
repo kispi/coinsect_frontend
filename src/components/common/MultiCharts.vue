@@ -2,7 +2,6 @@
   <div
     v-if="shouldShowCharts"
     class="multi-charts">
-    <TradingViewTicker class="m-b-8"/>
     <div
       v-if="$store.getters.charts.length > 0 && $store.getters.settings.tradingview"
       class="grid m-b-8"

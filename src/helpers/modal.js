@@ -1,7 +1,7 @@
-import { store as $store } from '@/store'
+import { store } from '@/store'
 import translate from './translate'
 
-const isOpened = component => $store.getters.modals.find(modal => (modal || {}).component === component) ? true : false
+const isOpened = component => store.getters.modals.find(modal => (modal || {}).component === component) ? true : false
 
 const initModal = (options, component) => new Promise(resolve => {
   if (
@@ -9,7 +9,7 @@ const initModal = (options, component) => new Promise(resolve => {
     isOpened(component)
   ) return
 
-  $store.commit('addModal', { component, options, resolve })
+  store.commit('addModal', { component, options, resolve })
 })
 
 const modal = {

@@ -1,4 +1,4 @@
-import { store as $store } from '@/store'
+import { store } from '@/store'
 
 const regex = {
   url: /\b(?:https?|ftp):\/\/[a-z0-9-+&@#/%?=~_|!:,.;]*[a-z0-9-+&@#/%=~_|]/gim,
@@ -18,7 +18,7 @@ const dom = {
     if (process.env.VUE_APP_SSR) return
 
     document.scrollingElement.scrollTop = 0
-    $store.commit('setScrollTop', 0)
+    store.commit('setScrollTop', 0)
   },
   isElementInViewport: (el, percentVisible = 100) => {
     if (!el) return
@@ -57,7 +57,7 @@ const dom = {
   loadScript: ({ url, attributes }) => new Promise(resolve => {
     if (process.env.VUE_APP_SSR) return
 
-    if ($store.getters.lazyLoadedScriptUrls.includes(url)) {
+    if (store.getters.lazyLoadedScriptUrls.includes(url)) {
       resolve()
       return
     }
@@ -69,10 +69,10 @@ const dom = {
     scriptTag.defer = true
     scriptTag.onload = resolve
     document.head.appendChild(scriptTag)
-    $store.commit('addLazyLoadedScriptUrl', url)
+    store.commit('addLazyLoadedScriptUrl', url)
   }),
   loadLink: ({ url, attributes }) => new Promise(resolve => {
-    if ($store.getters.lazyLoadedScriptUrls.includes(url)) {
+    if (store.getters.lazyLoadedScriptUrls.includes(url)) {
       resolve()
       return
     }
@@ -82,7 +82,7 @@ const dom = {
     linkTag.href = url
     linkTag.onload = resolve
     document.head.appendChild(linkTag)
-    $store.commit('addLazyLoadedScriptUrl', url)
+    store.commit('addLazyLoadedScriptUrl', url)
   }),
   linkify: text => text
     .replace(regex.url, `<a href="$&" class='text-underline c-brand-primary' rel='noreferrer' target="_blank">$&</a>`)

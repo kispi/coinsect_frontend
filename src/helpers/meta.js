@@ -1,4 +1,4 @@
-import { store as $store } from '@/store'
+import { store } from '@/store'
 import { router } from '@/router'
 
 const sanitize = html => {
@@ -16,7 +16,7 @@ const removeExisting = id => {
 }
 
 const appendMetaTags = tags => tags.forEach(tag => {
-  $store.commit('appendMetaTags', tag)
+  store.commit('appendMetaTags', tag)
 
   if (process.env.VUE_APP_SSR) return
 

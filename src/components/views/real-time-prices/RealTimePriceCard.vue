@@ -9,17 +9,17 @@
         <div
           class="price"
           :class="{
-            'c-price-up-bybit': ticker.$$tickDirection === 'up',
-            'c-price-down-bybit': ticker.$$tickDirection === 'down',
+            'c-price-up-bybit': ticker.$$tickDirectionTarget === 'up',
+            'c-price-down-bybit': ticker.$$tickDirectionTarget === 'down',
           }">
           <i
             class="far"
             :class="{
-              'fa-arrow-up': ticker.$$tickDirection === 'up',
-              'fa-arrow-down': ticker.$$tickDirection === 'down'
+              'fa-arrow-up': ticker.$$tickDirectionTarget === 'up',
+              'fa-arrow-down': ticker.$$tickDirectionTarget === 'down'
             }"
           />
-          $ {{ ticker.$$tradePriceTarget ? $helpers.number.pretty.price({ price: mustUSD(ticker.$$tradePriceTarget), baseCurrency: 'krw' }) : '-' }}</div>
+          $ {{ ticker.$$tradePriceTarget ? mustUSD(ticker.$$tradePriceTarget) : '-' }}</div>
       </div>
       <div class="attr" :class="upOrDown(ticker.$$changeRate1D)">
         <div class="key">{{ $translate('CHANGE_RATE_1D') }}</div>
@@ -52,7 +52,11 @@ export default {
     const mustUSD = price => {
       if (store.getters.settings.currency === 'usd') return price
 
-      return price / store.getters.usdKrw
+      const f = price / store.getters.usdKrw
+      return f.toLocaleString(undefined, {
+        minimumFractionDigits: f < 1 ? 4 : 2,
+        maximumFractionDigits: 4,
+      })
     }
 
     return {

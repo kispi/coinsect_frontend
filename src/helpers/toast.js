@@ -1,11 +1,11 @@
-import { store as $store } from '@/store'
+import { store } from '@/store'
 
 const showToast = options => {
-  if (!options.html || $store.getters.isSSR) return
+  if (!options.html || store.getters.isSSR) return
 
   options.show = true
   if (options.html) options.html = options.html.trim()
-  $store.commit('setToast', options)
+  store.commit('setToast', options)
 }
 
 export default {

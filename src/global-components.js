@@ -42,7 +42,6 @@ import SettingsPanel from '@/components/common/SettingsPanel'
 import TablePosts from '@/components/common/table-posts/TablePosts'
 import TradingView from '@/components/common/TradingView'
 import TradingViewSymbols from '@/components/common/TradingViewSymbols'
-import TradingViewTicker from '@/components/common/TradingViewTicker'
 import UserSymbol from '@/components/common/UserSymbol'
 import WhaleAlertItem from '@/components/common/whale-alert/WhaleAlertItem'
 
@@ -97,7 +96,6 @@ const useGlobalComponents = app => {
     .component('TablePosts', TablePosts)
     .component('TradingView', TradingView)
     .component('TradingViewSymbols', TradingViewSymbols)
-    .component('TradingViewTicker', TradingViewTicker)
     .component('UserSymbol', UserSymbol)
     .component('WhaleAlertItem', WhaleAlertItem)
 

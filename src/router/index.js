@@ -1,5 +1,5 @@
 import { createMemoryHistory, createWebHistory, createRouter } from 'vue-router'
-import { store as $store } from '@/store'
+import { store } from '@/store'
 import routesNoAuth from './routes-no-auth-async'
 import routesAuth from './routes-auth-async'
 import ViewNotFound from '@/components/views/ViewNotFound'
@@ -45,11 +45,11 @@ export const newRouter = () => {
   })
 
   r.beforeEach((to, from, next) => {
-    const modals = $store.getters.modals.filter(m => m)
+    const modals = store.getters.modals.filter(m => m)
     if (modals.length === 0) return next()
 
     const latestModal = modals[modals.length - 1]
-    $store.commit('popModal', latestModal)
+    store.commit('popModal', latestModal)
     next(false)
   })
 

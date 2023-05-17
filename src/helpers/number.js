@@ -1,14 +1,14 @@
-import { store as $store } from '@/store'
+import { store } from '@/store'
 
 const conversionRatio = baseCurrency => {
   if (
-    baseCurrency === $store.getters.settings.currency ||
-    $store.getters.settings.baseExchangeMarket === 'btc'
+    baseCurrency === store.getters.settings.currency ||
+    store.getters.settings.baseExchangeMarket === 'btc'
   ) return 1
 
-  if (baseCurrency === 'krw' && $store.getters.settings.currency === 'usd') return 1 / $store.getters.usdKrw
+  if (baseCurrency === 'krw' && store.getters.settings.currency === 'usd') return 1 / store.getters.usdKrw
 
-  if (baseCurrency === 'usd' && $store.getters.settings.currency === 'krw') return $store.getters.usdKrw
+  if (baseCurrency === 'usd' && store.getters.settings.currency === 'krw') return store.getters.usdKrw
 }
 
 const number = {
@@ -18,7 +18,7 @@ const number = {
 
       let numFracs = 0
       if (Math.abs(converted) < 100) numFracs = 2
-      if (Math.abs(converted) < 1) numFracs = $store.getters.settings.baseExchangeMarket === 'btc' ? 8 : 4
+      if (Math.abs(converted) < 1) numFracs = store.getters.settings.baseExchangeMarket === 'btc' ? 8 : 4
       if (Math.abs(converted) < 0.0001) numFracs = 8
 
       if (converted === 0) numFracs = 2
@@ -52,7 +52,7 @@ const number = {
       const converted = cap * conversionRatio(baseCurrency)
       if (baseCurrency === 'btc') return converted.toLocaleString(undefined, { maximumFractionDigits: 4, minimumFractionDigits: 4 })
 
-      if ($store.getters.settings.locale === 'en') {
+      if (store.getters.settings.locale === 'en') {
         if (converted / Math.pow(10, 12) >= 1) return `${Math.round(converted / Math.pow(10, 12) * 10000) / 10000}T`
         if (converted / Math.pow(10, 9) >= 1) return `${Math.round(converted / Math.pow(10, 9) * 10000) / 10000}B`
         if (converted / Math.pow(10, 6) >= 1) return `${Math.round(converted / Math.pow(10, 6) * 10000) / 10000}M`
@@ -60,7 +60,7 @@ const number = {
         return Math.round(converted * 10000) / 10000
       }
 
-      if ($store.getters.settings.locale === 'kr') return number.pretty.korean(converted, numKorUnits)
+      if (store.getters.settings.locale === 'kr') return number.pretty.korean(converted, numKorUnits)
     },
     percent: val => val.toLocaleString(undefined, {
       maximumFractionDigits: 2,

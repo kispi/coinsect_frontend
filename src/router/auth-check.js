@@ -1,5 +1,5 @@
 import helpers from '@/helpers'
-import { store as $store } from '@/store'
+import { store } from '@/store'
 
 export default async (to, from, next) => {
   if (typeof window === 'undefined') {
@@ -11,14 +11,14 @@ export default async (to, from, next) => {
     helpers.localStorage.setMeta('prevFullPath', to.fullPath)
   }
 
-  const me = $store.getters.me
+  const me = store.getters.me
   if (me) {
     next()
     return
   }
 
   try {
-    await $store.dispatch('loadAuthToken')
+    await store.dispatch('loadAuthToken')
     next()
   } catch (e) {
     next('/')

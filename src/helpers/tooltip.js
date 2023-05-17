@@ -1,4 +1,4 @@
-import { store as $store } from '@/store'
+import { store } from '@/store'
 
 const tooltip = {
   show: ({
@@ -7,7 +7,7 @@ const tooltip = {
     showAbove,
     below,
     dark,
-  }) => $store.commit('addTooltip', {
+  }) => store.commit('addTooltip', {
     id,
     text,
     showAbove,
@@ -15,7 +15,7 @@ const tooltip = {
     dark,
     bind: true,
   }),
-  hide: id => $store.commit('removeTooltip', id),
+  hide: id => store.commit('removeTooltip', id),
 }
 
 export default tooltip

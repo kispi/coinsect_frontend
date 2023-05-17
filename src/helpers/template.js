@@ -1,4 +1,3 @@
-import { store as $store } from '@/store'
 import dayjs from 'dayjs'
 
 // Vue 2시절 filter로 사용하던, 템플릿에 주로 사용하는 기능들을 이곳에 모으기로 한다.

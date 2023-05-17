@@ -1,4 +1,4 @@
-import { store as $store } from '@/store'
+import { store } from '@/store'
 
 export default {
   setPriceRow: ({
@@ -18,7 +18,7 @@ export default {
   }) => {
     if (!$$symbol) return
 
-    const o = $store.getters.realTimeTickers[$$symbol] || {}
+    const o = store.getters.realTimeTickers[$$symbol] || {}
     o.$$symbol = $$symbol
     o.$$tradePriceBase = parseFloat($$tradePriceBase)
     o.$$highest52WeekPrice = parseFloat($$highest52WeekPrice)
@@ -34,20 +34,22 @@ export default {
     o.$$caution = $$caution
     o.$$prevClosingPrice = parseFloat($$prevClosingPrice)
     o.$$tickDirection = $$tickDirection
-    $store.getters.realTimeTickers[$$symbol] = o
+    store.getters.realTimeTickers[$$symbol] = o
   },
   calculateKimp: ({
     $$symbol,
     $$tradePriceTarget,
     $$vol24HTarget,
+    $$tickDirectionTarget,
   }) => {
-    const o = $store.getters.realTimeTickers[$$symbol] || {}
-    if (!o.$$tradePriceBase || !($$tradePriceTarget * $store.getters.usdKrw)) return
+    const o = store.getters.realTimeTickers[$$symbol] || {}
+    if (!o.$$tradePriceBase || !($$tradePriceTarget * store.getters.usdKrw)) return
 
-    o.$$tradePriceTarget = $$tradePriceTarget * ($store.getters.settings.baseExchangeMarket === 'krw' ? $store.getters.usdKrw : 1)
+    o.$$tradePriceTarget = $$tradePriceTarget * (store.getters.settings.baseExchangeMarket === 'krw' ? store.getters.usdKrw : 1)
     o.$$premiumPrice = o.$$tradePriceBase - o.$$tradePriceTarget
     o.$$premiumRate = Math.round(o.$$premiumPrice / o.$$tradePriceTarget * 10000) / 100
     o.$$vol24HTarget = $$vol24HTarget
-    $store.getters.realTimeTickers[$$symbol] = o
+    o.$$tickDirectionTarget = $$tickDirectionTarget
+    store.getters.realTimeTickers[$$symbol] = o
   },
 }

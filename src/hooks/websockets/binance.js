@@ -31,11 +31,18 @@ const useBinance = () => {
         }
 
         const $$symbol = json.s.split((store.getters.settings.baseExchangeMarket === 'krw' ? 'usdt' : 'btc').toUpperCase())[0]
+        const $$tickDirectionTarget = (() => {
+          if (parseFloat(json.c) > (store.getters.realTimeTickers[$$symbol].$$tradePriceTarget / store.getters.usdKrw)) return 'up'
+          if (parseFloat(json.c) < (store.getters.realTimeTickers[$$symbol].$$tradePriceTarget / store.getters.usdKrw)) return 'down'
+          return 'same'
+        })()
+
         helpers.dataSetter.calculateKimp({
           // krw마켓은 usdt와 비교, btc는 그대로.
           $$symbol,
           $$tradePriceTarget: parseFloat(json.c) || 0,
           $$vol24HTarget: parseFloat(json.q) || 0,
+          $$tickDirectionTarget,
         })
 
         if (store.getters.settings.documentTitleTicker === $$symbol) setTickerSummaryInTitle(store.getters.realTimeTickers[$$symbol])
