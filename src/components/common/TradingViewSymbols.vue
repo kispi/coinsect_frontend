@@ -69,6 +69,10 @@ export default {
       key: 'CRYPTOCAP:BTC.D',
       img: 'https://static.upbit.com/logos/BTC.png',
     }, {
+      name: 'ETH_DOMINANCE',
+      key: 'CRYPTOCAP:ETH.D',
+      img: 'https://static.upbit.com/logos/ETH.png',
+    }, {
       name: 'KIMCHI_PREMIUM',
       key: 'UPBIT:BTCKRW/(BINANCE:BTCUSDT*FX_IDC:USDKRW) * 100',
       img: 'https://static.upbit.com/logos/BTC.png',

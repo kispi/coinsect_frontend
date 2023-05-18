@@ -3,6 +3,10 @@
     "en": "BTC.D",
     "kr": "BTC.D"
   },
+  "ETH_DOMINANCE": {
+    "en": "ETH.D",
+    "kr": "ETH.D"
+  },
   "TOTAL_MARKET_CAP": {
     "en": "Total Marketcap",
     "kr": "전체시가총액"
