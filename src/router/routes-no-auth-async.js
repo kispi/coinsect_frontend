@@ -159,6 +159,10 @@ const apps = [{
 }, {
   path: '/apps/voice-recorder',
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
+  meta: {
+    title: '브라우저 음성 API 테스트 - 코인충',
+    description: 'AudioContext / MediaRecorder / webkitSpeechRecognition API를 테스트 할 수 있는 페이지입니다.'
+  },
 }]
 
 const community = [{
