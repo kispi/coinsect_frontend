@@ -193,14 +193,15 @@ export default {
     const image = {
       upload: () => {
         plugins.$modal.custom({
-          component: 'ModalImageUploader',
+          component: 'ModalUploadImage',
           options: {
-            path: 'chat/profile',
+            noupload: true,
+            uploadDest: 'chat/profile',
           },
-        }).then(result => {
-          if (!result) return
+        }).then(url => {
+          if (!url) return
 
-          if (result.url) profile.value.image = result.url
+          profile.value.image = url
           update()
         })
       },

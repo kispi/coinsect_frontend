@@ -10,7 +10,7 @@
     <div
       v-if="$store.getters.chatUser"
       class="profile">
-      <UserSymbol :user="$store.getters.me" class="m-r-4"/>
+      <UserSymbol :user="$store.getters.chatUser" class="m-r-4"/>
       <div class="flex-row items-center">
         <div
           class="nickname lines-1"

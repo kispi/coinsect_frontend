@@ -47,16 +47,9 @@
         <button
           v-if="images.length === 0"
           class="btn btn-primary btn-upload-image"
-          @click="refUploader.click"
+          @click="onClickAddImage"
           :disabled="processing">
           <i class="far fa-image m-r-8"/>{{ $translate('ADD_IMAGE') }}
-          <input
-            ref="refUploader"
-            class="overlay"
-            type="file"
-            @change="onChangeFile"
-            accept="image/*"
-          >
         </button>
       </div>
       <div class="buttons flex-row">
@@ -94,8 +87,6 @@ export default {
   setup(props) {
     const { plugins, store, router } = useGlobalHooks()
 
-    const refUploader = ref(null)
-
     const payload = ref({})
 
     const processing = ref(null)
@@ -111,22 +102,6 @@ export default {
         post: props.post,
         user: props.user,
         parent: props.parent,
-      }
-    }
-
-    const onChangeFile = async e => {
-      const file = e.target.files[0]
-      const shouldResize = file > 1048576
-      try {
-        processing.value = true
-        const resized = shouldResize ? await plugins.$helpers.resizeImage({ file, width: 400 }) : file
-        // 이미지는 한장만 올릴 수 있도록 구현하되, 여러장 올리는 경우도 고려하기 위해 배열로 관리
-        images.value[0] = await s3Service.upload(resized, 'boards/replies')
-      } catch (e) {
-        return Promise.reject(e)
-      } finally {
-        e.target.value = null
-        processing.value = false
       }
     }
 
@@ -168,6 +143,20 @@ export default {
       }
     }
 
+    const onClickAddImage = () => {
+      plugins.$modal.custom({
+        component: 'ModalUploadImage',
+        options: {
+          noupload: true,
+          uploadDest: 'boards/replies',
+        },
+      }).then(url => {
+        if (!url) return
+
+        images.value[0] = url
+      })
+    }
+
     watch([
       () => props.post,
       () => props.user,
@@ -180,11 +169,10 @@ export default {
     onMounted(initPayload)
 
     return {
-      refUploader,
       processing,
       payload,
       images,
-      onChangeFile,
+      onClickAddImage,
       onClickDeleteImage,
       onClickCreateReply,
     }

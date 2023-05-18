@@ -80,7 +80,7 @@ export default {
     const chatFunctions = {
       image: () => {
         plugins.$modal.custom({
-          component: 'ModalSendImage',
+          component: 'ModalUploadImage',
           options: {
             noupload: true,
           },
@@ -134,7 +134,7 @@ export default {
       reader.onload = onloadEvent => {
         pasteEvent.target.blur()
         plugins.$modal.custom({
-          component: 'ModalSendImage',
+          component: 'ModalUploadImage',
           options: {
             file,
             src: onloadEvent.target.result,

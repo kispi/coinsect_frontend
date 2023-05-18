@@ -1,8 +1,8 @@
 <template>
   <div
-    ref="refModalSendImage"
-    class="modal-send-image scrollable-body">
-    <ModalHeader :title="'SEND_IMAGE'" @close="$emit('close')"/>
+    ref="refModalUploadImage"
+    class="modal-upload-image scrollable-body">
+    <ModalHeader :title="'UPLOAD_IMAGE'" @close="$emit('close')"/>
     <div class="body pretty-scrollbar">
       <AppImg v-if="payload.src" :src="payload.src"/>
       <ImageUploader
@@ -25,10 +25,11 @@
     <div class="bottom">
       <button
         class="btn btn-primary"
-        :disabled="!payload.file"
-        @click="onClickSendImage"
-        v-html="$translate('SEND')"
-      />
+        :disabled="!payload.file || uploading"
+        @click="onClickSendImage">
+        <AppLoader v-if="uploading"/>
+        <span v-else v-html="$translate('UPLOAD')"/>
+      </button>
     </div>
   </div>
 </template>
@@ -39,11 +40,19 @@ import s3Service from '@/services/s3'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
-  props: ['options'],
+  props: {
+    options: {
+      src: String,
+      file: File,
+      uploadDest: String,
+    },
+  },
   setup(props, { emit }) {
     const { plugins } = useGlobalHooks()
 
-    const refModalSendImage = ref(null)
+    const refModalUploadImage = ref(null)
+
+    const uploading = ref(null)
 
     const payload = ref({
       src: (props.options || {}).src,
@@ -65,10 +74,13 @@ export default {
       }
 
       try {
-        const uploadedUrl = await s3Service.upload(payload.value.file, 'chat')
+        uploading.value = true
+        const uploadedUrl = await s3Service.upload(payload.value.file, props.options.uploadDest || 'chat')
         emit('close', uploadedUrl)
       } catch (e) {
         showError()
+      } finally {
+        uploading.value = false
       }
     }
 
@@ -89,14 +101,15 @@ export default {
     watch(
       () => payload.value,
       () => {
-        setTimeout(() => plugins.$modal.center(refModalSendImage.value), 50)
+        setTimeout(() => plugins.$modal.center(refModalUploadImage.value), 50)
       },
       { deep: true },
     )
 
     return {
-      refModalSendImage,
+      refModalUploadImage,
       payload,
+      uploading,
       onClickSendImage,
       onClickInitPayload,
     }
@@ -105,7 +118,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal-send-image {
+.modal-upload-image {
   width: 480px;
 
   .body,

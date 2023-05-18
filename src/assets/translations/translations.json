@@ -15,6 +15,10 @@
     "en": "Send",
     "kr": "보내기"
   },
+  "UPLOAD": {
+    "en": "Upload",
+    "kr": "업로드"
+  },
   "RECOMMEND": {
     "en": "Recommend",
     "kr": "추천"
