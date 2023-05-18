@@ -23,7 +23,7 @@
             <div class="id-title flex-fill">
               <div
                 class="cell badge-post-type m-r-8"
-                :style="{ background: $helpers.hexToRgba(row.board.$$color, 0.25) }"
+                :style="{ background: $helpers.logic.hexToRgba(row.board.$$color, 0.25) }"
                 v-html="$translate(row.postType === 'notice' ? 'NOTICE' : row.board.description)"
               />
               <article class="cell title">

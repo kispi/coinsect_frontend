@@ -34,7 +34,7 @@ export default {
 
     const { meta, tryMetaTags, onClickMetaCard } = useSeo()
 
-    const link = computed(() => plugins.$helpers.retrieveUrlFromString(props.message.text))
+    const link = computed(() => plugins.$helpers.logic.retrieveUrlFromString(props.message.text))
 
     const init = async () => {
       try {

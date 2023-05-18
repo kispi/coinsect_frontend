@@ -24,7 +24,7 @@
       <div v-if="position.lastUpdate" class="dark overlay upper f-mono">
         <div class="flex-row items-center">
           <i class="fal fa-clock"/>
-          <div>{{ $helpers.elapsedTime(position.lastUpdate) }}</div>
+          <div>{{ $helpers.template.elapsedTime(position.lastUpdate) }}</div>
         </div>
       </div>
       <div class="dark overlay lower" v-html="position.name"/>

@@ -150,7 +150,7 @@ export default {
       if (isNaN(p) || p > lots.value.length || p < 1) return plugins.$toast.error(`${lots.value.length} 이하의 올바른 당첨칸 번호를 적어주세요 🤔`)
 
       lots.value.forEach(lot => lot.$$flipped = true)
-      lots.value = plugins.$helpers.shuffle(lots.value)
+      lots.value = plugins.$helpers.logic.shuffle(lots.value)
       shuffled.value = true
 
       setTimeout(() => shuffle(num - 1), 250)
@@ -175,7 +175,7 @@ export default {
             'Lumi',
             'Marv',
             'MJ',
-          ].map(name => ({ name, id: plugins.$helpers.mustToken() }))
+          ].map(name => ({ name, id: plugins.$helpers.logic.mustToken() }))
           emit('next-state')
         }
       },

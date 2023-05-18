@@ -18,8 +18,8 @@ export const postHelpers = {
     },
   },
   populateRenderablePost: async post => {
-    post.$$images = helpers.retrieveImagesFromHTML(post.content)
-    const hash = await helpers.crypto.hash.sha256(post.board.description) || ''
+    post.$$images = helpers.logic.retrieveImagesFromHTML(post.content)
+    const hash = await helpers.logic.crypto.hash.sha256(post.board.description) || ''
     if (!hash) return
 
     post.board.$$color = `#${hash.substring(0, 6)}`

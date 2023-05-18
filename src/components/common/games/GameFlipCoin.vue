@@ -93,7 +93,7 @@ export default {
 
     const shuffle = numCoinsToGenerate => {
       const coinSet = plugins.$helpers.coin.pickCoins({ numCoinsToGenerate, upbitOnly: true })
-      coins.value = plugins.$helpers.shuffle([
+      coins.value = plugins.$helpers.logic.shuffle([
         ...coinSet,
         ...coinSet,
       ]).map(([key, value]) => ({

@@ -12,11 +12,11 @@
           <span
             @click.prevent="$router.push(`/community?boardId=${post.board.id}`)"
             class="badge-post-type m-r-8"
-            :style="{ background: $helpers.hexToRgba(post.board.$$color, 0.25) }">
+            :style="{ background: $helpers.logic.hexToRgba(post.board.$$color, 0.25) }">
             {{ post.board.description }}
           </span>
           <span class="title-text">
-            <span class="elapsed-time f-mono">{{ $helpers.elapsedTime(post.createdAt) }}</span>
+            <span class="elapsed-time f-mono">{{ $helpers.template.elapsedTime(post.createdAt) }}</span>
             <i v-if="(post.$$images || []).length > 0" class="fa fa-image c-price-up-bybit"/>
             <div class="lines-1">{{ post.title }}</div>
           </span>

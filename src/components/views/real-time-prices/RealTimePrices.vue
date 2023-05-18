@@ -187,7 +187,7 @@ export default {
         const lowered = keyword.value.toLowerCase()
         return (geckoName.en || '').toLowerCase().includes(lowered) ||
           (geckoName.kr || '').includes(lowered) ||
-          plugins.$helpers.includesChosung(lowered, geckoName.kr) ||
+          plugins.$helpers.logic.includesChosung(lowered, geckoName.kr) ||
           t.$$symbol.toLowerCase().includes(lowered)
       }).sort((a, b) => {
         if (store.getters.settings.favorites[a.$$symbol] === store.getters.settings.favorites[b.$$symbol]) return sorter(a, b)

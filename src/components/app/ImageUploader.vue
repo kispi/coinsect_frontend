@@ -94,7 +94,7 @@ export default {
       let file = originalFile
       try {
         processing.value = true
-        file = shouldResize(originalFile) ? await plugins.$helpers.resizeImage({ file: originalFile, ...props.resize }) : originalFile
+        file = shouldResize(originalFile) ? await plugins.$helpers.logic.resizeImage({ file: originalFile, ...props.resize }) : originalFile
       } finally {
         processing.value = false
       }
@@ -119,7 +119,7 @@ export default {
 
     const onDrop = async e => {
       dragging.value = false
-      if (!shouldResize(e.dataTransfer.files[0]) && !plugins.$helpers.acceptableFileSize(e.dataTransfer.files[0])) return
+      if (!shouldResize(e.dataTransfer.files[0]) && !plugins.$helpers.logic.acceptableFileSize(e.dataTransfer.files[0])) return
 
       try {
         await doUpload(e.dataTransfer.files[0])
@@ -129,7 +129,7 @@ export default {
     }
 
     const onChangeFile = e => {
-      if (!shouldResize(e.target.files[0]) && !plugins.$helpers.acceptableFileSize(e.target.files[0])) return
+      if (!shouldResize(e.target.files[0]) && !plugins.$helpers.logic.acceptableFileSize(e.target.files[0])) return
 
       doUpload(e.target.files[0])
     }

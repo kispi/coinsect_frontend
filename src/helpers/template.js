@@ -1,4 +1,6 @@
+import { store } from '@/store'
 import dayjs from 'dayjs'
+import helpers from '.'
 
 // Vue 2시절 filter로 사용하던, 템플릿에 주로 사용하는 기능들을 이곳에 모으기로 한다.
 const template = {
@@ -64,6 +66,17 @@ const template = {
     maximumFractionDigits: 4,
     minimumFractionDigits: 4,
   }),
+  elapsedTime: timestamp => {
+    const en = store.getters.settings.locale === 'en'
+    const d = helpers.dayjs().diff(helpers.dayjs(timestamp), 'seconds')
+    if (d > 60 * 60 * 24) return `${Math.floor(d / 86400)}${en ? 'd' : '일'}`
+
+    if (d > 60 * 60) return `${Math.floor(d / 3600)}${en ? 'h' : '시'}`
+
+    if (d > 60) return `${Math.floor(d / 60)}${en ? 'm' : '분'}`
+
+    return `${d}${en ? 's' : '초'}`
+  },
 }
 
 export default template

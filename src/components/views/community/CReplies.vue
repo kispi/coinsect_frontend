@@ -41,7 +41,7 @@
         <div class="flex-row items-center flex-between">
           <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
           <div class="reply-functions">
-            <template v-if="$helpers.writing.canModify(reply)">
+            <template v-if="$helpers.logic.writing.canModify(reply)">
               <div
                 @click="onClickDelete(reply)"
                 class="reply-delete function">
@@ -104,7 +104,7 @@ export default {
     }
 
     const onClickDelete = async reply => {
-      if (plugins.$helpers.writing.isMine(reply)) {
+      if (plugins.$helpers.logic.writing.isMine(reply)) {
         const ok = await plugins.$modal.confirm({ body: '내 댓글을 삭제하시겠습니까?' })
         if (ok) onConfirmDelete({ id: reply.id })
       } else {

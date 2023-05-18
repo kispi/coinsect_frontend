@@ -45,7 +45,7 @@ export default {
       write: () => router.push('/community/write'),
       edit: () => router.push(`/community/edit/${post.value.sharingKey}`),
       delete: async () => {
-        if (plugins.$helpers.writing.isMine(post.value)) {
+        if (plugins.$helpers.logic.writing.isMine(post.value)) {
           const ok = await plugins.$modal.confirm({ body: '내 게시글을 삭제할까요?' })
           if (ok) onConfirmDelete({ sharingKey: post.value.sharingKey })
         } else {
@@ -63,7 +63,7 @@ export default {
 
       if (!post.value) return arr
 
-      if (post.value.postType === 'normal' && plugins.$helpers.writing.canModify(post.value)) {
+      if (post.value.postType === 'normal' && plugins.$helpers.logic.writing.canModify(post.value)) {
         arr.push({
           text: 'EDIT',
           handler: handlers.edit,

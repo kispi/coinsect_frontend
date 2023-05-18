@@ -55,7 +55,7 @@ export default {
     const tooltipId = computed(() => {
       if (!props.tooltip) return
 
-      return plugins.$helpers.mustToken()
+      return plugins.$helpers.logic.mustToken()
     })
 
     return {
