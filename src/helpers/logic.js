@@ -1,3 +1,4 @@
+import { store } from '@/store'
 import helpers from '.'
 
 const logic = {
