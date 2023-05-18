@@ -26,7 +26,11 @@
           maxlength="8"
         >
       </div>
-      <textarea v-model="payload.content" :placeholder="$translate('PLACEHOLDER_CONTENT')"/>
+      <textarea
+        @paste="onPaste"
+        v-model="payload.content"
+        :placeholder="$translate('PLACEHOLDER_CONTENT')"
+      />
     </form>
     <div class="reply-functions">
       <div class="reply-images">
@@ -72,7 +76,6 @@
 <script>
 import { onMounted, ref, watch } from 'vue'
 import crudService from '@/services/crud'
-import s3Service from '@/services/s3'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
@@ -103,6 +106,16 @@ export default {
         user: props.user,
         parent: props.parent,
       }
+    }
+
+    const onPaste = e => {
+      plugins.$helpers.logic.onPasteClipboardImage(
+        e,
+        url => {
+          if (!url) return
+
+          images.value[0] = url
+        })
     }
 
     const onClickDeleteImage = idx => {
@@ -172,6 +185,7 @@ export default {
       processing,
       payload,
       images,
+      onPaste,
       onClickAddImage,
       onClickDeleteImage,
       onClickCreateReply,
@@ -254,6 +268,7 @@ export default {
         height: 80px;
         border: 1px solid var(--border-base);
         border-radius: 4px;
+        overflow: hidden;
         cursor: pointer;
       }
     }

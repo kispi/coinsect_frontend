@@ -27,7 +27,7 @@
         class="btn btn-primary"
         :disabled="!payload.file || uploading"
         @click="onClickSendImage">
-        <AppLoader v-if="uploading"/>
+        <AppLoader v-if="uploading" :size="24"/>
         <span v-else v-html="$translate('UPLOAD')"/>
       </button>
     </div>

@@ -5,6 +5,7 @@ import dataSetter from './data-setter'
 import dayjs from 'dayjs'
 import dom from './dom'
 import errorHandlers from './error-handlers'
+import logic from './logic'
 import math from './math'
 import meta from './meta'
 import modal from './modal'
@@ -50,6 +51,7 @@ const helpers = {
   toast,
   dom,
   errorHandlers,
+  logic,
   math,
   meta,
   animate,

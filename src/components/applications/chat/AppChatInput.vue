@@ -124,30 +124,15 @@ export default {
       })
     }
 
-    const onPaste = async pasteEvent => {
-      const items = (pasteEvent.clipboardData || pasteEvent.originalEvent.clipboardData).items
-      const img = items[0]
-      if (!img.type.includes('image')) return
-
-      const file = img.getAsFile()
-      const reader = new FileReader()
-      reader.onload = onloadEvent => {
-        pasteEvent.target.blur()
-        plugins.$modal.custom({
-          component: 'ModalUploadImage',
-          options: {
-            file,
-            src: onloadEvent.target.result,
-          },
-        }).then(url => {
+    const onPaste = e => {
+      plugins.$helpers.logic.onPasteClipboardImage(
+        e,
+        url => {
           if (!url) return
 
           sendTextMessage(url, 'image')
-        })
-      }
-
-      const target = file.size > 1048576 ? await plugins.$helpers.resizeImage({ file, width: 1920 }) : file
-      reader.readAsDataURL(target)
+        },
+      )
     }
 
     onMounted(focusOnInput)
