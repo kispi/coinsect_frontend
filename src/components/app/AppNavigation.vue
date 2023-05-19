@@ -1,42 +1,45 @@
 <template>
   <div
-    class="app-navigation pretty-scrollbar"
+    class="app-navigation"
     :class="{'folded': !$store.getters.showNavigation}">
-    <BannerBitcoinBlog class="p-16 m-b-8"/>
-    <nav class="menu-items pretty-scrollbar">
-      <div
-        class="menu-item"
-        :key="menuItem.title"
-        v-for="menuItem in menuItems">
-        <a
-          @click.prevent="onClickMenuItem(menuItem)"
-          :href="menuItem.path"
-          :class="{'selected': selected(menuItem)}">
-          <div class="title">
-            <AppImg v-if="menuItem.img" :src="menuItem.img"/>
-            <span class="emoji" v-if="menuItem.emoji">{{ menuItem.emoji }}</span>
-            {{ $translate(menuItem.title) }}
-          </div>
-          <i v-if="menuItem.subItems" class="far m-l-4 center f-10" :class="menuItem.$$expanded ? 'fa-chevron-up' : 'fa-chevron-down'"/>
-        </a>
+    <div class="left-panel pretty-scrollbar">
+      <BannerBitcoinBlog class="p-16 m-b-8"/>
+      <nav class="menu-items pretty-scrollbar">
         <div
-          v-if="menuItem.$$expanded"
-          class="sub-pages">
+          class="menu-item"
+          :key="menuItem.title"
+          v-for="menuItem in menuItems">
           <a
-            @click.prevent.stop="onClickMenuItem(subItem)"
-            :href="subItem.path"
-            :class="{'selected': selected(subItem)}"
-            :key="subItem.title"
-            v-for="subItem in menuItem.subItems">
+            @click.prevent="onClickMenuItem(menuItem)"
+            :href="menuItem.path"
+            :class="{'selected': selected(menuItem)}">
             <div class="title">
-              <AppImg v-if="subItem.img" :src="subItem.img"/>
-              <span class="emoji" v-if="subItem.emoji">{{ subItem.emoji }}</span>
-              {{ $translate(subItem.title) }}
+              <AppImg v-if="menuItem.img" :src="menuItem.img"/>
+              <span class="emoji" v-if="menuItem.emoji">{{ menuItem.emoji }}</span>
+              {{ $translate(menuItem.title) }}
             </div>
+            <i v-if="menuItem.subItems" class="far m-l-4 center f-10" :class="menuItem.$$expanded ? 'fa-chevron-up' : 'fa-chevron-down'"/>
           </a>
+          <div
+            v-if="menuItem.$$expanded"
+            class="sub-pages">
+            <a
+              @click.prevent.stop="onClickMenuItem(subItem)"
+              :href="subItem.path"
+              :class="{'selected': selected(subItem)}"
+              :key="subItem.title"
+              v-for="subItem in menuItem.subItems">
+              <div class="title">
+                <AppImg v-if="subItem.img" :src="subItem.img"/>
+                <span class="emoji" v-if="subItem.emoji">{{ subItem.emoji }}</span>
+                {{ $translate(subItem.title) }}
+              </div>
+            </a>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
+    <div class="dimmed-overlay" @click="$store.commit('setShowNavigation', false)"/>
   </div>
 </template>
 
@@ -77,18 +80,21 @@ export default {
 <style lang="scss" scoped>
 .app-navigation {
   --navigation-width: 200px;
-  position: fixed;
-  background: var(--background-base);
-  width: var(--navigation-width);
-  overflow-y: auto;
-  max-height: calc(100% - var(--app-header-height));
-  z-index: 10;
-  top: calc(var(--app-header-height) - 1px);
-  border-right: 1px solid var(--border-base);
-  transform: translateX(-4px);
-  transition: all 0.3s ease;
-  padding: 4px;
-  height: 100%;
+
+  .left-panel {
+    position: fixed;
+    background: var(--background-base);
+    width: var(--navigation-width);
+    overflow-y: auto;
+    max-height: calc(100% - var(--app-header-height));
+    z-index: 10;
+    top: calc(var(--app-header-height) - 1px);
+    border-right: 1px solid var(--border-base);
+    transform: translateX(-12px);
+    transition: all 0.3s ease;
+    padding: 4px;
+    height: 100%;
+  }
 
   a {
     display: flex;
@@ -143,20 +149,46 @@ export default {
     margin-top: 4px;
   }
 
+  .dimmed-overlay {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    max-width: 992px;
+    margin: auto;
+    pointer-events: none;
+    background: var(--background-base);
+    transition: all 0.3s ease;
+  }
+
   @media (max-width: 1399px) {
     &.folded {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateX(calc(-40px - var(--navigation-width)));
+      .left-panel {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(calc(-40px - var(--navigation-width)));
+      }
+    }
+
+    &:not(.folded) {
+      .dimmed-overlay {
+        opacity: 0.5;
+        pointer-events: all;
+      }
     }
   }
 
   @media (min-width: 1400px) {
-    transform: translateX(calc(-24px - var(--navigation-width)));
-    border-right: 0;
-
     &.folded {
       opacity: 1;
+    }
+
+    .left-panel {
+      transform: translateX(calc(-24px - var(--navigation-width)));
+      border-right: 0;
     }
   }
 }

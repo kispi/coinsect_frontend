@@ -1,12 +1,14 @@
 <template>
   <div class="main-section">
-    <div class="section-header">
+    <div
+      @click.prevent="$router.push(link)"
+      class="section-header">
       <AppImg
         v-if="image"
         :src="image"
       />
       <a
-        @click.prevent="$router.push(link)"
+        @click.prevent
         class="section-title"
         :href="link">
         <span v-html="$translate(title)"/>
@@ -75,11 +77,12 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 8px;
+    padding: 8px;
     margin-bottom: 8px;
     color: var(--text-stress);
     border-bottom: 1px solid var(--border-base);
     font-size: 12px;
+    cursor: pointer;
 
     .app-img {
       width: 16px;
@@ -90,13 +93,11 @@ export default {
     .section-title {
       font-weight: 700;
       flex: 1;
-      cursor: pointer;
     }
 
-    a {
-      &:hover {
-        text-decoration: underline;
-      }
+    &:hover {
+      text-decoration: underline;
+      background: var(--border-base);
     }
   }
 

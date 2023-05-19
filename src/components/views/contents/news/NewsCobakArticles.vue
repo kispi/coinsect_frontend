@@ -3,15 +3,15 @@
     <div class="filters">
       <button
         class="btn"
-        :class="params.news_type === 'recent_news' ? 'btn-primary' : 'btn-default'"
-        @click="params.news_type = 'recent_news'">
-        최신뉴스
+        :class="params.news_type === 'most_viewed_news' ? 'btn-primary' : 'btn-default'"
+        @click="params.news_type = 'most_viewed_news'">
+        많이 본 뉴스
       </button>
       <button
         class="btn"
-        :class="params.news_type === 'best_news' ? 'btn-primary' : 'btn-default'"
-        @click="params.news_type = 'best_news'">
-        많이 본 뉴스
+        :class="params.news_type === 'recent_news' ? 'btn-primary' : 'btn-default'"
+        @click="params.news_type = 'recent_news'">
+        최신뉴스
       </button>
     </div>
     <div class="article-list">
@@ -38,11 +38,11 @@
             <div class="article-contents lines-1" v-html="article.contents"/>
           </div>
           <!-- 이미지 게제시 저작권 침해 -->
-          <!-- <AppImg
+          <AppImg
             v-if="(article.photos || []).length > 0"
             :src="article.photos[0].photo_url"
             :alt="article.title"
-          /> -->
+          />
         </article>
       </a>
       <div
@@ -75,7 +75,7 @@ export default {
     const interv = ref(null)
 
     const params = ref({
-      news_type: 'recent_news',
+      news_type: 'most_viewed_news',
       page: 0,
       current_time: plugins.$helpers.dayjs().format('YYYY-MM-DD'),
     })

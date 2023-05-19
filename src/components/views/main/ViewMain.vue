@@ -3,13 +3,17 @@
     <div
       v-if="dashboards"
       class="grid main">
-      <MainSection :title="'COMMUNITY'" :link="'/community'">
+      <MainSection
+        :title="'COMMUNITY'"
+        :link="'/community'"
+        :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
         <RecentPosts v-if="$store.getters.boards"/>
       </MainSection>
       <MainSection
         :title="'KIMP'"
-        :link="'/prices'">
-        <RealTimePrices :simple="true" :predefinedSymbols="['BTC', 'ETH', 'XRP', 'SOL']"/>
+        :link="'/prices'"
+        :image="'https://theme.zdassets.com/theme_assets/9190474/3941022f7857ffa2b0ac3cb9165aec2c2e4a4e89.jpg'">
+        <RealTimePrices :simple="true" :predefinedSymbols="['BTC', 'ETH', 'XRP', 'SOL', 'ADA', 'DOGE', 'LTC']"/>
       </MainSection>
       <MainSection
         :title="'REAL_TIME_POSITIONS'"

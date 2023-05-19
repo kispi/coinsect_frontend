@@ -13,13 +13,7 @@
           <div class="feed-publish-at" v-html="$helpers.dayjs(feed.updated_time).format('YYYY-MM-DD HH:mm:ss')"/>
           <div class="feed-title" v-html="feed.title"/>
         </div>
-        <!-- 내용이나 이미지를 게제하면 저작권법 위반 -->
-        <!-- <div class="feed-content" v-html="feed.contents"/>
-        <img
-          v-if="feed.contentImage"
-          :src="feed.contentImage"
-          class="feed-content-image"
-        > -->
+        <div class="feed-content lines-1" v-html="feed.contents"/>
         </a>
       <div
         v-if="!loading && data.length === 0"
@@ -184,6 +178,7 @@ export default {
     .feed-title {
       font-weight: 700;
       font-size: 16px;
+      margin-bottom: 8px;
       color: var(--text-stress);
     }
 
