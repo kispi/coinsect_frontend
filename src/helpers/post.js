@@ -17,12 +17,15 @@ export const postHelpers = {
       return Object.keys(o).filter(key => o[key]).map(key => `${key}=${o[key]}`).join('&')
     },
   },
+  populateBoardsColors: async boards => {
+    await Promise.all(boards.map(async board => {
+      const hash = await helpers.logic.crypto.hash.sha256(board.description) || ''
+      board.$$color = `#${hash.substring(0, 6)}`
+    }))
+  },
   populateRenderablePost: async post => {
     post.$$images = helpers.logic.retrieveImagesFromHTML(post.content)
-    const hash = await helpers.logic.crypto.hash.sha256(post.board.description) || ''
-    if (!hash) return
-
-    post.board.$$color = `#${hash.substring(0, 6)}`
+    await postHelpers.populateBoardsColors([post.board])
   },
   populateRenderablePosts: async posts => {
     const promises = posts.map(postHelpers.populateRenderablePost)

@@ -1,20 +1,26 @@
 <template>
-  <div
-    v-if="posts.data.length > 0"
-    class="recent-posts">
-    <div class="posts-grid">
+  <div class="recent-posts">
+    <div class="boards">
+      <a
+        :draggable="false"
+        @click.prevent="onClickBoard(board)"
+        class="board"
+        :class="{'selected': board.id === selectedBoardId}"
+        :href="`/community?boardId=${board.id}`"
+        :key="board.id"
+        v-for="board in $store.getters.boards">
+        {{ board.description }}
+      </a>
+    </div>
+    <div
+      v-if="posts.data.length > 0"
+      class="posts-grid">
       <RouterLink
         class="row"
         :to="`/community/${post.sharingKey}`"
         :key="post.id"
         v-for="post in posts.data.slice(0, $store.getters.isMobile ? 5 : 10)">
         <div class="title flex-fill lines-1 m-r-32">
-          <span
-            @click.prevent="$router.push(`/community?boardId=${post.board.id}`)"
-            class="badge-post-type m-r-8"
-            :style="{ background: $helpers.logic.hexToRgba(post.board.$$color, 0.25) }">
-            {{ post.board.description }}
-          </span>
           <span class="title-text">
             <span class="elapsed-time f-mono">{{ $helpers.template.elapsedTime(post.createdAt) }}</span>
             <i v-if="(post.$$images || []).length > 0" class="fa fa-image c-price-up-bybit"/>
@@ -28,20 +34,84 @@
         </div>
       </RouterLink>
     </div>
-    <RouterLink class="btn btn-primary btn-write" to="/community/write"><i class="fal fa-pencil m-r-8"/>{{ $translate('WRITE') }}</RouterLink>
+    <RouterLink
+      class="btn btn-primary btn-write"
+      :to="`/community/write?boardId=${selectedBoardId}`">
+      <i class="fal fa-pencil m-r-8"/>
+      {{ $translate('WRITE') }}
+    </RouterLink>
   </div>
 </template>
 
 <script>
+import { onMounted, ref } from 'vue'
+import communityService from '@/services/community'
+import useGlobalHooks from '@/hooks/global-hooks'
+
 export default {
-  props: {
-    posts: Object,
+  setup() {
+    const { plugins, store } = useGlobalHooks()
+
+    const selectedBoardId = ref(null)
+
+    const posts = ref({
+      data: [],
+      total: 0,
+    })
+
+    const onClickBoard = async board => {
+      if (selectedBoardId.value === board.id) return
+
+      selectedBoardId.value = board.id
+      const o = plugins.$helpers.qb().base()
+      o.limit(10).where(`post_type = "normal" AND board_id = ${board.id}`)
+
+      try {
+        posts.value = await communityService.post.all(o.build())
+        await plugins.$helpers.post.populateRenderablePosts(posts.value.data)
+      } catch (e) {
+        plugins.$toast.error('문제가 발생했습니다 :)')
+      }
+    }
+
+    onMounted(() => {
+      onClickBoard(store.getters.boards[0])
+    })
+
+    return {
+      selectedBoardId,
+      posts,
+      onClickBoard,
+    }
   },
 }
 </script>
 
 <style lang="scss">
 .recent-posts {
+  .boards {
+    display: flex;
+    margin-bottom: 8px;
+
+    .board {
+      flex: 1;
+      text-align: center;
+      max-width: 80px;
+      font-size: 12px;
+      padding: 4px;
+      color: var(--text-light);
+
+      &.selected {
+        color: var(--text-stress);
+        font-weight: 700;
+      }
+
+      &:hover {
+        background: var(--background-light);
+      }
+    }
+  }
+
   .posts-grid {
     font-size: 12px;
     display: grid;
@@ -64,15 +134,6 @@ export default {
     color: var(--brand-primary);
   }
 
-  .badge-post-type {
-    white-space: nowrap;
-    padding: 0 4px;
-
-    &:hover {
-      background: var(--border-light) !important;
-    }
-  }
-
   .row {
     display: flex;
     align-items: center;
@@ -93,18 +154,19 @@ export default {
       display: flex;
       align-items: center;
       gap: 8px;
+      color: var(--text-stress);
     }
 
     &:hover {
       .title-text {
-        color: var(--text-stress);
         font-weight: 500;
       }
     }
   }
 
   .btn-write {
-    margin-top: 8px;
+    width: calc(100% - 2px);
+    margin: 8px auto 0;
   }
 }
 </style>

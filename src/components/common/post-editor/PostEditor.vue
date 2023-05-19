@@ -82,6 +82,9 @@ export default {
     }
 
     const init = () => {
+      const boardId = parseInt(router.currentRoute.value.query.boardId)
+      if (boardId) payload.value.board = { id: boardId }
+
       if (props.post) payload.value = props.post
       else if (store.getters.me) payload.value.nickname = store.getters.me.profile.nickname
       else payload.value.nickname = ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname
@@ -131,6 +134,7 @@ export default {
     onMounted(init)
 
     onBeforeRouteLeave((to, from, next) => {
+      noAskRouteLeave.value = !payload.value.title && !payload.value.content
       if (noAskRouteLeave.value) return next()
 
       plugins.$modal.confirm({

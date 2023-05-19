@@ -5,7 +5,10 @@
         v-if="image"
         :src="image"
       />
-      <div class="section-title">
+      <a
+        @click.prevent="$router.push(link)"
+        class="section-title"
+        :href="link">
         <span v-html="$translate(title)"/>
         <i
           ref="refTooltip"
@@ -18,9 +21,6 @@
           })"
           @mouseleave="$tooltip.hide(tooltipId)"
         />
-      </div>
-      <a :href="link" @click.prevent="$router.push(link)">
-        <span>{{ $translate('SEE_MORE') }}</span>
         <i class="fal fa-chevron-right m-l-4 f-10"/>
       </a>
     </div>
@@ -69,7 +69,6 @@ export default {
 
 <style lang="scss" scoped>
 .main-section {
-  padding: 8px;
   border-radius: 8px;
 
   .section-header {
@@ -91,6 +90,7 @@ export default {
     .section-title {
       font-weight: 700;
       flex: 1;
+      cursor: pointer;
     }
 
     a {

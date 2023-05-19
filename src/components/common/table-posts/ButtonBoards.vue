@@ -4,6 +4,7 @@
       @click="$router.push(`/community${board.id ? `?boardId=${board.id}` : ''}`)"
       class="btn btn-brd"
       :class="{'selected': selected(board)}"
+      :style="{'background': $helpers.logic.hexToRgba(board.$$color, 0.25)}"
       :key="board.id"
       v-for="board in boards"
       v-html="$translate(board.description)"
@@ -46,6 +47,8 @@ export default {
   gap: 8px;
 
   .btn-brd {
+    border-radius: 0;
+
     &:not(.selected) {
       border: 1px solid var(--border-base);
     }

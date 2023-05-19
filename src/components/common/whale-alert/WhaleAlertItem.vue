@@ -11,7 +11,7 @@
         <AppImg :src="($store.getters.symbols[whaleAlert.symbol.toUpperCase()] || {}).thumb" :alt="whaleAlert.symbol"/>
         <div class="name">{{ displayAmount(whaleAlert) }} {{ whaleAlert.symbol }}</div>
         <div class="amount m-l-4">({{ $helpers.currency() }} {{ $helpers.number.pretty.price({ price: whaleAlert.amountUsd, baseCurrency: 'usd' }) }})</div>
-        <div class="m-l-8 m-r-8 c-text-light">|</div>
+        <div class="m-l-8 m-r-8 c-border-base">|</div>
         <div class="timestamp">{{ $helpers.template.elapsedTime($helpers.dayjs.unix(whaleAlert.timestamp)) }}</div>
       </div>
     </div>

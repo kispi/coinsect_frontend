@@ -24,7 +24,6 @@ const dashboard = {
 
         resp.leaderboards.sort((a, b) => ['Long', 'Short'].includes(a.side) && b.side === '-' ? -1 : 1)
 
-        await helpers.post.populateRenderablePosts(resp.posts.data)
         commit('setDashboardsMain', resp)
       } catch (e) {
         return Promise.reject(e)

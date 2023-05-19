@@ -41,6 +41,7 @@ const post = {
     async loadBoards({ commit }) {
       try {
         const resp = await communityService.board.all()
+        await helpers.post.populateBoardsColors(resp.data)
         commit('setBoards', (resp.data || []).filter(b => coinsectBoardIds.includes(b.id)))
       } catch (e) {
         return Promise.reject(e)

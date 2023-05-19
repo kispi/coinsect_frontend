@@ -4,7 +4,7 @@
       v-if="dashboards"
       class="grid main">
       <MainSection :title="'COMMUNITY'" :link="'/community'">
-        <RecentPosts :posts="dashboards.posts"/>
+        <RecentPosts v-if="$store.getters.boards"/>
       </MainSection>
       <MainSection
         :title="'KIMP'"
@@ -128,7 +128,7 @@ export default {
     gap: 8px;
 
     &.main {
-      gap: 8px;
+      gap: 16px;
     }
   }
 

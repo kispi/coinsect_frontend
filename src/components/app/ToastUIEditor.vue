@@ -107,6 +107,10 @@ export default {
     padding: 16px;
   }
 
+  .toastui-editor-defaultUI-toolbar {
+    padding: 0;
+  }
+
   input {
     border-radius: 4px !important;
     color: var(--black) !important;

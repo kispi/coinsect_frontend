@@ -54,7 +54,7 @@
             @click="onClickMenuAccount"
             class="clickable-icon-wrapper">
             <i v-if="$store.getters.me" class="fal fa-circle-user"/>
-            <div v-else class="f-10">로그인</div>
+            <div v-else class="f-10">{{ $translate('MODAL_SIGN_IN') }}</div>
           </div>
         </div>
         <WrapperDropdownOverlay
