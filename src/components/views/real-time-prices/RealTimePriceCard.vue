@@ -113,10 +113,6 @@ export default {
     height: 16px;
   }
 
-  &:hover {
-    background: var(--text-light);
-  }
-
   .symbol-name {
     display: flex;
     align-items: center;
@@ -166,6 +162,10 @@ export default {
     .symbol-price {
       color: var(--price-down-bybit);
     }
+  }
+
+  &:hover {
+    background: var(--text-light);
   }
 
   @media (min-width: 480px) {
