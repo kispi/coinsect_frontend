@@ -134,8 +134,10 @@ export default {
     onMounted(init)
 
     onBeforeRouteLeave((to, from, next) => {
-      noAskRouteLeave.value = !payload.value.title && !payload.value.content
-      if (noAskRouteLeave.value) return next()
+      if (
+        noAskRouteLeave.value ||
+        (!payload.value.title && !payload.value.content)
+      ) return next()
 
       plugins.$modal.confirm({
         body: plugins.$translate('MODAL_CONFIRM_QUIT_WRITING'),
