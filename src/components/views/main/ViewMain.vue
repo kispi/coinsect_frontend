@@ -10,10 +10,10 @@
         <RecentPosts v-if="$store.getters.boards"/>
       </MainSection>
       <MainSection
-        :title="'MARKETS'"
+        :title="'KIMP'"
         :link="'/prices'"
         :image="require('@/assets/images/binance.svg')">
-        <RealTimePriceCards :symbols="['BTC', 'ETH', 'BNB', 'XRP', 'ADA', 'DOGE', 'MATIC', 'SOL', 'LTC', 'TRX']"/>
+        <RealTimePriceCards :symbols="['BTC', 'ETH', 'BNB', 'XRP', 'ADA', 'DOGE', 'MATIC', 'SOL', 'LTC', 'TRX', 'DOT']"/>
       </MainSection>
       <MainSection
         :title="'REAL_TIME_POSITIONS'"

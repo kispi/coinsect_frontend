@@ -31,7 +31,7 @@ export default {
       img: require('@/assets/images/upbit.svg'),
     }, {
       key: 'bithumb_krw',
-      img: require('@/assets/images/bithumb.png'),
+      img: require('@/assets/images/bithumb.svg'),
     }].map(o => ({
       ...o,
       $$selected: o.key === `${store.getters.settings.baseExchange}_${store.getters.settings.baseExchangeMarket}`.toLowerCase(),
