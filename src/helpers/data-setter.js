@@ -40,7 +40,6 @@ export default {
     $$symbol,
     $$tradePriceTarget,
     $$vol24HTarget,
-    $$tickDirectionTarget,
   }) => {
     const o = store.getters.realTimeTickers[$$symbol] || {}
     if (!o.$$tradePriceBase || !($$tradePriceTarget * store.getters.usdKrw)) return
@@ -49,7 +48,6 @@ export default {
     o.$$premiumPrice = o.$$tradePriceBase - o.$$tradePriceTarget
     o.$$premiumRate = Math.round(o.$$premiumPrice / o.$$tradePriceTarget * 10000) / 100
     o.$$vol24HTarget = $$vol24HTarget
-    o.$$tickDirectionTarget = $$tickDirectionTarget
     store.getters.realTimeTickers[$$symbol] = o
   },
 }

@@ -2,9 +2,7 @@
   <div
     v-if="$store.getters.realTimeTickers"
     class="real-time-prices">
-    <div
-      v-if="!simple"
-      class="settings">
+    <div class="settings">
       <div class="total-and-search">
         <div>검색결과: {{ displayedList.length }}</div>
         <div class="input-wrapper">
@@ -29,7 +27,7 @@
       class="not-connected"
       @click="init"><AppLoader :size="32"/><div class="m-l-8">{{ $translate('PREPARING_REAL_TIME_PRICES') }}</div>
     </div>
-    <table v-else-if="!simple">
+    <table v-else>
       <thead>
         <tr>
           <th
@@ -57,21 +55,11 @@
       <tbody>
         <RealTimePriceRow
           :ticker="ticker"
-          :simple="simple"
           :key="ticker.$$symbol"
           v-for="ticker in displayedList"
         />
       </tbody>
     </table>
-    <div
-      v-else
-      class="real-time-price-cards">
-      <RealTimePriceCard
-        :ticker="ticker"
-        :key="ticker.$$symbol"
-        v-for="ticker in displayedList"
-      />
-    </div>
     <table v-if="calculating">
       <tbody>
         <AppSkeleton
@@ -91,7 +79,6 @@
 
 <script>
 import { onMounted, ref, watch, onUnmounted, computed } from 'vue'
-import RealTimePriceCard from './RealTimePriceCard'
 import RealTimePriceRow from './RealTimePriceRow'
 import useUpbit from '@/hooks/websockets/upbit'
 import useBithumb from '@/hooks/websockets/bithumb'
@@ -101,12 +88,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: {
-    RealTimePriceCard,
     RealTimePriceRow,
-  },
-  props: {
-    simple: Boolean,
-    predefinedSymbols: Array,
   },
   setup(props) {
     const { plugins, store } = useGlobalHooks()
@@ -172,12 +154,6 @@ export default {
 
     const recalcDisplayedList = async () => {
       calculating.value = true
-      if (props.predefinedSymbols) {
-        displayedList.value = props.predefinedSymbols.filter(o => store.getters.realTimeTickers[o]).map(o => store.getters.realTimeTickers[o])
-        calculating.value = false
-        return
-      }
-
       displayedList.value = Object.values(store.getters.realTimeTickers).filter(t => {
         if (store.getters.settings.filter === 'favorites' && !store.getters.settings.favorites[t.$$symbol]) return
 
@@ -416,12 +392,6 @@ export default {
     width: 100%;
     height: 60px;
     margin: 2px 0;
-  }
-
-  .real-time-price-cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
   }
 
   @media (max-width: 767px) {

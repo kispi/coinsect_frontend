@@ -10,10 +10,10 @@
         <RecentPosts v-if="$store.getters.boards"/>
       </MainSection>
       <MainSection
-        :title="'KIMP'"
+        :title="'MARKETS'"
         :link="'/prices'"
-        :image="'https://theme.zdassets.com/theme_assets/9190474/3941022f7857ffa2b0ac3cb9165aec2c2e4a4e89.jpg'">
-        <RealTimePrices :simple="true" :predefinedSymbols="['BTC', 'ETH', 'XRP', 'SOL', 'ADA', 'DOGE', 'LTC']"/>
+        :image="require('@/assets/images/binance.svg')">
+        <RealTimePriceCards :symbols="['BTC', 'ETH', 'BNB', 'XRP', 'ADA', 'DOGE', 'MATIC', 'SOL', 'LTC', 'TRX']"/>
       </MainSection>
       <MainSection
         :title="'REAL_TIME_POSITIONS'"
@@ -64,11 +64,11 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import MainSection from './MainSection'
 import RecentPosts from '../RecentPosts'
-import RealTimePrices from '@/components/views/real-time-prices/RealTimePrices'
+import RealTimePriceCards from '@/components/views/real-time-prices/RealTimePriceCards'
 import useRealTimePosition from '@/hooks/real-time-position'
 
 export default {
-  components: { MainSection, RecentPosts, RealTimePrices },
+  components: { MainSection, RecentPosts, RealTimePriceCards },
   setup() {
     const { plugins, store } = useGlobalHooks()
 

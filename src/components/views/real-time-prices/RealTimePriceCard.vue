@@ -1,47 +1,29 @@
 <template>
-  <div class="real-time-price-card f-mono">
+  <div
+    @click="openBinance"
+    class="real-time-price-card f-mono">
     <div class="symbol-name">
-      <AppImg :src="$store.getters.symbols[ticker.$$symbol].thumb" class="flex-wrap m-r-8" :alt="ticker.$$symbol"/>
-      {{ $store.getters.symbols[ticker.$$symbol][$store.getters.settings.locale] }}
+      <AppSkeleton v-if="!ticker"/>
+      <AppImg v-else :src="`https://static.upbit.com/logos/${symbol}.png`" class="flex-wrap m-r-8" :alt="symbol"/>
+      {{ symbol }}
     </div>
-    <div class="symbol-price">
-      <div class="attr">
-        <div
-          class="price"
-          :class="{
-            'c-price-up-bybit': ticker.$$tickDirectionTarget === 'up',
-            'c-price-down-bybit': ticker.$$tickDirectionTarget === 'down',
-          }">
-          <i
-            class="far"
-            :class="{
-              'fa-arrow-up': ticker.$$tickDirectionTarget === 'up',
-              'fa-arrow-down': ticker.$$tickDirectionTarget === 'down'
-            }"
-          />
-          $ {{ ticker.$$tradePriceTarget ? mustUSD(ticker.$$tradePriceTarget) : '-' }}</div>
-      </div>
-      <div class="attr" :class="upOrDown(ticker.$$changeRate1D)">
-        <div class="key">{{ $translate('CHANGE_RATE_1D') }}</div>
-        <div class="value">{{ ticker.$$changeRate1D > 0 ? `+${ticker.$$changeRate1D}` : ticker.$$changeRate1D }}%</div>
-      </div>
-      <div class="attr" :class="upOrDown(ticker.$$premiumRate)">
-        <div class="key">{{ $translate('PREMIUM') }}</div>
-        <div class="value">{{ ticker.$$premiumRate > 0 ? `+${ticker.$$premiumRate}` : ticker.$$premiumRate }}%</div>
-      </div>
-    </div>
+    <div class="symbol-price">$ {{ mustUSD((ticker || {}).c) }}</div>
   </div>
 </template>
 
 <script>
-import useGlobalHooks from '@/hooks/global-hooks'
+import { computed } from 'vue'
 
 export default {
   props: {
     ticker: Object,
   },
-  setup() {
-    const { store } = useGlobalHooks()
+  setup(props) {
+    const symbol = computed(() => ((props.ticker || {}).s || '').split('USDT')[0])
+
+    const openBinance = () => {
+      window.open(`https://www.binance.com/en/futures/${props.ticker.s}`, '_blank')
+    }
 
     const upOrDown = value => {
       if (value > 0) return 'up'
@@ -50,18 +32,19 @@ export default {
     }
 
     const mustUSD = price => {
-      if (store.getters.settings.currency === 'usd') return price
+      if (!price) return '-'
 
-      const f = price / store.getters.usdKrw
-      return f.toLocaleString(undefined, {
-        minimumFractionDigits: f < 1 ? 4 : 2,
+      return parseFloat(price).toLocaleString(undefined, {
+        minimumFractionDigits: price < 1 ? 4 : 2,
         maximumFractionDigits: 4,
       })
     }
 
     return {
+      symbol,
       upOrDown,
       mustUSD,
+      openBinance,
     }
   },
 }
@@ -75,54 +58,26 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--text-light);
+  }
 
   .symbol-name {
     display: flex;
     align-items: center;
 
     .app-img {
-      width: 24px;
-      height: 24px;
+      width: 16px;
+      height: 16px;
     }
   }
 
-  .price {
-    margin: 8px auto;
-    display: table;
-    font-weight: 700;
-    width: 120px;
-    text-align: center;
-
-    i {
-      margin-right: 8px;
-    }
-  }
-
-  .attr {
-    display: flex;
-    text-align: center;
-
-    .key {
-      width: 64px;
-      text-align: right;
-    }
-
-    .value {
-      margin-left: 8px;
-      font-weight: 700;
-    }
-
-    &.up {
-      .value {
-        color: var(--price-up-bybit);
-      }
-    }
-
-    &.down {
-      .value {
-        color: var(--price-down-bybit);
-      }
-    }
+  .symbol-price {
+    font-weight: 500;
+    font-size: 12px;
   }
 }
 </style>
