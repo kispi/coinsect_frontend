@@ -182,6 +182,9 @@ const community = [{
 const andSoOn = [{
   path: '/',
   component: () => import(/* webpackChunkName: 'view-main' */ '@/components/views/main/ViewMain'),
+  meta: {
+    title: '김치 프리미엄, 김프, 역프 및 암호화폐 실시간 시세 - 코인충',
+  },
 }, {
   path: '/prices',
   component: () => import(/* webpackChunkName: 'view-home' */ '@/components/views/real-time-prices/ViewRealTimePrices'),
