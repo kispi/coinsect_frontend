@@ -19,7 +19,7 @@
         v-if="options.exchange === 'bybit'"
         @load-orderbook="scrollCenter"
         :market="options.market"
-        :depth="6"
+        :depth="options.depth"
       />
     </div>
   </div>

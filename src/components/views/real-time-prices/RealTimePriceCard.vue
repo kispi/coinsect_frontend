@@ -1,6 +1,6 @@
 <template>
   <div
-    @click="openBinance"
+    @click="setDocumentTitleTicker"
     class="real-time-price-card f-mono"
     :class="{
       'up': info && info.$$tickDirection === 'up',
@@ -40,7 +40,7 @@ export default {
     tickerUpbit: Object,
   },
   setup(props) {
-    const { store } = useGlobalHooks()
+    const { plugins, store } = useGlobalHooks()
 
     const symbol = computed(() => ((props.tickerBinance || {}).s || '').split('USDT')[0])
 
@@ -60,8 +60,12 @@ export default {
       if (!props.tickerBinance) return
 
       const $$tickDirection = tickDirection()
+
+      // no-side-effects-in-computed-properties 위배이기는 한데, 이게 제일 깔끔함
       prev.value.price = parseFloat(props.tickerBinance.c)
       prev.value.direction = $$tickDirection
+      if (store.getters.settings.documentTitleTicker === symbol.value) document.title = `${mustUSD(props.tickerBinance.c)} ${symbol.value}/USDT`
+
       return {
         premiumUpbit: props.tickerUpbit && props.tickerBinance ? (((props.tickerUpbit.tp / store.getters.usdKrw) / props.tickerBinance.c - 1) * 100).toFixed(2) : null,
         premiumBithumb: props.tickerBithumb && props.tickerBinance ? (((props.tickerBithumb.closePrice / store.getters.usdKrw) / props.tickerBinance.c - 1) * 100).toFixed(2) : null,
@@ -69,7 +73,12 @@ export default {
       }
     })
 
-    const openBinance = () => window.open(`https://www.binance.com/en/futures/${props.tickerBinance.s}`, '_blank')
+    const setDocumentTitleTicker = () => {
+      if (!props.tickerBinance) return
+
+      store.commit('setSettings', { documentTitleTicker: symbol.value })
+      plugins.$toast.success(plugins.$translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, symbol.value))
+    }
 
     const mustUSD = price => {
       if (!price) return '-'
@@ -83,8 +92,8 @@ export default {
     return {
       info,
       symbol,
+      setDocumentTitleTicker,
       mustUSD,
-      openBinance,
     }
   },
 }

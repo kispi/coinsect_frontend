@@ -59,7 +59,7 @@ export default {
     market: String,
     depth: {
       type: Number,
-      default: 5,
+      default: 8,
     }
   },
   setup(props, { emit }) {
