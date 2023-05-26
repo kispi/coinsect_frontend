@@ -86,6 +86,7 @@ const helpers = {
     return symbols[store.getters.settings.currency]
   },
   isImageUrl: url => ['.jpg', '.jpeg', '.png'].some(ext => (url || '').endsWith(ext)), // AWS Rekognition에서 검사가능한 URL만 남김.
+  isNil: value => [null, undefined].includes(value) || isNaN(value),
   localStorage: {
     setMeta: (key, value) => {
       const meta = JSON.parse((window.localStorage.getItem('meta') || '{}'))

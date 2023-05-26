@@ -143,9 +143,9 @@ export default {
     }
 
     const sorter = (a, b) => {
-      if (a[settings.value.sort.column] === undefined) return 1
+      if (plugins.$helpers.isNil(a[settings.value.sort.column])) return 1
 
-      if (b[settings.value.sort.column] === undefined) return -1
+      if (plugins.$helpers.isNil(b[settings.value.sort.column])) return -1
 
       if (settings.value.sort.direction === 'asc') return a[settings.value.sort.column] < b[settings.value.sort.column] ? -1 : 1
 
