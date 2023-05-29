@@ -51,7 +51,7 @@ export default {
           preventCloseOnClickBackdrop: true,
         },
       }),
-      edit: () => checkPasswordAndAllowEdit({ post: post.value }),
+      edit: () => checkPasswordAndAllowEdit(post.value),
       delete: async () => {
         if (plugins.$helpers.logic.writing.isMine(post.value)) {
           const ok = await plugins.$modal.confirm({ body: '내 게시글을 삭제할까요?' })
