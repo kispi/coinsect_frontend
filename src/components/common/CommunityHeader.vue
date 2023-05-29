@@ -1,11 +1,16 @@
 <template>
   <div class="community-header">
     <div class="top">
-      <RouterLink to="/community" v-html="$translate('COMMUNITY')" class="button-community"/>
+      <RouterLink to="/community" class="button-community">{{ $translate('COMMUNITY') }}</RouterLink>
       <button
         v-if="withWriteButton"
-        @click="$router.push('/community/write')"
-        class="btn btn-primary"
+        @click="$modal.custom({
+          component: 'ModalPostEditor',
+          options: {
+            preventCloseOnClickBackdrop: true,
+          },
+        })"
+        class="btn btn-brd"
         v-html="$translate('WRITE')"
       />
     </div>

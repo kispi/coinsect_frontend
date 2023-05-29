@@ -24,10 +24,13 @@
 import { computed } from 'vue'
 import communityService from '@/services/community'
 import useGlobalHooks from '@/hooks/global-hooks'
+import usePost from '@/hooks/post'
 
 export default {
   setup() {
     const { plugins, store, router } = useGlobalHooks()
+
+    const { checkPasswordAndAllowEdit } = usePost()
 
     const post = computed(() => store.getters.post)
 
@@ -42,8 +45,13 @@ export default {
     }
 
     const handlers = {
-      write: () => router.push('/community/write'),
-      edit: () => router.push(`/community/edit/${post.value.sharingKey}`),
+      write: () => plugins.$modal.custom({
+        component: 'ModalPostEditor',
+        options: {
+          preventCloseOnClickBackdrop: true,
+        },
+      }),
+      edit: () => checkPasswordAndAllowEdit({ post: post.value }),
       delete: async () => {
         if (plugins.$helpers.logic.writing.isMine(post.value)) {
           const ok = await plugins.$modal.confirm({ body: '내 게시글을 삭제할까요?' })

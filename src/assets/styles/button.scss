@@ -78,6 +78,12 @@
 
 .btn-brd {
   background: none;
-  border: 1px solid var(--text-stress);
+  border: 1px solid var(--border-base);
   color: var(--text-stress);
+
+  &:not(.disabled):not(:disabled) {
+    &:hover {
+      border: 1px solid var(--text-stress);
+    }
+  }
 }

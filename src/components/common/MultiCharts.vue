@@ -22,7 +22,7 @@
     <div class="buttons">
       <button
         v-if="$store.getters.charts.length < 6"
-        class="btn btn-primary"
+        class="btn btn-brd"
         @click="onClickAddChart">
         <i class="fal fa-plus m-r-8"/>
         {{ $translate('ADD_CHART') }}

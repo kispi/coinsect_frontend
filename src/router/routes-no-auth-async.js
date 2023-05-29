@@ -169,12 +169,6 @@ const community = [{
   path: '/community',
   component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewCommunity'),
 }, {
-  path: '/community/write',
-  component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewPostWrite'),
-}, {
-  path: '/community/edit/:sharingKey',
-  component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewPostEdit'),
-}, {
   path: '/community/:sharingKey',
   component: () => import(/* webpackChunkName: 'view-community' */ '@/components/views/community/ViewCommunity'),
 }]

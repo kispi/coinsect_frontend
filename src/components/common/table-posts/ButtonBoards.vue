@@ -49,8 +49,8 @@ export default {
   .btn-brd {
     border-radius: 0;
 
-    &:not(.selected) {
-      border: 1px solid var(--border-base);
+    &.selected {
+      border: 1px solid var(--text-stress);
     }
   }
 }

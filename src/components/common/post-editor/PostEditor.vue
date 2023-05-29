@@ -36,7 +36,7 @@
     <ToastUIEditor v-model="payload.content"/>
     <div class="buttons">
       <button
-        @click="$router.push('/community')"
+        @click="$emit('close')"
         class="btn btn-default"
         v-html="$translate('CANCEL')"
       />
@@ -51,18 +51,23 @@
 
 <script>
 import { computed, onMounted, ref, watch } from 'vue'
-import { onBeforeRouteLeave } from 'vue-router'
 import crudService from '@/services/crud'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
+  emits: ['close'],
   props: {
-    post: Object,
+    boardId: {
+      required: false,
+      type: Number,
+    },
+    post: {
+      required: false,
+      type: Object,
+    },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const { plugins, store, router } = useGlobalHooks()
-
-    const noAskRouteLeave = ref(null) // 글을 작성해서 라우트를 벗어나는 경우는 물어보지 않도록
 
     const payload = ref({})
 
@@ -82,10 +87,9 @@ export default {
     }
 
     const init = () => {
-      const boardId = parseInt(router.currentRoute.value.query.boardId)
+      const boardId = props.boardId || parseInt(router.currentRoute.value.query.boardId)
       if (boardId) payload.value.board = { id: boardId }
-
-      if (props.post) payload.value = props.post
+      if (props.post) payload.value = {...props.post}
       else if (store.getters.me) payload.value.nickname = store.getters.me.profile.nickname
       else payload.value.nickname = ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname
 
@@ -113,12 +117,15 @@ export default {
 
       try {
         await crudService.post[payload.value.id ? 'update' : 'create'](payload.value)
-        noAskRouteLeave.value = true
-        router.push(
-          payload.value.sharingKey ?
-          `/community/${payload.value.sharingKey}` :
-          '/community',
-        )
+        emit('close')
+        setTimeout(() => {
+          router.push(
+            payload.value.sharingKey ?
+            `/community/${payload.value.sharingKey}` :
+            '/community',
+          )
+        })
+        if (payload.value.sharingKey) store.dispatch('loadPost', payload.value.sharingKey)
       } catch (e) {
         if (plugins.$helpers.errorHandlers.bannedUser(e)) return
 
@@ -132,17 +139,6 @@ export default {
     )
 
     onMounted(init)
-
-    onBeforeRouteLeave((to, from, next) => {
-      if (
-        noAskRouteLeave.value ||
-        (!payload.value.title && !payload.value.content)
-      ) return next()
-
-      plugins.$modal.confirm({
-        body: plugins.$translate('MODAL_CONFIRM_QUIT_WRITING'),
-      }).then(result => result === 1 ? next() : null)
-    })
 
     return {
       payload,
@@ -181,7 +177,7 @@ export default {
     .nickname,
     .authorized-user,
     .password {
-      width: 160px;
+      width: 144px;
       height: 36px;
       line-height: 36px;
       padding: 0 8px;
@@ -197,7 +193,7 @@ export default {
       background: var(--white) !important;
       border-radius: 4px !important;
       margin-right: var(--editor-gap);
-      width: 160px;
+      width: 144px;
       flex: 0 0 auto;
 
       .clickable-area,

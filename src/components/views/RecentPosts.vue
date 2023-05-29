@@ -5,7 +5,7 @@
         :draggable="false"
         @click.prevent="onClickBoard(board)"
         class="board"
-        :class="{'selected': board.id === selectedBoardId}"
+        :class="{'selected': board.id === (selectedBoard || {}).id}"
         :href="`/community?boardId=${board.id}`"
         :key="board.id"
         v-for="board in $store.getters.boards">
@@ -34,12 +34,27 @@
         </div>
       </RouterLink>
     </div>
-    <RouterLink
-      class="btn btn-primary btn-write"
-      :to="`/community/write?boardId=${selectedBoardId}`">
-      <i class="fal fa-pencil m-r-8"/>
-      {{ $translate('WRITE') }}
-    </RouterLink>
+    <div
+      v-if="selectedBoard"
+      class="buttons">
+      <RouterLink
+        class="btn btn-default btn-write"
+        :to="`/community?boardId=${selectedBoard.id}`">
+        {{ $translate('SEE_MORE') }}
+      </RouterLink>
+      <button
+        @click="$modal.custom({
+          component: 'ModalPostEditor',
+          options: {
+            boardId: selectedBoard.id,
+            preventCloseOnClickBackdrop: true,
+          },
+        })"
+        class="btn btn-brd btn-write">
+        <i class="fal fa-pencil m-r-8"/>
+        {{ $translate('WRITE') }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -52,7 +67,7 @@ export default {
   setup() {
     const { plugins, store } = useGlobalHooks()
 
-    const selectedBoardId = ref(null)
+    const selectedBoard = ref(null)
 
     const posts = ref({
       data: [],
@@ -60,9 +75,9 @@ export default {
     })
 
     const onClickBoard = async board => {
-      if (selectedBoardId.value === board.id) return
+      if (selectedBoard.value === board.id) return
 
-      selectedBoardId.value = board.id
+      selectedBoard.value = board
       const o = plugins.$helpers.qb().base()
       o.limit(10).where(`post_type = "normal" AND board_id = ${board.id}`)
 
@@ -79,7 +94,7 @@ export default {
     })
 
     return {
-      selectedBoardId,
+      selectedBoard,
       posts,
       onClickBoard,
     }
@@ -164,9 +179,14 @@ export default {
     }
   }
 
-  .btn-write {
-    width: calc(100% - 2px);
-    margin: 8px auto 0;
+  .buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+
+    > * {
+      flex: 1;
+    }
   }
 }
 </style>

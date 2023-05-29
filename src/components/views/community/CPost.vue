@@ -147,7 +147,8 @@ export default {
     max-width: 100%;
     white-space: pre-line;
 
-    img {
+    img,
+    iframe {
       max-width: 100%;
       cursor: pointer;
     }

@@ -56,6 +56,7 @@ export default {
     ModalUploadImage: defineAsyncComponent(() => import('@/components/modals/ModalUploadImage')),
     ModalSignIn: defineAsyncComponent(() => import('@/components/modals/ModalSignIn')),
     ModalPositionRequestEdit: defineAsyncComponent(() => import('@/components/modals/ModalPositionRequestEdit')),
+    ModalPostEditor: defineAsyncComponent(() => import('@/components/modals/ModalPostEditor')),
     ModalChatUsers: defineAsyncComponent(() => import('@/components/modals/ModalChatUsers')),
     ModalChatSettings: defineAsyncComponent(() => import('@/components/modals/ModalChatSettings')),
   },
