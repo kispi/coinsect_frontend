@@ -2,6 +2,7 @@
   <div
     class="app-chat-message"
     :class="{'mine': message.isMine}">
+    <EmojiPicker v-if="showEmojiSelector" @pick="onPickEmoji" @close="showEmojiSelector = false"/>
     <div class="content">
       <AppChatProfile v-if="showProfile" :user="message.user" :useBan="true"/>
       <div class="text-and-timestamp">
@@ -23,14 +24,14 @@
               v-if="(meta || {}).replyTo"
               class="meta-reply-to"
               @click="$emit('click-replied-message', meta.replyTo)">
-              <div class="mrt-nickname">To: {{ meta.replyTo.nickname }}</div>
+              <div class="o-50">To: {{ meta.replyTo.nickname }}</div>
               <div
                 class="m-t-4 lines-1">
                 <AppImg
                   v-if="$helpers.isImageUrl(meta.replyTo.text)"
                   :src="meta.replyTo.text"
                 />
-                <div v-else class="o-50 lines-1">{{ meta.replyTo.text }}</div>
+                <div v-else class="lines-1">{{ meta.replyTo.text }}</div>
               </div>
             </div>
             <div v-html="$helpers.dom.linkify(message.text)" @click.prevent="onClickMessage"/>
@@ -49,8 +50,8 @@
           <div
             v-if="message.type !== 'alert'"
             class="functions">
-            <i class="far fa-reply" @click="$emit('click-function', { type: 'reply', message })"/>
-            <!-- <i class="fa fa-heart" @click="$emit('click-function', { type: 'reaction', message })"/> -->
+            <i class="far fa-reply" @click="$emit('click-write-reply', message)"/>
+            <span @click="showEmojiSelector = !showEmojiSelector">😀</span>
           </div>
         </div>
       </div>
@@ -58,7 +59,7 @@
         v-if="message.$$reactions"
         class="message-reactions">
         <div
-          @click="$emit('click-function', { type: 'reaction', message, emoji: key })"
+          @click="onPickEmoji(key)"
           class="message-reaction"
           :key="key"
           v-for="key in Object.keys(message.$$reactions)">
@@ -70,14 +71,19 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
+import EmojiPicker from './EmojiPicker'
+import communityService from '@/services/community'
 
 export default {
-  emits: ['click-function', 'click-replied-message'],
+  emits: ['click-write-reply', 'click-replied-message'],
   props: ['prevMessage', 'message', 'nextMessage'],
+  components: { EmojiPicker },
   setup(props) {
-    const { plugins, router } = useGlobalHooks()
+    const { plugins, store, router } = useGlobalHooks()
+
+    const showEmojiSelector = ref(null)
 
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
@@ -94,6 +100,20 @@ export default {
       }
 
       window.open(link, '_blank', 'noreferrer')
+    }
+
+    const onPickEmoji = async key => {
+      showEmojiSelector.value = false
+
+      try {
+        await communityService.toggleReaction.message({
+          messageId: props.message.id,
+          type: key,
+          nickname: store.getters.chatUser.profile.nickname,
+        })
+      } catch (e) {
+        plugins.$toast.error(e.data.message)
+      }
     }
 
     const meta = computed(() => {
@@ -126,10 +146,12 @@ export default {
 
     return {
       meta,
+      showEmojiSelector,
       showProfile,
       showTimestamp,
       onClickMessage,
       onClickImage,
+      onPickEmoji,
     }
   },
 }
@@ -139,6 +161,7 @@ export default {
 .app-chat-message {
   font-size: 12px;
   display: flex;
+  position: relative;
 
   &:not(:hover) {
     .functions {
@@ -226,12 +249,14 @@ export default {
     border-radius: 4px;
     margin: 0 0 0 8px;
 
-    i {
+    i,
+    span {
       padding: 4px;
       font-size: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
+      user-select: none;
       cursor: pointer;
 
       &:not(:last-child) {
@@ -239,12 +264,23 @@ export default {
       }
 
       &:hover {
-        color: var(--brand-primary-hover);
+        opacity: 0.5;
       }
     }
 
     .fa-reply {
       transform: rotate(180deg);
+    }
+  }
+
+  .emoji-picker {
+    position: absolute;
+    bottom: 32px;
+    z-index: 1;
+    border-radius: 8px;
+
+    input {
+      display: none;
     }
   }
 

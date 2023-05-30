@@ -40,7 +40,7 @@
             :message="message"
           />
           <AppChatMessage
-            @click-function="onClickMessageFunction"
+            @click-write-reply="onClickWriteReply"
             @click-replied-message="onClickRepliedMessage"
             :prevMessage="messages[idx - 1]"
             :message="message"
@@ -167,25 +167,11 @@ export default {
       else plugins.$toast.error(`차단한 유저(${message.nickname})의 메시지입니다`)
     }
 
-    const onClickMessageFunction = async ({ type, message, emoji }) => {
-      if (type === 'reply') {
-        store.commit('setChat', { writingReplyTo: message })
-        setTimeout(() => {
-          if (refAppChatInput.value) refAppChatInput.value.refTextarea.focus()
-        })
-      }
-
-      if (type === 'reaction') {
-        try {
-          await communityService.toggleReaction.message({
-            messageId: message.id,
-            type: emoji,
-            nickname: store.getters.chatUser.profile.nickname,
-          })
-        } catch (e) {
-          plugins.$toast.error(e.data.message)
-        }
-      }
+    const onClickWriteReply = async writingReplyTo => {
+      store.commit('setChat', { writingReplyTo })
+      setTimeout(() => {
+        if (refAppChatInput.value) refAppChatInput.value.refTextarea.focus()
+      })
     }
 
     const onOpenChatContainer = () => setTimeout(() => {
@@ -248,7 +234,7 @@ export default {
       refAppChat,
       messages,
       loadingReplyTarget,
-      onClickMessageFunction,
+      onClickWriteReply,
       onClickRepliedMessage,
       scrollToBottom,
       onScroll,

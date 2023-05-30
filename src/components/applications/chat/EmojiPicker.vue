@@ -2,7 +2,7 @@
   <div
     v-if="$store.getters.config"
     class="emoji-picker">
-    <div class="closer center" @click="$emit('close')"><i class="fal fa-times"/></div>
+    <div class="closer center" @click="$emit('close')"><i class="c-white fal fa-times"/></div>
     <input
       v-model="keyword"
       @keydown="onKeydown"
@@ -12,14 +12,14 @@
     />
     <div class="emoji-list">
       <div
-        @click="$emit('pick', $store.getters.config.emojis[emoji])"
+        @click="$emit('pick', emoji)"
         class="emoji center"
         :key="emoji"
         v-for="emoji in emojis">
         {{ ($store.getters.config.emojis[emoji] || {}).emoji }}
       </div>
     </div>
-    <div v-if="keyword && emojis.length === 0" class="center">
+    <div v-if="keyword && emojis.length === 0" class="c-white center p-24">
       {{ $translate('NO_SEARCH_RESULT') }}
     </div>
   </div>
@@ -58,7 +58,8 @@ export default {
 
 <style lang="scss" scoped>
 .emoji-picker {
-  background: var(--background-base);
+  background: rgba(64, 64, 64, 0.9);
+  border: 1px solid var(--border-light);
   padding: 8px;
 
   input {
@@ -72,9 +73,8 @@ export default {
     grid-template-columns: repeat(8, 1fr);
 
     .emoji {
-      padding: 4px;
+      padding: 2px;
       border-radius: 4px;
-      font-size: 16px;
       cursor: pointer;
 
       &:hover {

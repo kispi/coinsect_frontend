@@ -146,7 +146,7 @@ const useChatHandler = () => {
       case 'updateReaction': {
         const targetMessage = store.getters.chat.messages.find(m => m.id === (message.meta || {}).messageId)
         const newReactions = (message.meta || {}).updatedReactions
-        if (!targetMessage || !newReactions) return
+        if (!targetMessage) return
 
         targetMessage.$$reactions = newReactions
         break

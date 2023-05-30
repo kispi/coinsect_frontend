@@ -8,10 +8,11 @@
         <div class="nickname">To: {{ $store.getters.chat.writingReplyTo.user.profile.nickname }}</div>
         <div class="text lines-1" v-html="$store.getters.chat.writingReplyTo.text"/>
       </div>
-      <i
+      <div
         @click="$store.commit('setChat', { writingReplyTo: null })"
-        class="fal fa-times flex-wrap"
-      />
+        class="clickable-icon-wrapper">
+        <i class="fal fa-times"/>
+      </div>
     </div>
     <div class="textarea-wrapper">
       <div
@@ -78,7 +79,7 @@ export default {
     const showEmojis = ref(null)
 
     const onPickEmoji = emoji => {
-      text.value = plugins.$helpers.dom.insertCharacter({ character: emoji.emoji, textarea: refTextarea.value })
+      text.value = plugins.$helpers.dom.insertCharacter({ character: (store.getters.config.emojis[emoji] || {}).emoji, textarea: refTextarea.value })
       showEmojis.value = false
     }
 
@@ -244,15 +245,17 @@ export default {
 
     i,
     span {
-      width: 16px;
+      max-width: 16px;
       height: 16px;
       line-height: 16px;
       color: var(--text-base);
-      display: table;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
 
       &:hover {
-        color: var(--text-stress);
+        opacity: 0.5;
       }
     }
   }
@@ -271,6 +274,7 @@ export default {
     right: var(--app-chat-padding);
     left: var(--app-chat-padding);
     z-index: 1;
+    opacity: 0.9;
 
     .left {
       min-width: 0;
@@ -283,13 +287,12 @@ export default {
       }
     }
 
-    .fa-times {
-      font-size: 14px;
-      color: var(--text-stress);
-      cursor: pointer;
+    .clickable-icon-wrapper {
+      width: 32px;
+      height: 32px;
 
-      &:hover {
-        color: var(--brand-primary);
+      .fa-times {
+        font-size: 16px;
       }
     }
   }
@@ -299,7 +302,6 @@ export default {
     bottom: 84px;
     left: var(--app-chat-padding);
     right: var(--app-chat-padding);
-    background: var(--background-base);
     border-radius: 16px;
     z-index: 2;
   }
