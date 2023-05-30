@@ -1,5 +1,6 @@
 <template>
   <div class="app-chat-input">
+    <EmojiPicker v-if="showEmojis" @pick="onPickEmoji" @close="showEmojis = false"/>
     <div
       v-if="$store.getters.chat.writingReplyTo"
       class="writing-reply-to">
@@ -36,6 +37,7 @@
       </div>
       <div class="functions">
         <i @click="chatFunctions.image" class="fa fa-image"/>
+        <span @click="showEmojis = !showEmojis">😀</span>
       </div>
       <textarea
         ref="refTextarea"
@@ -60,16 +62,25 @@
 import { ref, onMounted } from 'vue'
 import useChatHandler from '@/hooks/chat-handler'
 import useGlobalHooks from '@/hooks/global-hooks'
+import EmojiPicker from './EmojiPicker'
 
 export default {
+  components: { EmojiPicker },
   setup() {
     const { sendWebsocketMessage, updateSentiment } = useChatHandler()
 
     const { plugins, store } = useGlobalHooks()
 
-    const text = ref(null)
+    const text = ref('')
 
     const refTextarea = ref(null)
+
+    const showEmojis = ref(null)
+
+    const onPickEmoji = emoji => {
+      text.value = plugins.$helpers.dom.insertCharacter({ character: emoji.emoji, textarea: refTextarea.value })
+      showEmojis.value = false
+    }
 
     const focusOnInput = () => {
       setTimeout(() => {
@@ -141,6 +152,8 @@ export default {
       refTextarea,
       text,
       chatFunctions,
+      showEmojis,
+      onPickEmoji,
       updateSentiment,
       sendTextMessage,
       onKeydown,
@@ -221,16 +234,27 @@ export default {
     }
   }
 
-  .fa-image {
-    margin-right: 8px;
-    cursor: pointer;
-  }
-
   .functions {
     border-right: 1px solid var(--border-base);
-    margin: -8px 0;
-    padding: 8px 0;
+    padding: 0 8px 0 0;
     margin-right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    i,
+    span {
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      color: var(--text-base);
+      display: table;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--text-stress);
+      }
+    }
   }
 
   .writing-reply-to {
@@ -268,6 +292,16 @@ export default {
         color: var(--brand-primary);
       }
     }
+  }
+
+  .emoji-picker {
+    position: absolute;
+    bottom: 84px;
+    left: var(--app-chat-padding);
+    right: var(--app-chat-padding);
+    background: var(--background-base);
+    border-radius: 16px;
+    z-index: 2;
   }
 }
 </style>

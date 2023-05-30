@@ -31,6 +31,16 @@ const dom = {
       Math.floor(100 - ((rect.bottom - windowHeight) / rect.height) * 100) < percentVisible
     )
   },
+  insertCharacter: ({ character, textarea }) => {
+    const cursorPosition = textarea.selectionStart
+    const value = textarea.value
+    const updatedValue = value.substring(0, cursorPosition) + character + value.substring(cursorPosition)
+    textarea.value = updatedValue
+    textarea.selectionStart = cursorPosition + 2
+    textarea.selectionEnd = cursorPosition + 2
+    textarea.focus()
+    return updatedValue
+  },
   copyToClipboard: (str, link) => {
     if (process.env.VUE_APP_SSR) return
 
