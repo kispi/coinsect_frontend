@@ -49,6 +49,9 @@ export default {
 
     const shouldShowCharts = computed(() => {
       const p = router.currentRoute.value.path
+      const allowed = ['/contents/economic-calendar']
+      if (allowed.includes(p)) return true
+
       return !['/community', '/apps', '/contents'].some(path => p.startsWith(path)) && !['/about'].includes(p)
     })
 

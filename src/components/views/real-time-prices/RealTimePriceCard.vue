@@ -13,17 +13,12 @@
         {{ symbol }}
       </div>
       <div class="vr"/>
-      <div class="symbol-price">$ {{ mustUSD((tickerBinance || {}).c) }}</div>
+      <div class="symbol-price">{{ mustUSD((tickerBinance || {}).c) }}</div>
     </div>
-    <div v-if="symbol === 'BTC'" class="premiums">
-      <div v-if="info.premiumUpbit" class="attr">
+    <div class="premiums">
+      <div v-if="(info || {}).premiumUpbit" class="attr">
         <div class="key m-r-4"><AppImg :src="require('@/assets/images/upbit.svg')" :fit="'contain'"/></div>
-        <div class="value">{{ info.premiumUpbit || '-' }}%</div>
-      </div>
-      <div v-if="info.premiumUpbit && info.premiumBithumb" class="vr"/>
-      <div v-if="info.premiumBithumb" class="attr">
-        <div class="key m-r-4"><AppImg :src="require('@/assets/images/bithumb.svg')" :fit="'contain'"/></div>
-        <div class="value">{{ info.premiumBithumb || '-' }}%</div>
+        <div class="value">{{ $helpers.number.pretty.price({ price: tickerUpbit.tp, baseCurrency: 'krw' }) }} ({{ info.premiumUpbit || '-' }}%)</div>
       </div>
     </div>
   </div>
@@ -36,7 +31,6 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   props: {
     tickerBinance: Object,
-    tickerBithumb: Object,
     tickerUpbit: Object,
   },
   setup(props) {
@@ -68,7 +62,6 @@ export default {
 
       return {
         premiumUpbit: props.tickerUpbit && props.tickerBinance ? (((props.tickerUpbit.tp / store.getters.usdKrw) / props.tickerBinance.c - 1) * 100).toFixed(2) : null,
-        premiumBithumb: props.tickerBithumb && props.tickerBinance ? (((props.tickerBithumb.closePrice / store.getters.usdKrw) / props.tickerBinance.c - 1) * 100).toFixed(2) : null,
         $$tickDirection,
       }
     })

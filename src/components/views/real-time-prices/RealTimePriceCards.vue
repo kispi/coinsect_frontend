@@ -13,7 +13,6 @@
 <script>
 import { onMounted, onUnmounted, ref } from 'vue'
 import useBinance from '@/hooks/websockets/binance'
-import useBithumb from '@/hooks/websockets/bithumb'
 import useUpbit from '@/hooks/websockets/upbit'
 import RealTimePriceCard from './RealTimePriceCard'
 
@@ -27,11 +26,8 @@ export default {
 
     const { subscribe: subscribeUpbit } = useUpbit()
 
-    const { subscribe: subscribeBithumb } = useBithumb()
-
     const connection = ref({
       binance: null,
-      bithumb: null,
       upbit: null,
     })
 
@@ -46,11 +42,6 @@ export default {
           codes: props.symbols.map(symbol => `KRW-${symbol}`),
           $$raw: true,
         })
-        connection.value.bithumb = await subscribeBithumb({
-          type: 'ticker',
-          symbols: props.symbols.map(symbol => `${symbol}_KRW`),
-          $$raw: true,
-        })
       } catch (e) {
         console.error(e)
       }
@@ -61,7 +52,6 @@ export default {
     onUnmounted(() => {
       if (connection.value.binance) connection.value.binance.close()
       if (connection.value.upbit) connection.value.upbit.close()
-      if (connection.value.bithumb) connection.value.bithumb.close()
     })
   },
 }

@@ -24,7 +24,7 @@
           <CPosition
             :position="position"
             :key="position.name"
-            v-for="position in dashboards.realTimePositions.data.filter(p => p.editable)"
+            v-for="position in dashboards.realTimePositions.data"
           />
         </div>
       </MainSection>
@@ -72,7 +72,7 @@ export default {
   setup() {
     const { plugins, store } = useGlobalHooks()
 
-    const { openWebsocket } = useRealTimePosition()
+    const { openWebsocket, sorter } = useRealTimePosition()
 
     const dashboards = computed(() => store.getters.dashboardsMain)
 
@@ -101,6 +101,7 @@ export default {
         // 이하는 SSR에서는 실행하지 않음
         if (store.getters.isSSR) return
 
+        dashboards.value.realTimePositions.data.sort(sorter)
         store.commit('setRealTimePositions', dashboards.value.realTimePositions)
         openWebsocket()
         timeout.value = setTimeout(initDashboards, 1000 * 60)

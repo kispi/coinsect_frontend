@@ -8,8 +8,6 @@ export default {
 
     app.config.globalProperties.$translate = helpers.translate
 
-    app.config.globalProperties.$currency = helpers.template.currency
-
     app.config.globalProperties.$http = $http
 
     app.config.globalProperties.$httpNoAuth = $httpNoAuth
