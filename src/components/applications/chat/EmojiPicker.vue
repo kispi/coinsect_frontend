@@ -1,15 +1,26 @@
 <template>
-  <div class="emoji-picker">
+  <div
+    v-if="$store.getters.config"
+    class="emoji-picker">
     <div class="closer center" @click="$emit('close')"><i class="fal fa-times"/></div>
-    <input v-model="keyword" placeholder="이모지 검색" class="emoji-search"/>
+    <input
+      v-model="keyword"
+      @keydown="onKeydown"
+      @change="onKeydown"
+      placeholder="이모지 검색"
+      class="emoji-search"
+    />
     <div class="emoji-list">
       <div
         @click="$emit('pick', emoji)"
         class="emoji center"
         :key="emoji"
-        v-for="emoji in emojis.filter(emoji => keyword ? emoji.name.includes(keyword) : true)">
+        v-for="emoji in emojis">
         {{ emoji.emoji }}
       </div>
+    </div>
+    <div v-if="keyword && emojis.length === 0" class="center">
+      {{ $translate('NO_SEARCH_RESULT') }}
     </div>
   </div>
 </template>
@@ -23,13 +34,23 @@ export default {
   setup() {
     const { store } = useGlobalHooks()
 
-    const emojis = computed(() => store.getters.config.emojis || [])
+    const onKeydown = e => {
+      setTimeout(() => {
+        if (e.target.value) keyword.value = e.target.value
+      })
+    }
+
+    const emojis = computed(() => {
+      const arr = store.getters.config.emojis || []
+      return keyword.value ? arr.filter(emoji => emoji.name.includes(keyword.value.trim())) : arr
+    })
 
     const keyword = ref(null)
 
     return {
       keyword,
       emojis,
+      onKeydown,
     }
   },
 }
