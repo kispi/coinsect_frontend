@@ -19,15 +19,15 @@
           </div>
           <div class="reply-functions">
             <div
-              @click="toggleReaction(reply.id, 'up')"
+              @click="toggleReaction(reply.id, 'thumbs_up')"
               class="vote function f-mono">
-              <i class="fa-thumbs-up" :class="reply.summary.reactions.up.activated ? 'fa' : 'fal'"/>{{ reply.summary.reactions.up.count || 0 }}
+              <i class="fa-thumbs-up" :class="reply.summary.reactions.thumbs_up.activated ? 'fa' : 'fal'"/>{{ reply.summary.reactions.thumbs_up.count || 0 }}
             </div>
             <div class="vr"/>
             <div
-              @click="toggleReaction(reply.id, 'down')"
+              @click="toggleReaction(reply.id, 'thumbs_down')"
               class="vote function f-mono">
-              <i class="fa-thumbs-down" :class="reply.summary.reactions.down.activated ? 'fa' : 'fal'"/>{{ reply.summary.reactions.down.count || 0 }}
+              <i class="fa-thumbs-down" :class="reply.summary.reactions.thumbs_down.activated ? 'fa' : 'fal'"/>{{ reply.summary.reactions.thumbs_down.count || 0 }}
             </div>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default {
 
     const toggleReaction = async (replyId, type) => {
       try {
-        await communityService.toggleReaction({
+        await communityService.toggleReaction.reply({
           replyId,
           type,
           nickname: ((store.getters.chatUser || {}).profile || {}).nickname,

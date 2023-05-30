@@ -4,7 +4,11 @@ import crudService from './crud'
 const post = crudService.post
 
 // postId, replyId중 하나만 넣어야 함
-const toggleReaction = ({ postId, replyId, type, nickname }) => $http.post('reactions', { postId, replyId, type, nickname })
+const toggleReaction = {
+  post: ({ postId, type, nickname }) => $http.post('reactions/posts', { postId, type, nickname }),
+  reply: ({ replyId, type, nickname }) => $http.post('reactions/replies', { replyId, type, nickname }),
+  message: ({ messageId, type, nickname }) => $http.post('reactions/messages', { messageId, type, nickname }),
+}
 
 const checkPassword = {
   post: ({ sharingKey, password }) => $http.post(`posts/${sharingKey}/check_password`, { password }),

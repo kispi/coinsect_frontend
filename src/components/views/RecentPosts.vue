@@ -30,7 +30,7 @@
         </div>
         <div class="additional-info f-mono">
           <div class="views m-r-16"><i class="fal fa-eye m-r-4"/>{{ post.views }}</div>
-          <div class="reactions"><i class="fal fa-thumbs-up m-r-4"/>{{ post.summary.reactions.up.count || 0 }}</div>
+          <div class="reactions"><i class="fal fa-thumbs-up m-r-4"/>{{ post.summary.reactions.thumbs_up.count || 0 }}</div>
         </div>
       </RouterLink>
     </div>

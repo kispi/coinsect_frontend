@@ -47,9 +47,9 @@
               </div>
               <div
                 class="cell short">
-                {{ row.summary.reactions.up.count || 0 }}
+                {{ row.summary.reactions.thumbs_up.count || 0 }}
                 /
-                {{ row.summary.reactions.down.count || 0 }}
+                {{ row.summary.reactions.thumbs_down.count || 0 }}
               </div>
             </div>
           </AdaptiveLayout>

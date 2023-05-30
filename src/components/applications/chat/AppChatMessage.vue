@@ -30,7 +30,7 @@
                   v-if="$helpers.isImageUrl(meta.replyTo.text)"
                   :src="meta.replyTo.text"
                 />
-                <div v-else class="o-50">{{ meta.replyTo.text }}</div>
+                <div v-else class="o-50 lines-1">{{ meta.replyTo.text }}</div>
               </div>
             </div>
             <div v-html="$helpers.dom.linkify(message.text)" @click.prevent="onClickMessage"/>

@@ -23,7 +23,7 @@
         </div>
         <div class="numbers">
           <div class="views">조회 {{ post.views }}</div>
-          <div class="ups">추천 {{ post.summary.reactions.up.count || 0 }}</div>
+          <div class="ups">추천 {{ post.summary.reactions.thumbs_up.count || 0 }}</div>
           <div class="replies">댓글 {{ post.summary.numReplies }}</div>
         </div>
       </div>
@@ -34,16 +34,16 @@
       />
       <div class="post-reactions">
         <div
-          @click="toggleReaction('up')"
+          @click="toggleReaction('thumbs_up')"
           class="reaction-box">
-          <i class="fa-thumbs-up" :class="post.summary.reactions.up.activated ? 'fa' : 'fal'"/>
-          <div class="value">{{ post.summary.reactions.up.count || 0 }}</div>
+          <i class="fa-thumbs-up" :class="post.summary.reactions.thumbs_up.activated ? 'fa' : 'fal'"/>
+          <div class="value">{{ post.summary.reactions.thumbs_up.count || 0 }}</div>
         </div>
         <div
-          @click="toggleReaction('down')"
+          @click="toggleReaction('thumbs_down')"
           class="reaction-box">
-          <i class="fa-thumbs-down" :class="post.summary.reactions.down.activated ? 'fa' : 'fal'"/>
-          <div class="value">{{ post.summary.reactions.down.count || 0 }}</div>
+          <i class="fa-thumbs-down" :class="post.summary.reactions.thumbs_down.activated ? 'fa' : 'fal'"/>
+          <div class="value">{{ post.summary.reactions.thumbs_down.count || 0 }}</div>
         </div>
       </div>
     </div>
@@ -68,7 +68,7 @@ export default {
 
     const toggleReaction = async type => {
       try {
-        await communityService.toggleReaction({
+        await communityService.toggleReaction.post({
           postId: post.value.id,
           type,
           nickname: ((store.getters.chatUser || {}).profile || {}).nickname,
