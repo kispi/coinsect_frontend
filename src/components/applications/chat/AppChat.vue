@@ -72,6 +72,7 @@ import AppChatIncomingMessageOverlay from './AppChatIncomingMessageOverlay'
 import AppChatInput from './AppChatInput'
 import ChatBackgroundWeatherOverlay from './ChatBackgroundWeatherOverlay'
 import DailySeparator from './DailySeparator'
+import communityService from '@/services/community'
 import useChatHandler from '@/hooks/chat-handler'
 import useModalDraggable from '@/hooks/modal-draggable'
 import useGlobalHooks from '@/hooks/global-hooks'
@@ -166,14 +167,25 @@ export default {
       else plugins.$toast.error(`차단한 유저(${message.nickname})의 메시지입니다`)
     }
 
-    const onClickMessageFunction = async ({ type, message }) => {
+    const onClickMessageFunction = async ({ type, message, emoji }) => {
       if (type === 'reply') {
         store.commit('setChat', { writingReplyTo: message })
         setTimeout(() => {
           if (refAppChatInput.value) refAppChatInput.value.refTextarea.focus()
         })
       }
-      if (type === 'reaction') {}
+
+      if (type === 'reaction') {
+        try {
+          await communityService.toggleReaction.message({
+            messageId: message.id,
+            type: emoji,
+            nickname: store.getters.chatUser.profile.nickname,
+          })
+        } catch (e) {
+          plugins.$toast.error(e.data.message)
+        }
+      }
     }
 
     const onOpenChatContainer = () => setTimeout(() => {

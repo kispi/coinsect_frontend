@@ -51,6 +51,7 @@ const useChatHandler = () => {
     timestamp: message.ts,
     type: message.type,
     meta: message.meta,
+    $$reactions: (message.summary || {}).reactions,
   })
 
   const sendWebsocketMessage = message => {
@@ -140,6 +141,14 @@ const useChatHandler = () => {
 
         const targetMessage = (messages.value || []).find(m => m.id === targetMessageId)
         if (targetMessage) targetMessage.$$hide = true
+        break
+      }
+      case 'updateReaction': {
+        const targetMessage = store.getters.chat.messages.find(m => m.id === (message.meta || {}).messageId)
+        const newReactions = (message.meta || {}).updatedReactions
+        if (!targetMessage || !newReactions) return
+
+        targetMessage.$$reactions = newReactions
         break
       }
       case 'forceRefresh':

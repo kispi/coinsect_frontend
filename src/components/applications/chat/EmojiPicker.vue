@@ -12,11 +12,11 @@
     />
     <div class="emoji-list">
       <div
-        @click="$emit('pick', emoji)"
+        @click="$emit('pick', $store.getters.config.emojis[emoji])"
         class="emoji center"
         :key="emoji"
         v-for="emoji in emojis">
-        {{ emoji.emoji }}
+        {{ ($store.getters.config.emojis[emoji] || {}).emoji }}
       </div>
     </div>
     <div v-if="keyword && emojis.length === 0" class="center">
@@ -41,8 +41,8 @@ export default {
     }
 
     const emojis = computed(() => {
-      const arr = store.getters.config.emojis || []
-      return keyword.value ? arr.filter(emoji => emoji.name.includes(keyword.value.trim())) : arr
+      const arr = Object.keys(store.getters.config.emojis || [])
+      return keyword.value ? arr.filter(emojiName => emojiName.includes(keyword.value.trim())) : arr
     })
 
     const keyword = ref(null)

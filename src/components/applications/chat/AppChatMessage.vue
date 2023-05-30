@@ -54,6 +54,17 @@
           </div>
         </div>
       </div>
+      <div
+        v-if="message.$$reactions"
+        class="message-reactions">
+        <div
+          @click="$emit('click-function', { type: 'reaction', message, emoji: key })"
+          class="message-reaction"
+          :key="key"
+          v-for="key in Object.keys(message.$$reactions)">
+          {{ ($store.getters.config.emojis[key] || {}).emoji }} {{ message.$$reactions[key].count }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -186,6 +197,28 @@ export default {
     cursor: pointer;
   }
 
+  .message-reactions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+    max-width: 200px;
+
+    .message-reaction {
+      border-radius: 8px;
+      padding: 0 8px;
+      background: var(--border-base);
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      &:hover {
+        border: 1px solid var(--brand-primary);
+      }
+    }
+  }
+
   .functions {
     display: flex;
     align-items: center;
@@ -220,6 +253,11 @@ export default {
 
     .functions {
       margin: 0 8px 0 0;
+    }
+
+    .message-reactions {
+      margin-left: auto;
+      justify-content: flex-end;
     }
 
     .text-and-timestamp {

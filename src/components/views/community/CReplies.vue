@@ -21,13 +21,13 @@
             <div
               @click="toggleReaction(reply.id, 'thumbs_up')"
               class="vote function f-mono">
-              <i class="fa-thumbs-up" :class="reply.summary.reactions.thumbs_up.activated ? 'fa' : 'fal'"/>{{ reply.summary.reactions.thumbs_up.count || 0 }}
+              <i class="fa-thumbs-up" :class="((reply.summary.reactions || {}).thumbs_up || {}).activated ? 'fa' : 'fal'"/>{{ ((reply.summary.reactions || {}).thumbs_up || {}).count || 0 }}
             </div>
             <div class="vr"/>
             <div
               @click="toggleReaction(reply.id, 'thumbs_down')"
               class="vote function f-mono">
-              <i class="fa-thumbs-down" :class="reply.summary.reactions.thumbs_down.activated ? 'fa' : 'fal'"/>{{ reply.summary.reactions.thumbs_down.count || 0 }}
+              <i class="fa-thumbs-down" :class="((reply.summary.reactions || {}).thumbs_down || {}).activated ? 'fa' : 'fal'"/>{{ ((reply.summary.reactions || {}).thumbs_down || {}).count || 0 }}
             </div>
           </div>
         </div>
