@@ -26,7 +26,7 @@
               @click="$emit('click-replied-message', meta.replyTo)">
               <div class="o-50">To: {{ meta.replyTo.nickname }}</div>
               <div
-                class="m-t-4 lines-1">
+                class="m-t-4 c-text-stress lines-1">
                 <AppImg
                   v-if="$helpers.isImageUrl(meta.replyTo.text)"
                   :src="meta.replyTo.text"

@@ -5,8 +5,8 @@
       v-if="$store.getters.chat.writingReplyTo"
       class="writing-reply-to">
       <div class="left">
-        <div class="nickname">To: {{ $store.getters.chat.writingReplyTo.user.profile.nickname }}</div>
-        <div class="text lines-1" v-html="$store.getters.chat.writingReplyTo.text"/>
+        <div class="nickname o-50">To: {{ $store.getters.chat.writingReplyTo.user.profile.nickname }}</div>
+        <div class="text c-text-stress lines-1" v-html="$store.getters.chat.writingReplyTo.text"/>
       </div>
       <div
         @click="$store.commit('setChat', { writingReplyTo: null })"

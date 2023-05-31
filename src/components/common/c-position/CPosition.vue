@@ -13,13 +13,12 @@
       {{ $translate('TRADER_NOT_ON_AIR') }}
     </div>
     <div
-      v-if="position.image"
       class="image-container"
-      @click="$modal.images({
+      @click="position.image ? $modal.images({
         images: [position.image],
-      })">
+      }) : null">
       <div class="ratio-container">
-        <AppImg :src="position.image" v-if="position.image" class="overlay"/>
+        <AppImg :src="position.image" class="overlay"/>
       </div>
       <div v-if="position.lastUpdate" class="dark overlay upper f-mono">
         <div class="flex-row items-center">
