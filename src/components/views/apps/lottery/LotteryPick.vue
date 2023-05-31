@@ -9,7 +9,7 @@
         <div class="square center overlay" v-html="numbers[pos]"/>
       </div>
     </div>
-    <i class="fa fa-plus f-24"/>
+    <i class="fal fa-plus f-24"/>
     <div
       @click="$emit('click-remove', 6)"
       class="square-container">

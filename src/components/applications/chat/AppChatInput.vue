@@ -38,7 +38,7 @@
       </div>
       <div class="functions">
         <i @click="chatFunctions.image" class="fa fa-image"/>
-        <span @click="showEmojis = !showEmojis">😀</span>
+        <i @click="showEmojis = !showEmojis" class="fal" :class="showEmojis ? 'fa-minus' : 'fa-plus'"/>
       </div>
       <textarea
         ref="refTextarea"
@@ -248,7 +248,7 @@ export default {
       max-width: 16px;
       height: 16px;
       line-height: 16px;
-      color: var(--text-base);
+      color: var(--text-stress);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -304,6 +304,7 @@ export default {
     right: var(--app-chat-padding);
     border-radius: 16px;
     z-index: 2;
+    font-size: 20px;
   }
 }
 </style>

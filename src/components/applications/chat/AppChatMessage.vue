@@ -51,7 +51,7 @@
             v-if="message.type !== 'alert'"
             class="functions">
             <i class="far fa-reply" @click="$emit('click-write-reply', message)"/>
-            <span @click="showEmojiSelector = !showEmojiSelector">😀</span>
+            <i class="fal" :class="showEmojiSelector ? 'fa-minus' : 'fa-plus'" @click="showEmojiSelector = !showEmojiSelector"/>
           </div>
         </div>
       </div>
@@ -64,6 +64,11 @@
           :key="key"
           v-for="key in Object.keys(message.$$reactions)">
           {{ ($store.getters.config.emojis[key] || {}).emoji }} {{ message.$$reactions[key].count }}
+        </div>
+        <div
+          @click="showEmojiSelector = !showEmojiSelector"
+          class="message-reaction">
+          <i class="fal" :class="showEmojiSelector ? 'fa-minus' : 'fa-plus'"/>
         </div>
       </div>
     </div>
@@ -228,16 +233,15 @@ export default {
     max-width: 200px;
 
     .message-reaction {
-      border-radius: 8px;
-      padding: 0 8px;
+      border-radius: 16px;
+      padding: 0 6px;
       background: var(--border-base);
-      border: 1px solid transparent;
       display: flex;
       align-items: center;
       cursor: pointer;
 
       &:hover {
-        border: 1px solid var(--brand-primary);
+        box-shadow: 0 0 2px var(--brand-primary) inset;
       }
     }
   }
@@ -251,7 +255,7 @@ export default {
 
     i,
     span {
-      padding: 4px;
+      padding: 4px 8px;
       font-size: 10px;
       display: flex;
       align-items: center;
@@ -275,9 +279,11 @@ export default {
 
   .emoji-picker {
     position: absolute;
-    bottom: 32px;
+    bottom: 24px;
     z-index: 1;
     border-radius: 8px;
+    font-size: 16px;
+    width: calc(100% - 16px);
 
     input {
       display: none;

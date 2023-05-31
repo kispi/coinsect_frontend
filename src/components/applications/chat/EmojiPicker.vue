@@ -74,7 +74,8 @@ export default {
 
     .emoji {
       padding: 2px;
-      border-radius: 4px;
+      border-radius: 8px;
+      user-select: none;
       cursor: pointer;
 
       &:hover {

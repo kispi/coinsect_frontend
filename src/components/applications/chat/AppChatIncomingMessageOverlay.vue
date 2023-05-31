@@ -104,7 +104,7 @@ export default {
   bottom: 88px;
   left: 12px;
   right: 12px;
-  z-index: 1;
+  z-index: 2;
   cursor: pointer;
 
   .app-chat-profile {
