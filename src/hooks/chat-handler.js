@@ -144,12 +144,13 @@ const useChatHandler = () => {
         break
       }
       case 'updateReaction': {
-        const targetMessage = store.getters.chat.messages.find(m => m.id === (message.meta || {}).messageId)
+        const arr = store.getters.chat.messages || []
+        const targetMessage = arr.find(m => m.id === (message.meta || {}).messageId) || {}
         const newReactions = (message.meta || {}).updatedReactions
         if (!targetMessage) return
 
         targetMessage.$$reactions = newReactions
-        if (store.getters.chat.autoScrollable) plugins.$bus.$emit('scroll-to-bottom')
+        if (store.getters.chat.autoScrollable && targetMessage.id === arr[arr.length - 1].id) plugins.$bus.$emit('scroll-to-bottom')
         break
       }
       case 'forceRefresh':
