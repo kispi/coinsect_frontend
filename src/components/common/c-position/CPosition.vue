@@ -170,7 +170,7 @@ export default {
       &.upper {
         bottom: initial;
         background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
-        align-items: center;
+        align-items: flex-start;
         font-size: 10px;
         justify-content: space-between;
       }
