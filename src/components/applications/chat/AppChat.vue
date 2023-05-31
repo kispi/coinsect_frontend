@@ -208,14 +208,14 @@ export default {
     )
 
     onMounted(() => {
-      plugins.$bus.$on('first-load-messages', scrollToBottom) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
+      plugins.$bus.$on('scroll-to-bottom', scrollToBottom) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
 
       init()
       setAppChatPosition()
     })
 
     onUnmounted(() => {
-      plugins.$bus.$off('first-load-messages', scrollToBottom)
+      plugins.$bus.$off('scroll-to-bottom', scrollToBottom)
 
       /*
         <AppChat/>이 unmount되는 경우는, 로그인/로그아웃 뿐이다. 이 경우 상태관리의 편의를 위해 <AppChat/>을 rerender하기 때문에, connection도 새로 만들어진다.

@@ -149,6 +149,7 @@ const useChatHandler = () => {
         if (!targetMessage) return
 
         targetMessage.$$reactions = newReactions
+        if (store.getters.chat.autoScrollable) plugins.$bus.$emit('scroll-to-bottom')
         break
       }
       case 'forceRefresh':
@@ -236,7 +237,7 @@ const useChatHandler = () => {
       data.forEach(msg => msgBuf.unshift(preparedMessage(msg)))
       store.commit('setChat', { messages: msgBuf.concat(messages.value) })
 
-      if (!firstMessageId) plugins.$bus.$emit('first-load-messages')
+      if (!firstMessageId) plugins.$bus.$emit('scroll-to-bottom')
       return data
     } catch (e) {
       return Promise.reject(e)
