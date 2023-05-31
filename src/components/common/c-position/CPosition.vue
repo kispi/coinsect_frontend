@@ -17,11 +17,9 @@
       </div>
       <div v-if="position.lastUpdate" class="dark overlay upper f-mono">
         <div class="badge-air">
-          <span class="dot" :class="position.onAir ? 'bg-success' : 'bg-danger'"/>{{ position.onAir ? 'ON' : 'OFF' }}</div>
-        <div class="flex-row items-center">
-          <i class="fal fa-clock"/>
-          <div>{{ $helpers.template.elapsedTime(position.lastUpdate) }}</div>
+          <span class="dot" :class="position.onAir ? 'bg-success' : 'bg-danger'"/>{{ position.onAir ? 'ON' : 'OFF' }}
         </div>
+        <div>{{ $helpers.template.elapsedTime(position.lastUpdate) }}</div>
       </div>
       <div class="dark overlay lower" v-html="position.name"/>
     </div>
@@ -165,6 +163,7 @@ export default {
 
     .dark.overlay {
       display: flex;
+      align-items: center;
       height: 32px;
       color: var(--white);
       padding: 4px;
@@ -175,10 +174,6 @@ export default {
         align-items: flex-start;
         font-size: 10px;
         justify-content: space-between;
-
-        .fa-clock {
-          margin-right: 4px;
-        }
       }
 
       &.lower {
