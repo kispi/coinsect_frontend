@@ -22,7 +22,9 @@ const dashboard = {
         const found = (resp.leaderboards || []).find(o => o.name === 'aoa')
         if (found) found.name = 'aoa (워뇨띠)'
 
-        resp.leaderboards.sort((a, b) => ['Long', 'Short'].includes(a.side) && b.side === '-' ? -1 : 1)
+        resp.leaderboards = resp.leaderboards
+          .filter(o => o.side !== '-')
+          .sort((a, b) => Math.abs(a.dailyChange) < Math.abs(b.dailyChange) ? 1 : -1)
 
         commit('setDashboardsMain', resp)
       } catch (e) {

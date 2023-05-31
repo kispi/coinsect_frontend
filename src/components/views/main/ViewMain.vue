@@ -32,16 +32,7 @@
         :title="titleBitmexLeaderboard"
         :link="'/indicators/leaderboard'"
         :image="'https://d1085v6s0hknp1.cloudfront.net/images/exchanges/BITMEX.png'">
-        <div class="grid bitmex-positions">
-          <div
-            class="bitmex-position"
-            :class="(position.side || '').toLowerCase()"
-            :key="position.name"
-            v-for="position in dashboards.leaderboards">
-            <i class="fal" :class="{'fa-arrow-trend-up': position.side === 'Long', 'fa-arrow-trend-down': position.side === 'Short'}"/>
-            {{ position.name }}
-          </div>
-        </div>
+        <BitmexSimple :leaderboards="dashboards.leaderboards"/>
       </MainSection>
       <MainSection
         :title="'WHALE_ALERT'"
@@ -62,13 +53,14 @@
 <script>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
+import BitmexSimple from './BitmexSimple'
 import MainSection from './MainSection'
 import RecentPosts from '../RecentPosts'
 import RealTimePriceCards from '@/components/views/real-time-prices/RealTimePriceCards'
 import useRealTimePosition from '@/hooks/real-time-position'
 
 export default {
-  components: { MainSection, RecentPosts, RealTimePriceCards },
+  components: { BitmexSimple, MainSection, RecentPosts, RealTimePriceCards },
   setup() {
     const { plugins, store } = useGlobalHooks()
 
@@ -135,35 +127,6 @@ export default {
     &.main {
       gap: 16px;
     }
-  }
-
-  .bitmex-positions {
-    grid-template-columns: repeat(2, 1fr);
-
-    .bitmex-position {
-      border: 1px solid var(--border-base);
-      padding: 4px 12px;
-      font-size: 12px;
-      font-weight: 700;
-
-      i {
-        width: 16px;
-      }
-
-      &.long {
-        color: var(--price-up);
-        background: var(--price-up-bg);
-      }
-
-      &.short {
-        color: var(--price-down);
-        background: var(--price-down-bg);
-      }
-    }
-  }
-
-  .real-time-prices {
-
   }
 
   @media (min-width: 768px) {
