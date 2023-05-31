@@ -119,11 +119,11 @@ h4 {
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.5);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--brand-primary-hover);
+    background: var(--border-base);
     border-radius: 4px;
   }
 }

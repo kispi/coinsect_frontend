@@ -3,7 +3,7 @@
     v-if="numUnreads > 0"
     class="badge-unreads"
     :class="{'small': small}"
-    v-html="numUnreads > 99 ? '99+' : numUnreads"
+    v-html="numUnreads > 49 ? '49+' : numUnreads"
   />
 </template>
 
