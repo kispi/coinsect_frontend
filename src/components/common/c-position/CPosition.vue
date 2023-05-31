@@ -8,11 +8,6 @@
       'danger': isDanger(position),
     }">
     <div
-      v-if="!position.onAir"
-      class="trader-off overlay center">
-      {{ $translate('TRADER_NOT_ON_AIR') }}
-    </div>
-    <div
       class="image-container"
       @click="position.image ? $modal.images({
         images: [position.image],
@@ -21,6 +16,8 @@
         <AppImg :src="position.image" class="overlay"/>
       </div>
       <div v-if="position.lastUpdate" class="dark overlay upper f-mono">
+        <div class="badge-air">
+          <span class="dot" :class="position.onAir ? 'bg-success' : 'bg-danger'"/>{{ position.onAir ? 'ON' : 'OFF' }}</div>
         <div class="flex-row items-center">
           <i class="fal fa-clock"/>
           <div>{{ $helpers.template.elapsedTime(position.lastUpdate) }}</div>
@@ -141,19 +138,6 @@ export default {
     }
   }
 
-  &.on-air {
-    .image-container {
-      z-index: 1;
-    }
-  }
-
-  .trader-off {
-    color: var(--white);
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-    pointer-events: none;
-  }
-
   .badge-summary {
     border-radius: 4px;
     font-size: 11px;
@@ -164,6 +148,7 @@ export default {
   .image-container {
     max-width: 96px;
     position: relative;
+    z-index: 1;
     cursor: pointer;
 
     &:hover {
@@ -189,7 +174,7 @@ export default {
         background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
         align-items: flex-start;
         font-size: 10px;
-        justify-content: flex-end;
+        justify-content: space-between;
 
         .fa-clock {
           margin-right: 4px;
@@ -200,6 +185,23 @@ export default {
         top: initial;
         align-items: flex-end;
         background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+      }
+    }
+
+    .badge-air {
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      padding: 0 4px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      .dot {
+        display: block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 4px;
       }
     }
   }
