@@ -163,7 +163,6 @@ export default {
 
     .dark.overlay {
       display: flex;
-      align-items: center;
       height: 32px;
       color: var(--white);
       padding: 4px;
@@ -171,7 +170,7 @@ export default {
       &.upper {
         bottom: initial;
         background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
-        align-items: flex-start;
+        align-items: center;
         font-size: 10px;
         justify-content: space-between;
       }
