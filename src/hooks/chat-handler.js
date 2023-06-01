@@ -51,7 +51,7 @@ const useChatHandler = () => {
     timestamp: message.ts,
     type: message.type,
     meta: message.meta,
-    $$reactions: (message.summary || {}).reactions,
+    reactions: message.reactions,
   })
 
   const sendWebsocketMessage = message => {
@@ -149,7 +149,7 @@ const useChatHandler = () => {
         const newReactions = (message.meta || {}).updatedReactions
         if (!targetMessage) return
 
-        targetMessage.$$reactions = newReactions
+        targetMessage.reactions = newReactions
         if (store.getters.chat.autoScrollable && targetMessage.id === arr[arr.length - 1].id) plugins.$bus.$emit('scroll-to-bottom')
         break
       }

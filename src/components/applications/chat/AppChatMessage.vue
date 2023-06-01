@@ -3,6 +3,7 @@
     class="app-chat-message"
     :class="{'mine': message.isMine}">
     <EmojiPicker v-if="showEmojiSelector" @pick="onPickEmoji" @close="showEmojiSelector = false"/>
+    <ReactedUsers v-if="showReactedUsers" :summarizedReactions="summarizedMessageReactions" @close="showReactedUsers = false"/>
     <div class="content">
       <AppChatProfile v-if="showProfile" :user="message.user" :useBan="true"/>
       <div class="text-and-timestamp">
@@ -56,19 +57,25 @@
         </div>
       </div>
       <div
-        v-if="message.$$reactions"
+        v-if="(message.reactions || []).length > 0"
         class="message-reactions">
         <div
           @click="onPickEmoji(key)"
           class="message-reaction"
+          :class="activated(key)"
           :key="key"
-          v-for="key in Object.keys(message.$$reactions)">
-          {{ ($store.getters.config.emojis[key] || {}).emoji }} {{ message.$$reactions[key].count }}
+          v-for="key in Object.keys(summarizedMessageReactions)">
+          {{ ($store.getters.config.emojis[key] || {}).emoji }} {{ summarizedMessageReactions[key].length }}
         </div>
         <div
           @click="showEmojiSelector = !showEmojiSelector"
           class="message-reaction">
           <i class="fal" :class="showEmojiSelector ? 'fa-minus' : 'fa-plus'"/>
+        </div>
+        <div
+          @click="showReactedUsers = !showReactedUsers"
+          class="message-reaction">
+          <i class="fal fa-chevron-up" :class="{'opened': showReactedUsers}"/>
         </div>
       </div>
     </div>
@@ -78,17 +85,31 @@
 <script>
 import { computed, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
-import EmojiPicker from './EmojiPicker'
 import communityService from '@/services/community'
+import EmojiPicker from './EmojiPicker'
+import ReactedUsers from './ReactedUsers'
 
 export default {
   emits: ['click-write-reply', 'click-replied-message'],
   props: ['prevMessage', 'message', 'nextMessage'],
-  components: { EmojiPicker },
+  components: { EmojiPicker, ReactedUsers },
   setup(props) {
     const { plugins, store, router } = useGlobalHooks()
 
     const showEmojiSelector = ref(null)
+
+    const showReactedUsers = ref(null)
+
+    const summarizedMessageReactions = computed(() => {
+      if (!props.message) return
+
+      const o = {}
+      props.message.reactions.forEach(reaction => {
+        if (!o[reaction.type]) o[reaction.type] = [reaction]
+        else o[reaction.type].push(reaction)
+      })
+      return o
+    })
 
     const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
@@ -106,6 +127,13 @@ export default {
 
       window.open(link, '_blank', 'noreferrer')
     }
+
+    const activated = key => (summarizedMessageReactions.value[key] || [])
+      .find(r =>
+        // userId가 우선
+        store.getters.me && (r.userId === store.getters.me.id) ||
+        r.ip === store.getters.config.ip
+      ) ? 'activated' : ''
 
     const onPickEmoji = async key => {
       showEmojiSelector.value = false
@@ -152,11 +180,14 @@ export default {
     return {
       meta,
       showEmojiSelector,
+      showReactedUsers,
       showProfile,
       showTimestamp,
+      summarizedMessageReactions,
       onClickMessage,
       onClickImage,
       onPickEmoji,
+      activated,
     }
   },
 }
@@ -243,6 +274,18 @@ export default {
       &:hover {
         box-shadow: 0 0 2px var(--brand-primary) inset;
       }
+
+      &.activated {
+        background: var(--brand-primary-hover);
+      }
+
+      .fa-chevron-up {
+        transition: all 0.2s ease;
+
+        &.opened {
+          transform: rotate(-180deg);
+        }
+      }
     }
   }
 
@@ -253,8 +296,7 @@ export default {
     border-radius: 4px;
     margin: 0 0 0 8px;
 
-    i,
-    span {
+    i {
       padding: 4px 8px;
       font-size: 10px;
       display: flex;
@@ -277,7 +319,8 @@ export default {
     }
   }
 
-  .emoji-picker {
+  .emoji-picker,
+  .reacted-users {
     position: absolute;
     bottom: 24px;
     z-index: 1;

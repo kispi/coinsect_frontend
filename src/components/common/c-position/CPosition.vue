@@ -19,7 +19,7 @@
         <div class="badge-air">
           <span class="dot" :class="position.onAir ? 'bg-success' : 'bg-danger'"/>{{ position.onAir ? 'ON' : 'OFF' }}
         </div>
-        <div>{{ $helpers.template.elapsedTime(position.lastUpdate) }}</div>
+        <div class="last-update">{{ $helpers.template.elapsedTime(position.lastUpdate) }}</div>
       </div>
       <div class="dark overlay lower" v-html="position.name"/>
     </div>
@@ -197,6 +197,10 @@ export default {
         border-radius: 50%;
         margin-right: 4px;
       }
+    }
+
+    .last-update {
+      line-height: 18px;
     }
   }
 
