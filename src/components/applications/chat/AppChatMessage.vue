@@ -3,7 +3,7 @@
     class="app-chat-message"
     :class="{'mine': message.isMine}">
     <EmojiPicker v-if="showEmojiSelector" @pick="onPickEmoji" @close="showEmojiSelector = false"/>
-    <ReactedUsers v-if="showReactedUsers" :summarizedReactions="summarizedMessageReactions" @close="showReactedUsers = false"/>
+    <ReactedUsers v-if="showReactedUsers" :summarizedReactions="summarizedMessageReactions"/>
     <div class="content">
       <AppChatProfile v-if="showProfile" :user="message.user" :useBan="true"/>
       <div class="text-and-timestamp">

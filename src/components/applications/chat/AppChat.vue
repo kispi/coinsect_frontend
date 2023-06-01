@@ -168,7 +168,7 @@ export default {
     }
 
     const onClickWriteReply = async writingReplyTo => {
-      store.commit('setChat', { writingReplyTo })
+      store.commit('setChat', { writingReplyTo: store.getters.chat.writingReplyTo ? null : writingReplyTo })
       setTimeout(() => {
         if (refAppChatInput.value) refAppChatInput.value.refTextarea.focus()
       })

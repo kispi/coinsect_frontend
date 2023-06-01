@@ -1,6 +1,5 @@
 <template>
   <div class="reacted-users">
-    <div class="closer center" @click="$emit('close')"><i class="c-white fal fa-times"/></div>
     <div
       class="reaction-group"
       :key="key"
@@ -39,19 +38,6 @@ export default {
 
   .nicknames {
     color: var(--gs-bb);
-  }
-
-  .closer {
-    margin: 0 0 8px auto;
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-
-    &:hover {
-      background: var(--background-light);
-    }
   }
 }
 </style>
