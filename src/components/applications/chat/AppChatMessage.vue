@@ -73,9 +73,10 @@
           <i class="fal" :class="showEmojiSelector ? 'fa-minus' : 'fa-plus'"/>
         </div>
         <div
-          @click="showReactedUsers = !showReactedUsers"
+          @mouseover="showReactedUsers = true"
+          @mouseleave="showReactedUsers = false"
           class="message-reaction">
-          <i class="fal fa-chevron-up" :class="{'opened': showReactedUsers}"/>
+          <i class="fal fa-question" :class="{'opened': showReactedUsers}"/>
         </div>
       </div>
     </div>
@@ -277,14 +278,6 @@ export default {
 
       &.activated {
         background: var(--brand-primary-hover);
-      }
-
-      .fa-chevron-up {
-        transition: all 0.2s ease;
-
-        &.opened {
-          transform: rotate(-180deg);
-        }
       }
     }
   }
