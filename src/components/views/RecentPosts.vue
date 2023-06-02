@@ -24,7 +24,7 @@
           <span class="title-text">
             <span class="elapsed-time f-mono">{{ $helpers.template.elapsedTime(post.createdAt) }}</span>
             <i v-if="(post.$$images || []).length > 0" class="fa fa-image c-price-up-bybit"/>
-            <div class="lines-1">{{ post.title }}</div>
+            <div class="post-title lines-1">{{ post.title }}</div>
           </span>
           <span v-if="(post.replies || []).length > 0" class="num-replies"> [{{ (post.replies || []).length }}]</span>
         </div>
@@ -173,8 +173,8 @@ export default {
     }
 
     &:hover {
-      .title-text {
-        font-weight: 500;
+      .post-title {
+        text-decoration: underline;
       }
     }
   }

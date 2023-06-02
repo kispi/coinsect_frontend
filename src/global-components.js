@@ -23,6 +23,7 @@ import WrapperDropdownOverlay from '@/components/app/WrapperDropdownOverlay'
 // chat components
 import AppChatProfile from '@/components/applications/chat/AppChatProfile'
 import BadgeToken from '@/components/applications/chat/BadgeToken'
+import IconAddEmoji from '@/components/applications/chat/IconAddEmoji'
 
 // common components
 import BadgeUnreads from '@/components/common/BadgeUnreads'
@@ -77,6 +78,7 @@ const useGlobalComponents = app => {
     // chat components
     .component('AppChatProfile', AppChatProfile)
     .component('BadgeToken', BadgeToken)
+    .component('IconAddEmoji', IconAddEmoji)
 
     // common components
     .component('BadgeUnreads', BadgeUnreads)

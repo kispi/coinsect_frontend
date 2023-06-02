@@ -38,7 +38,7 @@
       </div>
       <div class="functions">
         <i @click="chatFunctions.image" class="fa fa-image"/>
-        <i @click="showEmojis = !showEmojis" class="fal" :class="showEmojis ? 'fa-minus' : 'fa-plus'"/>
+        <IconAddEmoji @click="showEmojis = !showEmojis"/>
       </div>
       <textarea
         ref="refTextarea"
@@ -244,7 +244,7 @@ export default {
     gap: 8px;
 
     i,
-    span {
+    .icon-add-emoji {
       max-width: 16px;
       height: 16px;
       line-height: 16px;

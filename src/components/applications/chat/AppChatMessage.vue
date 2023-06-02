@@ -52,7 +52,7 @@
             v-if="message.type !== 'alert'"
             class="functions">
             <i class="far fa-reply" @click="$emit('click-write-reply', message)"/>
-            <i class="fal" :class="showEmojiSelector ? 'fa-minus' : 'fa-plus'" @click="showEmojiSelector = !showEmojiSelector"/>
+            <IconAddEmoji @click="showEmojiSelector = !showEmojiSelector"/>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
         <div
           @click="showEmojiSelector = !showEmojiSelector"
           class="message-reaction">
-          <i class="fal" :class="showEmojiSelector ? 'fa-minus' : 'fa-plus'"/>
+          <IconAddEmoji/>
         </div>
         <div
           @mouseover="showReactedUsers = true"
@@ -282,6 +282,12 @@ export default {
     }
   }
 
+  .icon-add-emoji {
+    max-width: 24px;
+    max-height: 24px;
+    padding: 4px;
+  }
+
   .functions {
     display: flex;
     align-items: center;
@@ -292,6 +298,10 @@ export default {
     i {
       padding: 4px 8px;
       font-size: 10px;
+    }
+
+    i,
+    .icon-add-emoji {
       display: flex;
       align-items: center;
       justify-content: center;
