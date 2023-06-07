@@ -151,20 +151,20 @@ export default {
 
   .dimmed-overlay {
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     opacity: 0;
-    max-width: 992px;
+    max-width: 1200px;
     margin: auto;
     pointer-events: none;
     background: var(--background-base);
     transition: all 0.3s ease;
   }
 
-  @media (max-width: 1399px) {
+  @media (max-width: 1599px) {
     &.folded {
       .left-panel {
         opacity: 0;
@@ -181,7 +181,7 @@ export default {
     }
   }
 
-  @media (min-width: 1400px) {
+  @media (min-width: 1600px) {
     &.folded {
       opacity: 1;
     }

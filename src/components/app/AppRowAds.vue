@@ -17,7 +17,7 @@
   .relative {
     position: relative;
     margin: auto;
-    width: 992px;
+    width: 1200px;
   }
 
   .ad-sense {

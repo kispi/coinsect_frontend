@@ -14,7 +14,7 @@
       <div class="flex-row flex-between items-center flex-fill">
         <div class="flex-row items-center no-select">
           <div
-            v-if="$store.getters.windowInnerWidth < 1400"
+            v-if="$store.getters.windowInnerWidth < 1600"
             @click="$store.commit('setShowNavigation', !$store.getters.showNavigation)"
             class="clickable-icon-wrapper m-r-4">
             <i

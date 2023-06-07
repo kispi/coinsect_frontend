@@ -1,7 +1,7 @@
 <template>
   <AppHeader class="layout-centered"/>
   <div class="app-body view-layout-default no-scrollbar">
-    <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 992"/>
+    <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 1200"/>
     <AppNavigation/>
     <div class="router-view-container w-100">
       <MultiCharts v-if="prepared" class="m-b-24"/>
@@ -101,7 +101,7 @@ export default {
 }
 
 .layout-centered {
-  max-width: 992px;
+  max-width: 1200px;
   margin: auto;
   padding: var(--app-default-page-padding);
 }
@@ -130,7 +130,7 @@ export default {
     &.horizontal {
       display: block;
       margin: 24px 0;
-      max-width: 992px;
+      max-width: 1200px;
       height: 280px;
     }
   }

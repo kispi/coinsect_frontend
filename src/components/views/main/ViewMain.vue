@@ -58,6 +58,7 @@ import MainSection from './MainSection'
 import RecentPosts from '../RecentPosts'
 import RealTimePriceCards from '@/components/views/real-time-prices/RealTimePriceCards'
 import useRealTimePosition from '@/hooks/real-time-position'
+import useLazyLoads from '@/lazy-loads'
 
 export default {
   components: { BitmexSimple, MainSection, RecentPosts, RealTimePriceCards },
@@ -65,6 +66,8 @@ export default {
     const { plugins, store } = useGlobalHooks()
 
     const { openWebsocket, sorter } = useRealTimePosition()
+
+    const { loadToastUIEditor } = useLazyLoads()
 
     const dashboards = computed(() => store.getters.dashboardsMain)
 
@@ -102,7 +105,12 @@ export default {
       }
     }
 
-    onMounted(initDashboards)
+    onMounted(() => {
+      initDashboards()
+
+      // 여기서 미리 로드해둬야 글쓰기를 눌렀을 때 빠르게 로드됨
+      loadToastUIEditor()
+    })
 
     onUnmounted(() => {
       if (store.getters.isSSR) return
@@ -132,6 +140,12 @@ export default {
   @media (min-width: 768px) {
     .grid.main {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .grid.main {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }
