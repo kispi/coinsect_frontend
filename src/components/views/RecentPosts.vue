@@ -170,6 +170,10 @@ export default {
       align-items: center;
       gap: 8px;
       color: var(--text-stress);
+
+      .post-title {
+        padding-right: 1px; // 윈도우 돋움체에선 끝글자가 ? 등일 때 글씨가 살짝 잘림
+      }
     }
 
     &:hover {
