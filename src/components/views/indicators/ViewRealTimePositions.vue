@@ -125,14 +125,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    .toggle-tradingview {
-      flex: 0 0 auto;
-      display: flex;
-      align-items: center;
-      color: var(--text-stress);
-      cursor: pointer;
-    }
   }
 
   .description {
@@ -150,10 +142,6 @@ export default {
     border-radius: 0;
     padding: 20px;
     margin-top: 120px;
-  }
-
-  .trading-view {
-    height: 240px;
   }
 
   .position-group {
@@ -180,12 +168,14 @@ export default {
   }
 
   @media (min-width: 768px) {
-    .trading-view {
-      height: 336px;
-    }
-
     .positions {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .positions {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }
