@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted, defineAsyncComponent, watch } from 'vue'
+import { ref, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
 import helpers from './helpers'
 import useGlobalHooks from './hooks/global-hooks'
 
@@ -28,7 +28,7 @@ export default {
     AppFooter: defineAsyncComponent(() => import('@/components/app/AppFooter')),
   },
   setup() {
-    const { plugins, store, router } = useGlobalHooks()
+    const { store } = useGlobalHooks()
 
     const prepared = ref(null)
 

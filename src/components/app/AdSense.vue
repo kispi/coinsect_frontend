@@ -11,7 +11,7 @@
 
 <script>
 import useGlobalHooks from '@/hooks/global-hooks'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 export default {
   props: {
@@ -20,16 +20,19 @@ export default {
   setup() {
     const { store } = useGlobalHooks()
 
-    const useGoogleAdSense = process.env.NODE_ENV === 'PRODUCTION' && !store.getters.isSSR
+    const useGoogleAdSense = ref(null)
 
     const init = () => {
       if (store.getters.isSSR || typeof window.adsbygoogle === 'undefined') return
 
       setTimeout(() => {
         try {
+          useGoogleAdSense.value = process.env.NODE_ENV === 'PRODUCTION' && !store.getters.isSSR
           window.adsbygoogle.push({})
-        } catch (e) {}
-      }, 1000 + (Math.random() * 1000))
+        } catch (e) {
+          console.error(e)
+        }
+      }, 2000)
     }
 
     onMounted(init)
