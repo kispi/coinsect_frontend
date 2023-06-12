@@ -1,7 +1,7 @@
 <template>
   <div class="main-section">
     <div
-      @click.prevent="$router.push(link)"
+      @click.prevent="link ? $router.push(link) : null"
       class="section-header">
       <AppImg
         v-if="image"

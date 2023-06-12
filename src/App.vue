@@ -1,7 +1,6 @@
 <template>
   <AppHeader class="layout-centered"/>
   <div class="app-body view-layout-default no-scrollbar">
-    <AppRowAds v-if="showAd" v-show="$store.getters.windowInnerWidth >= 1200"/>
     <AppNavigation/>
     <div class="router-view-container w-100">
       <MultiCharts v-if="prepared" class="m-b-24"/>
@@ -10,7 +9,6 @@
         v-slot="{ Component, route }">
         <component :is="Component" :key="route.path"/>
       </RouterView>
-      <AdSense v-if="showAd" v-show="$router.currentRoute.value.path === '/'" :dataAdSlot="'9230500527'" class="horizontal"/>
     </div>
   </div>
   <AppFooter/>
@@ -28,14 +26,11 @@ export default {
     AppNavigation: defineAsyncComponent(() => import('@/components/app/AppNavigation')),
     AppAddons: defineAsyncComponent(() => import('@/components/app/addons/AppAddons')),
     AppFooter: defineAsyncComponent(() => import('@/components/app/AppFooter')),
-    AppRowAds: defineAsyncComponent(() => import('@/components/app/AppRowAds')),
   },
   setup() {
     const { plugins, store, router } = useGlobalHooks()
 
     const prepared = ref(null)
-
-    const showAd = ref(null)
 
     const setIsMobile = () => store.commit('setIsMobile')
 
@@ -50,7 +45,6 @@ export default {
       try {
         await store.dispatch('bootstrap')
         prepared.value = true
-        setTimeout(() => showAd.value = true, 2000)
       } finally {
         if (typeof document !== 'undefined') {
           const body = document.getElementsByTagName('body')[0]
@@ -76,19 +70,7 @@ export default {
       document.removeEventListener('visibilitychange', onVisibilityChange)
     })
 
-    // 같은 값에 대한 watcher가 아래도 있는데, showAd.value = false와 initAd에 대한 debounced 실행을 분리하기 위함.
-    watch(
-      () => router.currentRoute.value.path,
-      () => showAd.value = false,
-    )
-
-    watch(
-      () => router.currentRoute.value.path,
-      plugins.$helpers.debounce(() => showAd.value = true, 2000),
-    )
-
     return {
-      showAd,
       prepared,
     }
   },
@@ -125,14 +107,5 @@ export default {
   overflow-x: hidden;
   min-height: 100vh;
   flex: 1;
-
-  .ad-sense {
-    &.horizontal {
-      display: block;
-      margin: 24px 0;
-      max-width: 1200px;
-      height: 280px;
-    }
-  }
 }
 </style>
