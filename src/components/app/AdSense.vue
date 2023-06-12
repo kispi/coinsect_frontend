@@ -32,7 +32,7 @@ export default {
         } catch (e) {
           console.error(e)
         }
-      }, 2000)
+      }, 4000)
     }
 
     onMounted(init)
