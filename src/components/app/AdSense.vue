@@ -25,6 +25,11 @@ export default {
     const mustLoad = numTrial => {
       if (numTrial > 5) return
 
+      if (typeof window.adsbygoogle === 'undefined') {
+        setTimeout(() => mustLoad(numTrial + 1), 1000)
+        return
+      }
+
       try {
         window.adsbygoogle.push({})
       } catch (e) {
@@ -33,7 +38,7 @@ export default {
     }
 
     const init = () => {
-      if (store.getters.isSSR || typeof window.adsbygoogle === 'undefined') return
+      if (store.getters.isSSR) return
 
       useGoogleAdSense.value = process.env.NODE_ENV === 'PRODUCTION' && !store.getters.isSSR
       mustLoad(0)
