@@ -22,17 +22,21 @@ export default {
 
     const useGoogleAdSense = ref(null)
 
+    const mustLoad = numTrial => {
+      if (numTrial > 5) return
+
+      try {
+        window.adsbygoogle.push({})
+      } catch (e) {
+        setTimeout(() => mustLoad(numTrial + 1), 1000)
+      }
+    }
+
     const init = () => {
       if (store.getters.isSSR || typeof window.adsbygoogle === 'undefined') return
 
-      setTimeout(() => {
-        try {
-          useGoogleAdSense.value = process.env.NODE_ENV === 'PRODUCTION' && !store.getters.isSSR
-          window.adsbygoogle.push({})
-        } catch (e) {
-          console.error(e)
-        }
-      }, 4000)
+      useGoogleAdSense.value = process.env.NODE_ENV === 'PRODUCTION' && !store.getters.isSSR
+      mustLoad(0)
     }
 
     onMounted(init)
