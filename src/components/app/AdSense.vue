@@ -43,11 +43,9 @@ export default {
     const init = () => {
       if (store.getters.isSSR) return
 
-      useGoogleAdSense.value = process.env.NODE_ENV === 'PRODUCTION'
+      useGoogleAdSense.value = process.env.NODE_ENV === 'production'
       if (useGoogleAdSense.value) mustLoad(0)
       else localStyle.value = { background: 'var(--bitcoin)' }
-
-      console.log(useGoogleAdSense.value, process.env.NODE_ENV, localStyle.value)
     }
 
     onMounted(init)
