@@ -39,6 +39,7 @@ export default {
       try {
         window.adsbygoogle.push({})
       } catch (e) {
+        console.error('adsense initialization failed:', e)
         setTimeout(() => mustLoad(numTrial + 1), 1000)
       }
     }
