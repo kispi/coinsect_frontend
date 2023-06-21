@@ -3,6 +3,7 @@
   <div class="app-body view-layout-default no-scrollbar">
     <AppNavigation/>
     <div class="router-view-container w-100">
+      <AppAd class="m-b-16"/>
       <MultiCharts v-if="prepared" class="m-b-24"/>
       <RouterView
         v-if="$store.getters.isSSR || prepared"
@@ -26,6 +27,7 @@ export default {
     AppNavigation: defineAsyncComponent(() => import('@/components/app/AppNavigation')),
     AppAddons: defineAsyncComponent(() => import('@/components/app/addons/AppAddons')),
     AppFooter: defineAsyncComponent(() => import('@/components/app/AppFooter')),
+    AppAd: defineAsyncComponent(() => import('@/components/app/AppAd')),
   },
   setup() {
     const { store } = useGlobalHooks()
