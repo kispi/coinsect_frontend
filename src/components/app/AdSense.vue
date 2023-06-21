@@ -4,7 +4,10 @@
     :style="localStyle"
     class="ad-sense adsbygoogle"
     data-ad-client="ca-pub-3069752836489386"
-    data-ad-format="auto"
+    v-bind="responsive ? {
+      'data-ad-format': 'auto',
+      'data-full-width-responsive': 'true',
+    } : null"
     :data-ad-slot="dataAdSlot"
   />
 </template>
@@ -16,6 +19,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   props: {
     dataAdSlot: String,
+    responsive: Boolean,
   },
   setup() {
     const { store } = useGlobalHooks()

@@ -49,7 +49,7 @@
       <MainSection
         :title="'한 번씩 클릭 부탁드립니다!'"
         :image="'https://d1085v6s0hknp1.cloudfront.net/assets/logo.png'">
-        <AdSense :dataAdSlot="'8789268236'" style="min-height: 280px;" data-full-width-responsive="true"/>
+        <AdSense :dataAdSlot="'8789268236'" style="min-height: 280px;" :responsive="true"/>
       </MainSection>
     </div>
   </div>
