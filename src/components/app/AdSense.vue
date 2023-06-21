@@ -6,18 +6,16 @@
     data-ad-client="ca-pub-3069752836489386"
     data-ad-format="auto"
     :data-ad-slot="dataAdSlot"
-    :data-full-width-responsive="responsive"
   />
 </template>
 
 <script>
-import useGlobalHooks from '@/hooks/global-hooks'
 import { onMounted, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
     dataAdSlot: String,
-    responsive: Boolean,
   },
   setup() {
     const { store } = useGlobalHooks()
