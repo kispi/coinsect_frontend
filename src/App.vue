@@ -109,5 +109,7 @@ export default {
   overflow-x: hidden;
   min-height: 100vh;
   flex: 1;
+  position: relative;
+  z-index: 0;
 }
 </style>
