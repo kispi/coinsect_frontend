@@ -47,6 +47,9 @@
         </div>
       </div>
     </div>
+    <div class="section-ad-sense">
+      <AdSense :dataAdSlot="'5803682678'" style="min-height: 80px;"/>
+    </div>
     <div class="post-section-replies">
       <div class="header">댓글 <span class="c-brand-primary f-700">[{{ post.summary.numReplies }}]</span></div>
       <CReplies :replies="post.replies"/>
@@ -185,6 +188,11 @@ export default {
         margin-top: 4px;
       }
     }
+  }
+
+  .section-ad-sense {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-base);
   }
 }
 </style>
