@@ -1,17 +1,5 @@
 <template>
   <div class="recent-posts">
-    <div class="boards">
-      <a
-        :draggable="false"
-        @click.prevent="onClickBoard(board)"
-        class="board"
-        :class="{'selected': board.id === (selectedBoard || {}).id}"
-        :href="`/community?boardId=${board.id}`"
-        :key="board.id"
-        v-for="board in $store.getters.boards">
-        {{ board.description }}
-      </a>
-    </div>
     <div
       v-if="posts.data.length > 0"
       class="posts-grid">
@@ -23,6 +11,11 @@
         <div class="title flex-fill lines-1 m-r-32">
           <span class="title-text">
             <span class="elapsed-time f-mono">{{ $helpers.template.elapsedTime(post.createdAt) }}</span>
+            <span
+              class="badge-board"
+              :style="{ background: $helpers.logic.hexToRgba(post.board.$$color, 0.25) }">
+              {{ post.board.description }}
+            </span>
             <i v-if="(post.$$images || []).length > 0" class="fa fa-image c-price-up-bybit"/>
             <div class="post-title lines-1">{{ post.title }}</div>
           </span>
@@ -34,19 +27,17 @@
         </div>
       </RouterLink>
     </div>
-    <div
-      v-if="selectedBoard"
-      class="buttons">
+    <div class="buttons">
       <RouterLink
         class="btn btn-default btn-write"
-        :to="`/community?boardId=${selectedBoard.id}`">
+        to="/community">
         {{ $translate('SEE_MORE') }}
       </RouterLink>
       <button
         @click="$modal.custom({
           component: 'ModalPostEditor',
           options: {
-            boardId: selectedBoard.id,
+            boardId: 1,
             preventCloseOnClickBackdrop: true,
           },
         })"
@@ -65,22 +56,15 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
-
-    const selectedBoard = ref(null)
+    const { plugins } = useGlobalHooks()
 
     const posts = ref({
       data: [],
       total: 0,
     })
 
-    const onClickBoard = async board => {
-      if (selectedBoard.value === board.id) return
-
-      selectedBoard.value = board
-      const o = plugins.$helpers.qb().base()
-      o.limit(10).where(`post_type = "normal" AND board_id = ${board.id}`)
-
+    const callApi = async () => {
+      const o = plugins.$helpers.qb().base().limit(10).where(`post_type = "normal" AND board_id in (1, 2)`)
       try {
         posts.value = await communityService.post.all(o.build())
         await plugins.$helpers.post.populateRenderablePosts(posts.value.data)
@@ -89,14 +73,10 @@ export default {
       }
     }
 
-    onMounted(() => {
-      onClickBoard(store.getters.boards[0])
-    })
+    onMounted(callApi)
 
     return {
-      selectedBoard,
       posts,
-      onClickBoard,
     }
   },
 }
@@ -104,29 +84,6 @@ export default {
 
 <style lang="scss">
 .recent-posts {
-  .boards {
-    display: flex;
-    margin-bottom: 8px;
-
-    .board {
-      flex: 1;
-      text-align: center;
-      max-width: 80px;
-      font-size: 12px;
-      padding: 4px;
-      color: var(--text-light);
-
-      &.selected {
-        color: var(--text-stress);
-        font-weight: 700;
-      }
-
-      &:hover {
-        background: var(--background-light);
-      }
-    }
-  }
-
   .posts-grid {
     font-size: 12px;
     display: grid;
@@ -161,6 +118,10 @@ export default {
       opacity: 0.64;
       border-right: 1px solid var(--border-base);
       padding-right: 8px;
+    }
+
+    .badge-board {
+      padding: 0 4px;
     }
 
     .title-text {
