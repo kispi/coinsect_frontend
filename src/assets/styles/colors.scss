@@ -29,14 +29,14 @@
   --price-up-bybit-bg-20:   rgba(36, 174, 100, 0.2);
   --price-down-bybit-bg-20: rgba(224, 64, 64, 0.2);
 
-  --text-stress:         var(--gs-22);
-  --text-base:           var(--gs-44);
+  --text-stress:         var(--black);
+  --text-base:           var(--gs-22);
 }
 
 #app {
   color:                 var(--text-base);
-  --text-stress:         var(--gs-22);
-  --text-base:           var(--gs-44);
+  --text-stress:         var(--black);
+  --text-base:           var(--gs-22);
   --text-light:          var(--gs-bb);
   --border-base:         var(--gs-e0);
   --border-light:        rgba(0, 0, 0, 0.25);

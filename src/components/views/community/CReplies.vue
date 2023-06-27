@@ -8,7 +8,7 @@
       v-for="reply in repliesToDisplay">
       <div
         class="reply-body"
-        :style="paddingLeft">
+        :style="{'padding-left': `${depth * 24}px`}">
         <div class="reply-header">
           <div class="reply-user" :class="{'authorized-clickable-nickname': reply.userId}">
             <UserSymbol :user="reply.user" class="m-r-4"/>
@@ -59,7 +59,7 @@
       <div
         v-if="reply.$$showReply"
         class="reply-write-container"
-        :style="paddingLeft">
+        :style="{'padding-left': `${depth * 24 + 24}px`}">
         <ReplyWrite :post="$store.getters.post" :parent="reply" @cancel="reply.$$showReply = false"/>
       </div>
       <CReplies :replies="reply.replies" :depth="depth + 1"/>
@@ -78,14 +78,12 @@ export default {
     depth: {
       type: Number,
       default: 0,
-    }
+    },
   },
   setup(props) {
     const { plugins, store, router } = useGlobalHooks()
 
     const repliesToDisplay = computed(() => (props.replies || []).filter(o => !o.deletedAt || hasNonDeletedChild(o)))
-
-    const paddingLeft = computed(() => ({'padding-left': `${props.depth * 24}px`}))
 
     const hasNonDeletedChild = reply => {
       return (reply.replies || []).some(child => !child.deletedAt || hasNonDeletedChild(child))
@@ -125,7 +123,6 @@ export default {
 
     return {
       repliesToDisplay,
-      paddingLeft,
       hasNonDeletedChild,
       onClickDelete,
       toggleReaction,

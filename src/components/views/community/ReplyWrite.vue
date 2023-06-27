@@ -198,6 +198,7 @@ export default {
 .reply-write {
   border: 1px solid var(--border-base);
   border-radius: 8px;
+  overflow: hidden;
   margin: 8px 0;
 
   .authorized-clickable-nickname,
@@ -224,6 +225,7 @@ export default {
 
   .writer-and-password {
     display: flex;
+    align-items: center;
   }
 
   textarea {

@@ -82,7 +82,7 @@ export default {
 
   div.logo {
     font-size: 40px;
-    color: var(--text-stress);
+    color: var(--white);
   }
 
   @media (max-width: 767px) {

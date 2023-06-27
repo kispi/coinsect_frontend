@@ -179,6 +179,12 @@ export default {
     gap: 24px;
   }
 
+  @media (max-width: 767px) {
+    .sitemap {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+  }
+
   @media (min-width: 768px) {
     .bottom {
       grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
