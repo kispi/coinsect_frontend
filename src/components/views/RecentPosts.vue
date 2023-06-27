@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import communityService from '@/services/community'
 import useGlobalHooks from '@/hooks/global-hooks'
 
@@ -63,6 +63,8 @@ export default {
       total: 0,
     })
 
+    const timeout = ref(null)
+
     const callApi = async () => {
       const o = plugins.$helpers.qb().base().limit(10).where(`post_type = "normal" AND board_id in (1, 2)`)
       try {
@@ -71,9 +73,14 @@ export default {
       } catch (e) {
         plugins.$toast.error('문제가 발생했습니다 :)')
       }
+      timeout.value = setTimeout(callApi, 1000 * 60 * 5)
     }
 
     onMounted(callApi)
+
+    onUnmounted(() => {
+      if (timeout.value) clearTimeout(timeout.value)
+    })
 
     return {
       posts,
