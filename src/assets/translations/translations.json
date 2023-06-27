@@ -43,6 +43,10 @@
     "en": "Submit",
     "kr": "제출"
   },
+  "EDITED": {
+    "en": "Edited",
+    "kr": "수정됨"
+  },
   "ABOUT": {
     "en": "About",
     "kr": "소개"

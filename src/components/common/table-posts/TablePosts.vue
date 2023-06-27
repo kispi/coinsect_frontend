@@ -31,6 +31,7 @@
                 <div>
                   <span>{{ row.title }}</span>
                   <span v-if="(row.replies || []).length > 0" class="num-replies">[{{ (row.replies || []).length }}]</span>
+                  <span v-if="row.lastEdit" class="edited">({{ $translate('EDITED') }})</span>
                 </div>
               </article>
             </div>
@@ -253,6 +254,12 @@ export default {
 
       .num-replies {
         color: var(--brand-primary);
+        margin-left: 4px;
+      }
+
+      .edited {
+        font-size: 12px;
+        color: var(--text-light);
         margin-left: 4px;
       }
     }

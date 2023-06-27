@@ -6,7 +6,7 @@
       <div class="post-header">
         <div class="post-title">
           <span class="badge-post-type m-r-8">{{ post.board.description}}</span>
-          <span>{{ post.title }}</span>
+          <span>{{ post.title }}<span v-if="post.lastEdit" class="edited">({{ $translate('EDITED') }})</span></span>
         </div>
         <div class="writer-and-created-at">
           <div class="writer" :class="{'authorized-clickable-nickname': post.userId}">
@@ -128,6 +128,13 @@ export default {
     .post-title {
       font-weight: 700;
       color: var(--text-stress);
+    }
+
+    .edited {
+      font-size: 12px;
+      margin-left: 4px;
+      color: var(--text-light);
+      font-weight: initial;
     }
 
     .writer-and-created-at {

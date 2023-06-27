@@ -103,8 +103,12 @@ export default {
     }
   }
 
-  .toastui-editor-defaultUI .ProseMirror {
-    padding: 16px;
+  .toastui-editor-defaultUI {
+    overflow: hidden;
+
+    .ProseMirror {
+      padding: 16px;
+    }
   }
 
   .toastui-editor-defaultUI-toolbar {
