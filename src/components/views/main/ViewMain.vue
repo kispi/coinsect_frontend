@@ -139,6 +139,7 @@ export default {
 
     &.main {
       gap: 16px;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
     }
   }
 
