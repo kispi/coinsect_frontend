@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="section">
-      <div class="section-title m-t-16">2022년 말 기준 주요 거래소별 할인 요율</div>
+      <div class="section-title m-t-16">주요 거래소별 할인 요율</div>
       <table>
         <thead>
           <tr>
@@ -22,6 +22,8 @@
         </thead>
         <tbody>
           <tr
+            @click="onClickExchange(exchange)"
+            :class="{'cursor-pointer': exchange.link}"
             :key="exchange.name"
             v-for="exchange in exchanges">
             <td>
@@ -29,8 +31,8 @@
                 <AppImg :src="exchange.img" class="flex-wrap m-r-8"/>{{ exchange.key }}
               </div>
             </td>
-            <td>{{ exchange.n.m * 100 }}% / {{ exchange.n.t * 100 }}%</td>
-            <td>{{ exchange.d.m * 100 }}% / {{ exchange.d.t * 100 }}%</td>
+            <td>{{ asPercent(exchange.n.m) }}% / {{ asPercent(exchange.n.t) }}%</td>
+            <td>{{ asPercent(exchange.d.m) }}% / {{ asPercent(exchange.d.t) }}%</td>
           </tr>
         </tbody>
       </table>
@@ -101,11 +103,20 @@ export default {
 
     const exImg = ex => plugins.$helpers.withCdn(`images/exchanges/${ex}.png`)
 
+    const asPercent = val => (val * 100).toLocaleString(undefined, { maximumFractionDigits: 4 })
+
     const exchanges = ref([
-      { key: 'Binance', n: { m: 0.0002, t: 0.0004 }, d: { m: 0.00016, t: 0.00032 }, img: exImg('BINANCE') },
+      { key: 'Binance', n: { m: 0.0002, t: 0.0004 }, d: { m: 0.00016, t: 0.00032 }, img: exImg('BINANCE'), $$selected: true },
       { key: 'Bybit', n: { m: 0.0001, t: 0.0006 }, d: { m: 0.0001, t: 0.00048 }, img: exImg('BYBIT') },
-      { key: 'Bitget', n: { m: 0.0004, t: 0.0008 }, d: { m: 0.0002, t: 0.0004 }, img: exImg('BITGET'), $$selected: true },
+      { key: 'Bitget', n: { m: 0.0004, t: 0.0008 }, d: { m: 0.0002, t: 0.0004 }, img: exImg('BITGET') },
+      { key: 'BingX', n: { m: 0.0002, t: 0.0005 }, d: { m: 0.00011, t: 0.000275 }, img: exImg('BINGX'), link: 'https://bingx.com/en-us/partner/coinsect' },
     ])
+
+    const onClickExchange = exchange => {
+      if (!exchange.link) return
+
+      window.open(exchange.link, '_blank')
+    }
 
     const payload = ref({
       exchange: exchanges.value.find(ex => ex.$$selected),
@@ -123,7 +134,9 @@ export default {
     return {
       payload,
       exchanges,
+      asPercent,
       onSelectExchange,
+      onClickExchange,
     }
   },
 }
@@ -164,6 +177,12 @@ export default {
     img {
       width: 16px;
       height: 16px;
+    }
+
+    tr {
+      &:hover {
+        background: var(--background-light);
+      }
     }
   }
 
