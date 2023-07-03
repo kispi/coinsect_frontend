@@ -6,7 +6,7 @@
       "
       @close="$emit('close')"
     />
-    <TradingView :symbol="options.symbol" :interval="1"/>
+    <TradingView :symbol="options.symbol"/>
   </div>
 </template>
 

@@ -3,7 +3,7 @@
   <div class="app-body view-layout-default no-scrollbar">
     <AppNavigation/>
     <div class="router-view-container w-100">
-      <AppAd class="m-b-16"/>
+      <!-- <AppAd class="m-b-16"/> -->
       <MultiCharts v-if="prepared" class="m-b-24"/>
       <RouterView
         v-if="$store.getters.isSSR || prepared"
