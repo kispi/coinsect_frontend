@@ -29,7 +29,7 @@
               <article class="cell title">
                 <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
                 <div class="flex-row items-center">
-                  <IconYoutube v-if="row.$$thumbnail" class="m-r-4" size="16"/>
+                  <IconYoutube v-if="row.$$thumbnail" class="m-r-8" size="16"/>
                   <div>
                     <span>{{ row.title }}</span>
                     <span v-if="(row.replies || []).length > 0" class="num-replies m-l-4">[{{ (row.replies || []).length }}]</span>
