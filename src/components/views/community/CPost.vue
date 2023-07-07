@@ -168,6 +168,7 @@ export default {
 
     img,
     iframe {
+      border: 0;
       max-width: 100%;
       cursor: pointer;
     }

@@ -26,5 +26,9 @@
   "EXISTING_NICKNAME": {
     "en": "Existing nickname",
     "kr": "이미 존재하는 닉네임입니다"
+  },
+  "INVALID_YOUTUBE_URL": {
+    "en": "Please use the URL including 'youtube.com'",
+    "kr": "'youtube.com'을 포함한 URL을 사용해주세요"
   }
 }

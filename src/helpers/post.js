@@ -25,6 +25,7 @@ export const postHelpers = {
   },
   populateRenderablePost: async post => {
     post.$$images = helpers.logic.retrieveImagesFromHTML(post.content)
+    post.$$thumbnail = helpers.logic.retrieveYouTubeThumbnailFromHTML(post.content)
     await postHelpers.populateBoardsColors([post.board])
   },
   populateRenderablePosts: async posts => {

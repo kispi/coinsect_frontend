@@ -19,11 +19,74 @@ export default {
   setup(props, { emit }) {
     const refEditor = ref(null)
 
-    const editor = ref(null)
+    // ref를 쓰면 prototype이 오염되는건지 editor에 달린 메소드들이 제대로 작동하지 않음
+    let editor = null
 
     const { plugins } = useGlobalHooks()
 
     const { loadToastUIEditor } = useLazyLoads()
+
+    const createCustomHTMLRenderer = () => {
+      const iconYoutube = document.createElement('span')
+      iconYoutube.style = 'cursor: pointer;'
+
+      const icon = document.createElement('img')
+      icon.setAttribute('src', 'https://www.svgrepo.com/show/13671/youtube.svg')
+      icon.setAttribute('width', '32')
+      iconYoutube.appendChild(icon)
+
+      const popupYoutube = document.createElement('div')
+
+      const helpImage = document.createElement('img')
+      helpImage.src = 'https://d1085v6s0hknp1.cloudfront.net/boards/free_board/557c925f-e7ff-4a2b-a215-fc66021a6e0f_image.png'
+      helpImage.style = 'width: 320px; margin-bottom: 16px; border: 1px solid var(--border-base); border-radius: 4px;'
+
+      const button = document.createElement('div')
+      button.classList.add('btn')
+      button.classList.add('btn-primary')
+      button.classList.add('m-l-8')
+      button.textContent = plugins.$translate('CONFIRM')
+
+      const urlInput = document.createElement('input')
+      urlInput.style.width = '100%'
+      urlInput.placeholder = 'YouTube Link'
+
+      const row = document.createElement('div')
+      row.style = 'display: flex;'
+
+      popupYoutube.appendChild(helpImage)
+      row.appendChild(urlInput)
+      row.appendChild(button)
+      popupYoutube.appendChild(row)
+
+      button.addEventListener('click', () => {
+        if ((!urlInput.value.includes('youtube.com'))) {
+          plugins.$toast.error('INVALID_YOUTUBE_URL')
+          return
+        }
+
+        const url = urlInput.value.split('=').at(-1) ?? '';
+        let str = `<div><iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/${url}"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe></div>`
+
+        editor.changeMode('markdown')
+        editor.insertText('<p></p>')
+        editor.insertText(str)
+        editor.insertText('<p></p>')
+        editor.changeMode('wysiwyg')
+        editor.eventEmitter.emit('closePopup')
+        urlInput.value = ''
+      })
+
+      return { iconYoutube, popupYoutube }
+    }
 
     const init = async () => {
       if (typeof toastui === 'undefined') {
@@ -31,23 +94,48 @@ export default {
         return init()
       }
 
+      const { iconYoutube, popupYoutube } = createCustomHTMLRenderer()
+
       const { Editor } = toastui
 
       const { colorSyntax } = Editor.plugin
 
-      editor.value = new Editor({
+      editor = new Editor({
         el: refEditor.value,
         plugins: [colorSyntax],
         toolbarItems: [
           ['bold', 'italic', 'strike'],
           ['image', 'link'],
+          [{
+            name: 'YouTube',
+            tooltip: 'YouTube',
+            el: iconYoutube,
+            popup: {
+              body: popupYoutube,
+              style: { width: 'auto' },
+            },
+          }],
         ],
+        customHTMLRenderer: {
+          htmlBlock: {
+            iframe: node => [
+              { type: 'openTag', tagName: 'iframe', attributes: node.attrs },
+              { type: 'html', content: node.childrenHTML },
+              { type: 'closeTag', tagName: 'iframe' },
+            ],
+            div: node => [
+              { type: 'openTag', tagName: 'div', attributes: node.attrs },
+              { type: 'html', content: node.childrenHTML },
+              { type: 'closeTag', tagName: 'div' },
+            ],
+          },
+        },
         height: '480px',
         initialEditType: 'wysiwyg',
         initialValue: (props.modelValue || ''),
         events: {
           change: () => {
-            const html = editor.value.getHTML()
+            const html = editor.getHTML()
             emit('update:modelValue', html)
           },
         },
@@ -70,7 +158,7 @@ export default {
     })
 
     onUnmounted(() => {
-      if (editor.value) editor.value.destroy()
+      if (editor) editor.destroy()
     })
 
     return {
@@ -82,6 +170,8 @@ export default {
 
 <style lang="scss">
 .toast-ui-editor {
+  background: var(--white);
+
   .toastui-editor-mode-switch,
   label[for=toastuiAltTextInput],
   input#toastuiAltTextInput {
@@ -90,6 +180,10 @@ export default {
 
   .toastui-editor-contents {
     z-index: 0;
+
+    iframe {
+      border: 0;
+    }
   }
 
   .toastui-editor-popup {

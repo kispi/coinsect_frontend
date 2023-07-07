@@ -1,10 +1,12 @@
 <template>
   <div
-    v-if="(post.$$images || []).length > 0"
+    v-if="(post.$$images || []).length > 0 || post.$$thumbnail"
     class="post-image-preview"
-    @click.stop.prevent="$modal.images({ images: post.$$images })">
+    @click.stop.prevent="$modal.images({
+      images: post.$$images.length > 0 ? post.$$images : [post.$$thumbnail],
+    })">
     <AppImg
-      :src="post.$$images[0]"
+      :src="post.$$images[0] || post.$$thumbnail"
       draggable="false"
       class="overlay"
     />
