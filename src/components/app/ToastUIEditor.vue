@@ -39,7 +39,7 @@ export default {
 
       const helpImage = document.createElement('img')
       helpImage.src = 'https://d1085v6s0hknp1.cloudfront.net/boards/free_board/557c925f-e7ff-4a2b-a215-fc66021a6e0f_image.png'
-      helpImage.style = 'width: 320px; margin-bottom: 16px; border: 1px solid var(--border-base); border-radius: 4px;'
+      helpImage.style = 'width: 320px; max-width: 100%; margin-bottom: 16px; border: 1px solid var(--border-base); border-radius: 4px;'
 
       const button = document.createElement('div')
       button.classList.add('btn')
@@ -66,15 +66,16 @@ export default {
         }
 
         const url = urlInput.value.split('=').at(-1) ?? '';
-        let str = `<div><iframe
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/${url}"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen>
-        </iframe></div>`
+        const str = `<div class="youtube-container-size-limiter"><div class="youtube-ratio-wrapper">
+          <iframe
+            width="100%"
+            src="https://www.youtube.com/embed/${url}"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div></div>`
 
         editor.changeMode('markdown')
         editor.insertText('<p></p>')

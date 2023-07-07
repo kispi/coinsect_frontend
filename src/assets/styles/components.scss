@@ -162,3 +162,19 @@ table {
 .c-post {
   font-family: Gulim, sans-serif, 'IBM Plex Sans KR';
 }
+
+.youtube-container-size-limiter {
+  max-width: 560px;
+
+  .youtube-ratio-wrapper {
+    padding-top: 56.25%;
+    position: relative;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+  
+      @extend .overlay;
+    }
+  }
+}
