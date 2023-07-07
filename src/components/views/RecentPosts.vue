@@ -17,11 +17,7 @@
               {{ post.board.description }}
             </span>
             <i v-if="(post.$$images || []).length > 0" class="fa fa-image"/>
-            <div
-              v-if="post.$$thumbnail"
-              class="youtube-icon-container center bg-white">
-              <i class="fab fa-youtube c-danger"/>
-            </div>
+            <IconYoutube v-if="post.$$thumbnail"/>
             <div class="post-title lines-1">{{ post.title }}</div>
           </span>
           <span v-if="(post.replies || []).length > 0" class="num-replies"> [{{ (post.replies || []).length }}]</span>
@@ -146,11 +142,6 @@ export default {
 
       .post-title {
         padding-right: 1px; // 윈도우 돋움체에선 끝글자가 ? 등일 때 글씨가 살짝 잘림
-      }
-
-      .youtube-icon-container {
-        width: 8px;
-        height: 8px;
       }
     }
 

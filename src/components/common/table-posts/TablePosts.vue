@@ -28,10 +28,13 @@
               />
               <article class="cell title">
                 <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
-                <div>
-                  <span>{{ row.title }}</span>
-                  <span v-if="(row.replies || []).length > 0" class="num-replies">[{{ (row.replies || []).length }}]</span>
-                  <span v-if="row.lastEdit" class="edited">({{ $translate('EDITED') }})</span>
+                <div class="flex-row items-center">
+                  <IconYoutube v-if="row.$$thumbnail" class="m-r-4" size="16"/>
+                  <div>
+                    <span>{{ row.title }}</span>
+                    <span v-if="(row.replies || []).length > 0" class="num-replies m-l-4">[{{ (row.replies || []).length }}]</span>
+                    <span v-if="row.lastEdit" class="edited m-l-4">({{ $translate('EDITED') }})</span>
+                  </div>
                 </div>
               </article>
             </div>
@@ -254,13 +257,11 @@ export default {
 
       .num-replies {
         color: var(--brand-primary);
-        margin-left: 4px;
       }
 
       .edited {
         font-size: 12px;
         color: var(--text-light);
-        margin-left: 4px;
       }
     }
 
