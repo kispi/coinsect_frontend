@@ -13,7 +13,7 @@
         :title="'KIMP'"
         :link="'/prices'"
         :image="require('@/assets/images/binance.svg')">
-        <RealTimePriceCards :symbols="['BTC', 'ETH', 'BNB', 'XRP', 'ADA', 'DOGE', 'MATIC', 'SOL', 'LTC', 'TRX', 'DOT']"/>
+        <RealTimePriceCards :symbols="['BTC', 'ETH', 'XRP', 'ADA', 'DOGE', 'SOL', 'LTC', 'TRX', 'BCH']"/>
       </MainSection>
       <MainSection
         :title="'REAL_TIME_POSITIONS'"
