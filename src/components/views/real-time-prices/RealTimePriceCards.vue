@@ -1,5 +1,6 @@
 <template>
   <div class="real-time-price-cards">
+    <div v-if="!connected" class="disconnected center overlay">Reconnecting...</div>
     <RealTimePriceCard
       :tickerBinance="$store.getters.rawWebsocketInfo.binance[`${symbol}USDT`.toUpperCase()]"
       :tickerUpbit="$store.getters.rawWebsocketInfo.upbit[`KRW-${symbol}`]"
@@ -26,10 +27,19 @@ export default {
 
     const { subscribe: subscribeUpbit } = useUpbit()
 
+    const interv = ref(null)
+
+    const connected = ref(null)
+
     const connection = ref({
       binance: null,
       upbit: null,
     })
+
+    const checkConnection = () => {
+      connected.value = connection.value.binance.readyState === 1 && connection.value.upbit.readyState === 1
+      if (!connected.value) init()
+    }
 
     const init = async () => {
       try {
@@ -42,9 +52,12 @@ export default {
           codes: props.symbols.map(symbol => `KRW-${symbol}`),
           $$raw: true,
         })
+        connected.value = true
       } catch (e) {
         console.error(e)
       }
+
+      interv.value = setInterval(checkConnection, 3000)
     }
 
     onMounted(init)
@@ -52,7 +65,12 @@ export default {
     onUnmounted(() => {
       if (connection.value.binance) connection.value.binance.close()
       if (connection.value.upbit) connection.value.upbit.close()
+      if (interv.value) clearInterval(interv.value)
     })
+
+    return {
+      connected,
+    }
   },
 }
 </script>
@@ -67,6 +85,10 @@ export default {
     &:first-child {
       grid-column: 1 / span 2;
     }
+  }
+
+  .disconnected {
+    background: rgba(0, 0, 0, 0.5);
   }
 }
 </style>
