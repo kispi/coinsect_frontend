@@ -9,8 +9,8 @@
         <ul
           v-if="hasEvent"
           class="event">
-          <li><a href="https://bingx.com/en-us/act/task/6726462354/?ch=act_newuserjuly&ref=coinsect" target="_blank">7월 신규가입 이벤트($600)</a></li>
-          <li><a href="https://bingx.com/en-sa/act/template/4639?ref=OYEUJ6XS&randomId=1270977198" target="_blank">7월 입금 이벤트($500)</a></li>
+          <li><a href="https://bingx.com/en-us/act/task/6726462354/?ch=act_newuserjuly&ref=coinsect" target="_blank">7월 신규가입 이벤트(600 USDT)</a></li>
+          <li><a href="https://bingx.com/en-sa/act/template/4639?ref=OYEUJ6XS&randomId=1270977198" target="_blank">7월 입금 이벤트(500 USDT)</a></li>
           <li>coinsect 레퍼럴 코드로 가입하시면 위 두 이벤트는 자동 적용되며, 각 페이지를 보시면 보너스를 받기 위한 조건을 알 수 있습니다.</li>
         </ul>
       </div>
