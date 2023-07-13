@@ -3,7 +3,7 @@
     <ModalHeader :title="$translate('MODAL_REFERRAL')" @close="$emit('close')"/>
     <div class="body pre-line">
       <div class="banner m-b-24">
-        <a :href="exchange.link" target="_blank">
+        <a :href="exchange.link" target="_blank" draggable="false">
           <component :is="exchange.component"/>
         </a>
         <ul
