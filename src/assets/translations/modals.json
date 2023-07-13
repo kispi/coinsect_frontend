@@ -63,6 +63,10 @@
     "en": "User Activity",
     "kr": "유저 활동내역"
   },
+  "MODAL_REFERRAL": {
+    "en": "Crypto Derivates: Trading Fee Discount & Get Promotion",
+    "kr": "암호화폐 선물거래: 수수료 혜택 & 프로모션 받기"
+  },
   "LOGOUT": {
     "en": "Logout",
     "kr": "로그아웃"

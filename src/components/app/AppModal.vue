@@ -44,6 +44,7 @@ export default {
   props: ['modal'],
   components: {
     ModalBasic: defineAsyncComponent(() => import('@/components/modals/ModalBasic')),
+    ModalReferral: defineAsyncComponent(() => import('@/components/modals/ModalReferral')),
     ModalUserStats: defineAsyncComponent(() => import('@/components/modals/ModalUserStats')),
     ModalDonation: defineAsyncComponent(() => import('@/components/modals/ModalDonation')),
     ModalInput: defineAsyncComponent(() => import('@/components/modals/ModalInput')),

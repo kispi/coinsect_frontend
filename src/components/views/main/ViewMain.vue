@@ -47,9 +47,11 @@
         </div>
       </MainSection>
       <MainSection
-        :title="'한 번씩 클릭 부탁드립니다!'"
+        :title="'광고 & 레퍼럴'"
+        :link="'/contents/crypto-referral'"
         :image="'https://d1085v6s0hknp1.cloudfront.net/assets/logo.png'">
-        <AdSense :dataAdSlot="'8789268236'" style="min-height: 280px;" :responsive="true"/>
+        <AdExchanges/>
+        <AdSense :dataAdSlot="'8789268236'" style="min-height: 280px;" :responsive="true" class="m-t-8"/>
       </MainSection>
     </div>
   </div>
