@@ -135,7 +135,7 @@ const logic = {
 
     try {
       const dataUrl = await o.play(file)
-      return new File([await helpers.dataURLToBlob(dataUrl)], file.name, { type: 'image/jpg' })
+      return new File([await helpers.logic.dataURLToBlob(dataUrl)], file.name, { type: 'image/jpg' })
     } catch (e) {
       return file
     }
