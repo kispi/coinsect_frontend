@@ -15,12 +15,8 @@
         </ul>
       </div>
       <ul class="disclaimer">
-        <li class="c-danger">레버리지 선물 거래는 매우 위험합니다. 경험많은 트레이더가 아니라면 <b>절대 하지 마십시오</b>. 박호두가 못하는게 아닙니다.</li>
-        <li><a href="https://n.news.naver.com/article/001/0013570873" target="_blank">FTX의 사례</a>처럼, <span class="c-danger">거래소에 돈을 장기간 두는 것은 매우 위험합니다.</span> 항상 매매를 위해 사용할 소액만 예치하고, 코인은 항상 내 개인지갑이나 최소한 국내거래소(ex: 업비트)에 보관하십시오.</li>
-        <li>국내 거래소에서 직접 내 개인지갑으로 100만원을 초과하는 금액의 암호화폐를 옮길 수 없으므로, 경유하기 위한 목적으로 최소 해외거래소 한군데는 KYC를 해두시면 편리합니다.</li>
-        <li>트래블룰이 통과된 거래소만 광고합니다.</li>
-        <li>레퍼럴 시스템에 관해 더 궁금하다면 <a href="/contents/crypto-referral" target="_blank">크립토 레퍼럴</a> 페이지를 참조하세요.</li>
-        <li>기타 궁금한 점은 홈페이지 하단의 카톡/텔레그램으로 문의주세요.</li>
+        <li v-if="travelRuleExchanges.length > 0">트래블룰 통과 거래소: {{ travelRuleExchanges.join(', ') }}</li>
+        <li>암호화폐 거래소 레퍼럴 시스템에 관해 더 궁금하다면 <a href="/contents/crypto-referral" target="_blank">크립토 레퍼럴</a> 페이지를 참조하세요.</li>
       </ul>
       <a class="btn btn-primary m-t-24 p-16" :href="exchange.link" target="_blank" draggable="false">{{ options.exchange }} 수수료 혜택 받기</a>
     </div>
@@ -38,6 +34,13 @@ export default {
 
     const hasEvent = computed(() => props.options.exchange === 'BINGX' && plugins.$helpers.dayjs().isBefore('2023-08-01'))
 
+    const travelRuleExchanges = computed(() => {
+      const x = props.options.exchange
+      if (x === 'BINGX') return ['빗썸', '코인원']
+      if (x === 'BYBIT') return ['업비트', '빗썸', '코인원', '코빗']
+      return []
+    })
+
     const exchange = computed(() => {
       const exchange = (props.options.exchange || '').toLowerCase()
       return {
@@ -54,6 +57,7 @@ export default {
     return {
       hasEvent,
       exchange,
+      travelRuleExchanges,
     }
   },
 }
