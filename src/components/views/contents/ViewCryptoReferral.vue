@@ -82,12 +82,12 @@
         포지션 규모 * 매매 횟수 * 추천인 수 * 매매일 수 * 시장가 수수료 * 커미션<br>
         = ${{ payload.positionSize.toLocaleString() }} * {{ payload.tradingFrequency }} * {{ payload.numReferrer }} * {{ payload.numDays }} * {{ payload.exchange.d.t }} * {{ payload.commisionRate }}<br>
         = <b class="result">${{ Math.round(payload.positionSize * payload.tradingFrequency * payload.numReferrer * payload.numDays * payload.exchange.d.t * payload.commisionRate).toLocaleString() }}</b><br><br>
-        결론:<br>
-        - 레퍼럴 코드를 입력하는건 <span class="c-danger f-700">실제로 가입자의 매매 수수료를 줄여준다</span>.<br>
-        - 유명한 인플루언서들은 위 계산식의 입력값들이 기본 예시보다 훨씬 클거라고 쉽게 추측이 가능하다.<br>
-        - 그러니 실시간 시청자가 몇천명이 되는 연예인급 인플루언서들은 하루에 몇백씩 날리더라도 그게 큰 타격이 되지 않을 정도의 엄청난 레퍼럴 수익을 올리며, 따라서 일반인의 기준으로는 이해가 안갈 리스크의 무지성 매매가 가능하다.<br>
+        요약:<br>
+        - 레퍼럴 코드를 입력하면 수수료 혜택을 받을 수 있다.<br>
+        - 실시간 시청자가 몇천명이 되는 연예인급 인플루언서들은 하루에 몇백씩 날리더라도 그게 큰 타격이 되지 않을 정도의 엄청난 레퍼럴 수익을 올리며, 따라서 일반인의 기준으로는 이해가 안갈 리스크의 무지성 매매가 가능하다.<br>
         - <RouterLink :to="'/community/iVE5o84sTRmbRzGOCvN-XQ'" class="c-brand-primary">방송인들은 종종 출금인증을 하곤 한다.</RouterLink> 모의시드라면 있을수가 없는 일이다.<br>
-        - 매매를 자주 하는 것 자체가 거래소에 수수료를 퍼주는 것이며, 굳이 잦은 매매를 해야겠다면 내가 정말 후원하고 싶은 인플루언서의 레퍼럴 코드를 쓰는 것을 권장한다.<br>
+        - 인플루언서 입장에서도 자기 레퍼럴로 가입한 사람들이 청산당하지 않고 오래 매매해야 좋다.<br>
+        - 매매를 자주 하는 것 자체가 거래소에 수수료를 퍼주는 것이며, 굳이 잦은 매매를 해야겠다면 내가 정말 후원하고 싶은 인플루언서의 레퍼럴 코드를 쓰자.<br>
       </div>
     </div>
   </div>

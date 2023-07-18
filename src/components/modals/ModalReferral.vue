@@ -15,8 +15,14 @@
         </ul>
       </div>
       <ul class="disclaimer">
-        <li v-if="travelRuleExchanges.length > 0">트래블룰 통과 거래소: {{ travelRuleExchanges.join(', ') }}</li>
-        <li>암호화폐 거래소 레퍼럴 시스템에 관해 더 궁금하다면 <a href="/contents/crypto-referral" target="_blank">크립토 레퍼럴</a> 페이지를 참조하세요.</li>
+        <li
+          :key="benefit"
+          v-for="benefit in benefits"
+          v-html="benefit"
+        />
+      </ul>
+      <ul class="f-12 m-t-40">
+        <li>암호화폐 거래소 레퍼럴 시스템에 관해 더 궁금하다면 <a href="/contents/crypto-referral" target="_blank" class="text-underline">크립토 레퍼럴</a> 페이지를 참조하세요.</li>
       </ul>
       <a class="btn btn-primary m-t-24 p-16" :href="exchange.link" target="_blank" draggable="false">{{ options.exchange }} 수수료 혜택 받기</a>
     </div>
@@ -32,17 +38,17 @@ export default {
   setup(props) {
     const { plugins } = useGlobalHooks()
 
-    const hasEvent = computed(() => props.options.exchange === 'BINGX' && plugins.$helpers.dayjs().isBefore('2023-08-01'))
+    const x = (props.options.exchange || '').toLowerCase()
 
-    const travelRuleExchanges = computed(() => {
-      const x = props.options.exchange
-      if (x === 'BINGX') return ['빗썸', '코인원']
-      if (x === 'BYBIT') return ['업비트', '빗썸', '코인원', '코빗']
-      return []
+    const hasEvent = computed(() => x === 'bingx' && plugins.$helpers.dayjs().isBefore('2023-08-01'))
+
+    const benefits = computed(() => {
+      if (x === 'bybit') return ['트래블룰 통과: 업비트, 빗썸, 코인원, 코빗', '수수료 20% 할인 (0.01% / 0.048%)', '입금액 / 거래량에 따라 최대 30,000 USDT 보너스']
+      if (x === 'bingx') return ['트래블룰 통과: 빗썸, 코인원', '수수료 45% 페이백 (0.011% / 0.0275%)', '입금액 / 거래량에 따라 최대 5,000 USDT 보너스']
     })
 
     const exchange = computed(() => {
-      const exchange = (props.options.exchange || '').toLowerCase()
+      const exchange = x
       return {
         component: `Banner${plugins.$helpers.template.case.toCapital(exchange)}`,
         link: (() => {
@@ -57,7 +63,7 @@ export default {
     return {
       hasEvent,
       exchange,
-      travelRuleExchanges,
+      benefits,
     }
   },
 }

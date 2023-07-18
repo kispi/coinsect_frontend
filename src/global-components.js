@@ -1,7 +1,6 @@
 // app components
 import AdSense from '@/components/app/AdSense'
 import AdaptiveLayout from '@/components/app/AdaptiveLayout'
-import AppBackground from '@/components/app/AppBackground'
 import AppBanner from '@/components/app/AppBanner'
 import AppCheckbox from '@/components/app/AppCheckbox'
 import AppDraggable from '@/components/app/AppDraggable'
@@ -27,7 +26,6 @@ import BadgeToken from '@/components/applications/chat/BadgeToken'
 import IconAddEmoji from '@/components/applications/chat/IconAddEmoji'
 
 // common components
-import AdExchanges from '@/components/common/AdExchanges'
 import BadgeUnreads from '@/components/common/BadgeUnreads'
 import BannerBitcoinBlog from '@/components/common/BannerBitcoinBlog'
 import BannerBingx from '@/components/common/exchange-banners/BannerBingx'
@@ -60,7 +58,6 @@ const useGlobalComponents = app => {
   // app components
     .component('AdSense', AdSense)
     .component('AdaptiveLayout', AdaptiveLayout)
-    .component('AppBackground', AppBackground)
     .component('AppBanner', AppBanner)
     .component('AppCheckbox', AppCheckbox)
     .component('AppDraggable', AppDraggable)
@@ -86,7 +83,6 @@ const useGlobalComponents = app => {
     .component('IconAddEmoji', IconAddEmoji)
 
     // common components
-    .component('AdExchanges', AdExchanges)
     .component('BadgeUnreads', BadgeUnreads)
     .component('BannerBitcoinBlog', BannerBitcoinBlog)
     .component('BannerBingx', BannerBingx)

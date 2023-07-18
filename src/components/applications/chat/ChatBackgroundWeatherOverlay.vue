@@ -1,19 +1,8 @@
 <template>
   <div class="chat-background-weather-overlay">
     <div class="top">
-      <div class="icons-area weather">
-        <i
-          @click="onClickWeather(weather)"
-          class="fal clickable"
-          :class="{
-            'selected': weather.theme === selectedWeather.theme,
-            [weather.icon]: true,
-          }"
-          :key="weather.theme"
-          v-for="weather in weathers"
-        />
-      </div>
-      <div class="icons-area vote">
+      <div class="icons-area"/>
+      <div class="icons-area">
         <div
           @click="updateSentiment('long')"
           class="long clickable">
@@ -28,67 +17,38 @@
         </div>
       </div>
     </div>
-    <AppBackground
-      v-if="selectedWeather.theme"
-      class="overlay"
-      :numFallingObjects="20"
-      :theme="selectedWeather.theme"
-    />
+    <div class="exchange-icons">
+      <AppImg
+        @click="$modal.custom({
+          component: 'ModalReferral',
+          options: { exchange: 'bybit' },
+        })"
+        :src="'https://seeklogo.com/images/B/bybit-logo-4C31FD6A08-seeklogo.com.png'"
+        class="clickable"
+        draggable="false"
+      />
+      <AppImg
+        @click="$modal.custom({
+          component: 'ModalReferral',
+          options: { exchange: 'bingx' },
+        })"
+        :src="$helpers.withCdn('images/exchanges/BINGX.png')"
+        class="clickable"
+        draggable="false"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue'
-import useGlobalHooks from '@/hooks/global-hooks'
 import useChatHandler from '@/hooks/chat-handler'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
-
     const { updateSentiment } = useChatHandler()
 
-    const selectedWeather = ref({})
-
-    const weatherInterv = ref(null)
-
-    const base = '서울'
-
-    const weathers = [
-      { theme: 'rain', icon: 'fa-umbrella' },
-      { theme: 'snow', icon: 'fa-snowflake' },
-    ]
-
-    const onClickWeather = weather => selectedWeather.value = selectedWeather.value.theme === weather.theme ? {} : weather
-
-    const loadWeather = async () => {
-      if (store.getters.loading.weather) return
-
-      try {
-        store.commit('setLoading', { weather: true })
-        const { data } = await plugins.$http.post('helpers/proxy', { url: 'https://www.weather.go.kr/w//renew2021/rest/main/current-weather-obs.do' })
-        const targetWeather = ((data.find(o => o.stnKo === base) || {}).ww || '').toLowerCase()
-        if (targetWeather.includes('rain')) selectedWeather.value = weathers[0]
-        if (targetWeather.includes('snow')) selectedWeather.value = weathers[1]
-      } finally {
-        store.commit('setLoading', { weather: false })
-      }
-    }
-
-    onMounted(() => {
-      loadWeather()
-      weatherInterv.value = setInterval(loadWeather, 1000 * 60 * 60) // 날씨는 1시간에 한번만 땡겨와도 족함
-    })
-
-    onUnmounted(() => {
-      clearInterval(weatherInterv.value)
-    })
-
     return {
-      selectedWeather,
-      weathers,
       updateSentiment,
-      onClickWeather,
     }
   },
 }
@@ -122,20 +82,11 @@ export default {
     display: flex;
     padding: 12px;
     gap: 8px;
+  }
 
-    &.weather {
-      color: var(--text-stress);
-    }
-
-    .clickable {
-      pointer-events: auto;
-      cursor: pointer;
-
-      /* &:hover,
-      &.selected {
-        opacity: 0.5;
-      } */
-    }
+  .clickable {
+    pointer-events: auto;
+    cursor: pointer;
   }
 
   .long {
@@ -146,8 +97,19 @@ export default {
     color: var(--price-down-bybit);
   }
 
-  .app-background {
-    opacity: 0.5;
+  .exchange-icons {
+    position: absolute;
+    z-index: 1;
+    right: 8px;
+    top: calc(50% - 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .app-img {
+      width: 20px;
+      border-radius: 50%;
+    }
   }
 }
 </style>
