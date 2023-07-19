@@ -118,14 +118,12 @@ export default {
       try {
         await crudService.post[payload.value.id ? 'update' : 'create'](payload.value)
         emit('close')
-        setTimeout(() => {
-          router.push(
-            payload.value.sharingKey ?
-            `/community/${payload.value.sharingKey}` :
-            '/community',
-          )
-        })
-        if (payload.value.sharingKey) store.dispatch('loadPost', payload.value.sharingKey)
+        if (payload.value.sharingKey) {
+          store.dispatch('loadPost', payload.value.sharingKey)
+          plugins.$helpers.dom.scrollToTop()
+        } else {
+          store.dispatch('loadPosts', { limit: 10 })
+        }
       } catch (e) {
         if (plugins.$helpers.errorHandlers.bannedUser(e)) return
 

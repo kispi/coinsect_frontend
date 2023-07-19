@@ -51,29 +51,19 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref } from 'vue'
-import communityService from '@/services/community'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins } = useGlobalHooks()
+    const { store } = useGlobalHooks()
 
-    const posts = ref({
-      data: [],
-      total: 0,
-    })
+    const posts = computed(() => store.getters.posts)
 
     const timeout = ref(null)
 
     const callApi = async () => {
-      const o = plugins.$helpers.qb().base().limit(10).where(`post_type = "normal" AND board_id in (1, 2)`)
-      try {
-        posts.value = await communityService.post.all(o.build())
-        await plugins.$helpers.post.populateRenderablePosts(posts.value.data)
-      } catch (e) {
-        plugins.$toast.error('문제가 발생했습니다 :)')
-      }
+      store.dispatch('loadPosts', { limit: 10 })
       timeout.value = setTimeout(callApi, 1000 * 60 * 5)
     }
 

@@ -17,26 +17,6 @@
         </div>
       </div>
     </div>
-    <div class="exchange-icons">
-      <AppImg
-        @click="$modal.custom({
-          component: 'ModalReferral',
-          options: { exchange: 'bybit' },
-        })"
-        :src="'https://seeklogo.com/images/B/bybit-logo-4C31FD6A08-seeklogo.com.png'"
-        class="clickable"
-        draggable="false"
-      />
-      <AppImg
-        @click="$modal.custom({
-          component: 'ModalReferral',
-          options: { exchange: 'bingx' },
-        })"
-        :src="$helpers.withCdn('images/exchanges/BINGX.png')"
-        class="clickable"
-        draggable="false"
-      />
-    </div>
   </div>
 </template>
 
@@ -95,21 +75,6 @@ export default {
 
   .short {
     color: var(--price-down-bybit);
-  }
-
-  .exchange-icons {
-    position: absolute;
-    z-index: 1;
-    right: 8px;
-    top: calc(50% - 20px);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    .app-img {
-      width: 20px;
-      border-radius: 50%;
-    }
   }
 }
 </style>
