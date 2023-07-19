@@ -60,7 +60,8 @@ export default {
       popupYoutube.appendChild(row)
 
       button.addEventListener('click', () => {
-        if ((!urlInput.value.includes('youtube.com'))) {
+        // youtu.be는 embed가 안되네...
+        if (['youtube.com'].every(val => !urlInput.value.includes(val))) {
           plugins.$toast.error('INVALID_YOUTUBE_URL')
           return
         }
@@ -84,6 +85,10 @@ export default {
         editor.changeMode('wysiwyg')
         editor.eventEmitter.emit('closePopup')
         urlInput.value = ''
+      })
+
+      iconYoutube.addEventListener('click', () => {
+        setTimeout(() => urlInput.focus())
       })
 
       return { iconYoutube, popupYoutube }
