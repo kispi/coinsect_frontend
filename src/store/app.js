@@ -130,6 +130,11 @@ const app = {
           app.classList.remove(settings[key] === 'dark' ? 'light' : 'dark')
           app.classList.add(settings[key] === 'dark' ? 'dark' : 'light')
         }
+
+        if (key === 'locale') {
+          const supportedLocales = ['en', 'kr']
+          if (!supportedLocales.includes(settings[key])) state.settings[key] = 'kr'
+        }
       })
       helpers.localStorage.setMeta('settings', state.settings)
     },

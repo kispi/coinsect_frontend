@@ -29,7 +29,7 @@
       </button>
       <button
         @click="$store.commit('setSettings', { tradingview: !$store.getters.settings.tradingview })"
-        class="btn btn-default">
+        class="btn btn-brd">
         <i class="fal m-r-8" :class="$store.getters.settings.tradingview ? 'fa-chevron-up' : 'fa-chevron-down'"/>
         {{ $translate($store.getters.settings.tradingview ? 'CHART_HIDE' : 'CHART_SHOW') }}
       </button>

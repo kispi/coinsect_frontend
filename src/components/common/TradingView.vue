@@ -39,6 +39,7 @@ export default {
         toolbar_bg: '#f1f3f6',
         enable_publishing: false,
         allow_symbol_change: true,
+        hide_side_toolbar: false,
         container_id: `tradingview_upbit_${props.symbol}`,
       })
     }
@@ -65,8 +66,11 @@ export default {
 
 <style lang="scss" scoped>
 .trading-view {
-  height: 280px;
+  --min-height: 280px;
+  height: var(--min-height);
+  min-height: var(--min-height);
   resize: vertical;
+  overflow: hidden;
 
   .trading-view-container {
     height: 100%;
