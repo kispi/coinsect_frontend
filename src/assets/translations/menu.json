@@ -15,6 +15,10 @@
     "en": "Chart Full Width",
     "kr": "가로로 긴 차트"
   },
+  "CHART_TOOL": {
+    "en": "Chart Tool",
+    "kr": "차트 도구"
+  },
   "CHAT_DING": {
     "en": "Ring on new message",
     "kr": "새 메시지 소리 알림"

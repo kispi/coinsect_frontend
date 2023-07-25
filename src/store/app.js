@@ -36,6 +36,7 @@ const app = {
       filter: 'all', // 'favorites'
       tradingview: true,
       chartFullWidth: false,
+      chartTool: true,
       baseExchange: 'upbit', // 'upbit' || 'bithumb'
       baseExchangeMarket: 'krw', // 'krw' || 'btc' || 'usdt'...
       targetExchange: 'binance',

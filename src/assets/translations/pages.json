@@ -187,10 +187,6 @@
     "en": "No traders are under insterest to be monitored 😢",
     "kr": "포지션을 알 수 있는 관심 트레이더가 없는 것 같네요 😢"
   },
-  "RTP_OPERATION": {
-    "en": "No traders are being monitored at the moment 😢<br>The admin usually monitors during 22:00 ~ 02:00(KST), when many Korean traders are live on their streaming.<br>How about hanging around with Kimp page which provides Upbit / Bithumb / Binance real-time prices, chart, orderbook, ... etc?",
-    "kr": "현재 모니터링중인 트레이더가 없습니다 😢<br>보통 트레이더들이 실시간 매매를 진행하는 시간대인 22:00 ~ 02:00(KST)까지 모니터링을 진행하고 있습니다."
-  },
   "RTP_DISCLAIMER_1": {
     "en": "There could be a bit of delay for it's manually served by the admin, so cannot be guaranteed to be the latest. Don't trust if it's updated quite ago. Just have some fun and never make your trade based on this.",
     "kr": "운영자가 각 방송을 모니터링하며 입력하므로 약간의 지연이 있을 수 있으며, 최신정보임을 보장할 수 없습니다. 업데이트된지 오래된 경우 신뢰하지 마십시오. 어떤 경우이든 재미로만 보시고, 호반꿀이든 짭반꿀이든 절대로 타인의 매매를 참고하여 매매하지 마십시오."

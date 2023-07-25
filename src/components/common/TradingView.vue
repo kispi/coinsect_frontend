@@ -39,7 +39,7 @@ export default {
         toolbar_bg: '#f1f3f6',
         enable_publishing: false,
         allow_symbol_change: true,
-        hide_side_toolbar: false,
+        hide_side_toolbar: !store.getters.settings.chartTool,
         container_id: `tradingview_upbit_${props.symbol}`,
       })
     }
@@ -47,6 +47,7 @@ export default {
     watch([
       () => store.getters.settings.theme,
       () => store.getters.settings.locale,
+      () => store.getters.settings.chartTool,
       () => props.symbol,
       () => props.interval,
     ],

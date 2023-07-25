@@ -52,8 +52,8 @@ export default {
     }, {
       key: 'THEME',
       values: [
-        { title: 'UPBIT', value: 'light' },
-        { title: 'BYBIT', value: 'dark' },
+        { title: '☀️ LIGHT', value: 'light' },
+        { title: '🌙 DARK', value: 'dark' },
       ].map(o => ({ ...o, $$selected: store.getters.settings.theme === o.value })),
     }, {
       key: 'CHART_FULL_WIDTH',
@@ -62,11 +62,11 @@ export default {
         { title: 'OFF', value: false },
       ].map(o => ({ ...o, $$selected: store.getters.settings.chartFullWidth === o.value })),
     }, {
-      key: 'TRADINGVIEW',
+      key: 'CHART_TOOL',
       values: [
         { title: 'ON', value: true },
         { title: 'OFF', value: false },
-      ].map(o => ({ ...o, $$selected: store.getters.settings.tradingview === o.value })),
+      ].map(o => ({ ...o, $$selected: store.getters.settings.chartTool === o.value })),
     }, {
       key: 'FILTER',
       values: [
@@ -82,11 +82,6 @@ export default {
     }].filter((_, idx) => props.indices.length === 0 || props.indices.includes(idx)))
 
     const onClickValue = (key, setting) => {
-      if (key === 'TRADINGVIEW') {
-        store.commit('setSettings', { tradingview: setting.value })
-        return
-      }
-
       const o = {}
       o[plugins.$helpers.template.case.toCamel(key.toLowerCase())] = setting.value
       store.commit('setSettings', o)

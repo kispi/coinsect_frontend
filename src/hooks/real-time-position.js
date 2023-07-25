@@ -29,24 +29,17 @@ const useRealTimePosition = () => {
   const positions = computed(() => {
     const editable = []
     const nonEditable = []
-    const tracked = []
-    const nonTracked = []
     store.getters.realTimePositions.data.forEach(o => {
       if (o.editable) editable.push(o)
       else nonEditable.push(o)
-
-      if (o.tracking) tracked.push(o)
-      else nonTracked.push(o)
     })
 
-    const arrays = [editable, nonEditable, tracked, nonTracked]
+    const arrays = [editable, nonEditable]
     arrays.forEach(arr => arr.sort(sorter))
 
     return {
       editable,
       nonEditable,
-      tracked,
-      nonTracked
     }
   })
 
