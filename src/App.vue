@@ -4,8 +4,8 @@
     <AppNavigation/>
     <div class="router-view-container w-100">
       <AppAd class="m-b-16"/>
-      <MultiCharts v-if="prepared" class="m-b-24"/>
-      <div class="favorite-routes m-b-24">
+      <MultiCharts v-if="prepared" class="m-b-16"/>
+      <div class="favorite-routes m-b-16">
         <RouterLink
           :class="{'selected': route.path === $route.path}"
           :to="route.path"
@@ -13,7 +13,7 @@
           v-for="route in favoriteRoutes">
           <AppImg v-if="route.img" :src="route.img" :fit="'contain'"/>
           <span v-if="route.emoji" class="emoji">{{ route.emoji }}</span>
-          {{ $translate(route.title) }}
+          <span class="route-title">{{ $translate(route.title) }}</span>
         </RouterLink>
       </div>
       <RouterView
@@ -145,7 +145,6 @@ export default {
   border-bottom: 1px solid var(--border-base);
 
   a {
-    color: var(--text-light);
     padding: 8px;
     display: flex;
     justify-content: center;
@@ -157,6 +156,12 @@ export default {
     &.selected {
       color: var(--text-stress);
       font-weight: 700;
+    }
+
+    &:not(.selected) {
+      .route-title {
+        opacity: 0.9;
+      }
     }
 
     .emoji,

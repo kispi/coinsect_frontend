@@ -121,6 +121,8 @@ export default {
     const onPaste = e => {
       plugins.$helpers.logic.onPasteClipboardImage(e, resultUrl => {
         url.value = resultUrl
+        if (!url.value) return
+
         onUploadFile({
           src: resultUrl,
           url: resultUrl,
