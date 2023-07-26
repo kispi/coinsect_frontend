@@ -5,6 +5,17 @@
     <div class="router-view-container w-100">
       <AppAd class="m-b-16"/>
       <MultiCharts v-if="prepared" class="m-b-24"/>
+      <div class="favorite-routes m-b-24">
+        <RouterLink
+          :class="{'selected': route.path === $route.path}"
+          :to="route.path"
+          :key="route.path"
+          v-for="route in favoriteRoutes">
+          <AppImg v-if="route.img" :src="route.img" :fit="'contain'"/>
+          <span v-if="route.emoji" class="emoji">{{ route.emoji }}</span>
+          {{ $translate(route.title) }}
+        </RouterLink>
+      </div>
       <RouterView
         v-if="$store.getters.isSSR || prepared"
         v-slot="{ Component, route }">
@@ -17,7 +28,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
+import { ref, onMounted, onUnmounted, defineAsyncComponent, computed } from 'vue'
 import helpers from './helpers'
 import useGlobalHooks from './hooks/global-hooks'
 
@@ -42,6 +53,18 @@ export default {
 
       store.commit('setScrollTop', scrollTop)
     }
+
+    const favoriteRoutes = computed(() => {
+      const base = [
+        { title: 'NEWS', path: '/contents/news', emoji: '📰' },
+        { title: 'ECONOMIC_CALENDAR', path: '/contents/economic-calendar', img: 'https://d1085v6s0hknp1.cloudfront.net/assets/icon-investing.jpg' },
+        { title: 'CRYPTO', path: '/markets/crypto', emoji: '₿' },
+        { title: 'NASDAQ', path: '/markets/nasdaq', img: 'https://yt3.googleusercontent.com/ytc/AGIKgqMZKdfkx5yIMjtGEuX6jPQA_NIqwwbpfq1MdhRDNw=s900-c-k-c0x00ffffff-no-rj' },
+      ]
+      if (!store.getters.isMobile) base.push({ title: 'KOSPI', path: '/markets/kospi', img: 'https://www.samsung.com/sec/static/etc/designs/smg/global/imgs/logo-square-letter.png' })
+
+      return base
+    })
 
     const prepare = async () => {
       try {
@@ -74,6 +97,7 @@ export default {
 
     return {
       prepared,
+      favoriteRoutes,
     }
   },
 }
@@ -111,5 +135,49 @@ export default {
   flex: 1;
   position: relative;
   z-index: 0;
+}
+
+.favorite-routes {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-base);
+  border-bottom: 1px solid var(--border-base);
+
+  a {
+    color: var(--text-light);
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    flex: 1;
+
+    &:hover,
+    &.selected {
+      color: var(--text-stress);
+      font-weight: 700;
+    }
+
+    .emoji,
+    .app-img {
+      width: 24px;
+      margin-right: 8px;
+      border-radius: 50%;
+    }
+  }
+
+  @media (max-width: 479px) {
+    a {
+      font-size: 12px;
+      flex: initial;
+
+      .emoji,
+      .app-img {
+        width: 16px;
+        margin-right: 4px;
+      }
+    }
+  }
 }
 </style>

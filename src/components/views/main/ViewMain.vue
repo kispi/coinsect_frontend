@@ -41,7 +41,7 @@
         <div class="grid">
           <WhaleAlertItem
             :whaleAlert="whaleAlert"
-            :key="whaleAlert"
+            :key="whaleAlert.hash"
             v-for="whaleAlert in dashboards.whaleAlerts.data"
           />
         </div>
