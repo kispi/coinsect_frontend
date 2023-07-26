@@ -1,7 +1,7 @@
 <template>
   <div class="view-community">
     <CommunityHeader :withWriteButton="true"/>
-    <template v-if="$store.getters.post">
+    <template v-if="post">
       <CPost/>
       <CommunityButtons/>
     </template>
@@ -21,16 +21,18 @@ export default {
 
     const sharingKey = computed(() => router.currentRoute.value.params.sharingKey)
 
+    const post = computed(() => store.getters.post)
+
     const loadPost = async () => {
       if (!sharingKey.value) return
 
       try {
-        if ((store.getters.post || {}).sharingKey !== router.currentRoute.value.params.sharingKey) {
+        if ((post.value || {}).sharingKey !== router.currentRoute.value.params.sharingKey) {
           await store.dispatch('loadPost', sharingKey.value)
         }
-        plugins.$helpers.meta.setDocumentTitle(store.getters.post.title)
-        plugins.$helpers.meta.renderDescription(store.getters.post.content)
-        const firstImage = (plugins.$helpers.logic.retrieveImagesFromHTML(store.getters.post.content) || [])[0]
+        plugins.$helpers.meta.setDocumentTitle(post.value.title)
+        plugins.$helpers.meta.renderDescription(post.value.content)
+        const firstImage = (post.value.$$images || [])[0] || post.value.$$thumbnail
         if (firstImage) plugins.$helpers.meta.renderOgImage(firstImage)
       } catch (e) {
         plugins.$toast.error('존재하지 않는 게시글입니다')
@@ -43,6 +45,10 @@ export default {
     onMounted(loadPost)
 
     onUnmounted(() => store.commit('setPost', null))
+
+    return {
+      post,
+    }
   },
 }
 </script>

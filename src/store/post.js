@@ -53,6 +53,7 @@ const post = {
       try {
         commit('setLoading', { post: true })
         const data = await communityService.post.detail(sharingKey)
+        await helpers.post.populateRenderablePost(data)
         commit('setPost', data)
       } catch (e) {
         return Promise.reject(e)
