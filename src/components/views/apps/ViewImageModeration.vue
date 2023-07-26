@@ -18,17 +18,25 @@
         @upload-file="onUploadFile"
         :path="'rekognition'"
         :resize="{ above: 1, width: 1920 }"
-        :useURL="true"
         class="overlay"
       />
       <div
         v-if="url"
         class="image-remover center"
-        @click="() => {
-          data = null
-          url = null
-        }">
+        @click="reset">
         <i class="fal fa-times"/>
+      </div>
+    </div>
+    <div class="custom-url">
+      <div class="input-wrapper">
+        <i @click="onEnter" class="fal fa-search m-r-16"/>
+        <input
+          v-model="url"
+          @keydown="onEnter"
+          @paste="onPaste"
+          placeholder="이미지 링크 또는 클립보드 이미지 붙여넣기"
+        />
+        <i v-if="url" @click="reset" class="fal fa-times m-l-16"/>
       </div>
     </div>
     <div
@@ -89,6 +97,11 @@ export default {
 
     const testing = ref(null)
 
+    const reset = () => {
+      url.value = null
+      data.value = null
+    }
+
     const isGraphic = row => {
       if (row.Confidence < 90) return
 
@@ -104,6 +117,31 @@ export default {
       { name: '음주', src: `${process.env.VUE_APP_CDN}/chat/8e246c16-d9de-48fb-a516-f2d92e1ed48f_20220827_223728.jpg` },
       { name: '포스트 말론 & 도자 캣', src: 'https://stack.com.au/wp-content/uploads/2022/07/postmalonedoja.jpg' },
     ])
+
+    const onPaste = e => {
+      plugins.$helpers.logic.onPasteClipboardImage(e, resultUrl => {
+        url.value = resultUrl
+        onUploadFile({
+          src: resultUrl,
+          url: resultUrl,
+        })
+      })
+
+      setTimeout(() => {
+        if (e.target.value) {
+          url.value = e.target.value
+          onUploadFile({ src: url.value, url: url.value })
+        }
+      })
+    }
+
+    const onEnter = e => {
+      setTimeout(() => {
+        url.value = e.target.value
+
+        if (e.key === 'Enter') onUploadFile({ src: url.value, url: url.value })
+      })
+    }
 
     const onUploadFile = async e => {
       url.value = e.url
@@ -128,9 +166,12 @@ export default {
       data,
       testing,
       testset,
+      reset,
       onUploadFile,
       onClickImage,
       isGraphic,
+      onEnter,
+      onPaste,
     }
   },
 }
@@ -150,7 +191,7 @@ export default {
 
   .container {
     position: relative;
-    padding-top: 66%;
+    padding-top: 56.25%;
 
     .app-img {
       border: 1px solid var(--border-base);
@@ -200,6 +241,22 @@ export default {
         .app-img {
           filter: blur(8px);
         }
+      }
+    }
+  }
+
+  .custom-url {
+    margin-top: 16px;
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 24px;
+
+      i {
+        font-size: 16px;
+        cursor: pointer;
       }
     }
   }

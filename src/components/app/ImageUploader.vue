@@ -24,22 +24,6 @@
         >
       </div>
     </div>
-    <div
-      v-if="useURL"
-      class="custom-url">
-      <div class="input-wrapper">
-        <i
-          @click="onEnter"
-          class="fal fa-search m-r-16"/>
-        <input
-          v-model="customURL"
-          @keydown.enter="onEnter"
-          @paste="onEnter"
-          placeholder="이미지 링크 붙여넣기"
-        />
-        <i v-if="customURL" @click="customURL = null" class="fal fa-times m-l-16"/>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -63,7 +47,6 @@ export default {
         above: null,
       },
     },
-    useURL: Boolean,
   },
   setup(props, { emit }) {
     const { plugins } = useGlobalHooks()
@@ -71,19 +54,6 @@ export default {
     const dragging = ref(null)
 
     const processing = ref(null)
-
-    const customURL = ref(null)
-
-    const onEnter = e => {
-      setTimeout(() => {
-        customURL.value = e.target.value
-
-        emit('upload-file', {
-          src: customURL.value,
-          url: customURL.value,
-        })
-      })
-    }
 
     const shouldResize = originalFile =>
       props.resize.width &&
@@ -135,12 +105,10 @@ export default {
     }
 
     return {
-      onDrop,
-      onChangeFile,
       dragging,
       processing,
-      customURL,
-      onEnter,
+      onDrop,
+      onChangeFile,
     }
   },
 }
@@ -194,21 +162,6 @@ export default {
   .loader-container {
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
-  }
-}
-
-.custom-url {
-  .input-wrapper {
-    display: flex;
-    align-items: center;
-    padding: 8px 16px;
-    border-radius: 24px;
-    margin-top: 16px;
-
-    i {
-      font-size: 16px;
-      cursor: pointer;
-    }
   }
 }
 </style>
