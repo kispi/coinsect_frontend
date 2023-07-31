@@ -1,16 +1,21 @@
 <template>
   <div class="view-main">
-    <a
+    <div
       v-if="news"
-      @click.prevent="() => {
-        $store.commit('setSettings', { newsProvider: 'cobak_feed' })
-        $router.push('/contents/news')
-      }"
-      class="latest-news m-b-8"
-      href="/contents/news">
-      <div class="timestamp">{{ $helpers.dayjs((news[0] || {}).updated_time).format('HH:mm') }}</div>
-      <div class="title lines-1">{{ (news[0] || {}).title }}</div>
-    </a>
+      class="section-news m-b-8">
+      <a
+        @click.prevent="() => {
+          $store.commit('setSettings', { newsProvider: 'cobak_feed' })
+          $router.push('/contents/news')
+        }"
+        class="item-news lines-1"
+        href="/contents/news"
+        :key="item.id"
+        v-for="item in news">
+        <div class="timestamp">{{ $helpers.dayjs((item || {}).updated_time).format('HH:mm') }}</div>
+        <div class="title lines-1">{{ (item || {}).title }}</div>
+      </a>
+    </div>
     <div
       v-if="dashboards"
       class="grid main">
@@ -87,7 +92,14 @@ export default {
 
     const dashboards = computed(() => store.getters.dashboardsMain)
 
-    const news = computed(() => ((dashboards.value || {}).news || {}).breaking_news_list)
+    const news = computed(() => {
+      const arr = ((dashboards.value || {}).news || {}).breaking_news_list || []
+      const w = store.getters.windowInnerWidth
+      if (w >= 1200) return arr.slice(0, 4)
+      if (w >= 992) return arr.slice(0, 3)
+      if (w >= 480) return arr.slice(0, 2)
+      return arr.slice(0, 1)
+    })
 
     const timeout = ref(null)
 
@@ -147,24 +159,32 @@ export default {
 
 <style lang="scss">
 .view-main {
-  .latest-news {
-    padding: 8px;
-    background: var(--background-light);
+  .section-news {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
+    gap: 8px;
 
-    .timestamp {
+    .item-news {
+      padding: 8px;
       background: var(--background-light);
-      padding: 0 4px;
-      white-space: nowrap;
-    }
+      display: flex;
+      font-size: 12px;
+      flex: 1 1 0;
 
-    .title {
-      color: var(--text-stress);
-      font-weight: 700;
-      margin-left: 8px;
+      .timestamp {
+        background: var(--background-light);
+        padding: 0 4px;
+        white-space: nowrap;
+      }
+
+      .title {
+        color: var(--text-stress);
+        font-weight: 700;
+        margin-left: 8px;
+      }
+
+      &:hover {
+        background: var(--border-light);
+      }
     }
   }
 
