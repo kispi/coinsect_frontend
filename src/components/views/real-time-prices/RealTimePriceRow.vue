@@ -221,6 +221,7 @@ export default {
       .symbol {
         font-weight: 300;
         margin: 0 8px;
+        white-space: nowrap;
       }
 
       .exchange-logo {

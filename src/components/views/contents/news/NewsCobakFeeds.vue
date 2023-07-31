@@ -10,7 +10,7 @@
         :key="feed.id"
         v-for="feed in data">
         <div class="feed-header">
-          <div class="feed-publish-at" v-html="$helpers.dayjs(feed.updated_time).format('YYYY-MM-DD HH:mm:ss')"/>
+          <div class="feed-publish-at" v-html="$helpers.dayjs(feed.updated_time).format('YYYY-MM-DD HH:mm')"/>
           <div class="feed-title" v-html="feed.title"/>
         </div>
         <div class="feed-content lines-1" v-html="feed.contents"/>

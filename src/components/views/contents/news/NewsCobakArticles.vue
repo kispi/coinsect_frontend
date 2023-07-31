@@ -26,7 +26,7 @@
           <div class="article-body">
             <div class="article-header">
               <div class="flex-row items-center m-b-8">
-                <div class="article-publish-at flex-wrap" v-html="$helpers.dayjs(article.updated_time).format('YYYY-MM-DD HH:mm:ss')"/>
+                <div class="article-publish-at flex-wrap" v-html="$helpers.dayjs(article.updated_time).format('YYYY-MM-DD HH:mm')"/>
                 <div
                   v-if="article.user"
                   class="article-source m-l-8"

@@ -1,5 +1,16 @@
 <template>
   <div class="view-main">
+    <a
+      v-if="news"
+      @click.prevent="() => {
+        $store.commit('setSettings', { newsProvider: 'cobak_feed' })
+        $router.push('/contents/news')
+      }"
+      class="latest-news m-b-8"
+      href="/contents/news">
+      <div class="timestamp">{{ $helpers.dayjs((news[0] || {}).updated_time).format('HH:mm') }}</div>
+      <div class="title lines-1">{{ (news[0] || {}).title }}</div>
+    </a>
     <div
       v-if="dashboards"
       class="grid main">
@@ -76,6 +87,8 @@ export default {
 
     const dashboards = computed(() => store.getters.dashboardsMain)
 
+    const news = computed(() => ((dashboards.value || {}).news || {}).breaking_news_list)
+
     const timeout = ref(null)
 
     const titleBitmexLeaderboard = computed(() => {
@@ -125,6 +138,7 @@ export default {
 
     return {
       dashboards,
+      news,
       titleBitmexLeaderboard,
     }
   },
@@ -133,6 +147,27 @@ export default {
 
 <style lang="scss">
 .view-main {
+  .latest-news {
+    padding: 8px;
+    background: var(--background-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+
+    .timestamp {
+      background: var(--background-light);
+      padding: 0 4px;
+      white-space: nowrap;
+    }
+
+    .title {
+      color: var(--text-stress);
+      font-weight: 700;
+      margin-left: 8px;
+    }
+  }
+
   .grid {
     display: grid;
     gap: 8px;

@@ -52,10 +52,10 @@ const template = {
   prettyTime: (timestamp, simple) => {
     if (simple) {
       const isToday = dayjs(timestamp).format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')
-      return dayjs(timestamp).format(isToday ? 'HH:mm:ss' : 'YYYY-MM-DD')
+      return dayjs(timestamp).format(isToday ? 'HH:mm' : 'YYYY-MM-DD')
     }
 
-    return dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')
+    return dayjs(timestamp).format('YYYY-MM-DD HH:mm')
   },
   priceColor: value => {
     if (value > 0) return 'c-price-up'
