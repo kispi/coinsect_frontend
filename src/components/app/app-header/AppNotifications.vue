@@ -74,7 +74,7 @@ export default {
   }
 
   .notification-item {
-    padding: 12px 16px 12px 8px;
+    padding: 12px 16px;
     user-select: none;
 
     .notification-text {

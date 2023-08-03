@@ -97,7 +97,7 @@ export default {
 
     &:hover {
       text-decoration: underline;
-      background: var(--border-base);
+      background: var(--background-light);
     }
   }
 

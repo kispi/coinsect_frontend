@@ -69,7 +69,7 @@ export default {
     const contacts = [{
       key: 'kakao',
       img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw',
-      link: 'https://open.kakao.com/o/sFKflMte',
+      link: 'https://open.kakao.com/me/coinsect',
     }, {
       key: 'telegram',
       img: 'https://play-lh.googleusercontent.com/ZU9cSsyIJZo6Oy7HTHiEPwZg0m2Crep-d5ZrfajqtsH-qgUXSqKpNA2FpPDTn-7qA5Q=w240-h480-rw',
@@ -133,14 +133,14 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      opacity: 0.75;
+      transition: all 0.3s ease-in-out;
 
       &:not(:last-child) {
         margin-right: 8px;
       }
 
       &:hover {
-        opacity: 1;
+        transform: scale(1.05);
       }
     }
   }

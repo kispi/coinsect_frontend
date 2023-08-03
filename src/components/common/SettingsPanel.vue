@@ -52,8 +52,8 @@ export default {
     }, {
       key: 'THEME',
       values: [
-        { title: '☀️ LIGHT', value: 'light' },
-        { title: '🌙 DARK', value: 'dark' },
+        { title: '☀️', value: 'light' },
+        { title: '🌙', value: 'dark' },
       ].map(o => ({ ...o, $$selected: store.getters.settings.theme === o.value })),
     }, {
       key: 'CHART_FULL_WIDTH',
@@ -142,12 +142,13 @@ export default {
         align-items: center;
         justify-content: center;
         padding: 4px;
-        cursor: pointer;
         flex: 1;
         transition: none;
+        white-space: nowrap;
+        cursor: pointer;
 
         &:hover {
-          background: var(--brand-primary-hover-bg);
+          background: var(--background-light);
         }
 
         &.active {

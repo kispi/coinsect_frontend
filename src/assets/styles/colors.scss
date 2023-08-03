@@ -16,7 +16,7 @@
   --gs-bybit:            #17181e;
   --text-bybit:          rgba(255, 255, 255, 0.9);
   --success:             var(--price-up-bybit);
-  --warning:             var(--bitcoin);
+  --warning:             rgb(255, 108, 71, 1);
   --danger:              rgba(255, 32, 32, 1);
   --price-up-upbit:      #d60000;
   --price-down-upbit:    #0051c7;
@@ -41,7 +41,7 @@
   --border-base:         var(--gs-e0);
   --border-light:        rgba(0, 0, 0, 0.25);
   --background-base:     var(--white);
-  --background-light:    rgba(0, 0, 0, 0.1);
+  --background-light:    rgba(0, 0, 0, 0.05);
   --price-up:            var(--price-up-upbit);
   --price-down:          var(--price-down-upbit);
   --price-up-bg:         var(--price-up-upbit-bg);
@@ -55,7 +55,7 @@
     --border-base:       var(--gs-44);
     --border-light:      rgba(255, 255, 255, 0.25);
     --background-base:   var(--gs-bybit);
-    --background-light:  rgba(255, 255, 255, 0.1);
+    --background-light:  rgba(255, 255, 255, 0.05);
 
     --price-up:          var(--price-up-bybit);
     --price-down:        var(--price-down-bybit);

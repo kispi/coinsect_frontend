@@ -167,7 +167,7 @@ export default {
   }
 
   &:hover {
-    background: var(--text-light);
+    background: var(--border-base);
   }
 
   @media (min-width: 480px) {

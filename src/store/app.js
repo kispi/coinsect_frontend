@@ -190,8 +190,9 @@ const app = {
     },
   },
   actions: {
-    async loadNotifications({ commit }) {
-      const o = helpers.qb().sort('id').order('desc')
+    async loadNotifications({ commit }, page) {
+      const limit = 10
+      const o = helpers.qb().sort('id').order('desc').limit(limit).offset((page || 0) * limit)
 
       try {
         const data = await $http.get('notifications', { params: o.build() })

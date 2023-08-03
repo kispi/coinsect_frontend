@@ -9,6 +9,7 @@
           $router.push('/contents/news')
         }"
         class="item-news lines-1"
+        :class="{'best': item.is_best}"
         href="/contents/news"
         :key="item.id"
         v-for="item in news">
@@ -171,8 +172,10 @@ export default {
       flex: 1 1 0;
 
       .timestamp {
+        border: 1px solid var(--background-light);
+        border-radius: 16px;
         background: var(--background-light);
-        padding: 0 4px;
+        padding: 0 8px;
         white-space: nowrap;
       }
 
@@ -184,6 +187,17 @@ export default {
 
       &:hover {
         background: var(--border-light);
+      }
+
+      &.best {
+        .title {
+          color: var(--warning);
+        }
+
+        .timestamp {
+          background: var(--warning);
+          color: var(--white);
+        }
       }
     }
   }

@@ -83,7 +83,7 @@
 
   &:not(.disabled):not(:disabled) {
     &:hover {
-      border: 1px solid var(--text-stress);
+      border: 1px solid var(--border-light);
     }
   }
 }
