@@ -10,7 +10,7 @@ const indicators = [{
     image: withCdn('og-images/og-image-leaderboard.png'),
   },
 }, {
-  path: '/indicators/real-time-positions',
+  path: '/indicators/positions',
   component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewIndicators'),
   meta: {
     title: '실시간 포지션 - 코인충',

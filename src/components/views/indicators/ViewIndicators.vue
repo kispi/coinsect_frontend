@@ -21,7 +21,7 @@ export default {
     const selectedComponent = computed(() => {
       const p = router.currentRoute.value.path
       if (p === '/indicators/leaderboard') return 'ViewLeaderboard'
-      if (p === '/indicators/real-time-positions') return 'ViewRealTimePositions'
+      if (p === '/indicators/positions') return 'ViewRealTimePositions'
       if (p === '/indicators/richlist') return 'ViewRichlist'
       if (p === '/indicators/whale-alert') return 'ViewWhaleAlert'
     })

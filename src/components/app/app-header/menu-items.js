@@ -18,7 +18,7 @@ const useMenuItems = () => {
     title: 'INDICATORS',
     pathPrefix: '/indicators/',
     subItems: [
-      { path: '/indicators/real-time-positions', title: 'REAL_TIME_POSITIONS', img: 'https://d1085v6s0hknp1.cloudfront.net/assets/icon-jg.jpg' },
+      { path: '/indicators/positions', title: 'REAL_TIME_POSITIONS', img: 'https://d1085v6s0hknp1.cloudfront.net/assets/icon-jg.jpg' },
       { path: '/indicators/leaderboard', title: 'BITMEX_LEADERBOARD', img: 'https://d1085v6s0hknp1.cloudfront.net/images/exchanges/BITMEX.png' },
       { path: '/indicators/whale-alert', title: 'WHALE_ALERT', img: 'https://d1085v6s0hknp1.cloudfront.net/assets/icon-whalealert.jpg' },
       { path: '/indicators/richlist', title: 'RICHLIST', emoji: '🐳' },

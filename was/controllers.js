@@ -1,5 +1,11 @@
 const { useApp } = require('./helpers')
+const { log } = require('./logger')
 const useHtmlRenderer = require('./html-renderer')
+
+// Google SEO가 어느정도 완료되기 전까지는 유지해준다.
+const movedPermanently = [
+  { before: '/indicators/real-time-positions', after: '/indicators/positions' },
+]
 
 /*
   클라이언트 라우트에 정의된 route들 중에 현재 SSR로 요청된 path와 매치되는 route를 찾음.
@@ -31,6 +37,13 @@ const handleSSRRequest = async (req, res) => {
   })
   await router.push(req.url)
   await router.isReady()
+
+  const isMovedPath = movedPermanently.find(route => route.before === req.path)
+  if (isMovedPath) {
+    log.info(`handleSSRRequest: request to the path that is moved permanently(${req.path})`)
+    return res.redirect(301, isMovedPath.after)
+  }
+
   const matched = matchingRoute(router.options.routes, req.path)
   if (!matched) res.status(404)
 
