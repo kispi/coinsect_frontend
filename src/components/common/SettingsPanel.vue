@@ -135,6 +135,7 @@ export default {
 
     .values {
       display: flex;
+      gap: 8px;
       flex: 1;
 
       .value {
@@ -152,7 +153,7 @@ export default {
         }
 
         &.active {
-          color: var(--brand-primary);
+          background: var(--background-light);
           font-weight: 700;
         }
       }

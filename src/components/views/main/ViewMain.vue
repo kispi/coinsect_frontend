@@ -1,227 +1,27 @@
 <template>
-  <div class="view-main">
-    <div
-      v-if="news"
-      class="section-news m-b-8">
-      <a
-        @click.prevent="() => {
-          $store.commit('setSettings', { newsProvider: 'cobak_feed' })
-          $router.push('/contents/news')
-        }"
-        class="item-news lines-1"
-        :class="{'best': item.is_best}"
-        href="/contents/news"
-        :key="item.id"
-        v-for="item in news">
-        <div class="timestamp">{{ $helpers.dayjs((item || {}).updated_time).format('HH:mm') }}</div>
-        <div class="title lines-1">{{ (item || {}).title }}</div>
-      </a>
-    </div>
-    <div
-      v-if="dashboards"
-      class="grid main">
-      <MainSection
-        :title="'COMMUNITY'"
-        :link="'/community'"
-        :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
-        <RecentPosts v-if="$store.getters.boards"/>
-      </MainSection>
-      <MainSection
-        :title="'KIMP'"
-        :link="'/prices'"
-        :image="require('@/assets/images/binance.svg')">
-        <RealTimePriceCards :symbols="['BTC', 'ETH', 'XRP', 'ADA', 'DOGE', 'SOL', 'LTC', 'TRX', 'BCH']"/>
-      </MainSection>
-      <MainSection
-        :title="'REAL_TIME_POSITIONS'"
-        :link="'/indicators/positions'"
-        :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-jg.jpg'"
-        :tooltip="'TOOLTIP_REAL_TIME_POSITIONS'">
-        <div class="grid">
-          <CPosition
-            :position="position"
-            :key="position.name"
-            v-for="position in dashboards.realTimePositions.data"
-          />
-        </div>
-      </MainSection>
-      <MainSection
-        :title="titleBitmexLeaderboard"
-        :link="'/indicators/leaderboard'"
-        :image="'https://d1085v6s0hknp1.cloudfront.net/images/exchanges/BITMEX.png'">
-        <BitmexSimple :leaderboards="dashboards.leaderboards"/>
-      </MainSection>
-      <MainSection
-        :title="'WHALE_ALERT'"
-        :link="'/indicators/whale-alert'"
-        :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-whalealert.jpg'">
-        <div class="grid">
-          <WhaleAlertItem
-            :whaleAlert="whaleAlert"
-            :key="whaleAlert.hash"
-            v-for="whaleAlert in dashboards.whaleAlerts.data"
-          />
-        </div>
-      </MainSection>
-      <MainSection
-        :title="'광고'"
-        :image="'https://d1085v6s0hknp1.cloudfront.net/assets/logo.png'">
-        <AdSense :dataAdSlot="'8789268236'" style="min-height: 280px;" :responsive="true" class="m-t-8"/>
-      </MainSection>
-    </div>
-  </div>
+  <DashboardsMain class="view-main" v-if="prepared"/>
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import useGlobalHooks from '@/hooks/global-hooks'
-import BitmexSimple from './BitmexSimple'
-import MainSection from './MainSection'
-import RecentPosts from '../RecentPosts'
-import RealTimePriceCards from '@/components/views/real-time-prices/RealTimePriceCards'
-import useRealTimePosition from '@/hooks/real-time-position'
+import { onMounted, onUnmounted, ref } from 'vue'
+import DashboardsMain from './DashboardsMain'
 import useLazyLoads from '@/lazy-loads'
 
 export default {
-  components: { BitmexSimple, MainSection, RecentPosts, RealTimePriceCards },
+  components: { DashboardsMain },
   setup() {
-    const { plugins, store } = useGlobalHooks()
-
-    const { openWebsocket, sorter } = useRealTimePosition()
-
     const { loadToastUIEditor } = useLazyLoads()
 
-    const dashboards = computed(() => store.getters.dashboardsMain)
-
-    const news = computed(() => {
-      const arr = ((dashboards.value || {}).news || {}).breaking_news_list || []
-      const w = store.getters.windowInnerWidth
-      if (w >= 1200) return arr.slice(0, 4)
-      if (w >= 992) return arr.slice(0, 3)
-      if (w >= 480) return arr.slice(0, 2)
-      return arr.slice(0, 1)
-    })
-
-    const timeout = ref(null)
-
-    const titleBitmexLeaderboard = computed(() => {
-      const items = (dashboards.value || {}).leaderboards
-      if (!items) return ''
-
-      const positions = { long: 0, short: 0 }
-      items.forEach(o => {
-        if (o.side === 'Long') positions.long += 1
-        if (o.side === 'Short') positions.short += 1
-      })
-      return `
-        ${plugins.$translate('BITMEX_LEADERBOARD')}
-        (<span class="c-price-up"><i class="fal fa-arrow-trend-up m-r-4"></i>${positions.long}</span>
-        <span class="c-price-down"><i class="fal fa-arrow-trend-down m-r-4"></i>${positions.short}</span>)
-      `
-    })
-
-    const initDashboards = async () => {
-      try {
-        await store.dispatch('loadDashboardsMain')
-
-        // 이하는 SSR에서는 실행하지 않음
-        if (store.getters.isSSR) return
-
-        dashboards.value.realTimePositions.data.sort(sorter)
-        store.commit('setRealTimePositions', dashboards.value.realTimePositions)
-        openWebsocket()
-        timeout.value = setTimeout(initDashboards, 1000 * 60)
-      } catch (e) {
-        plugins.$toast.error(e.data.message)
-      }
-    }
+    const prepared = ref(true)
 
     onMounted(() => {
-      initDashboards()
-
       // 여기서 미리 로드해둬야 글쓰기를 눌렀을 때 빠르게 로드됨
       loadToastUIEditor()
     })
 
-    onUnmounted(() => {
-      if (store.getters.isSSR) return
-
-      clearTimeout(timeout.value)
-    })
-
     return {
-      dashboards,
-      news,
-      titleBitmexLeaderboard,
+      prepared,
     }
   },
 }
 </script>
-
-<style lang="scss">
-.view-main {
-  .section-news {
-    display: flex;
-    gap: 8px;
-
-    .item-news {
-      padding: 8px;
-      background: var(--background-light);
-      display: flex;
-      font-size: 12px;
-      flex: 1 1 0;
-
-      .timestamp {
-        border: 1px solid var(--background-light);
-        border-radius: 16px;
-        background: var(--background-light);
-        padding: 0 8px;
-        white-space: nowrap;
-      }
-
-      .title {
-        color: var(--text-stress);
-        font-weight: 700;
-        margin-left: 8px;
-      }
-
-      &:hover {
-        background: var(--border-light);
-      }
-
-      &.best {
-        .title {
-          color: var(--warning);
-        }
-
-        .timestamp {
-          background: var(--warning);
-          color: var(--white);
-        }
-      }
-    }
-  }
-
-  .grid {
-    display: grid;
-    gap: 8px;
-
-    &.main {
-      gap: 16px;
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 768px) {
-    .grid.main {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 1200px) {
-    .grid.main {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-}
-</style>
