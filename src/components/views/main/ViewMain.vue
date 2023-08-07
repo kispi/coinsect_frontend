@@ -1,5 +1,5 @@
 <template>
-  <DashboardsMain class="view-main" v-if="prepared"/>
+  <DashboardsMain v-if="prepared" class="view-main"/>
 </template>
 
 <script>
@@ -14,9 +14,19 @@ export default {
 
     const prepared = ref(true)
 
+    const onVisibilityChange = () => {
+      prepared.value = document.visibilityState === 'visible'
+    }
+
     onMounted(() => {
       // 여기서 미리 로드해둬야 글쓰기를 눌렀을 때 빠르게 로드됨
       loadToastUIEditor()
+
+      document.addEventListener('visibilitychange', onVisibilityChange)
+    })
+
+    onUnmounted(() => {
+      document.removeEventListener('visibilitychange', onVisibilityChange)
     })
 
     return {
