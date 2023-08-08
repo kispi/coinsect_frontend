@@ -126,6 +126,7 @@ const useRealTimePosition = () => {
   )
 
   return {
+    connection,
     positions,
     sorter,
     openWebsocket,

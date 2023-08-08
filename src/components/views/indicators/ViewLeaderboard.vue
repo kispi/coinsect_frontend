@@ -44,6 +44,7 @@
         </tr>
       </tbody>
     </table>
+    <div v-if="(sorted || []).length === 0" class="center p-24 text-stress f-700">{{ $translate('ERROR_API_SERVER') }}</div>
     <PoweredBy
       :by="'btctools.io'"
       :link="'https://btctools.io/kr/stats/leaderboard'"

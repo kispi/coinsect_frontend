@@ -30,7 +30,10 @@
         :title="'KIMP'"
         :link="'/prices'"
         :image="require('@/assets/images/binance.svg')">
-        <RealTimePriceCards :symbols="['BTC', 'ETH', 'XRP', 'ADA', 'DOGE', 'SOL', 'LTC', 'TRX', 'BCH']"/>
+        <RealTimePriceCards
+          ref="refRealTimePriceCards"
+          :symbols="['BTC', 'ETH', 'XRP', 'ADA', 'DOGE', 'SOL', 'LTC', 'TRX', 'BCH']"
+        />
       </MainSection>
       <MainSection
         :title="'REAL_TIME_POSITIONS'"
@@ -86,7 +89,9 @@ export default {
   setup() {
     const { plugins, store } = useGlobalHooks()
 
-    const { openWebsocket, sorter } = useRealTimePosition()
+    const { connection, openWebsocket, sorter } = useRealTimePosition()
+
+    const refRealTimePriceCards = ref(null)
 
     const dashboards = computed(() => store.getters.dashboardsMain)
 
@@ -133,9 +138,7 @@ export default {
       }
     }
 
-    onMounted(() => {
-      initDashboards()
-    })
+    onMounted(initDashboards)
 
     onUnmounted(() => {
       if (store.getters.isSSR) return
@@ -144,6 +147,8 @@ export default {
     })
 
     return {
+      refRealTimePriceCards,
+      connectionRealTimePositions: connection,
       dashboards,
       news,
       titleBitmexLeaderboard,

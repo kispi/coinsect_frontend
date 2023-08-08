@@ -19,7 +19,7 @@
         <div class="badge-air">
           <span class="dot" :class="position.onAir ? 'bg-success' : 'bg-danger'"/>{{ position.onAir ? 'ON' : 'OFF' }}
         </div>
-        <div class="last-update">{{ $helpers.template.elapsedTime(position.lastUpdate) }}</div>
+        <div v-if="position.editable" class="last-update">{{ $helpers.template.elapsedTime(position.lastUpdate) }}</div>
       </div>
       <div class="dark overlay lower" v-html="position.name"/>
     </div>

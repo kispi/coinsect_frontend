@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="leaderboards"
+    v-if="(leaderboards || []).length > 0"
     class="bitmex-simple">
     <div
       class="bitmex-position"
@@ -22,6 +22,9 @@
         Weekly<div><span>{{ $helpers.template.asBTC(position.weeklyChange) }}</span> BTC</div>
       </div>
     </div>
+  </div>
+  <div v-else class="center text-stress f-700 f-16">
+    {{ $translate('ERROR_API_SERVER') }}
   </div>
 </template>
 

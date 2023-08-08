@@ -1,5 +1,4 @@
 import { $http } from '@/modules/axios'
-import helpers from '@/helpers'
 
 const dashboard = {
   state: () => ({
