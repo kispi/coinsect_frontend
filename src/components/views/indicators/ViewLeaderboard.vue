@@ -111,7 +111,11 @@ export default {
 
     onUnmounted(() => clearTimeout(timeout.value))
 
-    onServerPrefetch(() => store.dispatch('loadLeaderboard'))
+    onServerPrefetch(async () => {
+      try {
+        await store.dispatch('loadLeaderboard')
+      } catch (e) {}
+    })
 
     return {
       lastUpdate,
