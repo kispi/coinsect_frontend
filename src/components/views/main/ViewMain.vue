@@ -40,21 +40,26 @@ export default {
 
     const reload = () => {
       prepared.value = false
-      setTimeout(() => prepared.value = true, 100)
+      connected.value = false
+
+      setTimeout(() => {
+        prepared.value = true
+        connected.value = true
+      }, 100)
     }
 
     // 업비트는 connection 체크 기준에서 제외
     const checkConnection = () => {
-      connected.value =
-        ((connections.value || {}).binance || {}).readyState === 1 &&
-        // ((connections.value || {}).upbit || {}).readyState === 1 &&
+      connected.value = ((connections.value || {}).binance || {}).readyState === 1 &&
+        ((connections.value || {}).upbit || {}).readyState === 1 &&
         (refDashboardsMain.value || {}).connectionRealTimePositions.readyState === 1
-
-      if (!connected.value) reload()
     }
 
     const onVisibilityChange = () => {
-      if (document.visibilityState === 'visible') checkConnection()
+      if (document.visibilityState === 'visible') {
+        checkConnection()
+        if (!connected.value) reload()
+      }
     }
 
     onMounted(() => {
