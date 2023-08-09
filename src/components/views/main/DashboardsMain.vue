@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import BitmexSimple from './BitmexSimple'
 import MainSection from './MainSection'
@@ -104,8 +104,6 @@ export default {
       return arr.slice(0, 1)
     })
 
-    const timeout = ref(null)
-
     const titleBitmexLeaderboard = computed(() => {
       const items = (dashboards.value || {}).leaderboards
       if (!items) return ''
@@ -132,19 +130,12 @@ export default {
         dashboards.value.realTimePositions.data.sort(sorter)
         store.commit('setRealTimePositions', dashboards.value.realTimePositions)
         openWebsocket()
-        timeout.value = setTimeout(initDashboards, 1000 * 60)
       } catch (e) {
         plugins.$toast.error(e.data.message)
       }
     }
 
     onMounted(initDashboards)
-
-    onUnmounted(() => {
-      if (store.getters.isSSR) return
-
-      clearTimeout(timeout.value)
-    })
 
     return {
       refRealTimePriceCards,

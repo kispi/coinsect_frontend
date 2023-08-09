@@ -5,16 +5,16 @@
       ref="refDashboardsMain"
       class="view-main"
     />
-    <!-- <div
+    <div
       v-if="!prepared || !connected"
       class="overlay disconnected center">
       <button class="btn btn-primary" @click="reload">재접속</button>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import DashboardsMain from './DashboardsMain'
 import useLazyLoads from '@/lazy-loads'
 
@@ -28,8 +28,6 @@ export default {
     const prepared = ref(true)
 
     const connected = ref(true)
-
-    // const interv = ref(null)
 
     const connections = computed(() => {
       const realTimePriceCards = ((refDashboardsMain.value || {}).refRealTimePriceCards || {}).connection || {}
@@ -45,26 +43,30 @@ export default {
       setTimeout(() => prepared.value = true, 100)
     }
 
-    // 업비트의 경우 점검하면 요게 끊기는 경우가 있어서 connected.value의 기준을 어찌 잡아야할지 고민해봐야 할 듯...
+    // 업비트는 connection 체크 기준에서 제외
     const checkConnection = () => {
       connected.value =
         ((connections.value || {}).binance || {}).readyState === 1 &&
-        ((connections.value || {}).upbit || {}).readyState === 1 &&
+        // ((connections.value || {}).upbit || {}).readyState === 1 &&
         (refDashboardsMain.value || {}).connectionRealTimePositions.readyState === 1
 
       if (!connected.value) reload()
+    }
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') checkConnection()
     }
 
     onMounted(() => {
       // 여기서 미리 로드해둬야 글쓰기를 눌렀을 때 빠르게 로드됨
       loadToastUIEditor()
 
-      // interv.value = setInterval(checkConnection, 3000)
+      document.addEventListener('visibilitychange', onVisibilityChange)
     })
 
-    // onUnmounted(() => {
-    //   if (interv.value) clearInterval(interv.value)
-    // })
+    onUnmounted(() => {
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+    })
 
     return {
       refDashboardsMain,
