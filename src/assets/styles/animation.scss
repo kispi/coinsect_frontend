@@ -87,20 +87,6 @@
   }
 }
 
-@keyframes hover-icon {
-  0% {
-    transform: scale(1) rotate(2deg);
-  }
-
-  50% {
-    transform: scale(1) rotate(-2deg);
-  }
-
-  100% {
-    transform: scale(1) rotate(2deg);
-  }
-}
-
 @keyframes snowing {
   0% {
     opacity: 0;
@@ -128,6 +114,24 @@
 @keyframes raining {
   100% {
     transform: translate(-8px, 100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
     opacity: 0;
   }
 }

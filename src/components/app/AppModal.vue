@@ -77,7 +77,7 @@ export default {
 
       if (props.modal.resolve) props.modal.resolve(e)
 
-      store.commit('popModal', props.modal)
+      store.commit('removeModal', props.modal)
     }
 
     const closeOnMousedownBackdrop = () => {

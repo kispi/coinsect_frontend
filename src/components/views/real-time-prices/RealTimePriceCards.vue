@@ -45,11 +45,7 @@ export default {
           $$raw: true,
         })
         connected.value = true
-      } catch (e) {
-        console.error(e)
-      }
-
-      // setTimeout(() => connection.value.binance.close(), 5000)
+      } catch (e) {}
     }
 
     onMounted(init)

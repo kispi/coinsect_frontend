@@ -12,6 +12,7 @@ import number from './number'
 import post from './post'
 import querybuilder from './querybuilder'
 import withCdn from './s3'
+import snackbar from './snackbar'
 import template from './template'
 import toast from './toast'
 import tooltip from './tooltip'
@@ -53,15 +54,16 @@ const helpers = {
   modal,
   number,
   post,
+  snackbar,
   toast,
   tooltip,
   template,
   forceRefresh: () => {
-    helpers.modal.alert('필수 업데이트가 있어 60초 후 새로고침됩니다.')
+    helpers.snackbar.warning('필수 업데이트가 있어 10초 후 새로고침됩니다.')
 
     if (typeof location === 'undefined') return
 
-    setTimeout(() => location.reload(), 1000 * 60)
+    setTimeout(() => location.reload(), 1000 * 10)
   },
   withCdn,
   canSkipApiCall,

@@ -3462,13 +3462,13 @@
 //   content: "\e111";
 // }
 
-.fa-circle-info::before {
-  content: "\f05a";
-}
-
-// .fa-info-circle::before {
+// .fa-circle-info::before {
 //   content: "\f05a";
 // }
+
+.fa-info-circle::before {
+  content: "\f05a";
+}
 
 // .fa-circle-j::before {
 //   content: "\e112";

@@ -13,6 +13,7 @@ const app = {
         label: null,
       },
     },
+    snackbars: [],
     modals: [],
     tooltips: [],
     loading: {
@@ -74,6 +75,7 @@ const app = {
   }),
   getters: {
     toast: state => state.toast,
+    snackbars: state => state.snackbars,
     modals: state => state.modals,
     tooltips: state => state.tooltips,
     loading: state => state.loading,
@@ -161,14 +163,25 @@ const app = {
     setLoading(state, payload) {
       Object.keys(payload).forEach(key => state.loading[key] = payload[key])
     },
+    addSnackbar(state, snackbar) {
+      snackbar.id = helpers.logic.generateUUIDV4()
+      state.snackbars.push(snackbar)
+    },
+    removeSnackbar(state, snackbar) {
+      const idx = state.snackbars.findIndex(s => s.id === snackbar.id)
+      if (idx >= 0) state.snackbars.splice(idx, 1)
+
+      if (state.snackbars.length === 0) state.snackbars = []
+    },
     addModal(state, modal) {
+      modal.id = helpers.logic.generateUUIDV4()
       state.modals.push(modal)
     },
-    popModal(state, modal) {
-      const idx = state.modals.findIndex(m => m === modal)
-      if (idx >= 0) delete state.modals[idx]
+    removeModal(state, modal) {
+      const idx = state.modals.findIndex(m => m.id === modal.id)
+      if (idx >= 0) state.modals.splice(idx, 1)
 
-      if (state.modals.filter(m => m).length === 0) state.modals = []
+      if (state.modals.length === 0) state.modals = []
     },
     removeAllModals(state) {
       state.modals = []

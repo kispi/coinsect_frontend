@@ -49,7 +49,7 @@ export const newRouter = () => {
     if (modals.length === 0) return next()
 
     const latestModal = modals[modals.length - 1]
-    store.commit('popModal', latestModal)
+    store.commit('removeModal', latestModal)
     next(false)
   })
 

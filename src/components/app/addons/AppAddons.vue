@@ -3,6 +3,7 @@
   <AppChatToggler/>
   <AppChat v-if="prepared"/>
   <AppToast/>
+  <AppSnackbar/>
   <AppTooltips/>
   <AppModal
     :modal="modal"
@@ -17,6 +18,7 @@ import { ref, watch } from 'vue'
 import AppChat from '@/components/applications/chat/AppChat'
 import AppChatToggler from '@/components/applications/chat/AppChatToggler'
 import AppModal from '@/components/app/AppModal'
+import AppSnackbar from '@/components/app/AppSnackbar'
 import AppTooltips from '@/components/app/AppTooltips'
 import AppToast from '@/components/app/AppToast'
 import GoToTop from '@/components/app/GoToTop'
@@ -29,6 +31,7 @@ export default {
     AppChat,
     AppChatToggler,
     AppModal,
+    AppSnackbar,
     AppTooltips,
     AppToast,
     GoToTop,

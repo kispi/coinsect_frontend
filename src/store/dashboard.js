@@ -1,3 +1,4 @@
+import helpers from '@/helpers'
 import { $http } from '@/modules/axios'
 
 const dashboard = {
@@ -16,15 +17,17 @@ const dashboard = {
     async loadDashboardsMain({ commit }) {
       try {
         const resp = await $http.get('dashboards/main')
+        if (resp.leaderboards) {
+          // 리더보드에서 '워뇨띠' 찾아넣기
+          const found = (resp.leaderboards || []).find(o => o.name === 'aoa')
+          if (found) found.name = 'aoa (워뇨띠)'
 
-        // 리더보드에서 '워뇨띠' 찾아넣기
-        const found = (resp.leaderboards || []).find(o => o.name === 'aoa')
-        if (found) found.name = 'aoa (워뇨띠)'
+          resp.leaderboards = resp.leaderboards
+            .sort((a, b) => a.profit < b.profit ? 1 : -1)
+            .slice(0, 8)
+        }
 
-        resp.leaderboards = resp.leaderboards
-          .filter(o => o.side !== '-')
-          .sort((a, b) => Math.abs(a.dailyChange) < Math.abs(b.dailyChange) ? 1 : -1)
-
+        if (resp.recentPosts) await helpers.post.populateRenderablePosts(resp.recentPosts.data)
         commit('setDashboardsMain', resp)
       } catch (e) {
         return Promise.reject(e)

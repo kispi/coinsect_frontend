@@ -24,7 +24,7 @@
         :title="'COMMUNITY'"
         :link="'/community'"
         :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
-        <RecentPosts v-if="$store.getters.boards"/>
+        <RecentPosts v-if="$store.getters.boards" :posts="dashboards.recentPosts"/>
       </MainSection>
       <MainSection
         :title="'KIMP'"

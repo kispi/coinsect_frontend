@@ -16,6 +16,8 @@ export default {
 
     app.config.globalProperties.$modal = helpers.modal
 
+    app.config.globalProperties.$snackbar = helpers.snackbar
+
     app.config.globalProperties.$toast = helpers.toast
 
     app.config.globalProperties.$animate = helpers.animate

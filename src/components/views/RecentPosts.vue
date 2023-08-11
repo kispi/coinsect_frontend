@@ -52,32 +52,8 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import useGlobalHooks from '@/hooks/global-hooks'
-
 export default {
-  setup() {
-    const { store } = useGlobalHooks()
-
-    const posts = computed(() => store.getters.posts)
-
-    const timeout = ref(null)
-
-    const callApi = async () => {
-      store.dispatch('loadPosts', { limit: 10 })
-      timeout.value = setTimeout(callApi, 1000 * 60 * 5)
-    }
-
-    onMounted(callApi)
-
-    onUnmounted(() => {
-      if (timeout.value) clearTimeout(timeout.value)
-    })
-
-    return {
-      posts,
-    }
-  },
+  props: ['posts'],
 }
 </script>
 

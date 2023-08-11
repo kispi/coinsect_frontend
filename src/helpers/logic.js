@@ -2,6 +2,10 @@ import { store } from '@/store'
 import helpers from '.'
 
 const logic = {
+  generateUUIDV4: () => {
+    const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
+    return `${s4()}-${s4()}-${s4()}-${s4()}-${s4()}-${s4()}-${s4()}-${s4()}`
+  },
   shuffle: arr => {
     let j, x, i
     for (i = arr.length - 1; i > 0; i--) {
