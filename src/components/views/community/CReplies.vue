@@ -133,8 +133,6 @@ export default {
 
 <style lang="scss">
 .c-replies {
-  font-size: 13px;
-
   .reply {
     .content {
       padding: 8px 0;
@@ -166,6 +164,14 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      .reply-user {
+        font-size: 13px;
+
+        &:not(.authorized-clickable-nickname) {
+          color: var(--text-light);
+        }
+      }
     }
 
     .reply-functions {

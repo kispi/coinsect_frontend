@@ -45,7 +45,7 @@ const template = {
   },
   // writing can be a post or a reply
   writer: writing => {
-    return ((writing.user || {}).profile || {}).nickname || writing.nickname
+    return writing.nickname || ((writing.user || {}).profile || {}).nickname
 
     // return `${writing.nickname}${writing.ip ? ` (${template.ip(writing.ip)})` : ''}`
   },

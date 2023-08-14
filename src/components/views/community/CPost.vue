@@ -100,8 +100,6 @@ export default {
 
 <style lang="scss">
 .c-post {
-  font-size: 13px;
-
   @mixin drawRightBorder {
     margin-right: 8px;
     padding-right: 8px;
@@ -165,6 +163,7 @@ export default {
     padding: 32px 0;
     max-width: 100%;
     white-space: pre-line;
+    font-size: 15px;
 
     img,
     iframe {

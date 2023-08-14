@@ -209,6 +209,10 @@ export default {
     .ProseMirror {
       padding: 16px;
     }
+
+    .toastui-editor-contents {
+      font-size: 15px;
+    }
   }
 
   .toastui-editor-defaultUI-toolbar {
