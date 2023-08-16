@@ -4,16 +4,13 @@
       v-if="news"
       class="section-news m-b-8">
       <a
-        @click.prevent="() => {
-          $store.commit('setSettings', { newsProvider: 'cobak_feed' })
-          $router.push('/contents/news')
-        }"
+        @click.prevent="$router.push('/contents/news')"
         class="item-news lines-1"
         :class="{'best': item.is_best}"
         href="/contents/news"
         :key="item.id"
         v-for="item in news">
-        <div class="timestamp">{{ $helpers.dayjs((item || {}).updated_time).format('HH:mm') }}</div>
+        <div class="timestamp">{{ $helpers.dayjs((item || {}).created_at).format('HH:mm') }}</div>
         <div class="title lines-1">{{ (item || {}).title }}</div>
       </a>
     </div>
@@ -98,7 +95,7 @@ export default {
     const dashboards = computed(() => store.getters.dashboardsMain)
 
     const news = computed(() => {
-      const arr = ((dashboards.value || {}).news || {}).breaking_news_list || []
+      const arr = (dashboards.value || {}).news || []
       const w = store.getters.windowInnerWidth
       if (w >= 1200) return arr.slice(0, 4)
       if (w >= 992) return arr.slice(0, 3)

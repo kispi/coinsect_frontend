@@ -35,7 +35,6 @@ export default {
       if (props.by === 'bitcointreasuries') return { title: 'Bitcointreasuries', src: 'bitcointreasuries.png', link: 'https://bitcointreasuries.net' }
       if (props.by === 'coinglass') return { title: 'Coinglass', src: 'coinglass.png', link: 'https://coinglass.com' }
       if (props.by === 'naver') return { title: 'Naver', src: 'naver.png', link: 'https://finance.naver.com' }
-      if (props.by === 'cobak') return { title: 'Cobak', src: 'cobak.png', link: 'https://cobak.co.kr' }
       if (props.by === 'investing.com') return { title: 'Investing.com', link: 'https://investing.com' }
     })
 
