@@ -69,6 +69,16 @@
         <AdSense :dataAdSlot="'8789268236'" style="min-height: 280px;" :responsive="true" class="m-t-8"/>
       </MainSection>
     </div>
+    <div
+      v-else
+      class="grid main">
+      <AppSkeleton style="height: 360px;"/>
+      <AppSkeleton style="height: 360px;"/>
+      <AppSkeleton style="height: 360px;"/>
+      <AppSkeleton style="height: 360px;"/>
+      <AppSkeleton style="height: 360px;"/>
+      <AppSkeleton style="height: 360px;"/>
+    </div>
   </div>
 </template>
 
