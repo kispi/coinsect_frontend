@@ -22,14 +22,14 @@
     <div class="buttons">
       <button
         v-if="$store.getters.charts.length < 6"
-        class="btn btn-brd"
+        class="btn btn-light"
         @click="onClickAddChart">
         <i class="fal fa-plus m-r-8"/>
         {{ $translate('ADD_CHART') }}
       </button>
       <button
         @click="$store.commit('setSettings', { tradingview: !$store.getters.settings.tradingview })"
-        class="btn btn-brd">
+        class="btn btn-light">
         <i class="fal m-r-8" :class="$store.getters.settings.tradingview ? 'fa-chevron-up' : 'fa-chevron-down'"/>
         {{ $translate($store.getters.settings.tradingview ? 'CHART_HIDE' : 'CHART_SHOW') }}
       </button>
@@ -122,6 +122,7 @@ export default {
 
     button {
       flex: 1;
+      padding: 8px;
     }
   }
 

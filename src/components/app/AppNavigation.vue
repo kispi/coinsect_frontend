@@ -90,10 +90,8 @@ export default {
     z-index: 10;
     top: calc(var(--app-header-height) - 1px);
     border-right: 1px solid var(--border-base);
-    transform: translateX(-12px);
     transition: all 0.3s ease;
     padding: 4px;
-    height: 100%;
   }
 
   a {
@@ -169,7 +167,6 @@ export default {
       .left-panel {
         opacity: 0;
         pointer-events: none;
-        transform: translateX(calc(-40px - var(--navigation-width)));
       }
     }
 
@@ -182,12 +179,13 @@ export default {
   }
 
   @media (min-width: 1600px) {
-    &.folded {
-      opacity: 1;
-    }
+    position: absolute;
+    height: 1120px;
+    left: calc(50% - 700px - var(--navigation-width) / 2);
 
     .left-panel {
-      transform: translateX(calc(-24px - var(--navigation-width)));
+      position: sticky;
+      left: calc(50% - 700px - var(--navigation-width) / 2);
       border-right: 0;
     }
   }

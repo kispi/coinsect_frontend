@@ -1,13 +1,13 @@
 <template>
   <AppHeader class="layout-centered"/>
+  <AppNavigation/>
   <div class="app-body view-layout-default no-scrollbar">
-    <AppNavigation/>
     <div class="router-view-container w-100">
       <AppAd class="m-b-16"/>
       <MultiCharts v-if="prepared" class="m-b-16"/>
       <div class="favorite-routes m-b-16">
         <RouterLink
-          :class="{'selected': route.path === $route.path}"
+          :class="{'selected': route.path === $router.currentRoute.value.path}"
           :to="route.path"
           :key="route.path"
           v-for="route in favoriteRoutes">
@@ -141,8 +141,6 @@ export default {
   display: flex;
   gap: 8px;
   justify-content: space-between;
-  border-top: 1px solid var(--border-base);
-  border-bottom: 1px solid var(--border-base);
 
   a {
     padding: 8px;
@@ -151,10 +149,13 @@ export default {
     align-items: center;
     white-space: nowrap;
     flex: 1;
+    background: var(--background-light);
+    border-radius: 8px;
 
     &:hover,
     &.selected {
       color: var(--text-stress);
+      box-shadow: 0 0 0 1px var(--text-base);
       font-weight: 700;
     }
 
@@ -169,13 +170,13 @@ export default {
       width: 24px;
       margin-right: 8px;
       border-radius: 50%;
+      text-align: center;
     }
   }
 
   @media (max-width: 479px) {
     a {
       font-size: 12px;
-      flex: initial;
 
       .emoji,
       .app-img {

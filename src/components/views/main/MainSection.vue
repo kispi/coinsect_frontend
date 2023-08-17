@@ -27,11 +27,9 @@
       </a>
     </div>
     <div class="section-content">
-      <div @scroll="e => showTopGrad = e.target.scrollTop > 0" class="scrollable pretty-scrollbar">
+      <div class="scrollable pretty-scrollbar">
         <slot/>
       </div>
-      <div class="overlay top" :class="{'o-0': !showTopGrad}"/>
-      <div class="overlay bottom"/>
     </div>
   </div>
 </template>
@@ -52,8 +50,6 @@ export default {
 
     const refTooltip = ref(null)
 
-    const showTopGrad = ref(null)
-
     const tooltipId = computed(() => {
       if (!props.tooltip) return
 
@@ -62,7 +58,6 @@ export default {
 
     return {
       refTooltip,
-      showTopGrad,
       tooltipId,
     }
   },
@@ -72,6 +67,9 @@ export default {
 <style lang="scss" scoped>
 .main-section {
   border-radius: 8px;
+  background: var(--background-light);
+  display: flex;
+  flex-direction: column;
 
   .section-header {
     display: flex;
@@ -103,33 +101,17 @@ export default {
 
   .section-content {
     position: relative;
+    padding: 0 8px;
+    flex: 1;
 
     .scrollable {
       max-height: 336px;
       overflow-y: auto;
-      padding-bottom: 24px;
     }
 
     &.whale-alerts {
       display: grid;
       gap: 8px;
-    }
-  }
-
-  .overlay {
-    height: 24px;
-    pointer-events: none;
-    z-index: 1;
-
-    &.top {
-      bottom: initial;
-      background: linear-gradient(to bottom, var(--background-base), rgba(255, 255, 255, 0));
-      transition: all 0.3s ease;
-    }
-
-    &.bottom {
-      top: initial;
-      background: linear-gradient(to top, var(--background-base), rgba(255, 255, 255, 0));
     }
   }
 }

@@ -112,6 +112,7 @@ const helpers = {
     const link = e.target.src || e.target.href
     if (link) window.open(link, '_blank', 'noreferrer')
   },
+  openLink: url => window.open(url, '_blank', 'noreferrer'),
 }
 
 export default helpers

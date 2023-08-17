@@ -40,10 +40,10 @@ export default {
 .bitmex-simple {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: 4px;
 
   .bitmex-position {
-    border: 1px solid var(--border-base);
+    background: var(--background-light);
     padding: 4px 12px;
     font-size: 12px;
 
@@ -62,11 +62,11 @@ export default {
       justify-content: space-between;
 
       &.profit span {
-        color: var(--price-up);
+        color: var(--price-up-bybit);
       }
 
       &.loss span {
-        color: var(--price-down);
+        color: var(--price-down-bybit);
       }
 
       i {
@@ -75,18 +75,18 @@ export default {
     }
 
     &.long {
-      background: var(--price-up-bg);
+      background: var(--price-up-bybit-bg);
 
       .trader {
-        color: var(--price-up);
+        color: var(--price-up-bybit);
       }
     }
 
     &.short {
-      background: var(--price-down-bg);
+      background: var(--price-down-bybit-bg);
 
       .trader {
-        color: var(--price-down);
+        color: var(--price-down-bybit);
       }
     }
   }

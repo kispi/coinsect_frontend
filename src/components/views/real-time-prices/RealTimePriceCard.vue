@@ -95,11 +95,10 @@ export default {
 <style lang="scss" scoped>
 .real-time-price-card {
   background: var(--background-light);
-  border-radius: 8px;
   padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   align-items: center;
   transition: all 0.3s ease;
   font-size: 12px;
@@ -135,6 +134,7 @@ export default {
     .value {
       display: flex;
       align-items: center;
+      white-space: nowrap;
     }
   }
 

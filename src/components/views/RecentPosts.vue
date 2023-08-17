@@ -30,7 +30,7 @@
     </div>
     <div class="buttons">
       <RouterLink
-        class="btn btn-brd"
+        class="btn btn-light"
         to="/community">
         <i class="fal fa-chevron-right m-r-8"/>
         {{ $translate('SEE_MORE') }}
@@ -43,7 +43,7 @@
             preventCloseOnClickBackdrop: true,
           },
         })"
-        class="btn btn-brd">
+        class="btn btn-light">
         <i class="fal fa-pencil m-r-8"/>
         {{ $translate('WRITE') }}
       </button>

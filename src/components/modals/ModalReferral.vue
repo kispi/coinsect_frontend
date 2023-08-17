@@ -6,13 +6,6 @@
         <a :href="exchange.link" target="_blank" draggable="false">
           <component :is="exchange.component"/>
         </a>
-        <ul
-          v-if="hasEvent"
-          class="event">
-          <li><a href="https://bingx.com/en-us/act/task/6726462354/?ch=act_newuserjuly&ref=coinsect" target="_blank">7월 신규가입 이벤트(600 USDT)</a></li>
-          <li><a href="https://bingx.com/en-sa/act/template/4639?ref=OYEUJ6XS&randomId=1270977198" target="_blank">7월 입금 이벤트(500 USDT)</a></li>
-          <li>coinsect 레퍼럴 코드로 가입하시면 위 두 이벤트는 자동 적용되며, 각 페이지를 보시면 보너스를 받기 위한 조건을 알 수 있습니다.</li>
-        </ul>
       </div>
       <ul class="disclaimer">
         <li
@@ -40,8 +33,6 @@ export default {
 
     const x = (props.options.exchange || '').toLowerCase()
 
-    const hasEvent = computed(() => x === 'bingx' && plugins.$helpers.dayjs().isBefore('2023-08-01'))
-
     const benefits = computed(() => {
       if (x === 'bybit') return ['트래블룰 통과: 업비트, 빗썸, 코인원, 코빗', '수수료 20% 할인 (0.01% / 0.048%)', '입금액 / 거래량에 따라 최대 30,000 USDT 보너스']
       if (x === 'bingx') return ['트래블룰 통과: 빗썸, 코인원', '수수료 45% 페이백 (0.011% / 0.0275%)', '입금액 / 거래량에 따라 최대 5,000 USDT 보너스']
@@ -61,7 +52,6 @@ export default {
     })
 
     return {
-      hasEvent,
       exchange,
       benefits,
     }
@@ -93,17 +83,6 @@ export default {
 
       &:not(:last-child) {
         margin-bottom: 4px;
-      }
-    }
-
-    &.event {
-      margin-top: 24px;
-      padding: 8px;
-      border: 1px solid var(--text-stress);
-      background: var(--bg-secondary);
-
-      li {
-        list-style: none;
       }
     }
   }

@@ -1,19 +1,6 @@
 <template>
   <div class="dashboards-main">
-    <div
-      v-if="news"
-      class="section-news m-b-8">
-      <a
-        @click.prevent="$router.push('/contents/news')"
-        class="item-news lines-1"
-        :class="{'best': item.is_best}"
-        href="/contents/news"
-        :key="item.id"
-        v-for="item in news">
-        <div class="timestamp">{{ $helpers.dayjs((item || {}).created_at).format('HH:mm') }}</div>
-        <div class="title lines-1">{{ (item || {}).title }}</div>
-      </a>
-    </div>
+    <SectionNews/>
     <div
       v-if="dashboards"
       class="grid main">
@@ -37,7 +24,7 @@
         :link="'/indicators/positions'"
         :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-jg.jpg'"
         :tooltip="'TOOLTIP_REAL_TIME_POSITIONS'">
-        <div class="grid">
+        <div class="flex g-4">
           <CPosition
             :position="position"
             :key="position.name"
@@ -55,7 +42,7 @@
         :title="'WHALE_ALERT'"
         :link="'/indicators/whale-alert'"
         :image="'https://d1085v6s0hknp1.cloudfront.net/assets/icon-whalealert.jpg'">
-        <div class="grid">
+        <div class="flex g-4">
           <WhaleAlertItem
             :whaleAlert="whaleAlert"
             :key="whaleAlert.hash"
@@ -89,10 +76,11 @@ import BitmexSimple from './BitmexSimple'
 import MainSection from './MainSection'
 import RecentPosts from '../RecentPosts'
 import RealTimePriceCards from '@/components/views/real-time-prices/RealTimePriceCards'
+import SectionNews from './SectionNews'
 import useRealTimePosition from '@/hooks/real-time-position'
 
 export default {
-  components: { BitmexSimple, MainSection, RecentPosts, RealTimePriceCards },
+  components: { BitmexSimple, MainSection, RecentPosts, RealTimePriceCards, SectionNews },
   setup() {
     const { plugins, store } = useGlobalHooks()
 
@@ -103,15 +91,6 @@ export default {
     const timeout = ref(null)
 
     const dashboards = computed(() => store.getters.dashboardsMain)
-
-    const news = computed(() => {
-      const arr = (dashboards.value || {}).news || []
-      const w = store.getters.windowInnerWidth
-      if (w >= 1200) return arr.slice(0, 4)
-      if (w >= 992) return arr.slice(0, 3)
-      if (w >= 480) return arr.slice(0, 2)
-      return arr.slice(0, 1)
-    })
 
     const titleBitmexLeaderboard = computed(() => {
       const items = (dashboards.value || {}).leaderboards
@@ -124,8 +103,8 @@ export default {
       })
       return `
         ${plugins.$translate('BITMEX_LEADERBOARD')}
-        (<span class="c-price-up"><i class="fal fa-arrow-trend-up m-r-4"></i>${positions.long}</span>
-        <span class="c-price-down"><i class="fal fa-arrow-trend-down m-r-4"></i>${positions.short}</span>)
+        (<span class="c-price-up-bybit"><i class="fal fa-arrow-trend-up m-r-4"></i>${positions.long}</span>
+        <span class="c-price-down-bybit"><i class="fal fa-arrow-trend-down m-r-4"></i>${positions.short}</span>)
       `
     })
 
@@ -156,7 +135,6 @@ export default {
       refRealTimePriceCards,
       connectionRealTimePositions: connection,
       dashboards,
-      news,
       titleBitmexLeaderboard,
     }
   },
@@ -165,54 +143,11 @@ export default {
 
 <style lang="scss">
 .dashboards-main {
-  .section-news {
-    display: flex;
-    gap: 8px;
-
-    .item-news {
-      padding: 8px;
-      background: var(--background-light);
-      display: flex;
-      font-size: 12px;
-      flex: 1 1 0;
-
-      .timestamp {
-        border: 1px solid var(--background-light);
-        border-radius: 16px;
-        background: var(--background-light);
-        padding: 0 8px;
-        white-space: nowrap;
-      }
-
-      .title {
-        color: var(--text-stress);
-        font-weight: 700;
-        margin-left: 8px;
-      }
-
-      &:hover {
-        background: var(--border-light);
-      }
-
-      &.best {
-        .title {
-          color: var(--warning);
-        }
-
-        .timestamp {
-          background: var(--warning);
-          color: var(--white);
-        }
-      }
-    }
-  }
-
   .grid {
     display: grid;
-    gap: 8px;
+    gap: 16px;
 
     &.main {
-      gap: 16px;
       grid-template-columns: repeat(1, minmax(0, 1fr));
     }
   }

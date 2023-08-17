@@ -102,7 +102,6 @@ export default {
   padding: 8px;
   font-size: 12px;
   border-radius: 4px;
-  border: 1px solid var(--border-base);
   color: var(--text-stress);
 
   .app-img {
@@ -112,13 +111,11 @@ export default {
   }
 
   &.bull {
-    background: var(--price-up-bg);
-    border: 1px solid var(--price-up);
+    background: var(--price-up-bybit-bg);
   }
 
   &.bear {
-    background: var(--price-down-bg);
-    border: 1px solid var(--price-down);
+    background: var(--price-down-bybit-bg);
   }
 
   .alert-item-header {
