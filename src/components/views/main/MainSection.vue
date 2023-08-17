@@ -101,7 +101,7 @@ export default {
 
   .section-content {
     position: relative;
-    padding: 0 8px;
+    padding: 0 8px 8px;
     flex: 1;
 
     .scrollable {
