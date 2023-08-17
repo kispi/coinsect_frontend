@@ -102,6 +102,7 @@ export default {
   padding: 8px;
   font-size: 12px;
   border-radius: 4px;
+  background: var(--background-light);
   color: var(--text-stress);
 
   .app-img {
