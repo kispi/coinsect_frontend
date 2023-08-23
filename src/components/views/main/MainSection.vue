@@ -84,6 +84,7 @@ export default {
 
     .app-img {
       width: 16px;
+      height: 16px;
       margin-right: 4px;
       border-radius: 50%;
     }
