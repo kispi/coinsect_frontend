@@ -16,6 +16,7 @@
       </ul>
       <ul class="f-12 m-t-40">
         <li>암호화폐 거래소 레퍼럴 시스템에 관해 더 궁금하다면 <a href="/contents/crypto-referral" target="_blank" class="text-underline">크립토 레퍼럴</a> 페이지를 참조하세요.</li>
+        <li>코인충 레퍼럴 코드(<a :href="exchange.link" target="_blank">COINSECT</a>)를 사용해주시면 사이트 운영에 대단히 큰 도움이 됩니다.</li>
       </ul>
       <a class="btn btn-primary m-t-24 p-16" :href="exchange.link" target="_blank" draggable="false">{{ options.exchange }} 수수료 혜택 받기</a>
     </div>
@@ -70,7 +71,6 @@ export default {
   }
 
   ul {
-    font-size: 13px;
     padding-left: 16px;
 
     a {

@@ -7,6 +7,7 @@
       <MultiCharts v-if="prepared" class="m-b-16"/>
       <div class="favorite-routes m-b-16">
         <RouterLink
+          class="btn-light"
           :class="{'selected': route.path === $router.currentRoute.value.path}"
           :to="route.path"
           :key="route.path"
@@ -152,10 +153,9 @@ export default {
     background: var(--background-light);
     border-radius: 8px;
 
-    &:hover,
     &.selected {
       color: var(--text-stress);
-      box-shadow: 0 0 0 1px var(--text-base);
+      box-shadow: 0 0 0 1px var(--border-light);
       font-weight: 700;
     }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-pagination">
+  <div class="app-pagination f-mono">
     <div class="page-numbers">
       <div
         @click="onPage(1)"
@@ -34,9 +34,9 @@
       >
       <button
         @click="onPage(pageValue)"
-        class="btn btn-primary"
+        class="btn btn-light"
         :disabled="!pageValue">
-        <i class="fa fa-chevron-right c-white"/>
+        <i class="fa fa-chevron-right"/>
       </button>
     </div>
   </div>
@@ -135,12 +135,12 @@ export default {
     height: 32px;
 
     input {
-      width: 48px;
+      width: 64px;
       height: 100%;
       text-align: right;
     }
 
-    .btn-primary {
+    .btn-light {
       flex: 0 0 auto;
       height: 100%;
       margin-left: 4px;
@@ -182,13 +182,13 @@ export default {
 
     .page-number {
       &.active {
-        color: var(--brand-primary);
-        background: var(--brand-primary-hover-bg);
+        color: var(--text-stress);
+        background: var(--background-light);
         font-weight: 700;
       }
 
       &:hover {
-        background: var(--brand-primary-hover-bg);
+        background: var(--background-light);
       }
     }
   }

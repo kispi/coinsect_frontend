@@ -63,7 +63,7 @@ export default {
 
     const callApi = async () => {
       store.dispatch('loadPosts', { limit: 10 })
-      setTimeout(callApi, 1000 * 60 * 5)
+      timeout.value = setTimeout(callApi, 1000)
     }
 
     onMounted(callApi)
@@ -78,7 +78,7 @@ export default {
 <style lang="scss">
 .recent-posts {
   .posts-grid {
-    font-size: 12px;
+    font-size: 13px;
     display: grid;
     row-gap: 4px;
     column-gap: 40px;

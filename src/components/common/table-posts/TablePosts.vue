@@ -214,13 +214,13 @@ export default {
   font-size: 12px;
 
   .table {
-    border-top: 1px solid var(--text-stress);
-    border-bottom: 1px solid var(--text-stress);
+    border-top: 1px solid var(--border-base);
+    border-bottom: 1px solid var(--border-base);
   }
 
   .posts-section {
     &.notice {
-      border-bottom: 1px solid var(--text-stress);
+      border-bottom: 1px solid var(--border-base);
       font-weight: 700;
     }
   }

@@ -2,13 +2,14 @@
   <div class="button-boards">
     <button
       @click="$router.push(`/community${board.id ? `?boardId=${board.id}` : ''}`)"
-      class="btn btn-brd"
+      class="btn btn-light"
       :class="{'selected': selected(board)}"
       :style="{'background': $helpers.logic.hexToRgba(board.$$color, 0.25)}"
       :key="board.id"
-      v-for="board in boards"
-      v-html="$translate(board.description)"
-    />
+      v-for="board in boards">
+      <i v-if="selected(board)" class="fa fa-check m-r-4"/>
+      {{ $translate(board.description) }}
+    </button>
   </div>
 </template>
 
@@ -46,12 +47,9 @@ export default {
   margin-bottom: 16px;
   gap: 8px;
 
-  .btn-brd {
+  .btn-light {
     border-radius: 0;
-
-    &.selected {
-      border: 1px solid var(--text-stress);
-    }
+    min-width: 64px;
   }
 }
 </style>

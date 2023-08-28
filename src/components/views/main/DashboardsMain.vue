@@ -143,6 +143,8 @@ export default {
 
 <style lang="scss">
 .dashboards-main {
+  overflow: hidden;
+
   .grid {
     display: grid;
     gap: 16px;

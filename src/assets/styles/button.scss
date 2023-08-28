@@ -48,11 +48,11 @@
 
 .btn-light {
   background: var(--background-light);
-  color: var(--white);
+  color: var(--text-stress);
 
   &:not(.disabled):not(:disabled) {
     &:hover {
-      background: var(--gs-44);
+      background: var(--border-base);
     }
   }
 }

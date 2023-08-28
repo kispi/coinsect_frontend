@@ -2,7 +2,7 @@
   <div class="view-crypto-referral">
     <div class="page-title"></div>
     <div class="section m-t-0">
-      <div class="description m-b-8">
+      <div class="m-b-8">
         레퍼럴은 추천인 제도로, 다른 사람에게 거래소에 가입하도록 하는 영업입니다.<br>
         다른 사람이 내 레퍼럴 코드를 입력해서 가입하면, 그 사람도 수수료 할인 혜택을 받을 수 있고, 나도 그 사람이 내는 수수료의 일부를 받을 수 있습니다.(거래소마다 다르며, 계약하기 나름으로 보통 40~60%선)<br>
         따라서 <b>레퍼럴 코드를 사용해서 가입하여 거래소를 이용하는게 수수료 할인 혜택 때문에 이득</b>입니다.<br>
@@ -39,7 +39,7 @@
     </div>
     <div class="section">
       <div class="section-title">레퍼럴 수익 계산기</div>
-      <div class="description">
+      <div>
         예시:<br>
         - $1,000 증거금을 입금해서 20배로 1비트정도를 잡고(비트 $20,000이라 가정)<br>
         - '시장가'로 하루 1회 샀다 팔았다 총 2회 매매하는 추천인이<br>
@@ -78,7 +78,7 @@
           </div>
         </div>
       </div>
-      <div class="description m-t-24">
+      <div class="m-t-24">
         포지션 규모 * 매매 횟수 * 추천인 수 * 매매일 수 * 시장가 수수료 * 커미션<br>
         = ${{ payload.positionSize.toLocaleString() }} * {{ payload.tradingFrequency }} * {{ payload.numReferrer }} * {{ payload.numDays }} * {{ payload.exchange.d.t }} * {{ payload.commisionRate }}<br>
         = <b class="result">${{ Math.round(payload.positionSize * payload.tradingFrequency * payload.numReferrer * payload.numDays * payload.exchange.d.t * payload.commisionRate).toLocaleString() }}</b><br><br>
@@ -155,10 +155,6 @@ export default {
 
   .section {
     margin: 40px 0;
-  }
-
-  .description {
-    font-size: 12px;
   }
 
   .result {
