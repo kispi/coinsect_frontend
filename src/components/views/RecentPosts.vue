@@ -63,7 +63,7 @@ export default {
 
     const callApi = async () => {
       store.dispatch('loadPosts', { limit: 10 })
-      timeout.value = setTimeout(callApi, 1000)
+      timeout.value = setTimeout(callApi, 1000 * 60 * 5)
     }
 
     onMounted(callApi)
