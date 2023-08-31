@@ -28,9 +28,8 @@ import IconAddEmoji from '@/components/applications/chat/IconAddEmoji'
 // common components
 import BadgeUnreads from '@/components/common/BadgeUnreads'
 import BannerBitcoinBlog from '@/components/common/BannerBitcoinBlog'
-import BannerBingx from '@/components/common/exchange-banners/BannerBingx'
-import BannerBybit from '@/components/common/exchange-banners/BannerBybit'
 import CommunityHeader from '@/components/common/CommunityHeader'
+import ExchangeBanner from '@/components/common/ExchangeBanner'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
 import CPosition from '@/components/common/c-position/CPosition'
@@ -84,11 +83,10 @@ const useGlobalComponents = app => {
     // common components
     .component('BadgeUnreads', BadgeUnreads)
     .component('BannerBitcoinBlog', BannerBitcoinBlog)
-    .component('BannerBingx', BannerBingx)
-    .component('BannerBybit', BannerBybit)
     .component('CommunityHeader', CommunityHeader)
     .component('CPortfolio', CPortfolio)
     .component('CPosition', CPosition)
+    .component('ExchangeBanner', ExchangeBanner)
     .component('LongShortRatio', LongShortRatio)
     .component('MultiCharts', MultiCharts)
     .component('ModalHeader', ModalHeader)

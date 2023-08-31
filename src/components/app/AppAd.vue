@@ -1,16 +1,14 @@
 <template>
   <div class="app-ad">
-    <BannerBybit
+    <ExchangeBanner
       @click="$modal.custom({
         component: 'ModalReferral',
-        options: { exchange: 'bybit' },
+        options: { exchange },
       })"
-    />
-    <BannerBingx
-      @click="$modal.custom({
-        component: 'ModalReferral',
-        options: { exchange: 'bingx' },
-      })"
+      :exchange="exchange"
+      :simple="$store.getters.isMobile"
+      :key="exchange"
+      v-for="exchange in ['bybit', 'bitget', 'bingx']"
     />
   </div>
 </template>
@@ -20,12 +18,6 @@
   position: relative;
   display: grid;
   gap: 8px;
-  grid-template-columns: repeat(2, 1fr);
-
-  @media (max-width: 767px) {
-    .promotion {
-      display: none;
-    }
-  }
+  grid-template-columns: repeat(3, 1fr);
 }
 </style>

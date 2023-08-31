@@ -3,58 +3,43 @@
     <ModalHeader :title="$translate('MODAL_REFERRAL')" @close="$emit('close')"/>
     <div class="body pre-line">
       <div class="banner m-b-24">
-        <a :href="exchange.link" target="_blank" draggable="false">
-          <component :is="exchange.component"/>
+        <a :href="referral.link" target="_blank" draggable="false">
+          <ExchangeBanner :exchange="exchange.key"/>
         </a>
       </div>
       <ul class="disclaimer">
+        <li>트래블룰 거래소: {{ travelRuleString }}</li>
+        <li v-html="referral.promotion"/>
         <li
           :key="benefit"
-          v-for="benefit in benefits"
+          v-for="benefit in referral.benefits"
           v-html="benefit"
         />
       </ul>
-      <ul class="f-12 m-t-40">
-        <li>암호화폐 거래소 레퍼럴 시스템에 관해 더 궁금하다면 <a href="/contents/crypto-referral" target="_blank" class="text-underline">크립토 레퍼럴</a> 페이지를 참조하세요.</li>
-        <li>코인충 레퍼럴 코드(<a :href="exchange.link" target="_blank">COINSECT</a>)를 사용해주시면 사이트 운영에 대단히 큰 도움이 됩니다.</li>
+      <ul class="small-list m-t-32">
+        <li>레퍼럴 시스템에 관해 더 궁금하다면 <a href="/contents/crypto-referral" target="_blank" class="text-underline">크립토 레퍼럴</a> 페이지를 참조하세요.</li>
+        <li>코인충 레퍼럴 코드(<a :href="referral.link" target="_blank">COINSECT</a>)를 사용해주시면 사이트 운영에 큰 도움이 됩니다.</li>
       </ul>
-      <a class="btn btn-primary m-t-24 p-16" :href="exchange.link" target="_blank" draggable="false">{{ options.exchange }} 수수료 혜택 받기</a>
+      <a class="btn btn-primary m-t-24 p-16" :href="referral.link" target="_blank" draggable="false">{{ exchange.name }} 수수료 혜택 받기</a>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
-import useGlobalHooks from '@/hooks/global-hooks'
+import exchanges from '@/assets/constants/exchanges'
+import referrals from '@/assets/constants/referrals'
 
 export default {
   props: ['options'],
   setup(props) {
-    const { plugins } = useGlobalHooks()
+    const exchange = exchanges[(props.options.exchange || '').toLowerCase()]
 
-    const x = (props.options.exchange || '').toLowerCase()
-
-    const benefits = computed(() => {
-      if (x === 'bybit') return ['트래블룰 통과: 업비트, 빗썸, 코인원, 코빗', '수수료 20% 할인 (0.01% / 0.048%)', '입금액 / 거래량에 따라 최대 30,000 USDT 보너스']
-      if (x === 'bingx') return ['트래블룰 통과: 빗썸, 코인원', '수수료 45% 페이백 (0.011% / 0.0275%)', '입금액 / 거래량에 따라 최대 5,000 USDT 보너스']
-    })
-
-    const exchange = computed(() => {
-      const exchange = x
-      return {
-        component: `Banner${plugins.$helpers.template.case.toCapital(exchange)}`,
-        link: (() => {
-          let link = ''
-          if (exchange === 'bybit') link = 'https://partner.bybit.com/b/coinsect'
-          if (exchange === 'bingx') link = 'https://bingx.com/en-us/partner/coinsect'
-          return link
-        })(),
-      }
-    })
+    const travelRuleString = (exchange.travelRule || []).map(exchangeKey => exchanges[exchangeKey].name).join(', ')
 
     return {
+      referral: referrals[(props.options.exchange || '').toLowerCase()],
       exchange,
-      benefits,
+      travelRuleString,
     }
   },
 }
@@ -84,6 +69,11 @@ export default {
       &:not(:last-child) {
         margin-bottom: 4px;
       }
+    }
+
+    &.small-list {
+      font-size: 12px;
+      padding-left: 24px;
     }
   }
 }

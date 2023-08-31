@@ -87,7 +87,7 @@ export default {
     width: var(--navigation-width);
     overflow-y: auto;
     max-height: calc(100% - var(--app-header-height));
-    z-index: 10;
+    z-index: 5;
     top: calc(var(--app-header-height) - 1px);
     border-right: 1px solid var(--border-base);
     transition: all 0.3s ease;
