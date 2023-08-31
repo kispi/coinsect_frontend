@@ -18,7 +18,7 @@
       </ul>
       <ul class="small-list m-t-32">
         <li>레퍼럴 시스템에 관해 더 궁금하다면 <a href="/contents/crypto-referral" target="_blank" class="text-underline">크립토 레퍼럴</a> 페이지를 참조하세요.</li>
-        <li>코인충 레퍼럴 코드(<a :href="referral.link" target="_blank">COINSECT</a>)를 사용해주시면 사이트 운영에 큰 도움이 됩니다.</li>
+        <li><a :href="referral.link" target="_blank">코인충 레퍼럴 링크</a>로 가입해주시면 사이트 운영에 큰 도움이 됩니다.</li>
       </ul>
       <a class="btn btn-primary m-t-24 p-16" :href="referral.link" target="_blank" draggable="false">{{ exchange.name }} 수수료 혜택 받기</a>
     </div>
