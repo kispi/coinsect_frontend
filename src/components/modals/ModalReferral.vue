@@ -65,6 +65,7 @@ export default {
 
     li {
       list-style-type: disc;
+      white-space: initial;
 
       &:not(:last-child) {
         margin-bottom: 4px;

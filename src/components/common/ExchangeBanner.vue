@@ -57,6 +57,7 @@ export default {
   .promotion {
     color: var(--white);
     flex: 1;
+    white-space: pre-line;
   }
 
   &:hover {
