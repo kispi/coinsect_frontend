@@ -1,22 +1,11 @@
 <template>
   <AppHeader class="layout-centered"/>
   <AppNavigation/>
-  <div class="app-body view-layout-default no-scrollbar">
+  <div class="app-body layout-centered">
     <div class="router-view-container w-100">
       <AppAd class="m-b-16"/>
       <MultiCharts v-if="prepared" class="m-b-16"/>
-      <div class="favorite-routes m-b-16">
-        <RouterLink
-          class="btn-light"
-          :class="{'selected': route.path === $router.currentRoute.value.path}"
-          :to="route.path"
-          :key="route.path"
-          v-for="route in favoriteRoutes">
-          <AppImg v-if="route.img" :src="route.img" :fit="'contain'"/>
-          <span v-if="route.emoji" class="emoji">{{ route.emoji }}</span>
-          <span class="route-title">{{ $translate(route.title) }}</span>
-        </RouterLink>
-      </div>
+      <FavoriteRoutes/>
       <RouterView
         v-if="$store.getters.isSSR || prepared"
         v-slot="{ Component, route }">
@@ -30,8 +19,8 @@
 
 <script>
 import { ref, onMounted, onUnmounted, defineAsyncComponent, computed } from 'vue'
-import helpers from './helpers'
-import useGlobalHooks from './hooks/global-hooks'
+import helpers from '@/helpers'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   components: {
@@ -40,6 +29,7 @@ export default {
     AppAddons: defineAsyncComponent(() => import('@/components/app/addons/AppAddons')),
     AppFooter: defineAsyncComponent(() => import('@/components/app/AppFooter')),
     AppAd: defineAsyncComponent(() => import('@/components/app/AppAd')),
+    FavoriteRoutes: defineAsyncComponent(() => import('@/components/common/FavoriteRoutes')),
   },
   setup() {
     const { store } = useGlobalHooks()
@@ -109,81 +99,18 @@ export default {
   background: var(--background-base);
 }
 
-.layout-centered {
-  max-width: 1200px;
-  margin: auto;
-  padding: var(--app-default-page-padding);
-}
-
-.view-layout-default {
-  @extend .layout-centered;
-
-  padding-top: calc(var(--app-header-height) + var(--app-default-page-padding));
-  padding-bottom: 80px;
-}
-
 .app-header {
   position: fixed;
   left: 0;
   right: 0;
   z-index: 5;
-  background: var(--background-base);
 }
 
 .app-body {
-  overflow-x: hidden;
   min-height: 100vh;
-  flex: 1;
-  position: relative;
-  z-index: 0;
-}
-
-.favorite-routes {
-  display: flex;
-  gap: 8px;
-  justify-content: space-between;
-
-  a {
-    padding: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    white-space: nowrap;
-    flex: 1;
-    background: var(--background-light);
-    border-radius: 8px;
-
-    &.selected {
-      color: var(--text-stress);
-      box-shadow: 0 0 0 1px var(--border-light);
-      font-weight: 700;
-    }
-
-    &:not(.selected) {
-      .route-title {
-        opacity: 0.9;
-      }
-    }
-
-    .emoji,
-    .app-img {
-      width: 24px;
-      margin-right: 8px;
-      border-radius: 50%;
-      text-align: center;
-    }
-  }
-
-  @media (max-width: 479px) {
-    a {
-      font-size: 12px;
-
-      .emoji,
-      .app-img {
-        width: 16px;
-        margin-right: 4px;
-      }
-    }
-  }
+  padding:
+    calc(var(--app-header-height) + var(--app-default-page-padding))
+    var(--app-default-page-padding)
+    80px;
 }
 </style>

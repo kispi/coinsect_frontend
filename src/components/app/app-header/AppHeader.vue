@@ -176,6 +176,7 @@ export default {
 .app-header {
   width: 100%;
   padding: 0 var(--app-default-page-padding);
+  background: var(--background-base);
 
   .top {
     display: flex;

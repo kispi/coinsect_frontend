@@ -118,9 +118,7 @@ export default {
 .app-footer {
   background: var(--background-light);
   font-size: 12px;
-  padding: 16px;
-  padding-top: 32px;
-  padding-bottom: 120px;
+  padding: 32px 16px 120px;
 
   .contact-sns {
     display: flex;
