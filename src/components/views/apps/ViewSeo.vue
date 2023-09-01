@@ -29,30 +29,12 @@
     <div v-if="error" class="validation-error width-limiter m-t-8" v-html="error"/>
     <div
       v-if="tried && !error && !loading"
-      class="meta-card width-limiter m-t-40"
-      @click.prevent="onClickMetaCard(link)">
+      class="meta-card-container width-limiter m-t-40">
       <i
         class="fal fa-times center"
         @click.stop="initParams"
       />
-      <div
-        v-if="!meta.title && !meta.image && !meta.description"
-        class="empty-meta center p-16">
-        웹사이트 {{ submitted }}에서 유의미한 메타 정보(타이틀, 설명, 이미지)를 찾지 못했습니다 😥
-      </div>
-      <div
-        v-else
-        class="meta-image"
-        :class="{'has-image': meta.image}">
-        <AppImg v-if="meta.image" :src="meta.image" class="overlay"/>
-        <div v-else class="center p-16">웹사이트 {{ submitted }}에서 메타 이미지를 찾지 못했습니다 😥</div>
-      </div>
-      <div
-        v-if="meta.title || meta.description"
-        class="meta-info">
-        <div v-if="meta.title" class="meta-title" v-html="meta.title"/>
-        <div v-if="meta.description" class="meta-description" v-html="meta.description"/>
-      </div>
+      <MetaCard :meta="meta" :useBlankGuide="true" :link="submitted"/>
     </div>
   </div>
 </template>
@@ -79,7 +61,7 @@ export default {
 
     const sites = ref(null)
 
-    const { meta, onClickMetaCard, reset, tryMetaTags, useExamples } = useSeo()
+    const { meta, reset, tryMetaTags, useExamples } = useSeo()
 
     const initParams = () => {
       link.value = null
@@ -170,13 +152,12 @@ export default {
       onEnter,
       onPaste,
       onClickRecommend,
-      onClickMetaCard,
     }
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .view-seo {
   .app-loading {
     position: fixed;
@@ -222,65 +203,26 @@ export default {
     color: var(--danger);
   }
 
-  .meta-card {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
-    border: 1px solid var(--border-base);
+  .meta-card-container {
     position: relative;
     min-height: 80px;
     cursor: pointer;
 
-    .empty-meta {
-      text-align: center;
-      font-size: 20px;
-      color: var(--text-stress);
-      height: 120px;
-    }
-
     .fa-times {
       position: absolute;
-      right: 16px;
-      top: 16px;
+      right: 8px;
+      top: 8px;
       z-index: 1;
       background: var(--white);
       color: var(--black);
       border-radius: 50%;
       width: 40px;
       height: 40px;
-      font-size: 20px;
+      font-size: 24px;
       cursor: pointer;
 
       &:hover {
-        background: var(--brand-primary-hover-bg);
-      }
-    }
-
-    .meta-image {
-      position: relative;
-
-      &.has-image {
-        padding-top: 56.25%;
-      }
-    }
-
-    .meta-info {
-      border-top: 1px solid var(--border-light);
-      background: var(--white);
-      padding: 8px 12px;
-      color: var(--black);
-
-      .meta-title {
-        font-size: 12px;
-        font-weight: 500;
-      }
-
-      .meta-description {
-        font-size: 10px;
-      }
-
-      > div:not(:last-child) {
-        margin-bottom: 8px;
+        background: var(--border-light);
       }
     }
   }
@@ -302,7 +244,7 @@ export default {
       }
     }
 
-    .meta-card {
+    .meta-card-container {
       .meta-info {
         padding: 16px 24px;
 

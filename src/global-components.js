@@ -34,6 +34,7 @@ import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
 import CPosition from '@/components/common/c-position/CPosition'
 import LongShortRatio from '@/components/common/LongShortRatio'
+import MetaCard from '@/components/common/MetaCard'
 import MultiCharts from '@/components/common/MultiCharts'
 import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
 import OrderbookUpbit from '@/components/common/orderbooks/OrderbookUpbit'
@@ -88,6 +89,7 @@ const useGlobalComponents = app => {
     .component('CPosition', CPosition)
     .component('ExchangeBanner', ExchangeBanner)
     .component('LongShortRatio', LongShortRatio)
+    .component('MetaCard', MetaCard)
     .component('MultiCharts', MultiCharts)
     .component('ModalHeader', ModalHeader)
     .component('OrderbookBybit', OrderbookBybit)

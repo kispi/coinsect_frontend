@@ -52,7 +52,6 @@ const app = {
       sentimentVoted: false,
       chatFolded: false,
       chatSizeMax: false,
-      chatHideImage: false,
       chatDing: false,
       chatTransparent: false,
       chatOverlayNewMessage: true,

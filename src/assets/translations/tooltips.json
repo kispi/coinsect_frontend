@@ -15,10 +15,6 @@
     "en": "Toggle chat size along Base/Max.",
     "kr": "채팅창 크기를 기본/최대 사이로 전환합니다."
   },
-  "TOOLTIP_CHAT_HIDE_IMAGE": {
-    "en": "Hide image messages on chat.",
-    "kr": "채팅창에 올라오는 이미지를 보지 않습니다."
-  },
   "TOOLTIP_BLOCKED_DEPOSIT": {
     "en": "Deopsit Unavailable",
     "kr": "입금 불가"

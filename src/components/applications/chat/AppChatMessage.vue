@@ -9,11 +9,7 @@
       <div class="text-and-timestamp">
         <template v-if="!message.$$hide">
           <template v-if="message.type === 'image'">
-            <div
-              v-if="$store.getters.settings.chatHideImage"
-              class="text hidden">이미지를 보지 않습니다.<br>(채팅 설정에서 변경 가능합니다)</div>
             <AppImg
-              v-else
               :src="message.text"
               @click="onClickImage(message.text)"
             />
