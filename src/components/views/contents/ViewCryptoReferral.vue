@@ -96,6 +96,7 @@
 <script>
 import { ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
+import referrals from '@/assets/constants/referrals'
 
 export default {
   setup() {
@@ -107,9 +108,9 @@ export default {
 
     const exchanges = ref([
       { key: 'Binance', n: { m: 0.0002, t: 0.0004 }, d: { m: 0.00016, t: 0.00032 }, img: exImg('BINANCE'), $$selected: true },
-      { key: 'Bybit', n: { m: 0.0001, t: 0.0006 }, d: { m: 0.0001, t: 0.00048 }, img: exImg('BYBIT'), link: 'https://partner.bybit.com/b/coinsect' },
-      { key: 'Bitget', n: { m: 0.0004, t: 0.0008 }, d: { m: 0.0002, t: 0.0004 }, img: exImg('BITGET') },
-      { key: 'BingX', n: { m: 0.0002, t: 0.0005 }, d: { m: 0.00011, t: 0.000275 }, img: exImg('BINGX'), link: 'https://bingx.com/en-us/partner/coinsect' },
+      { key: 'Bybit', n: { m: 0.0001, t: 0.0006 }, d: { m: 0.0001, t: 0.00048 }, img: exImg('BYBIT'), link: referrals.bybit.link },
+      { key: 'Bitget', n: { m: 0.0004, t: 0.0008 }, d: { m: 0.0002, t: 0.0004 }, img: exImg('BITGET'), link: referrals.bitget.link },
+      { key: 'BingX', n: { m: 0.0002, t: 0.0005 }, d: { m: 0.00011, t: 0.000275 }, img: exImg('BINGX'), link: referrals.bingx.link },
     ])
 
     const onClickExchange = exchange => {

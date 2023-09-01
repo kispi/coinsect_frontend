@@ -1,4 +1,4 @@
-export const referral = {
+export const referrals = {
   bybit: {
     promotion: '수수료 <b>20%</b> 할인\n(지정가: 0.01% / 시장가 0.048%)',
     travelRule: ['upbit', 'bithumb', 'coinone', 'korbit'],
@@ -19,6 +19,6 @@ export const referral = {
   },
 }
 
-Object.keys(referral).forEach(exchangeKey => referral[exchangeKey].key = exchangeKey)
+Object.keys(referrals).forEach(exchangeKey => referrals[exchangeKey].key = exchangeKey)
 
-export default referral
+export default referrals
