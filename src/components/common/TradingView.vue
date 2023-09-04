@@ -32,7 +32,7 @@ export default {
       new TradingView.widget({
         autosize: true,
         symbol: props.symbol,
-        interval: props.interval,
+        interval: (props.interval || 15).toString(),
         timezone: 'Asia/Seoul',
         theme: store.getters.settings.theme,
         locale: store.getters.settings.locale,
