@@ -107,7 +107,7 @@ export default {
 }
 
 .app-body {
-  min-height: 100vh;
+  min-height: calc(100vh - 560px); // 560 for footer
   padding:
     calc(var(--app-header-height) + var(--app-default-page-padding))
     var(--app-default-page-padding)
