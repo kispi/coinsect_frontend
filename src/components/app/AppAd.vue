@@ -10,9 +10,7 @@
       :key="exchange"
       v-for="exchange in ['bybit', 'bitget', 'bingx']"
     />
-    <div v-if="$store.getters.windowInnerWidth >= 1200" class="ad-container" :style="forcedStyle">
-      <AdSense :dataAdSlot="'3927887162'" :responsive="true" @load="onLoadAdSense"/>
-    </div>
+    <AdSense v-if="$store.getters.windowInnerWidth >= 1200" :dataAdSlot="'3927887162'" :responsive="true"/>
   </div>
 </template>
 
@@ -43,17 +41,12 @@ export default {
   grid-template-columns: repeat(3, 1fr);
 
   --banner-width: 300px;
-  .ad-container {
-    position: absolute;
-    top: 0;
-    right: calc(-1 * var(--banner-width) - 16px);
+  .ad-sense {
+    position: fixed;
+    top: calc(var(--app-header-height) + var(--app-default-page-padding));
+    right: calc((100vw - 1200px) / 2 - var(--banner-width) - 16px);
     width: var(--banner-width);
-
-    .ad-sense {
-      position: sticky;
-      top: calc(var(--app-header-height) + var(--app-default-page-padding));
-      height: 600px;
-    }
+    height: 600px;
   }
 }
 </style>
