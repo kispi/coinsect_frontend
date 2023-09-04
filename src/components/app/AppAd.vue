@@ -10,11 +10,30 @@
       :key="exchange"
       v-for="exchange in ['bybit', 'bitget', 'bingx']"
     />
-    <div v-if="$store.getters.windowInnerWidth >= 1200" class="ad-container" style="height: 960px !important;">
-      <AdSense :dataAdSlot="'3927887162'" :responsive="true"/>
+    <div v-if="$store.getters.windowInnerWidth >= 1200" class="ad-container" :style="forcedStyle">
+      <AdSense :dataAdSlot="'3927887162'" :responsive="true" @load="onLoadAdSense"/>
     </div>
   </div>
 </template>
+
+<script>
+import { ref } from 'vue'
+
+export default {
+  setup() {
+    const forcedStyle = ref(null)
+
+    const onLoadAdSense = () => {
+      setTimeout(() => forcedStyle.value = { height: '960px !important' }, 500)
+    }
+
+    return {
+      forcedStyle,
+      onLoadAdSense,
+    }
+  },
+}
+</script>
 
 <style lang="scss">
 .app-ad {

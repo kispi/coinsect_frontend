@@ -17,11 +17,12 @@ import { onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
+  emits: ['load'],
   props: {
     dataAdSlot: String,
     responsive: Boolean,
   },
-  setup() {
+  setup(_, { emit }) {
     const { store } = useGlobalHooks()
 
     const useGoogleAdSense = ref(null)
@@ -38,6 +39,7 @@ export default {
 
       try {
         window.adsbygoogle.push({})
+        emit('load')
       } catch (e) {
         setTimeout(() => mustLoad(numTrial + 1), 1000)
       }
