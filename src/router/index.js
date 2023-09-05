@@ -7,7 +7,7 @@ import ViewNotFound from '@/components/views/ViewNotFound'
 const onFail = () => {
   const body = document.querySelector('body')
   body.style.visibility = 'visible'
-  body.innerHTML = 'Site has changed. Reload after 5 seconds...'
+  body.innerHTML = '사이트가 업데이트된 것 같습니다... 잠시 후 재접속합니다...'
   setTimeout(() => location.reload(), 5000)
 }
 
@@ -23,9 +23,9 @@ const routes = [
 routes.forEach(route => {
   if (typeof route.component === 'function') {
     const importPromise = route.component
-    route.component = () => {
+    route.component = async () => {
       try {
-        return importPromise()
+        return await importPromise()
       } catch (e) {
         if (typeof document === 'undefined') return
 
