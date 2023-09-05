@@ -89,7 +89,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   components: { ImageUploader },
   setup() {
-    const { plugins } = useGlobalHooks()
+    const { plugins, store } = useGlobalHooks()
 
     const url = ref(null)
 
@@ -150,7 +150,10 @@ export default {
       plugins.$helpers.dom.scrollToTop()
       try {
         testing.value = true
-        const { ModerationLabels } = await rekognitionService.imageModeration.create(url.value)
+        const { ModerationLabels } = await rekognitionService.imageModeration.create({
+          url: url.value,
+          token: store.getters.chatUser.token,
+        })
         data.value = ModerationLabels
       } catch (e) {
         plugins.$toast.error('jpeg, jpg, png 형식의 이미지만 지원됩니다')
