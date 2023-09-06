@@ -14,7 +14,7 @@
     </div>
   </div>
   <AppFooter/>
-  <AppAddons/>
+  <AppAddons v-if="prepared"/>
 </template>
 
 <script>

@@ -59,7 +59,8 @@
       "no-empty": "off",
       "no-undef": "off",
       "vue/return-in-computed-property": "off",
-      "vue/no-side-effects-in-computed-properties": "off"
+      "vue/no-side-effects-in-computed-properties": "off",
+      "vue/no-unused-components": "warn"
     }
   },
   "prettier": {
