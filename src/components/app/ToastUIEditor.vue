@@ -26,6 +26,8 @@ export default {
 
     const { loadToastUIEditor } = useLazyLoads()
 
+    const autoResizeAbove = 10 * Math.pow(2, 20)
+
     const createCustomHTMLRenderer = () => {
       const iconYoutube = document.createElement('span')
       iconYoutube.style = 'cursor: pointer;'
@@ -148,7 +150,9 @@ export default {
         hooks: {
           addImageBlobHook: async (file, callback) => {
             try {
-              const resized = file.size > 1048576 ? await plugins.$helpers.logic.resizeImage({ file, width: 1920 }) : file
+              const resized = file.size > autoResizeAbove ?
+                await plugins.$helpers.logic.resizeImage({ file, width: 1920 }) :
+                file
               const url = await s3Service.upload(resized, 'boards/free_board')
               callback(url)
             } catch (e) {
