@@ -28,8 +28,8 @@
     "kr": "이미 존재하는 닉네임입니다"
   },
   "INVALID_YOUTUBE_URL": {
-    "en": "Please use the URL including 'youtube.com'",
-    "kr": "'youtube.com'을 포함한 URL을 사용해주세요"
+    "en": "Looks like the link is not a valid YouTube URL 😢",
+    "kr": "유효한 유튜브 링크가 아닌 것 같습니다 😢"
   },
   "ERROR_API_SERVER": {
     "en": "There seems to be a problem with the API server 😢",

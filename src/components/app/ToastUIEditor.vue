@@ -28,6 +28,11 @@ export default {
 
     const autoResizeAbove = 10 * Math.pow(2, 20)
 
+    const extractVideoId = youtubeUrl => {
+      const match = youtubeUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?feature=player_embedded&v=|watch\?list=\S+&v=))([\w-]+)/)
+      return match && match[1]
+    }
+
     const createCustomHTMLRenderer = () => {
       const iconYoutube = document.createElement('span')
       iconYoutube.style = 'cursor: pointer;'
@@ -62,13 +67,9 @@ export default {
       popupYoutube.appendChild(row)
 
       button.addEventListener('click', () => {
-        // youtu.be는 embed가 안되네...
-        if (['youtube.com'].every(val => !urlInput.value.includes(val))) {
-          plugins.$toast.error('INVALID_YOUTUBE_URL')
-          return
-        }
+        const url =  extractVideoId(urlInput.value)
+        if (!url) return plugins.$toast.error('INVALID_YOUTUBE_URL')
 
-        const url = urlInput.value.split('=').at(-1) ?? '';
         const str = `<div class="youtube-container-size-limiter"><div class="youtube-ratio-wrapper">
           <iframe
             width="100%"
