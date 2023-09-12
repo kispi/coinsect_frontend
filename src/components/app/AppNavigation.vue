@@ -1,7 +1,10 @@
 <template>
   <div
     class="app-navigation"
-    :class="{'folded': !$store.getters.showNavigation}">
+    :class="{'folded': !$store.getters.showNavigation}"
+    :style="{
+      height: $store.getters.stickyAppBodyHeight,
+    }">
     <div class="left-panel pretty-scrollbar">
       <BannerBitcoinBlog class="p-16 m-b-8"/>
       <nav class="menu-items pretty-scrollbar">
@@ -80,6 +83,8 @@ export default {
 <style lang="scss" scoped>
 .app-navigation {
   --navigation-width: 200px;
+  position: absolute;
+  min-height: 960px;
 
   .left-panel {
     position: fixed;
@@ -155,7 +160,6 @@ export default {
     left: 0;
     right: 0;
     opacity: 0;
-    max-width: 1200px;
     margin: auto;
     pointer-events: none;
     background: var(--background-base);
@@ -163,6 +167,7 @@ export default {
   }
 
   @media (max-width: 1599px) {
+
     &.folded {
       .left-panel {
         opacity: 0;
@@ -171,6 +176,10 @@ export default {
     }
 
     &:not(.folded) {
+      .left-panel {
+        height: 100vh;
+      }
+
       .dimmed-overlay {
         opacity: 0.5;
         pointer-events: all;
@@ -179,13 +188,12 @@ export default {
   }
 
   @media (min-width: 1600px) {
-    position: absolute;
-    height: 1120px;
+    top: var(--app-header-height);
     left: calc(50% - 700px - var(--navigation-width) / 2);
 
     .left-panel {
+      top: var(--app-header-height);
       position: sticky;
-      left: calc(50% - 700px - var(--navigation-width) / 2);
       border-right: 0;
     }
   }

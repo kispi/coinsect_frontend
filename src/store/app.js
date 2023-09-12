@@ -69,6 +69,7 @@ const app = {
     documentVisible: true, // 접속 직후에는 true
     lastApiCall: {},
     scrollTop: null, // global scrollTop value
+    stickyAppBodyHeight: null,
     lazyLoadedScriptUrls: [],
   }),
   getters: {
@@ -90,6 +91,7 @@ const app = {
     documentVisible: state => state.documentVisible,
     lastApiCall: state => state.lastApiCall,
     scrollTop: state => state.scrollTop,
+    stickyAppBodyHeight: state => state.stickyAppBodyHeight,
     lazyLoadedScriptUrls: state => state.lazyLoadedScriptUrls,
   },
   mutations: {
@@ -157,6 +159,7 @@ const app = {
     },
     setScrollTop(state, scrollTop) {
       state.scrollTop = scrollTop
+      state.stickyAppBodyHeight = `calc(${document.getElementsByClassName('app-body')[0].clientHeight}px - var(--app-header-height) - 80px)`
     },
     setLoading(state, payload) {
       Object.keys(payload).forEach(key => state.loading[key] = payload[key])
