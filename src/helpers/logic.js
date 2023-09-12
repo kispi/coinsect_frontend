@@ -25,13 +25,6 @@ const logic = {
 
     return images
   },
-  retrieveYouTubeThumbnailFromHTML: html => {
-    const youtubeRegex = /<iframe[^>]*src="https:\/\/www.youtube.com\/embed\/([^"]+)"[^>]*>/g
-    const youtube = youtubeRegex.exec(html) || []
-    if (!youtube[1]) return
-
-    return `https://img.youtube.com/vi/${youtube[1]}/0.jpg`
-  },
   includesChosung: (partial, whole) => {
     const d = Hangul.disassemble
     if (d(partial, true).length !== d(partial).length) return

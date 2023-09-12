@@ -17,6 +17,7 @@ import template from './template'
 import toast from './toast'
 import tooltip from './tooltip'
 import translate from './translate'
+import youtube from './youtube'
 
 /**
  * API 콜을 하는 페이지들이 항상 다시 mount될때마다 API 콜을 할 필요는 없으므로, 일정 시간동안은 똑같은 요청을 하지 않게 해준다.
@@ -58,6 +59,7 @@ const helpers = {
   toast,
   tooltip,
   template,
+  youtube,
   forceRefresh: () => {
     helpers.snackbar.warning('필수 업데이트가 있어 10초 후 새로고침됩니다.')
 
