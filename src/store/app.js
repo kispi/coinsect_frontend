@@ -159,6 +159,9 @@ const app = {
     },
     setScrollTop(state, scrollTop) {
       state.scrollTop = scrollTop
+
+      if (state.windowInnerWidth < 1200) return
+
       state.stickyAppBodyHeight = `calc(${document.getElementsByClassName('app-body')[0].clientHeight}px - var(--app-header-height) - 80px)`
     },
     setLoading(state, payload) {
