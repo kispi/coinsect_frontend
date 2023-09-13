@@ -251,7 +251,7 @@ export default {
   }
 }
 
-#app.dark {
+body.dark {
   .app-dropdown {
     &:not(.transparent) {
       background: var(--background-light);

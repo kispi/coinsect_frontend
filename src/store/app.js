@@ -129,9 +129,9 @@ const app = {
         state.settings[key] = settings[key]
 
         if (key.toLowerCase() === 'theme') {
-          const app = document.getElementById('app')
-          app.classList.remove(settings[key] === 'dark' ? 'light' : 'dark')
-          app.classList.add(settings[key] === 'dark' ? 'dark' : 'light')
+          const body = document.body
+          body.classList.remove(settings[key] === 'dark' ? 'light' : 'dark')
+          body.classList.add(settings[key] === 'dark' ? 'dark' : 'light')
         }
 
         if (key === 'locale') {

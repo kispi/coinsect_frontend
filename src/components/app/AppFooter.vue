@@ -120,6 +120,10 @@ export default {
   font-size: 12px;
   padding: 32px 16px 120px;
 
+  .layout-centered {
+    padding: 0 var(--app-default-page-padding);
+  }
+
   .contact-sns {
     display: flex;
 

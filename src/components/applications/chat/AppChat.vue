@@ -326,7 +326,7 @@ export default {
   }
 }
 
-#app {
+body {
   &.light {
     --app-chat-background: var(--white);
   }
