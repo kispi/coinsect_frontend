@@ -123,7 +123,7 @@ export default {
 
     const bybitMarket = symbol => {
       const supportedMarkets = store.getters.markets.bybit.filter(o => o.endsWith('USDT'))
-      return supportedMarkets.find(supported => supported.startsWith(symbol))
+      return supportedMarkets.find(supported => supported === symbol || supported.startsWith(symbol))
     }
 
     const openModalTradingView = () => {
