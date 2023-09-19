@@ -122,8 +122,9 @@ export default {
     const { setTickerSummaryInTitle } = useWebsocketCommon()
 
     const bybitMarket = symbol => {
-      const supportedMarkets = store.getters.markets.bybit.filter(o => o.endsWith('USDT'))
-      return supportedMarkets.find(supported => supported === symbol || supported.startsWith(symbol))
+      const supportedMarkets = store.getters.markets.bybit.filter(o => o.endsWith('USDT')).map(market => market.split('USDT')[0])
+      const found = supportedMarkets.find(supported => supported === symbol)
+      return found ? found + 'USDT' : null
     }
 
     const openModalTradingView = () => {
