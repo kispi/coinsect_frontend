@@ -30,13 +30,7 @@ export const createHttpClient = () => {
         throw { data: {} }
       }
 
-      if (!err.response) {
-        throw err
-      }
-
-      if (err.response.status === 404) helpers.forceRefresh()
-
-      throw err.response
+      throw err.response || err
     },
   )
 
