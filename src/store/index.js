@@ -5,7 +5,6 @@ import constant from './constant'
 import content from './content'
 import dashboard from './dashboard'
 import marketInfo from './market-info'
-import onchain from './onchain'
 import post from './post'
 import ssr from './ssr'
 import user from './user'
@@ -17,7 +16,6 @@ const initialState = {
   content: content.state,
   dashboard: dashboard.state,
   marketInfo: marketInfo.state,
-  onchain: onchain.state,
   post: post.state,
   ssr: ssr.state,
   user: user.state,
@@ -31,7 +29,6 @@ export const newStore = () => createStore({
     content,
     dashboard,
     marketInfo,
-    onchain,
     post,
     ssr,
     user,

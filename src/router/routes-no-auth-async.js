@@ -18,14 +18,6 @@ const indicators = [{
     image: withCdn('og-images/og-image-streamer-positions.png'),
   },
 }, {
-  path: '/indicators/richlist',
-  component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewRichlist'),
-  meta: {
-    title: '리치리스트 - 코인충',
-    description: '암호화폐의 분포를 보여줍니다.',
-    image: withCdn('og-images/og-image-richlist.png'),
-  },
-}, {
   path: '/indicators/whale-alert',
   component: () => import(/* webpackChunkName: 'view-indicators' */ '@/components/views/indicators/ViewWhaleAlert'),
   meta: {

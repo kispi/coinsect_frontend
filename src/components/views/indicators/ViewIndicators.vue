@@ -12,7 +12,6 @@ export default {
   components: {
     ViewLeaderboard: defineAsyncComponent(() => import('./ViewLeaderboard')),
     ViewRealTimePositions: defineAsyncComponent(() => import('./ViewRealTimePositions')),
-    ViewRichlist: defineAsyncComponent(() => import('./ViewRichlist')),
     ViewWhaleAlert: defineAsyncComponent(() => import('./ViewWhaleAlert')),
   },
   setup() {
@@ -22,7 +21,6 @@ export default {
       const p = router.currentRoute.value.path
       if (p === '/indicators/leaderboard') return 'ViewLeaderboard'
       if (p === '/indicators/positions') return 'ViewRealTimePositions'
-      if (p === '/indicators/richlist') return 'ViewRichlist'
       if (p === '/indicators/whale-alert') return 'ViewWhaleAlert'
     })
 

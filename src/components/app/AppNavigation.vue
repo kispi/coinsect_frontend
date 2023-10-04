@@ -52,7 +52,7 @@ import useMenuItems from './app-header/menu-items'
 
 export default {
   setup() {
-    const { store, router } = useGlobalHooks()
+    const { plugins, store, router } = useGlobalHooks()
 
     const { menuItems } = useMenuItems()
 
@@ -62,6 +62,11 @@ export default {
     }
 
     const onClickMenuItem = menuItem => {
+      if (menuItem.link) {
+        plugins.$helpers.openLink(menuItem.link)
+        return
+      }
+
       if (!menuItem.path) {
         menuItem.$$expanded = !menuItem.$$expanded
         return

@@ -339,62 +339,6 @@
     "en": "Quotes",
     "kr": "말말말"
   },
-  "RICHLIST_BALANCE_BETWEEN": {
-    "en": "Balance Between",
-    "kr": "잔고 범위"
-  },
-  "RICHLIST_ADDRESSES": {
-    "en": "No. Addresses",
-    "kr": "주소 수"
-  },
-  "RICHLIST_ADDRESSES_RATIO": {
-    "en": "%. Addresses",
-    "kr": "%. 주소"
-  },
-  "RICHLIST_BALANCE": {
-    "en": "Total Balance",
-    "kr": "총 잔고"
-  },
-  "RICHLIST_VALUATION": {
-    "en": "Valuation",
-    "kr": "평가액"
-  },
-  "RICHLIST_DOMINANCE": {
-    "en": "Dominance",
-    "kr": "도미넌스"
-  },
-  "SHRIMP": {
-    "en": "Shrimp",
-    "kr": "새우"
-  },
-  "CRAB": {
-    "en": "Crab",
-    "kr": "게"
-  },
-  "OCTOPUS": {
-    "en": "Octopus",
-    "kr": "문어"
-  },
-  "FISH": {
-    "en": "Fish",
-    "kr": "물고기"
-  },
-  "DOLPHIN": {
-    "en": "Dolphin",
-    "kr": "돌고래"
-  },
-  "SHARK": {
-    "en": "Shark",
-    "kr": "상어"
-  },
-  "WHALE": {
-    "en": "Whale",
-    "kr": "고래"
-  },
-  "HUMPBACK": {
-    "en": "Humpback",
-    "kr": "혹등고래"
-  },
   "GENERATE": {
     "en": "Generate",
     "kr": "생성"
