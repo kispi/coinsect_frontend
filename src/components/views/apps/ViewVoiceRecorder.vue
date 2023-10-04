@@ -15,7 +15,7 @@
     </div>
     <div class="voice-recognition section">
       <div class="section-title"><a href="https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/grammars" target="_blank">webkitSpeechRecognition</a></div>
-      <button class="btn btn-primary" @click="onClickRecognition">{{ active ? '음성인식중지' : '음성인식시작' }}</button>
+      <button class="btn btn-primary" @click="onClickRecognition">{{ active ? '음성인식중지(영어)' : '음성인식시작(영어)' }}</button>
       <div class="pre-line m-t-8">인식된 음성: {{ text || '-' }}</div>
     </div>
   </div>
@@ -52,7 +52,7 @@ export default {
       }
 
       recognition.value = new webkitSpeechRecognition()
-      recognition.value.lang = 'ko-KR'
+      recognition.value.lang = 'en-US' // 'ko-KR'
       recognition.value.continuous = true
       recognition.value.onresult = (event) => text.value = event.results[event.results.length - 1][0].transcript
     }
