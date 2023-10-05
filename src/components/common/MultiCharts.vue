@@ -76,7 +76,7 @@ export default {
     const onClickAddChart = () => {
       if (store.getters.charts.length >= 6) return
 
-      const preset = ['BINANCE:BTCUSDT', 'FOREXCOM:NSXUSD', 'USDX', 'CRYPTOCAP:BTC.D', 'USOIL', 'UPBIT:BTCKRW/(BINANCE:BTCUSDT*FX_IDC:USDKRW) * 100']
+      const preset = ['BTCUSDT', 'NSXUSD', 'USDX', 'BTC.D', 'USOIL']
       preset.some(symbol => {
         if (store.getters.charts.every(chart => chart.symbol !== symbol)) {
           store.getters.charts.push({

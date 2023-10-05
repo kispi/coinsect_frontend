@@ -59,8 +59,8 @@ const app = {
     },
     showNavigation: null,
     charts: [
-      { symbol: 'BINANCE:BTCUSDT', interval: 15 },
-      { symbol: 'FOREXCOM:NSXUSD', interval: 15 },
+      { symbol: 'BTCUSDT', interval: 15 },
+      { symbol: 'NSXUSD', interval: 15 },
     ],
     chatStats: {},
     chatUsers: null, // 웹소켓 커넥션이 아니고 접속자 정보임
