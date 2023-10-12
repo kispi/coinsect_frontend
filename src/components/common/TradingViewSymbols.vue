@@ -33,28 +33,20 @@ export default {
     }
 
     const tradingviewSymbols = ref([{
-      name: 'BTCUSDT_BINANCE',
-      key: 'BINANCE:BTCUSDT',
+      name: 'BTCUSDT',
+      key: 'BTCUSDT',
       img: require('@/assets/images/binance.svg'),
-    }, {
-      name: 'BTCUSDT_BYBIT',
-      key: 'BYBIT:BTCUSDT',
-      img: require('@/assets/images/bybit.svg'),
-    }, {
-      name: 'BTCUSD_BITSTAMP',
-      key: 'BITSTAMP:BTCUSD',
-      img: require('@/assets/images/bitstamp.svg'),
     }, {
       name: 'USDX',
       key: 'USDX',
       img: 'https://s3-symbol-logo.tradingview.com/indices/u-s-dollar-index--600.png',
     }, {
       name: 'NASDAQ',
-      key: 'FOREXCOM:NSXUSD',
+      key: 'NSXUSD',
       img: 'https://s3-symbol-logo.tradingview.com/indices/nasdaq-100.svg',
     }, {
       name: 'S&P 500',
-      key: 'FOREXCOM:SPXUSD',
+      key: 'SPXUSD',
       img: 'https://s3-symbol-logo.tradingview.com/indices/s-and-p-500.svg'
     }, {
       name: 'GOLD',
@@ -66,23 +58,19 @@ export default {
       img: 'https://s3-symbol-logo.tradingview.com/metal/silver.svg',
     }, {
       name: 'BTC_DOMINANCE',
-      key: 'CRYPTOCAP:BTC.D',
+      key: 'BTC.D',
       img: 'https://static.upbit.com/logos/BTC.png',
     }, {
       name: 'ETH_DOMINANCE',
-      key: 'CRYPTOCAP:ETH.D',
+      key: 'ETH.D',
       img: 'https://static.upbit.com/logos/ETH.png',
     }, {
-      name: 'KIMCHI_PREMIUM',
-      key: 'UPBIT:BTCKRW/(BINANCE:BTCUSDT*FX_IDC:USDKRW) * 100',
-      img: 'https://static.upbit.com/logos/BTC.png',
-    }, {
       name: 'BITCOIN_LONGS',
-      key: 'BITFINEX:BTCUSDLONGS',
+      key: 'BTCUSDLONGS',
       img: 'https://static.upbit.com/logos/BTC.png',
     }, {
       name: 'BITCOIN_SHORTS',
-      key: 'BITFINEX:BTCUSDSHORTS',
+      key: 'BTCUSDSHORTS',
       img: 'https://static.upbit.com/logos/BTC.png',
     }].map(o => ({
       ...o,

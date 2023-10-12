@@ -47,25 +47,13 @@
     "en": "Kimp",
     "kr": "김프"
   },
-  "BTCUSD_BITSTAMP": {
-    "en": "Bitcoin (Bitstamp)",
-    "kr": "비트코인 (Bitstamp)"
-  },
-  "BTCUSDT_BINANCE": {
-    "en": "Bitcoin (Binance)",
-    "kr": "비트코인 (Binance)"
-  },
-  "BTCUSDT_BYBIT": {
-    "en": "Bitcoin (Bybit)",
-    "kr": "비트코인 (Bybit)"
-  },
   "BITCOIN_LONGS": {
-    "en": "Bitcoin (Bitfinex)",
-    "kr": "비트코인 롱 (Bitfinex)"
+    "en": "Bitcoin Longs",
+    "kr": "비트코인 롱"
   },
   "BITCOIN_SHORTS": {
-    "en": "Bitcoin (Bitfinex)",
-    "kr": "비트코인 숏 (Bitfinex)"
+    "en": "Bitcoin Shorts",
+    "kr": "비트코인 숏"
   },
   "USDX": {
     "en": "Dollar Index",
