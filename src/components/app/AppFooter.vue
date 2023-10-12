@@ -8,7 +8,8 @@
           v-for="section in sections">
           <div class="section-title" v-html="$translate(section.title)"/>
           <a
-            @click.prevent="$router.push(page.path)"
+            class="cursor-pointer"
+            @click.prevent="page.path ? $router.push(page.path) : $helpers.openLink(page.link)"
             :href="page.path"
             :key="page.path"
             v-for="page in section.subItems"
