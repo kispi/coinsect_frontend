@@ -16,7 +16,7 @@ const dashboard = {
   actions: {
     async loadDashboardsMain({ commit }) {
       try {
-        const resp = await $http.get('dashboards/main')
+        const resp = await helpers.logic.crypto.decryptAPI(await $http.get('dashboards/main'))
         if (resp.leaderboards) {
           // 리더보드에서 '워뇨띠' 찾아넣기
           const found = (resp.leaderboards || []).find(o => o.name === 'aoa')

@@ -94,7 +94,7 @@ export default {
     const search = async () => {
       try {
         loading.value = true
-        resp.value = await onchainService.whaleAlert(createQuery().build())
+        resp.value = await plugins.$helpers.logic.crypto.decryptAPI(await onchainService.whaleAlert(createQuery().build()))
       } catch (e) {
         plugins.$toast.error(e.data.message)
       } finally {

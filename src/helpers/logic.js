@@ -149,6 +149,29 @@ const logic = {
         return hashHex
       },
     },
+    decryptAPI: async encrypted => {
+      let decrypted = ''
+
+      for (let i = 0; i < encrypted.length; i++) {
+        const char = encrypted.charAt(i)
+        let decryptedChar = ''
+
+        for (let j = 0; j < char.length; j++) {
+          const charCode = char.charCodeAt(j)
+          const shiftedCharCode = charCode + 5 // shiftAmount is 5
+
+          decryptedChar += String.fromCharCode(shiftedCharCode)
+        }
+
+        decrypted += decryptedChar
+      }
+
+      try {
+        return JSON.parse(decrypted)
+      } catch (error) {
+        console.error('Decryption error:', error)
+      }
+    },
   },
 }
 
