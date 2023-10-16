@@ -14,11 +14,6 @@
     >
       <div class="key" v-html="$translate(index.key)"/>
       <div class="value f-mono" v-html="index.value"/>
-      <div
-        class="changes f-mono"
-        :class="index.changes > 0 ? 'c-price-up' : 'c-price-down'"
-        v-html="`${index.changes > 0 ? '+' : ''}${index.changes}%`"
-      />
     </AdaptiveLayout>
   </div>
 </template>
@@ -43,17 +38,14 @@ export default {
         key: 'USD/KRW',
         link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=USDKRW',
         value: usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }),
-        changes: Math.round(o.signedChangeRate * 10000) / 100,
       }, {
         key: 'BTC_DOMINANCE',
         link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ABTC.D',
         value: `${o.btcDominance}%`,
-        changes: o.btcDominance24hChangePercent,
       }, {
         key: 'TOTAL_MARKET_CAP',
         link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ATOTAL',
         value: plugins.$helpers.number.pretty.cap({ cap: o.totalMarketCap, baseCurrency: 'usd' }),
-        changes: o.totalMarketCap24hChangePercent,
       }]
     })
 
