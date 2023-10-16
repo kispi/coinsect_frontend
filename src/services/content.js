@@ -4,7 +4,7 @@ import { $http } from '@/modules/axios'
 const content = {
   realTimePositions: async () => {
     try {
-      return await helpers.logic.crypto.decryptAPI(await $http.get('contents/real_time_positions'))
+      return await helpers.logic.crypto.decryptAPIResponse(await $http.get('contents/real_time_positions'))
     } catch (e) {
       return Promise.reject(e)
     }
