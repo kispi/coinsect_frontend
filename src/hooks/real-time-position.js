@@ -73,7 +73,7 @@ const useRealTimePosition = () => {
     const updateTarget = (realTimePositionsArray || []).find(p => p.id === newPosition.id)
     if (!updateTarget) return
 
-    const keys = ['size', 'entryPrice', 'liqPrice', 'markPrice', 'contract', '$$value', '$$unrealized', 'onAir', 'tracking', 'editable', 'lastUpdate']
+    const keys = ['size', 'entryPrice', 'liqPrice', 'markPrice', 'contract', '$$value', '$$unrealized', 'onAir', 'editable', 'lastUpdate']
     keys.forEach(key => updateTarget[key] = newPosition[key])
   }
 
