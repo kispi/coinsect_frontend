@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="user"
-    class="app-chat-profile lines-1"
+    class="app-chat-profile"
     :class="{
       'authenticated': user.id,
     }">

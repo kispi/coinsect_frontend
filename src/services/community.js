@@ -20,6 +20,8 @@ const remove = {
   reply: ({ id, password }) => $http.delete(`replies/${id}`, { data: { password } }),
 }
 
+const pricePrediction = crudService.pricePrediction
+
 export default {
   board: {
     all: () => $http.get('boards'),
@@ -28,4 +30,5 @@ export default {
   remove,
   checkPassword,
   toggleReaction,
+  pricePrediction,
 }

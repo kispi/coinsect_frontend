@@ -33,6 +33,12 @@
         </div>
       </MainSection>
       <MainSection
+        :title="'PRICE_PREDICTIONS'"
+        :image="'https://cdn-icons-png.flaticon.com/512/4882/4882559.png'"
+        :tooltip="'TOOLTIP_PRICE_PREDICTIONS'">
+        <PricePredictions/>
+      </MainSection>
+      <MainSection
         :title="titleBitmexLeaderboard"
         :link="'/indicators/leaderboard'"
         :image="'https://d1085v6s0hknp1.cloudfront.net/images/exchanges/BITMEX.png'">
@@ -74,13 +80,14 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import BitmexSimple from './BitmexSimple'
 import MainSection from './MainSection'
+import PricePredictions from './PricePredictions'
 import RecentPosts from '../RecentPosts'
 import RealTimePriceCards from '@/components/views/real-time-prices/RealTimePriceCards'
 import SectionNews from './SectionNews'
 import useRealTimePosition from '@/hooks/real-time-position'
 
 export default {
-  components: { BitmexSimple, MainSection, RecentPosts, RealTimePriceCards, SectionNews },
+  components: { BitmexSimple, MainSection, PricePredictions, RecentPosts, RealTimePriceCards, SectionNews },
   setup() {
     const { plugins, store } = useGlobalHooks()
 

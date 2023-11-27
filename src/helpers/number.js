@@ -1,7 +1,8 @@
 import { store } from '@/store'
 
-const conversionRatio = baseCurrency => {
+const conversionRatio = ({ baseCurrency, noConversion }) => {
   if (
+    noConversion ||
     baseCurrency === store.getters.settings.currency ||
     store.getters.settings.baseExchangeMarket === 'btc'
   ) return 1
@@ -13,8 +14,9 @@ const conversionRatio = baseCurrency => {
 
 const number = {
   pretty: {
-    price: ({ price, baseCurrency, fracs }) => {
-      const converted = price * conversionRatio(baseCurrency)
+    // noConversion: true이면 baseCurrency 무관하게 항상 conversionRatio는 1이다.
+    price: ({ price, baseCurrency, fracs, noConversion }) => {
+      const converted = price * conversionRatio({ baseCurrency, noConversion })
 
       let numFracs = 0
       if (Math.abs(converted) < 100) numFracs = 2
@@ -49,7 +51,7 @@ const number = {
       return result.slice(0, numKorUnits).join(' ')
     },
     cap: ({ cap, baseCurrency, numKorUnits = 2 }) => {
-      const converted = cap * conversionRatio(baseCurrency)
+      const converted = cap * conversionRatio({ baseCurrency })
       if (baseCurrency === 'btc') return converted.toLocaleString(undefined, { maximumFractionDigits: 4, minimumFractionDigits: 4 })
 
       if (store.getters.settings.locale === 'en') {

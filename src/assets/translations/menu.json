@@ -155,6 +155,10 @@
     "en": "Realtime Positions",
     "kr": "실시간 포지션"
   },
+  "PRICE_PREDICTIONS": {
+    "en": "Price Predictions",
+    "kr": "가격 예측"
+  },
   "LONG_SHORT": {
     "en": "Long & Short",
     "kr": "롱 & 숏"

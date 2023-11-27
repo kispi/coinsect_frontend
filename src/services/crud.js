@@ -5,6 +5,7 @@ const crudTargets = [
   'person',
   'post',
   'reply',
+  'pricePrediction',
 ].map(key => ({
   model: key,
   endpoint: helpers.template.case.toSnake(helpers.template.case.pluralize(key)),
