@@ -141,6 +141,8 @@ export default {
         plugins.$toast.error('시간 구간 최솟값이나 최댓값, 적어도 둘 중 하나는 있어야 합니다.')
         return false
       }
+
+      return true
     }
 
     const createPrediction = async () => {
