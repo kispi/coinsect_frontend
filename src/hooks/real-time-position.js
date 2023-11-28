@@ -58,7 +58,7 @@ const useRealTimePosition = () => {
     reloadMarkets()
     if (markets.value.length === 0) return
 
-    subscribe({ type: 'instrument_info.100ms', markets: markets.value }).then(conn => connection.value = conn)
+    subscribe({ type: 'tickers', markets: markets.value }).then(conn => connection.value = conn)
   }
 
   const callApi = async () => {
@@ -108,18 +108,14 @@ const useRealTimePosition = () => {
       if (!newVal || !store.getters.realTimePositions) return
 
       store.getters.realTimePositions.data.forEach(position => {
-        position.markPrice = parseFloat((newVal[position.contract] || {}).mark_price || 0)
-        if (!position.entryPrice) return
+        const bybitMarkPrice = (newVal[position.contract] || {}).markPrice
+        if (!position.entryPrice || !bybitMarkPrice) return
 
-        if (position.size > 0) {
-          position.$$unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
-        }
+        if (position.size > 0) position.$$unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
+        if (position.size < 0) position.$$unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
 
-        if (position.size < 0) {
-          position.$$unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
-        }
-
-        position.$$value = position.size * position.markPrice
+        position.markPrice = parseFloat(bybitMarkPrice) || 0
+        position.$$value = position.size * position.markPrice || 0
       })
     },
     { deep: true },

@@ -120,7 +120,7 @@ const useBybit = () => {
       USDT Perpetual: /realtime_public
       Inverse Perpetual: /realtime
     */
-    const connection = new WebSocket('wss://stream.bybit.com/realtime_public')
+    const connection = new WebSocket('wss://stream.bybit.com/v5/public/linear')
 
     connection.onopen = () => {
       connection.send(JSON.stringify({
@@ -137,7 +137,7 @@ const useBybit = () => {
         if (!json.data) return
 
         if (type.includes('orderBookL2')) markets.forEach(market => setOrderbook(json, market))
-        if (type === 'instrument_info.100ms') markets.forEach(market => setInstrument(json, market))
+        if (type === 'tickers') markets.forEach(market => setInstrument(json, market))
       } catch (e) {}
     }
 
