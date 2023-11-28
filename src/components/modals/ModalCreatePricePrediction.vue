@@ -131,7 +131,21 @@ export default {
       })
     })
 
+    const valid = () => {
+      if (!payload.value.priceMax && !payload.value.priceMin) {
+        plugins.$toast.error('가격 구간 최솟값이나 최댓값, 적어도 둘 중 하나는 있어야 합니다.')
+        return false
+      }
+
+      if (!payload.value.timeFrom && !payload.value.timeTo) {
+        plugins.$toast.error('시간 구간 최솟값이나 최댓값, 적어도 둘 중 하나는 있어야 합니다.')
+        return false
+      }
+    }
+
     const createPrediction = async () => {
+      if (!valid()) return
+
       const isToday = plugins.$helpers.dayjs(payload.value.timeFrom).isSame(plugins.$helpers.dayjs(), 'day')
       if (isToday) {
         const ok = await plugins.$modal.confirm({
