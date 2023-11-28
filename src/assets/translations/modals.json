@@ -84,7 +84,7 @@
     "kr": "이미지 업로드"
   },
   "MODAL_WARNING_CREATE_PREDICTION_TODAY": {
-    "en": "Do you really predict that the price will reach the target price range(%s) today?",
-    "kr": "정말 오늘 해당 가격 구간(%s)에 도달하리라 예측하시는건가요?"
+    "en": "Do you really predict that the price will reach the target price range(%s) <b class='c-danger'>today</b>?",
+    "kr": "정말 <b class='c-danger'>오늘</b> 해당 가격 구간(%s)에 도달하리라 예측하시는건가요?"
   }
 }

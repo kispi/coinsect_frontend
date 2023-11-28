@@ -135,7 +135,7 @@ export default {
       const isToday = plugins.$helpers.dayjs(payload.value.timeFrom).isSame(plugins.$helpers.dayjs(), 'day')
       if (isToday) {
         const ok = await plugins.$modal.confirm({
-          body: plugins.$translate('MODAL_WARNING_CREATE_PREDICTION_TODAY').replace('%s', priceRan),
+          body: plugins.$translate('MODAL_WARNING_CREATE_PREDICTION_TODAY').replace('%s', plugins.$helpers.logic.pricePrediction.priceRange(payload.value)),
         })
         if (!ok) return
       }
