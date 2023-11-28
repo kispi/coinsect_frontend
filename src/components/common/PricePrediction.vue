@@ -61,7 +61,7 @@ export default {
       const d = plugins.$helpers.dayjs
       const whatPriceToUse = p.priceMin || p.priceMax
       const whatDayToUse = p.timeTo || p.timeFrom
-      const diff = d(whatDayToUse).diff(d(p.timeFrom), 'days')
+      const diff = d(whatDayToUse).diff(d(), 'days')
       return {
         price: o.value.$$outlook() ? `${((whatPriceToUse - p.priceSnapshot) * 100 / p.priceSnapshot).toFixed(2)}%` : '횡보',
         date: diff >= 0 ? `${diff}일 남음` : '만료',
