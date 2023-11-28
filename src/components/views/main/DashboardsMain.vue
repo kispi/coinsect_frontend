@@ -36,7 +36,7 @@
         :title="'PRICE_PREDICTIONS'"
         :image="'https://cdn-icons-png.flaticon.com/512/4882/4882559.png'"
         :tooltip="'TOOLTIP_PRICE_PREDICTIONS'">
-        <PricePredictions/>
+        <PricePredictions class="h-100"/>
       </MainSection>
       <MainSection
         :title="titleBitmexLeaderboard"

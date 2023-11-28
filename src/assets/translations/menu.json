@@ -155,9 +155,33 @@
     "en": "Realtime Positions",
     "kr": "실시간 포지션"
   },
+  "CREATE_PREDICTION": {
+    "en": "Create Prediction",
+    "kr": "예측 남기기"
+  },
+  "MARKET": {
+    "en": "Market",
+    "kr": "마켓"
+  },
+  "PERIOD": {
+    "en": "Period",
+    "kr": "기간"
+  },
+  "PRICE_RANGE": {
+    "en": "Price Range",
+    "kr": "가격 구간"
+  },
+  "PRICE_PREDICTION_DESCRIPTION": {
+    "en": "Please predict the price range of a specific period!<br>Please give us a tight guess as possible 😀",
+    "kr": "특정 기간의 가격이 대략 어느 구간일지 예측해주세요!<br>너무 넓은 범위보다는 최대한 구체적인 구간을 잡아주시면 감사하겠습니다 😀"
+  },
+  "CURRENT_PRICE": {
+    "en": "Current Price",
+    "kr": "현재 가격"
+  },
   "PRICE_PREDICTIONS": {
-    "en": "Price Predictions",
-    "kr": "가격 예측"
+    "en": "Users Price Predictions",
+    "kr": "유저 가격 예측"
   },
   "LONG_SHORT": {
     "en": "Long & Short",

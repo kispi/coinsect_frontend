@@ -157,12 +157,6 @@ table {
   padding: 2px 8px;
 }
 
-.recent-posts .row,
-.table-posts,
-.c-post {
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
 .youtube-container-size-limiter {
   max-width: 560px;
 
@@ -182,4 +176,17 @@ table {
 .layout-centered {
   max-width: 1200px;
   margin: auto;
+}
+
+// vue-datepicker
+.dp__main {
+  .dp__input,
+  .dp__menu,
+  .dp__action_button {
+    font-family: 'IBM Plex Sans KR', monospace;
+  }
+  
+  .dp__action_button {
+    white-space: nowrap;
+  }
 }

@@ -42,6 +42,20 @@ const logic = {
     const orderedIndices = JSON.parse(JSON.stringify(foundIndices)).sort()
     return JSON.stringify(foundIndices) === JSON.stringify(orderedIndices)
   },
+  pricePrediction: {
+    dateRange: pricePrediction => {
+      const d = date => helpers.dayjs(date).format('YYYY-MM-DD')
+      if (pricePrediction.timeFrom && pricePrediction.timeTo) return `${d(pricePrediction.timeFrom)} ~ ${d(pricePrediction.timeTo)}`
+      if (pricePrediction.timeFrom) return `${d(pricePrediction.timeFrom)} ~`
+      if (pricePrediction.timeTo) return `~ ${d(pricePrediction.timeTo)}`
+    },
+    priceRange: pricePrediction => {
+      const p = price => helpers.number.pretty.price({ price, noConversion: true})
+      if (parseFloat(pricePrediction.priceMin) && parseFloat(pricePrediction.priceMax)) return `$${p(pricePrediction.priceMin)} ~ $${p(pricePrediction.priceMax)}`
+      if (parseFloat(pricePrediction.priceMin)) return `$${p(pricePrediction.priceMin)} ~`
+      if (parseFloat(pricePrediction.priceMax)) return `~ $${p(pricePrediction.priceMax)}`
+    },
+  },
   writing: {
     isMine: writing => {
       if (!store.getters.me || !(writing || {}).user) return

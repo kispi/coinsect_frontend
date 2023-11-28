@@ -1,72 +1,82 @@
 <template>
   <div class="price-predictions">
-    <div
-      v-if="((resp || {}).data || []).length === 0"
-      class="center f-500 f-16 c-text-stress">
-      {{ $translate('NO_SEARCH_RESULT') }}
+    <div class="items pretty-scrollbar">
+      <div
+        v-if="(($store.getters.pricePredictions || {}).data || []).length === 0"
+        class="center f-500 f-16 c-text-stress flex-fill">
+        {{ $translate('NO_SEARCH_RESULT') }}
+      </div>
+      <template v-else>
+        <PricePrediction
+          :pricePrediction="prediction"
+          :key="prediction.sharingKey"
+          v-for="prediction in ($store.getters.pricePredictions || {}).data"
+        />
+      </template>
     </div>
-    <template v-else>
-      <PricePrediction
-        :pricePrediction="prediction"
-        :key="prediction.sharingKey"
-        v-for="prediction in (resp || {}).data"
-      />
-    </template>
+    <button
+      class="btn btn-primary"
+      @click="$modal.custom({ component: 'ModalCreatePricePrediction' })">
+      {{ $translate('CREATE_PREDICTION') }}
+    </button>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
-import communityService from '@/services/community'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
     const { plugins, store } = useGlobalHooks()
 
-    const resp = ref(null)
+    const timeout = ref(null)
 
-    const createPrediction = async () => {
+    const callApi = async () => {
       try {
-        await communityService.pricePrediction.create({
-          nickname: store.getters.me ? store.getters.me.profile.nickname : ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname,
-          password: '1234',
-          ticker: 'BTCUSDT',
-          timeFrom: '2025-01-01',
-          timeTo: '2025-02-28',
-          priceMin: 72000,
-          priceMax: 76000,
-        })
+        await store.dispatch('loadPricePredictions')
       } catch (e) {
         plugins.$toast.error(e.data.message)
+      } finally {
+        timeout.value = setTimeout(callApi, 1000 * 60 * 5)
       }
     }
 
-    const loadPredictions = async () => {
-      try {
-        resp.value = await communityService.pricePrediction.all()
-      } catch (e) {
-        plugins.$toast.error(e.data.message)
-      }
+    const onNewPrediction = message => {
+      if (!message.meta) return
+
+      store.getters.pricePredictions.data.unshift(message.meta)
     }
 
-    const init = () => {
-      loadPredictions()
-      // createPrediction()
-    }
+    onMounted(callApi)
 
-    onMounted(init)
+    onUnmounted(() => {
+      if (timeout.value) clearTimeout(timeout.value)
+    })
 
-    return {
-      resp,
-    }
+    watch(
+      () => store.getters.chat.lastWebsocketMessage,
+      onNewPrediction,
+    )
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .price-predictions {
-  display: grid;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+
+  .items {
+    display: grid;
+    align-content: flex-start;
+    overflow-y: auto;
+    gap: 2px;
+  }
+
+  .btn-primary {
+    margin-top: 8px;
+    padding: 12px 16px;
+  }
 }
 </style>

@@ -104,10 +104,13 @@ export default {
     position: relative;
     padding: 0 8px 8px;
     flex: 1;
+    display: flex;
+    flex-direction: column;
 
     .scrollable {
       max-height: 336px;
       overflow-y: auto;
+      flex: 1;
     }
 
     &.whale-alerts {
