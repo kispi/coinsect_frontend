@@ -1,13 +1,13 @@
 <template>
   <div
     class="price-prediction"
-    :class="o.$$outlook()">
+    :class="$helpers.logic.pricePrediction.outlook(pricePrediction)">
     <div class="flex-row items-center g-8">
       <div class="badge-ticker flex-wrap">
         <img v-if="mustThumb" :src="mustThumb"/>
         {{ o.ticker }}
       </div>
-      <div class="outlook flex-wrap">{{ o.$$outlook() }}</div>
+      <div class="outlook flex-wrap">{{ $helpers.logic.pricePrediction.outlook(pricePrediction) }}</div>
       <div
         ref="refSnapshot"
         class="snapshot flex-wrap"
@@ -25,7 +25,8 @@
     <div class="flex-row items-end">
       <ul class="p-l-16">
         <li class="disc">{{ $helpers.logic.pricePrediction.priceRange(pricePrediction) }} <span class="percentage">({{ summary.price }})</span></li>
-        <li class="disc">{{ $helpers.logic.pricePrediction.dateRange(pricePrediction) }} ({{ summary.date }})</li>
+        <li class="disc">{{ $helpers.logic.pricePrediction.dateRange(pricePrediction) }}</li>
+        <li class="disc" v-html="$helpers.logic.pricePrediction.summary(pricePrediction)"/>
       </ul>
       <div class="profile flex-row items-center flex-wrap">
         <AppChatProfile v-if="o.user" :user="o.user"/>
@@ -59,11 +60,15 @@ export default {
     const summary = computed(() => {
       const p = props.pricePrediction
       const d = plugins.$helpers.dayjs
-      const whatPriceToUse = p.priceMin || p.priceMax
+      const whatPriceToUse = (() => {
+        if (plugins.$helpers.logic.pricePrediction.outlook(p) === 'bullish') return p.priceMax || p.priceMin
+        if (plugins.$helpers.logic.pricePrediction.outlook(p) === 'bearish') return p.priceMin || p.priceMax
+        return p.priceMin || p.priceMax
+      })()
       const whatDayToUse = p.timeTo || p.timeFrom
-      const diff = d(whatDayToUse).diff(d(), 'days')
+      const diff = d(whatDayToUse).startOf('day').diff(d().startOf('day'), 'days')
       return {
-        price: o.value.$$outlook() ? `${((whatPriceToUse - p.priceSnapshot) * 100 / p.priceSnapshot).toFixed(2)}%` : '횡보',
+        price: plugins.$helpers.logic.pricePrediction.outlook(p) !== 'sideways' ? `${((whatPriceToUse - p.priceSnapshot) * 100 / p.priceSnapshot).toFixed(2)}%` : '횡보',
         date: diff >= 0 ? `${diff}일 남음` : '만료',
       }
     })
@@ -80,10 +85,6 @@ export default {
       timeFrom: props.pricePrediction.timeFrom,
       timeTo: props.pricePrediction.timeTo,
       createdAt: props.pricePrediction.createdAt,
-      $$outlook: () => {
-        if (props.pricePrediction.priceMin > props.pricePrediction.priceSnapshot) return 'bullish'
-        if (props.pricePrediction.priceMax < props.pricePrediction.priceSnapshot) return 'bearish'
-      },
     }))
 
     return {
@@ -126,6 +127,7 @@ export default {
     padding: 0 4px;
     text-transform: capitalize;
     margin-right: auto;
+    border: 1px solid var(--border-base);
   }
 
   .badge-ticker {
@@ -156,6 +158,7 @@ export default {
     .outlook {
       background: var(--price-down-bybit-bg);
       color: var(--price-down-bybit);
+      border: 1px solid var(--price-down-bybit-bg);
     }
 
     .percentage {
@@ -169,6 +172,7 @@ export default {
     .outlook {
       background: var(--price-up-bybit-bg);
       color: var(--price-up-bybit);
+      border: 1px solid var(--price-up-bybit-bg);
     }
 
     .percentage {

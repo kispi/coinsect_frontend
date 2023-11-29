@@ -55,6 +55,22 @@ const logic = {
       if (parseFloat(pricePrediction.priceMin)) return `$${p(pricePrediction.priceMin)} ~`
       if (parseFloat(pricePrediction.priceMax)) return `~ $${p(pricePrediction.priceMax)}`
     },
+    summary: pricePrediction => {
+      const d = date => helpers.dayjs(date)
+      const diff = d(pricePrediction.timeTo || pricePrediction.timeFrom).startOf('day').diff(d().startOf('day'), 'days')
+      if (diff < 0) return '만료'
+
+      const l = logic.pricePrediction.outlook(pricePrediction)
+      return `${diff}일 안에 <span class="${l === 'bullish' ? 'c-price-up-bybit' : l === 'bearish' ? 'c-price-down-bybit' : null}">$${helpers.number.pretty.price({
+        price: parseFloat(pricePrediction.priceMin || pricePrediction.priceMax),
+        noConversion: true,
+      })}</span> 도달`
+    },
+    outlook: pricePrediction => {
+      if (pricePrediction.priceMin > pricePrediction.priceSnapshot) return 'bullish'
+      if (pricePrediction.priceMax < pricePrediction.priceSnapshot) return 'bearish'
+      return 'sideways'
+    },
   },
   writing: {
     isMine: writing => {

@@ -11,7 +11,7 @@
         <div class="m-t-8 f-12">{{ $translate('CURRENT_PRICE') }}: ${{ $helpers.number.pretty.price({ price: currentTickerPrice, noConversion: true }) || '-' }}</div>
       </div>
       <div class="form-control">
-        <label>{{ $translate('PERIOD') }}<span v-if="$store.getters.windowInnerWidth < 480" class="m-l-4">(from / to)</span></label>
+        <label>{{ $translate('PERIOD') }} (시작일만 필수)</label>
         <AdaptiveLayout
           :gap="8"
           :boundaryWidth="480"
@@ -34,7 +34,7 @@
         </AdaptiveLayout>
       </div>
       <div class="form-control">
-        <label>{{ $translate('PRICE_RANGE') }}</label>
+        <label>{{ $translate('PRICE_RANGE') }} (둘 중 하나는 필수)</label>
         <div class="flex-row items-center">
           <div class="input-wrapper">
             <span>$</span>
@@ -73,8 +73,8 @@ export default {
 
     const payload = ref({
       ticker: 'BTCUSDT',
-      timeFrom: plugins.$helpers.dayjs().startOf('day').format('YYYY-MM-DD'),
-      timeTo: plugins.$helpers.dayjs().endOf('day').format('YYYY-MM-DD'),
+      timeFrom: plugins.$helpers.dayjs().add(1, 'days').startOf('day').format('YYYY-MM-DD'),
+      timeTo: null,
       priceMin: null,
       priceMax: null,
       password: null,
@@ -142,6 +142,16 @@ export default {
         return false
       }
 
+      if (payload.value.timeFrom && !plugins.$helpers.dayjs(payload.value.timeFrom).isValid()) {
+        plugins.$toast.error('시작일이 올바르지 않습니다.')
+        return false
+      }
+
+      if (payload.value.timeTo && !plugins.$helpers.dayjs(payload.value.timeTo).isValid()) {
+        plugins.$toast.error('종료일이 올바르지 않습니다.')
+        return false
+      }
+
       return true
     }
 
@@ -158,8 +168,6 @@ export default {
 
       try {
         if (store.getters.me) delete payload.value.password
-        if (!plugins.$helpers.dayjs(payload.value.timeFrom).isValid()) delete payload.value.timeFrom
-        if (!plugins.$helpers.dayjs(payload.value.timeTo).isValid()) delete payload.value.timeTo
         await crudService.pricePrediction.create({
           ...payload.value,
           nickname: store.getters.me ? store.getters.me.profile.nickname : ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname,
