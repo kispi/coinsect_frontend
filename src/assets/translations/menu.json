@@ -171,8 +171,12 @@
     "en": "Price Range",
     "kr": "가격 구간"
   },
+  "AT_LEAST_ONE_OF_THESE": {
+    "en": "At least one of these is required",
+    "kr": "둘 중 하나는 필수"
+  },
   "PRICE_PREDICTION_DESCRIPTION": {
-    "en": "Please predict the price range of a specific period!<br>Please give us a tight guess as possible 😀",
+    "en": "Please predict the price range of a specific period!<br>Please give as tight guess as possible 😀",
     "kr": "특정 기간의 가격이 대략 어느 구간일지 예측해주세요!<br>너무 넓은 범위보다는 최대한 구체적인 구간을 잡아주시면 감사하겠습니다 😀"
   },
   "CURRENT_PRICE": {

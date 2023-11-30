@@ -11,7 +11,7 @@
         <div class="m-t-8 f-12">{{ $translate('CURRENT_PRICE') }}: ${{ $helpers.number.pretty.price({ price: currentTickerPrice, noConversion: true }) || '-' }}</div>
       </div>
       <div class="form-control">
-        <label>{{ $translate('PERIOD') }} (시작일만 필수)</label>
+        <label>{{ $translate('PERIOD') }} ({{ $translate('AT_LEAST_ONE_OF_THESE') }})</label>
         <AdaptiveLayout
           :gap="8"
           :boundaryWidth="480"
@@ -34,7 +34,7 @@
         </AdaptiveLayout>
       </div>
       <div class="form-control">
-        <label>{{ $translate('PRICE_RANGE') }} (둘 중 하나는 필수)</label>
+        <label>{{ $translate('PRICE_RANGE') }} ({{ $translate('AT_LEAST_ONE_OF_THESE') }})</label>
         <div class="flex-row items-center">
           <div class="input-wrapper">
             <span>$</span>
@@ -182,7 +182,7 @@ export default {
     watch(
       () => payload.value.timeFrom,
       newVal => {
-        payload.value.timeFrom = plugins.$helpers.dayjs(newVal).startOf('day').format('YYYY-MM-DD')
+        payload.value.timeFrom = newVal ? plugins.$helpers.dayjs(newVal).startOf('day').format('YYYY-MM-DD') : null
         if (payload.value.timeFrom > payload.value.timeTo) payload.value.timeTo = plugins.$helpers.dayjs(newVal).endOf('day').format('YYYY-MM-DD')
       },
     )
@@ -190,7 +190,7 @@ export default {
     watch(
       () => payload.value.timeTo,
       newVal => {
-        payload.value.timeTo = plugins.$helpers.dayjs(newVal).endOf('day').format('YYYY-MM-DD')
+        payload.value.timeTo = newVal ? plugins.$helpers.dayjs(newVal).endOf('day').format('YYYY-MM-DD') : null
       },
     )
 
