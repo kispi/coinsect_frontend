@@ -5,80 +5,60 @@ const useBybit = () => {
 
   let $$biggestSize = 0
 
+  let orderbookSize = 0
+
   const setOrderbook = (json, market) => {
     if (json.type === 'delta') {
-      if ((json.topic || '').split('.')[1] !== market) return
+      const splitted = (json.topic || '').split('.')
+      if (splitted[splitted.length - 1] !== market) return
 
       const book = store.getters.orderbooks.bybit[market]
       if (!book) return
 
-      json.data.delete.forEach(o => {
-        if (o.side === 'Sell') {
-          const targetIdx = book.$$asks.findIndex(ask => ask.price === o.price)
-          if (targetIdx < 0) return
-
-          book.$$asks.splice(targetIdx, 1)
-          return
-        }
-
-        if (o.side === 'Buy') {
-          const targetIdx = book.$$bids.findIndex(bid => bid.price === o.price)
-          if (targetIdx < 0) return
-
-          book.$$bids.splice(targetIdx, 1)
-          return
-        }
-      })
-
-      json.data.insert.forEach(o => {
-        if (o.side === 'Sell') {
-          book.$$asks.push(o)
+      json.data.a.forEach(ask => {
+        const idx = book.$$asks.findIndex(o => o.price === ask[0])
+        const newAsk = { price: ask[0], size: ask[1] }
+        if (idx >= 0) {
+          if (parseFloat(newAsk.size) === 0) book.$$asks.splice(idx, 1)
+          else book.$$asks[idx] = newAsk
+        } else {
+          book.$$asks.push(newAsk)
           book.$$asks.sort((a, b) => b.price - a.price)
-          return
-        }
-
-        if (o.side === 'Buy') {
-          book.$$bids.push(o)
-          book.$$bids.sort((a, b) => b.price - a.price)
-          return
         }
       })
 
-      json.data.update.forEach(o => {
-        if (o.side === 'Sell') book.$$asks[book.$$asks.findIndex(ask => ask.price === o.price)] = o
-        if (o.side === 'Buy') book.$$bids[book.$$bids.findIndex(bid => bid.price === o.price)] = o
+      json.data.b.forEach(bid => {
+        const idx = book.$$bids.findIndex(o => o.price === bid[0])
+        const newBid = { price: bid[0], size: bid[1] }
+        if (idx >= 0) {
+          if (parseFloat(newBid.size) === 0) book.$$bids.splice(idx, 1)
+          else book.$$bids[idx] = newBid
+        } else {
+          book.$$bids.push(newBid)
+          book.$$bids.sort((a, b) => b.price - a.price)
+        }
       })
 
       book.$$biggestSize = Math.max(...[...book.$$asks, ...book.$$bids].map(o => o.size))
       return
     }
 
-    if (((json.data.order_book || [])[0] || {}).symbol !== market) return
+    if (json.data.s !== market) return
 
-    /*
-      USDT Perpetual: json.data.order_book
-      Inverse Perpetual: json.data
-    */
-    const units = market.endsWith('USDT') ? json.data.order_book : json.data
-    const $$asks = []
-    const $$bids = []
+    // snapshot
+    orderbookSize = json.data.a.length
+    const $$asks = json.data.a.map(ask => ({
+      price: ask[0],
+      size: ask[1],
+    })).reverse()
 
-    units.forEach(unit => {
-      if (unit.side === 'Sell') {
-        $$asks.unshift({
-          price: unit.price,
-          size: unit.size,
-        })
-      }
+    const $$bids = json.data.b.map(bid => ({
+      price: bid[0],
+      size: bid[1],
+    }))
 
-      if (unit.side === 'Buy') {
-        $$bids.unshift({
-          price: unit.price,
-          size: unit.size,
-        })
-      }
-
-      if (unit.size >= $$biggestSize) $$biggestSize = unit.size
+    $$asks.concat($$bids).forEach(o => {
+      if (o.size >= $$biggestSize) $$biggestSize = o.size
     })
 
     store.commit('setOrderbook', {
@@ -94,7 +74,7 @@ const useBybit = () => {
   }
 
   const setInstrument = (json, market) => {
-    if (!json.data.update) {
+    if (json.type === 'snapshot') {
       if (json.data.symbol !== market) return
 
       store.commit('setInstrument', {
@@ -103,7 +83,7 @@ const useBybit = () => {
         instrument: json.data,
       })
     } else {
-      const o = json.data.update[0]
+      const o = json.data
       if (o.symbol !== market) return
 
       const exst = store.getters.instruments.bybit[market]
@@ -116,10 +96,6 @@ const useBybit = () => {
   const subscribe = ({ type, markets }) => new Promise((resolve) => {
     if (!markets || !type) return
 
-    /*
-      USDT Perpetual: /realtime_public
-      Inverse Perpetual: /realtime
-    */
     const connection = new WebSocket('wss://stream.bybit.com/v5/public/linear')
 
     connection.onopen = () => {
@@ -136,7 +112,7 @@ const useBybit = () => {
         const json = JSON.parse(event.data)
         if (!json.data) return
 
-        if (type.includes('orderBookL2')) markets.forEach(market => setOrderbook(json, market))
+        if (type.includes('orderbook')) markets.forEach(market => setOrderbook(json, market))
         if (type === 'tickers') markets.forEach(market => setInstrument(json, market))
       } catch (e) {}
     }

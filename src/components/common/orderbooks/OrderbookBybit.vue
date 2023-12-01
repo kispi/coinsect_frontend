@@ -22,13 +22,13 @@
       </div>
     </div>
     <div class="instrument f-mono">
-      <div class="last-price" :class="instrument.last_tick_direction.includes('Minus') ? 'c-price-down' : 'c-price-up'">
-        <i class="fa" :class="instrument.last_tick_direction.includes('Minus') ? 'fa-arrow-down' : 'fa-arrow-up'"/>
-        {{ displayPrice(instrument.last_price) }}
+      <div class="last-price" :class="instrument.tickDirection.includes('Minus') ? 'c-price-down' : 'c-price-up'">
+        <i class="fa" :class="instrument.tickDirection.includes('Minus') ? 'fa-arrow-down' : 'fa-arrow-up'"/>
+        {{ displayPrice(instrument.lastPrice) }}
       </div>
       <div class="other-prices">
-        <div class="mark-price m-b-4">Mark {{ displayPrice(instrument.mark_price) }}</div>
-        <div class="index-price">Index {{ displayPrice(instrument.index_price) }}</div>
+        <div class="mark-price m-b-4">Mark {{ displayPrice(instrument.markPrice) }}</div>
+        <div class="index-price">Index {{ displayPrice(instrument.indexPrice) }}</div>
       </div>
     </div>
     <div
@@ -93,8 +93,8 @@ export default {
     }
 
     const init = () => {
-      subscribe({ type: 'orderBookL2_25', markets: [props.market] }).then(conn => connection.value.orderbook = conn)
-      subscribe({ type: 'instrument_info.100ms', markets: [props.market] }).then(conn => connection.value.instrument = conn)
+      subscribe({ type: 'orderbook.50', markets: [props.market] }).then(conn => connection.value.orderbook = conn)
+      subscribe({ type: 'tickers', markets: [props.market] }).then(conn => connection.value.instrument = conn)
     }
 
     onMounted(init)
