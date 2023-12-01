@@ -67,8 +67,8 @@ const logic = {
       })}</span> 도달`
     },
     outlook: pricePrediction => {
-      if (pricePrediction.priceMin > pricePrediction.priceSnapshot) return 'bullish'
-      if (pricePrediction.priceMax < pricePrediction.priceSnapshot) return 'bearish'
+      if (parseFloat(pricePrediction.priceMin || pricePrediction.priceMax) > parseFloat(pricePrediction.priceSnapshot)) return 'bullish'
+      if (parseFloat(pricePrediction.priceMax || pricePrediction.priceMin) < parseFloat(pricePrediction.priceSnapshot)) return 'bearish'
       return 'sideways'
     },
   },
