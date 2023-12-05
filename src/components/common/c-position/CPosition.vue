@@ -26,7 +26,7 @@
     <div class="position-info">
       <div class="base">
         <div class="contract">
-          <div class="key c-white f-14">{{ position.contract ? position.contract.toLocaleString() : '' }}</div>
+          <div class="key c-white f-12">{{ position.contract ? position.contract.toLocaleString() : '' }}</div>
           <div class="value">
             <div class="badge-summary" v-html="position.contract ? badgeSummary(position) : ''"/>
           </div>
@@ -205,7 +205,7 @@ export default {
   }
 
   .position-info {
-    padding: 0 16px;
+    padding: 0 8px;
 
     .base {
       margin-bottom: 8px;
@@ -214,6 +214,7 @@ export default {
     .base,
     .prices {
       display: flex;
+      gap: 4px;
 
       > div {
         flex: 1;
@@ -231,7 +232,7 @@ export default {
     }
 
     .value {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       white-space: nowrap;
       color: var(--white);
