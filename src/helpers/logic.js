@@ -69,6 +69,16 @@ const logic = {
     outlook: pricePrediction => {
       if (parseFloat(pricePrediction.priceMin || pricePrediction.priceMax) > parseFloat(pricePrediction.priceSnapshot)) return 'bullish'
       if (parseFloat(pricePrediction.priceMax || pricePrediction.priceMin) < parseFloat(pricePrediction.priceSnapshot)) return 'bearish'
+
+      const min = parseFloat(pricePrediction.priceMin)
+      const max = parseFloat(pricePrediction.priceMax)
+      if (!isNaN(min) && !isNaN(max)) {
+        const diffMax = Math.abs(max - parseFloat(pricePrediction.priceSnapshot))
+        const diffMin = Math.abs(min - parseFloat(pricePrediction.priceSnapshot))
+        if (diffMax > diffMin) return 'bullish'
+        if (diffMax < diffMin) return 'bearish'
+      }
+
       return 'sideways'
     },
   },
