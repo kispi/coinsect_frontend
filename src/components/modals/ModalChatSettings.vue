@@ -284,7 +284,6 @@ export default {
       }
 
       .field-name {
-        width: 120px;
         flex: 0 0 auto;
         color: var(--text-stress);
       }
