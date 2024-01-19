@@ -164,16 +164,12 @@ export default {
         if (newVal >= 3) {
           trigger.value = 0
           lots.value = [
-            'Chaeil',
             'Chris',
             'Eli',
             'Emily',
             'Gilbert',
-            'Henry',
-            'Ian',
             'Juan',
             'Ki',
-            'Loody',
             'Lumi',
             'Marv',
             'MJ',
