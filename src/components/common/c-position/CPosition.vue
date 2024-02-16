@@ -90,7 +90,7 @@ export default {
 
     const display = key => {
       const v = props.position[key]
-      if (!props.position.entryPrice || v === null || v === undefined || isNaN(v)) return '-'
+      if (isNaN(parseFloat(props.position.entryPrice)) || v === null || v === undefined || isNaN(v)) return '-'
 
       const frac = (['size', '$$unrealized'].includes(key) || Math.abs(v) >= 100) ? 2 : 4
       return v.toLocaleString(undefined, {

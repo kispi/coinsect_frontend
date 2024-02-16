@@ -109,7 +109,7 @@ const useRealTimePosition = () => {
 
       store.getters.realTimePositions.data.forEach(position => {
         const bybitMarkPrice = (newVal[position.contract] || {}).markPrice
-        if (!position.entryPrice || !bybitMarkPrice) return
+        if (isNaN(parseFloat(position.entryPrice)) || !bybitMarkPrice) return
 
         if (position.size > 0) position.$$unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
         if (position.size < 0) position.$$unrealized = Math.floor(100 * position.size * (position.markPrice - position.entryPrice)) / 100
