@@ -19,9 +19,15 @@ const number = {
       const converted = price * conversionRatio({ baseCurrency, noConversion })
 
       let numFracs = 0
-      if (Math.abs(converted) < 100) numFracs = 2
-      if (Math.abs(converted) < 1) numFracs = store.getters.settings.baseExchangeMarket === 'btc' ? 8 : 4
-      if (Math.abs(converted) < 0.0001) numFracs = 8
+      if (store.getters.settings.baseExchangeMarket === 'btc') numFracs = 8
+      else {
+        if (Math.abs(converted) < 1000) numFracs = 1
+        if (Math.abs(converted) < 100) numFracs = 2
+        if (Math.abs(converted) < 10) numFracs = 3
+        if (Math.abs(converted) < 1) numFracs = 4
+        if (Math.abs(converted) < 0.1) numFracs = 5
+        if (Math.abs(converted) < 0.01) numFracs = 6
+      }
 
       if (converted === 0) numFracs = 2
 
