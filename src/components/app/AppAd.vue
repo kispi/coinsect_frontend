@@ -1,24 +1,31 @@
 <template>
   <div class="app-ad">
-    <ExchangeBanner
-      @click="$modal.custom({
-        component: 'ModalReferral',
-        options: { exchange },
-      })"
-      :exchange="exchange"
-      :simple="$store.getters.isMobile"
-      :key="exchange"
-      v-for="exchange in ['bybit', 'bitget', 'bingx']"
-    />
+    <template v-if="whereToShow">
+      <ExchangeBanner
+        @click="$modal.custom({
+          component: 'ModalReferral',
+          options: { exchange },
+        })"
+        :exchange="exchange"
+        :simple="$store.getters.isMobile"
+        :key="exchange"
+        v-for="exchange in ['bybit', 'bitget', 'bingx']"
+      />
+    </template>
     <AdSense v-if="$store.getters.windowInnerWidth >= 1200" :dataAdSlot="'3927887162'" :responsive="true"/>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
+    const { router } = useGlobalHooks()
+
+    const whereToShow = computed(() => ['/contents/crypto-referral'].includes(router.currentRoute.value.path))
+
     const forcedStyle = ref(null)
 
     const onLoadAdSense = () => {
@@ -27,6 +34,7 @@ export default {
 
     return {
       forcedStyle,
+      whereToShow,
       onLoadAdSense,
     }
   },
