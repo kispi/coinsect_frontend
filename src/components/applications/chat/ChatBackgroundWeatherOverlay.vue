@@ -37,7 +37,7 @@ export default {
 <style lang="scss" scoped>
 .chat-background-weather-overlay {
   position: absolute;
-  top: 44px;
+  top: 43px;
   right: 0;
   bottom: 74px;
   left: 0;
