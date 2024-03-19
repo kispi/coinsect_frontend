@@ -62,6 +62,7 @@ const useMenuItems = () => {
       { path: '/apps/voice-recorder', title: 'VOICE_RECORDER' },
     ],
     img: 'https://aroundsketch.github.io/Apple-App-Icons/App%20Icon/Apple/AppStore/@PNG.png',
+    $$expanded: true,
   }, {
     title: 'ABOUT',
     path: '/about',
