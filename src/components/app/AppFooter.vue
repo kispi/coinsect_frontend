@@ -68,10 +68,6 @@ export default {
     const { store } = useGlobalHooks()
 
     const contacts = [{
-      key: 'kakao',
-      img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw',
-      link: 'https://open.kakao.com/me/coinsect',
-    }, {
       key: 'telegram',
       img: 'https://play-lh.googleusercontent.com/ZU9cSsyIJZo6Oy7HTHiEPwZg0m2Crep-d5ZrfajqtsH-qgUXSqKpNA2FpPDTn-7qA5Q=w240-h480-rw',
       link: 'https://t.me/coinsect',
