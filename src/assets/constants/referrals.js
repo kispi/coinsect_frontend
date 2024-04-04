@@ -6,7 +6,7 @@ export const referrals = {
     link: 'https://partner.bybit.com/b/coinsect',
   },
   bitget: {
-    promotion: '수수료 <b>50%</b> 할인\n(지정가: 0.02% / 시장가 0.04%)',
+    promotion: '수수료 <b>50%</b> 할인\n(지정가: 0.02% / 시장가 0.03%)',
     travelRule: ['upbit', 'bithumb', 'coinone'],
     benefits: [],
     link: 'https://partner.bitget.com/bg/0U5130',
