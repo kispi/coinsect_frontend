@@ -71,10 +71,6 @@ export default {
       key: 'telegram',
       img: 'https://play-lh.googleusercontent.com/ZU9cSsyIJZo6Oy7HTHiEPwZg0m2Crep-d5ZrfajqtsH-qgUXSqKpNA2FpPDTn-7qA5Q=w240-h480-rw',
       link: 'https://t.me/coinsect',
-    }, {
-      key: 'email',
-      img: 'https://cdn-icons-png.flaticon.com/512/331/331389.png',
-      link: 'mailto:admin@coinsect.io',
     }]
 
     const sections = computed(() => [{
