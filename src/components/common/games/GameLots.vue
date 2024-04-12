@@ -169,7 +169,6 @@ export default {
             'Emily',
             'Gilbert',
             'Juan',
-            'Ki',
             'Lumi',
             'Marv',
             'MJ',
