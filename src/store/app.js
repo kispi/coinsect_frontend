@@ -49,7 +49,6 @@ const app = {
         numFamily: 1,
         nonTax: 1200000,
       },
-      sentimentVoted: false,
       chatFolded: false,
       chatSizeMax: false,
       chatDing: false,

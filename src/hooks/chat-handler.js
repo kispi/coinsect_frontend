@@ -79,12 +79,6 @@ const useChatHandler = () => {
     p.sentiment = { type }
     store.dispatch('setAccount', p)
     plugins.$toast.success('기분을 업데이트했습니다')
-    store.commit('setSettings', { sentimentVoted: true })
-  }
-
-  const checkSentimentVoted = user => {
-    const sentimentVoted = (user.profile || {}).sentiment && plugins.$helpers.dayjs(user.profile.sentiment.expireAt).isAfter(plugins.$helpers.dayjs())
-    store.commit('setSettings', { sentimentVoted })
   }
 
   const handleMessage = message => {
@@ -116,7 +110,6 @@ const useChatHandler = () => {
         break
       }
       case 'auth':
-        checkSentimentVoted(message.user)
         plugins.$helpers.localStorage.setMeta('user', message.user)
         store.commit('setChatUser', message.user)
         ping()

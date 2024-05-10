@@ -15,27 +15,6 @@
       </div>
     </div>
     <div class="textarea-wrapper">
-      <div
-        v-if="!$store.getters.settings.sentimentVoted"
-        class="vote-long-short overlay">
-        <AppImg :src="$helpers.withCdn('images/influencers/zzapgu_monkey.png')"/>
-        <div class="buttons">
-          <button
-            @click="updateSentiment('long', true)"
-            class="btn btn-long">
-            {{ $translate('LONG') }}
-          </button>
-          <button
-            @click="updateSentiment('short', true)"
-            class="btn btn-short">
-            {{ $translate('SHORT') }}
-          </button>
-        </div>
-        <div class="m-t-24">
-          - 방문자님의 관점을 알기 위함입니다<br>
-          - 클릭 후 24시간동안은 물어보지 않습니다
-        </div>
-      </div>
       <div class="functions">
         <i @click="chatFunctions.image" class="fa fa-image"/>
         <IconAddEmoji @click="showEmojis = !showEmojis"/>
@@ -45,7 +24,6 @@
         v-model="text"
         @keydown="onKeydown"
         @paste="onPaste"
-        :disabled="!$store.getters.settings.sentimentVoted"
         :maxlength="255"
         placeholder="이미지를 첨부하려면 왼쪽 아이콘 클릭 / 또는 스크린샷 후 Ctrl + V"
         class="no-scrollbar"
@@ -175,53 +153,6 @@ export default {
     display: flex;
     align-items: center;
     padding: 8px;
-
-    .vote-long-short {
-      color: var(--text-stress);
-      padding: 4px 12px;
-      border: 1px solid var(--border-base);
-      background: var(--brand-primary-hover-bg);
-      backdrop-filter: blur(4px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      top: 45px;
-      font-size: 12px;
-      text-align: center;
-
-      .app-img {
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-      }
-
-      .buttons {
-        margin-top: 24px;
-        display: flex;
-        gap: 8px;
-        width: 100%;
-
-        button {
-          width: 100%;
-          font-size: 16px;
-          border-radius: 4px;
-
-          &:hover {
-            opacity: 0.5;
-          }
-        }
-
-        .btn-long {
-          background: var(--price-up-bybit);
-        }
-
-        .btn-short {
-          background: var(--price-down-bybit);
-        }
-      }
-    }
 
     textarea {
       padding-right: 16px;
