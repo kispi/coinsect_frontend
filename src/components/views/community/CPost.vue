@@ -168,7 +168,7 @@ export default {
     img,
     iframe {
       border: 0;
-      max-width: 768px;
+      max-width: 100%;
       cursor: pointer;
     }
 
@@ -209,6 +209,15 @@ export default {
   .section-ad-sense {
     padding: 8px 0;
     border-bottom: 1px solid var(--border-base);
+  }
+
+  @media (min-width: 768px) {
+    .post-content {
+      img,
+      iframe {
+        max-width: 768px;
+      }
+    }
   }
 }
 </style>
