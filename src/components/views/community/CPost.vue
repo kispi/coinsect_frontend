@@ -210,5 +210,14 @@ export default {
     padding: 8px 0;
     border-bottom: 1px solid var(--border-base);
   }
+
+  @media (min-width: 768px) {
+    .post-content {
+      img,
+      iframe {
+        max-width: 768px;
+      }
+    }
+  }
 }
 </style>

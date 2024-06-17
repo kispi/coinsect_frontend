@@ -31,7 +31,11 @@
                 <div v-else class="lines-1">{{ meta.replyTo.text }}</div>
               </div>
             </div>
-            <div v-html="$helpers.dom.linkify(message.text)" @click.prevent="onClickMessage"/>
+            <div
+              @click.prevent="onClickMessage"
+              class="o-hidden"
+              v-html="$helpers.dom.linkify(message.text)"
+            />
           </div>
         </template>
         <div v-else class="text hidden">
