@@ -22,6 +22,7 @@ const initialState = {
 }
 
 export const newStore = () => createStore({
+  devtools: false,
   modules: {
     app,
     chat,
