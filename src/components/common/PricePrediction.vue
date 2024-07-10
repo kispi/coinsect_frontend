@@ -55,7 +55,7 @@ export default {
 
     const refSnapshot = ref(null)
 
-    const mustThumb = computed(() => store.getters.symbols[(props.pricePrediction.ticker || '').split('USDT')[0] || {}].thumb)
+    const mustThumb = computed(() => (store.getters.symbols[(props.pricePrediction.ticker || '').split('USDT')[0]] || {}).thumb)
 
     const summary = computed(() => {
       const p = props.pricePrediction
