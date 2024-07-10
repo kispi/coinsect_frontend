@@ -4,6 +4,7 @@ const regex = {
   url: /\b(?:https?|ftp):\/\/[a-z0-9-+&@#/%?=~_|!:,.;]*[a-z0-9-+&@#/%=~_|]/gim,
   pseudoUrl: /(^|[^/])(www\.[\S]+(\b|$))/gim,
   email: /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim,
+  imgTag: /<img\b[^>]*>/gim
 }
 
 // DOM을 직접 건드리는 함수들을 이쪽으로 분리
@@ -94,10 +95,27 @@ const dom = {
     document.head.appendChild(linkTag)
     store.commit('addLazyLoadedScriptUrl', url)
   }),
-  linkify: text => text
-    .replace(regex.url, `<a href="$&" class='text-underline c-brand-primary' rel='noreferrer' target="_blank">$&</a>`)
-    .replace(regex.pseudoUrl, `$1<a href="http://$2" class='text-underline c-brand-primary' rel='noreferrer' target="_blank">$2</a>`)
-    .replace(regex.email, `<a href="mailto:$&" class='text-underline c-brand-primary' rel='noreferrer' target="_blank">$&</a>`),
+  linkify: text => {
+    const imgTags = []
+    let i = 0
+  
+    // Temporarily replace <img> tags with placeholders
+    text = text.replace(regex.imgTag, match => {
+      imgTags.push(match)
+      return `__IMG_PLACEHOLDER_${i++}__`
+    })
+  
+    // Perform linkification
+    text = text
+      .replace(regex.url, `<a href="$&" class='text-underline c-brand-primary' rel='noreferrer' target="_blank">$&</a>`)
+      .replace(regex.pseudoUrl, `$1<a href="http://$2" class='text-underline c-brand-primary' rel='noreferrer' target="_blank">$2</a>`)
+      .replace(regex.email, `<a href="mailto:$&" class='text-underline c-brand-primary' rel='noreferrer' target="_blank">$&</a>`)
+  
+    // Restore <img> tags from placeholders
+    imgTags.forEach((imgTag, index) => text = text.replace(`__IMG_PLACEHOLDER_${index}__`, imgTag))
+  
+    return text
+  },
 }
 
 export default dom
