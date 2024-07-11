@@ -43,7 +43,7 @@ export default {
     }
 
     const onNewPrediction = message => {
-      if (!message.meta) return
+      if ((message.meta || {}).$$alertType !== 'pricePrediction') return
 
       store.getters.pricePredictions.data.unshift(message.meta)
     }

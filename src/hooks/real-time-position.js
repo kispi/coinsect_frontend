@@ -82,7 +82,7 @@ const useRealTimePosition = () => {
 
   const onPositionChange = message => {
     const newPosition = message.meta
-    if (!newPosition) return
+    if ((newPosition || {}).$$alertType !== 'realTimePosition') return
 
     if (newPosition.$$deleted) {
       const posIdInDashboard = (((store.getters.dashboardsMain || {}).realTimePositions || {}).data || []).findIndex(p => p.id === newPosition.id)
