@@ -213,8 +213,6 @@ const marketInfo = {
       try {
         commit('setLoading', { global: true })
         const data = await marketInfoService.leaderboard()
-        const aoa = data.find(row => row.name === 'aoa')
-        if (aoa) aoa.name = 'aoa (워뇨띠)'
         commit('setLeaderboard', data)
       } catch (e) {
         return Promise.reject(e)

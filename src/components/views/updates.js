@@ -1,4 +1,9 @@
 export default [{
+  date: '2024-07',
+  jobsDone: [
+    '메인화면 개편 (게시판 위주)',
+  ],
+}, {
   date: '2023-11',
   jobsDone: [
     '유저 가격 예측 기능 추가',

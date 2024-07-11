@@ -42,9 +42,7 @@ const post = {
       try {
         const resp = await communityService.board.all()
         await helpers.post.populateBoardsColors(resp.data)
-        commit('setBoards', (resp.data || []).filter(b => coinsectBoardIds.includes(b.id)).sort((a, b) => {
-          if (a.id === 2) return -1 // 관점을 맨 앞으로
-        }))
+        commit('setBoards', (resp.data || []).filter(b => coinsectBoardIds.includes(b.id)))
       } catch (e) {
         return Promise.reject(e)
       }

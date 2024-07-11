@@ -52,7 +52,6 @@ export default {
     ModalOrderbook: defineAsyncComponent(() => import('@/components/modals/ModalOrderbook')),
     ModalGame: defineAsyncComponent(() => import('@/components/modals/ModalGame')),
     ModalAddPortfolio: defineAsyncComponent(() => import('@/components/modals/ModalAddPortfolio')),
-    ModalCreatePricePrediction: defineAsyncComponent(() => import('@/components/modals/ModalCreatePricePrediction')),
     ModalVideo: defineAsyncComponent(() => import('@/components/modals/ModalVideo')),
     ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
     ModalUploadImage: defineAsyncComponent(() => import('@/components/modals/ModalUploadImage')),

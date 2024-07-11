@@ -41,7 +41,6 @@ import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
 import OrderbookUpbit from '@/components/common/orderbooks/OrderbookUpbit'
 import PostEditor from '@/components/common/post-editor/PostEditor'
 import PoweredBy from '@/components/common/PoweredBy'
-import PricePrediction from '@/components/common/PricePrediction'
 import SettingsPanel from '@/components/common/SettingsPanel'
 import TablePosts from '@/components/common/table-posts/TablePosts'
 import TradingView from '@/components/common/TradingView'
@@ -99,7 +98,6 @@ const useGlobalComponents = app => {
     .component('OrderbookUpbit', OrderbookUpbit)
     .component('PostEditor', PostEditor)
     .component('PoweredBy', PoweredBy)
-    .component('PricePrediction', PricePrediction)
     .component('SettingsPanel', SettingsPanel)
     .component('TablePosts', TablePosts)
     .component('TradingView', TradingView)

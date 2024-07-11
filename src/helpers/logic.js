@@ -42,46 +42,6 @@ const logic = {
     const orderedIndices = JSON.parse(JSON.stringify(foundIndices)).sort()
     return JSON.stringify(foundIndices) === JSON.stringify(orderedIndices)
   },
-  pricePrediction: {
-    dateRange: pricePrediction => {
-      const d = date => helpers.dayjs(date).format('YYYY-MM-DD')
-      if (pricePrediction.timeFrom && pricePrediction.timeTo) return `${d(pricePrediction.timeFrom)} ~ ${d(pricePrediction.timeTo)}`
-      if (pricePrediction.timeFrom) return `${d(pricePrediction.timeFrom)} ~`
-      if (pricePrediction.timeTo) return `~ ${d(pricePrediction.timeTo)}`
-    },
-    priceRange: pricePrediction => {
-      const p = price => helpers.number.pretty.price({ price, noConversion: true})
-      if (parseFloat(pricePrediction.priceMin) && parseFloat(pricePrediction.priceMax)) return `$${p(pricePrediction.priceMin)} ~ $${p(pricePrediction.priceMax)}`
-      if (parseFloat(pricePrediction.priceMin)) return `$${p(pricePrediction.priceMin)} ~`
-      if (parseFloat(pricePrediction.priceMax)) return `~ $${p(pricePrediction.priceMax)}`
-    },
-    summary: pricePrediction => {
-      const d = date => helpers.dayjs(date)
-      const diff = d(pricePrediction.timeTo || pricePrediction.timeFrom).startOf('day').diff(d().startOf('day'), 'days')
-      if (diff < 0) return '만료'
-
-      const l = logic.pricePrediction.outlook(pricePrediction)
-      return `${diff}일 안에 <span class="${l === 'bullish' ? 'c-price-up-bybit' : l === 'bearish' ? 'c-price-down-bybit' : null}">$${helpers.number.pretty.price({
-        price: parseFloat(pricePrediction.priceMin || pricePrediction.priceMax),
-        noConversion: true,
-      })}</span> 도달`
-    },
-    outlook: pricePrediction => {
-      if (parseFloat(pricePrediction.priceMin || pricePrediction.priceMax) > parseFloat(pricePrediction.priceSnapshot)) return 'bullish'
-      if (parseFloat(pricePrediction.priceMax || pricePrediction.priceMin) < parseFloat(pricePrediction.priceSnapshot)) return 'bearish'
-
-      const min = parseFloat(pricePrediction.priceMin)
-      const max = parseFloat(pricePrediction.priceMax)
-      if (!isNaN(min) && !isNaN(max)) {
-        const diffMax = Math.abs(max - parseFloat(pricePrediction.priceSnapshot))
-        const diffMin = Math.abs(min - parseFloat(pricePrediction.priceSnapshot))
-        if (diffMax > diffMin) return 'bullish'
-        if (diffMax < diffMin) return 'bearish'
-      }
-
-      return 'sideways'
-    },
-  },
   writing: {
     isMine: writing => {
       if (!store.getters.me || !(writing || {}).user) return

@@ -1,13 +1,13 @@
 <template>
   <div class="recent-posts">
     <div
-      v-if="$store.getters.posts.data.length > 0"
+      v-if="postItems.length > 0"
       class="posts-grid">
       <RouterLink
         class="row"
         :to="`/community/${post.sharingKey}`"
         :key="post.id"
-        v-for="post in $store.getters.posts.data.slice(0, $store.getters.isMobile ? 5 : 10)">
+        v-for="post in postItems.slice(0, $store.getters.isMobile ? 5 : 10)">
         <div class="title flex-fill lines-1 m-r-32">
           <span class="title-text">
             <span class="elapsed-time f-mono">{{ $helpers.template.elapsedTime(post.createdAt) }}</span>
@@ -52,26 +52,8 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref } from 'vue'
-import useGlobalHooks from '@/hooks/global-hooks'
-
 export default {
-  setup() {
-    const { store } = useGlobalHooks()
-
-    const timeout = ref(null)
-
-    const callApi = async () => {
-      store.dispatch('loadPosts', { limit: 10 })
-      timeout.value = setTimeout(callApi, 1000 * 60 * 5)
-    }
-
-    onMounted(callApi)
-
-    onUnmounted(() => {
-      if (timeout.value) clearTimeout(timeout.value)
-    })
-  }
+  props: ['postItems'],
 }
 </script>
 
