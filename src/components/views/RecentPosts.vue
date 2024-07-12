@@ -39,7 +39,7 @@
         @click="$modal.custom({
           component: 'ModalPostEditor',
           options: {
-            boardId: 1,
+            board,
             preventCloseOnClickBackdrop: true,
           },
         })"
@@ -53,7 +53,7 @@
 
 <script>
 export default {
-  props: ['postItems'],
+  props: ['postItems', 'board'],
 }
 </script>
 

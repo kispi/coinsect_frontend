@@ -4,18 +4,18 @@
     <div
       v-if="dashboards"
       class="grid main">
-      <template v-if="$store.getters.boards && dashboardPosts">
+      <template v-if="$store.getters.boards">
         <MainSection
           :title="`${$store.getters.boards[0].description} (비로그인 글쓰기 가능)`"
           :link="'/community'"
           :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
-          <RecentPosts :postItems="dashboardPosts[0].data"/>
+          <RecentPosts v-if="dashboardPosts[0]" :postItems="dashboardPosts[0].data" :board="$store.getters.boards[0]"/>
         </MainSection>
         <MainSection
           :title="$store.getters.boards[1].description"
           :link="'/community'"
           :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
-          <RecentPosts :postItems="dashboardPosts[1].data"/>
+          <RecentPosts v-if="dashboardPosts[1]" :postItems="dashboardPosts[1].data" :board="$store.getters.boards[1]"/>
         </MainSection>
       </template>
       <MainSection
@@ -92,7 +92,7 @@ export default {
 
     const dashboards = computed(() => store.getters.dashboardsMain)
 
-    const dashboardPosts = ref(null)
+    const dashboardPosts = ref([])
 
     const initDashboards = async () => {
       try {
@@ -118,7 +118,7 @@ export default {
           order: 'desc',
         })
         await plugins.$helpers.post.populateRenderablePosts(resp.data)
-        return resp
+        dashboardPosts.value[boardId - 1] = resp
       } catch (e) {
         return Promise.reject(e)
       }
@@ -126,10 +126,7 @@ export default {
 
     const loadPosts = async () => {
       try {
-        dashboardPosts.value = await Promise.all([
-          loadPostSimple(1),
-          loadPostSimple(2),
-        ])
+        await Promise.all([loadPostSimple(1), loadPostSimple(2)])
       } catch (e) {
         return Promise.reject(e)
       }
@@ -138,6 +135,7 @@ export default {
     onMounted(() => {
       initDashboards()
       loadPosts()
+      plugins.$bus.$on('write-post', loadPostSimple)
 
       interval.value = setInterval(() => {
         initDashboards()
@@ -146,6 +144,7 @@ export default {
     })
 
     onUnmounted(() => {
+      plugins.$bus.$off('write-post')
       if (interval.value) clearInterval(interval.value)
     })
 
