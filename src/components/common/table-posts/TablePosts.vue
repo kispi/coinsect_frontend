@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onServerPrefetch, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, onServerPrefetch, watch } from 'vue'
 import ButtonBoards from './ButtonBoards'
 import PostImagePreview from './PostImagePreview'
 import useGlobalHooks from '@/hooks/global-hooks'
@@ -171,7 +171,14 @@ export default {
       ])
     }
 
-    onMounted(callApi)
+    onMounted(() => {
+      callApi()
+      plugins.$bus.$on('write-post', loadPosts)
+    })
+
+    onUnmounted(() => {
+      plugins.$bus.$off('write-post', loadPosts)
+    })
 
     onServerPrefetch(callApi)
 

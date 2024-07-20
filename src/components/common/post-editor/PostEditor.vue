@@ -25,7 +25,7 @@
       >
     </div>
     <div class="board-title">
-      <AppDropdown v-if="boards" :dropdownItems="boards" @select-dropdown-item="onSelectBoard"/>
+      <AppDropdown v-if="boards && !boardId" :dropdownItems="boards" @select-dropdown-item="onSelectBoard"/>
       <input
         v-model="payload.title"
         class="title bg-white c-black"
@@ -122,7 +122,7 @@ export default {
           store.dispatch('loadPost', payload.value.sharingKey)
           plugins.$helpers.dom.scrollToTop()
         } else {
-          store.dispatch('loadPosts', { limit: 10 })
+          plugins.$bus.$emit('write-post', payload.value.board.id)
         }
       } catch (e) {
         if (plugins.$helpers.errorHandlers.bannedUser(e)) return

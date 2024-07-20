@@ -4,12 +4,20 @@
     <div
       v-if="dashboards"
       class="grid main">
-      <MainSection
-        :title="'COMMUNITY'"
-        :link="'/community'"
-        :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
-        <RecentPosts v-if="$store.getters.boards" :posts="dashboards.recentPosts"/>
-      </MainSection>
+      <template v-if="$store.getters.boards">
+        <MainSection
+          :title="`${$store.getters.boards[0].description} (비로그인 글쓰기 가능)`"
+          :link="'/community'"
+          :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
+          <RecentPosts v-if="dashboardPosts[0]" :postItems="dashboardPosts[0].data" :board="$store.getters.boards[0]"/>
+        </MainSection>
+        <MainSection
+          :title="$store.getters.boards[1].description"
+          :link="'/community'"
+          :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
+          <RecentPosts v-if="dashboardPosts[1]" :postItems="dashboardPosts[1].data" :board="$store.getters.boards[1]"/>
+        </MainSection>
+      </template>
       <MainSection
         :title="'KIMP'"
         :link="'/prices'"
@@ -31,18 +39,6 @@
             v-for="position in dashboards.realTimePositions.data"
           />
         </div>
-      </MainSection>
-      <MainSection
-        :title="'PRICE_PREDICTIONS'"
-        :image="'https://cdn-icons-png.flaticon.com/512/4882/4882559.png'"
-        :tooltip="'TOOLTIP_PRICE_PREDICTIONS'">
-        <PricePredictions class="h-100"/>
-      </MainSection>
-      <MainSection
-        :title="titleBitmexLeaderboard"
-        :link="'/indicators/leaderboard'"
-        :image="'https://d1085v6s0hknp1.cloudfront.net/images/exchanges/BITMEX.png'">
-        <BitmexSimple :leaderboards="dashboards.leaderboards"/>
       </MainSection>
       <MainSection
         :title="'WHALE_ALERT'"
@@ -69,8 +65,6 @@
       <AppSkeleton style="height: 360px;"/>
       <AppSkeleton style="height: 360px;"/>
       <AppSkeleton style="height: 360px;"/>
-      <AppSkeleton style="height: 360px;"/>
-      <AppSkeleton style="height: 360px;"/>
     </div>
   </div>
 </template>
@@ -78,16 +72,15 @@
 <script>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
-import BitmexSimple from './BitmexSimple'
 import MainSection from './MainSection'
-import PricePredictions from './PricePredictions'
 import RecentPosts from '../RecentPosts'
 import RealTimePriceCards from '@/components/views/real-time-prices/RealTimePriceCards'
 import SectionNews from './SectionNews'
+import communityService from '@/services/community'
 import useRealTimePosition from '@/hooks/real-time-position'
 
 export default {
-  components: { BitmexSimple, MainSection, PricePredictions, RecentPosts, RealTimePriceCards, SectionNews },
+  components: { MainSection, RecentPosts, RealTimePriceCards, SectionNews },
   setup() {
     const { plugins, store } = useGlobalHooks()
 
@@ -95,25 +88,11 @@ export default {
 
     const refRealTimePriceCards = ref(null)
 
-    const timeout = ref(null)
+    const interval = ref(null)
 
     const dashboards = computed(() => store.getters.dashboardsMain)
 
-    const titleBitmexLeaderboard = computed(() => {
-      const items = (dashboards.value || {}).leaderboards
-      if (!items) return ''
-
-      const positions = { long: 0, short: 0 }
-      items.forEach(o => {
-        if (o.side === 'Long') positions.long += 1
-        if (o.side === 'Short') positions.short += 1
-      })
-      return `
-        ${plugins.$translate('BITMEX_LEADERBOARD')}
-        (<span class="c-price-up-bybit"><i class="fal fa-arrow-trend-up m-r-4"></i>${positions.long}</span>
-        <span class="c-price-down-bybit"><i class="fal fa-arrow-trend-down m-r-4"></i>${positions.short}</span>)
-      `
-    })
+    const dashboardPosts = ref([])
 
     const initDashboards = async () => {
       try {
@@ -125,24 +104,55 @@ export default {
         dashboards.value.realTimePositions.data.sort(sorter)
         store.commit('setRealTimePositions', dashboards.value.realTimePositions)
         openWebsocket()
-
-        timeout.value = setTimeout(initDashboards, 1000 * 60 * 5)
       } catch (e) {
         plugins.$toast.error(e.data.message)
       }
     }
 
-    onMounted(initDashboards)
+    const loadPostSimple = async boardId => {
+      try {
+        const resp = await communityService.post.all({
+          where: `board_id=${boardId}`,
+          limit: 10,
+          sort: 'id',
+          order: 'desc',
+        })
+        await plugins.$helpers.post.populateRenderablePosts(resp.data)
+        dashboardPosts.value[boardId - 1] = resp
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    }
+
+    const loadPosts = async () => {
+      try {
+        await Promise.all([loadPostSimple(1), loadPostSimple(2)])
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    }
+
+    onMounted(() => {
+      initDashboards()
+      loadPosts()
+      plugins.$bus.$on('write-post', loadPostSimple)
+
+      interval.value = setInterval(() => {
+        initDashboards()
+        loadPosts()
+      }, 1000 * 60 * 5)
+    })
 
     onUnmounted(() => {
-      if (timeout.value) clearTimeout(timeout.value)
+      plugins.$bus.$off('write-post')
+      if (interval.value) clearInterval(interval.value)
     })
 
     return {
       refRealTimePriceCards,
       connectionRealTimePositions: connection,
       dashboards,
-      titleBitmexLeaderboard,
+      dashboardPosts,
     }
   },
 }

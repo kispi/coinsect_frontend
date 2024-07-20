@@ -7,14 +7,12 @@ const content = {
     publicTreasuries: null,
     influencers: null,
     realTimePositions: null,
-    pricePredictions: null,
   }),
   getters: {
     publicTreasuries: state => state.publicTreasuries,
     influencers: state => state.influencers,
     news: state => state.news,
     realTimePositions: state => state.realTimePositions,
-    pricePredictions: state => state.pricePredictions,
   },
   mutations: {
     setPublicTreasuries(state, publicTreasuries) {
@@ -25,9 +23,6 @@ const content = {
     },
     setRealTimePositions(state, realTimePositions) {
       state.realTimePositions = realTimePositions
-    },
-    setPricePredictions(state, pricePredictions) {
-      state.pricePredictions = pricePredictions
     },
   },
   actions: {
@@ -64,18 +59,6 @@ const content = {
       try {
         const data = await contentService.realTimePositions()
         commit('setRealTimePositions', data)
-      } catch (e) {
-        return Promise.reject(e)
-      }
-    },
-    async loadPricePredictions({ commit }, params = {}) {
-      try {
-        const o = helpers.qb().base()
-        if (params.limit) o.limit(params.limit)
-        if (params.offset) o.offset(params.offset)
-
-        const data = await crudService.pricePrediction.all(o.build())
-        commit('setPricePredictions', data)
       } catch (e) {
         return Promise.reject(e)
       }

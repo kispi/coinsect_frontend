@@ -28,7 +28,7 @@
         </div>
       </div>
       <div
-        @click.prevent="$helpers.onClickHTMLContent"
+        @click="$helpers.onClickHTMLContent"
         class="post-content"
         v-html="post.content"
       />

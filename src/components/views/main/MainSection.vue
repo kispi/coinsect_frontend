@@ -23,7 +23,9 @@
           })"
           @mouseleave="$tooltip.hide(tooltipId)"
         />
-        <i class="fal fa-chevron-right m-l-4 f-10"/>
+        <div class="m-l-a">
+          {{ $translate('SEE_MORE') }}<i class="fal fa-chevron-right m-l-4 f-10"/>
+        </div>
       </a>
     </div>
     <div class="section-content">
@@ -92,6 +94,8 @@ export default {
     .section-title {
       font-weight: 700;
       flex: 1;
+      display: flex;
+      align-items: center;
     }
 
     &:hover {

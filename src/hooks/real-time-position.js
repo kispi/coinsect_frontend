@@ -70,8 +70,11 @@ const useRealTimePosition = () => {
   }
 
   const updatePosition = (realTimePositionsArray, newPosition) => {
-    const updateTarget = (realTimePositionsArray || []).find(p => p.id === newPosition.id)
-    if (!updateTarget) return
+    const updateTarget = realTimePositionsArray.find(p => p.id === newPosition.id)
+    if (!updateTarget) {
+      realTimePositionsArray.push(newPosition)
+      return
+    }
 
     const keys = ['size', 'entryPrice', 'liqPrice', 'markPrice', 'contract', '$$value', '$$unrealized', 'onAir', 'editable', 'lastUpdate']
     keys.forEach(key => updateTarget[key] = newPosition[key])
@@ -79,10 +82,19 @@ const useRealTimePosition = () => {
 
   const onPositionChange = message => {
     const newPosition = message.meta
-    if (!newPosition) return
+    if ((newPosition || {}).$$alertType !== 'realTimePosition') return
 
-    updatePosition((store.getters.realTimePositions || {}).data, newPosition)
-    updatePosition(((store.getters.dashboardsMain || {}).realTimePositions || {}).data, newPosition)
+    if (newPosition.$$deleted) {
+      const posIdInDashboard = (((store.getters.dashboardsMain || {}).realTimePositions || {}).data || []).findIndex(p => p.id === newPosition.id)
+      if (posIdInDashboard >= 0) store.getters.dashboardsMain.realTimePositions.data.splice(posIdInDashboard, 1)
+
+      const posIdInRealTimePositions = ((store.getters.realTimePositions || {}).data || []).findIndex(p => p.id === newPosition.id)
+      if (posIdInRealTimePositions >= 0) store.getters.realTimePositions.data.splice(posIdInRealTimePositions, 1)
+      return
+    }
+
+    updatePosition((store.getters.realTimePositions || {}).data || [], newPosition)
+    updatePosition(((store.getters.dashboardsMain || {}).realTimePositions || {}).data || [], newPosition)
 
     reloadMarkets()
     if (connection.value) connection.value.close()

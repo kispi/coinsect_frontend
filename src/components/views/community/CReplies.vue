@@ -35,7 +35,7 @@
           @click="$helpers.onClickHTMLContent"
           class="content"
           :class="{'deleted': reply.deletedAt}"
-          v-html="reply.deletedAt ? $translate('DELETED_REPLY') : reply.content"
+          v-html="reply.deletedAt ? $translate('DELETED_REPLY') : $helpers.dom.linkify(reply.content)"
         />
         <div class="flex-row items-center flex-between">
           <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
