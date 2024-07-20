@@ -1,4 +1,5 @@
 import { $http, $httpNoAuth } from '@/modules/axios'
+import helperService from './helper'
 
 const cacheTime = 1000 * 60 * 30 // 이건 자주 바뀌는게 아니라 30분에 한번씩만 땡겨와도 됨.
 
@@ -27,7 +28,7 @@ const marketInfo = {
 
     try {
       if (bEx === 'upbit') {
-        const data = await $httpNoAuth.get('https://api.upbit.com/v1/market/all')
+        const data = await helperService.proxy('https://api.upbit.com/v1/market/all')
         const upbit = data.filter(o => o.market.startsWith(`${bExMarket.toUpperCase()}-`)).map(o => ({
           ...o,
           $$symbol: o.market.split('-')[1]
