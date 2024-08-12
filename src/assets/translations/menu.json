@@ -207,6 +207,10 @@
     "en": "Economic Calendar",
     "kr": "경제 캘린더"
   },
+  "PUBLIC_TREASURY": {
+    "en": "Public Treasury",
+    "kr": "비트코인 보유단체"
+  },
   "TWITTER": {
     "en": "Twitter",
     "kr": "트위터"
