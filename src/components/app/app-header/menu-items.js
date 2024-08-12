@@ -31,7 +31,7 @@ const useMenuItems = () => {
     subItems: [
       { path: '/contents/news', title: 'NEWS', emoji: '📰' },
       { path: '/contents/economic-calendar', title: 'ECONOMIC_CALENDAR', img: 'https://d1085v6s0hknp1.cloudfront.net/assets/icon-investing.jpg' },
-      { path: '/contents/public-treasury', title: 'PUBLIC_TREASURY', img: 'https://g.foolcdn.com/art/companylogos/square/mstr.png' },
+      { title: 'PUBLIC_TREASURY', img: 'https://g.foolcdn.com/art/companylogos/square/mstr.png', link: 'https://bitcointreasuries.net' },
       { path: '/contents/influencers', title: 'INFLUENCERS', img: 'https://pbs.twimg.com/profile_images/1485632175932383235/8t0DGo6V_400x400.jpg' },
       { path: '/contents/crypto-referral', title: 'CRYPTO_REFERRAL', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEw91p80xgQe4acv2JsriSrnsghx7kuXGjjqI7wF1Rvs--GOi5LfPb0XcY6Zabv8xWzTs&usqp=CAU' },
     ],
