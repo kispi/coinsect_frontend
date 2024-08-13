@@ -67,15 +67,15 @@ const useUpbit = () => {
   const subscribe = ({ type, codes, $$raw }) => new Promise((resolve) => {
     if (!type || !codes) return
 
-    const connection = new WebSocket('wss://api.upbit.com/websocket/v1')
+    const connection = new WebSocket('wss://crix-ws-web.upbit.com/websocket')
     connection.binaryType = 'arraybuffer'
 
     connection.onopen = () => {
       connection.send(JSON.stringify([{
-        ticket: 'coinsect-upbit',
+        ticket: plugins.$helpers.logic.generateUUIDV4(),
       }, {
         type,
-        codes,
+        codes: codes.map(code => `CRIX.UPBIT.${code}`),
       }, {
         format: 'SIMPLE',
       }]))
@@ -91,7 +91,8 @@ const useUpbit = () => {
     connection.onmessage = event => {
       try {
         const json = eventAsJSON(event)
-        if (type === 'ticker') {
+        json.cd = json.cd.split('CRIX.UPBIT.')[1]
+        if (type === 'recentCrix') {
           if ($$raw) {
             store.commit('setRawWebsocketInfo', { exchange: 'upbit', market: json.cd, json })
             return

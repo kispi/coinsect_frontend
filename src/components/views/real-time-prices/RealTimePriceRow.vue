@@ -36,13 +36,14 @@
           :class="$store.getters.settings.favorites[ticker.$$symbol] ? 'fa' : 'fal'"
         />
         <div v-html="ticker.$$symbol" class="symbol"/>
-        <img
+        <!-- 오더북 API가 왠지 안 됨... -->
+        <!-- <img
           v-if="$store.getters.settings.baseExchange === 'upbit'"
           class="exchange-logo"
           @click.stop="openModalOrderbook('upbit', `${$store.getters.settings.baseExchangeMarket.toUpperCase()}-${ticker.$$symbol}`)"
           src="@/assets/images/upbit.svg"
           alt="upbit"
-        >
+        > -->
         <img
           v-if="bybitMarket(ticker.$$symbol)"
           class="exchange-logo bybit"

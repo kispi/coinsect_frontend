@@ -202,7 +202,7 @@ export default {
 
     const subscriber = {
       upbit: () => subscribeUpbit({
-        type: 'ticker',
+        type: 'recentCrix',
         codes: store.getters.markets.upbit.map(o => o.market),
       }).then(conn => onConnected(conn, 'upbit')),
       bithumb: () => subscribeBithumb({

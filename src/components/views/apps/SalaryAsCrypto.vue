@@ -68,7 +68,7 @@ export default {
         store.commit('setSettings', { baseExchangeMarket: 'krw' })
         await store.dispatch('loadBaseMarkets')
         const conn = await subscribe({
-          type: 'ticker',
+          type: 'recentCrix',
           codes: store.getters.markets.upbit.map(o => o.market),
           $$raw: true,
         })

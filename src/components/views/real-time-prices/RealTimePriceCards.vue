@@ -40,7 +40,7 @@ export default {
           $$raw: true,
         })
         connection.value.upbit = await subscribeUpbit({
-          type: 'ticker',
+          type: 'recentCrix',
           codes: props.symbols.map(symbol => `KRW-${symbol}`),
           $$raw: true,
         })
