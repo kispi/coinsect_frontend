@@ -67,7 +67,7 @@ const useUpbit = () => {
   const subscribe = ({ type, codes, $$raw }) => new Promise((resolve) => {
     if (!type || !codes) return
 
-    const connection = new WebSocket('wss://crix-ws-web.upbit.com/websocket')
+    const connection = new WebSocket('wss://crix-ws-first.upbit.com/websocket')
     connection.binaryType = 'arraybuffer'
 
     connection.onopen = () => {
