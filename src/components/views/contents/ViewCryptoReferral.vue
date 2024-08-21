@@ -22,8 +22,6 @@
         </thead>
         <tbody>
           <tr
-            @click="onClickExchange(exchange)"
-            :class="{'cursor-pointer': exchange.link}"
             :key="exchange.name"
             v-for="exchange in exchanges">
             <td>
