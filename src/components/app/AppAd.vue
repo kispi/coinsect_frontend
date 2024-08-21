@@ -18,13 +18,13 @@
 
 <script>
 import { ref, computed } from 'vue'
-import useGlobalHooks from '@/hooks/global-hooks'
+// import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { router } = useGlobalHooks()
+    // const { router } = useGlobalHooks()
 
-    const whereToShow = computed(() => ['/contents/crypto-referral'].includes(router.currentRoute.value.path))
+    const whereToShow = computed(() => false)//['/contents/crypto-referral'].includes(router.currentRoute.value.path))
 
     const forcedStyle = ref(null)
 
