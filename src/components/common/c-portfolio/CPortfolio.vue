@@ -147,7 +147,7 @@ export default {
     const connect = () => {
       if (portfolio.value.upbit) {
         sUpbit({
-          type: 'recentCrix',
+          type: 'ticker',
           codes: portfolio.value.upbit.map(o => o.market),
           $$raw: true,
         }).then(conn => connections.value.upbit = conn)
