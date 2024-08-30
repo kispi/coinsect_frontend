@@ -39,14 +39,6 @@ export default {
         link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=USDKRW',
         value: usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }),
       }, {
-        key: 'USDT/KRW',
-        link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=USDTKRW',
-        value: plugins.$helpers.number.pretty.price({
-          price: (store.getters.realTimeTickers.USDT || {}).$$tradePriceBase,
-          baseCurrency: 'krw',
-          noConversion: true,
-        }),
-      }, {
         key: 'BTC_DOMINANCE',
         link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ABTC.D',
         value: `${o.btcDominance}%`,
