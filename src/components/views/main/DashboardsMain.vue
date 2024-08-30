@@ -24,7 +24,7 @@
         :image="require('@/assets/images/binance.svg')">
         <RealTimePriceCards
           ref="refRealTimePriceCards"
-          :symbols="['BTC', 'ETH', 'USDT', 'BNB', 'SOL', 'XRP', 'DOGE', 'TRX', 'ADA']"
+          :symbols="['BTC', 'ETH', 'SOL', 'XRP', 'DOGE', 'TRX', 'ADA', 'BCH', 'DOT']"
         />
       </MainSection>
       <MainSection

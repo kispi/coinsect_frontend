@@ -39,6 +39,14 @@ export default {
         link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=USDKRW',
         value: usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }),
       }, {
+        key: 'USDT/KRW',
+        link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=USDTKRW',
+        value: plugins.$helpers.number.pretty.price({
+          price: (store.getters.realTimeTickers.USDT || {}).$$tradePriceBase,
+          baseCurrency: 'krw',
+          noConversion: true,
+        }),
+      }, {
         key: 'BTC_DOMINANCE',
         link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ABTC.D',
         value: `${o.btcDominance}%`,
@@ -80,14 +88,11 @@ export default {
 <style lang="scss">
 .banner-market-indices {
   display: flex;
+  gap: 16px;
 
   .adaptive-layout {
     white-space: nowrap;
     font-size: 12px;
-
-    &:not(:last-child) {
-      margin-right: 16px;
-    }
 
     .key {
       color: var(--text-base);
@@ -98,6 +103,12 @@ export default {
       color: var(--text-stress);
       font-weight: 500;
       flex: 0 0 auto;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .adaptive-layout {
+      font-size: 10px;
     }
   }
 }
