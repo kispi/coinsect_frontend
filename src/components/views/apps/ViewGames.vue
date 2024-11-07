@@ -2,8 +2,8 @@
   <div class="view-games">
     <div class="list-games">
       <div
-        @click="$modal.custom({
-          component: 'ModalGame',
+        @click="helpers.modal.custom({
+          component: ModalGame,
           options: {
             game,
             preventCloseOnClickBackdrop: true,
@@ -20,25 +20,24 @@
   </div>
 </template>
 
-<script>
-export default {
-  setup() {
-    const games = [{
-      title: 'GAME_LOTS',
-      component: 'GameLots',
-    }, {
-      title: 'GAME_FLIP_COIN',
-      component: 'GameFlipCoin',
-    }, {
-      title: 'GAME_COLOR_SENSE',
-      component: 'GameColorSense',
-    }]
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+import { defineAsyncComponent } from 'vue'
 
-    return {
-      games,
-    }
-  },
-}
+const { helpers } = useGlobalHooks()
+
+const ModalGame = defineAsyncComponent(() => import('@/components/modals/ModalGame'))
+
+const games = [{
+  title: 'GAME_LOTS',
+  component: 'GameLots',
+}, {
+  title: 'GAME_FLIP_COIN',
+  component: 'GameFlipCoin',
+}, {
+  title: 'GAME_COLOR_SENSE',
+  component: 'GameColorSense',
+}]
 </script>
 
 <style lang="scss" scoped>

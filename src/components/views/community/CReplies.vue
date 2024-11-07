@@ -13,8 +13,8 @@
           <div class="reply-user" :class="{'authorized-clickable-nickname': reply.userId}">
             <UserSymbol :user="reply.user" class="m-r-4"/>
             <span
-              @click="reply.userId ? $modal.custom({ component: 'ModalUserStats', options: { user: reply.user } }) : null"
-              v-html="$helpers.template.writer(reply)"
+              @click="reply.userId ? helpers.modal.custom({ component: ModalUserStats, options: { user: reply.user } }) : null"
+              v-html="helpers.template.writer(reply)"
             />
           </div>
           <div class="reply-functions">
@@ -32,15 +32,15 @@
           </div>
         </div>
         <div
-          @click="$helpers.onClickHTMLContent"
+          @click="helpers.onClickHTMLContent"
           class="content"
           :class="{'deleted': reply.deletedAt}"
-          v-html="reply.deletedAt ? $translate('DELETED_REPLY') : $helpers.dom.linkify(reply.content)"
+          v-html="reply.deletedAt ? $translate('DELETED_REPLY') : helpers.dom.linkify(reply.content)"
         />
         <div class="flex-row items-center flex-between">
-          <div class="created-at" v-html="$helpers.template.prettyTime(reply.createdAt, true)"/>
+          <div class="created-at" v-html="helpers.template.prettyTime(reply.createdAt, true)"/>
           <div class="reply-functions">
-            <template v-if="$helpers.logic.writing.canModify(reply)">
+            <template v-if="helpers.logic.writing.canModify(reply)">
               <div
                 @click="onClickDelete(reply)"
                 class="reply-delete function">
@@ -67,67 +67,59 @@
   </div>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script setup>
+import { computed, defineAsyncComponent } from 'vue'
 import communityService from '@/services/community'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    replies: Array,
-    depth: {
-      type: Number,
-      default: 0,
-    },
+const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
+
+const props = defineProps({
+  replies: Array,
+  depth: {
+    type: Number,
+    default: 0,
   },
-  setup(props) {
-    const { plugins, store, router } = useGlobalHooks()
+})
 
-    const repliesToDisplay = computed(() => (props.replies || []).filter(o => !o.deletedAt || hasNonDeletedChild(o)))
+const { helpers, store, router } = useGlobalHooks()
 
-    const hasNonDeletedChild = reply => {
-      return (reply.replies || []).some(child => !child.deletedAt || hasNonDeletedChild(child))
-    }
+const repliesToDisplay = computed(() => (props.replies || []).filter(o => !o.deletedAt || hasNonDeletedChild(o)))
 
-    const onConfirmDelete = async ({ id, password }) => {
-      try {
-        await communityService.remove.reply({ id, password })
-        store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
-        store.dispatch('loadPosts')
-        plugins.$toast.success('댓글을 삭제했습니다')
-      } catch (e) {
-        plugins.$toast.error(e.data.message)
-      }
-    }
+const hasNonDeletedChild = reply => {
+  return (reply.replies || []).some(child => !child.deletedAt || hasNonDeletedChild(child))
+}
 
-    const onClickDelete = async reply => {
-      if (plugins.$helpers.logic.writing.isMine(reply)) {
-        const ok = await plugins.$modal.confirm({ body: '내 댓글을 삭제하시겠습니까?' })
-        if (ok) onConfirmDelete({ id: reply.id })
-      } else {
-        const password = await plugins.$modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
-        if (password) onConfirmDelete({ id: reply.id, password })
-      }
-    }
+const onConfirmDelete = async ({ id, password }) => {
+  try {
+    await communityService.remove.reply({ id, password })
+    store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
+    store.dispatch('loadPosts')
+    helpers.toast.success('댓글을 삭제했습니다')
+  } catch (e) {
+    helpers.toast.error(e.data.message)
+  }
+}
 
-    const toggleReaction = async (replyId, type) => {
-      try {
-        await communityService.toggleReaction.reply({
-          replyId,
-          type,
-          nickname: ((store.getters.chatUser || {}).profile || {}).nickname,
-        })
-        store.dispatch('loadPost', store.getters.post.sharingKey)
-      } catch (e) {}
-    }
+const onClickDelete = async reply => {
+  if (helpers.logic.writing.isMine(reply)) {
+    const ok = await helpers.modal.confirm({ body: '내 댓글을 삭제하시겠습니까?' })
+    if (ok) onConfirmDelete({ id: reply.id })
+  } else {
+    const password = await helpers.modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+    if (password) onConfirmDelete({ id: reply.id, password })
+  }
+}
 
-    return {
-      repliesToDisplay,
-      hasNonDeletedChild,
-      onClickDelete,
-      toggleReaction,
-    }
-  },
+const toggleReaction = async (replyId, type) => {
+  try {
+    await communityService.toggleReaction.reply({
+      replyId,
+      type,
+      nickname: ((store.getters.chatUser || {}).profile || {}).nickname,
+    })
+    store.dispatch('loadPost', store.getters.post.sharingKey)
+  } catch (e) {}
 }
 </script>
 

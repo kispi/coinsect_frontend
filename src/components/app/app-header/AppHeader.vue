@@ -3,23 +3,23 @@
     <div class="top">
       <BannerMarketIndices/>
       <div
-        @click="$modal.custom({ component: 'ModalChatUsers' })"
+        @click="helpers.modal.custom({ component: 'ModalChatUsers' })"
         class="num-users f-mono f-12 cursor-pointer"
         :class="numConnectionsColorClass">
         <i class="fa fa-user-group m-r-4"/>
-        {{ (($store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
+        {{ ((store.getters.chatStats || {}).numConnections || 0).toLocaleString() }}
       </div>
     </div>
     <div class="logo-and-settings">
       <div class="flex-row flex-between items-center flex-fill">
         <div class="flex-row items-center no-select">
           <div
-            v-if="$store.getters.windowInnerWidth < 1600"
-            @click="$store.commit('setShowNavigation', !$store.getters.showNavigation)"
+            v-if="store.getters.windowInnerWidth < 1600"
+            @click="store.commit('setShowNavigation', !store.getters.showNavigation)"
             class="clickable-icon-wrapper m-r-4">
             <i
               class="fal menu-icon"
-              :class="$store.getters.showNavigation ? 'fa-times' : 'fa-bars'"
+              :class="store.getters.showNavigation ? 'fa-times' : 'fa-bars'"
             />
           </div>
           <AppLogo/>
@@ -53,7 +53,7 @@
             ref="refIconMenuAccount"
             @click="onClickMenuAccount"
             class="clickable-icon-wrapper">
-            <i v-if="$store.getters.me" class="fal fa-circle-user"/>
+            <i v-if="store.getters.me" class="fal fa-circle-user"/>
             <div v-else class="f-10">{{ $translate('MODAL_SIGN_IN') }}</div>
           </div>
         </div>
@@ -77,9 +77,9 @@
           :align="'right'"
           :mountBelow="refIconMenuAccount">
           <ul class="my-activity">
-            <li @click="handleClickMyActivity(() => $modal.custom({ component: 'ModalUserStats', options: { user: $store.getters.me } }))">내 활동</li>
-            <li @click="handleClickMyActivity(() => $modal.custom({ component: $store.getters.me ? 'ModalChatSettings' : 'ModalSignIn' }))">계정 설정</li>
-            <li @click="handleClickMyActivity(() => $store.dispatch('signOut'))">{{ $translate('LOGOUT') }}</li>
+            <li @click="handleClickMyActivity(() => helpers.modal.custom({ component: ModalUserStats, options: { user: store.getters.me } }))">내 활동</li>
+            <li @click="handleClickMyActivity(() => helpers.modal.custom({ component: store.getters.me ? ModalChatSettings : ModalSignIn }))">계정 설정</li>
+            <li @click="handleClickMyActivity(() => store.dispatch('signOut'))">{{ $translate('LOGOUT') }}</li>
           </ul>
         </WrapperDropdownOverlay>
       </div>
@@ -87,89 +87,73 @@
   </header>
 </template>
 
-<script>
-import { computed, ref, watch } from 'vue'
+<script setup>
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
 
-export default {
-  components: {
-    AppNotifications,
-    BannerMarketIndices,
-  },
-  setup() {
-    const { plugins, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const refIconSettings = ref(null)
+const ModalSignIn = defineAsyncComponent(() => import('@/components/modals/ModalSignIn'))
 
-    const refIconNotifications = ref(null)
+const ModalChatSettings = defineAsyncComponent(() => import('@/components/modals/ModalChatSettings'))
 
-    const refIconMenuAccount = ref(null)
+const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
-    const showSettings = ref(null)
+const refIconSettings = ref(null)
 
-    const showNotifications = ref(null)
+const refIconNotifications = ref(null)
 
-    const showMenuAccount = ref(null)
+const refIconMenuAccount = ref(null)
 
-    const numConnectionsColorClass = ref(null)
+const showSettings = ref(false)
 
-    const numNewNotifications = computed(() => {
-      const list = (store.getters.notifications || {}).data || []
-      if (list.length === 0) return
+const showNotifications = ref(false)
 
-      const d = plugins.$helpers.dayjs
+const showMenuAccount = ref(false)
 
-      const lastId = plugins.$helpers.localStorage.getMeta('lastNotificationId')
-      if (lastId) return list.filter(o => o.id > lastId).length
+const numConnectionsColorClass = ref(null)
 
-      return list.filter(o => d().diff(o.createdAt, 'hour') < 24).length
-    })
+const numNewNotifications = computed(() => {
+  const list = (store.getters.notifications || {}).data || []
+  if (list.length === 0) return
 
-    const onClickShare = () => {
-      const url = window.location.origin + window.location.pathname
-      plugins.$helpers.dom.copyToClipboard(encodeURI(url))
-      plugins.$toast.success('현재 페이지 주소가 복사되었습니다. 카카오톡 등의 SNS로 붙여넣기해서 공유해보세요 🥰')
-    }
+  const d = helpers.dayjs
 
-    const handleClickMyActivity = handler => {
-      handler()
-      showMenuAccount.value = false
-    }
+  const lastId = helpers.localStorage.getMeta('lastNotificationId')
+  if (lastId) return list.filter(o => o.id > lastId).length
 
-    const onClickMenuAccount = () => {
-      if (store.getters.me) {
-        showMenuAccount.value = !showMenuAccount.value
-        return
-      }
+  return list.filter(o => d().diff(o.createdAt, 'hour') < 24).length
+})
 
-      plugins.$modal.custom({ component: 'ModalSignIn' })
-    }
-
-    watch(
-      () => store.getters.chatStats.numConnections,
-      (newVal, oldVal) => {
-        if (newVal > oldVal) numConnectionsColorClass.value = 'c-price-up'
-        if (newVal < oldVal) numConnectionsColorClass.value = 'c-price-down'
-      },
-    )
-
-    return {
-      refIconNotifications,
-      refIconSettings,
-      refIconMenuAccount,
-      showNotifications,
-      showSettings,
-      showMenuAccount,
-      numConnectionsColorClass,
-      numNewNotifications,
-      onClickMenuAccount,
-      onClickShare,
-      handleClickMyActivity,
-    }
-  },
+const onClickShare = () => {
+  const url = window.location.origin + window.location.pathname
+  helpers.dom.copyToClipboard(encodeURI(url))
+  helpers.toast.success('현재 페이지 주소가 복사되었습니다. 카카오톡 등의 SNS로 붙여넣기해서 공유해보세요 🥰')
 }
+
+const handleClickMyActivity = handler => {
+  handler()
+  showMenuAccount.value = false
+}
+
+const onClickMenuAccount = () => {
+  if (store.getters.me) {
+    showMenuAccount.value = !showMenuAccount.value
+    return
+  }
+
+  helpers.modal.custom({ component: ModalSignIn })
+}
+
+watch(
+  () => store.getters.chatStats.numConnections,
+  (newVal, oldVal) => {
+    if (newVal > oldVal) numConnectionsColorClass.value = 'c-price-up'
+    if (newVal < oldVal) numConnectionsColorClass.value = 'c-price-down'
+  },
+)
 </script>
 
 <style lang="scss">

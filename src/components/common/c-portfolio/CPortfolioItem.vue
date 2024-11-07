@@ -25,11 +25,11 @@
         initial: item.averagePurchasePrice,
       })">
       <div class="key">매수평균</div>
-      <div class="value">{{ displayedPrice(item.averagePurchasePrice, exchange) }}</div>
+      <div class="value">{{ displayedPrice(item.averagePurchasePrice) }}</div>
     </div>
     <div class="current-worth">
       <div class="key">평가금액</div>
-      <div class="value">{{ displayedPrice(item.$$worth, exchange) }}</div>
+      <div class="value">{{ displayedPrice(item.$$worth) }}</div>
     </div>
     <div
       class="roi"
@@ -38,69 +38,69 @@
         'c-price-down': item.$$unrealized < 0,
       }">
       <div class="key">평가손익</div>
-      <div class="value">{{ displayedPrice(item.$$unrealized, exchange) }} ({{ item.$$roi.toFixed(2) }}%)</div>
+      <div class="value">{{ displayedPrice(item.$$unrealized) }} ({{ item.$$roi.toFixed(2) }}%)</div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: ['item', 'exchange'],
-  setup(props) {
-    const { plugins, store } = useGlobalHooks()
-
-    const removePortfolioItem = () => {
-      const portfolio = store.getters.settings.portfolio
-      const idx = (portfolio[props.exchange] || []).findIndex(o => o.market === props.item.market)
-      if (idx >= 0) portfolio[props.exchange].splice(idx, 1)
-
-      if ((portfolio[props.exchange] || []).length === 0) delete portfolio[props.exchange]
-      store.commit('setSettings', { portfolio })
-    }
-
-    const displayedPrice = (price, exchange) => plugins.$helpers.number.pretty.price({ price, baseCurrency: 'krw' })
-
-    const openModalInput = ({ type, exchange, market, initial }) => {
-      const portfolio = store.getters.settings.portfolio
-
-      if (type === 'amount') {
-        plugins.$modal.input({ title: '보유수량을 입력하세요', inputValue: initial })
-          .then(amount => {
-            if (!amount) return
-
-            const idx = (portfolio[exchange] || []).findIndex(o => o.market === market)
-            if (idx >= 0) {
-              const rounded = Math.round(amount * Math.pow(10, 8)) / Math.pow(10, 8)
-              portfolio[exchange][idx].amount = rounded
-              store.commit('setSettings', { portfolio })
-            }
-          })
-          return
-      }
-
-      if (type === 'averagePurchasePrice') {
-        plugins.$modal.input({ title: '매수평균단가를 입력하세요', inputValue: initial })
-          .then(avg => {
-            if (!avg) return
-
-            const idx = (portfolio[exchange] || []).findIndex(o => o.market === market) 
-            if (idx >= 0) {
-              portfolio[exchange][idx].averagePurchasePrice = Math.round(avg)
-              store.commit('setSettings', { portfolio })
-            }
-          })
-          return
-      }
-    }
-
-    return {
-      openModalInput,
-      displayedPrice,
-      removePortfolioItem,
-    }
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true,
   },
+  exchange: {
+    type: String,
+    required: true,
+  },
+})
+
+const { helpers, store } = useGlobalHooks()
+
+const removePortfolioItem = () => {
+  const portfolio = store.getters.settings.portfolio
+  const idx = (portfolio[props.exchange] || []).findIndex(o => o.market === props.item.market)
+  if (idx >= 0) portfolio[props.exchange].splice(idx, 1)
+
+  if ((portfolio[props.exchange] || []).length === 0) delete portfolio[props.exchange]
+  store.commit('setSettings', { portfolio })
+}
+
+const displayedPrice = price => helpers.number.pretty.price({ price, baseCurrency: 'krw' })
+
+const openModalInput = ({ type, exchange, market, initial }) => {
+  const portfolio = store.getters.settings.portfolio
+
+  if (type === 'amount') {
+    helpers.modal.input({ title: '보유수량을 입력하세요', inputValue: initial })
+      .then(amount => {
+        if (!amount) return
+
+        const idx = (portfolio[exchange] || []).findIndex(o => o.market === market)
+        if (idx >= 0) {
+          const rounded = Math.round(amount * Math.pow(10, 8)) / Math.pow(10, 8)
+          portfolio[exchange][idx].amount = rounded
+          store.commit('setSettings', { portfolio })
+        }
+      })
+      return
+  }
+
+  if (type === 'averagePurchasePrice') {
+    helpers.modal.input({ title: '매수평균단가를 입력하세요', inputValue: initial })
+      .then(avg => {
+        if (!avg) return
+
+        const idx = (portfolio[exchange] || []).findIndex(o => o.market === market) 
+        if (idx >= 0) {
+          portfolio[exchange][idx].averagePurchasePrice = Math.round(avg)
+          store.commit('setSettings', { portfolio })
+        }
+      })
+      return
+  }
 }
 </script>
 

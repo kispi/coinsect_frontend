@@ -1,5 +1,6 @@
 import { store } from '@/store'
 import animate from './animate'
+import createBus from './bus'
 import coin from './coin'
 import dataSetter from './data-setter'
 import dayjs from 'dayjs'
@@ -45,6 +46,7 @@ const canSkipApiCall = (apiId, cacheTimeout) => {
 
 const helpers = {
   animate,
+  bus: createBus(),
   coin,
   dataSetter,
   dayjs,

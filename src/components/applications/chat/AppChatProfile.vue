@@ -24,8 +24,8 @@
       />
     </template>
     <span
-      @click="user.id ? $modal.custom({
-        component: 'ModalUserStats',
+      @click="user.id ? helpers.modal.custom({
+        component: ModalUserStats,
         options: { user },
       }) : null"
       class="nickname"
@@ -49,46 +49,41 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    user: null,
-    useBan: null,
-    useSentiment: null,
-  },
-  setup(props) {
-    const { plugins, store } = useGlobalHooks()
+const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
-    const $t = plugins.$translate
+const props = defineProps({
+  user: Object,
+  useBan: Boolean,
+  useSentiment: Boolean,
+})
 
-    const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', (props.user.token || '').toUpperCase().slice(0, 3))
+const { helpers, store } = useGlobalHooks()
 
-    const magnifyUserImage = () => plugins.$modal.images({
-      images: [(props.user.profile || {}).image],
-    })
+const $t = helpers.translate
 
-    const openModalBlockUser = () => {
-      if (!props.user.token) return
+const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', (props.user.token || '').toUpperCase().slice(0, 3))
 
-      const blockedUsers = store.getters.settings.blockedUsers
-      plugins.$modal.confirm({
-        body: replacer($t(blockedUsers[props.user.token] ? 'UNBLOCK_USER' : 'BLOCK_USER'))
-      }).then(idx => {
-        if (idx !== 1) return
+const magnifyUserImage = () => helpers.modal.images({
+  images: [(props.user.profile || {}).image],
+})
 
-        if (blockedUsers[props.user.token]) delete blockedUsers[props.user.token]
-        else blockedUsers[props.user.token] = true
-        store.commit('setSettings', { blockedUsers })
-      })
-    }
+const openModalBlockUser = () => {
+  if (!props.user.token) return
 
-    return {
-      openModalBlockUser,
-      magnifyUserImage,
-    }
-  },
+  const blockedUsers = store.getters.settings.blockedUsers
+  helpers.modal.confirm({
+    body: replacer($t(blockedUsers[props.user.token] ? 'UNBLOCK_USER' : 'BLOCK_USER'))
+  }).then(idx => {
+    if (idx !== 1) return
+
+    if (blockedUsers[props.user.token]) delete blockedUsers[props.user.token]
+    else blockedUsers[props.user.token] = true
+    store.commit('setSettings', { blockedUsers })
+  })
 }
 </script>
 

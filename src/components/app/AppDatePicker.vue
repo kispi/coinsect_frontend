@@ -18,12 +18,12 @@ export default {
     VueDatePicker: defineAsyncComponent(() => import('@vuepic/vue-datepicker')),
   },
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const krList = ['일', '월', '화', '수', '목', '금', '토']
 
     const defaultFormatter = date => {
-      const target = plugins.$helpers.dayjs(date)
+      const target = helpers.dayjs(date)
       const dayOfWeek = target.day()
       return target.format(`YYYY-MM-DD (${store.getters.settings.locale === 'kr' ? krList[dayOfWeek] : 'ddd'})`)
     }

@@ -3,42 +3,28 @@
     <template v-if="whereToShow">
       <ExchangeBanner
         @click="$modal.custom({
-          component: 'ModalReferral',
+          component: ModalReferral,
           options: { exchange },
         })"
         :exchange="exchange"
-        :simple="$store.getters.isMobile"
+        :simple="store.getters.isMobile"
         :key="exchange"
         v-for="exchange in ['bybit', 'bitget', 'bingx']"
       />
     </template>
-    <AdSense v-if="$store.getters.windowInnerWidth >= 1200" :dataAdSlot="'3927887162'" :responsive="true"/>
+    <AdSense v-if="store.getters.windowInnerWidth >= 1200" :dataAdSlot="'3927887162'" :responsive="true"/>
   </div>
 </template>
 
-<script>
-import { ref, computed } from 'vue'
-// import useGlobalHooks from '@/hooks/global-hooks'
+<script setup>
+import { ref, computed, defineAsyncComponent } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    // const { router } = useGlobalHooks()
+const { store } = useGlobalHooks()
 
-    const whereToShow = computed(() => false)//['/contents/crypto-referral'].includes(router.currentRoute.value.path))
+const ModalReferral = defineAsyncComponent(() => import('@/components/modals/ModalReferral'))
 
-    const forcedStyle = ref(null)
-
-    const onLoadAdSense = () => {
-      setTimeout(() => forcedStyle.value = { height: '960px !important' }, 500)
-    }
-
-    return {
-      forcedStyle,
-      whereToShow,
-      onLoadAdSense,
-    }
-  },
-}
+const whereToShow = computed(() => false)
 </script>
 
 <style lang="scss">

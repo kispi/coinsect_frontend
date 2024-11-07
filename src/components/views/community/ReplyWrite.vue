@@ -3,23 +3,23 @@
     <form>
       <div class="writer-and-password">
         <input
-          v-if="!$store.getters.me"
+          v-if="!store.getters.me"
           v-model="payload.nickname"
           class="nickname"
           autocomplete="reply-nickname"
-          :placeholder="$translate('PLACEHOLDER_NICKNAME')"
-          :maxlength="(($store.getters.config || {}).maxlength || {}).nickname"
+          :placeholder="helpers.translate('PLACEHOLDER_NICKNAME')"
+          :maxlength="((store.getters.config || {}).maxlength || {}).nickname"
         >
         <div
           v-else
-          @click="$modal.custom({ component: 'ModalUserStats', options: { user: $store.getters.me } })"
+          @click="helpers.modal.custom({ component: ModalUserStats, options: { user: store.getters.me } })"
           class="authorized-clickable-nickname p-8">
-          <UserSymbol :user="$store.getters.me" class="m-r-4"/><span class="lines-1">{{ ($store.getters.me.profile || {}).nickname }}</span>
+          <UserSymbol :user="store.getters.me" class="m-r-4"/><span class="lines-1">{{ (store.getters.me.profile || {}).nickname }}</span>
         </div>
         <input
-          v-if="!$store.getters.me"
+          v-if="!store.getters.me"
           v-model="payload.password"
-          :placeholder="$translate('PLACEHOLDER_PASSWORD')"
+          :placeholder="helpers.translate('PLACEHOLDER_PASSWORD')"
           class="password"
           type="password"
           autocomplete="reply-password"
@@ -29,7 +29,7 @@
       <textarea
         @paste="onPaste"
         v-model="payload.content"
-        :placeholder="$translate('PLACEHOLDER_CONTENT')"
+        :placeholder="helpers.translate('PLACEHOLDER_CONTENT')"
       />
     </form>
     <div class="reply-functions">
@@ -53,7 +53,7 @@
           class="btn btn-primary btn-upload-image"
           @click="onClickAddImage"
           :disabled="processing">
-          <i class="far fa-image m-r-8"/>{{ $translate('ADD_IMAGE') }}
+          <i class="far fa-image m-r-8"/>{{ helpers.translate('ADD_IMAGE') }}
         </button>
       </div>
       <div class="buttons flex-row">
@@ -61,137 +61,126 @@
           v-if="parent"
           @click="$emit('cancel')"
           class="btn btn-default"
-          v-html="$translate('CANCEL')"
+          v-html="helpers.translate('CANCEL')"
         />
         <button
           @click="onClickCreateReply"
           class="btn btn-primary"
-          v-html="$translate('SUBMIT_PAYLOAD')"
+          v-html="helpers.translate('SUBMIT_PAYLOAD')"
         />
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import { onMounted, ref, watch } from 'vue'
+<script setup>
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import crudService from '@/services/crud'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    post: {
-      type: Object,
-      required: true,
-    },
-    user: Object,
-    parent: Object,
+const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
+
+const props = defineProps({
+  post: {
+    type: Object,
+    required: true,
   },
-  setup(props) {
-    const { plugins, store, router } = useGlobalHooks()
+  user: Object,
+  parent: Object,
+})
 
-    const payload = ref({})
+const { helpers, store, router } = useGlobalHooks()
 
-    const processing = ref(null)
+const payload = ref({})
 
-    const images = ref([]) // payload와 별개로 관리
+const processing = ref(null)
 
-    const initPayload = () => {
-      images.value = []
-      payload.value = {
-        nickname: ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname,
-        password: null,
-        content: null,
-        post: props.post,
-        user: props.user,
-        parent: props.parent,
-      }
-    }
+const images = ref([]) // payload와 별개로 관리
 
-    const onPaste = e => {
-      plugins.$helpers.logic.onPasteClipboardImage(
-        e,
-        url => {
-          if (!url) return
-
-          images.value[0] = url
-        })
-    }
-
-    const onClickDeleteImage = idx => {
-      plugins.$modal.confirm({ body: plugins.$translate('MODAL_CONFIRM_DELETE_REPLY_IMAGE') })
-        .then(ok => ok ? images.value.splice(idx, 1) : null)
-    }
-
-    const onClickCreateReply = async () => {
-      const required = ['nickname', 'content']
-      if (!store.getters.me) required.push('password')
-
-      // 굳이 복사하는 이유는 이미지를 content 앞에 붙여넣기 위해서인데, payload를 직접 수정하면 순간적으로 textarea에 업로드된 파일의 주소가 번쩍함.
-      const o = {...payload.value}
-
-      // 이미지가 있으면 content 앞에 붙여넣기
-      if (images.value.length > 0) {
-        const imgTag = `<img src="${images.value[0]}">`
-        if (!o.content) o.content = imgTag
-        else o.content = `${imgTag}\n\n${o.content}`
-      }
-
-      if (required.some(key => {
-        if (!o[key]) {
-          plugins.$toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
-          return true
-        }
-        return !o[key]
-      })) return
-
-      try {
-        await crudService.reply.create(o)
-        store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
-        store.dispatch('loadPosts')
-      } catch (e) {
-        if (plugins.$helpers.errorHandlers.bannedUser(e)) return
-
-        plugins.$toast.error(e.data.message)
-      }
-    }
-
-    const onClickAddImage = () => {
-      plugins.$modal.custom({
-        component: 'ModalUploadImage',
-        options: {
-          noupload: true,
-          uploadDest: 'boards/replies',
-        },
-      }).then(url => {
-        if (!url) return
-
-        images.value[0] = url
-      })
-    }
-
-    watch([
-      () => props.post,
-      () => props.user,
-      () => props.parent,
-    ],
-      initPayload,
-      { deep: true },
-    )
-
-    onMounted(initPayload)
-
-    return {
-      processing,
-      payload,
-      images,
-      onPaste,
-      onClickAddImage,
-      onClickDeleteImage,
-      onClickCreateReply,
-    }
+const initPayload = () => {
+  images.value = []
+  payload.value = {
+    nickname: ((helpers.localStorage.getMeta('user') || {}).profile || {}).nickname,
+    password: null,
+    content: null,
+    post: props.post,
+    user: props.user,
+    parent: props.parent,
   }
 }
+
+const onPaste = e => {
+  helpers.logic.onPasteClipboardImage(
+    e,
+    url => {
+      if (!url) return
+
+      images.value[0] = url
+    })
+}
+
+const onClickDeleteImage = idx => {
+  helpers.modal.confirm({ body: helpers.translate('MODAL_CONFIRM_DELETE_REPLY_IMAGE') })
+    .then(ok => ok ? images.value.splice(idx, 1) : null)
+}
+
+const onClickCreateReply = async () => {
+  const required = ['nickname', 'content']
+  if (!store.getters.me) required.push('password')
+
+  // 굳이 복사하는 이유는 이미지를 content 앞에 붙여넣기 위해서인데, payload를 직접 수정하면 순간적으로 textarea에 업로드된 파일의 주소가 번쩍함.
+  const o = {...payload.value}
+
+  // 이미지가 있으면 content 앞에 붙여넣기
+  if (images.value.length > 0) {
+    const imgTag = `<img src="${images.value[0]}">`
+    if (!o.content) o.content = imgTag
+    else o.content = `${imgTag}\n\n${o.content}`
+  }
+
+  if (required.some(key => {
+    if (!o[key]) {
+      helpers.toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
+      return true
+    }
+    return !o[key]
+  })) return
+
+  try {
+    await crudService.reply.create(o)
+    store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
+    store.dispatch('loadPosts')
+  } catch (e) {
+    if (helpers.errorHandlers.bannedUser(e)) return
+
+    helpers.toast.error(e.data.message)
+  }
+}
+
+const onClickAddImage = () => {
+  helpers.modal.custom({
+    component: 'ModalUploadImage',
+    options: {
+      noupload: true,
+      uploadDest: 'boards/replies',
+    },
+  }).then(url => {
+    if (!url) return
+
+    images.value[0] = url
+  })
+}
+
+watch([
+  () => props.post,
+  () => props.user,
+  () => props.parent,
+],
+  initPayload,
+  { deep: true },
+)
+
+onMounted(initPayload)
 </script>
 
 <style lang="scss" scoped>

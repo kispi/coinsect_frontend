@@ -4,7 +4,7 @@
       class="snackbar-item"
       :class="snackbar.class"
       :key="snackbar"
-      v-for="snackbar in $store.getters.snackbars">
+      v-for="snackbar in store.getters.snackbars">
       <div class="snackbar-content">
         <i v-if="snackbar.class === 'info'" class="fal fa-info-circle"/>
         <i v-if="snackbar.class === 'warning'" class="fal fa-exclamation-circle"/>
@@ -12,13 +12,19 @@
       </div>
       <div class="clickable-icon-wrapper m-l-8">
         <i
-          @click="$store.commit('removeSnackbar', snackbar)"
+          @click="store.commit('removeSnackbar', snackbar)"
           class="fal fa-times"
         />
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+const { store } = useGlobalHooks()
+</script>
 
 <style lang="scss" scoped>
 .app-snackbar {

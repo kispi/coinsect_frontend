@@ -2,20 +2,20 @@
   <form class="post-editor" @submit.prevent>
     <div class="nickname-password">
       <input
-        v-if="!$store.getters.me"
+        v-if="!store.getters.me"
         v-model="payload.nickname"
         class="nickname bg-white c-black"
         :placeholder="$translate('PLACEHOLDER_NICKNAME')"
-        :maxlength="(($store.getters.config || {}).maxlength || {}).nickname"
+        :maxlength="((store.getters.config || {}).maxlength || {}).nickname"
       >
       <div
         v-else
-        @click="$modal.custom({ component: 'ModalUserStats', options: { user: $store.getters.me } })"
+        @click="helpers.modal.custom({ component: ModalUserStats, options: { user: store.getters.me } })"
         class="authorized-user flex-wrap">
-        <UserSymbol :user="$store.getters.me" class="m-r-4"/><span class="lines-1">{{ ($store.getters.me.profile || {}).nickname }}</span>
+        <UserSymbol :user="store.getters.me" class="m-r-4"/><span class="lines-1">{{ (store.getters.me.profile || {}).nickname }}</span>
       </div>
       <input
-        v-if="!$store.getters.me"
+        v-if="!store.getters.me"
         v-model="payload.password"
         class="password bg-white c-black"
         :placeholder="$translate('PLACEHOLDER_PASSWORD')"
@@ -30,7 +30,7 @@
         v-model="payload.title"
         class="title bg-white c-black"
         :placeholder="$translate('PLACEHOLDER_TITLE')"
-        :maxlength="(($store.getters.config || {}).maxlength || {}).title"
+        :maxlength="((store.getters.config || {}).maxlength || {}).title"
       >
     </div>
     <ToastUIEditor v-model="payload.content"/>
@@ -49,103 +49,96 @@
   </form>
 </template>
 
-<script>
-import { computed, onMounted, ref, watch } from 'vue'
+<script setup>
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import crudService from '@/services/crud'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  emits: ['close'],
-  props: {
-    boardId: {
-      required: false,
-      type: Number,
-    },
-    post: {
-      required: false,
-      type: Object,
-    },
+const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
+
+const props = defineProps({
+  boardId: {
+    required: false,
+    type: Number,
   },
-  setup(props, { emit }) {
-    const { plugins, store, router } = useGlobalHooks()
-
-    const payload = ref({})
-
-    const boards = computed(() => {
-      const arr = store.getters.boards
-      if (!arr) return
-
-      return arr.map(o => ({
-        key: o.id,
-        name: o.description,
-        $$selected: o.id === (payload.value.board || {}).id,
-      }))
-    })
-
-    const onSelectBoard = e => {
-      payload.value.board = { id: e.key }
-    }
-
-    const init = () => {
-      const boardId = props.boardId || parseInt(router.currentRoute.value.query.boardId)
-      if (boardId) payload.value.board = { id: boardId }
-      if (props.post) payload.value = {...props.post}
-      else if (store.getters.me) payload.value.nickname = store.getters.me.profile.nickname
-      else payload.value.nickname = ((plugins.$helpers.localStorage.getMeta('user') || {}).profile || {}).nickname
-
-      if (!payload.value.board) payload.value.board = { id: 1 }
-    }
-
-    const createPost = async () => {
-      const required = ['nickname', 'title', 'content']
-      if (!store.getters.me) required.push('password')
-
-      if (required.some(key => {
-        if (!(payload.value[key] || '').trim()) {
-          const dom = document.querySelector(`input.${key}`) || document.querySelector('.ql-container')
-          if (dom) {
-            dom.scrollIntoView({ behavior: 'smooth' })
-            dom.focus()
-            plugins.$animate.shake(dom)
-          }
-
-          plugins.$toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
-          return true
-        }
-        return !payload.value[key]
-      })) return
-
-      try {
-        await crudService.post[payload.value.id ? 'update' : 'create'](payload.value)
-        emit('close')
-        if (payload.value.sharingKey) {
-          store.dispatch('loadPost', payload.value.sharingKey)
-          plugins.$helpers.dom.scrollToTop()
-        } else {
-          plugins.$bus.$emit('write-post', payload.value.board.id)
-        }
-      } catch (e) {
-        if (plugins.$helpers.errorHandlers.bannedUser(e)) return
-
-        plugins.$toast.error(e.data.message)
-      }
-    }
-
-    watch(
-      () => props.post,
-      init,
-    )
-
-    onMounted(init)
-
-    return {
-      payload,
-      boards,
-      onSelectBoard,
-      createPost
-    }
+  post: {
+    required: false,
+    type: Object,
   },
+})
+
+const emit = defineEmits(['close'])
+
+const { helpers, store, router } = useGlobalHooks()
+
+const payload = ref({})
+
+const boards = computed(() => {
+  const arr = store.getters.boards
+  if (!arr) return
+
+  return arr.map(o => ({
+    key: o.id,
+    name: o.description,
+    $$selected: o.id === (payload.value.board || {}).id,
+  }))
+})
+
+const onSelectBoard = e => {
+  payload.value.board = { id: e.key }
 }
+
+const init = () => {
+  const boardId = props.boardId || parseInt(router.currentRoute.value.query.boardId)
+  if (boardId) payload.value.board = { id: boardId }
+  if (props.post) payload.value = {...props.post}
+  else if (store.getters.me) payload.value.nickname = store.getters.me.profile.nickname
+  else payload.value.nickname = ((helpers.localStorage.getMeta('user') || {}).profile || {}).nickname
+
+  if (!payload.value.board) payload.value.board = { id: 1 }
+}
+
+const createPost = async () => {
+  const required = ['nickname', 'title', 'content']
+  if (!store.getters.me) required.push('password')
+
+  if (required.some(key => {
+    if (!(payload.value[key] || '').trim()) {
+      const dom = document.querySelector(`input.${key}`) || document.querySelector('.ql-container')
+      if (dom) {
+        dom.scrollIntoView({ behavior: 'smooth' })
+        dom.focus()
+        helpers.animate.shake(dom)
+      }
+
+      helpers.toast.error(`PLACEHOLDER_${key.toUpperCase()}`)
+      return true
+    }
+    return !payload.value[key]
+  })) return
+
+  try {
+    await crudService.post[payload.value.id ? 'update' : 'create'](payload.value)
+    emit('close')
+    if (payload.value.sharingKey) {
+      store.dispatch('loadPost', payload.value.sharingKey)
+      helpers.dom.scrollToTop()
+    } else {
+      helpers.bus.$emit('write-post', payload.value.board.id)
+    }
+  } catch (e) {
+    if (helpers.errorHandlers.bannedUser(e)) return
+
+    helpers.toast.error(e.data.message)
+  }
+}
+
+watch(
+  () => props.post,
+  init,
+)
+
+onMounted(init)
 </script>
 
 <style lang="scss">

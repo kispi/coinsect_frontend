@@ -3,20 +3,20 @@
     <button
       @click="openModalAddPortfolio"
       class="btn btn-primary w-100 m-b-24">
-      <i class="fal fa-plus"/><div class="m-l-8" v-html="$translate('ADD_PORTFOLIO')"/>
+      <i class="fal fa-plus"/><div class="m-l-8" v-html="helpers.translate('ADD_PORTFOLIO')"/>
     </button>
     <div class="stats m-b-24">
       <div>
-        {{ $translate('NET_PURCHASE') }}: {{ $helpers.number.pretty.price({ price: netStat.purchase, baseCurrency: $store.getters.settings.baseExchangeMarket })}}
+        {{ helpers.translate('NET_PURCHASE') }}: {{ helpers.number.pretty.price({ price: netStat.purchase, baseCurrency: store.getters.settings.baseExchangeMarket })}}
       </div>
       <div>
-        {{ $translate('PURCHASEMENT_WORTH') }}: {{ $helpers.number.pretty.price({ price: netStat.worth, baseCurrency: $store.getters.settings.baseExchangeMarket })}}
+        {{ helpers.translate('PURCHASEMENT_WORTH') }}: {{ helpers.number.pretty.price({ price: netStat.worth, baseCurrency: store.getters.settings.baseExchangeMarket })}}
       </div>
       <div :class="{'c-price-up': netStat.unrealized > 0, 'c-price-down': netStat.unrealized < 0}">
-        {{ $translate('UNREALIZED') }}: {{ $helpers.number.pretty.price({ price: netStat.unrealized, baseCurrency: $store.getters.settings.baseExchangeMarket }) }}
+        {{ helpers.translate('UNREALIZED') }}: {{ helpers.number.pretty.price({ price: netStat.unrealized, baseCurrency: store.getters.settings.baseExchangeMarket }) }}
       </div>
       <div :class="{'c-price-up': netStat.roi > 0, 'c-price-down': netStat.roi < 0}">
-        {{ $translate('ROI') }}: {{ (netStat.roi || 0).toFixed(2) }}%
+        {{ helpers.translate('ROI') }}: {{ (netStat.roi || 0).toFixed(2) }}%
       </div>
       <AdaptiveLayout
         :gap="8"
@@ -30,7 +30,7 @@
         </div>
       </AdaptiveLayout>
       <div class="net-worth">
-        {{ $translate('NET_WORTH') }}: {{ $helpers.number.pretty.price({ price: netStat.total, baseCurrency: $store.getters.settings.baseExchangeMarket }) }}
+        {{ helpers.translate('NET_WORTH') }}: {{ helpers.number.pretty.price({ price: netStat.total, baseCurrency: store.getters.settings.baseExchangeMarket }) }}
       </div>
     </div>
     <div
@@ -50,147 +50,136 @@
   </div>
 </template>
 
-<script>
+<script setup>
 // 있는거 사용하려 하지 말고 새로 웹소켓 연결해서 쓰는게 나을듯
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import useBinance from '@/hooks/websockets/binance'
 import useUpbit from '@/hooks/websockets/upbit'
 import CPortfolioItem from './CPortfolioItem'
 
-export default {
-  components: { CPortfolioItem },
-  setup() {
-    const { plugins, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const { subscribe: sUpbit } = useUpbit()
+const { subscribe: sUpbit } = useUpbit()
 
-    const { subscribe: sBinance } = useBinance()
+const { subscribe: sBinance } = useBinance()
 
-    const supportedExchanges = ['upbit', 'binance']
+const ModalAddPortfolio = defineAsyncComponent(() => import('@/components/modals/ModalAddPortfolio'))
 
-    const connections = ref({
-      upbit: null,
-      binance: null,
+const supportedExchanges = ['upbit', 'binance']
+
+const connections = ref({
+  upbit: null,
+  binance: null,
+})
+
+const stable = ref(0)
+
+const portfolio = computed(() => store.getters.settings.portfolio)
+
+const netStat = computed(() => {
+  const p = portfolio.value
+  let sumWorth = 0
+  let sumPurchase = 0
+  supportedExchanges.forEach(x => {
+    (p[x] || []).forEach(item => {
+      sumWorth += item.$$worth
+      sumPurchase += Math.round(item.averagePurchasePrice * item.amount)
     })
+  })
 
-    const stable = ref(0)
+  const worth = Math.round(sumWorth)
+  const purchase = Math.round(sumPurchase)
+  const total = worth + (p.stable || 0)
+  const unrealized = (worth - purchase)
 
-    const portfolio = computed(() => store.getters.settings.portfolio)
+  return {
+    worth,
+    purchase,
+    total,
+    roi: Math.round(unrealized / purchase * 10000) / 100,
+    unrealized,
+  }
+})
 
-    const netStat = computed(() => {
-      const p = portfolio.value
-      let sumWorth = 0
-      let sumPurchase = 0
-      supportedExchanges.forEach(x => {
-        (p[x] || []).forEach(item => {
-          sumWorth += item.$$worth
-          sumPurchase += Math.round(item.averagePurchasePrice * item.amount)
-        })
-      })
-
-      const worth = Math.round(sumWorth)
-      const purchase = Math.round(sumPurchase)
-      const total = worth + (p.stable || 0)
-      const unrealized = (worth - purchase)
-
-      return {
-        worth,
-        purchase,
-        total,
-        roi: Math.round(unrealized / purchase * 10000) / 100,
-        unrealized,
-      }
-    })
-
-    watch(
-      () => stable.value,
-      newVal => {
-        stable.value = parseFloat(newVal)
-        portfolio.value.stable = stable.value
-        store.commit('setSettings', { portfolio: portfolio.value })
-      },
-    )
-
-    const unrealized = (exchange, item) => {
-      const info = (store.getters.rawWebsocketInfo[exchange] || {})[item.market]
-      if (!info) return 0
-
-      if (exchange === 'upbit') return Math.round((info.tp - item.averagePurchasePrice) * item.amount)
-      if (exchange === 'binance') return Math.round((info.c * store.getters.usdKrw - item.averagePurchasePrice) * item.amount * 100) / 100
-    }
-
-    const worth = (exchange, item) => {
-      const info = (store.getters.rawWebsocketInfo[exchange] || {})[item.market]
-      if (!info) return 0
-
-      if (exchange === 'upbit') return Math.round(info.tp * item.amount)
-      if (exchange === 'binance') return Math.round(info.c * item.amount * store.getters.usdKrw * 100) / 100
-    }
-
-    const displayedPortfolio = computed(() => {
-      const arr = []
-      supportedExchanges.forEach(exchange => {
-        const items = portfolio.value[exchange]
-        if (!items) return
-
-        items.forEach((item, idx) => {
-          items[idx].$$unrealized = unrealized(exchange, item)
-          items[idx].$$worth = worth(exchange, item)
-          items[idx].$$roi = Math.round(items[idx].$$unrealized / (item.averagePurchasePrice * item.amount) * 10000) / 100
-        })
-        arr.push({ exchange, items })
-      })
-      return arr
-    })
-
-    const connect = () => {
-      if (portfolio.value.upbit) {
-        sUpbit({
-          type: 'ticker',
-          codes: portfolio.value.upbit.map(o => o.market),
-          $$raw: true,
-        }).then(conn => connections.value.upbit = conn)
-      }
-
-      if (portfolio.value.binance) {
-        sBinance({
-          codes: portfolio.value.binance.map(o => `${o.market.toLowerCase()}@miniTicker`),
-          $$raw: true,
-        }).then(conn => connections.value.binance = conn)
-      }
-    }
-
-    const openModalAddPortfolio = () => plugins.$modal.custom({ component: 'ModalAddPortfolio' }).then(() => {
-      disconnect()
-      setTimeout(connect, 1000)
-    })
-
-    const disconnect = () => {
-      if (connections.value.upbit) connections.value.upbit.close()
-      if (connections.value.binance) connections.value.binance.close()
-    }
-
-    onMounted(() => {
-      store.dispatch('loadBaseMarkets')
-
-      if (portfolio.value) {
-        stable.value = portfolio.value.stable
-        connect()
-      }
-    })
-
-    onUnmounted(disconnect)
-
-    return {
-      displayedPortfolio,
-      stable,
-      netStat,
-      connections,
-      openModalAddPortfolio,
-    }
+watch(
+  () => stable.value,
+  newVal => {
+    stable.value = parseFloat(newVal)
+    portfolio.value.stable = stable.value
+    store.commit('setSettings', { portfolio: portfolio.value })
   },
+)
+
+const unrealized = (exchange, item) => {
+  const info = (store.getters.rawWebsocketInfo[exchange] || {})[item.market]
+  if (!info) return 0
+
+  if (exchange === 'upbit') return Math.round((info.tp - item.averagePurchasePrice) * item.amount)
+  if (exchange === 'binance') return Math.round((info.c * store.getters.usdKrw - item.averagePurchasePrice) * item.amount * 100) / 100
 }
+
+const worth = (exchange, item) => {
+  const info = (store.getters.rawWebsocketInfo[exchange] || {})[item.market]
+  if (!info) return 0
+
+  if (exchange === 'upbit') return Math.round(info.tp * item.amount)
+  if (exchange === 'binance') return Math.round(info.c * item.amount * store.getters.usdKrw * 100) / 100
+}
+
+const displayedPortfolio = computed(() => {
+  const arr = []
+  supportedExchanges.forEach(exchange => {
+    const items = portfolio.value[exchange]
+    if (!items) return
+
+    items.forEach((item, idx) => {
+      items[idx].$$unrealized = unrealized(exchange, item)
+      items[idx].$$worth = worth(exchange, item)
+      items[idx].$$roi = Math.round(items[idx].$$unrealized / (item.averagePurchasePrice * item.amount) * 10000) / 100
+    })
+    arr.push({ exchange, items })
+  })
+  return arr
+})
+
+const connect = () => {
+  if (portfolio.value.upbit) {
+    sUpbit({
+      type: 'ticker',
+      codes: portfolio.value.upbit.map(o => o.market),
+      $$raw: true,
+    }).then(conn => connections.value.upbit = conn)
+  }
+
+  if (portfolio.value.binance) {
+    sBinance({
+      codes: portfolio.value.binance.map(o => `${o.market.toLowerCase()}@miniTicker`),
+      $$raw: true,
+    }).then(conn => connections.value.binance = conn)
+  }
+}
+
+const openModalAddPortfolio = () => helpers.modal.custom({ component: ModalAddPortfolio }).then(() => {
+  disconnect()
+  setTimeout(connect, 1000)
+})
+
+const disconnect = () => {
+  if (connections.value.upbit) connections.value.upbit.close()
+  if (connections.value.binance) connections.value.binance.close()
+}
+
+onMounted(() => {
+  store.dispatch('loadBaseMarkets')
+
+  if (portfolio.value) {
+    stable.value = portfolio.value.stable
+    connect()
+  }
+})
+
+onUnmounted(disconnect)
 </script>
 
 <style lang="scss" scoped>

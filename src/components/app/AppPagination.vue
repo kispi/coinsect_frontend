@@ -42,83 +42,61 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  name: 'AppPagination',
-  props: {
-    limit: {
-      type: Number, // 전체 페이지 개수
-    },
-    total: {
-      type: Number, // API response data상의 total (해당 쿼리로 검색된 전체 개수)
-    },
-    page: {
-      type: Number, // API response data상의 page (현재 페이지)
-    },
+const props = defineProps({
+  limit: {
+    type: Number, // 전체 페이지 개수
   },
-  setup(props, { emit }) {
-    const { plugins } = useGlobalHooks()
-
-    const pageValue = ref(props.page)
-
-    // 현재 페이지 양쪽으로 몇개까지나 보여줄지
-    const wingLength = 3
-
-    const numTotalPages = computed(() => Math.ceil(props.total / props.limit))
-
-    const onPage = value => {
-      if (value < 1 || value > numTotalPages.value) return
-
-      pageValue.value = parseInt(value)
-      emit('page', pageValue.value)
-    }
-
-    const shouldShowDots = idx => {
-      if (idx === 0 || idx === pageNumbers.value.length - 1) return
-
-      return pageNumbers.value[idx] + 1 !== pageNumbers.value[idx + 1]
-    }
-
-    // 페이지 중략 (...) 처리를 위해 1번 페이지와 마지막 페이지는 배열에 포함하지 않음 (따로 처리)
-    const pageNumbers = computed(() => {
-      if (numTotalPages.value <= 9) {
-        return plugins.$helpers.numArray(numTotalPages.value - 2)
-          .map(num => num + 2)
-      }
-
-      const arr = []
-
-      for (let i = -wingLength; i <= wingLength; i++) {
-        const toAdd = props.page + i
-        if (!arr.includes(toAdd) && toAdd > 1 && toAdd < numTotalPages.value) arr.push(toAdd)
-      }
-
-      return arr
-    })
-
-    const lastItemIdx = computed(() => {
-      const candidate = props.page * props.limit
-      return candidate < props.total ? candidate : props.total
-    })
-
-    watch(
-      () => props.page,
-      newVal => pageValue.value = newVal,
-    )
-
-    return {
-      pageValue,
-      pageNumbers,
-      numTotalPages,
-      lastItemIdx,
-      shouldShowDots,
-      onPage,
-    }
+  total: {
+    type: Number, // API response data상의 total (해당 쿼리로 검색된 전체 개수)
   },
+  page: {
+    type: Number, // API response data상의 page (현재 페이지)
+  },
+})
+
+const emit = defineEmits(['page'])
+
+const { helpers } = useGlobalHooks()
+
+const pageValue = ref(props.page)
+
+// 현재 페이지 양쪽으로 몇개까지나 보여줄지
+const wingLength = 3
+
+const numTotalPages = computed(() => Math.ceil(props.total / props.limit))
+
+const onPage = value => {
+  if (value < 1 || value > numTotalPages.value) return
+
+  pageValue.value = parseInt(value)
+  emit('page', pageValue.value)
 }
+
+// 페이지 중략 (...) 처리를 위해 1번 페이지와 마지막 페이지는 배열에 포함하지 않음 (따로 처리)
+const pageNumbers = computed(() => {
+  if (numTotalPages.value <= 9) {
+    return helpers.numArray(numTotalPages.value - 2)
+      .map(num => num + 2)
+  }
+
+  const arr = []
+
+  for (let i = -wingLength; i <= wingLength; i++) {
+    const toAdd = props.page + i
+    if (!arr.includes(toAdd) && toAdd > 1 && toAdd < numTotalPages.value) arr.push(toAdd)
+  }
+
+  return arr
+})
+
+watch(
+  () => props.page,
+  newVal => pageValue.value = newVal,
+)
 </script>
 
 <style lang="scss" scoped>

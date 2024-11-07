@@ -13,13 +13,13 @@
             <UserSymbol :user="post.user" class="m-r-4"/>
             <span
               @click="post.userId ?
-                $modal.custom({ component: 'ModalUserStats', options: { user: post.user } }) :
+                helpers.modal.custom({ component: ModalUserStats, options: { user: post.user } }) :
                 null
               ">
-              {{ $helpers.template.writer(post) }}
+              {{ helpers.template.writer(post) }}
             </span>
           </div>
-          <div class="created-at" v-html="$helpers.template.prettyTime(post.createdAt)"/>
+          <div class="created-at" v-html="helpers.template.prettyTime(post.createdAt)"/>
         </div>
         <div class="numbers">
           <div class="views">조회 {{ post.views }}</div>
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div
-        @click="$helpers.onClickHTMLContent"
+        @click="helpers.onClickHTMLContent"
         class="post-content"
         v-html="post.content"
       />
@@ -50,7 +50,7 @@
     <div class="section-ad-sense center">
       <AdSense
         :dataAdSlot="'5803682678'"
-        :style="$store.getters.isMobile ? {
+        :style="store.getters.isMobile ? {
           width: '360px',
           height: '80px',
         } : {
@@ -67,34 +67,27 @@
   </article>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script setup>
+import { computed, defineAsyncComponent } from 'vue'
 import communityService from '@/services/community'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { store } = useGlobalHooks()
+const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
-    const post = computed(() => store.getters.post)
+const { helpers, store } = useGlobalHooks()
 
-    const toggleReaction = async type => {
-      try {
-        await communityService.toggleReaction.post({
-          postId: post.value.id,
-          type,
-          nickname: ((store.getters.chatUser || {}).profile || {}).nickname,
-        })
-        store.dispatch('loadPost', post.value.sharingKey)
-        store.dispatch('loadPosts')
-      } catch (e) {}
-    }
+const post = computed(() => store.getters.post)
 
-    return {
-      post,
-      toggleReaction,
-    }
-  },
+const toggleReaction = async type => {
+  try {
+    await communityService.toggleReaction.post({
+      postId: post.value.id,
+      type,
+      nickname: ((store.getters.chatUser || {}).profile || {}).nickname,
+    })
+    store.dispatch('loadPost', post.value.sharingKey)
+    store.dispatch('loadPosts')
+  } catch (e) {}
 }
 </script>
 

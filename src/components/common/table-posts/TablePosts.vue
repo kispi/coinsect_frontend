@@ -23,11 +23,11 @@
             <div class="id-title flex-fill">
               <div
                 class="cell badge-post-type m-r-8"
-                :style="{ background: $helpers.logic.hexToRgba(row.board.$$color, 0.25) }"
+                :style="{ background: helpers.logic.hexToRgba(row.board.$$color, 0.25) }"
                 v-html="$translate(row.postType === 'notice' ? 'NOTICE' : row.board.description)"
               />
               <article class="cell title">
-                <PostImagePreview v-if="!$store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
+                <PostImagePreview v-if="!store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
                 <div class="flex-row items-center">
                   <IconYoutube v-if="row.$$thumbnail" class="m-r-8" size="16"/>
                   <div>
@@ -43,11 +43,11 @@
                 class="cell nickname"
                 :class="{'authorized-clickable-nickname': row.userId}">
                 <UserSymbol :user="row.user" class="flex-wrap m-r-4"/>
-                <span @click.stop.prevent="onClickUserNickname(row)">{{ $helpers.template.writer(row) }}</span>
+                <span @click.stop.prevent="onClickUserNickname(row)">{{ helpers.template.writer(row) }}</span>
               </div>
-              <div class="cell date">{{ $helpers.template.prettyTime(row.createdAt, true) }}</div>
+              <div class="cell date">{{ helpers.template.prettyTime(row.createdAt, true) }}</div>
               <div class="cell short">
-                <span v-if="$store.getters.isMobile" class="m-r-4">조회</span>{{ row.views }}
+                <span v-if="store.getters.isMobile" class="m-r-4">조회</span>{{ row.views }}
               </div>
               <div
                 class="cell short">
@@ -57,15 +57,15 @@
               </div>
             </div>
           </AdaptiveLayout>
-          <PostImagePreview v-if="$store.getters.isMobile" :post="row"/>
+          <PostImagePreview v-if="store.getters.isMobile" :post="row"/>
         </a>
       </div>
     </div>
     <AppPagination
       class="m-t-16 m-b-16"
-      :page="$store.getters.posts.page"
-      :limit="$store.getters.posts.limit"
-      :total="$store.getters.posts.total"
+      :page="store.getters.posts.page"
+      :limit="store.getters.posts.limit"
+      :total="store.getters.posts.total"
       @page="onPage"
     />
     <div
@@ -77,22 +77,22 @@
       :class="{'focus': focus}">
       <i
         class="fal fa-search"
-        :class="{'disabled': !$store.getters.posts.keyword}"
+        :class="{'disabled': !store.getters.posts.keyword}"
         @click.stop="loadPosts"
       />
       <input
         ref="refInput"
         placeholder="작성자, 글 제목, 내용"
-        :value="$store.getters.posts.keyword"
+        :value="store.getters.posts.keyword"
         @keydown="onKeydown"
         @click="focus = true"
         @blur="focus = false"
       >
       <i
-        v-if="$store.getters.posts.keyword"
+        v-if="store.getters.posts.keyword"
         class="fal fa-times"
         @click.stop="() => {
-          $store.commit('setPosts', { keyword: null })
+          store.commit('setPosts', { keyword: null })
           refInput.focus()
         }"
       />
@@ -100,120 +100,101 @@
   </div>
 </template>
 
-<script>
-import { ref, computed, onMounted, onUnmounted, onServerPrefetch, watch } from 'vue'
+<script setup>
+import { ref, computed, onMounted, onUnmounted, onServerPrefetch, watch, defineAsyncComponent } from 'vue'
 import ButtonBoards from './ButtonBoards'
 import PostImagePreview from './PostImagePreview'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: {
-    ButtonBoards,
-    PostImagePreview,
-  },
-  setup() {
-    const { plugins, store, router } = useGlobalHooks()
+const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
-    const refInput = ref(null)
+const { helpers, store, router } = useGlobalHooks()
 
-    const focus = ref(null)
+const refInput = ref(null)
 
-    const posts = computed(() => store.getters.posts)
+const focus = ref(null)
 
-    const notices = computed(() => store.getters.notices)
+const posts = computed(() => store.getters.posts)
 
-    const onKeydown = e => {
-      setTimeout(() => {
-        store.commit('setPosts', { keyword: e.target.value })
-        if (e.key === 'Enter' && !e.isComposing) {
-          store.commit('setPosts', { page: 1 })
-          if (!store.getters.posts.keyword) store.commit('setPosts', { limit: 20 })
-          onPage(store.getters.posts.page)
-        }
+const notices = computed(() => store.getters.notices)
+
+const onKeydown = e => {
+  setTimeout(() => {
+    store.commit('setPosts', { keyword: e.target.value })
+    if (e.key === 'Enter' && !e.isComposing) {
+      store.commit('setPosts', { page: 1 })
+      if (!store.getters.posts.keyword) store.commit('setPosts', { limit: 20 })
+      onPage(store.getters.posts.page)
+    }
+  })
+}
+
+const isActivePost = row => router.currentRoute.value.params.sharingKey === row.sharingKey
+
+const queryString = () => `${Object.keys(store.getters.posts)
+  .filter(key => store.getters.posts[key] && !['data', 'total'].includes(key))
+  .map(key => `${key}=${store.getters.posts[key]}`).join('&')}`
+
+const onClickRow = row => {
+  if (row.sharingKey === router.currentRoute.value.params.sharingKey) return
+
+  router.push(`/community/${row.sharingKey}?${queryString()}`)
+}
+
+const onClickUserNickname = row => {
+  if (!row.userId) {
+    onClickRow(row)
+    return
+  }
+
+  helpers.modal.custom({ component: ModalUserStats, options: { user: row.user } })
+}
+
+const onPage = page => {
+  store.commit('setPosts', { page })
+  router.push(`/community?${queryString()}`)
+}
+
+const loadPosts = async () => {
+  await store.dispatch('loadPosts')
+  helpers.dom.scrollToTop()
+}
+
+const callApi = async () => {
+  await Promise.all([
+    store.dispatch('loadNotices'),
+    loadPosts(),
+  ])
+}
+
+onMounted(() => {
+  callApi()
+  helpers.bus.$on('write-post', loadPosts)
+})
+
+onUnmounted(() => {
+  helpers.bus.$off('write-post', loadPosts)
+})
+
+onServerPrefetch(callApi)
+
+watch(
+  () => router.currentRoute.value,
+  newVal => {
+    if (!newVal || !newVal.fullPath.startsWith('/community')) return
+
+    if (newVal.fullPath === '/community') {
+      store.commit('setPosts', {
+        page: 1,
+        limit: 20,
+        keyword: null,
       })
     }
 
-    const isActivePost = row => router.currentRoute.value.params.sharingKey === row.sharingKey
-
-    const queryString = () => `${Object.keys(store.getters.posts)
-      .filter(key => store.getters.posts[key] && !['data', 'total'].includes(key))
-      .map(key => `${key}=${store.getters.posts[key]}`).join('&')}`
-
-    const onClickRow = row => {
-      if (row.sharingKey === router.currentRoute.value.params.sharingKey) return
-
-      router.push(`/community/${row.sharingKey}?${queryString()}`)
-    }
-
-    const onClickUserNickname = row => {
-      if (!row.userId) {
-        onClickRow(row)
-        return
-      }
-
-      plugins.$modal.custom({ component: 'ModalUserStats', options: { user: row.user } })
-    }
-
-    const onPage = page => {
-      store.commit('setPosts', { page })
-      router.push(`/community?${queryString()}`)
-    }
-
-    const loadPosts = async () => {
-      await store.dispatch('loadPosts')
-      plugins.$helpers.dom.scrollToTop()
-    }
-
-    const callApi = async () => {
-      await Promise.all([
-        store.dispatch('loadNotices'),
-        loadPosts(),
-      ])
-    }
-
-    onMounted(() => {
-      callApi()
-      plugins.$bus.$on('write-post', loadPosts)
-    })
-
-    onUnmounted(() => {
-      plugins.$bus.$off('write-post', loadPosts)
-    })
-
-    onServerPrefetch(callApi)
-
-    watch(
-      () => router.currentRoute.value,
-      newVal => {
-        if (!newVal || !newVal.fullPath.startsWith('/community')) return
-
-        if (newVal.fullPath === '/community') {
-          store.commit('setPosts', {
-            page: 1,
-            limit: 20,
-            keyword: null,
-          })
-        }
-
-        loadPosts()
-      },
-      { deep: true },
-    )
-
-    return {
-      refInput,
-      focus,
-      notices,
-      posts,
-      isActivePost,
-      onPage,
-      loadPosts,
-      onClickRow,
-      onClickUserNickname,
-      onKeydown,
-    }
+    loadPosts()
   },
-}
+  { deep: true },
+)
 </script>
 
 <style lang="scss" scoped>

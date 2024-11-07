@@ -7,8 +7,8 @@
         <AppImg :src="symbol.thumb" class="flex-wrap m-r-8" :alt="ticker.$$symbol"/>
         <div
           class="name lines-1"
-          :class="ticker.$$symbol === $store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''">
-          {{ symbol[$store.getters.settings.locale] || symbol.en }}
+          :class="ticker.$$symbol === store.getters.settings.documentTitleTicker ? 'text-underline f-700' : ''">
+          {{ symbol[store.getters.settings.locale] || symbol.en }}
         </div>
         <div v-if="ticker.$$caution === 'CAUTION'" class="badge-caution">유</div>
         <div
@@ -22,8 +22,8 @@
           class="badge-caution no-wallet"
           :key="w"
           v-for="w in [
-            { v: ($store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol] || {}).d, text: '입', type: 'DEPOSIT' },
-            { v: ($store.getters.walletStatus[$store.getters.settings.baseExchange][ticker.$$symbol] || {}).w, text: '출', type: 'WITHDRAWL' },
+            { v: (store.getters.walletStatus[store.getters.settings.baseExchange][ticker.$$symbol] || {}).d, text: '입', type: 'DEPOSIT' },
+            { v: (store.getters.walletStatus[store.getters.settings.baseExchange][ticker.$$symbol] || {}).w, text: '출', type: 'WITHDRAWL' },
           ].filter(w => w.v === false)"
           v-html="w.text">
         </div>
@@ -33,14 +33,14 @@
         <i
           @click.stop="toggleFavorite"
           class="fa-star"
-          :class="$store.getters.settings.favorites[ticker.$$symbol] ? 'fa' : 'fal'"
+          :class="store.getters.settings.favorites[ticker.$$symbol] ? 'fa' : 'fal'"
         />
         <div v-html="ticker.$$symbol" class="symbol"/>
         <!-- 오더북 API가 왠지 안 됨... -->
         <!-- <img
-          v-if="$store.getters.settings.baseExchange === 'upbit'"
+          v-if="store.getters.settings.baseExchange === 'upbit'"
           class="exchange-logo"
-          @click.stop="openModalOrderbook('upbit', `${$store.getters.settings.baseExchangeMarket.toUpperCase()}-${ticker.$$symbol}`)"
+          @click.stop="openModalOrderbook('upbit', `${store.getters.settings.baseExchangeMarket.toUpperCase()}-${ticker.$$symbol}`)"
           src="@/assets/images/upbit.svg"
           alt="upbit"
         > -->
@@ -57,130 +57,124 @@
       <div
         class="ticker-current-price-base"
         :class="[
-          $helpers.template.priceColor(ticker.$$changeRate1D),
+          helpers.template.priceColor(ticker.$$changeRate1D),
           ticker.$$tradePriceBase ? '' : 'o-0',
           ticker.$$tickDirection,
         ]"
-        v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: $store.getters.settings.baseExchangeMarket })"
+        v-html="helpers.number.pretty.price({ price: ticker.$$tradePriceBase, baseCurrency: store.getters.settings.baseExchangeMarket })"
       />
       <div
         :class="ticker.$$tradePriceTarget ? '' : 'o-0'"
         class="ticker-current-price-target"
-        v-html="$helpers.number.pretty.price({ price: ticker.$$tradePriceTarget, baseCurrency: $store.getters.settings.baseExchangeMarket })" 
+        v-html="helpers.number.pretty.price({ price: ticker.$$tradePriceTarget, baseCurrency: store.getters.settings.baseExchangeMarket })" 
       />
     </td>
     <td class="ticker-premium">
       <div
         v-if="typeof ticker.$$premiumRate === 'number'"
-        :class="$helpers.template.priceColor(ticker.$$premiumRate)"
+        :class="helpers.template.priceColor(ticker.$$premiumRate)"
         v-html="`${autoFrac(ticker.$$premiumRate)}%`"
       />
       <div
         v-if="!isNaN(ticker.$$premiumPrice)"
-        v-html="$helpers.number.pretty.price({ price: ticker.$$premiumPrice, baseCurrency: $store.getters.settings.baseExchangeMarket })"
+        v-html="helpers.number.pretty.price({ price: ticker.$$premiumPrice, baseCurrency: store.getters.settings.baseExchangeMarket })"
       />
     </td>
-    <td class="ticker-changes-24h" :class="$helpers.template.priceColor(ticker.$$changeRate1D)">
+    <td class="ticker-changes-24h" :class="helpers.template.priceColor(ticker.$$changeRate1D)">
       <div v-html="`${autoFrac(ticker.$$changeRate1D)}%`"/>
-      <div v-html="$helpers.number.pretty.price({ price: ticker.$$changePrice24H, baseCurrency: $store.getters.settings.baseExchangeMarket })" :class="isNaN(ticker.$$changePrice24H) ? 'o-0' : ''"/>
+      <div v-html="helpers.number.pretty.price({ price: ticker.$$changePrice24H, baseCurrency: store.getters.settings.baseExchangeMarket })" :class="isNaN(ticker.$$changePrice24H) ? 'o-0' : ''"/>
     </td>
-    <td v-if="!$store.getters.isMobile && $store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
+    <td v-if="!store.getters.isMobile && store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
       <div
-        :class="$helpers.template.priceColor(ticker.$$changeRate52WH)"
+        :class="helpers.template.priceColor(ticker.$$changeRate52WH)"
         v-html="`${autoFrac(ticker.$$changeRate52WH)}%`"
       />
-      <div v-html="$helpers.number.pretty.price({ price: ticker.$$highest52WeekPrice, baseCurrency: $store.getters.settings.baseExchangeMarket })" :class="ticker.$$highest52WeekPrice ? '' : 'o-0'"/>
+      <div v-html="helpers.number.pretty.price({ price: ticker.$$highest52WeekPrice, baseCurrency: store.getters.settings.baseExchangeMarket })" :class="ticker.$$highest52WeekPrice ? '' : 'o-0'"/>
     </td>
-    <td v-if="!$store.getters.isMobile && $store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
+    <td v-if="!store.getters.isMobile && store.getters.settings.baseExchange === 'upbit'" class="ticker-changes-52w-high">
       <div
-        :class="$helpers.template.priceColor(ticker.$$changeRate52WL)"
+        :class="helpers.template.priceColor(ticker.$$changeRate52WL)"
         v-html="`${autoFrac(ticker.$$changeRate52WL, 2)}%`"
       />
-      <div v-html="$helpers.number.pretty.price({ price: ticker.$$lowest52WeekPrice, baseCurrency: $store.getters.settings.baseExchangeMarket })" :class="ticker.$$lowest52WeekPrice ? '' : 'o-0'"/>
+      <div v-html="helpers.number.pretty.price({ price: ticker.$$lowest52WeekPrice, baseCurrency: store.getters.settings.baseExchangeMarket })" :class="ticker.$$lowest52WeekPrice ? '' : 'o-0'"/>
     </td>
     <td class="ticker-vol-24h">
-      <div v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HBase, baseCurrency: $store.getters.settings.baseExchangeMarket, numKorUnits: (ticker.$$vol24HBase >= Math.pow(10, 8) && !$store.getters.isMobile) ? 2 : 1 })"/>
+      <div v-html="helpers.number.pretty.cap({ cap: ticker.$$vol24HBase, baseCurrency: store.getters.settings.baseExchangeMarket, numKorUnits: (ticker.$$vol24HBase >= Math.pow(10, 8) && !store.getters.isMobile) ? 2 : 1 })"/>
       <div
         :class="ticker.$$vol24HTarget ? '' : 'o-0'"
-        v-html="$helpers.number.pretty.cap({ cap: ticker.$$vol24HTarget, baseCurrency: 'usd', numKorUnits: (ticker.$$vol24HTarget >= Math.pow(10, 8) && !$store.getters.isMobile) ? 2 : 1 })"
+        v-html="helpers.number.pretty.cap({ cap: ticker.$$vol24HTarget, baseCurrency: 'usd', numKorUnits: (ticker.$$vol24HTarget >= Math.pow(10, 8) && !store.getters.isMobile) ? 2 : 1 })"
       />
     </td>
   </tr>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script setup>
+import { computed, defineAsyncComponent } from 'vue'
 import useWebsocketCommon from '@/hooks/websockets/websocket-common'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: ['ticker'],
-  setup(props) {
-    const { plugins, store } = useGlobalHooks()
-
-    const symbol = computed(() => store.getters.symbols[props.ticker.$$symbol] || {})
-
-    const { setTickerSummaryInTitle } = useWebsocketCommon()
-
-    const bybitMarket = symbol => {
-      const supportedMarkets = store.getters.markets.bybit.filter(o => o.endsWith('USDT')).map(market => market.split('USDT')[0])
-      const found = supportedMarkets.find(supported => supported === symbol)
-      return found ? found + 'USDT' : null
-    }
-
-    const openModalTradingView = () => {
-      plugins.$modal.custom({
-        component: 'ModalTradingView',
-        options: {
-          symbol: `${store.getters.settings.baseExchange}:${props.ticker.$$symbol}${store.getters.settings.baseExchangeMarket}`.toUpperCase(),
-          resizable: !store.getters.isMobile,
-          noBackdrop: true,
-          useMultiOpen: true,
-        },
-      })
-    }
-
-    const openModalOrderbook = (exchange, market) => {
-      plugins.$modal.custom({
-        component: 'ModalOrderbook',
-        options: {
-          market,
-          exchange: exchange,
-          resizable: !store.getters.isMobile,
-          noBackdrop: true,
-          useMultiOpen: true,
-        },
-      })
-    }
-
-    const autoFrac = (price, numFrac) => (price || 0).toLocaleString(undefined, {
-      maximumFractionDigits: numFrac || (Math.abs(price) >= 100 ? 0 : 2),
-      minimumFractionDigits: numFrac || (Math.abs(price) >= 100 ? 0 : 2),
-    })
-
-    const toggleFavorite = () => {
-      const favorites = store.getters.settings.favorites
-      if (favorites[props.ticker.$$symbol]) delete favorites[props.ticker.$$symbol]
-      else favorites[props.ticker.$$symbol] = true
-      store.commit('setSettings', { favorites })
-    }
-
-    const setSummaryOnDocumentTitle = () => {
-      store.commit('setSettings', { documentTitleTicker: props.ticker.$$symbol })
-      plugins.$toast.success(plugins.$translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, props.ticker.$$symbol))
-      setTickerSummaryInTitle(props.ticker)
-    }
-
-    return {
-      symbol,
-      openModalTradingView,
-      autoFrac,
-      openModalOrderbook,
-      setSummaryOnDocumentTitle,
-      toggleFavorite,
-      bybitMarket,
-    }
+const props = defineProps({
+  ticker: {
+    type: Object,
+    required: true,
   },
+})
+
+const ModalOrderbook = defineAsyncComponent(() => import('@/components/modals/ModalOrderbook'))
+
+const { helpers, store } = useGlobalHooks()
+
+const symbol = computed(() => store.getters.symbols[props.ticker.$$symbol] || {})
+
+const { setTickerSummaryInTitle } = useWebsocketCommon()
+
+const bybitMarket = symbol => {
+  const supportedMarkets = store.getters.markets.bybit.filter(o => o.endsWith('USDT')).map(market => market.split('USDT')[0])
+  const found = supportedMarkets.find(supported => supported === symbol)
+  return found ? found + 'USDT' : null
+}
+
+const openModalTradingView = () => {
+  helpers.modal.custom({
+    component: 'ModalTradingView',
+    options: {
+      symbol: `${store.getters.settings.baseExchange}:${props.ticker.$$symbol}${store.getters.settings.baseExchangeMarket}`.toUpperCase(),
+      resizable: !store.getters.isMobile,
+      noBackdrop: true,
+      useMultiOpen: true,
+    },
+  })
+}
+
+const openModalOrderbook = (exchange, market) => {
+  helpers.modal.custom({
+    component: ModalOrderbook,
+    options: {
+      market,
+      exchange: exchange,
+      resizable: !store.getters.isMobile,
+      noBackdrop: true,
+      useMultiOpen: true,
+    },
+  })
+}
+
+const autoFrac = (price, numFrac) => (price || 0).toLocaleString(undefined, {
+  maximumFractionDigits: numFrac || (Math.abs(price) >= 100 ? 0 : 2),
+  minimumFractionDigits: numFrac || (Math.abs(price) >= 100 ? 0 : 2),
+})
+
+const toggleFavorite = () => {
+  const favorites = store.getters.settings.favorites
+  if (favorites[props.ticker.$$symbol]) delete favorites[props.ticker.$$symbol]
+  else favorites[props.ticker.$$symbol] = true
+  store.commit('setSettings', { favorites })
+}
+
+const setSummaryOnDocumentTitle = () => {
+  store.commit('setSettings', { documentTitleTicker: props.ticker.$$symbol })
+  helpers.toast.success(helpers.translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, props.ticker.$$symbol))
+  setTickerSummaryInTitle(props.ticker)
 }
 </script>
 

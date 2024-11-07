@@ -28,92 +28,89 @@
   </div>
 </template>
 
-<script>
-import { ref, watch } from 'vue'
+<script setup>
+import { defineAsyncComponent, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: ['position'],
-  setup(props) {
-    const { plugins, router } = useGlobalHooks()
+const ModalPositionRequestEdit = defineAsyncComponent(() => import('@/components/modals/ModalPositionRequestEdit'))
 
-    const refContextOverlay = ref(null)
+const props = defineProps({
+  position: {
+    type: Object,
+    required: true,
+  },
+})
 
-    const customMenu = ref({
-      show: null,
-      top: null,
-      left: null,
-      right: null,
+const { helpers, router } = useGlobalHooks()
+
+const refContextOverlay = ref(null)
+
+const customMenu = ref({
+  show: null,
+  top: null,
+  left: null,
+  right: null,
+})
+
+const menuHandlers = {
+  goToPlatform: () => {
+    if (!props.position.link) return
+
+    if (props.position.link.startsWith('http')) {
+      window.open(props.position.link, '_blank')
+      return
+    }
+
+    router.push(props.position.link)
+  },
+  requestEdit: () => {
+    helpers.modal.custom({
+      component: ModalPositionRequestEdit,
+      options: {
+        position: props.position,
+      },
     })
-
-    const menuHandlers = {
-      goToPlatform: () => {
-        if (!props.position.link) return
-
-        if (props.position.link.startsWith('http')) {
-          window.open(props.position.link, '_blank')
-          return
-        }
-
-        router.push(props.position.link)
-      },
-      requestEdit: () => {
-        plugins.$modal.custom({
-          component: 'ModalPositionRequestEdit',
-          options: {
-            position: props.position,
-          },
-        })
-      },
-    }
-
-    const onContextmenu = e => {
-      if (e.target.classList.contains('disabled')) return
-
-      if (customMenu.value.show) {
-        customMenu.value.show = false
-        return
-      }
-
-      const remainWidth = window.innerWidth - e.clientX
-      customMenu.value.top = e.clientY
-      if (remainWidth > 120) {
-        customMenu.value.left = e.clientX
-      } else {
-        customMenu.value.left = window.innerWidth - 120
-      }
-      customMenu.value.show = true
-    }
-
-    const prevent = e => {
-      e.preventDefault()
-    }
-
-    watch(
-      () => customMenu.value.show,
-      newVal => {
-        if (!refContextOverlay.value) return
-
-        if (newVal) {
-          refContextOverlay.value.addEventListener('mousewheel', prevent)
-          refContextOverlay.value.addEventListener('touchmove', prevent)
-          document.addEventListener('keydown', prevent)
-        } else {
-          refContextOverlay.value.removeEventListener('mousewheel', prevent)
-          refContextOverlay.value.removeEventListener('touchmove', prevent)
-          document.removeEventListener('keydown', prevent)
-        }
-      },
-    )
-
-    return {
-      refContextOverlay,
-      customMenu,
-      menuHandlers,
-      onContextmenu,
-    }
   },
 }
+
+const onContextmenu = e => {
+  if (e.target.classList.contains('disabled')) return
+
+  if (customMenu.value.show) {
+    customMenu.value.show = false
+    return
+  }
+
+  const remainWidth = window.innerWidth - e.clientX
+  customMenu.value.top = e.clientY
+  if (remainWidth > 120) {
+    customMenu.value.left = e.clientX
+  } else {
+    customMenu.value.left = window.innerWidth - 120
+  }
+  customMenu.value.show = true
+}
+
+const prevent = e => {
+  e.preventDefault()
+}
+
+watch(
+  () => customMenu.value.show,
+  newVal => {
+    if (!refContextOverlay.value) return
+
+    if (newVal) {
+      refContextOverlay.value.addEventListener('mousewheel', prevent)
+      refContextOverlay.value.addEventListener('touchmove', prevent)
+      document.addEventListener('keydown', prevent)
+    } else {
+      refContextOverlay.value.removeEventListener('mousewheel', prevent)
+      refContextOverlay.value.removeEventListener('touchmove', prevent)
+      document.removeEventListener('keydown', prevent)
+    }
+  },
+)
 </script>
 
 <style lang="scss" scoped>

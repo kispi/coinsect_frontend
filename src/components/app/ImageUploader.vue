@@ -27,90 +27,82 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import s3Service from '@/services/s3'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    path: {
-      type: String,
-      default: 'boards/free_board',
-    },
-    noupload: {
-      type: Boolean, // true일 시, 업로드는 하지 않고 파일의 objectURL과 file 객체만 리턴받는다.
-    },
-    resize: {
-      default: {
-        width: null,
-        above: null,
-      },
+const props = defineProps({
+  path: {
+    type: String,
+    default: 'boards/free_board',
+  },
+  noupload: { // true일 시, 업로드는 하지 않고 파일의 objectURL과 file 객체만 리턴받는다.
+    type: Boolean,
+  },
+  resize: {
+    default: {
+      width: null,
+      above: null,
     },
   },
-  setup(props, { emit }) {
-    const { plugins } = useGlobalHooks()
+})
 
-    const dragging = ref(null)
+const emit = defineEmits(['upload-file'])
 
-    const processing = ref(null)
+const { plugins } = useGlobalHooks()
 
-    const shouldResize = originalFile =>
-      props.resize.width &&
-      props.resize.above &&
-      originalFile.size >= props.resize.above
+const dragging = ref(null)
 
-    const doUpload = async originalFile => {
-      let file = originalFile
-      try {
-        processing.value = true
-        file = shouldResize(originalFile) ? await plugins.$helpers.logic.resizeImage({ file: originalFile, ...props.resize }) : originalFile
-      } finally {
-        processing.value = false
-      }
+const processing = ref(null)
 
-      try {
-        processing.value = true
-        let url
-        if (!props.noupload) url = await s3Service.upload(file, props.path)
-        const emittable = {
-          src: URL.createObjectURL(file),
-          originalFile,
-          file,
-        }
-        if (url) emittable['url'] = url
-        emit('upload-file', emittable)
-      } catch (e) {
-        return Promise.reject(e)
-      } finally {
-        processing.value = false
-      }
+const shouldResize = originalFile =>
+  props.resize.width &&
+  props.resize.above &&
+  originalFile.size >= props.resize.above
+
+const doUpload = async originalFile => {
+  let file = originalFile
+  try {
+    processing.value = true
+    file = shouldResize(originalFile) ? await plugins.$helpers.logic.resizeImage({ file: originalFile, ...props.resize }) : originalFile
+  } finally {
+    processing.value = false
+  }
+
+  try {
+    processing.value = true
+    let url
+    if (!props.noupload) url = await s3Service.upload(file, props.path)
+    const emittable = {
+      src: URL.createObjectURL(file),
+      originalFile,
+      file,
     }
+    if (url) emittable['url'] = url
+    emit('upload-file', emittable)
+  } catch (e) {
+    return Promise.reject(e)
+  } finally {
+    processing.value = false
+  }
+}
 
-    const onDrop = async e => {
-      dragging.value = false
-      if (!shouldResize(e.dataTransfer.files[0]) && !plugins.$helpers.logic.acceptableFileSize(e.dataTransfer.files[0])) return
+const onDrop = async e => {
+  dragging.value = false
+  if (!shouldResize(e.dataTransfer.files[0]) && !plugins.$helpers.logic.acceptableFileSize(e.dataTransfer.files[0])) return
 
-      try {
-        await doUpload(e.dataTransfer.files[0])
-      } finally {
-        e.target.value = null
-      }
-    }
+  try {
+    await doUpload(e.dataTransfer.files[0])
+  } finally {
+    e.target.value = null
+  }
+}
 
-    const onChangeFile = e => {
-      if (!shouldResize(e.target.files[0]) && !plugins.$helpers.logic.acceptableFileSize(e.target.files[0])) return
+const onChangeFile = e => {
+  if (!shouldResize(e.target.files[0]) && !plugins.$helpers.logic.acceptableFileSize(e.target.files[0])) return
 
-      doUpload(e.target.files[0])
-    }
-
-    return {
-      dragging,
-      processing,
-      onDrop,
-      onChangeFile,
-    }
-  },
+  doUpload(e.target.files[0])
 }
 </script>
 

@@ -2,10 +2,10 @@ import { onMounted } from 'vue'
 import useGlobalHooks from '../global-hooks'
 
 const useKakao = () => {
-  const { plugins, store } = useGlobalHooks()
+  const { helpers, store } = useGlobalHooks()
 
   const init = async () => {
-    await plugins.$helpers.dom.loadScript({ url: 'https://developers.kakao.com/sdk/js/kakao.js' })
+    await helpers.dom.loadScript({ url: 'https://developers.kakao.com/sdk/js/kakao.js' })
     if (typeof Kakao === 'undefined') return
 
     if (!Kakao.isInitialized()) Kakao.init(process.env.VUE_APP_OAUTH_KAKAO)

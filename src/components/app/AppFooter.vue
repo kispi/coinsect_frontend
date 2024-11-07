@@ -6,21 +6,21 @@
           class="section"
           :key="section"
           v-for="section in sections">
-          <div class="section-title" v-html="$translate(section.title)"/>
+          <div class="section-title" v-html="helpers.translate(section.title)"/>
           <a
             class="cursor-pointer"
             @click.prevent="page.path ? $router.push(page.path) : $helpers.openLink(page.link)"
             :href="page.path"
             :key="page.path"
             v-for="page in section.subItems"
-            v-html="$translate(page.title)"
+            v-html="helpers.translate(page.title)"
           />
         </div>
       </div>
       <div class="bottom">
         <div>
           <div class="section">
-            <div class="section-title" v-html="$translate('CONTACT')"/>
+            <div class="section-title" v-html="helpers.translate('CONTACT')"/>
             <div class="contact-sns">
               <a
                 :href="contact.link"
@@ -33,12 +33,12 @@
             </div>
           </div>
           <div class="section m-t-24">
-            <div class="section-title m-t-16 cursor-pointer text-underline" @click="$modal.custom({ component: 'ModalDonation' })" v-html="$translate('MODAL_DONATION')"/>
+            <div class="section-title m-t-16 cursor-pointer text-underline" @click="helpers.modal.custom({ component: ModalDonation })" v-html="helpers.translate('MODAL_DONATION')"/>
           </div>
         </div>
         <div class="info">
           <div class="section">
-            <div class="section-title" v-html="$translate('DISCLAIMER')"/>
+            <div class="section-title" v-html="helpers.translate('DISCLAIMER')"/>
             <div v-html="info.disclaimer"/>
           </div>
           <a
@@ -46,7 +46,7 @@
             href="https://btc.coinsect.io/posts/commodity-vs-security"
             target="_blank">
             <div class="section-title">
-              <i class="fa fa-external-link m-r-8 f-12"></i>{{ $translate('BITCOIN_VS_ALTCOIN') }}
+              <i class="fa fa-external-link m-r-8 f-12"></i>{{ helpers.translate('BITCOIN_VS_ALTCOIN') }}
             </div>
             <div v-html="info.bitcoinVsAltcoin"/>
           </a>
@@ -56,55 +56,47 @@
   </footer>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script setup>
+import { computed, defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import useMenuItems from './app-header/menu-items'
 
-export default {
-  setup() {
-    const { menuItems } = useMenuItems()
+const ModalDonation = defineAsyncComponent(() => import('@/components/modals/ModalDonation'))
 
-    const { store } = useGlobalHooks()
+const { menuItems } = useMenuItems()
 
-    const contacts = [{
-      key: 'telegram',
-      img: 'https://play-lh.googleusercontent.com/ZU9cSsyIJZo6Oy7HTHiEPwZg0m2Crep-d5ZrfajqtsH-qgUXSqKpNA2FpPDTn-7qA5Q=w240-h480-rw',
-      link: 'https://t.me/coinsect',
-    }]
+const { helpers, store } = useGlobalHooks()
 
-    const sections = computed(() => [{
-      title: 'MAIN',
-      subItems: [
-        { path: '/', title: 'HOME' },
-        { path: '/prices', title: 'KIMP' },
-        { path: '/community', title: 'COMMUNITY' },
-        { path: '/about', title: 'ABOUT' },
-      ],
-    }].concat(menuItems.value.filter(o => o.subItems)))
+const contacts = [{
+  key: 'telegram',
+  img: 'https://play-lh.googleusercontent.com/ZU9cSsyIJZo6Oy7HTHiEPwZg0m2Crep-d5ZrfajqtsH-qgUXSqKpNA2FpPDTn-7qA5Q=w240-h480-rw',
+  link: 'https://t.me/coinsect',
+}]
 
-    const info = computed(() => {
-      const html = {
-        kr: {
-          disclaimer: `<div>코인충(coinsect.io)에서 제공되는 어떤 정보도 투자에 대한 조언이 아니며, 이용자들의 투자 결과에 대해 아무런 책임을 지지 않습니다. 암호자산은 극도의 변동성을 보이므로 투자에 유의하시기 바랍니다.</div>`,
-          bitcoinVsAltcoin: `<div>오직 비트코인만 금과 같은 '상품'이며, 나머지 모든 알트코인(이더리움 포함)은 아직 불명확한 규제의 회색지대를 이용한 미등록 증권으로, 매우 큰 위험성을 지닌 벤처기업들로 볼 수 있습니다.</div>`,
-        },
-        en: {
-          disclaimer: `<div>None of the information provided here(coinsect.io) should be considered as a financial advice, thus we are not responsble for loss of users. Cryptocurrency is notorious for it's volatility.</div>`,
-          bitcoinVsAltcoin: `<div>Bitcoin is the only COMMODITY, whereas altcoins(ETH included) are in fact STARTUPS, UNREGISTERED SECURITIES taking advantage of gray area of regulation, involving extreme investment risk.</div>`,
-        },
-      }
+const sections = computed(() => [{
+  title: 'MAIN',
+  subItems: [
+    { path: '/', title: 'HOME' },
+    { path: '/prices', title: 'KIMP' },
+    { path: '/community', title: 'COMMUNITY' },
+    { path: '/about', title: 'ABOUT' },
+  ],
+}].concat(menuItems.value.filter(o => o.subItems)))
 
-      return html[store.getters.settings.locale]
-    })
+const info = computed(() => {
+  const html = {
+    kr: {
+      disclaimer: `<div>코인충(coinsect.io)에서 제공되는 어떤 정보도 투자에 대한 조언이 아니며, 이용자들의 투자 결과에 대해 아무런 책임을 지지 않습니다. 암호자산은 극도의 변동성을 보이므로 투자에 유의하시기 바랍니다.</div>`,
+      bitcoinVsAltcoin: `<div>오직 비트코인만 금과 같은 '상품'이며, 나머지 모든 알트코인(이더리움 포함)은 아직 불명확한 규제의 회색지대를 이용한 미등록 증권으로, 매우 큰 위험성을 지닌 벤처기업들로 볼 수 있습니다.</div>`,
+    },
+    en: {
+      disclaimer: `<div>None of the information provided here(coinsect.io) should be considered as a financial advice, thus we are not responsble for loss of users. Cryptocurrency is notorious for it's volatility.</div>`,
+      bitcoinVsAltcoin: `<div>Bitcoin is the only COMMODITY, whereas altcoins(ETH included) are in fact STARTUPS, UNREGISTERED SECURITIES taking advantage of gray area of regulation, involving extreme investment risk.</div>`,
+    },
+  }
 
-    return {
-      info,
-      sections,
-      contacts,
-    }
-  },
-}
+  return html[store.getters.settings.locale]
+})
 </script>
 
 <style lang="scss" scoped>
