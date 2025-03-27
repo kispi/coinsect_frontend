@@ -67,7 +67,8 @@ const useUpbit = () => {
   const subscribe = ({ type, codes, $$raw }) => new Promise((resolve) => {
     if (!type || !codes) return
 
-    const connection = new WebSocket('wss://api.upbit.com/websocket/v1')
+    const endpoint = process.env.NODE_ENV === 'production' ? 'wss://api.coinsect.io/upbit' : 'wss://api.upbit.com/websocket/v1'
+    const connection = new WebSocket(endpoint)
     connection.binaryType = 'arraybuffer'
 
     connection.onopen = () => {
