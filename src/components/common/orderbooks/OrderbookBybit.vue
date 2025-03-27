@@ -120,7 +120,6 @@ export default {
       () => orderbook.value,
       newVal => {
         if (newVal && !emitted.value) {
-          emit('load-orderbook')
           emitted.value = true
         }
       },

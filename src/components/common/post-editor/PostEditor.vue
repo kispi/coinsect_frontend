@@ -10,7 +10,7 @@
       >
       <div
         v-else
-        @click="helpers.modal.custom({ component: ModalUserStats, options: { user: store.getters.me } })"
+        @click="helpers.modal.custom({ component: 'ModalUserStats', options: { user: store.getters.me } })"
         class="authorized-user flex-wrap">
         <UserSymbol :user="store.getters.me" class="m-r-4"/><span class="lines-1">{{ (store.getters.me.profile || {}).nickname }}</span>
       </div>
@@ -50,11 +50,9 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import crudService from '@/services/crud'
 import useGlobalHooks from '@/hooks/global-hooks'
-
-const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
 const props = defineProps({
   boardId: {

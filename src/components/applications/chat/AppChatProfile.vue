@@ -25,7 +25,7 @@
     </template>
     <span
       @click="user.id ? helpers.modal.custom({
-        component: ModalUserStats,
+        component: 'ModalUserStats',
         options: { user },
       }) : null"
       class="nickname"
@@ -50,10 +50,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
-
-const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
 const props = defineProps({
   user: Object,

@@ -26,7 +26,6 @@
           'resizable': (modal.options || {}).resizable,
         }"
         @close="onClose"
-        @load-modal-component="makeDraggable(refModal, { toMove: 'modal-base-style', toGrab: 'modal-header' })"
         :options="modal.options"
         :is="modal.component"
       />
@@ -34,68 +33,86 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { defineAsyncComponent, onUnmounted, onMounted, ref, watch } from 'vue'
 import useModalDraggable from '@/hooks/modal-draggable'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const props = defineProps({
-  modal: {
-    type: Object,
-    required: true,
+export default {
+  props: ['modal'],
+  components: {
+    ModalBasic: defineAsyncComponent(() => import('@/components/modals/ModalBasic')),
+    ModalReferral: defineAsyncComponent(() => import('@/components/modals/ModalReferral')),
+    ModalUserStats: defineAsyncComponent(() => import('@/components/modals/ModalUserStats')),
+    ModalDonation: defineAsyncComponent(() => import('@/components/modals/ModalDonation')),
+    ModalInput: defineAsyncComponent(() => import('@/components/modals/ModalInput')),
+    ModalTradingView: defineAsyncComponent(() => import('@/components/modals/ModalTradingView')),
+    ModalOrderbook: defineAsyncComponent(() => import('@/components/modals/ModalOrderbook')),
+    ModalGame: defineAsyncComponent(() => import('@/components/modals/ModalGame')),
+    ModalAddPortfolio: defineAsyncComponent(() => import('@/components/modals/ModalAddPortfolio')),
+    ModalImages: defineAsyncComponent(() => import('@/components/modals/ModalImages')),
+    ModalUploadImage: defineAsyncComponent(() => import('@/components/modals/ModalUploadImage')),
+    ModalSignIn: defineAsyncComponent(() => import('@/components/modals/ModalSignIn')),
+    ModalPositionRequestEdit: defineAsyncComponent(() => import('@/components/modals/ModalPositionRequestEdit')),
+    ModalPostEditor: defineAsyncComponent(() => import('@/components/modals/ModalPostEditor')),
+    ModalChatUsers: defineAsyncComponent(() => import('@/components/modals/ModalChatUsers')),
+    ModalChatSettings: defineAsyncComponent(() => import('@/components/modals/ModalChatSettings')),
   },
-})
+  setup(props) {
+    const { helpers, store } = useGlobalHooks()
 
-const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
-const ModalTradingView = defineAsyncComponent(() => import('@/components/modals/ModalTradingView'))
-const ModalUploadImage = defineAsyncComponent(() => import('@/components/modals/ModalUploadImage'))
-const ModalPostEditor = defineAsyncComponent(() => import('@/components/modals/ModalPostEditor'))
-const ModalChatUsers = defineAsyncComponent(() => import('@/components/modals/ModalChatUsers'))
+    const { makeDraggable } = useModalDraggable()
 
-const { helpers, store } = useGlobalHooks()
+    const show = ref(false)
 
-const { makeDraggable } = useModalDraggable()
+    const refModal = ref(null)
 
-const show = ref(false)
+    const refTargetModal = ref(null)
 
-const refModal = ref(null)
+    const onClose = e => {
+      if (!props.modal) return
 
-const refTargetModal = ref(null)
+      if (props.modal.resolve) props.modal.resolve(e)
 
-const onClose = e => {
-  if (!props.modal) return
+      store.commit('removeModal', props.modal)
+    }
 
-  if (props.modal.resolve) props.modal.resolve(e)
+    const closeOnMousedownBackdrop = () => {
+      if ((props.modal.options || {}).preventCloseOnClickBackdrop) return
 
-  store.commit('removeModal', props.modal)
+      onClose()
+    }
+
+    const onKeydown = e => (e.key === 'Escape') && onClose()
+
+    onMounted(() => {
+      document.addEventListener('keydown', onKeydown)
+
+      setTimeout(() => show.value = true)
+
+      if (!store.getters.isMobile) makeDraggable(refModal.value, { toMove: 'modal-base-style', toGrab: 'modal-header' })
+    })
+
+    onUnmounted(() => {
+      document.removeEventListener('keydown', onKeydown)
+    })
+
+    watch([
+      () => store.getters.windowInnerWidth,
+      () => store.getters.windowInnerHeight,
+    ],
+      () => helpers.modal.center(refTargetModal.value.$el),
+    )
+
+    return {
+      show,
+      refModal,
+      refTargetModal,
+      onClose,
+      closeOnMousedownBackdrop,
+    }
+  },
 }
-
-const closeOnMousedownBackdrop = () => {
-  if ((props.modal.options || {}).preventCloseOnClickBackdrop) return
-
-  onClose()
-}
-
-const onKeydown = e => (e.key === 'Escape') && onClose()
-
-onMounted(() => {
-  document.addEventListener('keydown', onKeydown)
-
-  setTimeout(() => show.value = true)
-
-  if (!store.getters.isMobile) makeDraggable(refModal.value, { toMove: 'modal-base-style', toGrab: 'modal-header' })
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', onKeydown)
-})
-
-watch([
-  () => store.getters.windowInnerWidth,
-  () => store.getters.windowInnerHeight,
-],
-  () => helpers.modal.center(refTargetModal.value.$el),
-)
 </script>
 
 <style lang="scss">

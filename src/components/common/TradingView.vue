@@ -17,7 +17,6 @@ export default {
       required: true,
     },
     interval: {
-      required: true,
       default: 15,
     },
   },

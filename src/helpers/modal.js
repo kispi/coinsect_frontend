@@ -1,12 +1,5 @@
-import { defineAsyncComponent, markRaw } from 'vue'
 import { store } from '@/store'
 import translate from './translate'
-
-const ModalBasic = defineAsyncComponent(() => import('@/components/modals/ModalBasic'))
-
-const ModalImages = defineAsyncComponent(() => import('@/components/modals/ModalImages'))
-
-const ModalInput = defineAsyncComponent(() => import('@/components/modals/ModalInput'))
 
 const isOpened = component => store.getters.modals.find(modal => (modal || {}).component === component) ? true : false
 
@@ -16,14 +9,14 @@ const initModal = (options, component) => new Promise(resolve => {
     isOpened(component)
   ) return
 
-  store.commit('addModal', { component: markRaw(component), options, resolve })
+  store.commit('addModal', { component, options, resolve })
 })
 
 const modal = {
   isOpened,
-  basic: options => initModal(options, ModalBasic),
-  input: options => initModal(options, ModalInput),
-  images: options => initModal(options, ModalImages),
+  basic: options => initModal(options, 'ModalBasic'),
+  input: options => initModal(options, 'ModalInput'),
+  images: options => initModal(options, 'ModalImages'),
   alert: body => modal.confirm({
     body,
     buttons: [{ text: 'OK', class: 'btn-primary light' }],
@@ -37,7 +30,7 @@ const modal = {
       { text: 'CONFIRM', class: options.class ? `btn-${options.class}` : 'btn-primary' },
     ]
     return options
-  })(), ModalBasic),
+  })(), 'ModalBasic'),
   custom: ({ options, component }) => initModal(options, component),
   // 다른 메소드들과 달리 모달을 띄우는게 아닌 띄워진 모달의 위치를 화면 가운데로 하는 메소드
   center: dom => {

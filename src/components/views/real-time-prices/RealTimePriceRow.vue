@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent } from 'vue'
+import { computed } from 'vue'
 import useWebsocketCommon from '@/hooks/websockets/websocket-common'
 import useGlobalHooks from '@/hooks/global-hooks'
 
@@ -119,8 +119,6 @@ const props = defineProps({
     required: true,
   },
 })
-
-const ModalOrderbook = defineAsyncComponent(() => import('@/components/modals/ModalOrderbook'))
 
 const { helpers, store } = useGlobalHooks()
 
@@ -148,7 +146,7 @@ const openModalTradingView = () => {
 
 const openModalOrderbook = (exchange, market) => {
   helpers.modal.custom({
-    component: ModalOrderbook,
+    component: 'ModalOrderbook',
     options: {
       market,
       exchange: exchange,

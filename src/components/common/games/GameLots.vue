@@ -5,7 +5,6 @@
         @click="() => {
           focus.a = true
           refInputA.focus()
-          trigger++
         }"
         class="input-wrapper"
         :class="{'focus': focus.a}">
@@ -108,8 +107,6 @@ export default {
 
     const shuffled = ref(null)
 
-    const trigger = ref(0)
-
     const remove = idx => {
       lots.value.splice(idx, 1)
       refInputA.value.focus()
@@ -158,32 +155,11 @@ export default {
 
     onMounted(() => refInputA.value.focus())
 
-    watch(
-      () => trigger.value,
-      newVal => {
-        if (newVal >= 3) {
-          trigger.value = 0
-          lots.value = [
-            'Chris',
-            'Eli',
-            'Emily',
-            'Gilbert',
-            'Juan',
-            'Lumi',
-            'Marv',
-            'MJ',
-          ].map(name => ({ name, id: plugins.$helpers.logic.mustToken() }))
-          emit('next-state')
-        }
-      },
-    )
-
     return {
       refInputA,
       refInputB,
       focus,
       lotName,
-      trigger,
       slotNumber,
       lots,
       shuffled,

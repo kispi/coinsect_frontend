@@ -13,7 +13,7 @@
           <div class="reply-user" :class="{'authorized-clickable-nickname': reply.userId}">
             <UserSymbol :user="reply.user" class="m-r-4"/>
             <span
-              @click="reply.userId ? helpers.modal.custom({ component: ModalUserStats, options: { user: reply.user } }) : null"
+              @click="reply.userId ? helpers.modal.custom({ component: 'ModalUserStats', options: { user: reply.user } }) : null"
               v-html="helpers.template.writer(reply)"
             />
           </div>
@@ -68,11 +68,9 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent } from 'vue'
+import { computed } from 'vue'
 import communityService from '@/services/community'
 import useGlobalHooks from '@/hooks/global-hooks'
-
-const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
 const props = defineProps({
   replies: Array,

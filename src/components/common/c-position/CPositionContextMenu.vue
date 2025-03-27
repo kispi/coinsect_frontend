@@ -29,10 +29,8 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
-
-const ModalPositionRequestEdit = defineAsyncComponent(() => import('@/components/modals/ModalPositionRequestEdit'))
 
 const props = defineProps({
   position: {
@@ -65,7 +63,7 @@ const menuHandlers = {
   },
   requestEdit: () => {
     helpers.modal.custom({
-      component: ModalPositionRequestEdit,
+      component: 'ModalPositionRequestEdit',
       options: {
         position: props.position,
       },

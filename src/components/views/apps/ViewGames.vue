@@ -3,7 +3,7 @@
     <div class="list-games">
       <div
         @click="helpers.modal.custom({
-          component: ModalGame,
+          component: 'ModalGame',
           options: {
             game,
             preventCloseOnClickBackdrop: true,
@@ -22,11 +22,8 @@
 
 <script setup>
 import useGlobalHooks from '@/hooks/global-hooks'
-import { defineAsyncComponent } from 'vue'
 
 const { helpers } = useGlobalHooks()
-
-const ModalGame = defineAsyncComponent(() => import('@/components/modals/ModalGame'))
 
 const games = [{
   title: 'GAME_LOTS',

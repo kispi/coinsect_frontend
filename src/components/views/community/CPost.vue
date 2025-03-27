@@ -13,7 +13,7 @@
             <UserSymbol :user="post.user" class="m-r-4"/>
             <span
               @click="post.userId ?
-                helpers.modal.custom({ component: ModalUserStats, options: { user: post.user } }) :
+                helpers.modal.custom({ component: 'ModalUserStats', options: { user: post.user } }) :
                 null
               ">
               {{ helpers.template.writer(post) }}
@@ -68,11 +68,9 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent } from 'vue'
+import { computed } from 'vue'
 import communityService from '@/services/community'
 import useGlobalHooks from '@/hooks/global-hooks'
-
-const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
 const { helpers, store } = useGlobalHooks()
 

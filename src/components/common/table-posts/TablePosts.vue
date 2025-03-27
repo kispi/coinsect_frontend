@@ -101,12 +101,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, onServerPrefetch, watch, defineAsyncComponent } from 'vue'
+import { ref, computed, onMounted, onUnmounted, onServerPrefetch, watch } from 'vue'
 import ButtonBoards from './ButtonBoards'
 import PostImagePreview from './PostImagePreview'
 import useGlobalHooks from '@/hooks/global-hooks'
-
-const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
 const { helpers, store, router } = useGlobalHooks()
 
@@ -147,7 +145,7 @@ const onClickUserNickname = row => {
     return
   }
 
-  helpers.modal.custom({ component: ModalUserStats, options: { user: row.user } })
+  helpers.modal.custom({ component: 'ModalUserStats', options: { user: row.user } })
 }
 
 const onPage = page => {

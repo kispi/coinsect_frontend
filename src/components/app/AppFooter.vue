@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="section m-t-24">
-            <div class="section-title m-t-16 cursor-pointer text-underline" @click="helpers.modal.custom({ component: ModalDonation })" v-html="helpers.translate('MODAL_DONATION')"/>
+            <div class="section-title m-t-16 cursor-pointer text-underline" @click="helpers.modal.custom({ component: 'ModalDonation' })" v-html="helpers.translate('MODAL_DONATION')"/>
           </div>
         </div>
         <div class="info">
@@ -57,11 +57,9 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent } from 'vue'
+import { computed } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import useMenuItems from './app-header/menu-items'
-
-const ModalDonation = defineAsyncComponent(() => import('@/components/modals/ModalDonation'))
 
 const { menuItems } = useMenuItems()
 

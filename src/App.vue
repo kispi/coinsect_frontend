@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, defineAsyncComponent, computed } from 'vue'
+import { ref, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
 import helpers from '@/helpers'
 import useGlobalHooks from '@/hooks/global-hooks'
 

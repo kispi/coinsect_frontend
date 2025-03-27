@@ -77,8 +77,8 @@
           :align="'right'"
           :mountBelow="refIconMenuAccount">
           <ul class="my-activity">
-            <li @click="handleClickMyActivity(() => helpers.modal.custom({ component: ModalUserStats, options: { user: store.getters.me } }))">내 활동</li>
-            <li @click="handleClickMyActivity(() => helpers.modal.custom({ component: store.getters.me ? ModalChatSettings : ModalSignIn }))">계정 설정</li>
+            <li @click="handleClickMyActivity(() => helpers.modal.custom({ component: 'ModalUserStats', options: { user: store.getters.me } }))">내 활동</li>
+            <li @click="handleClickMyActivity(() => helpers.modal.custom({ component: store.getters.me ? 'ModalChatSettings' : 'ModalSignIn' }))">계정 설정</li>
             <li @click="handleClickMyActivity(() => store.dispatch('signOut'))">{{ $translate('LOGOUT') }}</li>
           </ul>
         </WrapperDropdownOverlay>
@@ -88,18 +88,12 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import AppNotifications from './AppNotifications'
 import BannerMarketIndices from './BannerMarketIndices'
 
 const { helpers, store } = useGlobalHooks()
-
-const ModalSignIn = defineAsyncComponent(() => import('@/components/modals/ModalSignIn'))
-
-const ModalChatSettings = defineAsyncComponent(() => import('@/components/modals/ModalChatSettings'))
-
-const ModalUserStats = defineAsyncComponent(() => import('@/components/modals/ModalUserStats'))
 
 const refIconSettings = ref(null)
 

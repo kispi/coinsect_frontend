@@ -52,7 +52,7 @@
 
 <script setup>
 // 있는거 사용하려 하지 말고 새로 웹소켓 연결해서 쓰는게 나을듯
-import { ref, computed, onMounted, onUnmounted, watch, defineAsyncComponent } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import useBinance from '@/hooks/websockets/binance'
 import useUpbit from '@/hooks/websockets/upbit'
@@ -63,8 +63,6 @@ const { helpers, store } = useGlobalHooks()
 const { subscribe: sUpbit } = useUpbit()
 
 const { subscribe: sBinance } = useBinance()
-
-const ModalAddPortfolio = defineAsyncComponent(() => import('@/components/modals/ModalAddPortfolio'))
 
 const supportedExchanges = ['upbit', 'binance']
 
@@ -160,7 +158,7 @@ const connect = () => {
   }
 }
 
-const openModalAddPortfolio = () => helpers.modal.custom({ component: ModalAddPortfolio }).then(() => {
+const openModalAddPortfolio = () => helpers.modal.custom({ component: 'ModalAddPortfolio' }).then(() => {
   disconnect()
   setTimeout(connect, 1000)
 })

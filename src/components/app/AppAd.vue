@@ -3,7 +3,7 @@
     <template v-if="whereToShow">
       <ExchangeBanner
         @click="$modal.custom({
-          component: ModalReferral,
+          component: 'ModalReferral',
           options: { exchange },
         })"
         :exchange="exchange"
@@ -21,8 +21,6 @@ import { ref, computed, defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 const { store } = useGlobalHooks()
-
-const ModalReferral = defineAsyncComponent(() => import('@/components/modals/ModalReferral'))
 
 const whereToShow = computed(() => false)
 </script>
