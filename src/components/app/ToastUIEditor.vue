@@ -22,7 +22,7 @@ const refEditor = ref(null)
 // ref를 쓰면 prototype이 오염되는건지 editor에 달린 메소드들이 제대로 작동하지 않음
 let editor = null
 
-const { plugins } = useGlobalHooks()
+const { helpers } = useGlobalHooks()
 
 const { loadToastUIEditor } = useLazyLoads()
 
@@ -47,7 +47,7 @@ const createCustomHTMLRenderer = () => {
   button.classList.add('btn')
   button.classList.add('btn-primary')
   button.classList.add('m-l-8')
-  button.textContent = plugins.$translate('CONFIRM')
+  button.textContent = helpers.translate('CONFIRM')
 
   const urlInput = document.createElement('input')
   urlInput.style.width = '100%'
@@ -62,8 +62,8 @@ const createCustomHTMLRenderer = () => {
   popupYoutube.appendChild(row)
 
   button.addEventListener('click', () => {
-    const url = plugins.$helpers.youtube.extractVideoId(urlInput.value)
-    if (!url) return plugins.$toast.error('INVALID_YOUTUBE_URL')
+    const url = helpers.youtube.extractVideoId(urlInput.value)
+    if (!url) return helpers.toast.error('INVALID_YOUTUBE_URL')
 
     const str = `<div class="youtube-container-size-limiter"><div class="youtube-ratio-wrapper">
       <iframe
@@ -147,12 +147,12 @@ const init = async () => {
       addImageBlobHook: async (file, callback) => {
         try {
           const resized = file.size > autoResizeAbove ?
-            await plugins.$helpers.logic.resizeImage({ file, width: 1920 }) :
+            await helpers.logic.resizeImage({ file, width: 1920 }) :
             file
           const url = await s3Service.upload(resized, 'boards/free_board')
           callback(url)
         } catch (e) {
-          plugins.$toast.error(e.data.message)
+          helpers.toast.error(e.data.message)
         }
       },
     },

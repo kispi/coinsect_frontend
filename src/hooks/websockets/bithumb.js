@@ -2,13 +2,13 @@ import useGlobalHooks from '../global-hooks'
 import useWebsocketCommon from './websocket-common'
 
 const useBithumb = () => {
-  const { plugins, store } = useGlobalHooks()
+  const { helpers, store } = useGlobalHooks()
 
   const { tickDirection } = useWebsocketCommon()
 
   const setAsBasePriceFromWebSocket = ({ symbol, json }) => {
     const $$tickDirection = tickDirection(symbol, json.closePrice)
-    plugins.$helpers.dataSetter.setPriceRow({
+    helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$tradePriceBase: json.closePrice,
       $$changePrice24H: json.chgAmt,
@@ -22,7 +22,7 @@ const useBithumb = () => {
 
   // 엥간하면 웹소켓이랑 맞추지 빗썸놈들 ㅡㅡ
   const setAsBasePriceFromRestAPI = ({ symbol, json }) => {
-    plugins.$helpers.dataSetter.setPriceRow({
+    helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$tradePriceBase: json.closing_price,
       $$vol24HBase: json.acc_trade_value_24H,

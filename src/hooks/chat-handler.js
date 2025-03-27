@@ -2,7 +2,7 @@ import { ref, onUnmounted, computed } from 'vue'
 import useGlobalHooks from './global-hooks'
 
 const useChatHandler = () => {
-  const { plugins, store, router } = useGlobalHooks()
+  const { helpers, store, router } = useGlobalHooks()
 
   const messages = computed(() => store.getters.chat.messages)
 
@@ -78,7 +78,7 @@ const useChatHandler = () => {
 
     p.sentiment = { type }
     store.dispatch('setAccount', p)
-    plugins.$toast.success('기분을 업데이트했습니다')
+    helpers.toast.success('기분을 업데이트했습니다')
   }
 
   const handleMessage = message => {
@@ -86,7 +86,7 @@ const useChatHandler = () => {
 
     switch (message.type) {
       case 'sessionExpired':
-        plugins.$toast.error('최종 로그인 이후 7일이 경과하여 세션이 만료되었습니다. 다시 로그인해주세요!')
+        helpers.toast.error('최종 로그인 이후 7일이 경과하여 세션이 만료되었습니다. 다시 로그인해주세요!')
         setTimeout(() => store.dispatch('signOut'), 3000)
         break
       case 'alert':
@@ -110,7 +110,7 @@ const useChatHandler = () => {
         break
       }
       case 'auth':
-        plugins.$helpers.localStorage.setMeta('user', message.user)
+        helpers.localStorage.setMeta('user', message.user)
         store.commit('setChatUser', message.user)
         ping()
 
@@ -119,7 +119,7 @@ const useChatHandler = () => {
           store.dispatch('setAccount', {
             nickname: m.profile.nickname,
             image: m.profile.image,
-          }).catch(e => plugins.$toast.error(e.data.message))
+          }).catch(e => helpers.toast.error(e.data.message))
         }
         break
       case 'userSetting':
@@ -143,18 +143,18 @@ const useChatHandler = () => {
         if (!targetMessage) return
 
         targetMessage.reactions = newReactions
-        if (store.getters.chat.autoScrollable) plugins.$bus.$emit('scroll-to-bottom')
+        if (store.getters.chat.autoScrollable) helpers.bus.$emit('scroll-to-bottom')
         break
       }
       case 'forceRefresh':
-        plugins.$helpers.forceRefresh()
+        helpers.forceRefresh()
         break
     }
   }
 
   const setAccount = async profile => {
     try {
-      const user = await plugins.$http.put(`webchat/users/${store.getters.chatUser.token}`, {
+      const user = await helpers.http().put(`webchat/users/${store.getters.chatUser.token}`, {
         profile,
       })
       store.commit('setChatUser', user)
@@ -165,10 +165,10 @@ const useChatHandler = () => {
 
   const updateUserSetting = async () => {
     try {
-      const userSetting = await plugins.$http.put(`webchat/user_settings/${store.getters.chatUser.token}`, store.getters.chatUserSetting)
+      const userSetting = await helpers.http().put(`webchat/user_settings/${store.getters.chatUser.token}`, store.getters.chatUserSetting)
       store.commit('setChatUserSetting', userSetting)
     } catch (e) {
-      plugins.$toast.error(e.data.message)
+      helpers.toast.error(e.data.message)
     }
   }
 
@@ -220,7 +220,7 @@ const useChatHandler = () => {
     const firstMessageId = (messages.value[0] || {}).id
     try {
       loadingMessages.value = true
-      const data = await plugins.$http.get('webchat/messages', { params: { firstMessageId, limit } })
+      const data = await helpers.http().get('webchat/messages', { params: { firstMessageId, limit } })
       if ((data || []).length === 0) {
         fullyLoaded.value = true
         return
@@ -231,7 +231,7 @@ const useChatHandler = () => {
       data.forEach(msg => msgBuf.unshift(preparedMessage(msg)))
       store.commit('setChat', { messages: msgBuf.concat(messages.value) })
 
-      if (!firstMessageId) plugins.$bus.$emit('scroll-to-bottom')
+      if (!firstMessageId) helpers.bus.$emit('scroll-to-bottom')
       return data
     } catch (e) {
       return Promise.reject(e)
@@ -241,7 +241,7 @@ const useChatHandler = () => {
   }
 
   const init = () => {
-    token.value = (plugins.$helpers.localStorage.getMeta('user') || {}).token
+    token.value = (helpers.localStorage.getMeta('user') || {}).token
     connect()
   }
 

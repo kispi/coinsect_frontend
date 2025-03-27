@@ -1,15 +1,14 @@
 import { onMounted } from 'vue'
-import helpers from '@/helpers'
 import useGlobalHooks from '../global-hooks'
 
 const useHealthChecker = () => {
-  const { plugins, store } = useGlobalHooks()
+  const { helpers, store } = useGlobalHooks()
 
   const refreshConfig = () => {
     setTimeout(async () => {
       try {
         const previousVersion = ((store.getters.config || {}).version || {}).frontend
-        const config = await plugins.$http.get('config')
+        const config = await helpers.http().get('config')
         if (previousVersion && config.version.frontend !== previousVersion) {
           helpers.toast.custom({
             html: 'TOAST_NEW_VERSION_AVAILABLE',

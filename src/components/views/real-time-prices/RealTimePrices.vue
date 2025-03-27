@@ -90,8 +90,8 @@ export default {
   components: {
     RealTimePriceRow,
   },
-  setup(props) {
-    const { plugins, store } = useGlobalHooks()
+  setup() {
+    const { helpers, store } = useGlobalHooks()
 
     const refNotConnected = ref(null)
 
@@ -143,9 +143,9 @@ export default {
     }
 
     const sorter = (a, b) => {
-      if (plugins.$helpers.isNil(a[settings.value.sort.column])) return 1
+      if (helpers.isNil(a[settings.value.sort.column])) return 1
 
-      if (plugins.$helpers.isNil(b[settings.value.sort.column])) return -1
+      if (helpers.isNil(b[settings.value.sort.column])) return -1
 
       if (settings.value.sort.direction === 'asc') return a[settings.value.sort.column] < b[settings.value.sort.column] ? -1 : 1
 
@@ -163,7 +163,7 @@ export default {
         const lowered = keyword.value.toLowerCase()
         return (geckoName.en || '').toLowerCase().includes(lowered) ||
           (geckoName.kr || '').includes(lowered) ||
-          plugins.$helpers.logic.includesChosung(lowered, geckoName.kr) ||
+          helpers.logic.includesChosung(lowered, geckoName.kr) ||
           t.$$symbol.toLowerCase().includes(lowered)
       }).sort((a, b) => {
         if (store.getters.settings.favorites[a.$$symbol] === store.getters.settings.favorites[b.$$symbol]) return sorter(a, b)
@@ -248,7 +248,7 @@ export default {
         recalcDisplayedList()
         runRecalcInterv()
       } catch (e) {
-        plugins.$toast.error(`거래소(${baseExchange.value})의 정보를 불러오는데 실패했습니다. 다시 시도해주세요.`)
+        helpers.toast.error(`거래소(${baseExchange.value})의 정보를 불러오는데 실패했습니다. 다시 시도해주세요.`)
       }
     }
 

@@ -50,7 +50,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup(_, { emit }) {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const exchanges = ref([])
 
@@ -102,17 +102,17 @@ export default {
       }
 
       if (errMsg) {
-        plugins.$toast.error(errMsg)
+        helpers.toast.error(errMsg)
         return
       }
 
       if (!payload.value.averagePurchasePrice) {
-        plugins.$toast.error('매수평균단가를 입력하세요')
+        helpers.toast.error('매수평균단가를 입력하세요')
         return
       }
 
       if (!payload.value.amount) {
-        plugins.$toast.error('보유수량을 입력하세요')
+        helpers.toast.error('보유수량을 입력하세요')
         return
       }
 

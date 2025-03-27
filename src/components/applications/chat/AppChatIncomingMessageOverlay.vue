@@ -19,7 +19,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   emits: ['scroll-to-bottom'],
   setup(_, { emit }) {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const incomingMessage = computed(() => store.getters.chat.incomingMessage)
 
@@ -27,7 +27,7 @@ export default {
 
     const { filteredMessages: messages } = useChatHandler()
 
-    const debouncedMessageRemover = plugins.$helpers.debounce(() => {
+    const debouncedMessageRemover = helpers.debounce(() => {
       store.commit('setChat', { incomingMessage: null })
     }, 10000)
 
@@ -70,7 +70,7 @@ export default {
     const loadDing = () => {
       if (typeof Audio === 'undefined') return
 
-      ding.value = new Audio(plugins.$helpers.withCdn('files/ding.mp3'))
+      ding.value = new Audio(helpers.withCdn('files/ding.mp3'))
       ding.value.volume = 0.2
     }
 

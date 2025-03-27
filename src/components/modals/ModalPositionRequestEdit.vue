@@ -58,7 +58,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   props: ['options'],
   setup(props, { emit }) {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const payload = ref({})
 
@@ -66,11 +66,11 @@ export default {
       const o = JSON.parse(JSON.stringify(payload.value))
       try {
         ['entryPrice', 'liqPrice', 'size'].forEach(key => o[key] = parseFloat(o[key]))
-        await plugins.$http.post('contents/real_time_positions/change_notifications', o)
+        await helpers.http().post('contents/real_time_positions/change_notifications', o)
         emit('close')
-        plugins.$toast.success('TOAST_POSITION_EDIT_REQUESTED')
+        helpers.toast.success('TOAST_POSITION_EDIT_REQUESTED')
       } catch (e) {
-        plugins.$toast.error(e.data.message)
+        helpers.toast.error(e.data.message)
       }
     }
 

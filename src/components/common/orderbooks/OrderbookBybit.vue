@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import useBybit from '@/hooks/websockets/bybit'
 import useGlobalHooks from '@/hooks/global-hooks'
 
@@ -62,14 +62,12 @@ export default {
       default: 8,
     }
   },
-  setup(props, { emit }) {
+  setup(props) {
     const { store } = useGlobalHooks()
 
     const orderbook = computed(() => store.getters.orderbooks.bybit[props.market])
 
     const instrument = computed(() => store.getters.instruments.bybit[props.market])
-
-    const emitted = ref(null)
 
     const relativeWidth = size => `${size * 100 / orderbook.value.$$biggestSize}%`
 
@@ -115,16 +113,6 @@ export default {
       connection.value.orderbook.close()
       connection.value.instrument.close()
     })
-
-    watch(
-      () => orderbook.value,
-      newVal => {
-        if (newVal && !emitted.value) {
-          emitted.value = true
-        }
-      },
-      { deep: true },
-    )
 
     return {
       orderbook,

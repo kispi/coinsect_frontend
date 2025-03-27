@@ -104,7 +104,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins, store, router } = useGlobalHooks()
+    const { helpers, store, router } = useGlobalHooks()
 
     const influencer = computed(() => {
       if (!store.getters.influencers) return
@@ -129,10 +129,10 @@ export default {
       const p = influencer.value
       if (!p) return router.push('/contents/influencers')
 
-      plugins.$helpers.meta.setDocumentTitle(`인물 - ${p.name} - 코인충`)
-      plugins.$helpers.meta.renderDescription(JSON.parse(p.description).kr)
-      plugins.$helpers.meta.renderOgImage(plugins.$helpers.withCdn(((p.images || [])[0] || {}).key))
-      plugins.$helpers.meta.renderCanonicalLink()
+      helpers.meta.setDocumentTitle(`인물 - ${p.name} - 코인충`)
+      helpers.meta.renderDescription(JSON.parse(p.description).kr)
+      helpers.meta.renderOgImage(helpers.withCdn(((p.images || [])[0] || {}).key))
+      helpers.meta.renderCanonicalLink()
     }
 
     onMounted(init)

@@ -60,7 +60,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const timeout = ref(null)
 
@@ -101,9 +101,9 @@ export default {
     const loadLeaderboard = async () => {
       try {
         await store.dispatch('loadLeaderboard')
-        let minute = plugins.$helpers.dayjs().format('mm')
-        minute = `${plugins.$helpers.template.withLeadingZero(minute - minute % 5, 2)}`
-        lastUpdate.value = plugins.$helpers.dayjs().format('YYYY-MM-DD HH:') + minute
+        let minute = helpers.dayjs().format('mm')
+        minute = `${helpers.template.withLeadingZero(minute - minute % 5, 2)}`
+        lastUpdate.value = helpers.dayjs().format('YYYY-MM-DD HH:') + minute
         timeout.value = setTimeout(loadLeaderboard, 1000 * 60)
       } catch (e) {}
     }

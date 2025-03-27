@@ -27,7 +27,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
     const text = ref(null)
 
@@ -47,7 +47,7 @@ export default {
 
     const init = () => {
       if (typeof webkitSpeechRecognition === 'undefined') {
-        plugins.$toast.error('음성 인식은 크롬 브라우저에서만 사용 가능합니다.')
+        helpers.toast.error('음성 인식은 크롬 브라우저에서만 사용 가능합니다.')
         return
       }
 

@@ -77,7 +77,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const payload = ref({
       column: null,
@@ -88,7 +88,7 @@ export default {
       const parsed = parseFloat((value || '').replace(/,/g, ''))
       if (!parsed) return '?'
 
-      const p = plugins.$helpers.number.pretty
+      const p = helpers.number.pretty
       const baseCurrency = 'krw'
 
       return {
@@ -131,7 +131,7 @@ export default {
     const interv = ref(null)
 
     const openModalTradingView = item => {
-      plugins.$modal.custom({
+      helpers.modal.custom({
         component: 'ModalTradingView',
         options: {
           symbol: `KRX:${item.reutersCode}`,

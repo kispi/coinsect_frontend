@@ -17,7 +17,7 @@ import CPost from './CPost'
 export default {
   components: { CPost },
   setup() {
-    const { plugins, store, router } = useGlobalHooks()
+    const { helpers, store, router } = useGlobalHooks()
 
     const sharingKey = computed(() => router.currentRoute.value.params.sharingKey)
 
@@ -30,12 +30,12 @@ export default {
         if ((post.value || {}).sharingKey !== router.currentRoute.value.params.sharingKey) {
           await store.dispatch('loadPost', sharingKey.value)
         }
-        plugins.$helpers.meta.setDocumentTitle(post.value.title)
-        plugins.$helpers.meta.renderDescription(post.value.content)
+        helpers.meta.setDocumentTitle(post.value.title)
+        helpers.meta.renderDescription(post.value.content)
         const firstImage = (post.value.$$images || [])[0] || post.value.$$thumbnail
-        if (firstImage) plugins.$helpers.meta.renderOgImage(firstImage)
+        if (firstImage) helpers.meta.renderOgImage(firstImage)
       } catch (e) {
-        plugins.$toast.error('존재하지 않는 게시글입니다')
+        helpers.toast.error('존재하지 않는 게시글입니다')
         router.push('/community')
       }
     }

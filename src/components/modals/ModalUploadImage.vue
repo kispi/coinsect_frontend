@@ -48,7 +48,7 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
     const refModalUploadImage = ref(null)
 
@@ -64,7 +64,7 @@ export default {
       payload.value.file = null
     }
 
-    const showError = () => plugins.$toast.error('이미지를 보내는 도중에 문제가 발생했습니다. 다시 시도해주세요.')
+    const showError = () => helpers.toast.error('이미지를 보내는 도중에 문제가 발생했습니다. 다시 시도해주세요.')
 
     const onClickSendImage = async () => {
       if (!payload.value.file) {
@@ -101,7 +101,7 @@ export default {
     watch(
       () => payload.value,
       () => {
-        setTimeout(() => plugins.$modal.center(refModalUploadImage.value), 50)
+        setTimeout(() => helpers.modal.center(refModalUploadImage.value), 50)
       },
       { deep: true },
     )

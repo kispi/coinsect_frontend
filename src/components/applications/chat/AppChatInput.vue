@@ -48,7 +48,7 @@ export default {
   setup() {
     const { sendWebsocketMessage, updateSentiment } = useChatHandler()
 
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const text = ref('')
 
@@ -57,7 +57,7 @@ export default {
     const showEmojis = ref(null)
 
     const onPickEmoji = emoji => {
-      text.value = plugins.$helpers.dom.insertCharacter({ character: (store.getters.config.emojis[emoji] || {}).emoji, textarea: refTextarea.value })
+      text.value = helpers.dom.insertCharacter({ character: (store.getters.config.emojis[emoji] || {}).emoji, textarea: refTextarea.value })
       showEmojis.value = false
     }
 
@@ -69,7 +69,7 @@ export default {
 
     const chatFunctions = {
       image: () => {
-        plugins.$modal.custom({
+        helpers.modal.custom({
           component: 'ModalUploadImage',
           options: {
             noupload: true,
@@ -115,7 +115,7 @@ export default {
     }
 
     const onPaste = e => {
-      plugins.$helpers.logic.onPasteClipboardImage(
+      helpers.logic.onPasteClipboardImage(
         e,
         url => {
           if (!url) return

@@ -34,7 +34,7 @@ export default {
     tickerUpbit: Object,
   },
   setup(props) {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const symbol = computed(() => ((props.tickerBinance || {}).s || '').split('USDT')[0])
 
@@ -70,7 +70,7 @@ export default {
       if (!props.tickerBinance) return
 
       store.commit('setSettings', { documentTitleTicker: symbol.value })
-      plugins.$toast.success(plugins.$translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, symbol.value))
+      helpers.toast.success(helpers.translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, symbol.value))
     }
 
     const mustUSD = price => {

@@ -2,7 +2,7 @@ import useGlobalHooks from '../global-hooks'
 import useWebsocketCommon from './websocket-common'
 
 const useUpbit = () => {
-  const { plugins, store } = useGlobalHooks()
+  const { helpers, store } = useGlobalHooks()
 
   const { tickDirection } = useWebsocketCommon()
 
@@ -12,7 +12,7 @@ const useUpbit = () => {
 
   const setAsBasePrice = ({ symbol, json }) => {
     const $$tickDirection = tickDirection(symbol, json.tp)
-    plugins.$helpers.dataSetter.setPriceRow({
+    helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$tradePriceBase: json.tp,
       $$highest52WeekPrice: json.h52wp,
@@ -73,7 +73,7 @@ const useUpbit = () => {
 
     connection.onopen = () => {
       connection.send(JSON.stringify([{
-        ticket: plugins.$helpers.logic.generateUUIDV4(),
+        ticket: helpers.logic.generateUUIDV4(),
       }, {
         type,
         codes: codes.map(code => `${code}`),

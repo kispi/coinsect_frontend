@@ -95,7 +95,7 @@ export default {
   props: ['prevMessage', 'message', 'nextMessage'],
   components: { EmojiPicker, ReactedUsers },
   setup(props) {
-    const { plugins, store, router } = useGlobalHooks()
+    const { helpers, store, router } = useGlobalHooks()
 
     const showEmojiSelector = ref(null)
 
@@ -112,7 +112,7 @@ export default {
       return o
     })
 
-    const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
+    const d = ts => helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
 
     const onClickImage = url => window.open(url, '_blank', 'noreferrer')
 
@@ -146,7 +146,7 @@ export default {
           nickname: store.getters.chatUser.profile.nickname,
         })
       } catch (e) {
-        plugins.$toast.error(e.data.message)
+        helpers.toast.error(e.data.message)
       }
     }
 

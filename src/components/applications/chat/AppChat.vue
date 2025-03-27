@@ -87,7 +87,7 @@ export default {
     DailySeparator,
   },
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const refAppChatBody = ref(null)
 
@@ -156,14 +156,14 @@ export default {
       loadingReplyTarget.value = false
 
       if (!found) {
-        plugins.$toast.error('너무 오래된 메시지인 것 같아요 😥')
+        helpers.toast.error('너무 오래된 메시지인 것 같아요 😥')
         return
       }
 
-      await plugins.$helpers.sleep(100)
+      await helpers.sleep(100)
       const dom = refAppChatBody.value.getElementsByClassName(`mid-${found.id}`)[0]
       if (dom) dom.scrollIntoView({ behavior: 'smooth' })
-      else plugins.$toast.error(`차단한 유저(${message.nickname})의 메시지입니다`)
+      else helpers.toast.error(`차단한 유저(${message.nickname})의 메시지입니다`)
     }
 
     const onClickWriteReply = async writingReplyTo => {
@@ -182,7 +182,7 @@ export default {
     watch(
       () => store.getters.chat.lastWebsocketMessage,
       () => {
-        if (!store.getters.documentVisible) plugins.$helpers.useFaviconWithUnreads(true)
+        if (!store.getters.documentVisible) helpers.useFaviconWithUnreads(true)
       },
     )
 
@@ -207,14 +207,14 @@ export default {
     )
 
     onMounted(() => {
-      plugins.$bus.$on('scroll-to-bottom', scrollToBottom) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
+      helpers.bus.$on('scroll-to-bottom', scrollToBottom) // 사실상 이 컴포넌트가 마운트됐을때만 실행되는거라 굳이 이렇게 하고싶진 않지만 별 방법이 없는듯...
 
       init()
       setAppChatPosition()
     })
 
     onUnmounted(() => {
-      plugins.$bus.$off('scroll-to-bottom', scrollToBottom)
+      helpers.bus.$off('scroll-to-bottom', scrollToBottom)
 
       /*
         <AppChat/>이 unmount되는 경우는, 로그인/로그아웃 뿐이다. 이 경우 상태관리의 편의를 위해 <AppChat/>을 rerender하기 때문에, connection도 새로 만들어진다.

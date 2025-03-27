@@ -46,7 +46,7 @@ export default {
   setup(_, { emit }) {
     const refModalDonation = ref(null)
 
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const drawing = ref(null)
 
@@ -57,8 +57,8 @@ export default {
     const qrcode = ref(null)
 
     const copyToClipboard = () => {
-      plugins.$helpers.dom.copyToClipboard(selectedWallet.value.address)
-      plugins.$toast.success(`코인충 운영자의 ${selectedWallet.value.blockchain.symbol}주소를 클립보드로 복사했습니다`)
+      helpers.dom.copyToClipboard(selectedWallet.value.address)
+      helpers.toast.success(`코인충 운영자의 ${selectedWallet.value.blockchain.symbol}주소를 클립보드로 복사했습니다`)
     }
 
     const openBlockExplore = () => {
@@ -69,7 +69,7 @@ export default {
 
     const selectWallet = async wallet => {
       drawing.value = true
-      await plugins.$helpers.sleep(100)
+      await helpers.sleep(100)
       drawing.value = false
       selectedWallet.value = wallet
       if (typeof QRCode === 'undefined') return
@@ -97,7 +97,7 @@ export default {
     const init = async () => {
       try {
         await Promise.all([
-          plugins.$helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' }),
+          helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' }),
           store.dispatch('loadWallets'),
         ])
 

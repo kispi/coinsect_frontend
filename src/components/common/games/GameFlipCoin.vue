@@ -43,7 +43,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   components: { CTimer },
   setup(_, { emit }) {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
     const coins = ref(null)
 
@@ -92,8 +92,8 @@ export default {
     }
 
     const shuffle = numCoinsToGenerate => {
-      const coinSet = plugins.$helpers.coin.pickCoins({ numCoinsToGenerate, upbitOnly: true })
-      coins.value = plugins.$helpers.logic.shuffle([
+      const coinSet = helpers.coin.pickCoins({ numCoinsToGenerate, upbitOnly: true })
+      coins.value = helpers.logic.shuffle([
         ...coinSet,
         ...coinSet,
       ]).map(([key, value]) => ({

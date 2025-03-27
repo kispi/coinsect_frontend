@@ -18,11 +18,11 @@ export default {
     message: null,
   },
   setup(props, { emit }) {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const { meta, tryMetaTags } = useSeo()
 
-    const link = computed(() => plugins.$helpers.logic.retrieveUrlFromString(props.message.text))
+    const link = computed(() => helpers.logic.retrieveUrlFromString(props.message.text))
 
     const init = async () => {
       try {

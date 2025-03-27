@@ -18,7 +18,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
     const show = ref(null)
 
@@ -30,7 +30,7 @@ export default {
     }
 
     const check = () => {
-      const today = plugins.$helpers.dayjs().format('MM-DD')
+      const today = helpers.dayjs().format('MM-DD')
       show.value = today === '04-01'
       timeout.value = setTimeout(check, 5000)
     }

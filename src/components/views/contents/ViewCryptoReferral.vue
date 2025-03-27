@@ -98,9 +98,9 @@ import referrals from '@/assets/constants/referrals'
 
 export default {
   setup() {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
-    const exImg = ex => plugins.$helpers.withCdn(`images/exchanges/${ex}.png`)
+    const exImg = ex => helpers.withCdn(`images/exchanges/${ex}.png`)
 
     const asPercent = val => (val * 100).toLocaleString(undefined, { maximumFractionDigits: 4 })
 

@@ -45,7 +45,7 @@ import TradingViewSymbols from './TradingViewSymbols'
 export default {
   components: { TradingViewSymbols },
   setup() {
-    const { plugins, store, router } = useGlobalHooks()
+    const { helpers, store, router } = useGlobalHooks()
 
     const shouldShowCharts = computed(() => {
       const p = router.currentRoute.value.path
@@ -84,7 +84,7 @@ export default {
             interval: 15,
           })
           store.commit('setCharts', store.getters.charts)
-          plugins.$helpers.toast.success('차트가 너무 많으면 페이지가 현저히 느려질 수 있습니다.')
+          helpers.toast.success('차트가 너무 많으면 페이지가 현저히 느려질 수 있습니다.')
           return true
         }
       })

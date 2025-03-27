@@ -91,7 +91,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup(_, { emit }) {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
     const refInputA = ref(null)
 
@@ -133,7 +133,7 @@ export default {
 
     const flip = lot => {
       if (!shuffled.value) {
-        plugins.$toast.error('먼저 적어도 1회 이상 덱을 섞어주세요')
+        helpers.toast.error('먼저 적어도 1회 이상 덱을 섞어주세요')
         return
       }
 
@@ -144,10 +144,10 @@ export default {
       if (num <= 0) return
 
       const p = parseInt(slotNumber.value)
-      if (isNaN(p) || p > lots.value.length || p < 1) return plugins.$toast.error(`${lots.value.length} 이하의 올바른 당첨칸 번호를 적어주세요 🤔`)
+      if (isNaN(p) || p > lots.value.length || p < 1) return helpers.toast.error(`${lots.value.length} 이하의 올바른 당첨칸 번호를 적어주세요 🤔`)
 
       lots.value.forEach(lot => lot.$$flipped = true)
-      lots.value = plugins.$helpers.logic.shuffle(lots.value)
+      lots.value = helpers.logic.shuffle(lots.value)
       shuffled.value = true
 
       setTimeout(() => shuffle(num - 1), 250)

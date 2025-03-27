@@ -82,7 +82,7 @@ import useRealTimePosition from '@/hooks/real-time-position'
 export default {
   components: { MainSection, RecentPosts, RealTimePriceCards, SectionNews },
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const { connection, openWebsocket, sorter } = useRealTimePosition()
 
@@ -105,7 +105,7 @@ export default {
         store.commit('setRealTimePositions', dashboards.value.realTimePositions)
         openWebsocket()
       } catch (e) {
-        plugins.$toast.error(e.data.message)
+        helpers.toast.error(e.data.message)
       }
     }
 
@@ -117,7 +117,7 @@ export default {
           sort: 'id',
           order: 'desc',
         })
-        await plugins.$helpers.post.populateRenderablePosts(resp.data)
+        await helpers.post.populateRenderablePosts(resp.data)
         dashboardPosts.value[boardId - 1] = resp
       } catch (e) {
         return Promise.reject(e)
@@ -135,7 +135,7 @@ export default {
     onMounted(() => {
       initDashboards()
       loadPosts()
-      plugins.$bus.$on('write-post', loadPostSimple)
+      helpers.bus.$on('write-post', loadPostSimple)
 
       interval.value = setInterval(() => {
         initDashboards()
@@ -144,7 +144,7 @@ export default {
     })
 
     onUnmounted(() => {
-      plugins.$bus.$off('write-post')
+      helpers.bus.$off('write-post')
       if (interval.value) clearInterval(interval.value)
     })
 

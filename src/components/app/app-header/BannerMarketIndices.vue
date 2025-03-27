@@ -24,7 +24,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const interv = ref(null)
 
@@ -45,7 +45,7 @@ export default {
       }, {
         key: 'TOTAL_MARKET_CAP',
         link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ATOTAL',
-        value: plugins.$helpers.number.pretty.cap({ cap: o.totalMarketCap, baseCurrency: 'usd' }),
+        value: helpers.number.pretty.cap({ cap: o.totalMarketCap, baseCurrency: 'usd' }),
       }]
     })
 

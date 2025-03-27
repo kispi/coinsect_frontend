@@ -66,7 +66,7 @@ export default {
     WhaleAlertFilters,
   },
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const resp = ref(null)
 
@@ -81,7 +81,7 @@ export default {
     const params = ref()
 
     const createQuery = () => {
-      const o = plugins.$helpers.qb().limit(20)
+      const o = helpers.qb().limit(20)
       const conds = []
       if (params.value.amount) conds.push(`amount >= ${params.value.amount}`)
       if (params.value.amountUsd) conds.push(`amount_usd >= ${params.value.amountUsd}`)
@@ -94,9 +94,9 @@ export default {
     const search = async () => {
       try {
         loading.value = true
-        resp.value = await plugins.$helpers.logic.crypto.decryptAPIResponse(await onchainService.whaleAlert(createQuery().build()))
+        resp.value = await helpers.logic.crypto.decryptAPIResponse(await onchainService.whaleAlert(createQuery().build()))
       } catch (e) {
-        plugins.$toast.error(e.data.message)
+        helpers.toast.error(e.data.message)
       } finally {
         loading.value = false
       }
@@ -111,7 +111,7 @@ export default {
 
     watch(
       () => params.value,
-      plugins.$helpers.debounce(() => {
+      helpers.debounce(() => {
         clearTimeout(timeout.value) // 조건이 초기화되었으므로 timeout을 다시걸어야함.
         search()
       }, 500),

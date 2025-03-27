@@ -48,14 +48,14 @@ export default {
     tooltip: String,
   },
   setup(props) {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
     const refTooltip = ref(null)
 
     const tooltipId = computed(() => {
       if (!props.tooltip) return
 
-      return plugins.$helpers.logic.mustToken()
+      return helpers.logic.mustToken()
     })
 
     return {

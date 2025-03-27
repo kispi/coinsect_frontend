@@ -2,12 +2,12 @@ import useGlobalHooks from './global-hooks'
 import communityService from '@/services/community'
 
 const usePost = () => {
-  const { plugins, store } = useGlobalHooks()
+  const { helpers, store } = useGlobalHooks()
 
   const openEditor = ({ post, $$originalPassword }) => {
     if ($$originalPassword) post.$$originalPassword = $$originalPassword
 
-    plugins.$modal.custom({
+    helpers.modal.custom({
       component: 'ModalPostEditor',
       options: {
         preventCloseOnClickBackdrop: true,
@@ -19,7 +19,7 @@ const usePost = () => {
   const checkPasswordAndAllowEdit = async post => {
     if (store.getters.me && post.userId === store.getters.me.id) return openEditor({ post })
 
-    const password = await plugins.$modal.input({ title: '비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+    const password = await helpers.modal.input({ title: '비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
     if (!password) return
 
     try {
@@ -27,11 +27,9 @@ const usePost = () => {
       post.$$originalPassword = password
       openEditor({ post, $$originalPassword: password })
     } catch (e) {
-      plugins.$toast.error(plugins.$translate('INCORRECT_PASSWORD'))
+      helpers.toast.error(helpers.translate('INCORRECT_PASSWORD'))
     }
   }
-
-
 
   return {
     checkPasswordAndAllowEdit,

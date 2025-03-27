@@ -13,9 +13,9 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   props: ['prevMessage', 'message'],
   setup(props) {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
-    const d = ts => plugins.$helpers.dayjs(ts).format('YYYY-MM-DD')
+    const d = ts => helpers.dayjs(ts).format('YYYY-MM-DD')
 
     const showSeparator = computed(() => {
       if (!props.prevMessage) return true

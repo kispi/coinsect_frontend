@@ -29,7 +29,7 @@ import useKakao from '@/hooks/oauth/kakao'
 
 export default {
   setup(_, { emit }) {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
     const { signIn } = useKakao()
 
@@ -38,7 +38,7 @@ export default {
         await signInFunction()
         emit('close')
       } catch (e) {
-        plugins.$toast.error('소셜 로그인 과정에서 문제가 발생했습니다. 아마도 연동 계정에서 이메일 정보를 가져올 수 없는 것 같습니다 😢')
+        helpers.toast.error('소셜 로그인 과정에서 문제가 발생했습니다. 아마도 연동 계정에서 이메일 정보를 가져올 수 없는 것 같습니다 😢')
       }
     }
 

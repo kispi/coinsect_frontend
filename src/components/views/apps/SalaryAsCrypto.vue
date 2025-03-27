@@ -33,7 +33,7 @@ export default {
   setup(props, { emit }) {
     const { subscribe } = useUpbit()
 
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const connection = ref(null)
 
@@ -75,7 +75,7 @@ export default {
         connection.value = conn
         populateMarkets()
       } catch (e) {
-        plugins.$toast.error('문제가 발생했습니다 😢 새로고침해주세요')
+        helpers.toast.error('문제가 발생했습니다 😢 새로고침해주세요')
       }
     }
 

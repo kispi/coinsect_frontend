@@ -32,7 +32,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   props: ['options'],
   setup(props, { emit }) {
-    const { plugins } = useGlobalHooks()
+    const { helpers } = useGlobalHooks()
 
     const refModal = ref(null)
 
@@ -45,11 +45,11 @@ export default {
         loading.value = true
         data.value = await userService.userStats(props.options.user.id)
       } catch (e) {
-        plugins.$toast.error('해당 유저의 활동 내역을 가져오는데 실패했습니다')
+        helpers.toast.error('해당 유저의 활동 내역을 가져오는데 실패했습니다')
         emit('close')
       } finally {
         loading.value = false
-        plugins.$helpers.modal.center(refModal.value)
+        helpers.modal.center(refModal.value)
       }
     }
 

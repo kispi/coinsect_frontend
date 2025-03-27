@@ -153,7 +153,7 @@ export default {
 
     const refInputNickname = ref(null)
 
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const { updateUserSetting } = useChatHandler()
 
@@ -176,7 +176,7 @@ export default {
 
     const image = {
       upload: () => {
-        plugins.$modal.custom({
+        helpers.modal.custom({
           component: 'ModalUploadImage',
           options: {
             noupload: true,
@@ -190,8 +190,8 @@ export default {
         })
       },
       delete: () => {
-        plugins.$modal.confirm({
-          body: plugins.$translate('MODAL_CONFIRM_DELETE_IMAGE'),
+        helpers.modal.confirm({
+          body: helpers.translate('MODAL_CONFIRM_DELETE_IMAGE'),
         }).then(idx => {
           if (idx === 1) {
             profile.value.image = null
@@ -207,7 +207,7 @@ export default {
         editing.value = false
         if (store.getters.me) store.dispatch('loadMe')
       } catch (e) {
-        plugins.$toast.error(e.data.message)
+        helpers.toast.error(e.data.message)
 
         if (!(profile.value.nickname || '').trim()) {
           refInputNickname.value.focus()
@@ -229,7 +229,7 @@ export default {
       try {
         const p = store.getters.chatUserSetting
         if (!p.pushPositionChange) {
-          const result = await plugins.$modal.confirm({
+          const result = await helpers.modal.confirm({
             body: '브라우저에서 푸시 알림을 보낼 수 있도록 물어보는 창이 뜨면 허용해주세요<br>거절했더라도 나중에 브라우저 설정에서 다시 허용할 수 있습니다 🥰',
           })
           if (!result) return
@@ -240,7 +240,7 @@ export default {
         p.pushPositionChange = !p.pushPositionChange
         updateUserSetting()
       } catch (e) {
-        plugins.$toast.error('푸시 알림이 거부되어 있어요 😢<br>사이트 설정에서 허용해주세요')
+        helpers.toast.error('푸시 알림이 거부되어 있어요 😢<br>사이트 설정에서 허용해주세요')
       } finally {
         loading.value = false
       }

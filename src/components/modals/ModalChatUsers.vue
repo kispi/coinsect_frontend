@@ -48,7 +48,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const refModalChatUsers = ref(null)
 
@@ -121,7 +121,7 @@ export default {
       () => sorted.value,
       () => {
         if (!centered.value) {
-          plugins.$helpers.modal.center(refModalChatUsers.value)
+          helpers.modal.center(refModalChatUsers.value)
           centered.value = true
         }
       },
@@ -129,7 +129,7 @@ export default {
 
     watch(
       () => selectedTab.value,
-      () => plugins.$helpers.modal.center(refModalChatUsers.value),
+      () => helpers.modal.center(refModalChatUsers.value),
     )
 
     watch([

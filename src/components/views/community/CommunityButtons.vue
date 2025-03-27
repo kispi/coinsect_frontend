@@ -28,7 +28,7 @@ import usePost from '@/hooks/post'
 
 export default {
   setup() {
-    const { plugins, store, router } = useGlobalHooks()
+    const { helpers, store, router } = useGlobalHooks()
 
     const { checkPasswordAndAllowEdit } = usePost()
 
@@ -38,14 +38,14 @@ export default {
       try {
         await communityService.remove.post({ sharingKey, password })
         router.push('/community')
-        plugins.$toast.success('게시글을 삭제했습니다')
+        helpers.toast.success('게시글을 삭제했습니다')
       } catch (e) {
-        plugins.$toast.error(e.data.message)
+        helpers.toast.error(e.data.message)
       }
     }
 
     const handlers = {
-      write: () => plugins.$modal.custom({
+      write: () => helpers.modal.custom({
         component: 'ModalPostEditor',
         options: {
           preventCloseOnClickBackdrop: true,
@@ -53,11 +53,11 @@ export default {
       }),
       edit: () => checkPasswordAndAllowEdit(post.value),
       delete: async () => {
-        if (plugins.$helpers.logic.writing.isMine(post.value)) {
-          const ok = await plugins.$modal.confirm({ body: '내 게시글을 삭제할까요?' })
+        if (helpers.logic.writing.isMine(post.value)) {
+          const ok = await helpers.modal.confirm({ body: '내 게시글을 삭제할까요?' })
           if (ok) onConfirmDelete({ sharingKey: post.value.sharingKey })
         } else {
-          const password = await plugins.$modal.input({ title: '게시글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+          const password = await helpers.modal.input({ title: '게시글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
           if (password) onConfirmDelete({ sharingKey: post.value.sharingKey, password })
         }
       },
@@ -71,7 +71,7 @@ export default {
 
       if (!post.value) return arr
 
-      if (post.value.postType === 'normal' && plugins.$helpers.logic.writing.canModify(post.value)) {
+      if (post.value.postType === 'normal' && helpers.logic.writing.canModify(post.value)) {
         arr.push({
           text: 'EDIT',
           handler: handlers.edit,

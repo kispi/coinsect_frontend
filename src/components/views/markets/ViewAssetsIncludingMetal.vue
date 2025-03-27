@@ -68,7 +68,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const payload = ref({
       column: null,
@@ -78,7 +78,7 @@ export default {
     const displayPrice = value => {
       if (!value) return '?'
 
-      const p = plugins.$helpers.number.pretty
+      const p = helpers.number.pretty
       const baseCurrency = 'usd'
 
       return {
@@ -120,7 +120,7 @@ export default {
     const interv = ref(null)
 
     const openModalTradingView = item => {
-      plugins.$modal.custom({
+      helpers.modal.custom({
         component: 'ModalTradingView',
         options: {
           symbol: item.code,
@@ -150,7 +150,7 @@ export default {
       if (store.getters.isSSR) return
 
       store.commit('setSettings', { currency: 'usd' })
-      plugins.$toast.success(`
+      helpers.toast.success(`
         통화를 USD로 설정합니다. 페이지를 벗어나면 다시 원래 통화로 돌아갑니다.
         또는 상단 <i class='fa fa-cog'></i> 개인화 설정에서 언제든 변경하실 수 있습니다.
       `, 5000)

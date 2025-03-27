@@ -1,4 +1,5 @@
 import { store } from '@/store'
+import { $http } from '@/modules/axios'
 import animate from './animate'
 import createBus from './bus'
 import coin from './coin'
@@ -47,6 +48,7 @@ const canSkipApiCall = (apiId, cacheTimeout) => {
 const helpers = {
   animate,
   bus: createBus(),
+  http: () => $http,
   coin,
   dataSetter,
   dayjs,

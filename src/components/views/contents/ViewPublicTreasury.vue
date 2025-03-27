@@ -54,7 +54,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const data = computed(() => {
       if (!store.getters.publicTreasuries) return
@@ -73,7 +73,7 @@ export default {
       try {
         await store.dispatch('loadPublicTreasuries')
       } catch (e) {
-        plugins.$toast.error('정보를 가져올 수 없습니다')
+        helpers.toast.error('정보를 가져올 수 없습니다')
       }
     }
 

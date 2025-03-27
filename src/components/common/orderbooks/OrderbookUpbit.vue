@@ -42,8 +42,8 @@ export default {
   props: {
     market: String,
   },
-  setup(props, { emit }) {
-    const { plugins, store } = useGlobalHooks()
+  setup(props) {
+    const { store } = useGlobalHooks()
 
     const orderbook = computed(() => store.getters.orderbooks.upbit[props.market])
 
@@ -75,7 +75,7 @@ export default {
     const connection = ref(null)
 
     const zeroOrPercent = order => {
-      const value = plugins.$helpers.number.pretty.percent(Math.round((order.price - prevClosingPrice.value) / prevClosingPrice.value * 10000) / 100)
+      const value = helpers.number.pretty.percent(Math.round((order.price - prevClosingPrice.value) / prevClosingPrice.value * 10000) / 100)
       return isNaN(value) ? 0 : value
     }
 

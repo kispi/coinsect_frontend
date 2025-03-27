@@ -3,7 +3,7 @@ import helperService from '@/services/helper'
 import useGlobalHooks from './global-hooks'
 
 const useSeo = () => {
-  const { plugins, router } = useGlobalHooks()
+  const { helpers, router } = useGlobalHooks()
 
   const numTrial = ref(0)
 
@@ -40,7 +40,7 @@ const useSeo = () => {
       return Promise.reject()
     }
 
-    if (plugins.$helpers.isImageUrl(link)) {
+    if (helpers.isImageUrl(link)) {
       meta.value.image = link
       return
     }

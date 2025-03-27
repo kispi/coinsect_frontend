@@ -50,7 +50,7 @@ const props = defineProps({
 
 const emit = defineEmits(['upload-file'])
 
-const { plugins } = useGlobalHooks()
+const { helpers } = useGlobalHooks()
 
 const dragging = ref(null)
 
@@ -65,7 +65,7 @@ const doUpload = async originalFile => {
   let file = originalFile
   try {
     processing.value = true
-    file = shouldResize(originalFile) ? await plugins.$helpers.logic.resizeImage({ file: originalFile, ...props.resize }) : originalFile
+    file = shouldResize(originalFile) ? await helpers.logic.resizeImage({ file: originalFile, ...props.resize }) : originalFile
   } finally {
     processing.value = false
   }
@@ -90,7 +90,7 @@ const doUpload = async originalFile => {
 
 const onDrop = async e => {
   dragging.value = false
-  if (!shouldResize(e.dataTransfer.files[0]) && !plugins.$helpers.logic.acceptableFileSize(e.dataTransfer.files[0])) return
+  if (!shouldResize(e.dataTransfer.files[0]) && !helpers.logic.acceptableFileSize(e.dataTransfer.files[0])) return
 
   try {
     await doUpload(e.dataTransfer.files[0])
@@ -100,7 +100,7 @@ const onDrop = async e => {
 }
 
 const onChangeFile = e => {
-  if (!shouldResize(e.target.files[0]) && !plugins.$helpers.logic.acceptableFileSize(e.target.files[0])) return
+  if (!shouldResize(e.target.files[0]) && !helpers.logic.acceptableFileSize(e.target.files[0])) return
 
   doUpload(e.target.files[0])
 }

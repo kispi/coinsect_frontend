@@ -21,7 +21,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   emits: ['scroll-to-bottom'],
   setup(_, { emit }) {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const { filteredMessages: messages, numUnreads } = useChatHandler()
 
@@ -38,7 +38,7 @@ export default {
     }
 
     onMounted(() => {
-      store.commit('setChat', { lastReadMessage: plugins.$helpers.localStorage.getMeta('lastReadMessage') })
+      store.commit('setChat', { lastReadMessage: helpers.localStorage.getMeta('lastReadMessage') })
     })
 
     return {

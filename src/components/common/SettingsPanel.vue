@@ -35,7 +35,7 @@ export default {
     },
   },
   setup(props) {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const settings = computed(() => [{
       key: 'LOCALE',
@@ -77,19 +77,19 @@ export default {
       key: 'SORT_INTERVAL',
       values: [
         { title: 'REAL_TIME', value: 50 },
-        { title: `5 ${plugins.$translate('SECONDS')}`, value: 5000 },
+        { title: `5 ${helpers.translate('SECONDS')}`, value: 5000 },
       ].map(o => ({ ...o, $$selected: store.getters.settings.sortInterval === o.value })),
     }].filter((_, idx) => props.indices.length === 0 || props.indices.includes(idx)))
 
     const onClickValue = (key, setting) => {
       const o = {}
-      o[plugins.$helpers.template.case.toCamel(key.toLowerCase())] = setting.value
+      o[helpers.template.case.toCamel(key.toLowerCase())] = setting.value
       store.commit('setSettings', o)
     }
 
     const onClickInitSettings = () => {
-      plugins.$modal.confirm({
-        body: plugins.$translate('MODAL_INIT_SETTINGS'),
+      helpers.modal.confirm({
+        body: helpers.translate('MODAL_INIT_SETTINGS'),
       }).then(idx => {
         if (idx === 1) {
           store.commit('setLoading', { global: true })

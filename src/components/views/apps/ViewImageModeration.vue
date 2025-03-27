@@ -89,7 +89,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 export default {
   components: { ImageUploader },
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const url = ref(null)
 
@@ -111,7 +111,7 @@ export default {
     const testset = ref(null)
 
     const onPaste = e => {
-      plugins.$helpers.logic.onPasteClipboardImage(e, resultUrl => {
+      helpers.logic.onPasteClipboardImage(e, resultUrl => {
         url.value = resultUrl
         if (!url.value) return
 
@@ -139,7 +139,7 @@ export default {
 
     const onUploadFile = async e => {
       url.value = e.url
-      plugins.$helpers.dom.scrollToTop()
+      helpers.dom.scrollToTop()
       try {
         testing.value = true
         const { ModerationLabels } = await rekognitionService.imageModeration.create({
@@ -148,7 +148,7 @@ export default {
         })
         data.value = ModerationLabels
       } catch (e) {
-        plugins.$toast.error('jpeg, jpg, png 형식의 이미지만 지원됩니다')
+        helpers.toast.error('jpeg, jpg, png 형식의 이미지만 지원됩니다')
       } finally {
         testing.value = false
       }

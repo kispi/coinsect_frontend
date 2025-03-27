@@ -106,7 +106,7 @@ import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   setup() {
-    const { plugins, store } = useGlobalHooks()
+    const { helpers, store } = useGlobalHooks()
 
     const total = ref(null)
 
@@ -169,7 +169,7 @@ export default {
       if (payload.value.page === page) return
 
       payload.value.page = page
-      plugins.$helpers.dom.scrollToTop()
+      helpers.dom.scrollToTop()
       callApi()
     }
 

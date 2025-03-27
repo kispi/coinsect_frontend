@@ -13,15 +13,12 @@
 
 <script>
 import { onMounted, ref } from 'vue'
-import useGlobalHooks from '@/hooks/global-hooks'
 
 export default {
   props: {
     tooltip: null, // { bind, text, showAbove, below }
   },
   setup(props) {
-    const { plugins } = useGlobalHooks()
-
     const refAppTooltip = ref(null)
 
     const finalStyle = ref({})
@@ -36,9 +33,9 @@ export default {
       const rectAppTooltip = refAppTooltip.value.getBoundingClientRect()
 
       if (props.tooltip.below) {
-        finalStyle.value.top = `${-plugins.$helpers.dom.headerHeight() + rectShowAbove.top + rectShowAbove.height + 8}px`
+        finalStyle.value.top = `${-helpers.dom.headerHeight() + rectShowAbove.top + rectShowAbove.height + 8}px`
       } else {
-        finalStyle.value.top = `${-plugins.$helpers.dom.headerHeight() + rectShowAbove.top - rectAppTooltip.height - 16}px`
+        finalStyle.value.top = `${-helpers.dom.headerHeight() + rectShowAbove.top - rectAppTooltip.height - 16}px`
       }
 
       const distanceHor = window.innerWidth - rectShowAbove.left
