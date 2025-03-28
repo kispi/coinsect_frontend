@@ -42,12 +42,10 @@ export default {
   props: {
     market: String,
   },
-  setup(props) {
-    const { store } = useGlobalHooks()
+  setup(props, { emit }) {
+    const { helpers, store } = useGlobalHooks()
 
     const orderbook = computed(() => store.getters.orderbooks.upbit[props.market])
-
-    const emitted = ref(null)
 
     const realTimeTicker = computed(() => {
       if (!props.market) return
@@ -98,8 +96,8 @@ export default {
     watch(
       () => orderbook.value,
       newVal => {
-        if (newVal && !emitted.value) {
-          emitted.value = true
+        if (newVal) {
+          emit('load-orderbook')
         }
       },
     )

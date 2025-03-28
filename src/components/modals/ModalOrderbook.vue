@@ -12,10 +12,12 @@
       class="body">
       <OrderbookUpbit
         v-if="options.exchange === 'upbit'"
+        @load-orderbook="scrollCenter"
         :market="options.market"
       />
       <OrderbookBybit
         v-if="options.exchange === 'bybit'"
+        @load-orderbook="scrollCenter"
         :market="options.market"
         :depth="options.depth"
       />
@@ -28,11 +30,18 @@ import { ref } from 'vue'
 
 export default {
   props: ['options'],
-  setup(_, { emit }) {
+  setup() {
     const refBody = ref(null)
+
+    const scrollCenter = () => {
+      setTimeout(() => {
+        refBody.value.scrollTop = (refBody.value.scrollHeight - refBody.value.clientHeight) / 2
+      })
+    }
 
     return {
       refBody,
+      scrollCenter,
     }
   },
 }
