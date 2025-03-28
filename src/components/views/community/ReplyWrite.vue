@@ -44,7 +44,7 @@
             <i class="fal fa-times"/>
           </div>
           <AppImg
-            @click="$modal.images({ images })"
+            @click="helpers.modal.images({ images })"
             :src="image"
           />
         </div>

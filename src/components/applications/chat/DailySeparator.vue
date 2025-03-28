@@ -2,34 +2,35 @@
   <div
     v-if="showSeparator"
     class="daily-separator flex-row items-center">
-    <div class="timestamp flex-wrap"><i class="fal fa-calendar-alt m-r-8"/>{{ $helpers.dayjs(message.timestamp).format('YYYY-MM-DD') }}</div>
+    <div class="timestamp flex-wrap"><i class="fal fa-calendar-alt m-r-8"/>{{ helpers.dayjs(message.timestamp).format('YYYY-MM-DD') }}</div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: ['prevMessage', 'message'],
-  setup(props) {
-    const { helpers } = useGlobalHooks()
-
-    const d = ts => helpers.dayjs(ts).format('YYYY-MM-DD')
-
-    const showSeparator = computed(() => {
-      if (!props.prevMessage) return true
-
-      if (!(props.message || {}).timestamp) return false
-
-      return d(props.prevMessage.timestamp) !== d(props.message.timestamp)
-    })
-
-    return {
-      showSeparator,
-    }
+const props = defineProps({
+  prevMessage: {
+    type: Object,
   },
-}
+  message: {
+    type: Object,
+    required: true,
+  },
+})
+
+const { helpers } = useGlobalHooks()
+
+const d = ts => helpers.dayjs(ts).format('YYYY-MM-DD')
+
+const showSeparator = computed(() => {
+  if (!props.prevMessage) return true
+
+  if (!(props.message || {}).timestamp) return false
+
+  return d(props.prevMessage.timestamp) !== d(props.message.timestamp)
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,12 +1,18 @@
 <template>
   <div class="view-not-found">
-    <AppImg :src="$helpers.withCdn('og-images/og-image.png')"/>
+    <AppImg :src="helpers.withCdn('og-images/og-image.png')"/>
     <div class="error-404">어떻게 여기 들어오셨어요?</div>
-    <button @click="$router.replace('/')" class="btn btn-primary m-a m-t-16">
+    <button @click="router.replace('/')" class="btn btn-primary m-a m-t-16">
       김프 보러가기
     </button>
   </div>
 </template>
+
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+const { helpers, router } = useGlobalHooks()
+</script>
 
 <style lang="scss" scoped>
 .view-not-found {

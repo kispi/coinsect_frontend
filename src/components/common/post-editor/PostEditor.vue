@@ -5,7 +5,7 @@
         v-if="!store.getters.me"
         v-model="payload.nickname"
         class="nickname bg-white c-black"
-        :placeholder="$translate('PLACEHOLDER_NICKNAME')"
+        :placeholder="helpers.translate('PLACEHOLDER_NICKNAME')"
         :maxlength="((store.getters.config || {}).maxlength || {}).nickname"
       >
       <div
@@ -18,7 +18,7 @@
         v-if="!store.getters.me"
         v-model="payload.password"
         class="password bg-white c-black"
-        :placeholder="$translate('PLACEHOLDER_PASSWORD')"
+        :placeholder="helpers.translate('PLACEHOLDER_PASSWORD')"
         type="password"
         maxlength="8"
         autocomplete="post-password"
@@ -29,7 +29,7 @@
       <input
         v-model="payload.title"
         class="title bg-white c-black"
-        :placeholder="$translate('PLACEHOLDER_TITLE')"
+        :placeholder="helpers.translate('PLACEHOLDER_TITLE')"
         :maxlength="((store.getters.config || {}).maxlength || {}).title"
       >
     </div>
@@ -38,12 +38,12 @@
       <button
         @click="$emit('close')"
         class="btn btn-default"
-        v-html="$translate('CANCEL')"
+        v-html="helpers.translate('CANCEL')"
       />
       <button
         @click="createPost"
         class="btn btn-primary"
-        v-html="$translate('SUBMIT_PAYLOAD')"
+        v-html="helpers.translate('SUBMIT_PAYLOAD')"
       />
     </div>
   </form>

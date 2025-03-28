@@ -7,31 +7,26 @@
           @click="updateSentiment('long')"
           class="long clickable">
           <i class="fal fa-arrow-trend-up"/>
-          {{ $store.getters.chatStats.numBulls }}
+          {{ store.getters.chatStats.numBulls }}
         </div>
         <div
           @click="updateSentiment('short')"
           class="short clickable">
           <i class="fal fa-arrow-trend-down"/>
-          {{ $store.getters.chatStats.numBears }}
+          {{ store.getters.chatStats.numBears }}
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import useChatHandler from '@/hooks/chat-handler'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { updateSentiment } = useChatHandler()
+const { updateSentiment } = useChatHandler()
 
-    return {
-      updateSentiment,
-    }
-  },
-}
+const { store } = useGlobalHooks()
 </script>
 
 <style lang="scss" scoped>

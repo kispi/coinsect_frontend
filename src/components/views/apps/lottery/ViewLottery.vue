@@ -4,7 +4,7 @@
       @click="useCustomPick = !useCustomPick"
       class="custom-pick-toggler">
       <i class="fa" :class="useCustomPick ? 'fa-chevron-up' : 'fa-chevron-down'"/>
-      <div class="m-l-8">{{ $translate(useCustomPick ? 'CLOSE' : 'CUSTOM_PICK') }}</div>
+      <div class="m-l-8">{{ helpers.translate(useCustomPick ? 'CLOSE' : 'CUSTOM_PICK') }}</div>
     </div>
     <transition name="slide-down">
       <div
@@ -19,7 +19,7 @@
           <div
             class="ball-container"
             :key="num"
-            v-for="num in $helpers.numArray(45).map(v => v + 1)">
+            v-for="num in helpers.numArray(45).map(v => v + 1)">
             <div
               @click="onClickBall(num)"
               class="ball center"
@@ -33,7 +33,7 @@
     <button
       @click="() => picks.push(autopick())"
       class="btn btn-primary btn-autopick"
-      v-html="$translate('GENERATE')"
+      v-html="helpers.translate('GENERATE')"
     />
     <div
       v-if="picks.length > 0"
@@ -50,79 +50,61 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import LotteryPick from './LotteryPick'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: {
-    LotteryPick,
-  },
-  setup() {
-    const picks = ref([])
+const { helpers } = useGlobalHooks()
 
-    const payload = ref([])
+const picks = ref([])
 
-    const useCustomPick = ref(null)
+const payload = ref([])
 
-    const autopick = () => {
-      const o = {}
-      let bonus
-      while (Object.keys(o).length < 7) {
-        const num = Math.floor(Math.random() * 45) + 1
-        o[num] = true
-        bonus = num
-      }
-      delete o[bonus]
+const useCustomPick = ref(null)
 
-      return {
-        basic: Object.keys(o),
-        bonus,
-      }
-    }
+const autopick = () => {
+  const o = {}
+  let bonus
+  while (Object.keys(o).length < 7) {
+    const num = Math.floor(Math.random() * 45) + 1
+    o[num] = true
+    bonus = num
+  }
+  delete o[bonus]
 
-    const onClickBall = num => {
-      const idx = payload.value.indexOf(num)
-      if (idx >= 0) {
-        removeNumber(idx)
-        return
-      }
+  return {
+    basic: Object.keys(o),
+    bonus,
+  }
+}
 
-      payload.value.push(num)
-      if (payload.value.length < 7) payload.value.sort((a, b) => a - b)
-      else {
-        picks.value.push({
-          basic: payload.value.slice(0, 6),
-          bonus: payload.value[6],
-        })
-        payload.value = []
-        const component = picks.value[picks.value.length - 1]
-        setTimeout(() => {
-          if (component.$$ref) component.$$ref.focus()
-          component.$$ref.$el.scrollIntoView({ behavior: 'smooth' })
-        })
-      }
-    }
+const onClickBall = num => {
+  const idx = payload.value.indexOf(num)
+  if (idx >= 0) {
+    removeNumber(idx)
+    return
+  }
 
-    const removeNumber = pos => {
-      payload.value.splice(pos, 1)
-      payload.value.sort((a, b) => a - b)
-    }
+  payload.value.push(num)
+  if (payload.value.length < 7) payload.value.sort((a, b) => a - b)
+  else {
+    picks.value.push({
+      basic: payload.value.slice(0, 6),
+      bonus: payload.value[6],
+    })
+    payload.value = []
+    const component = picks.value[picks.value.length - 1]
+    setTimeout(() => {
+      if (component.$$ref) component.$$ref.focus()
+      component.$$ref.$el.scrollIntoView({ behavior: 'smooth' })
+    })
+  }
+}
 
-    const onClickSubmitPayload = () => {
-
-    }
-
-    return {
-      picks,
-      payload,
-      useCustomPick,
-      autopick,
-      removeNumber,
-      onClickBall,
-      onClickSubmitPayload,
-    }
-  },
+const removeNumber = pos => {
+  payload.value.splice(pos, 1)
+  payload.value.sort((a, b) => a - b)
 }
 </script>
 

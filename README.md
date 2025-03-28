@@ -33,7 +33,8 @@ npm run build
 - 크기, 여백 등에 사용하는 px은 가능하다면 최대한 4의 배수, 내지는 짝수만 사용하도록 한다. (border등은 무관)
 - .m-, .f- 등의 dom에 직접 클래스를 붙여 스타일링하는 경우는 그 방식이 요긴한 상황이 아니라면 가급적 피한다.
 - String은 가급적 single quote(')를 사용한다. (템플릿에서는 String을 위해 '를 쓰는게 강제되는 상황이 많아서 프로젝트 전체적으로 통일하기 위함)
-- 링크 이동은 가급적 <RouterLink>를 활용하거나, <a :href="값" @click.prevent="$router.push(path)">를 활용하여 실제 <a href>로 렌더링될 수 있도록 한다. (SEO)
+- 링크 이동은 가급적 <RouterLink>를 활용하거나, <a :href="값" @click.prevent="router.push(path)">를 활용하여 실제 <a href>로 렌더링될 수 있도록 한다. (SEO)
+- 컴포넌트는 반드시 `<script setup lang="ts">` 으로 선언하고, 플러그인은 사용하지 않으며 전부 명시적 import를 통해 자동완성이 잘 될 수 있게 한다.
 
 ### etc
 - components/app => 앱의 기능적인 특성들(Modal, Toast 등...)에 관련된 전역 컴포넌트들로, 비즈니스 로직(db)과 무관.

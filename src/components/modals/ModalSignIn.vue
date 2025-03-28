@@ -1,7 +1,7 @@
 <template>
   <div class="modal-sign-in">
     <ModalHeader
-      :title="$translate('MODAL_SIGN_IN')"
+      :title="helpers.translate('MODAL_SIGN_IN')"
       @close="$emit('close')"
     />
     <div class="body">
@@ -23,36 +23,29 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import useGlobalHooks from '@/hooks/global-hooks'
 import useKakao from '@/hooks/oauth/kakao'
 
-export default {
-  setup(_, { emit }) {
-    const { helpers } = useGlobalHooks()
+const emit = defineEmits(['close'])
 
-    const { signIn } = useKakao()
+const { helpers } = useGlobalHooks()
 
-    const wrapper = signInFunction => async () => {
-      try {
-        await signInFunction()
-        emit('close')
-      } catch (e) {
-        helpers.toast.error('소셜 로그인 과정에서 문제가 발생했습니다. 아마도 연동 계정에서 이메일 정보를 가져올 수 없는 것 같습니다 😢')
-      }
-    }
+const { signIn } = useKakao()
 
-    const waysToLogin = [
-      { title: '카카오', handler: wrapper(signIn), img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw' },
-      // { title: '네이버', handler: signIn, img: require('@/assets/images/naver.png') },
-    ]
-
-    return {
-      waysToLogin,
-      signIn,
-    }
-  },
+const wrapper = signInFunction => async () => {
+  try {
+    await signInFunction()
+    emit('close')
+  } catch (e) {
+    helpers.toast.error('소셜 로그인 과정에서 문제가 발생했습니다. 아마도 연동 계정에서 이메일 정보를 가져올 수 없는 것 같습니다 😢')
+  }
 }
+
+const waysToLogin = [
+  { title: '카카오', handler: wrapper(signIn), img: 'https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd=w240-h480-rw' },
+  // { title: '네이버', handler: signIn, img: require('@/assets/images/naver.png') },
+]
 </script>
 
 <style lang="scss" scoped>

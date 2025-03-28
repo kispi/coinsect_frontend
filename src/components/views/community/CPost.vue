@@ -6,7 +6,7 @@
       <div class="post-header">
         <div class="post-title">
           <span class="badge-post-type m-r-8">{{ post.board.description}}</span>
-          <span>{{ post.title }}<span v-if="post.lastEdit" class="edited">({{ $translate('EDITED') }})</span></span>
+          <span>{{ post.title }}<span v-if="post.lastEdit" class="edited">({{ helpers.translate('EDITED') }})</span></span>
         </div>
         <div class="writer-and-created-at">
           <div class="writer" :class="{'authorized-clickable-nickname': post.userId}">

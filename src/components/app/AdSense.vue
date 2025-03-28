@@ -12,53 +12,51 @@
   />
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    dataAdSlot: String,
-    responsive: Boolean,
+defineProps({
+  dataAdSlot: {
+    type: String,
+    required: true,
   },
-  setup() {
-    const { store } = useGlobalHooks()
-
-    const useGoogleAdSense = ref(null)
-
-    const localStyle = ref(null)
-
-    const mustLoad = numTrial => {
-      if (numTrial > 5) return
-
-      if (typeof window.adsbygoogle === 'undefined') {
-        setTimeout(() => mustLoad(numTrial + 1), 1000)
-        return
-      }
-
-      try {
-        window.adsbygoogle.push({})
-      } catch (e) {
-        setTimeout(() => mustLoad(numTrial + 1), 1000)
-      }
-    }
-
-    const init = () => {
-      if (store.getters.isSSR) return
-
-      useGoogleAdSense.value = process.env.NODE_ENV === 'production'
-      if (useGoogleAdSense.value) mustLoad(0)
-      else localStyle.value = { background: 'var(--bitcoin)' }
-    }
-
-    onMounted(init)
-
-    return {
-      localStyle,
-      useGoogleAdSense,
-    }
+  responsive: {
+    type: Boolean,
+    default: false,
   },
+})
+
+const { store } = useGlobalHooks()
+
+const useGoogleAdSense = ref(null)
+
+const localStyle = ref(null)
+
+const mustLoad = numTrial => {
+  if (numTrial > 5) return
+
+  if (typeof window.adsbygoogle === 'undefined') {
+    setTimeout(() => mustLoad(numTrial + 1), 1000)
+    return
+  }
+
+  try {
+    window.adsbygoogle.push({})
+  } catch (e) {
+    setTimeout(() => mustLoad(numTrial + 1), 1000)
+  }
 }
+
+const init = () => {
+  if (store.getters.isSSR) return
+
+  useGoogleAdSense.value = process.env.NODE_ENV === 'production'
+  if (useGoogleAdSense.value) mustLoad(0)
+  else localStyle.value = { background: 'var(--bitcoin)' }
+}
+
+onMounted(init)
 </script>
 
 <style lang="scss" scoped>

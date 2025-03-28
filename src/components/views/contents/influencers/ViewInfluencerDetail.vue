@@ -3,7 +3,7 @@
     v-if="influencer"
     class="view-influencer-detail">
     <div class="influencer-image">
-      <AppImg v-if="(influencer.images || []).length > 0" :src="$helpers.withCdn(influencer.images[0].key)"/>
+      <AppImg v-if="(influencer.images || []).length > 0" :src="helpers.withCdn(influencer.images[0].key)"/>
     </div>
     <div class="influencer-name">{{ influencer.name }}</div>
     <div
@@ -17,25 +17,25 @@
       <div
         v-if="influencer.$$bio.birth"
         class="bio-item">
-        <div class="key">{{ $translate('BIRTH') }}</div>
+        <div class="key">{{ helpers.translate('BIRTH') }}</div>
         <div class="value">{{ influencer.$$bio.birth }}</div>
       </div>
       <div
         v-if="influencer.$$bio.nationality"
         class="bio-item">
-        <div class="key">{{ $translate('NATIONALITY') }}</div>
+        <div class="key">{{ helpers.translate('NATIONALITY') }}</div>
         <div class="value">{{ influencer.$$bio.nationality }}</div>
       </div>
       <div
         v-if="influencer.$$bio.estimatedNetWorth"
         class="bio-item">
-        <div class="key">{{ $translate('ESTIMATED_NET_WORTH') }}</div>
+        <div class="key">{{ helpers.translate('ESTIMATED_NET_WORTH') }}</div>
         <div class="value">{{ influencer.$$bio.estimatedNetWorth }}</div>
       </div>
       <div
         v-if="influencer.$$bio.career"
         class="bio-item">
-        <div class="key">{{ $translate('CAREER') }}</div>
+        <div class="key">{{ helpers.translate('CAREER') }}</div>
         <ul class="value">
           <li
             :key="career"
@@ -47,7 +47,7 @@
       <div
         v-if="influencer.$$bio.quotes"
         class="bio-item">
-        <div class="key">{{ $translate('QUOTES') }}</div>
+        <div class="key">{{ helpers.translate('QUOTES') }}</div>
         <ul class="value">
           <li
             :key="quote"
@@ -98,52 +98,44 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, onServerPrefetch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { helpers, store, router } = useGlobalHooks()
+const { helpers, store, router } = useGlobalHooks()
 
-    const influencer = computed(() => {
-      if (!store.getters.influencers) return
+const influencer = computed(() => {
+  if (!store.getters.influencers) return
 
-      const key = router.currentRoute.value.path.split('/contents/influencers/')[1]
-      if (!key) {
-        router.push('/contents/influencers')
-        return
-      }
+  const key = router.currentRoute.value.path.split('/contents/influencers/')[1]
+  if (!key) {
+    router.push('/contents/influencers')
+    return
+  }
 
-      const target = store.getters.influencers.data.find(o => o.sharingKey === key)
-      if (!target) {
-        router.push('/contents/influencers')
-        return
-      }
+  const target = store.getters.influencers.data.find(o => o.sharingKey === key)
+  if (!target) {
+    router.push('/contents/influencers')
+    return
+  }
 
-      return target
-    })
+  return target
+})
 
-    const init = async () => {
-      await store.dispatch('loadInfluencers')
-      const p = influencer.value
-      if (!p) return router.push('/contents/influencers')
+const init = async () => {
+  await store.dispatch('loadInfluencers')
+  const p = influencer.value
+  if (!p) return router.push('/contents/influencers')
 
-      helpers.meta.setDocumentTitle(`인물 - ${p.name} - 코인충`)
-      helpers.meta.renderDescription(JSON.parse(p.description).kr)
-      helpers.meta.renderOgImage(helpers.withCdn(((p.images || [])[0] || {}).key))
-      helpers.meta.renderCanonicalLink()
-    }
-
-    onMounted(init)
-
-    onServerPrefetch(init)
-
-    return {
-      influencer,
-    }
-  },
+  helpers.meta.setDocumentTitle(`인물 - ${p.name} - 코인충`)
+  helpers.meta.renderDescription(JSON.parse(p.description).kr)
+  helpers.meta.renderOgImage(helpers.withCdn(((p.images || [])[0] || {}).key))
+  helpers.meta.renderCanonicalLink()
 }
+
+onMounted(init)
+
+onServerPrefetch(init)
 </script>
 
 <style lang="scss" scoped>

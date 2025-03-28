@@ -5,88 +5,80 @@
     class="app-chat-incoming-message-overlay">
     <div class="flex-row items-center flex-fill lines-1">
       <AppChatProfile :user="incomingMessage.user" class="no-touch flex-wrap"/>
-      <div class="text lines-1" v-html="incomingMessage.type === 'image' ? $translate('IMAGE') : incomingMessage.text"/>
+      <div class="text lines-1" v-html="incomingMessage.type === 'image' ? helpers.translate('IMAGE') : incomingMessage.text"/>
     </div>
     <i class="fa fa-chevron-down"/>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import useChatHandler from '@/hooks/chat-handler'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  emits: ['scroll-to-bottom'],
-  setup(_, { emit }) {
-    const { helpers, store } = useGlobalHooks()
+const emit = defineEmits(['scroll-to-bottom'])
 
-    const incomingMessage = computed(() => store.getters.chat.incomingMessage)
+const { helpers, store } = useGlobalHooks()
 
-    const ding = ref(null)
+const incomingMessage = computed(() => store.getters.chat.incomingMessage)
 
-    const { filteredMessages: messages } = useChatHandler()
+const ding = ref(null)
 
-    const debouncedMessageRemover = helpers.debounce(() => {
-      store.commit('setChat', { incomingMessage: null })
-    }, 10000)
+const { filteredMessages: messages } = useChatHandler()
 
-    const showIncomingMessageOverlay = () => {
-      if (
-        messages.value.length === 0 ||
-        (!store.getters.settings.chatFolded && store.getters.chat.autoScrollable) ||         // 채팅창이 접혀있고 바닥부근이거나
-        (store.getters.settings.chatFolded && !store.getters.settings.chatOverlayNewMessage) // 채팅창이 열려있고 메시지 띄워주기 옵션이 꺼진 경우
-      ) return
+const debouncedMessageRemover = helpers.debounce(() => {
+  store.commit('setChat', { incomingMessage: null })
+}, 10000)
 
-      store.commit('setChat', { incomingMessage: messages.value[messages.value.length - 1] })
+const showIncomingMessageOverlay = () => {
+  if (
+    messages.value.length === 0 ||
+    (!store.getters.settings.chatFolded && store.getters.chat.autoScrollable) ||         // 채팅창이 접혀있고 바닥부근이거나
+    (store.getters.settings.chatFolded && !store.getters.settings.chatOverlayNewMessage) // 채팅창이 열려있고 메시지 띄워주기 옵션이 꺼진 경우
+  ) return
 
-      // 채팅창이 접혀있는 상태인 경우 incomingMessage를 일정시간 후 지워주는게 UX적으로 좋을듯
-      if (store.getters.settings.chatFolded) debouncedMessageRemover()
-    }
+  store.commit('setChat', { incomingMessage: messages.value[messages.value.length - 1] })
 
-    const onIncomingMessage = async () => {
-      showIncomingMessageOverlay()
-      if (store.getters.settings.chatFolded) {
-        if (ding.value && store.getters.settings.chatDing) {
-          try {
-            await ding.value.play() // 유저가 페이지에서 상호작용하지 않아 오류가 있더라도 무시
-          } catch (e) {}
-        }
-        return
-      }
-
-      // 채팅창이 열려있는 경우의 처리
-      if (store.getters.chat.autoScrollable) emit('scroll-to-bottom')
-
-      store.commit('setChat', { lastReadMessage: messages.value[messages.value.length - 1] })
-    }
-
-    const onClickIncomingMessageOverlay = () => {
-      store.commit('setSettings', { chatFolded: false })
-      store.commit('setChat', { incomingMessage: null })
-      emit('scroll-to-bottom')
-    }
-
-    const loadDing = () => {
-      if (typeof Audio === 'undefined') return
-
-      ding.value = new Audio(helpers.withCdn('files/ding.mp3'))
-      ding.value.volume = 0.2
-    }
-
-    onMounted(loadDing)
-
-    watch(
-      () => store.getters.chat.lastWebsocketMessage,
-      onIncomingMessage,
-    )
-
-    return {
-      incomingMessage,
-      onClickIncomingMessageOverlay,
-    }
-  },
+  // 채팅창이 접혀있는 상태인 경우 incomingMessage를 일정시간 후 지워주는게 UX적으로 좋을듯
+  if (store.getters.settings.chatFolded) debouncedMessageRemover()
 }
+
+const onIncomingMessage = async () => {
+  showIncomingMessageOverlay()
+  if (store.getters.settings.chatFolded) {
+    if (ding.value && store.getters.settings.chatDing) {
+      try {
+        await ding.value.play() // 유저가 페이지에서 상호작용하지 않아 오류가 있더라도 무시
+      } catch (e) {}
+    }
+    return
+  }
+
+  // 채팅창이 열려있는 경우의 처리
+  if (store.getters.chat.autoScrollable) emit('scroll-to-bottom')
+
+  store.commit('setChat', { lastReadMessage: messages.value[messages.value.length - 1] })
+}
+
+const onClickIncomingMessageOverlay = () => {
+  store.commit('setSettings', { chatFolded: false })
+  store.commit('setChat', { incomingMessage: null })
+  emit('scroll-to-bottom')
+}
+
+const loadDing = () => {
+  if (typeof Audio === 'undefined') return
+
+  ding.value = new Audio(helpers.withCdn('files/ding.mp3'))
+  ding.value.volume = 0.2
+}
+
+onMounted(loadDing)
+
+watch(
+  () => store.getters.chat.lastWebsocketMessage,
+  onIncomingMessage,
+)
 </script>
 
 <style lang="scss" scoped>

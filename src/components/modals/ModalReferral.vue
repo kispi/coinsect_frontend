@@ -1,6 +1,6 @@
 <template>
   <div class="modal-referral scrollable-body">
-    <ModalHeader :title="$translate('MODAL_REFERRAL')" @close="$emit('close')"/>
+    <ModalHeader :title="helpers.translate('MODAL_REFERRAL')" @close="$emit('close')"/>
     <div class="body pre-line">
       <div class="banner m-b-24">
         <a :href="referral.link" target="_blank" draggable="false">
@@ -25,24 +25,25 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
 import exchanges from '@/assets/constants/exchanges'
 import referrals from '@/assets/constants/referrals'
 
-export default {
-  props: ['options'],
-  setup(props) {
-    const exchange = exchanges[(props.options.exchange || '').toLowerCase()]
-
-    const travelRuleString = (exchange.travelRule || []).map(exchangeKey => exchanges[exchangeKey].name).join(', ')
-
-    return {
-      referral: referrals[(props.options.exchange || '').toLowerCase()],
-      exchange,
-      travelRuleString,
-    }
+const props = defineProps({
+  options: {
+    type: Object,
+    required: true,
   },
-}
+})
+
+const { helpers } = useGlobalHooks()
+
+const exchange = exchanges[(props.options.exchange || '').toLowerCase()]
+
+const referral = referrals[exchange.key]
+
+const travelRuleString = (exchange.travelRule || []).map(exchangeKey => exchanges[exchangeKey].name).join(', ')
 </script>
 
 <style lang="scss" scoped>

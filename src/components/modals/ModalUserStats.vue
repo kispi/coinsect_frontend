@@ -2,7 +2,7 @@
   <div
     ref="refModal"
     class="modal-user-stats">
-    <ModalHeader :title="$translate('MODAL_USER_STATS')" @close="$emit('close')"/>
+    <ModalHeader :title="helpers.translate('MODAL_USER_STATS')" @close="$emit('close')"/>
     <div class="body">
       <AppLoading :loading="loading"/>
       <div
@@ -24,44 +24,42 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from 'vue'
 import userService from '@/services/user'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: ['options'],
-  setup(props, { emit }) {
-    const { helpers } = useGlobalHooks()
-
-    const refModal = ref(null)
-
-    const data = ref(null)
-
-    const loading = ref(null)
-
-    const init = async () => {
-      try {
-        loading.value = true
-        data.value = await userService.userStats(props.options.user.id)
-      } catch (e) {
-        helpers.toast.error('해당 유저의 활동 내역을 가져오는데 실패했습니다')
-        emit('close')
-      } finally {
-        loading.value = false
-        helpers.modal.center(refModal.value)
-      }
-    }
-
-    onMounted(init)
-
-    return {
-      refModal,
-      data,
-      loading,
-    }
+const props = defineProps({
+  options: {
+    type: Object,
+    required: true,
   },
+})
+
+const emit = defineEmits(['close'])
+
+const { helpers } = useGlobalHooks()
+
+const refModal = ref(null)
+
+const data = ref(null)
+
+const loading = ref(null)
+
+const init = async () => {
+  try {
+    loading.value = true
+    data.value = await userService.userStats(props.options.user.id)
+  } catch (e) {
+    helpers.toast.error('해당 유저의 활동 내역을 가져오는데 실패했습니다')
+    emit('close')
+  } finally {
+    loading.value = false
+    helpers.modal.center(refModal.value)
+  }
 }
+
+onMounted(init)
 </script>
 
 <style lang="scss" scoped>

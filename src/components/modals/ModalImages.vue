@@ -23,33 +23,29 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import useModalMedia from '@/hooks/modal-media'
 
-export default {
-  props: ['options'],
-  setup(props) {
-    const images = computed(() => props.options.images || [])
-
-    const {
-      currentIndex,
-      chevronLeft,
-      chevronRight,
-      onClickLeft,
-      onClickRight,
-    } = useModalMedia(images.value, props.options.selectedIndex)
-
-    return {
-      images,
-      currentIndex,
-      chevronLeft,
-      chevronRight,
-      onClickLeft,
-      onClickRight,
-    }
+const props = defineProps({
+  options: {
+    type: Object,
+    default: () => ({
+      images: [],
+      selectedIndex: 0,
+    }),
   },
-}
+})
+
+const images = computed(() => props.options.images || [])
+
+const {
+  currentIndex,
+  chevronLeft,
+  chevronRight,
+  onClickLeft,
+  onClickRight,
+} = useModalMedia(images.value, props.options.selectedIndex)
 </script>
 
 <style lang="scss" scoped>

@@ -8,18 +8,18 @@
     ]">
     <div class="alert-item-header">
       <div class="alert-item-symbol">
-        <AppImg :src="($store.getters.symbols[whaleAlert.symbol.toUpperCase()] || {}).thumb" :alt="whaleAlert.symbol"/>
+        <AppImg :src="(store.getters.symbols[whaleAlert.symbol.toUpperCase()] || {}).thumb" :alt="whaleAlert.symbol"/>
         <div class="name">{{ displayAmount(whaleAlert) }} {{ whaleAlert.symbol }}</div>
-        <div class="amount m-l-4">({{ $helpers.currency() }} {{ $helpers.number.pretty.price({ price: whaleAlert.amountUsd, baseCurrency: 'usd' }) }})</div>
+        <div class="amount m-l-4">({{ helpers.currency() }} {{ helpers.number.pretty.price({ price: whaleAlert.amountUsd, baseCurrency: 'usd' }) }})</div>
         <div class="m-l-8 m-r-8 c-border-base">|</div>
-        <div class="timestamp">{{ $helpers.template.elapsedTime($helpers.dayjs.unix(whaleAlert.timestamp)) }}</div>
+        <div class="timestamp">{{ helpers.template.elapsedTime(helpers.dayjs.unix(whaleAlert.timestamp)) }}</div>
       </div>
     </div>
     <div class="alert-item-from-to">
       <div class="from address">
         <AppImg
           v-if="whaleAlert.fromOwnerType !== 'unknown'"
-          :src="$helpers.withCdn(`images/exchanges/${(whaleAlert.fromOwner || '').toUpperCase().replace(/[ .]/g, '_')}.png`)"
+          :src="helpers.withCdn(`images/exchanges/${(whaleAlert.fromOwner || '').toUpperCase().replace(/[ .]/g, '_')}.png`)"
           :alt="whaleAlert.fromOwner"
         />
         {{ displayAddressName(whaleAlert, 'from') }}</div>
@@ -27,7 +27,7 @@
       <div class="to address">
         <AppImg
           v-if="whaleAlert.toOwnerType !== 'unknown'"
-          :src="$helpers.withCdn(`images/exchanges/${(whaleAlert.toOwner || '').toUpperCase().replace(/[ .]/g, '_')}.png`)"
+          :src="helpers.withCdn(`images/exchanges/${(whaleAlert.toOwner || '').toUpperCase().replace(/[ .]/g, '_')}.png`)"
           :alt="whaleAlert.toOwner"
         />
         {{ displayAddressName(whaleAlert, 'to') }}
@@ -36,64 +36,59 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import constants from '@/assets/constants'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    whaleAlert: Object,
+defineProps({
+  whaleAlert: {
+    type: Object,
+    required: true,
   },
-  setup() {
-    const getUrl = transaction => {
-      const urls = {
-        bitcoin: 'https://www.blockchain.com/btc/tx/',
-        ethereum: 'https://etherscan.io/tx/0x',
-        tron: 'https://tronscan.org/#/transaction/',
-        ripple: 'https://xrpscan.com/tx/'
-      }
+})
 
-      const exploreUrl = urls[transaction.blockchain]
-      if (!exploreUrl) return
+const { helpers, store } = useGlobalHooks()
 
-      return exploreUrl + transaction.hash
-    }
+const getUrl = transaction => {
+  const urls = {
+    bitcoin: 'https://www.blockchain.com/btc/tx/',
+    ethereum: 'https://etherscan.io/tx/0x',
+    tron: 'https://tronscan.org/#/transaction/',
+    ripple: 'https://xrpscan.com/tx/'
+  }
 
-    const bullOrBear = whaleAlert => {
-      const isStable = constants.stableCoins.includes(whaleAlert.symbol)
-      if (whaleAlert.fromOwnerType === 'exchange' && whaleAlert.toOwnerType === 'unknown') return isStable ? 'bear' : 'bull'
-      if (whaleAlert.fromOwnerType === 'unknown' && whaleAlert.toOwnerType === 'exchange') return isStable ? 'bull' : 'bear'
-    }
+  const exploreUrl = urls[transaction.blockchain]
+  if (!exploreUrl) return
 
-    const onClickHash = t => {
-      const url = getUrl(t)
-      if (!url) return
+  return exploreUrl + transaction.hash
+}
 
-      window.open(url, '_blank')
-    }
+const bullOrBear = whaleAlert => {
+  const isStable = constants.stableCoins.includes(whaleAlert.symbol)
+  if (whaleAlert.fromOwnerType === 'exchange' && whaleAlert.toOwnerType === 'unknown') return isStable ? 'bear' : 'bull'
+  if (whaleAlert.fromOwnerType === 'unknown' && whaleAlert.toOwnerType === 'exchange') return isStable ? 'bull' : 'bear'
+}
 
-    const displayAddressName = (transaction, target) => {
-      return transaction[target + 'Owner'] || (transaction[target + 'OwnerType'] === 'unknown' ? '?' : transaction[target + 'OwnerType'])
-    }
+const onClickHash = t => {
+  const url = getUrl(t)
+  if (!url) return
 
-    const displayAmount = transaction => {
-      const parsed = parseFloat(transaction.amount) || 0
-      if (!parsed) return '?'
+  window.open(url, '_blank')
+}
 
-      const isStable = constants.stableCoins.includes(transaction.symbol)
-      return isStable ? Math.round(parsed).toLocaleString() : parsed.toLocaleString(undefined, {
-        minimumFractionDigits: 4,
-        maximumFractionDigits: 4,
-      })
-    }
+const displayAddressName = (transaction, target) => {
+  return transaction[target + 'Owner'] || (transaction[target + 'OwnerType'] === 'unknown' ? '?' : transaction[target + 'OwnerType'])
+}
 
-    return {
-      getUrl,
-      bullOrBear,
-      displayAddressName,
-      displayAmount,
-      onClickHash,
-    }
-  },
+const displayAmount = transaction => {
+  const parsed = parseFloat(transaction.amount) || 0
+  if (!parsed) return '?'
+
+  const isStable = constants.stableCoins.includes(transaction.symbol)
+  return isStable ? Math.round(parsed).toLocaleString() : parsed.toLocaleString(undefined, {
+    minimumFractionDigits: 4,
+    maximumFractionDigits: 4,
+  })
 }
 </script>
 

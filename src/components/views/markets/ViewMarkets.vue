@@ -4,31 +4,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: {
-    ViewCrypto: defineAsyncComponent(() => import('./crypto/ViewCrypto')),
-    ViewNasdaq: defineAsyncComponent(() => import('./nasdaq/ViewNasdaq')),
-    ViewKospi: defineAsyncComponent(() => import('./kospi/ViewKospi')),
-    ViewAssetsIncludingMetal: defineAsyncComponent(() => import('./ViewAssetsIncludingMetal')),
-  },
-  setup() {
-    const { router } = useGlobalHooks()
+const ViewCrypto = defineAsyncComponent(() => import('./crypto/ViewCrypto'))
+const ViewNasdaq = defineAsyncComponent(() => import('./nasdaq/ViewNasdaq'))
+const ViewKospi = defineAsyncComponent(() => import('./kospi/ViewKospi'))
+const ViewAssetsIncludingMetal = defineAsyncComponent(() => import('./ViewAssetsIncludingMetal'))
 
-    const selectedComponent = computed(() => {
-      const p = router.currentRoute.value.path
-      if (p === '/markets/crypto') return 'ViewCrypto'
-      if (p === '/markets/nasdaq') return 'ViewNasdaq'
-      if (p === '/markets/kospi') return 'ViewKospi'
-      if (p === '/markets/assets-including-metal') return 'ViewAssetsIncludingMetal'
-    })
+const { router } = useGlobalHooks()
 
-    return {
-      selectedComponent,
-    }
-  },
-}
+const selectedComponent = computed(() => {
+  const p = router.currentRoute.value.path
+  if (p === '/markets/crypto') return ViewCrypto
+  if (p === '/markets/nasdaq') return ViewNasdaq
+  if (p === '/markets/kospi') return ViewKospi
+  if (p === '/markets/assets-including-metal') return ViewAssetsIncludingMetal
+})
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <div class="modal-post-write" :class="{'fullscreen': $store.getters.isMobile}">
-    <ModalHeader :title="`${$translate('WRITE')}${options.board ? ` (${options.board.description})` : ''}`" @close="$emit('close')"/>
+  <div class="modal-post-write" :class="{'fullscreen': store.getters.isMobile}">
+    <ModalHeader :title="`${helpers.translate('WRITE')}${options.board ? ` (${options.board.description})` : ''}`" @close="$emit('close')"/>
     <PostEditor
       class="body"
       :post="options.post"
@@ -10,10 +10,17 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: ['options'],
-}
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+defineProps({
+  options: {
+    type: Object,
+    required: true,
+  },
+})
+
+const { helpers, store } = useGlobalHooks()
 </script>
 
 <style lang="scss" scoped>

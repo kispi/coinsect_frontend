@@ -7,13 +7,13 @@
         class="row"
         :to="`/community/${post.sharingKey}`"
         :key="post.id"
-        v-for="post in postItems.slice(0, $store.getters.isMobile ? 5 : 10)">
+        v-for="post in postItems.slice(0, store.getters.isMobile ? 5 : 10)">
         <div class="title flex-fill lines-1 m-r-32">
           <span class="title-text">
-            <span class="elapsed-time f-mono">{{ $helpers.template.elapsedTime(post.createdAt) }}</span>
+            <span class="elapsed-time f-mono">{{ helpers.template.elapsedTime(post.createdAt) }}</span>
             <span
               class="badge-board"
-              :style="{ background: $helpers.logic.hexToRgba(post.board.$$color, 0.25) }">
+              :style="{ background: helpers.logic.hexToRgba(post.board.$$color, 0.25) }">
               {{ post.board.description }}
             </span>
             <i v-if="(post.$$images || []).length > 0" class="fa fa-image"/>
@@ -33,10 +33,10 @@
         class="btn btn-light"
         to="/community">
         <i class="fal fa-chevron-right m-r-8"/>
-        {{ $translate('SEE_MORE') }}
+        {{ helpers.translate('SEE_MORE') }}
       </RouterLink>
       <button
-        @click="$modal.custom({
+        @click="helpers.modal.custom({
           component: 'ModalPostEditor',
           options: {
             board,
@@ -45,16 +45,27 @@
         })"
         class="btn btn-light">
         <i class="fal fa-pencil m-r-8"/>
-        {{ $translate('WRITE') }}
+        {{ helpers.translate('WRITE') }}
       </button>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  props: ['postItems', 'board'],
-}
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+defineProps({
+  postItems: {
+    type: Array,
+    default: () => [],
+  },
+  board: {
+    type: Object,
+    default: () => ({}),
+  },
+})
+
+const { helpers, store } = useGlobalHooks()
 </script>
 
 <style lang="scss">

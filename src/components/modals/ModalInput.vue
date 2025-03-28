@@ -2,7 +2,7 @@
   <div
     class="modal-input"
     :style="options.style">
-    <ModalHeader :title="$translate(options.title)" @close="$emit('close')"/>
+    <ModalHeader :title="helpers.translate(options.title)" @close="$emit('close')"/>
     <form class="p-16" @submit.prevent>
       <input
         ref="refInput"
@@ -23,44 +23,42 @@
           :class="btn.class"
           :key="idx"
           v-for="(btn, idx) in buttons"
-          v-html="$translate(btn.text)"
+          v-html="helpers.translate(btn.text)"
         />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from 'vue'
 
-export default {
-  props: ['options'],
-  setup(props, { emit }) {
-    const refInput = ref(null)
-
-    const inputValue = ref(null)
-
-    const buttons = [{
-      text: 'CANCEL',
-      class: 'btn-default',
-      handler: () => emit('close')
-    }, {
-      text: 'CONFIRM',
-      class: 'btn-primary',
-      handler: () => emit('close', inputValue.value)
-    }]
-
-    onMounted(() => {
-      if (refInput.value) refInput.value.focus()
-
-      if (props.options.inputValue) inputValue.value = props.options.inputValue
-    })
-
-    return {
-      refInput,
-      inputValue,
-      buttons,
-    }
+const props = defineProps({
+  options: {
+    type: Object,
+    required: true,
   },
-}
+})
+
+const emit = defineEmits(['close'])
+
+const refInput = ref(null)
+
+const inputValue = ref(null)
+
+const buttons = [{
+  text: 'CANCEL',
+  class: 'btn-default',
+  handler: () => emit('close')
+}, {
+  text: 'CONFIRM',
+  class: 'btn-primary',
+  handler: () => emit('close', inputValue.value)
+}]
+
+onMounted(() => {
+  if (refInput.value) refInput.value.focus()
+
+  if (props.options.inputValue) inputValue.value = props.options.inputValue
+})
 </script>

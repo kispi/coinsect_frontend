@@ -5,21 +5,14 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import KospiNaver from './KospiNaver'
 
-export default {
-  components:{
-    KospiNaver,
-  },
-  setup() {
-    const { store } = useGlobalHooks()
+const { store } = useGlobalHooks()
 
-    onMounted(() => {
-      store.commit('setSettings', { currency: 'krw' })
-    })
-  },
-}
+onMounted(() => {
+  store.commit('setSettings', { currency: 'krw' })
+})
 </script>

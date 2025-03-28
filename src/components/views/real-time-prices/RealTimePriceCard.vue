@@ -18,77 +18,71 @@
     <div class="premiums">
       <div v-if="(info || {}).premiumUpbit" class="attr">
         <div class="key m-r-4"><AppImg :src="require('@/assets/images/upbit.svg')" :fit="'contain'"/></div>
-        <div class="value">{{ $helpers.number.pretty.price({ price: tickerUpbit.tp, baseCurrency: 'krw' }) }} ({{ info.premiumUpbit || '-' }}%)</div>
+        <div class="value">{{ helpers.number.pretty.price({ price: tickerUpbit.tp, baseCurrency: 'krw' }) }} ({{ info.premiumUpbit || '-' }}%)</div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    tickerBinance: Object,
-    tickerUpbit: Object,
+const props = defineProps({
+  tickerBinance: {
+    type: Object,
   },
-  setup(props) {
-    const { helpers, store } = useGlobalHooks()
-
-    const symbol = computed(() => ((props.tickerBinance || {}).s || '').split('USDT')[0])
-
-    const prev = ref({
-      price: null,
-      direction: null,
-    })
-
-    const tickDirection = () => {
-      const next = parseFloat(props.tickerBinance.c)
-      if (!prev.value.price || prev.value.price === next) return prev.value.direction
-      if (next > prev.value.price) return 'up'
-      if (next < prev.value.price) return 'down'
-    }
-
-    const info = computed(() => {
-      if (!props.tickerBinance) return
-
-      const $$tickDirection = tickDirection()
-
-      // no-side-effects-in-computed-properties 위배이기는 한데, 이게 제일 깔끔함
-      prev.value.price = parseFloat(props.tickerBinance.c)
-      prev.value.direction = $$tickDirection
-      if (store.getters.settings.documentTitleTicker === symbol.value) document.title = `${mustUSD(props.tickerBinance.c)} ${symbol.value}/USDT`
-
-      return {
-        premiumUpbit: props.tickerUpbit && props.tickerBinance ? (((props.tickerUpbit.tp / store.getters.usdKrw) / props.tickerBinance.c - 1) * 100).toFixed(2) : null,
-        $$tickDirection,
-      }
-    })
-
-    const setDocumentTitleTicker = () => {
-      if (!props.tickerBinance) return
-
-      store.commit('setSettings', { documentTitleTicker: symbol.value })
-      helpers.toast.success(helpers.translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, symbol.value))
-    }
-
-    const mustUSD = price => {
-      if (!price) return '-'
-
-      return parseFloat(price).toLocaleString(undefined, {
-        minimumFractionDigits: price < 1 ? 4 : 2,
-        maximumFractionDigits: 4,
-      })
-    }
-
-    return {
-      info,
-      symbol,
-      setDocumentTitleTicker,
-      mustUSD,
-    }
+  tickerUpbit: {
+    type: Object,
   },
+})
+
+const { helpers, store } = useGlobalHooks()
+
+const symbol = computed(() => ((props.tickerBinance || {}).s || '').split('USDT')[0])
+
+const prev = ref({
+  price: null,
+  direction: null,
+})
+
+const tickDirection = () => {
+  const next = parseFloat(props.tickerBinance.c)
+  if (!prev.value.price || prev.value.price === next) return prev.value.direction
+  if (next > prev.value.price) return 'up'
+  if (next < prev.value.price) return 'down'
+}
+
+const info = computed(() => {
+  if (!props.tickerBinance) return
+
+  const $$tickDirection = tickDirection()
+
+  // no-side-effects-in-computed-properties 위배이기는 한데, 이게 제일 깔끔함
+  prev.value.price = parseFloat(props.tickerBinance.c)
+  prev.value.direction = $$tickDirection
+  if (store.getters.settings.documentTitleTicker === symbol.value) document.title = `${mustUSD(props.tickerBinance.c)} ${symbol.value}/USDT`
+
+  return {
+    premiumUpbit: props.tickerUpbit && props.tickerBinance ? (((props.tickerUpbit.tp / store.getters.usdKrw) / props.tickerBinance.c - 1) * 100).toFixed(2) : null,
+    $$tickDirection,
+  }
+})
+
+const setDocumentTitleTicker = () => {
+  if (!props.tickerBinance) return
+
+  store.commit('setSettings', { documentTitleTicker: symbol.value })
+  helpers.toast.success(helpers.translate('TOAST_REAL_TIME_TICKER_SELECTED').replace(/%s/, symbol.value))
+}
+
+const mustUSD = price => {
+  if (!price) return '-'
+
+  return parseFloat(price).toLocaleString(undefined, {
+    minimumFractionDigits: price < 1 ? 4 : 2,
+    maximumFractionDigits: 4,
+  })
 }
 </script>
 

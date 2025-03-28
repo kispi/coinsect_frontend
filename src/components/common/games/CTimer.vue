@@ -7,64 +7,63 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onUnmounted, watch } from 'vue'
 
-export default {
-  props: ['ms'],
-  setup(props, { emit }) {
-    const showCountdown = ref(null)
-
-    const timer = ref({
-      timeoutShowCountdown: null,
-      timeout: null,
-      ms: null,
-    })
-
-    const resetTimeouts = () => {
-      if (timer.value.timeout) {
-        clearTimeout(timer.value.timeout)
-        timer.value.timeout = null
-      }
-
-      if (timer.value.timeoutShowCountdown) {
-        clearTimeout(timer.value.timeoutShowCountdown)
-        timer.value.timeoutShowCountdown = null
-      }
-    }
-
-    const startTimeout = () => {
-      resetTimeouts()
-
-      if (typeof timer.value.ms === 'number' && timer.value.ms <= 0) {
-        timer.value.timeoutShowCountdown = setTimeout(() => showCountdown.value = false, 1000)
-        emit('expire')
-        return
-      }
-
-      showCountdown.value = true
-      timer.value.timeout = setTimeout(() => {
-        timer.value.ms -= 1000
-        startTimeout()
-      }, 1000)
-    }
-
-    onUnmounted(resetTimeouts)
-
-    watch(
-      () => props.ms,
-      newVal => {
-        timer.value.ms = newVal
-        startTimeout()
-      },
-    )
-
-    return {
-      showCountdown,
-      timer,
-    }
+const props = defineProps({
+  ms: {
+    type: Number,
+    default: 0,
   },
+})
+
+const emit = defineEmits(['expire'])
+
+const showCountdown = ref(null)
+
+const timer = ref({
+  timeoutShowCountdown: null,
+  timeout: null,
+  ms: null,
+})
+
+const resetTimeouts = () => {
+  if (timer.value.timeout) {
+    clearTimeout(timer.value.timeout)
+    timer.value.timeout = null
+  }
+
+  if (timer.value.timeoutShowCountdown) {
+    clearTimeout(timer.value.timeoutShowCountdown)
+    timer.value.timeoutShowCountdown = null
+  }
 }
+
+const startTimeout = () => {
+  resetTimeouts()
+
+  if (typeof timer.value.ms === 'number' && timer.value.ms <= 0) {
+    timer.value.timeoutShowCountdown = setTimeout(() => showCountdown.value = false, 1000)
+    emit('expire')
+    return
+  }
+
+  showCountdown.value = true
+  timer.value.timeout = setTimeout(() => {
+    timer.value.ms -= 1000
+    startTimeout()
+  }, 1000)
+}
+
+onUnmounted(resetTimeouts)
+
+watch(
+  () => props.ms,
+  newVal => {
+    timer.value.ms = newVal
+    startTimeout()
+  },
+)
 </script>
 
 <style lang="scss" scoped>

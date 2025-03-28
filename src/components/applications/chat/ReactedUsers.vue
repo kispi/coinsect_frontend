@@ -4,7 +4,7 @@
       class="reaction-group"
       :key="key"
       v-for="key in Object.keys(summarizedReactions)">
-      <div class="reaction center f-18 p-8">{{ ($store.getters.config.emojis[key] || {}).emoji }}</div>
+      <div class="reaction center f-18 p-8">{{ (store.getters.config.emojis[key] || {}).emoji }}</div>
       <div class="nicknames">
         <div class="c-white f-700">:{{ key }}:</div>
         {{ (summarizedReactions[key] || []).map(r => r.nickname).join(', ') }}
@@ -13,14 +13,17 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    summarizedReactions: {
-      type: Object,
-    },
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+defineProps({
+  summarizedReactions: {
+    type: Object,
+    required: true,
   },
-}
+})
+
+const { store } = useGlobalHooks()
 </script>
 <style lang="scss" scoped>
 .reacted-users {

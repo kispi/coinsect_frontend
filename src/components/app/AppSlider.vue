@@ -13,99 +13,88 @@
   </div>
 </template>
 
-<script>
-import useGlobalHooks from '@/hooks/global-hooks'
+<script setup>
 import { onMounted, onUnmounted, ref, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  emits: ['change'],
-  setup(_, { emit }) {
-    const { store } = useGlobalHooks()
+const emit = defineEmits(['change'])
 
-    const refContainer = ref(null)
+const { store } = useGlobalHooks()
 
-    const dragging = ref(null)
+const refContainer = ref(null)
 
-    const containerSize = ref(null)
+const dragging = ref(null)
 
-    const handleSize = 40
+const containerSize = ref(null)
 
-    const handlePos = ref({
-      width: `${handleSize}px`,
-      left: 0,
-    })
+const handleSize = 40
 
-    const nextX = ref(0)
+const handlePos = ref({
+  width: `${handleSize}px`,
+  left: 0,
+})
 
-    const ratio = ref(0)
+const nextX = ref(0)
 
-    const emitRatio = () => emit('change', ratio.value) // emits (0 <= ratio <= 1)
+const ratio = ref(0)
 
-    const setNext = e => {
-      if (!refContainer.value) return
+const emitRatio = () => emit('change', ratio.value) // emits (0 <= ratio <= 1)
 
-      const rectX = refContainer.value.getBoundingClientRect().x
-      nextX.value = (e.touches ? e.touches[0].clientX : e.clientX) - handleSize / 2 - rectX
+const setNext = e => {
+  if (!refContainer.value) return
 
-      if (nextX.value < 0) nextX.value = 0
-      if (nextX.value > containerSize.value - handleSize) nextX.value = containerSize.value - handleSize
-    }
+  const rectX = refContainer.value.getBoundingClientRect().x
+  nextX.value = (e.touches ? e.touches[0].clientX : e.clientX) - handleSize / 2 - rectX
 
-    const onMousemove = e => {
-      if (!dragging.value) return
-
-      setNext(e)
-
-      handlePos.value.transform = `translateX(${nextX.value}px)`
-      ratio.value = nextX.value / (containerSize.value - handleSize)
-      emitRatio()
-    }
-
-    const onMousedown = e => {
-      dragging.value = true
-      document.addEventListener('mousemove', onMousemove)
-      document.addEventListener('touchmove', onMousemove)
-
-      // 헤더 안에서 클릭된 마우스의 위치만큼(offset)을 onMousemove에서 빼주어야함.
-      setNext(e)
-      handlePos.value.transform = `translateX(${nextX.value}px)`
-      ratio.value = nextX.value / (containerSize.value - handleSize)
-      emitRatio()
-    }
-
-    const onMouseup = () => {
-      dragging.value = false
-      document.removeEventListener('mousemove', onMousemove)
-      document.removeEventListener('touchmove', onMousemove)
-    }
-
-    onMounted(() => {
-      containerSize.value = refContainer.value.getBoundingClientRect().width
-      document.addEventListener('mouseup', onMouseup)
-      document.addEventListener('touchend', onMouseup)
-    })
-
-    onUnmounted(() => {
-      document.removeEventListener('mouseup', onMouseup)
-      document.removeEventListener('touchend', onMouseup)
-    })
-
-    watch(
-      () => store.getters.windowInnerWidth,
-      () => {
-        containerSize.value = refContainer.value.getBoundingClientRect().width
-      },
-    )
-
-    return {
-      refContainer,
-      ratio,
-      handlePos,
-      dragging,
-      onMousedown,
-    }
-  },
+  if (nextX.value < 0) nextX.value = 0
+  if (nextX.value > containerSize.value - handleSize) nextX.value = containerSize.value - handleSize
 }
+
+const onMousemove = e => {
+  if (!dragging.value) return
+
+  setNext(e)
+
+  handlePos.value.transform = `translateX(${nextX.value}px)`
+  ratio.value = nextX.value / (containerSize.value - handleSize)
+  emitRatio()
+}
+
+const onMousedown = e => {
+  dragging.value = true
+  document.addEventListener('mousemove', onMousemove)
+  document.addEventListener('touchmove', onMousemove)
+
+  // 헤더 안에서 클릭된 마우스의 위치만큼(offset)을 onMousemove에서 빼주어야함.
+  setNext(e)
+  handlePos.value.transform = `translateX(${nextX.value}px)`
+  ratio.value = nextX.value / (containerSize.value - handleSize)
+  emitRatio()
+}
+
+const onMouseup = () => {
+  dragging.value = false
+  document.removeEventListener('mousemove', onMousemove)
+  document.removeEventListener('touchmove', onMousemove)
+}
+
+onMounted(() => {
+  containerSize.value = refContainer.value.getBoundingClientRect().width
+  document.addEventListener('mouseup', onMouseup)
+  document.addEventListener('touchend', onMouseup)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mouseup', onMouseup)
+  document.removeEventListener('touchend', onMouseup)
+})
+
+watch(
+  () => store.getters.windowInnerWidth,
+  () => {
+    containerSize.value = refContainer.value.getBoundingClientRect().width
+  },
+)
 </script>
 
 <style lang="scss" scoped>

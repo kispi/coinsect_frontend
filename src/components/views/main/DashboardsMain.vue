@@ -4,18 +4,18 @@
     <div
       v-if="dashboards"
       class="grid main">
-      <template v-if="$store.getters.boards">
+      <template v-if="store.getters.boards">
         <MainSection
-          :title="`${$store.getters.boards[0].description} (비로그인 글쓰기 가능)`"
+          :title="`${store.getters.boards[0].description} (비로그인 글쓰기 가능)`"
           :link="'/community'"
           :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
-          <RecentPosts v-if="dashboardPosts[0]" :postItems="dashboardPosts[0].data" :board="$store.getters.boards[0]"/>
+          <RecentPosts v-if="dashboardPosts[0]" :postItems="dashboardPosts[0].data" :board="store.getters.boards[0]"/>
         </MainSection>
         <MainSection
-          :title="$store.getters.boards[1].description"
+          :title="store.getters.boards[1].description"
           :link="'/community'"
           :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
-          <RecentPosts v-if="dashboardPosts[1]" :postItems="dashboardPosts[1].data" :board="$store.getters.boards[1]"/>
+          <RecentPosts v-if="dashboardPosts[1]" :postItems="dashboardPosts[1].data" :board="store.getters.boards[1]"/>
         </MainSection>
       </template>
       <MainSection
@@ -69,7 +69,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import MainSection from './MainSection'
@@ -79,83 +79,71 @@ import SectionNews from './SectionNews'
 import communityService from '@/services/community'
 import useRealTimePosition from '@/hooks/real-time-position'
 
-export default {
-  components: { MainSection, RecentPosts, RealTimePriceCards, SectionNews },
-  setup() {
-    const { helpers, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const { connection, openWebsocket, sorter } = useRealTimePosition()
+const { connection, openWebsocket, sorter } = useRealTimePosition()
 
-    const refRealTimePriceCards = ref(null)
+const refRealTimePriceCards = ref(null)
 
-    const interval = ref(null)
+const interval = ref(null)
 
-    const dashboards = computed(() => store.getters.dashboardsMain)
+const dashboards = computed(() => store.getters.dashboardsMain)
 
-    const dashboardPosts = ref([])
+const dashboardPosts = ref([])
 
-    const initDashboards = async () => {
-      try {
-        await store.dispatch('loadDashboardsMain')
+const initDashboards = async () => {
+  try {
+    await store.dispatch('loadDashboardsMain')
 
-        // 이하는 SSR에서는 실행하지 않음
-        if (store.getters.isSSR) return
+    // 이하는 SSR에서는 실행하지 않음
+    if (store.getters.isSSR) return
 
-        dashboards.value.realTimePositions.data.sort(sorter)
-        store.commit('setRealTimePositions', dashboards.value.realTimePositions)
-        openWebsocket()
-      } catch (e) {
-        helpers.toast.error(e.data.message)
-      }
-    }
-
-    const loadPostSimple = async boardId => {
-      try {
-        const resp = await communityService.post.all({
-          where: `board_id=${boardId}`,
-          limit: 10,
-          sort: 'id',
-          order: 'desc',
-        })
-        await helpers.post.populateRenderablePosts(resp.data)
-        dashboardPosts.value[boardId - 1] = resp
-      } catch (e) {
-        return Promise.reject(e)
-      }
-    }
-
-    const loadPosts = async () => {
-      try {
-        await Promise.all([loadPostSimple(1), loadPostSimple(2)])
-      } catch (e) {
-        return Promise.reject(e)
-      }
-    }
-
-    onMounted(() => {
-      initDashboards()
-      loadPosts()
-      helpers.bus.$on('write-post', loadPostSimple)
-
-      interval.value = setInterval(() => {
-        initDashboards()
-        loadPosts()
-      }, 1000 * 60 * 5)
-    })
-
-    onUnmounted(() => {
-      helpers.bus.$off('write-post')
-      if (interval.value) clearInterval(interval.value)
-    })
-
-    return {
-      refRealTimePriceCards,
-      connectionRealTimePositions: connection,
-      dashboards,
-      dashboardPosts,
-    }
-  },
+    dashboards.value.realTimePositions.data.sort(sorter)
+    store.commit('setRealTimePositions', dashboards.value.realTimePositions)
+    openWebsocket()
+  } catch (e) {
+    helpers.toast.error(e.data.message)
+  }
 }
+
+const loadPostSimple = async boardId => {
+  try {
+    const resp = await communityService.post.all({
+      where: `board_id=${boardId}`,
+      limit: 10,
+      sort: 'id',
+      order: 'desc',
+    })
+    await helpers.post.populateRenderablePosts(resp.data)
+    dashboardPosts.value[boardId - 1] = resp
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
+
+const loadPosts = async () => {
+  try {
+    await Promise.all([loadPostSimple(1), loadPostSimple(2)])
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
+
+onMounted(() => {
+  initDashboards()
+  loadPosts()
+  helpers.bus.$on('write-post', loadPostSimple)
+
+  interval.value = setInterval(() => {
+    initDashboards()
+    loadPosts()
+  }, 1000 * 60 * 5)
+})
+
+onUnmounted(() => {
+  helpers.bus.$off('write-post')
+  if (interval.value) clearInterval(interval.value)
+})
 </script>
 
 <style lang="scss">

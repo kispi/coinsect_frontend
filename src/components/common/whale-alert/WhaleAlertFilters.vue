@@ -2,32 +2,32 @@
   <div class="whale-alert-filters">
     <div class="flex-row">
       <div class="form-control flex-fill m-r-16">
-        <label>{{ $translate('WA_AMOUNT_ABOVE') }}</label>
+        <label>{{ helpers.translate('WA_AMOUNT_ABOVE') }}</label>
         <input v-model="params.amount" maxlength="20" type="number">
-        <div v-if="params.amount > 0" class="pretty">{{ $helpers.number.pretty.korean(params.amount) }} 코인</div>
+        <div v-if="params.amount > 0" class="pretty">{{ helpers.number.pretty.korean(params.amount) }} 코인</div>
       </div>
       <div class="form-control flex-fill">
-        <label>{{ $translate('WA_AMOUNT_USD_ABOVE') }}</label>
+        <label>{{ helpers.translate('WA_AMOUNT_USD_ABOVE') }}</label>
         <input v-model="params.amountUsd" maxlength="20" type="number">
-        <div v-if="params.amountUsd > 0" class="pretty">$ {{ $helpers.number.pretty.korean(params.amountUsd) }}</div>
+        <div v-if="params.amountUsd > 0" class="pretty">$ {{ helpers.number.pretty.korean(params.amountUsd) }}</div>
       </div>
     </div>
     <div class="hr"/>
     <div class="form-control">
       <div class="filter-boolean" @click="params.excludeBetweenSameExchange = !params.excludeBetweenSameExchange">
         <AppCheckbox :modelValue="params.excludeBetweenSameExchange" class="no-touch"/>
-        <div>{{ $translate('WA_EXCLUDE_BETWEEN_SAME_EXCHANGE') }}</div>
+        <div>{{ helpers.translate('WA_EXCLUDE_BETWEEN_SAME_EXCHANGE') }}</div>
       </div>
     </div>
     <div class="hr"/>
     <div class="form-control">
       <div class="flex-row flex-between items-center m-b-8" style="height: 24px;">
-        <label class="m-b-0">{{ $translate('WA_SYMBOLS') }}</label>
+        <label class="m-b-0">{{ helpers.translate('WA_SYMBOLS') }}</label>
         <button
           v-if="params.symbols.filter(s => s.$$selected).length > 0"
           @click="deselectAll"
           class="btn btn-brd btn-small">
-          {{ $translate('WA_DESELECT_COIN_FILTERS') }}
+          {{ helpers.translate('WA_DESELECT_COIN_FILTERS') }}
         </button>
       </div>
       <div class="available-symbols">
@@ -37,61 +37,54 @@
           @click="onClickSymbol(aSymbol)"
           class="available-symbol"
           :class="{'selected': aSymbol.$$selected}">
-          <AppImg :src="($store.getters.symbols[aSymbol.symbol.toUpperCase()] || {}).thumb"/>{{ aSymbol.symbol }}
+          <AppImg :src="(store.getters.symbols[aSymbol.symbol.toUpperCase()] || {}).thumb"/>{{ aSymbol.symbol }}
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref, watch } from 'vue'
 import constants from '@/assets/constants'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  emits: ['change-params'],
-  setup(props, { emit }) {
-    const availableSymbols = ref(
-      ['btc', 'eth', 'usdt', 'usdc', 'busd', 'pax', 'gusd', 'bnb', 'xrp', 'xlm', 'wbtc', 'sand', 'trx', 'mana', 'matic', 'chz', 'paxg', 'bat', 'ankr', 'qnt', 'aave']
-        .map(symbol => ({
-          symbol,
-          $$selected: false,
-          isStable: constants.stableCoins.includes(symbol),
-        }))
-    )
+const emit = defineEmits(['change-params'])
 
-    const params = ref({
-      amount: 0,
-      amountUsd: 3000000,
-      symbols: availableSymbols.value,
-      excludeBetweenSameExchange: true,
-    })
+const { helpers, store } = useGlobalHooks()
 
-    const onClickSymbol = symbol => {
-      symbol.$$selected = !symbol.$$selected
-      params.value.symbols = availableSymbols.value
-    }
+const availableSymbols = ref(
+  ['btc', 'eth', 'usdt', 'usdc', 'busd', 'pax', 'gusd', 'bnb', 'xrp', 'xlm', 'wbtc', 'sand', 'trx', 'mana', 'matic', 'chz', 'paxg', 'bat', 'ankr', 'qnt', 'aave']
+    .map(symbol => ({
+      symbol,
+      $$selected: false,
+      isStable: constants.stableCoins.includes(symbol),
+    }))
+)
 
-    const deselectAll =() => {
-      params.value.symbols.forEach(s => s.$$selected = false)
-    }
+const params = ref({
+  amount: 0,
+  amountUsd: 3000000,
+  symbols: availableSymbols.value,
+  excludeBetweenSameExchange: true,
+})
 
-    watch(
-      () => params.value,
-      () => emit('change-params', params.value),
-      { deep: true },
-    )
-
-    onMounted(() => emit('change-params', params.value))
-
-    return {
-      availableSymbols,
-      params,
-      deselectAll,
-      onClickSymbol,
-    }
-  },
+const onClickSymbol = symbol => {
+  symbol.$$selected = !symbol.$$selected
+  params.value.symbols = availableSymbols.value
 }
+
+const deselectAll =() => {
+  params.value.symbols.forEach(s => s.$$selected = false)
+}
+
+watch(
+  () => params.value,
+  () => emit('change-params', params.value),
+  { deep: true },
+)
+
+onMounted(() => emit('change-params', params.value))
 </script>
 
 <style lang="scss" scoped>

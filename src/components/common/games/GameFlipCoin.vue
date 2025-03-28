@@ -35,105 +35,91 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from 'vue'
 import CTimer from './CTimer'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: { CTimer },
-  setup(_, { emit }) {
-    const { helpers } = useGlobalHooks()
+const emit = defineEmits(['next-state'])
 
-    const coins = ref(null)
+const { helpers } = useGlobalHooks()
 
-    const playing = ref(null)
+const coins = ref(null)
 
-    const numTries = ref(null)
+const playing = ref(null)
 
-    const stage = ref(1)
+const numTries = ref(null)
 
-    const ms = ref(null)
+const stage = ref(1)
 
-    const flip = coin => {
-      if (!playing.value || coin.$$confirmed || coin.$$testing) return
+const ms = ref(null)
 
-      coin.$$flipped = !coin.$$flipped
-      coin.$$testing = true
+const flip = coin => {
+  if (!playing.value || coin.$$confirmed || coin.$$testing) return
 
-      let testingCards = coins.value.filter(coin => coin.$$testing)
-      if (testingCards.length % 2 !== 0) return
+  coin.$$flipped = !coin.$$flipped
+  coin.$$testing = true
 
-      if (testingCards[0].symbol === testingCards[1].symbol) {
-        testingCards.forEach(c => {
-          c.$$testing = false
-          c.$$confirmed = true
-        })
+  let testingCards = coins.value.filter(coin => coin.$$testing)
+  if (testingCards.length % 2 !== 0) return
 
-        if (coins.value.every(c => c.$$confirmed)) {
-          stage.value += 1
-          playing.value = null
-          play()
-          emit('next-state')
-        }
-      } else {
-        numTries.value += 1
-        testingCards.forEach(c => {
-          c.$$shake = true
-          c.$$testing = false
-        })
-        setTimeout(() => {
-          testingCards.forEach(c => {
-            c.$$flipped = true
-            c.$$shake = false
-          })
-        }, 500)
-      }
-    }
+  if (testingCards[0].symbol === testingCards[1].symbol) {
+    testingCards.forEach(c => {
+      c.$$testing = false
+      c.$$confirmed = true
+    })
 
-    const shuffle = numCoinsToGenerate => {
-      const coinSet = helpers.coin.pickCoins({ numCoinsToGenerate, upbitOnly: true })
-      coins.value = helpers.logic.shuffle([
-        ...coinSet,
-        ...coinSet,
-      ]).map(([key, value]) => ({
-        symbol: key,
-        thumb: value.thumb, 
-        $$flipped: true,
-      }))
-    }
-
-    const onExpire = () => {
-      coins.value.forEach(symbol => symbol.$$flipped = true)
-      playing.value = true
-    }
-
-    const play = () => {
-      if (playing.value && stage.value === 1) numTries.value = null
-
-      coins.value = null
+    if (coins.value.every(c => c.$$confirmed)) {
+      stage.value += 1
       playing.value = null
-      ms.value = null
-      setTimeout(() => ms.value = 3000)
-
-      shuffle(stage.value * 4)
-      coins.value.forEach(coin => coin.$$flipped = false)
+      play()
+      emit('next-state')
     }
-
-    onMounted(() => shuffle(stage.value * 4))
-
-    return {
-      stage,
-      playing,
-      onExpire,
-      ms,
-      coins,
-      numTries,
-      play,
-      flip,
-    }
-  },
+  } else {
+    numTries.value += 1
+    testingCards.forEach(c => {
+      c.$$shake = true
+      c.$$testing = false
+    })
+    setTimeout(() => {
+      testingCards.forEach(c => {
+        c.$$flipped = true
+        c.$$shake = false
+      })
+    }, 500)
+  }
 }
+
+const shuffle = numCoinsToGenerate => {
+  const coinSet = helpers.coin.pickCoins({ numCoinsToGenerate, upbitOnly: true })
+  coins.value = helpers.logic.shuffle([
+    ...coinSet,
+    ...coinSet,
+  ]).map(([key, value]) => ({
+    symbol: key,
+    thumb: value.thumb, 
+    $$flipped: true,
+  }))
+}
+
+const onExpire = () => {
+  coins.value.forEach(symbol => symbol.$$flipped = true)
+  playing.value = true
+}
+
+const play = () => {
+  if (playing.value && stage.value === 1) numTries.value = null
+
+  coins.value = null
+  playing.value = null
+  ms.value = null
+  setTimeout(() => ms.value = 3000)
+
+  shuffle(stage.value * 4)
+  coins.value.forEach(coin => coin.$$flipped = false)
+}
+
+onMounted(() => shuffle(stage.value * 4))
 </script>
 
 <style lang="scss" scoped>

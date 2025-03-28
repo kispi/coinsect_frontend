@@ -4,35 +4,26 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: {
-    ViewNews: defineAsyncComponent(() => import('./news/ViewNews')),
-    ViewEconomicCalendar: defineAsyncComponent(() => import('./ViewEconomicCalendar')),
-    ViewInfluencers: defineAsyncComponent(() => import('./influencers/ViewInfluencers')),
-    ViewInfluencerDetail: defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail')),
-    ViewPublicTreasury: defineAsyncComponent(() => import('./ViewPublicTreasury')),
-    ViewCryptoReferral: defineAsyncComponent(() => import('./ViewCryptoReferral')),
-  },
-  setup() {
-    const { router } = useGlobalHooks()
+const ViewNews = defineAsyncComponent(() => import('./news/ViewNews'))
+const ViewEconomicCalendar = defineAsyncComponent(() => import('./ViewEconomicCalendar'))
+const ViewInfluencers = defineAsyncComponent(() => import('./influencers/ViewInfluencers'))
+const ViewInfluencerDetail = defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail'))
+const ViewPublicTreasury = defineAsyncComponent(() => import('./ViewPublicTreasury'))
+const ViewCryptoReferral = defineAsyncComponent(() => import('./ViewCryptoReferral'))
 
-    const selectedComponent = computed(() => {
-      const p = router.currentRoute.value.path
-      if (p === '/contents/news') return 'ViewNews'
-      if (p === '/contents/economic-calendar') return 'ViewEconomicCalendar'
-      if (p === '/contents/influencers') return 'ViewInfluencers'
-      if (p.startsWith('/contents/influencers/')) return 'ViewInfluencerDetail'
-      if (p === '/contents/public-treasury') return 'ViewPublicTreasury'
-      if (p === '/contents/crypto-referral') return 'ViewCryptoReferral'
-    })
+const { router } = useGlobalHooks()
 
-    return {
-      selectedComponent,
-    }
-  },
-}
+const selectedComponent = computed(() => {
+  const p = router.currentRoute.value.path
+  if (p === '/contents/news') return ViewNews
+  if (p === '/contents/economic-calendar') return ViewEconomicCalendar
+  if (p === '/contents/influencers') return ViewInfluencers
+  if (p.startsWith('/contents/influencers/')) return ViewInfluencerDetail
+  if (p === '/contents/public-treasury') return ViewPublicTreasury
+  if (p === '/contents/crypto-referral') return ViewCryptoReferral
+})
 </script>

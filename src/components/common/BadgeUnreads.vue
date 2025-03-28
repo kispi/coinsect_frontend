@@ -7,13 +7,17 @@
   />
 </template>
 
-<script>
-export default {
-  props: {
-    numUnreads: Number,
-    small: Boolean,
+<script setup>
+defineProps({
+  numUnreads: {
+    type: Number,
+    default: 0,
   },
-}
+  small: {
+    type: Boolean,
+    default: false,
+  },
+})
 </script>
 
 <style lang="scss" scoped>

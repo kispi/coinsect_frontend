@@ -12,41 +12,44 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { helpers } = useGlobalHooks()
+const { helpers } = useGlobalHooks()
 
-    const show = ref(null)
+const show = ref(null)
 
-    const timeout = ref(null)
+const timeout = ref(null)
 
-    const close = () => {
-      show.value = false
-      clearTimeout(timeout.value)
-    }
-
-    const check = () => {
-      const today = helpers.dayjs().format('MM-DD')
-      show.value = today === '04-01'
-      timeout.value = setTimeout(check, 5000)
-    }
-
-    onMounted(check)
-
-    onUnmounted(() => {
-      clearTimeout(timeout.value)
-    })
-
-    return {
-      show,
-      close,
-    }
-  },
+const close = () => {
+  show.value = false
+  clearTimeout(timeout.value)
+  helpers.localStorage.setMeta('fools-day-prank-seen', helpers.dayjs().format('YYYY-MM-DD HH:mm:ss'))
 }
+
+const check = () => {
+  const lastSeen = helpers.localStorage.getMeta('fools-day-prank-seen')
+  if (lastSeen) {
+    const lastSeenDate = helpers.dayjs(lastSeen)
+    const today = helpers.dayjs()
+    const diff = today.diff(lastSeenDate, 'day')
+    if (diff < 1) {
+      show.value = false
+      return
+    }
+  }
+
+  const today = helpers.dayjs().format('MM-DD')
+  show.value = today === '04-01'
+  timeout.value = setTimeout(check, 5000)
+}
+
+onMounted(check)
+
+onUnmounted(() => {
+  clearTimeout(timeout.value)
+})
 </script>
 
 <style lang="scss">

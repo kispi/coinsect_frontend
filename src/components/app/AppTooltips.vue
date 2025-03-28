@@ -3,28 +3,23 @@
     <AppTooltip
       :tooltip="tooltip"
       :key="tooltip.key"
-      v-for="tooltip in $store.getters.tooltips"
+      v-for="tooltip in store.getters.tooltips"
     />
   </div>
 </template>
 
-<script>
+<script setup>
 import { watch } from 'vue'
 import AppTooltip from './AppTooltip'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: { AppTooltip },
-  setup() {
-    const { store, router } = useGlobalHooks()
+const { store, router } = useGlobalHooks()
 
-    watch([
-      () => router.currentRoute.value.path,
-    ],
-      () => store.commit('removeAllTooltips'),
-    )
-  },
-}
+watch([
+  () => router.currentRoute.value.path,
+],
+  () => store.commit('removeAllTooltips'),
+)
 </script>
 
 <style lang="scss" scoped>

@@ -6,66 +6,63 @@
       'below': tooltip.below,
     }"
     :style="finalStyle">
-    <div class="tooltip-body" v-html="$translate(tooltip.text)"/>
+    <div class="tooltip-body" v-html="helpers.translate(tooltip.text)"/>
     <div class="triangle" :style="trianglePosition"/>
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    tooltip: null, // { bind, text, showAbove, below }
+const props = defineProps({
+  tooltip: {
+    type: Object, // { bind, text, showAbove, below }
+    required: true,
   },
-  setup(props) {
-    const refAppTooltip = ref(null)
+})
 
-    const finalStyle = ref({})
+const { helpers } = useGlobalHooks()
 
-    const trianglePosition = ref({})
+const refAppTooltip = ref(null)
 
-    const setFinalStyle = () => {
-      const dom = props.tooltip.showAbove
-      if (!dom) return
+const finalStyle = ref({})
 
-      const rectShowAbove = dom.getBoundingClientRect()
-      const rectAppTooltip = refAppTooltip.value.getBoundingClientRect()
+const trianglePosition = ref({})
 
-      if (props.tooltip.below) {
-        finalStyle.value.top = `${-helpers.dom.headerHeight() + rectShowAbove.top + rectShowAbove.height + 8}px`
-      } else {
-        finalStyle.value.top = `${-helpers.dom.headerHeight() + rectShowAbove.top - rectAppTooltip.height - 16}px`
-      }
+const setFinalStyle = () => {
+  const dom = props.tooltip.showAbove
+  if (!dom) return
 
-      const distanceHor = window.innerWidth - rectShowAbove.left
-      if (window.innerWidth < rectShowAbove.left + rectAppTooltip.width) {
-        finalStyle.value.left = `${window.innerWidth - rectAppTooltip.width}px`
-        trianglePosition.value = {
-          left: 'initial',
-          transform: 'initial',
-          right: `${distanceHor - rectShowAbove.width / 2 - (props.tooltip.below ? 16 : 8)}px`,
-        }
-      } else {
-        const left = rectShowAbove.left - rectAppTooltip.width / 2 + rectShowAbove.width / 2
-        finalStyle.value.left = left < 0 ? 0 : `${left}px`
-        if (left < 0) {
-          trianglePosition.value = {
-            left: `${rectShowAbove.left + rectShowAbove.width / 2}px`,
-          }
-        }
+  const rectShowAbove = dom.getBoundingClientRect()
+  const rectAppTooltip = refAppTooltip.value.getBoundingClientRect()
+
+  if (props.tooltip.below) {
+    finalStyle.value.top = `${-helpers.dom.headerHeight() + rectShowAbove.top + rectShowAbove.height + 8}px`
+  } else {
+    finalStyle.value.top = `${-helpers.dom.headerHeight() + rectShowAbove.top - rectAppTooltip.height - 16}px`
+  }
+
+  const distanceHor = window.innerWidth - rectShowAbove.left
+  if (window.innerWidth < rectShowAbove.left + rectAppTooltip.width) {
+    finalStyle.value.left = `${window.innerWidth - rectAppTooltip.width}px`
+    trianglePosition.value = {
+      left: 'initial',
+      transform: 'initial',
+      right: `${distanceHor - rectShowAbove.width / 2 - (props.tooltip.below ? 16 : 8)}px`,
+    }
+  } else {
+    const left = rectShowAbove.left - rectAppTooltip.width / 2 + rectShowAbove.width / 2
+    finalStyle.value.left = left < 0 ? 0 : `${left}px`
+    if (left < 0) {
+      trianglePosition.value = {
+        left: `${rectShowAbove.left + rectShowAbove.width / 2}px`,
       }
     }
-
-    onMounted(setFinalStyle)
-
-    return {
-      refAppTooltip,
-      finalStyle,
-      trianglePosition,
-    }
-  },
+  }
 }
+
+onMounted(setFinalStyle)
 </script>
 
 <style lang="scss" scoped>

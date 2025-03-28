@@ -2,7 +2,7 @@
   <div
     v-if="(post.$$images || []).length > 0 || post.$$thumbnail"
     class="post-image-preview"
-    @click.stop.prevent="$modal.images({
+    @click.stop.prevent="helpers.modal.images({
       images: post.$$images.length > 0 ? post.$$images : [post.$$thumbnail],
     })">
     <AppImg
@@ -14,10 +14,17 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: ['post'],
-}
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+defineProps({
+  post: {
+    type: Object,
+    required: true,
+  },
+})
+
+const { helpers } = useGlobalHooks()
 </script>
 
 <style lang="scss" scoped>

@@ -2,7 +2,7 @@
   <div class="view-seo">
     <AppLoading :loading="loading"/>
     <div class="description">여러분이 좋아하는 사이트의 주소를 넣고, 메타 데이터를 확인해보세요!</div>
-    <div class="btn btn-primary" @click="onClickRecommend" v-html="$translate('랜덤 URL 추천받기')"/>
+    <div class="btn btn-primary" @click="onClickRecommend" v-html="helpers.translate('랜덤 URL 추천받기')"/>
     <div
       class="input-wrapper width-limiter"
       :class="{'error': error}">
@@ -39,122 +39,104 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 import useSeo from '@/hooks/seo'
 
-export default {
-  setup() {
-    const refInput = ref(null)
+const { helpers } = useGlobalHooks()
 
-    const link = ref(null)
+const refInput = ref(null)
 
-    const submitted = ref(null)
+const link = ref(null)
 
-    const placeholder = ref(null)
+const submitted = ref(null)
 
-    const loading = ref(null)
+const placeholder = ref(null)
 
-    const error = ref(null)
+const loading = ref(null)
 
-    const tried = ref(null)
+const error = ref(null)
 
-    const sites = ref(null)
+const tried = ref(null)
 
-    const { meta, reset, tryMetaTags, useExamples } = useSeo()
+const sites = ref(null)
 
-    const initParams = () => {
-      link.value = null
-      submitted.value = null
-      error.value = null
-      tried.value = null
-      loading.value = null
-    }
+const { meta, reset, tryMetaTags, useExamples } = useSeo()
 
-    const callApi = async () => {
-      if (!link.value || loading.value) return
-
-      // 아래 regex를 helpers.dom에서 export해서 쓰면 이상하게 작동함... 브라우저 버그인가?
-      if (!link.value.includes('.')) {
-        error.value = '입력하신 url이 유효하지 않습니다 😥'
-        return
-      }
-
-      reset()
-      try {
-        loading.value = true
-        tried.value = true
-        submitted.value = link.value
-        await tryMetaTags(link.value)
-      } catch (e) {
-        error.value = `정보를 수집하지 못했습니다. 혹시 입력하신 URL(<a href="${link.value}" target="_blank" rel="noreferrer" class="text-underline">${link.value}</a>)이 잘 열리시나요?`
-      } finally {
-        loading.value = false
-      }
-    }
-
-    const onPaste = e => {
-      setTimeout(() => {
-        link.value = e.target.value
-        callApi()
-      })
-    }
-
-    const onEnter = e => {
-      if (e) e.target.blur()
-
-      if (!link.value) link.value = placeholder.value
-
-      callApi()
-    }
-
-    const onClickRecommend = () => {
-      recommend()
-      link.value = placeholder.value
-      callApi()
-    }
-
-    const recommend = () => {
-      const newOne = sites.value[Math.floor(Math.random() * sites.value.length)]
-      if (newOne === placeholder.value) return recommend()
-
-      placeholder.value = newOne
-    }
-
-    const init = async () => {
-      try {
-        sites.value = await useExamples()
-        recommend()
-      } catch (e) {}
-    }
-
-    onMounted(init)
-
-    watch(
-      () => link.value,
-      () => {
-        error.value = null
-      },
-    )
-
-    return {
-      refInput,
-      meta,
-      link,
-      submitted,
-      tried,
-      placeholder,
-      error,
-      loading,
-      initParams,
-      reset,
-      recommend,
-      onEnter,
-      onPaste,
-      onClickRecommend,
-    }
-  },
+const initParams = () => {
+  link.value = null
+  submitted.value = null
+  error.value = null
+  tried.value = null
+  loading.value = null
 }
+
+const callApi = async () => {
+  if (!link.value || loading.value) return
+
+  // 아래 regex를 helpers.dom에서 export해서 쓰면 이상하게 작동함... 브라우저 버그인가?
+  if (!link.value.includes('.')) {
+    error.value = '입력하신 url이 유효하지 않습니다 😥'
+    return
+  }
+
+  reset()
+  try {
+    loading.value = true
+    tried.value = true
+    submitted.value = link.value
+    await tryMetaTags(link.value)
+  } catch (e) {
+    error.value = `정보를 수집하지 못했습니다. 혹시 입력하신 URL(<a href="${link.value}" target="_blank" rel="noreferrer" class="text-underline">${link.value}</a>)이 잘 열리시나요?`
+  } finally {
+    loading.value = false
+  }
+}
+
+const onPaste = e => {
+  setTimeout(() => {
+    link.value = e.target.value
+    callApi()
+  })
+}
+
+const onEnter = e => {
+  if (e) e.target.blur()
+
+  if (!link.value) link.value = placeholder.value
+
+  callApi()
+}
+
+const onClickRecommend = () => {
+  recommend()
+  link.value = placeholder.value
+  callApi()
+}
+
+const recommend = () => {
+  const newOne = sites.value[Math.floor(Math.random() * sites.value.length)]
+  if (newOne === placeholder.value) return recommend()
+
+  placeholder.value = newOne
+}
+
+const init = async () => {
+  try {
+    sites.value = await useExamples()
+    recommend()
+  } catch (e) {}
+}
+
+onMounted(init)
+
+watch(
+  () => link.value,
+  () => {
+    error.value = null
+  },
+)
 </script>
 
 <style lang="scss">

@@ -5,14 +5,14 @@
         class="list pretty-scrollbar"
         :key="key"
         v-for="key in Object.keys(data)">
-        <div class="entity-category">{{ $translate(key) }}</div>
+        <div class="entity-category">{{ helpers.translate(key) }}</div>
         <div class="table f-mono">
           <div class="thead">
             <div class="row">
               <div class="td">단체</div>
               <div class="td"><div>홀딩</div><div>시총비중</div></div>
               <div class="td"><div>매수금액</div><div>평가액</div></div>
-              <div class="td" v-if="!$store.getters.isMobile"><div>평단</div><div>수익률</div></div>
+              <div class="td" v-if="!store.getters.isMobile"><div>평단</div><div>수익률</div></div>
             </div>
           </div>
           <div class="tbody">
@@ -32,11 +32,11 @@
                 <div>{{ entity.dominance ? `${entity.dominance}%` : '-' }}</div>
               </div>
               <div class="td">
-                <div>{{ entity.costBasis ? $helpers.number.pretty.cap({ cap: entity.costBasis, baseCurrency: 'usd' }) : '-' }}</div>
-                <div>{{ entity.valuation ? $helpers.number.pretty.cap({ cap: entity.valuation, baseCurrency: 'usd' }) : '-' }}</div>
+                <div>{{ entity.costBasis ? helpers.number.pretty.cap({ cap: entity.costBasis, baseCurrency: 'usd' }) : '-' }}</div>
+                <div>{{ entity.valuation ? helpers.number.pretty.cap({ cap: entity.valuation, baseCurrency: 'usd' }) : '-' }}</div>
               </div>
-              <div class="td" v-if="!$store.getters.isMobile">
-                <div>{{ entity.profit ? $helpers.number.pretty.price({ price: entity.avgPrice, baseCurrency: 'usd' }) : '-' }}</div>
+              <div class="td" v-if="!store.getters.isMobile">
+                <div>{{ entity.profit ? helpers.number.pretty.price({ price: entity.avgPrice, baseCurrency: 'usd' }) : '-' }}</div>
                 <div class="profit">{{ entity.profit ? `${entity.profit}%` : '-' }}</div>
               </div>
             </div>
@@ -48,46 +48,38 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, onServerPrefetch, onUnmounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { helpers, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const data = computed(() => {
-      if (!store.getters.publicTreasuries) return
+const data = computed(() => {
+  if (!store.getters.publicTreasuries) return
 
-      const group = {}
-      store.getters.publicTreasuries.forEach(pt => group[pt.type] ? group[pt.type].push(pt) : group[pt.type] = [pt])
-      Object.keys(group).forEach(key => {
-        if (group[key].length === 0) delete group[key]
-      })
-      return group
-    })
+  const group = {}
+  store.getters.publicTreasuries.forEach(pt => group[pt.type] ? group[pt.type].push(pt) : group[pt.type] = [pt])
+  Object.keys(group).forEach(key => {
+    if (group[key].length === 0) delete group[key]
+  })
+  return group
+})
 
-    const callApi = async () => {
-      if (store.getters.publicTreasuries) return
+const callApi = async () => {
+  if (store.getters.publicTreasuries) return
 
-      try {
-        await store.dispatch('loadPublicTreasuries')
-      } catch (e) {
-        helpers.toast.error('정보를 가져올 수 없습니다')
-      }
-    }
-
-    onMounted(callApi)
-
-    onUnmounted(() => store.commit('setPublicTreasuries', null))
-
-    onServerPrefetch(() => store.dispatch('loadPublicTreasuries'))
-
-    return {
-      data,
-    }
-  },
+  try {
+    await store.dispatch('loadPublicTreasuries')
+  } catch (e) {
+    helpers.toast.error('정보를 가져올 수 없습니다')
+  }
 }
+
+onMounted(callApi)
+
+onUnmounted(() => store.commit('setPublicTreasuries', null))
+
+onServerPrefetch(() => store.dispatch('loadPublicTreasuries'))
 </script>
 
 <style lang="scss" scoped>

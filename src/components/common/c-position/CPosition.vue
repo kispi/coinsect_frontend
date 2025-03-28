@@ -9,7 +9,7 @@
     }">
     <div
       class="image-container"
-      @click="position.image ? $modal.images({
+      @click="position.image ? helpers.modal.images({
         images: [position.image],
       }) : null">
       <div class="ratio-container">
@@ -19,7 +19,7 @@
         <div class="badge-air">
           <span class="dot" :class="position.onAir ? 'bg-success' : 'bg-danger'"/>{{ position.onAir ? 'ON' : 'OFF' }}
         </div>
-        <div v-if="position.editable" class="last-update">{{ $helpers.template.elapsedTime(position.lastUpdate) }}</div>
+        <div v-if="position.editable" class="last-update">{{ helpers.template.elapsedTime(position.lastUpdate) }}</div>
       </div>
       <div class="dark overlay lower" v-html="position.name"/>
     </div>
@@ -32,11 +32,11 @@
           </div>
         </div>
         <div class="size">
-          <div class="key">{{ $translate('SIZE') }}</div>
+          <div class="key">{{ helpers.translate('SIZE') }}</div>
           <div class="value f-mono">{{ display('size') }}</div>
         </div>
         <div class="unrealized">
-          <div class="key">{{ $translate('UNREALIZED_PNL') }}</div>
+          <div class="key">{{ helpers.translate('UNREALIZED_PNL') }}</div>
           <div
             class="value f-mono"
             :class="{
@@ -49,15 +49,15 @@
       </div>
       <div class="prices">
         <div class="entry">
-          <div class="key">{{ $translate('ENTRY_PRICE') }}</div>
+          <div class="key">{{ helpers.translate('ENTRY_PRICE') }}</div>
           <div class="value f-mono">{{ display('entryPrice') }}</div>
         </div>
         <div class="mark">
-          <div class="key">{{ $translate('MARK_PRICE') }}</div>
+          <div class="key">{{ helpers.translate('MARK_PRICE') }}</div>
           <div class="value f-mono">{{ display('markPrice') }}</div>
         </div>
         <div class="liq">
-          <div class="key">{{ $translate('LIQ_PRICE') }}</div>
+          <div class="key">{{ helpers.translate('LIQ_PRICE') }}</div>
           <div class="value f-mono">{{ display('liqPrice') }}</div>
         </div>
       </div>
@@ -66,45 +66,41 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import CPositionContextMenu from './CPositionContextMenu'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: {
-    CPositionContextMenu,
+const props = defineProps({
+  position: {
+    type: Object,
+    required: true,
   },
-  props: ['position'],
-  setup(props) {
-    const badgeSummary = position => {
-      if (position.size > 0) return 'Long'
-      if (position.size < 0) return 'Short'
+})
 
-      return '-'
-    }
+const { helpers } = useGlobalHooks()
 
-    const isDanger = position => {
-      if (!position.liqPrice) return
+const badgeSummary = position => {
+  if (position.size > 0) return 'Long'
+  if (position.size < 0) return 'Short'
 
-      return position.$$unrealized < 0 && ((Math.abs(position.liqPrice - position.markPrice)  / position.markPrice) < 0.005)
-    }
+  return '-'
+}
 
-    const display = key => {
-      const v = props.position[key]
-      if (isNaN(parseFloat(props.position.entryPrice)) || v === null || v === undefined || isNaN(v)) return '-'
+const isDanger = position => {
+  if (!position.liqPrice) return
 
-      const frac = (['size', '$$unrealized'].includes(key) || Math.abs(v) >= 100) ? 2 : 4
-      return v.toLocaleString(undefined, {
-        maximumFractionDigits: frac,
-        minimumFractionDigits: frac,
-      })
-    }
+  return position.$$unrealized < 0 && ((Math.abs(position.liqPrice - position.markPrice)  / position.markPrice) < 0.005)
+}
 
-    return {
-      isDanger,
-      badgeSummary,
-      display,
-    }
-  },
+const display = key => {
+  const v = props.position[key]
+  if (isNaN(parseFloat(props.position.entryPrice)) || v === null || v === undefined || isNaN(v)) return '-'
+
+  const frac = (['size', '$$unrealized'].includes(key) || Math.abs(v) >= 100) ? 2 : 4
+  return v.toLocaleString(undefined, {
+    maximumFractionDigits: frac,
+    minimumFractionDigits: frac,
+  })
 }
 </script>
 

@@ -8,63 +8,53 @@
           toast.type || 'success',
           toast.handler ? 'cursor-pointer' : '',
         ]">
-        <div class="html" v-html="$translate(html)"/>
+        <div class="html" v-html="helpers.translate(html)"/>
         <div
           v-if="toast.action.label"
           @click="onClickToastHandler"
           class="action"
-          v-html="$translate(toast.action.label)"
+          v-html="helpers.translate(toast.action.label)"
         />
       </div>
     </transition>
   </div>
 </template>
 
-<script>
-import useGlobalHooks from '@/hooks/global-hooks'
+<script setup>
 import { computed, onMounted, ref, watch } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const toastTimeout = ref(null)
+const toastTimeout = ref(null)
 
-    const toast = computed(() => store.getters.toast || {})
+const toast = computed(() => store.getters.toast || {})
 
-    const html = computed(() => toast.value.html)
+const html = computed(() => toast.value.html)
 
-    const onClickToastHandler = () => {
-      if (!toast.value.action || !toast.value.action.handler) return
+const onClickToastHandler = () => {
+  if (!toast.value.action || !toast.value.action.handler) return
 
-      toast.value.action.handler()
-      store.commit('setToast', null)
-    }
-
-    const checkAndCloseToast = () => {
-      if (toastTimeout.value) {
-        clearTimeout(toastTimeout.value)
-      }
-
-      if (toast.value.duration < 0) return
-
-      toastTimeout.value = setTimeout(() => store.commit('setToast', null), toast.value.duration || 3000)
-    }
-
-    watch(
-      () => toast.value.show,
-      checkAndCloseToast,
-    )
-
-    onMounted(checkAndCloseToast)
-
-    return {
-      toast,
-      html,
-      onClickToastHandler,
-    }
-  },
+  toast.value.action.handler()
+  store.commit('setToast', null)
 }
+
+const checkAndCloseToast = () => {
+  if (toastTimeout.value) {
+    clearTimeout(toastTimeout.value)
+  }
+
+  if (toast.value.duration < 0) return
+
+  toastTimeout.value = setTimeout(() => store.commit('setToast', null), toast.value.duration || 3000)
+}
+
+watch(
+  () => toast.value.show,
+  checkAndCloseToast,
+)
+
+onMounted(checkAndCloseToast)
 </script>
 
 <style lang="scss">

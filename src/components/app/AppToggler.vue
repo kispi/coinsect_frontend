@@ -10,23 +10,18 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    modelValue: null,
-    small: Boolean,
-  },
-  setup(props ,{ emit }) {
-    const onClickCheckbox = () => {
-      const newVal = props.modelValue !== true
-      emit('update:modelValue', newVal)
-      emit('change', newVal)
-    }
+<script setup>
+const props = defineProps({
+  modelValue: null,
+  small: Boolean,
+})
 
-    return {
-      onClickCheckbox,
-    }
-  },
+const emit = defineEmits(['update:modelValue', 'change'])
+
+const onClickCheckbox = () => {
+  const newVal = props.modelValue !== true
+  emit('update:modelValue', newVal)
+  emit('change', newVal)
 }
 </script>
 

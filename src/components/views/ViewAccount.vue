@@ -11,25 +11,17 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import useGlobalHooks from '@/hooks/global-hooks'
 import { computed, onMounted } from 'vue'
 
-export default {
-  setup() {
-    const { store } = useGlobalHooks()
+const { store } = useGlobalHooks()
 
-    const data = computed(() => store.getters.accountStats)
+const data = computed(() => store.getters.accountStats)
 
-    onMounted(() => {
-      store.dispatch('loadAccountStats')
-    })
-
-    return {
-      data,
-    }
-  },
-}
+onMounted(() => {
+  store.dispatch('loadAccountStats')
+})
 </script>
 
 <style lang="scss" scoped>

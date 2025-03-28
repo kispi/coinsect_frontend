@@ -1,35 +1,35 @@
 <template>
   <div class="modal-position-notify-change">
     <ModalHeader
-      :title="$translate('MODAL_POSITION_NOTIFY_CHANGE').replace('%s', payload.name)"
+      :title="helpers.translate('MODAL_POSITION_NOTIFY_CHANGE').replace('%s', payload.name)"
       @close="$emit('close')"
     />
     <div class="body">
       <div
         class="description"
-        v-html="$translate('MODAL_POSITION_NOTIFY_CHANGE_DESC').replace('%s', payload.name)"
+        v-html="helpers.translate('MODAL_POSITION_NOTIFY_CHANGE_DESC').replace('%s', payload.name)"
       />
       <div class="fields">
         <div class="form-control">
-          <label>{{ $translate('ENTRY_PRICE') }}</label>
+          <label>{{ helpers.translate('ENTRY_PRICE') }}</label>
           <input v-model="payload.entryPrice" placeholder="EX:) 40000">
         </div>
         <div class="form-control">
-          <label>{{ $translate('LIQ_PRICE') }}</label>
+          <label>{{ helpers.translate('LIQ_PRICE') }}</label>
           <input v-model="payload.liqPrice" placeholder="EX:) 30000">
         </div>
         <div class="form-control">
-          <label>{{ $translate('SIZE') }} {{ $translate('SIZE_DESC') }}</label>
+          <label>{{ helpers.translate('SIZE') }} {{ helpers.translate('SIZE_DESC') }}</label>
           <input v-model="payload.size" placeholder="EX:) 5, -3...">
         </div>
         <div class="form-control">
-          <label>{{ $translate('CONTRACT') }}</label>
+          <label>{{ helpers.translate('CONTRACT') }}</label>
           <input v-model="payload.contract" placeholder="EX:) BTCUSDT, ETHUSDT...">
         </div>
         <div
           @click="payload.onAir = !payload.onAir"
           class="form-control flex-row items-center no-select">
-          <label class="m-0 cursor-pointer">{{ $translate('ON_AIR') }}</label>
+          <label class="m-0 cursor-pointer">{{ helpers.translate('ON_AIR') }}</label>
           <AppToggler v-model="payload.onAir" class="flex-wrap no-touch"/>
         </div>
       </div>
@@ -39,61 +39,60 @@
         <button
           class="btn btn-default"
           @click="$emit('close')"
-          v-html="$translate('CANCEL')"
+          v-html="helpers.translate('CANCEL')"
         />
         <button
           class="btn btn-primary"
           @click="onClickSubmit"
-          v-html="$translate('CONFIRM')"
+          v-html="helpers.translate('CONFIRM')"
         />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: ['options'],
-  setup(props, { emit }) {
-    const { helpers, store } = useGlobalHooks()
-
-    const payload = ref({})
-
-    const onClickSubmit = async () => {
-      const o = JSON.parse(JSON.stringify(payload.value))
-      try {
-        ['entryPrice', 'liqPrice', 'size'].forEach(key => o[key] = parseFloat(o[key]))
-        await helpers.http().post('contents/real_time_positions/change_notifications', o)
-        emit('close')
-        helpers.toast.success('TOAST_POSITION_EDIT_REQUESTED')
-      } catch (e) {
-        helpers.toast.error(e.data.message)
-      }
-    }
-
-    const initPayload = () => {
-      const p = props.options.position
-      payload.value.id = p.id
-      payload.value.name = p.name
-      payload.value.entryPrice = p.entryPrice
-      payload.value.liqPrice = p.liqPrice
-      payload.value.size = p.size
-      payload.value.contract = p.contract || 'BTCUSDT'
-      payload.value.token = store.getters.chatUser.token
-      payload.value.onAir = true
-    }
-
-    onMounted(initPayload)
-
-    return {
-      payload,
-      onClickSubmit,
-    }
+const props = defineProps({
+  options: {
+    type: Object,
+    required: true,
   },
+})
+
+const emit = defineEmits(['close'])
+
+const { helpers, store } = useGlobalHooks()
+
+const payload = ref({})
+
+const onClickSubmit = async () => {
+  const o = JSON.parse(JSON.stringify(payload.value))
+  try {
+    ['entryPrice', 'liqPrice', 'size'].forEach(key => o[key] = parseFloat(o[key]))
+    await helpers.http().post('contents/real_time_positions/change_notifications', o)
+    emit('close')
+    helpers.toast.success('TOAST_POSITION_EDIT_REQUESTED')
+  } catch (e) {
+    helpers.toast.error(e.data.message)
+  }
 }
+
+const initPayload = () => {
+  const p = props.options.position
+  payload.value.id = p.id
+  payload.value.name = p.name
+  payload.value.entryPrice = p.entryPrice
+  payload.value.liqPrice = p.liqPrice
+  payload.value.size = p.size
+  payload.value.contract = p.contract || 'BTCUSDT'
+  payload.value.token = store.getters.chatUser.token
+  payload.value.onAir = true
+}
+
+onMounted(initPayload)
 </script>
 
 <style lang="scss" scoped>

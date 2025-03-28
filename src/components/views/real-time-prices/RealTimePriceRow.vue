@@ -13,12 +13,12 @@
         <div v-if="ticker.$$caution === 'CAUTION'" class="badge-caution">유</div>
         <div
           :ref="el => w.$$el = el"
-          @mouseover="$tooltip.show({
+          @mouseover="helpers.tooltip.show({
             id: 'tooltipWallet',
             showAbove: w.$$el,
             text: `TOOLTIP_BLOCKED_${w.type}`,
           })"
-          @mouseleave="$tooltip.hide('tooltipWallet')"
+          @mouseleave="helpers.tooltip.hide('tooltipWallet')"
           class="badge-caution no-wallet"
           :key="w"
           v-for="w in [

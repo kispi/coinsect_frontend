@@ -16,13 +16,13 @@
         @click="menuHandlers.goToPlatform"
         class="menu-item"
         :class="{'disabled': !position.link}">
-        <i class="fal fa-home"/>{{ $translate('GO_TO_PLATFORM') }}
+        <i class="fal fa-home"/>{{ helpers.translate('GO_TO_PLATFORM') }}
       </div>
       <div
         v-if="position.editable"
         @click="menuHandlers.requestEdit"
         class="menu-item">
-        <i class="fal fa-pencil"/>{{ $translate('REQUEST_EDIT') }}
+        <i class="fal fa-pencil"/>{{ helpers.translate('REQUEST_EDIT') }}
       </div>
     </div>
   </div>

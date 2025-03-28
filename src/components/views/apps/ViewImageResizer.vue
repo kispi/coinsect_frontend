@@ -61,42 +61,29 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import ImageUploader from '@/components/app/ImageUploader'
 import { ref } from 'vue'
 
-export default {
-  components: { ImageUploader },
-  setup() {
-    const payload = ref({})
+const payload = ref({})
 
-    const formats = ref(['jpg', 'png', 'webp'].map(key => ({ key, $$selected: key === 'jpg' })))
+const formats = ref(['jpg', 'png', 'webp'].map(key => ({ key, $$selected: key === 'jpg' })))
 
-    const resizeOption = ref({
-      width: 1920,
-      format: 'jpg',
-      quality: 0.75,
-      reSample: 2,
-    })
+const resizeOption = ref({
+  width: 1920,
+  format: 'jpg',
+  quality: 0.75,
+  reSample: 2,
+})
 
-    const onClickImage = () => {
-      window.open(payload.value.src, '_blank', 'noreferrer')
-    }
+const onClickImage = () => {
+  window.open(payload.value.src, '_blank', 'noreferrer')
+}
 
-    const asMB = byte => {
-      if (!byte) return
+const asMB = byte => {
+  if (!byte) return
 
-      return `${(Math.ceil(byte / 1048576 * 100) / 100).toLocaleString()} MB`
-    }
-
-    return {
-      payload,
-      formats,
-      resizeOption,
-      asMB,
-      onClickImage,
-    }
-  },
+  return `${(Math.ceil(byte / 1048576 * 100) / 100).toLocaleString()} MB`
 }
 </script>
 

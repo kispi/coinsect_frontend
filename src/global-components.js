@@ -3,7 +3,6 @@ import AdSense from '@/components/app/AdSense'
 import AdaptiveLayout from '@/components/app/AdaptiveLayout'
 import AppBanner from '@/components/app/AppBanner'
 import AppCheckbox from '@/components/app/AppCheckbox'
-import AppDatePicker from '@/components/app/AppDatePicker'
 import AppDraggable from '@/components/app/AppDraggable'
 import AppDropdown from '@/components/app/AppDropdown'
 import AppImg from '@/components/app/AppImg'
@@ -34,7 +33,6 @@ import ExchangeBanner from '@/components/common/ExchangeBanner'
 import ModalHeader from '@/components/modals/common-components/ModalHeader'
 import CPortfolio from '@/components/common/c-portfolio/CPortfolio'
 import CPosition from '@/components/common/c-position/CPosition'
-import LongShortRatio from '@/components/common/LongShortRatio'
 import MetaCard from '@/components/common/MetaCard'
 import MultiCharts from '@/components/common/MultiCharts'
 import OrderbookBybit from '@/components/common/orderbooks/OrderbookBybit'
@@ -60,7 +58,6 @@ const useGlobalComponents = app => {
     .component('AdaptiveLayout', AdaptiveLayout)
     .component('AppBanner', AppBanner)
     .component('AppCheckbox', AppCheckbox)
-    .component('AppDatePicker', AppDatePicker)
     .component('AppDraggable', AppDraggable)
     .component('AppDropdown', AppDropdown)
     .component('AppImg', AppImg)
@@ -90,7 +87,6 @@ const useGlobalComponents = app => {
     .component('CPortfolio', CPortfolio)
     .component('CPosition', CPosition)
     .component('ExchangeBanner', ExchangeBanner)
-    .component('LongShortRatio', LongShortRatio)
     .component('MetaCard', MetaCard)
     .component('MultiCharts', MultiCharts)
     .component('ModalHeader', ModalHeader)

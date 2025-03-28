@@ -1,11 +1,11 @@
 <template>
   <div
-    v-if="$store.getters.realTimePositions"
+    v-if="store.getters.realTimePositions"
     class="view-real-time-positions">
     <div
       v-if="(positions.editable || []).length === 0"
       class="empty">
-      {{ $translate('RTP_EMPTY') }}
+      {{ helpers.translate('RTP_EMPTY') }}
     </div>
     <div
       v-else
@@ -22,10 +22,10 @@
     <RouterLink
       to="/"
       class="btn btn-primary m-t-8 p-16 display-block">
-      {{ $translate('GO_TO_MAIN') }}
+      {{ helpers.translate('GO_TO_MAIN') }}
     </RouterLink>
     <div class="description">
-      <div :key="num" v-for="num in $helpers.numArray(6)">* {{ $translate(`RTP_DISCLAIMER_${num + 1}`)}}</div>
+      <div :key="num" v-for="num in helpers.numArray(6)">* {{ helpers.translate(`RTP_DISCLAIMER_${num + 1}`)}}</div>
     </div>
     <div
       v-if="positions.nonEditable.length > 0"
@@ -33,7 +33,7 @@
       <RouterLink
         to="/contents/public-treasury"
         class="text-underline c-brand-primary display-block m-b-8">
-        {{ $translate('BIG_ENTITIES') }}
+        {{ helpers.translate('BIG_ENTITIES') }}
       </RouterLink>
       <div class="positions">
         <CPosition
@@ -46,21 +46,16 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted } from 'vue'
 import useRealTimePosition from '@/hooks/real-time-position'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { positions, callApi } = useRealTimePosition()
+const { helpers, store } = useGlobalHooks()
 
-    onMounted(callApi)
+const { positions, callApi } = useRealTimePosition()
 
-    return {
-      positions,
-    }
-  },
-}
+onMounted(callApi)
 </script>
 
 <style lang="scss" scoped>

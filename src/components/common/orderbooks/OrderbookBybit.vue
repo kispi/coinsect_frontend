@@ -49,89 +49,81 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import useBybit from '@/hooks/websockets/bybit'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    market: String,
-    depth: {
-      type: Number,
-      default: 8,
-    }
-  },
-  setup(props, { emit }) {
-    const { store } = useGlobalHooks()
+const props = defineProps({
+  market: String,
+  depth: {
+    type: Number,
+    default: 8,
+  }
+})
 
-    const orderbook = computed(() => store.getters.orderbooks.bybit[props.market])
+const emit = defineEmits(['load-orderbook'])
 
-    const instrument = computed(() => store.getters.instruments.bybit[props.market])
+const { store } = useGlobalHooks()
 
-    const relativeWidth = size => `${size * 100 / orderbook.value.$$biggestSize}%`
+const orderbook = computed(() => store.getters.orderbooks.bybit[props.market])
 
-    const { subscribe } = useBybit()
+const instrument = computed(() => store.getters.instruments.bybit[props.market])
 
-    const connection = ref({
-      orderbook: null,
-      instrument: null,
-    })
+const relativeWidth = size => `${size * 100 / orderbook.value.$$biggestSize}%`
 
-    const numFrac = ref(0)
+const { subscribe } = useBybit()
 
-    const displayPrice = price => {
-      // 그래도 뭐 참조가 매번 재계산보단 빠르겠지
-      if (!numFrac.value) numFrac.value = ((price || '').split('.')[1] || '').length
+const connection = ref({
+  orderbook: null,
+  instrument: null,
+})
 
-      return (parseFloat(price) || 0).toLocaleString(undefined, {
-        maximumFractionDigits: numFrac.value,
-        minimumFractionDigits: numFrac.value,
-      })
-    }
+const numFrac = ref(0)
 
-    const init = () => {
-      subscribe({ type: 'orderbook.50', markets: [props.market] }).then(conn => connection.value.orderbook = conn)
-      subscribe({ type: 'tickers', markets: [props.market] }).then(conn => connection.value.instrument = conn)
-    }
+const displayPrice = price => {
+  // 그래도 뭐 참조가 매번 재계산보단 빠르겠지
+  if (!numFrac.value) numFrac.value = ((price || '').split('.')[1] || '').length
 
-    onMounted(init)
-
-    onUnmounted(() => {
-      store.commit('setOrderbook', {
-        exchange: 'bybit',
-        market: props.market,
-        orderbook: null,
-      })
-
-      store.commit('setInstrument', {
-        exchange: 'bybit',
-        market: props.market,
-        instrument: null,
-      })
-
-      connection.value.orderbook.close()
-      connection.value.instrument.close()
-    })
-
-    watch([
-      () => orderbook.value,
-      () => instrument.value,
-    ],
-    ([a, b]) => {
-      if (a && b) {
-        emit('load-orderbook')
-      }
-    })
-
-    return {
-      orderbook,
-      instrument,
-      relativeWidth,
-      displayPrice,
-    }
-  },
+  return (parseFloat(price) || 0).toLocaleString(undefined, {
+    maximumFractionDigits: numFrac.value,
+    minimumFractionDigits: numFrac.value,
+  })
 }
+
+const init = () => {
+  subscribe({ type: 'orderbook.50', markets: [props.market] }).then(conn => connection.value.orderbook = conn)
+  subscribe({ type: 'tickers', markets: [props.market] }).then(conn => connection.value.instrument = conn)
+}
+
+onMounted(init)
+
+onUnmounted(() => {
+  store.commit('setOrderbook', {
+    exchange: 'bybit',
+    market: props.market,
+    orderbook: null,
+  })
+
+  store.commit('setInstrument', {
+    exchange: 'bybit',
+    market: props.market,
+    instrument: null,
+  })
+
+  connection.value.orderbook.close()
+  connection.value.instrument.close()
+})
+
+watch([
+  () => orderbook.value,
+  () => instrument.value,
+],
+([a, b]) => {
+  if (a && b) {
+    emit('load-orderbook')
+  }
+})
 </script>
 
 <style lang="scss" scoped>

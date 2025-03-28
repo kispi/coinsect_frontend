@@ -9,22 +9,17 @@
   </div>
 </template>
 
-<script>
-/**
- * boundaryWidth를 기준으로, '이상'이 되면 flex-row로 (가로), '미만'은 block으로 (세로) 처리해주는 컴포넌트.
- */
-export default {
-  props: {
-    boundaryWidth: {
-      type: Number,
-      default: 768, // 480, 768, 992, 1200 (0인 경우 항상 가로)
-    },
-    gap: {
-      type: Number,
-      default: 0, // 0, 4, 8, ... , 80
-    },
+<script setup>
+defineProps({
+  boundaryWidth: {
+    type: Number,
+    default: 768, // 480, 768, 992, 1200 (0인 경우 항상 가로)
   },
-}
+  gap: {
+    type: Number,
+    default: 0, // 0, 4, 8, ... , 80
+  },
+})
 </script>
 
 <style lang="scss">

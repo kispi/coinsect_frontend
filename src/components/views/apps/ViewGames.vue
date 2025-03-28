@@ -13,7 +13,7 @@
         :key="game.title"
         v-for="game in games">
         <div class="overlay">
-          <div class="title" v-html="$translate(game.title)"/>
+          <div class="title" v-html="helpers.translate(game.title)"/>
         </div>
       </div>
     </div>
@@ -21,19 +21,23 @@
 </template>
 
 <script setup>
+import { markRaw } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
+import GameColorSense from '@/components/common/games/GameColorSense'
+import GameFlipCoin from '@/components/common/games/GameFlipCoin'
+import GameLots from '@/components/common/games/GameLots'
 
 const { helpers } = useGlobalHooks()
 
 const games = [{
   title: 'GAME_LOTS',
-  component: 'GameLots',
+  component: markRaw(GameLots),
 }, {
   title: 'GAME_FLIP_COIN',
-  component: 'GameFlipCoin',
+  component: markRaw(GameFlipCoin),
 }, {
   title: 'GAME_COLOR_SENSE',
-  component: 'GameColorSense',
+  component: markRaw(GameColorSense),
 }]
 </script>
 

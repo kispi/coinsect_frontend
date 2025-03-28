@@ -4,34 +4,26 @@
     class="section-news m-b-16">
     <div class="hor-scroll">
       <a
-        @click.prevent="$helpers.openLink(item.url)"
+        @click.prevent="helpers.openLink(item.url)"
         class="item-news lines-1"
         :class="{'best': item.is_best}"
         :href="item.url"
         :key="item.id"
         v-for="item in news">
-        <div class="timestamp">{{ $helpers.dayjs((item || {}).created_at).format('HH:mm') }}</div>
+        <div class="timestamp">{{ helpers.dayjs((item || {}).created_at).format('HH:mm') }}</div>
         <div class="title lines-1">{{ (item || {}).title }}</div>
       </a>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup(props) {
-    const { store } = useGlobalHooks()
-    
-    const news = computed(() => (store.getters.dashboardsMain || {}).news)
+const { helpers, store } = useGlobalHooks()
 
-    return {
-      news,
-    }
-  },
-}
+const news = computed(() => (store.getters.dashboardsMain || {}).news)
 </script>
 
 <style lang="scss" scoped>

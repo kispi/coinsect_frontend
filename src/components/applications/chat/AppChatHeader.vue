@@ -3,59 +3,51 @@
     <div class="chat-settings">
       <div
         class="clickable-icon-wrapper"
-        @click="$modal.custom({ component: 'ModalChatSettings' })">
+        @click="helpers.modal.custom({ component: 'ModalChatSettings' })">
         <i class="fal fa-cog"/>
       </div>
     </div>
     <div
-      v-if="$store.getters.chatUser"
+      v-if="store.getters.chatUser"
       class="profile">
-      <UserSymbol :user="$store.getters.chatUser" class="m-r-4"/>
+      <UserSymbol :user="store.getters.chatUser" class="m-r-4"/>
       <div class="flex-row items-center">
         <div
           class="nickname lines-1"
           :class="{
-            'c-price-up-bybit': ($store.getters.chatUser.profile.sentiment || {}).type === 'long',
-            'c-price-down-bybit': ($store.getters.chatUser.profile.sentiment || {}).type === 'short',
+            'c-price-up-bybit': (store.getters.chatUser.profile.sentiment || {}).type === 'long',
+            'c-price-down-bybit': (store.getters.chatUser.profile.sentiment || {}).type === 'short',
           }"
-          @click="$modal.custom({ component: 'ModalChatSettings' })"
-          v-html="$store.getters.chatUser.profile.nickname"
+          @click="helpers.modal.custom({ component: 'ModalChatSettings' })"
+          v-html="store.getters.chatUser.profile.nickname"
         />
-        <BadgeToken v-if="!$store.getters.me" :token="$store.getters.chatUser.token" class="m-l-4"/>
+        <BadgeToken v-if="!store.getters.me" :token="store.getters.chatUser.token" class="m-l-4"/>
       </div>
     </div>
     <div class="chat-settings">
       <div
         class="clickable-icon-wrapper chat-folded"
-        @click="$store.commit('setSettings', { chatFolded: true })">
+        @click="store.commit('setSettings', { chatFolded: true })">
         <i class="fal fa-minus"/>
       </div>
       <div
         class="clickable-icon-wrapper chat-size"
         @click="toggleChatSizeMax">
-        <i class="fal" :class="$store.getters.settings.chatSizeMax ? 'fa-clone' : 'fa-square'"/>
+        <i class="fal" :class="store.getters.settings.chatSizeMax ? 'fa-clone' : 'fa-square'"/>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const toggleChatSizeMax = () => {
-      const appChatContainer = document.querySelector('.app-chat-container')
-      if (appChatContainer) appChatContainer.style.height = ''
-      store.commit('setSettings', { chatSizeMax: !store.getters.settings.chatSizeMax })
-    }
-
-    return {
-      toggleChatSizeMax,
-    }
-  },
+const toggleChatSizeMax = () => {
+  const appChatContainer = document.querySelector('.app-chat-container')
+  if (appChatContainer) appChatContainer.style.height = ''
+  store.commit('setSettings', { chatSizeMax: !store.getters.settings.chatSizeMax })
 }
 </script>
 

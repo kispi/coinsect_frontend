@@ -9,7 +9,7 @@
   >
 </template>
 
-<script>
+<script setup>
 /**
  * background-image + background-size: cover 조합 대신 img 태그를 이용해 cover를 처리하는 컴포넌트.
  * 
@@ -18,27 +18,20 @@
  */
 import fallbackImage from '@/assets/images/no-image.png'
 
-export default {
-  props: {
-    src: {
-      type: String,
-      default: fallbackImage,
-    },
-    fit: {
-      type: String,
-      default: 'cover',
-    },
-    alt: {
-      type: String,
-      default: '김치 프리미엄, 김프, 역프 및 암호화폐 실시간 시세 - 코인충',
-    },
+defineProps({
+  src: {
+    type: String,
+    default: fallbackImage,
   },
-  setup() {
-    return {
-      fallbackImage,
-    }
+  fit: {
+    type: String,
+    default: 'cover',
   },
-}
+  alt: {
+    type: String,
+    default: '김치 프리미엄, 김프, 역프 및 암호화폐 실시간 시세 - 코인충',
+  },
+})
 </script>
 
 <style lang="scss" scoped>

@@ -80,106 +80,88 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from 'vue'
 import ImageUploader from '@/components/app/ImageUploader'
 import rekognitionService from '@/services/rekognition'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: { ImageUploader },
-  setup() {
-    const { helpers, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const url = ref(null)
+const url = ref(null)
 
-    const data = ref(null)
+const data = ref(null)
 
-    const testing = ref(null)
+const testing = ref(null)
 
-    const reset = () => {
-      url.value = null
-      data.value = null
-    }
-
-    const isGraphic = row => {
-      if (row.Confidence < 90) return
-
-      return ['Nudity', 'Sexual', 'Gore', 'Bodies', 'Corpses'].some(word => (row.Name || row.ParentName || '').includes(word))
-    }
-
-    const testset = ref(null)
-
-    const onPaste = e => {
-      helpers.logic.onPasteClipboardImage(e, resultUrl => {
-        url.value = resultUrl
-        if (!url.value) return
-
-        onUploadFile({
-          src: resultUrl,
-          url: resultUrl,
-        })
-      })
-
-      setTimeout(() => {
-        if (e.target.value) {
-          url.value = e.target.value
-          onUploadFile({ src: url.value, url: url.value })
-        }
-      })
-    }
-
-    const onEnter = e => {
-      setTimeout(() => {
-        url.value = e.target.value
-
-        if (e.key === 'Enter') onUploadFile({ src: url.value, url: url.value })
-      })
-    }
-
-    const onUploadFile = async e => {
-      url.value = e.url
-      helpers.dom.scrollToTop()
-      try {
-        testing.value = true
-        const { ModerationLabels } = await rekognitionService.imageModeration.create({
-          url: url.value,
-          token: store.getters.chatUser.token,
-        })
-        data.value = ModerationLabels
-      } catch (e) {
-        helpers.toast.error('jpeg, jpg, png 형식의 이미지만 지원됩니다')
-      } finally {
-        testing.value = false
-      }
-    }
-
-    const onClickImage = () => {
-      window.open(url.value, '_blank', 'noreferrer')
-    }
-
-    const loadExamples = async () => {
-      try {
-        testset.value = await rekognitionService.imageModeration.examples()
-      } catch (e) {}
-    }
-
-    onMounted(loadExamples)
-
-    return {
-      url,
-      data,
-      testing,
-      testset,
-      reset,
-      onUploadFile,
-      onClickImage,
-      isGraphic,
-      onEnter,
-      onPaste,
-    }
-  },
+const reset = () => {
+  url.value = null
+  data.value = null
 }
+
+const isGraphic = row => {
+  if (row.Confidence < 90) return
+
+  return ['Nudity', 'Sexual', 'Gore', 'Bodies', 'Corpses'].some(word => (row.Name || row.ParentName || '').includes(word))
+}
+
+const testset = ref(null)
+
+const onPaste = e => {
+  helpers.logic.onPasteClipboardImage(e, resultUrl => {
+    url.value = resultUrl
+    if (!url.value) return
+
+    onUploadFile({
+      src: resultUrl,
+      url: resultUrl,
+    })
+  })
+
+  setTimeout(() => {
+    if (e.target.value) {
+      url.value = e.target.value
+      onUploadFile({ src: url.value, url: url.value })
+    }
+  })
+}
+
+const onEnter = e => {
+  setTimeout(() => {
+    url.value = e.target.value
+
+    if (e.key === 'Enter') onUploadFile({ src: url.value, url: url.value })
+  })
+}
+
+const onUploadFile = async e => {
+  url.value = e.url
+  helpers.dom.scrollToTop()
+  try {
+    testing.value = true
+    const { ModerationLabels } = await rekognitionService.imageModeration.create({
+      url: url.value,
+      token: store.getters.chatUser.token,
+    })
+    data.value = ModerationLabels
+  } catch (e) {
+    helpers.toast.error('jpeg, jpg, png 형식의 이미지만 지원됩니다')
+  } finally {
+    testing.value = false
+  }
+}
+
+const onClickImage = () => {
+  window.open(url.value, '_blank', 'noreferrer')
+}
+
+const loadExamples = async () => {
+  try {
+    testset.value = await rekognitionService.imageModeration.examples()
+  } catch (e) {}
+}
+
+onMounted(loadExamples)
 </script>
 
 <style lang="scss" scoped>

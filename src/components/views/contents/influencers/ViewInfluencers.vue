@@ -7,7 +7,7 @@
         :key="item.id"
         v-for="item in items">
         <div class="image-container">
-          <AppImg v-if="(item.images || []).length > 0" :src="$helpers.withCdn(item.images[0].key)" class="overlay"/>
+          <AppImg v-if="(item.images || []).length > 0" :src="helpers.withCdn(item.images[0].key)" class="overlay"/>
         </div>
         <div class="influencer-name">{{ item.name }}</div>
       </RouterLink>
@@ -15,27 +15,19 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import useGlobalHooks from '@/hooks/global-hooks'
 import { computed, onMounted, onServerPrefetch } from 'vue'
 
-export default {
-  setup() {
-    const { store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const items = computed(() => (store.getters.influencers || {}).data || [])
+const items = computed(() => (store.getters.influencers || {}).data || [])
 
-    onMounted(() => {
-      store.dispatch('loadInfluencers')
-    })
+onMounted(() => {
+  store.dispatch('loadInfluencers')
+})
 
-    onServerPrefetch(() => store.dispatch('loadInfluencers'))
-
-    return {
-      items,
-    }
-  },
-}
+onServerPrefetch(() => store.dispatch('loadInfluencers'))
 </script>
 
 <style lang="scss" scoped>

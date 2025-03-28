@@ -1,6 +1,6 @@
 <template>
   <div class="modal-add-portfolio">
-    <ModalHeader :title="$translate('ADD_PORTFOLIO')" @close="$emit('close')"/>
+    <ModalHeader :title="helpers.translate('ADD_PORTFOLIO')" @close="$emit('close')"/>
     <div class="p-16">
       <div class="form-control">
         <label>거래소</label>
@@ -31,122 +31,110 @@
         <button
           @click="$emit('close')"
           class="btn btn-default"
-          v-html="$translate('CANCEL')"
+          v-html="helpers.translate('CANCEL')"
         />
         <button
           @click="addPortfolioItem"
           class="btn btn-primary"
           :disabled="disabled"
-          v-html="$translate('CONFIRM')"
+          v-html="helpers.translate('CONFIRM')"
         />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup(_, { emit }) {
-    const { helpers, store } = useGlobalHooks()
+const emit = defineEmits(['close'])
 
-    const exchanges = ref([])
+const { helpers, store } = useGlobalHooks()
 
-    const sortedMarkets = ref([])
+const exchanges = ref([])
 
-    const disabled = computed(() => !payload.value.averagePurchasePrice || !payload.value.amount)
+const sortedMarkets = ref([])
 
-    const populateMarkets = () => {
-      const x = payload.value.exchange
-      sortedMarkets.value = JSON.parse(JSON.stringify(store.getters.markets[x].map(o => x === 'upbit' ? o.market : o)))
-        .sort((a, b) => a > b ? 1 : -1).map(key => ({ key }))
-    }
+const disabled = computed(() => !payload.value.averagePurchasePrice || !payload.value.amount)
 
-    const payload = ref({
-      averagePurchasePrice: null,
-      amount: null,
-      market: null,
-      exchange: 'upbit',
-    })
-
-    const onSelectExchange = o => {
-      exchanges.value.forEach(x => {
-        x.$$selected = x.key === o.key
-        if (x.$$selected) payload.value.exchange = x.key
-      })
-    }
-
-    const onSelectMarket = o => {
-      sortedMarkets.value.forEach(x => {
-        x.$$selected = x.key === o.key
-        if (x.$$selected) payload.value.market = x.key
-      })
-    }
-
-    const addPortfolioItem = () => {
-      if (disabled.value) return
-
-      const portfolio = store.getters.settings.portfolio
-      let found, errMsg
-      if (payload.value.exchange === 'upbit') {
-        found = store.getters.markets.upbit.find(o => o.market === payload.value.market)
-        if (!found) errMsg = `마켓 '${payload.value.market}'는 업비트에 존재하지 않습니다`
-      }
-
-      if (payload.value.exchange === 'binance') {
-        found = store.getters.markets.binance.find(market => market === payload.value.market)
-        payload.value.averagePurchasePrice *= store.getters.usdKrw
-        if (!found) errMsg = `마켓 '${payload.value.market}'는 바이낸스에 존재하지 않습니다`
-      }
-
-      if (errMsg) {
-        helpers.toast.error(errMsg)
-        return
-      }
-
-      if (!payload.value.averagePurchasePrice) {
-        helpers.toast.error('매수평균단가를 입력하세요')
-        return
-      }
-
-      if (!payload.value.amount) {
-        helpers.toast.error('보유수량을 입력하세요')
-        return
-      }
-
-      payload.value.market = payload.value.market.toUpperCase()
-      if (!portfolio[payload.value.exchange]) portfolio[payload.value.exchange] = []
-      const idx = portfolio[payload.value.exchange].findIndex(o => o.market === payload.value.market)
-      if (idx >= 0) portfolio[payload.value.exchange][idx] = payload.value
-      else portfolio[payload.value.exchange].push(payload.value)
-
-      store.commit('setSettings', { portfolio })
-      emit('close')
-    }
-
-    watch(
-      () => payload.value.exchange,
-      populateMarkets,
-    )
-
-    onMounted(() => {
-      exchanges.value = ['upbit', 'binance'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) }))
-      populateMarkets()
-    })
-
-    return {
-      disabled,
-      exchanges,
-      sortedMarkets,
-      payload,
-      onSelectExchange,
-      onSelectMarket,
-      addPortfolioItem,
-    }
-  },
+const populateMarkets = () => {
+  const x = payload.value.exchange
+  sortedMarkets.value = JSON.parse(JSON.stringify(store.getters.markets[x].map(o => x === 'upbit' ? o.market : o)))
+    .sort((a, b) => a > b ? 1 : -1).map(key => ({ key }))
 }
+
+const payload = ref({
+  averagePurchasePrice: null,
+  amount: null,
+  market: null,
+  exchange: 'upbit',
+})
+
+const onSelectExchange = o => {
+  exchanges.value.forEach(x => {
+    x.$$selected = x.key === o.key
+    if (x.$$selected) payload.value.exchange = x.key
+  })
+}
+
+const onSelectMarket = o => {
+  sortedMarkets.value.forEach(x => {
+    x.$$selected = x.key === o.key
+    if (x.$$selected) payload.value.market = x.key
+  })
+}
+
+const addPortfolioItem = () => {
+  if (disabled.value) return
+
+  const portfolio = store.getters.settings.portfolio
+  let found, errMsg
+  if (payload.value.exchange === 'upbit') {
+    found = store.getters.markets.upbit.find(o => o.market === payload.value.market)
+    if (!found) errMsg = `마켓 '${payload.value.market}'는 업비트에 존재하지 않습니다`
+  }
+
+  if (payload.value.exchange === 'binance') {
+    found = store.getters.markets.binance.find(market => market === payload.value.market)
+    payload.value.averagePurchasePrice *= store.getters.usdKrw
+    if (!found) errMsg = `마켓 '${payload.value.market}'는 바이낸스에 존재하지 않습니다`
+  }
+
+  if (errMsg) {
+    helpers.toast.error(errMsg)
+    return
+  }
+
+  if (!payload.value.averagePurchasePrice) {
+    helpers.toast.error('매수평균단가를 입력하세요')
+    return
+  }
+
+  if (!payload.value.amount) {
+    helpers.toast.error('보유수량을 입력하세요')
+    return
+  }
+
+  payload.value.market = payload.value.market.toUpperCase()
+  if (!portfolio[payload.value.exchange]) portfolio[payload.value.exchange] = []
+  const idx = portfolio[payload.value.exchange].findIndex(o => o.market === payload.value.market)
+  if (idx >= 0) portfolio[payload.value.exchange][idx] = payload.value
+  else portfolio[payload.value.exchange].push(payload.value)
+
+  store.commit('setSettings', { portfolio })
+  emit('close')
+}
+
+watch(
+  () => payload.value.exchange,
+  populateMarkets,
+)
+
+onMounted(() => {
+  exchanges.value = ['upbit', 'binance'].map(key => ({ key, img: require(`@/assets/images/${key}.svg`) }))
+  populateMarkets()
+})
 </script>
 
 <style lang="scss" scoped>

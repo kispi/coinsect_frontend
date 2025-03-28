@@ -6,56 +6,50 @@
         class="notification-item"
         :class="{'cursor-pointer': notification.link}"
         :key="notification.id"
-        v-for="notification in ($store.getters.notifications ||{}).data">
+        v-for="notification in (store.getters.notifications ||{}).data">
         <div class="notification-text" v-html="notification.text"/>
-        <div class="passed-time" v-html="$helpers.template.elapsedTime(notification.createdAt)"/>
+        <div class="passed-time" v-html="helpers.template.elapsedTime(notification.createdAt)"/>
       </div>
     </div>
     <div
-      v-if="(($store.getters.notifications || {}).data || []).length === 0"
+      v-if="((store.getters.notifications || {}).data || []).length === 0"
       class="empty">
       <i class="fal fa-bell"/>
-      <div>{{ $translate('EMPTY_NOTIFICATIONS') }}</div>
+      <div>{{ helpers.translate('EMPTY_NOTIFICATIONS') }}</div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup(_, { emit }) {
-    const { helpers, store, router } = useGlobalHooks()
+const emit = defineEmits(['close'])
 
-    const onClickNotificationItem = notification => {
-      if (!notification.link) return
+const { helpers, store, router } = useGlobalHooks()
 
-      if (notification.link.startsWith('http')) {
-        window.open(notification.link, '_blank')
-        emit('close')
-        return
-      }
+const onClickNotificationItem = notification => {
+  if (!notification.link) return
 
-      router.push(notification.link)
-      emit('close')
-    }
+  if (notification.link.startsWith('http')) {
+    window.open(notification.link, '_blank')
+    emit('close')
+    return
+  }
 
-    const init = async () => {
-      const list = (store.getters.notifications || {}).data || []
-      if (list.length > 0) {
-        helpers.localStorage.setMeta('lastNotificationId', (list[0]).id)
-      }
-      store.dispatch('loadNotifications')
-    }
-
-    onMounted(init)
-
-    return {
-      onClickNotificationItem,
-    }
-  },
+  router.push(notification.link)
+  emit('close')
 }
+
+const init = async () => {
+  const list = (store.getters.notifications || {}).data || []
+  if (list.length > 0) {
+    helpers.localStorage.setMeta('lastNotificationId', (list[0]).id)
+  }
+  store.dispatch('loadNotifications')
+}
+
+onMounted(init)
 </script>
 
 <style lang="scss" scoped>

@@ -7,7 +7,7 @@
       <div class="form-control">
         <label>연봉 (세전)</label>
         <input v-model="payload.preTax" type="number" step="10000">
-        <div class="pretty">{{ $helpers.number.pretty.korean(payload.preTax) }}원</div>
+        <div class="pretty">{{ helpers.number.pretty.korean(payload.preTax) }}원</div>
       </div>
       <div class="form-control">
         <label>인적공제 (명)</label>
@@ -19,16 +19,16 @@
           <i
             ref="refInfoNonTax"
             class="far fa-question-circle m-l-8"
-            @mouseover="$tooltip.show({
+            @mouseover="helpers.tooltip.show({
               id: 'tooltipNonTax',
               showAbove: refInfoNonTax,
               text: '월 식대 10만원이 대표적. 비과세 금액이 많을수록 과세표준이 적게 책정되지만, 인정받을 수 있는 한도가 있습니다.',
             })"
-            @mouseleave="$tooltip.hide('tooltipNonTax')"
+            @mouseleave="helpers.tooltip.hide('tooltipNonTax')"
           />
         </label>
         <input v-model="payload.nonTax" type="number">
-        <div class="pretty">{{ $helpers.number.pretty.korean(payload.nonTax) }}원</div>
+        <div class="pretty">{{ helpers.number.pretty.korean(payload.nonTax) }}원</div>
       </div>
     </div>
     <div class="reports" :class="{'show-detail': showDetail}">
@@ -47,12 +47,12 @@
               <i
                 v-if="item.tooltip"
                 :ref="el => item.$$ref = el"
-                @mouseover="$tooltip.show({
+                @mouseover="helpers.tooltip.show({
                   id: `tooltip${item.name}`,
                   showAbove: item.$$ref,
                   text: item.tooltip,
                 })"
-                @mouseleave="$tooltip.hide(`tooltip${item.name}`)"
+                @mouseleave="helpers.tooltip.hide(`tooltip${item.name}`)"
                 class="far fa-question-circle m-l-8"
               />
             </div>
@@ -74,140 +74,122 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import salaryReport from './salary-report'
 import salary2022 from './salary-2022.json'
 import SalaryAsCrypto from './SalaryAsCrypto'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: {
-    SalaryAsCrypto,
-  },
-  setup() {
-    const { store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const refInfoNonTax = ref(null)
+const refInfoNonTax = ref(null)
 
-    const payload = ref({
-      preTax: store.getters.settings.salary.preTax,
-      numFamily: store.getters.settings.salary.numFamily,
-      nonTax: store.getters.settings.salary.nonTax,
-    })
+const payload = ref({
+  preTax: store.getters.settings.salary.preTax,
+  numFamily: store.getters.settings.salary.numFamily,
+  nonTax: store.getters.settings.salary.nonTax,
+})
 
-    const showDetail = ref(null)
+const showDetail = ref(null)
 
-    const percentage = ref(null)
+const percentage = ref(null)
 
-    const resultAsCrypto = ref({})
+const resultAsCrypto = ref({})
 
-    const withCrypto = ref(true)
+const withCrypto = ref(true)
 
-    const onSlide = ratio => {
-      payload.value.preTax = Math.round((22000000 + 178000000 * ratio) / 100000) * 100000
-    }
-
-    const pretty = ({ field, monthly = true }) => {
-      let fiat = result.value[field]
-      let crypto = resultAsCrypto.value[`$$${field}`]
-
-      if (monthly) {
-        fiat /= 12
-        crypto /= 12
-      }
-
-      if (withCrypto.value && crypto) return `
-        <div>${(Math.floor(fiat) || 0).toLocaleString()}</div>
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            margin-top: 4px;
-          ">
-          <img src="${resultAsCrypto.value['$$img']}" style="width: 12px; flex: 0 0 auto; margin-right: 4px;">
-          <div>${crypto.toLocaleString(undefined, {
-            maximumFractionDigits: 4,
-            minimumFractionDigits: 4,
-          })}</div>
-        </div>
-      `
-
-      return (Math.floor(fiat) || 0).toLocaleString()
-    }
-
-    const reports = computed(() => [{
-      title: '요약',
-      items: [
-        { key: '연봉 (세전)', value: pretty({ field: 'preTax', monthly: false }) },
-        { key: '월급 (세전)', value: pretty({ field: 'preTax' }) },
-        { key: '연봉 (세후)', value: pretty({ field: 'afterTax', monthly: false }) },
-        { key: '월급 (세후)', value: pretty({ field: 'afterTax' }) },
-      ],
-    }, {
-      title: '공제 (단위: 연)',
-      items: [
-        { key: '인적공제', value: pretty({ field: 'familyDeduction', monthly: false }), tooltip: '본인포함 부양자수 * 150만원' },
-        { key: '소득공제', value: pretty({ field: 'incomeDeduction', monthly: false }) },
-        { key: '소득세액공제', value: pretty({ field: 'taxDeduction', monthly: false }) },
-        { key: '과세표준', value: pretty({ field: 'taxOn', monthly: false }), tooltip: `소득세 계산의 기준이 되는 연소득으로, {과세금액} - {소득세를 제외한 공제항목들} 입니다.` },
-      ],
-    }, {
-      title: '세금 (단위: 월)',
-      items: [
-        { key: '국민연금', value: pretty({ field: 'pension' }), tooltip: '과세금액의 4.5% (상한: 월 235,800)' },
-        { key: '건강보험', value: pretty({ field: 'health' }), tooltip: '과세금액의 3.495%' },
-        { key: '장기요양', value: pretty({ field: 'care' }), tooltip: '건강보험료의 12.27%' },
-        { key: '고용보험', value: pretty({ field: 'hire' }), tooltip: '과세금액의 0.8%' },
-        { key: '소득세', value: pretty({ field: 'incomeTax' }), tooltip: '과세표준 구간별로 상이.' },
-        { key: '지방소득세', value: pretty({ field: 'incomeTaxLocal' }), tooltip: '소득세의 10%' },
-      ],
-    }])
-
-    const result = computed(() => salaryReport(
-      payload.value.preTax,
-      payload.value.numFamily,
-      payload.value.nonTax,
-    ))
-
-    const findMyPercentage = () => {
-      if (!payload.value || !payload.value.preTax) return
-
-      const s = payload.value.preTax
-      const found = salary2022.find(row => s >= row[1])
-      if (!found) return
-
-      percentage.value = found[0]
-    }
-
-    watch(
-      () => payload.value,
-      newVal => {
-        const o = store.getters.settings.salary || {}
-        Object.assign(o, newVal)
-        store.commit('setSettings', { salary: o })
-
-        findMyPercentage()
-      },
-      { deep: true },
-    )
-
-    onMounted(findMyPercentage)
-
-    return {
-      refInfoNonTax,
-      payload,
-      percentage,
-      showDetail,
-      result,
-      reports,
-      resultAsCrypto,
-      onSlide,
-    }
-  },
+const onSlide = ratio => {
+  payload.value.preTax = Math.round((22000000 + 178000000 * ratio) / 100000) * 100000
 }
+
+const pretty = ({ field, monthly = true }) => {
+  let fiat = result.value[field]
+  let crypto = resultAsCrypto.value[`$$${field}`]
+
+  if (monthly) {
+    fiat /= 12
+    crypto /= 12
+  }
+
+  if (withCrypto.value && crypto) return `
+    <div>${(Math.floor(fiat) || 0).toLocaleString()}</div>
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        margin-top: 4px;
+      ">
+      <img src="${resultAsCrypto.value['$$img']}" style="width: 12px; flex: 0 0 auto; margin-right: 4px;">
+      <div>${crypto.toLocaleString(undefined, {
+        maximumFractionDigits: 4,
+        minimumFractionDigits: 4,
+      })}</div>
+    </div>
+  `
+
+  return (Math.floor(fiat) || 0).toLocaleString()
+}
+
+const reports = computed(() => [{
+  title: '요약',
+  items: [
+    { key: '연봉 (세전)', value: pretty({ field: 'preTax', monthly: false }) },
+    { key: '월급 (세전)', value: pretty({ field: 'preTax' }) },
+    { key: '연봉 (세후)', value: pretty({ field: 'afterTax', monthly: false }) },
+    { key: '월급 (세후)', value: pretty({ field: 'afterTax' }) },
+  ],
+}, {
+  title: '공제 (단위: 연)',
+  items: [
+    { key: '인적공제', value: pretty({ field: 'familyDeduction', monthly: false }), tooltip: '본인포함 부양자수 * 150만원' },
+    { key: '소득공제', value: pretty({ field: 'incomeDeduction', monthly: false }) },
+    { key: '소득세액공제', value: pretty({ field: 'taxDeduction', monthly: false }) },
+    { key: '과세표준', value: pretty({ field: 'taxOn', monthly: false }), tooltip: `소득세 계산의 기준이 되는 연소득으로, {과세금액} - {소득세를 제외한 공제항목들} 입니다.` },
+  ],
+}, {
+  title: '세금 (단위: 월)',
+  items: [
+    { key: '국민연금', value: pretty({ field: 'pension' }), tooltip: '과세금액의 4.5% (상한: 월 235,800)' },
+    { key: '건강보험', value: pretty({ field: 'health' }), tooltip: '과세금액의 3.495%' },
+    { key: '장기요양', value: pretty({ field: 'care' }), tooltip: '건강보험료의 12.27%' },
+    { key: '고용보험', value: pretty({ field: 'hire' }), tooltip: '과세금액의 0.8%' },
+    { key: '소득세', value: pretty({ field: 'incomeTax' }), tooltip: '과세표준 구간별로 상이.' },
+    { key: '지방소득세', value: pretty({ field: 'incomeTaxLocal' }), tooltip: '소득세의 10%' },
+  ],
+}])
+
+const result = computed(() => salaryReport(
+  payload.value.preTax,
+  payload.value.numFamily,
+  payload.value.nonTax,
+))
+
+const findMyPercentage = () => {
+  if (!payload.value || !payload.value.preTax) return
+
+  const s = payload.value.preTax
+  const found = salary2022.find(row => s >= row[1])
+  if (!found) return
+
+  percentage.value = found[0]
+}
+
+watch(
+  () => payload.value,
+  newVal => {
+    const o = store.getters.settings.salary || {}
+    Object.assign(o, newVal)
+    store.commit('setSettings', { salary: o })
+
+    findMyPercentage()
+  },
+  { deep: true },
+)
+
+onMounted(findMyPercentage)
 </script>
 
 <style lang="scss" scoped>

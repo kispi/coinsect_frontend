@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 /**
  * <slot/>으로 들어온 컴포넌트를 draggable하게 만들어주는 컴포넌트.
  *
@@ -24,82 +24,74 @@
  *   <아무 HTMLElement/>
  * </AppDraggable>
  */
-import useGlobalHooks from '@/hooks/global-hooks'
 import { ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  emits: ['app-draggable-move'],
-  setup(_, { emit }) {
-    const { store } = useGlobalHooks()
+const emit = defineEmits(['app-draggable-move'])
 
-    const draggingContainer = ref({
-      target: null,
-      style: null,
-      offset: null,
-      size: null,
-    })
+const { store } = useGlobalHooks()
 
-    const dragging = ref(null)
+const draggingContainer = ref({
+  target: null,
+  style: null,
+  offset: null,
+  size: null,
+})
 
-    const mousemove = e => {
-      if (!store.getters.isMobile) e.preventDefault()
+const dragging = ref(null)
 
-      if (!dragging.value) return
+const mousemove = e => {
+  if (!store.getters.isMobile) e.preventDefault()
 
-      const clientX = e.clientX
-      const clientY = e.clientY
+  if (!dragging.value) return
 
-      draggingContainer.value.style = {
-        left: `${clientX - draggingContainer.value.offset.x}px`,
-        top: `${clientY - draggingContainer.value.offset.y}px`,
-        width: `${draggingContainer.value.size.width}px`,
-        height: `${draggingContainer.value.size.height}px`,
-      }
+  const clientX = e.clientX
+  const clientY = e.clientY
 
-      draggingContainer.value.target.classList.add('dragging')
+  draggingContainer.value.style = {
+    left: `${clientX - draggingContainer.value.offset.x}px`,
+    top: `${clientY - draggingContainer.value.offset.y}px`,
+    width: `${draggingContainer.value.size.width}px`,
+    height: `${draggingContainer.value.size.height}px`,
+  }
 
-      emit('app-draggable-move', e)
-    }
+  draggingContainer.value.target.classList.add('dragging')
 
-    const mouseup = () => {
-      dragging.value = false
-      draggingContainer.value.target.classList.remove('dragging')
-      draggingContainer.value.target = null
-      draggingContainer.value.style = null
-      draggingContainer.value.offset = null
-      draggingContainer.value.size = null
-      document.removeEventListener('mousemove', mousemove)
-      document.removeEventListener('mouseup', mouseup)
-    }
+  emit('app-draggable-move', e)
+}
 
-    const mousedown = e => {
-      dragging.value = true
-      const rect = e.target.getBoundingClientRect()
-      if (!rect) return
+const mouseup = () => {
+  dragging.value = false
+  draggingContainer.value.target.classList.remove('dragging')
+  draggingContainer.value.target = null
+  draggingContainer.value.style = null
+  draggingContainer.value.offset = null
+  draggingContainer.value.size = null
+  document.removeEventListener('mousemove', mousemove)
+  document.removeEventListener('mouseup', mouseup)
+}
 
-      draggingContainer.value.size = {
-        width: rect.width,
-        height: rect.height,
-      }
+const mousedown = e => {
+  dragging.value = true
+  const rect = e.target.getBoundingClientRect()
+  if (!rect) return
 
-      const offsetX = e.offsetX
-      const offsetY = e.offsetY
+  draggingContainer.value.size = {
+    width: rect.width,
+    height: rect.height,
+  }
 
-      draggingContainer.value.target = e.target
-      draggingContainer.value.offset = {
-        x: offsetX,
-        y: offsetY,
-      }
+  const offsetX = e.offsetX
+  const offsetY = e.offsetY
 
-      document.addEventListener('mousemove', mousemove)
-      document.addEventListener('mouseup', mouseup)
-    }
+  draggingContainer.value.target = e.target
+  draggingContainer.value.offset = {
+    x: offsetX,
+    y: offsetY,
+  }
 
-    return {
-      mousedown,
-      draggingContainer,
-    }
-  },
+  document.addEventListener('mousemove', mousemove)
+  document.addEventListener('mouseup', mouseup)
 }
 </script>
 

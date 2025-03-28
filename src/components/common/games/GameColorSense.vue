@@ -24,140 +24,131 @@
       <button
         class="btn btn-primary"
         @click="play"
-        v-html="$translate('PLAY')"
+        v-html="helpers.translate('PLAY')"
       />
     </template>
   </div>
 </template>
 
-<script>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+<script setup>
+import { computed, onUnmounted, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup(_, { emit }) {
-    const colors = ref([])
+const emit = defineEmits(['next-state'])
 
-    const numColumns = computed(() => {
-      if (stage.value <= 2) return 2
-      if (stage.value <= 4) return 4
-      if (stage.value <= 8) return 8
-      return 12
-    })
+const { helpers } = useGlobalHooks()
 
-    const playing = ref(null)
+const colors = ref([])
 
-    const timer = ref({
-      interv: null,
-      ms: 15 * 1000,
-    })
+const numColumns = computed(() => {
+  if (stage.value <= 2) return 2
+  if (stage.value <= 4) return 4
+  if (stage.value <= 8) return 8
+  return 12
+})
 
-    const stage = ref(1)
+const playing = ref(null)
 
-    const randRGB = (o = {}) => {
-      const v = () => Math.floor(Math.random() * 256)
-      return { r: o.r || v(), g: o.g || v(), b: o.b || v() }
-    }
+const timer = ref({
+  interv: null,
+  ms: 15 * 1000,
+})
 
-    const colorDiff = (rgb1, rgb2) => {
-      return Math.sqrt(
-        Math.pow((rgb2.r - rgb1.r), 2) +
-        Math.pow((rgb2.g - rgb1.g), 2) + 
-        Math.pow((rgb2.b - rgb1.b), 2),
-      )
-    }
+const stage = ref(1)
 
-    const onClickColorchip = color => {
-      const numSameColors = colors.value.filter(c =>
-        c.r === color.r &&
-        c.g === color.g &&
-        c.b === color.b
-      ).length
-
-      if (numSameColors === 1) {
-        stage.value += 1
-        timer.value.ms = 15000
-        populateColors()
-        return
-      }
-
-      timer.value.ms -= 3000
-    }
-
-    const populateColors = () => {
-      const color1 = (() => {
-        let base = { r: 127, g: 127, b: 127 }
-        let candidate = randRGB()
-        let diff = colorDiff(base, candidate)
-
-        while (diff < 100) {
-          candidate = randRGB()
-          diff = colorDiff(base, candidate)
-        }
-
-        return candidate
-      })()
-
-      const color2 = (() => {
-        const difficulty = (100 - stage.value * 2)
-        const color1AsArray = [color1.r, color1.g, color1.b]
-        const primeIdx = color1AsArray.indexOf(Math.max(...color1AsArray))
-        const colorArg = {}
-        if (primeIdx === 0) colorArg.r = color1AsArray[0]
-        if (primeIdx === 1) colorArg.g = color1AsArray[1]
-        if (primeIdx === 2) colorArg.b = color1AsArray[2]
-
-        let candidate = randRGB(colorArg)
-        let diff = colorDiff(color1, candidate)
-
-        while (Math.abs(diff - difficulty) > 1) {
-          candidate = randRGB(colorArg)
-          diff = colorDiff(color1, candidate)
-        }
-
-        return candidate
-      })()
-
-      colors.value = []
-      for (let i = 0; i < numColumns.value * numColumns.value; i++) colors.value.push(color1)
-      colors.value[Math.floor(Math.random() * colors.value.length)] = color2
-    }
-
-    const clearTimer = () => {
-      if (timer.value.interv) {
-        clearInterval(timer.value.interv)
-        timer.value.interv = null
-      }
-    }
-
-    const play = () => {
-      populateColors()
-      playing.value = true
-      timer.value.interv = setInterval(() => {
-        timer.value.ms -= 10
-
-        if (timer.value.ms <= 0) {
-          playing.value = false
-          emit('next-state')
-          clearTimer()
-          timer.value.ms = 15000
-        }
-      }, 10)
-      emit('next-state')
-    }
-
-    onUnmounted(clearTimer)
-
-    return {
-      playing,
-      colors,
-      numColumns,
-      timer,
-      stage,
-      onClickColorchip,
-      play,
-    }
-  },
+const randRGB = (o = {}) => {
+  const v = () => Math.floor(Math.random() * 256)
+  return { r: o.r || v(), g: o.g || v(), b: o.b || v() }
 }
+
+const colorDiff = (rgb1, rgb2) => {
+  return Math.sqrt(
+    Math.pow((rgb2.r - rgb1.r), 2) +
+    Math.pow((rgb2.g - rgb1.g), 2) + 
+    Math.pow((rgb2.b - rgb1.b), 2),
+  )
+}
+
+const onClickColorchip = color => {
+  const numSameColors = colors.value.filter(c =>
+    c.r === color.r &&
+    c.g === color.g &&
+    c.b === color.b
+  ).length
+
+  if (numSameColors === 1) {
+    stage.value += 1
+    timer.value.ms = 15000
+    populateColors()
+    return
+  }
+
+  timer.value.ms -= 3000
+}
+
+const populateColors = () => {
+  const color1 = (() => {
+    let base = { r: 127, g: 127, b: 127 }
+    let candidate = randRGB()
+    let diff = colorDiff(base, candidate)
+
+    while (diff < 100) {
+      candidate = randRGB()
+      diff = colorDiff(base, candidate)
+    }
+
+    return candidate
+  })()
+
+  const color2 = (() => {
+    const difficulty = (100 - stage.value * 2)
+    const color1AsArray = [color1.r, color1.g, color1.b]
+    const primeIdx = color1AsArray.indexOf(Math.max(...color1AsArray))
+    const colorArg = {}
+    if (primeIdx === 0) colorArg.r = color1AsArray[0]
+    if (primeIdx === 1) colorArg.g = color1AsArray[1]
+    if (primeIdx === 2) colorArg.b = color1AsArray[2]
+
+    let candidate = randRGB(colorArg)
+    let diff = colorDiff(color1, candidate)
+
+    while (Math.abs(diff - difficulty) > 1) {
+      candidate = randRGB(colorArg)
+      diff = colorDiff(color1, candidate)
+    }
+
+    return candidate
+  })()
+
+  colors.value = []
+  for (let i = 0; i < numColumns.value * numColumns.value; i++) colors.value.push(color1)
+  colors.value[Math.floor(Math.random() * colors.value.length)] = color2
+}
+
+const clearTimer = () => {
+  if (timer.value.interv) {
+    clearInterval(timer.value.interv)
+    timer.value.interv = null
+  }
+}
+
+const play = () => {
+  populateColors()
+  playing.value = true
+  timer.value.interv = setInterval(() => {
+    timer.value.ms -= 10
+
+    if (timer.value.ms <= 0) {
+      playing.value = false
+      emit('next-state')
+      clearTimer()
+      timer.value.ms = 15000
+    }
+  }, 10)
+  emit('next-state')
+}
+
+onUnmounted(clearTimer)
 </script>
 
 <style lang="scss" scoped>

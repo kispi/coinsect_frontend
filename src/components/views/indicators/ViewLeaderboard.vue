@@ -19,11 +19,11 @@
               { column: 'rank', title: 'RANK' },
               { column: 'name', title: 'NAME' },
               { column: 'side', title: 'PREDICTED_POSITION' },
-              { column: 'profit', title: 'PROFIT_TOTAL', $$hide: $store.getters.isMobile },
+              { column: 'profit', title: 'PROFIT_TOTAL', $$hide: store.getters.isMobile },
               { column: 'dailyChange', title: 'PROFIT_24H' },
               { column: 'weeklyChange', title: 'PROFIT_7D' },
             ].filter(o => !o.$$hide)">
-            {{ $translate(th.title) }}
+            {{ helpers.translate(th.title) }}
             <span class="sort-icons">
               <i class="fas fa-sort-up"/>
               <i class="fas fa-sort-down"/>
@@ -38,13 +38,13 @@
           <td>{{ row.rank }}</td>
           <td><div class="lines-1" v-html="row.name"/></td>
           <td :class="(row.side || '').toLowerCase()">{{ row.side }}</td>
-          <td v-if="!$store.getters.isMobile" :class="{'long': row.profit > 0, 'short': row.profit < 0}"><i class="fab fa-bitcoin"/>{{ $helpers.template.asBTC(row.profit) }}</td>
-          <td :class="{'long': row.dailyChange > 0, 'short': row.dailyChange < 0}"><i class="fab fa-bitcoin"/>{{ $helpers.template.asBTC(row.dailyChange) }}</td>
-          <td :class="{'long': row.weeklyChange > 0, 'short': row.weeklyChange < 0}"><i class="fab fa-bitcoin"/>{{ $helpers.template.asBTC(row.weeklyChange) }}</td>
+          <td v-if="!store.getters.isMobile" :class="{'long': row.profit > 0, 'short': row.profit < 0}"><i class="fab fa-bitcoin"/>{{ helpers.template.asBTC(row.profit) }}</td>
+          <td :class="{'long': row.dailyChange > 0, 'short': row.dailyChange < 0}"><i class="fab fa-bitcoin"/>{{ helpers.template.asBTC(row.dailyChange) }}</td>
+          <td :class="{'long': row.weeklyChange > 0, 'short': row.weeklyChange < 0}"><i class="fab fa-bitcoin"/>{{ helpers.template.asBTC(row.weeklyChange) }}</td>
         </tr>
       </tbody>
     </table>
-    <div v-if="(sorted || []).length === 0" class="center p-24 text-stress f-700">{{ $translate('ERROR_API_SERVER') }}</div>
+    <div v-if="(sorted || []).length === 0" class="center p-24 text-stress f-700">{{ helpers.translate('ERROR_API_SERVER') }}</div>
     <PoweredBy
       :by="'btctools.io'"
       :link="'https://btctools.io/kr/stats/leaderboard'"
@@ -54,78 +54,67 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { helpers, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const timeout = ref(null)
+const timeout = ref(null)
 
-    const lastUpdate = ref(null)
+const lastUpdate = ref(null)
 
-    const sort = ref({
-      column: 'rank',
-      direction: 'asc',
-    })
+const sort = ref({
+  column: 'rank',
+  direction: 'asc',
+})
 
-    const setSort = column => {
-      if (sort.value.column !== column) {
-        sort.value.column = column
-        sort.value.direction = 'desc'
-        return
-      }
+const setSort = column => {
+  if (sort.value.column !== column) {
+    sort.value.column = column
+    sort.value.direction = 'desc'
+    return
+  }
 
-      sort.value.direction = sort.value.direction === 'desc' ? 'asc' : 'desc'
-    }
-
-    const leaderboard = computed(() => store.getters.leaderboard)
-
-    const sorted = computed(() => {
-      if (!leaderboard.value) return []
-
-      const copied = JSON.parse(JSON.stringify(leaderboard.value))
-      return copied.sort((a, b) => {
-        if (a[sort.value.column] === undefined) return 1
-
-        if (b[sort.value.column] === undefined) return -1
-
-        if (sort.value.direction === 'asc') return a[sort.value.column] < b[sort.value.column] ? -1 : 1
-
-        if (sort.value.direction === 'desc') return a[sort.value.column] < b[sort.value.column] ? 1 : -1
-      })
-    })
-
-    const loadLeaderboard = async () => {
-      try {
-        await store.dispatch('loadLeaderboard')
-        let minute = helpers.dayjs().format('mm')
-        minute = `${helpers.template.withLeadingZero(minute - minute % 5, 2)}`
-        lastUpdate.value = helpers.dayjs().format('YYYY-MM-DD HH:') + minute
-        timeout.value = setTimeout(loadLeaderboard, 1000 * 60)
-      } catch (e) {}
-    }
-
-    onMounted(loadLeaderboard)
-
-    onUnmounted(() => clearTimeout(timeout.value))
-
-    onServerPrefetch(async () => {
-      try {
-        await store.dispatch('loadLeaderboard')
-      } catch (e) {}
-    })
-
-    return {
-      lastUpdate,
-      sort,
-      sorted,
-      setSort,
-    }
-  },
+  sort.value.direction = sort.value.direction === 'desc' ? 'asc' : 'desc'
 }
+
+const leaderboard = computed(() => store.getters.leaderboard)
+
+const sorted = computed(() => {
+  if (!leaderboard.value) return []
+
+  const copied = JSON.parse(JSON.stringify(leaderboard.value))
+  return copied.sort((a, b) => {
+    if (a[sort.value.column] === undefined) return 1
+
+    if (b[sort.value.column] === undefined) return -1
+
+    if (sort.value.direction === 'asc') return a[sort.value.column] < b[sort.value.column] ? -1 : 1
+
+    if (sort.value.direction === 'desc') return a[sort.value.column] < b[sort.value.column] ? 1 : -1
+  })
+})
+
+const loadLeaderboard = async () => {
+  try {
+    await store.dispatch('loadLeaderboard')
+    let minute = helpers.dayjs().format('mm')
+    minute = `${helpers.template.withLeadingZero(minute - minute % 5, 2)}`
+    lastUpdate.value = helpers.dayjs().format('YYYY-MM-DD HH:') + minute
+    timeout.value = setTimeout(loadLeaderboard, 1000 * 60)
+  } catch (e) {}
+}
+
+onMounted(loadLeaderboard)
+
+onUnmounted(() => clearTimeout(timeout.value))
+
+onServerPrefetch(async () => {
+  try {
+    await store.dispatch('loadLeaderboard')
+  } catch (e) {}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -3,7 +3,7 @@
     ref="refModalDonation"
     class="modal-donation scrollable-body">
     <AppLoading :loading="drawing"/>
-    <ModalHeader :title="$translate('MODAL_DONATION')" @close="$emit('close')"/>
+    <ModalHeader :title="helpers.translate('MODAL_DONATION')" @close="$emit('close')"/>
     <div class="body pre-line">
       <div class="description m-b-16">
         <div class="m-b-8">- 리플은 데스티네이션 태그가 없어도 송금이 가능합니다.</div>
@@ -37,95 +37,89 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: ['options'],
-  setup(_, { emit }) {
-    const refModalDonation = ref(null)
-
-    const { helpers, store } = useGlobalHooks()
-
-    const drawing = ref(null)
-
-    const wallets = computed(() => store.getters.wallets)
-
-    const selectedWallet = ref(null)
-
-    const qrcode = ref(null)
-
-    const copyToClipboard = () => {
-      helpers.dom.copyToClipboard(selectedWallet.value.address)
-      helpers.toast.success(`코인충 운영자의 ${selectedWallet.value.blockchain.symbol}주소를 클립보드로 복사했습니다`)
-    }
-
-    const openBlockExplore = () => {
-      if (!selectedWallet.value.blockchain.exploreUrl) return
-
-      window.open(`${selectedWallet.value.blockchain.exploreUrl}${selectedWallet.value.address}`, '_blank', 'noreferrer')
-    }
-
-    const selectWallet = async wallet => {
-      drawing.value = true
-      await helpers.sleep(100)
-      drawing.value = false
-      selectedWallet.value = wallet
-      if (typeof QRCode === 'undefined') return
-
-      if (qrcode.value) {
-        qrcode.value.clear()
-        qrcode.value.makeCode(selectedWallet.value.address)
-        return
-      }
-
-      if (!refModalDonation.value) {
-        emit('close')
-        return
-      }
-
-      const size = refModalDonation.value.getBoundingClientRect().width - 16 * 4 // 양쪽 패딩만큼 뺌
-      qrcode.value = new QRCode(document.getElementById('modal-donation-qr-code'), {
-        text: selectedWallet.value.address,
-        width: size,
-        height: size,
-        correctLevel: QRCode.CorrectLevel.H,
-      })
-    }
-
-    const init = async () => {
-      try {
-        await Promise.all([
-          helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' }),
-          store.dispatch('loadWallets'),
-        ])
-
-        // 왜인지는 모르겠으나 이 찌꺼기가 남아있는 경우가 있음
-        const dom = document.getElementById('modal-donation-qr-code')
-        const canvas = dom.getElementsByTagName('canvas')[0]
-        if (canvas) canvas.remove()
-
-        const img = dom.getElementsByTagName('img')[0]
-        if (img) img.remove()
-
-        selectWallet(wallets.value.data[0])
-      } catch (e) {}
-    }
-
-    onMounted(init)
-
-    return {
-      refModalDonation,
-      drawing,
-      wallets,
-      selectedWallet,
-      copyToClipboard,
-      openBlockExplore,
-      selectWallet,
-    }
+defineProps({
+  options: {
+    type: Object,
+    default: () => ({}),
   },
+})
+
+const emit = defineEmits(['close'])
+
+const refModalDonation = ref(null)
+
+const { helpers, store } = useGlobalHooks()
+
+const drawing = ref(null)
+
+const wallets = computed(() => store.getters.wallets)
+
+const selectedWallet = ref(null)
+
+const qrcode = ref(null)
+
+const copyToClipboard = () => {
+  helpers.dom.copyToClipboard(selectedWallet.value.address)
+  helpers.toast.success(`코인충 운영자의 ${selectedWallet.value.blockchain.symbol}주소를 클립보드로 복사했습니다`)
 }
+
+const openBlockExplore = () => {
+  if (!selectedWallet.value.blockchain.exploreUrl) return
+
+  window.open(`${selectedWallet.value.blockchain.exploreUrl}${selectedWallet.value.address}`, '_blank', 'noreferrer')
+}
+
+const selectWallet = async wallet => {
+  drawing.value = true
+  await helpers.sleep(100)
+  drawing.value = false
+  selectedWallet.value = wallet
+  if (typeof QRCode === 'undefined') return
+
+  if (qrcode.value) {
+    qrcode.value.clear()
+    qrcode.value.makeCode(selectedWallet.value.address)
+    return
+  }
+
+  if (!refModalDonation.value) {
+    emit('close')
+    return
+  }
+
+  const size = refModalDonation.value.getBoundingClientRect().width - 16 * 4 // 양쪽 패딩만큼 뺌
+  qrcode.value = new QRCode(document.getElementById('modal-donation-qr-code'), {
+    text: selectedWallet.value.address,
+    width: size,
+    height: size,
+    correctLevel: QRCode.CorrectLevel.H,
+  })
+}
+
+const init = async () => {
+  try {
+    await Promise.all([
+      helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' }),
+      store.dispatch('loadWallets'),
+    ])
+
+    // 왜인지는 모르겠으나 이 찌꺼기가 남아있는 경우가 있음
+    const dom = document.getElementById('modal-donation-qr-code')
+    const canvas = dom.getElementsByTagName('canvas')[0]
+    if (canvas) canvas.remove()
+
+    const img = dom.getElementsByTagName('img')[0]
+    if (img) img.remove()
+
+    selectWallet(wallets.value.data[0])
+  } catch (e) {}
+}
+
+onMounted(init)
 </script>
 
 <style lang="scss" scoped>

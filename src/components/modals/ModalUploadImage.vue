@@ -28,93 +28,83 @@
         :disabled="!payload.file || uploading"
         @click="onClickSendImage">
         <AppLoader v-if="uploading" :size="24"/>
-        <span v-else v-html="$translate('UPLOAD')"/>
+        <span v-else v-html="helpers.translate('UPLOAD')"/>
       </button>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import s3Service from '@/services/s3'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    options: {
-      src: String,
-      file: File,
-      uploadDest: String,
-    },
+const props = defineProps({
+  options: {
+    type: Object, // { src: String, file: File, uploadDest: String }
+    default: () => ({}),
   },
-  setup(props, { emit }) {
-    const { helpers } = useGlobalHooks()
+})
 
-    const refModalUploadImage = ref(null)
+const emit = defineEmits(['close'])
 
-    const uploading = ref(null)
+const { helpers } = useGlobalHooks()
 
-    const payload = ref({
-      src: (props.options || {}).src,
-      file: (props.options || {}).file,
-    })
+const refModalUploadImage = ref(null)
 
-    const onClickInitPayload = () => {
-      payload.value.src = null,
-      payload.value.file = null
-    }
+const uploading = ref(null)
 
-    const showError = () => helpers.toast.error('이미지를 보내는 도중에 문제가 발생했습니다. 다시 시도해주세요.')
+const payload = ref({
+  src: (props.options || {}).src,
+  file: (props.options || {}).file,
+})
 
-    const onClickSendImage = async () => {
-      if (!payload.value.file) {
-        showError()
-        emit('close')
-        return
-      }
-
-      try {
-        uploading.value = true
-        const uploadedUrl = await s3Service.upload(payload.value.file, props.options.uploadDest || 'chat')
-        emit('close', uploadedUrl)
-      } catch (e) {
-        showError()
-      } finally {
-        uploading.value = false
-      }
-    }
-
-    const onEnter = e => {
-      if (e.key !== 'Enter') return
-
-      onClickSendImage()
-    }
-
-    onMounted(() => {
-      document.addEventListener('keydown', onEnter)
-    })
-
-    onUnmounted(() => {
-      document.removeEventListener('keydown', onEnter)
-    })
-
-    watch(
-      () => payload.value,
-      () => {
-        setTimeout(() => helpers.modal.center(refModalUploadImage.value), 50)
-      },
-      { deep: true },
-    )
-
-    return {
-      refModalUploadImage,
-      payload,
-      uploading,
-      onClickSendImage,
-      onClickInitPayload,
-    }
-  },
+const onClickInitPayload = () => {
+  payload.value.src = null,
+  payload.value.file = null
 }
+
+const showError = () => helpers.toast.error('이미지를 보내는 도중에 문제가 발생했습니다. 다시 시도해주세요.')
+
+const onClickSendImage = async () => {
+  if (!payload.value.file) {
+    showError()
+    emit('close')
+    return
+  }
+
+  try {
+    uploading.value = true
+    const uploadedUrl = await s3Service.upload(payload.value.file, props.options.uploadDest || 'chat')
+    emit('close', uploadedUrl)
+  } catch (e) {
+    showError()
+  } finally {
+    uploading.value = false
+  }
+}
+
+const onEnter = e => {
+  if (e.key !== 'Enter') return
+
+  onClickSendImage()
+}
+
+onMounted(() => {
+  document.addEventListener('keydown', onEnter)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', onEnter)
+})
+
+watch(
+  () => payload.value,
+  () => {
+    setTimeout(() => helpers.modal.center(refModalUploadImage.value), 50)
+  },
+  { deep: true },
+)
 </script>
 
 <style lang="scss" scoped>

@@ -21,51 +21,41 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { helpers } = useGlobalHooks()
+const { helpers } = useGlobalHooks()
 
-    const text = ref(null)
+const text = ref(null)
 
-    const recognition = ref(null)
+const recognition = ref(null)
 
-    const active = ref(null)
+const active = ref(null)
 
-    const onClickRecognition = () => {
-      if (active.value) {
-        recognition.value.stop()
-        active.value = false
-      } else {
-        recognition.value.start()
-        active.value = true
-      }
-    }
-
-    const init = () => {
-      if (typeof webkitSpeechRecognition === 'undefined') {
-        helpers.toast.error('음성 인식은 크롬 브라우저에서만 사용 가능합니다.')
-        return
-      }
-
-      recognition.value = new webkitSpeechRecognition()
-      recognition.value.lang = 'en-US' // 'ko-KR'
-      recognition.value.continuous = true
-      recognition.value.onresult = (event) => text.value = event.results[event.results.length - 1][0].transcript
-    }
-
-    onMounted(init)
-
-    return {
-      active,
-      text,
-      onClickRecognition,
-    }
-  },
+const onClickRecognition = () => {
+  if (active.value) {
+    recognition.value.stop()
+    active.value = false
+  } else {
+    recognition.value.start()
+    active.value = true
+  }
 }
+
+const init = () => {
+  if (typeof webkitSpeechRecognition === 'undefined') {
+    helpers.toast.error('음성 인식은 크롬 브라우저에서만 사용 가능합니다.')
+    return
+  }
+
+  recognition.value = new webkitSpeechRecognition()
+  recognition.value.lang = 'en-US' // 'ko-KR'
+  recognition.value.continuous = true
+  recognition.value.onresult = (event) => text.value = event.results[event.results.length - 1][0].transcript
+}
+
+onMounted(init)
 </script>
 
 <style lang="scss" scoped>

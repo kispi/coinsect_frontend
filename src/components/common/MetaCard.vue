@@ -25,27 +25,29 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import useSeo from '@/hooks/seo'
 
-export default {
-  props: {
-    small: Boolean,
-    useBlankGuide: Boolean,
-    link: String,
-    meta: {
-      type: Object,
-      default: () => ({}),
-    },
+const props = defineProps({
+  small: {
+    type: Boolean,
+    default: false,
   },
-  setup() {
-    const { onClickMetaCard } = useSeo()
+  useBlankGuide: {
+    type: Boolean,
+    default: false,
+  },
+  link: {
+    type: String,
+    required: true,
+  },
+  meta: {
+    type: Object,
+    default: () => ({}),
+  },
+})
 
-    return {
-      onClickMetaCard,
-    }
-  },
-}
+const { onClickMetaCard } = useSeo()
 </script>
 
 <style lang="scss" scoped>

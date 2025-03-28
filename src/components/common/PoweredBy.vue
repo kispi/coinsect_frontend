@@ -12,38 +12,39 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 
-export default {
-  props: {
-    by: String,
-    link: String,
-    imgUrl: String,
+const props = defineProps({
+  by: {
+    type: String,
+    default: '',
   },
-  setup(props) {
-    const adaptiveSrc = src => {
-      if (src.startsWith('http')) return src
-
-      return require(`@/assets/images/${src}`)
-    }
-
-    const rendered = computed(() => {
-      if (props.by === 'coinmarketcap') return { title: 'Coinmarketcap', src: 'coinmarketcap.png', link: 'https://coinmarketcap.com' }
-      if (props.by === 'companiesmarketcap') return { title: 'Companiesmarketcap', src: 'companiesmarketcap.png', link: 'https://companiesmarketcap.com' }
-      if (props.by === 'upbit') return { title: 'Upbit', src: 'upbit.svg', link: 'https://upbit.com' }
-      if (props.by === 'bitcointreasuries') return { title: 'Bitcointreasuries', src: 'bitcointreasuries.png', link: 'https://bitcointreasuries.net' }
-      if (props.by === 'coinglass') return { title: 'Coinglass', src: 'coinglass.png', link: 'https://coinglass.com' }
-      if (props.by === 'naver') return { title: 'Naver', src: 'naver.png', link: 'https://finance.naver.com' }
-      if (props.by === 'investing.com') return { title: 'Investing.com', link: 'https://investing.com' }
-    })
-
-    return {
-      rendered,
-      adaptiveSrc,
-    }
+  link: {
+    type: String,
+    default: '',
   },
+  imgUrl: {
+    type: String,
+    default: '',
+  },
+})
+
+const adaptiveSrc = src => {
+  if (src.startsWith('http')) return src
+
+  return require(`@/assets/images/${src}`)
 }
+
+const rendered = computed(() => {
+  if (props.by === 'coinmarketcap') return { title: 'Coinmarketcap', src: 'coinmarketcap.png', link: 'https://coinmarketcap.com' }
+  if (props.by === 'companiesmarketcap') return { title: 'Companiesmarketcap', src: 'companiesmarketcap.png', link: 'https://companiesmarketcap.com' }
+  if (props.by === 'upbit') return { title: 'Upbit', src: 'upbit.svg', link: 'https://upbit.com' }
+  if (props.by === 'bitcointreasuries') return { title: 'Bitcointreasuries', src: 'bitcointreasuries.png', link: 'https://bitcointreasuries.net' }
+  if (props.by === 'coinglass') return { title: 'Coinglass', src: 'coinglass.png', link: 'https://coinglass.com' }
+  if (props.by === 'naver') return { title: 'Naver', src: 'naver.png', link: 'https://finance.naver.com' }
+  if (props.by === 'investing.com') return { title: 'Investing.com', link: 'https://investing.com' }
+})
 </script>
 
 <style lang="scss" scoped>

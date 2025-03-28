@@ -1,7 +1,7 @@
 <template>
   <div class="modal-trading-view scrollable-body">
     <ModalHeader
-      :title="$translate('MODAL_TRADING_VIEW')
+      :title="helpers.translate('MODAL_TRADING_VIEW')
         .replace('%ticker', options.symbol)
       "
       @close="$emit('close')"
@@ -10,8 +10,15 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: ['options'],
-}
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+defineProps({
+  options: {
+    type: Object,
+    required: true,
+  },
+})
+
+const { helpers } = useGlobalHooks()
 </script>

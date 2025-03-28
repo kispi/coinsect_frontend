@@ -9,20 +9,20 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: ['modelValue'],
-  setup(props ,{ emit }) {
-    const onClickCheckbox = () => {
-      const newVal = props.modelValue !== true
-      emit('update:modelValue', newVal)
-      emit('change', newVal)
-    }
-
-    return {
-      onClickCheckbox,
-    }
+<script setup>
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false,
   },
+})
+
+const emit = defineEmits(['update:modelValue', 'change'])
+
+const onClickCheckbox = () => {
+  const newVal = props.modelValue !== true
+  emit('update:modelValue', newVal)
+  emit('change', newVal)
 }
 </script>
 

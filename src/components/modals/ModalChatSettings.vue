@@ -1,7 +1,7 @@
 <template>
   <div class="modal-chat-settings">
     <AppLoading :loading="loading"/>
-    <ModalHeader :title="$translate('MODAL_CHAT_SETTINGS')" @close="$emit('close')"/>
+    <ModalHeader :title="helpers.translate('MODAL_CHAT_SETTINGS')" @close="$emit('close')"/>
     <div class="body">
       <div class="section">
         <div class="profile">
@@ -13,7 +13,7 @@
             />
             <AppImg
               :src="profile.image || require('@/assets/images/no-image-person.png')"
-              @click="profile.image ? $modal.images({
+              @click="profile.image ? helpers.modal.images({
                 images: [profile.image],
               }) : image.upload()"
             />
@@ -23,8 +23,8 @@
             :class="{'editing': editing}">
             <input
               ref="refInputNickname"
-              :placeholder="`최대 ${$store.getters.config.maxlength.nickname} 글자`"
-              :maxlength="$store.getters.config.maxlength.nickname"
+              :placeholder="`최대 ${store.getters.config.maxlength.nickname} 글자`"
+              :maxlength="store.getters.config.maxlength.nickname"
               :readonly="!editing"
               @keydown.enter="toggleEditProfile"
               @keydown="e => onKeydown(e, 'nickname')"
@@ -32,14 +32,14 @@
             >
             <i
               ref="refFixedNickname"
-              v-if="$store.getters.me"
+              v-if="store.getters.me"
               class="fa fa-shield-check"
-              @mouseover="$tooltip.show({
+              @mouseover="helpers.tooltip.show({
                 id: 'tooltipFixedNickname',
                 showAbove: refFixedNickname,
                 text: 'TOOLTIP_FIXED_NICKNAME',
               })"
-              @mouseleave="$tooltip.hide('tooltipFixedNickname')"
+              @mouseleave="helpers.tooltip.hide('tooltipFixedNickname')"
             />
             <i @click="toggleEditProfile" class="fal" :class="editing ? 'fa-save' : 'fa-edit'"/>
           </div>
@@ -48,71 +48,71 @@
       <div class="section">
         <div class="title">* 채팅</div>
         <div class="chat-setting-item">
-          <div class="field-name">{{ $translate('CHAT_TRANSPARENT') }}</div>
+          <div class="field-name">{{ helpers.translate('CHAT_TRANSPARENT') }}</div>
           <AppToggler
             ref="refChatTransparent"
-            :modelValue="$store.getters.settings.chatTransparent"
-            @click="$store.commit('setSettings', { chatTransparent: !$store.getters.settings.chatTransparent })"
-            @mouseover="$tooltip.show({
+            :modelValue="store.getters.settings.chatTransparent"
+            @click="store.commit('setSettings', { chatTransparent: !store.getters.settings.chatTransparent })"
+            @mouseover="helpers.tooltip.show({
               id: 'tooltipChatTransparent',
               showAbove: refChatTransparent.$el,
               text: 'TOOLTIP_CHAT_TRANSPARENT',
             })"
-            @mouseleave="$tooltip.hide('tooltipChatTransparent')"
+            @mouseleave="helpers.tooltip.hide('tooltipChatTransparent')"
           />
         </div>
         <div class="chat-setting-item">
-          <div class="field-name">{{ $translate('CHAT_DING') }}</div>
+          <div class="field-name">{{ helpers.translate('CHAT_DING') }}</div>
           <AppToggler
             ref="refChatDing"
-            :modelValue="$store.getters.settings.chatDing"
-            @click="$store.commit('setSettings', { chatDing: !$store.getters.settings.chatDing })"
-            @mouseover="$tooltip.show({
+            :modelValue="store.getters.settings.chatDing"
+            @click="store.commit('setSettings', { chatDing: !store.getters.settings.chatDing })"
+            @mouseover="helpers.tooltip.show({
               id: 'tooltipChatDing',
               showAbove: refChatDing.$el,
               text: 'TOOLTIP_CHAT_DING',
             })"
-            @mouseleave="$tooltip.hide('tooltipChatDing')"
+            @mouseleave="helpers.tooltip.hide('tooltipChatDing')"
           />
         </div>
         <div class="chat-setting-item">
-          <div class="field-name">{{ $translate('CHAT_OVERLAY_NEW_MESSAGE') }}</div>
+          <div class="field-name">{{ helpers.translate('CHAT_OVERLAY_NEW_MESSAGE') }}</div>
           <AppToggler
             ref="refChatOverlayNewMessage"
-            :modelValue="$store.getters.settings.chatOverlayNewMessage"
-            @click="$store.commit('setSettings', { chatOverlayNewMessage: !$store.getters.settings.chatOverlayNewMessage })"
-            @mouseover="$tooltip.show({
+            :modelValue="store.getters.settings.chatOverlayNewMessage"
+            @click="store.commit('setSettings', { chatOverlayNewMessage: !store.getters.settings.chatOverlayNewMessage })"
+            @mouseover="helpers.tooltip.show({
               id: 'tooltipChatOverlayNewMessage',
               showAbove: refChatOverlayNewMessage.$el,
               text: 'TOOLTIP_CHAT_OVERLAY_NEW_MESSAGE',
             })"
-            @mouseleave="$tooltip.hide('tooltipChatOverlayNewMessage')"
+            @mouseleave="helpers.tooltip.hide('tooltipChatOverlayNewMessage')"
           />
         </div>
         <div class="chat-setting-item">
-          <div class="field-name">{{ $translate('CHAT_SIZE_MAX') }}</div>
+          <div class="field-name">{{ helpers.translate('CHAT_SIZE_MAX') }}</div>
           <AppToggler
             ref="refChatSizeMax"
-            :modelValue="$store.getters.settings.chatSizeMax"
-            @click="$store.commit('setSettings', { chatSizeMax: !$store.getters.settings.chatSizeMax })"
-            @mouseover="$tooltip.show({
+            :modelValue="store.getters.settings.chatSizeMax"
+            @click="store.commit('setSettings', { chatSizeMax: !store.getters.settings.chatSizeMax })"
+            @mouseover="helpers.tooltip.show({
               id: 'tooltipChatSizeMax',
               showAbove: refChatSizeMax.$el,
               text: 'TOOLTIP_CHAT_SIZE_MAX',
             })"
-            @mouseleave="$tooltip.hide('tooltipChatSizeMax')"
+            @mouseleave="helpers.tooltip.hide('tooltipChatSizeMax')"
           />
         </div>
         <div class="chat-setting-item">
-          <div class="field-name">{{ $translate('CHAT_SKIN') }}</div>
+          <div class="field-name">{{ helpers.translate('CHAT_SKIN') }}</div>
           <div class="chat-skins">
             <div
               class="chat-skin"
-              :class="{'selected': $store.getters.settings.chatSkin === chatSkin}"
-              @click="$store.commit('setSettings', { chatSkin })"
+              :class="{'selected': store.getters.settings.chatSkin === chatSkin}"
+              @click="store.commit('setSettings', { chatSkin })"
               :key="chatSkin"
               v-for="chatSkin in ['basic', 'kakao']">
-              {{ $translate(`SKIN_${chatSkin}`) }}
+              {{ helpers.translate(`SKIN_${chatSkin}`) }}
             </div>
           </div>
         </div>
@@ -120,9 +120,9 @@
       <div class="section">
         <div class="title">* 푸시알림</div>
         <div class="chat-setting-item">
-          <div class="field-name">{{ $translate('PUSH_POSITION_CHANGE') }}</div>
+          <div class="field-name">{{ helpers.translate('PUSH_POSITION_CHANGE') }}</div>
           <AppToggler
-            :modelValue="$store.getters.chatUserSetting.pushPositionChange"
+            :modelValue="store.getters.chatUserSetting.pushPositionChange"
             @click="togglePushPositionChange"
           />
         </div>
@@ -132,136 +132,115 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import useChatHandler from '@/hooks/chat-handler'
 import usePWA from '@/hooks/addons/pwa'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: ['options'],
-  setup() {
-    const refFixedNickname = ref(null)
+const refFixedNickname = ref(null)
 
-    const refChatDing = ref(null)
+const refChatDing = ref(null)
 
-    const refChatTransparent = ref(null)
+const refChatTransparent = ref(null)
 
-    const refChatSizeMax = ref(null)
+const refChatSizeMax = ref(null)
 
-    const refChatOverlayNewMessage = ref(null)
+const refChatOverlayNewMessage = ref(null)
 
-    const refInputNickname = ref(null)
+const refInputNickname = ref(null)
 
-    const { helpers, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const { updateUserSetting } = useChatHandler()
+const { updateUserSetting } = useChatHandler()
 
-    const { initFirebase } = usePWA()
+const { initFirebase } = usePWA()
 
-    const editing = ref(null)
+const editing = ref(null)
 
-    const loading = ref(null)
+const loading = ref(null)
 
-    const profile = ref({
-      nickname: store.getters.chatUser.profile.nickname,
-      image: store.getters.chatUser.profile.image,
-    })
+const profile = ref({
+  nickname: store.getters.chatUser.profile.nickname,
+  image: store.getters.chatUser.profile.image,
+})
 
-    const onKeydown = (e, field) => {
-      setTimeout(() => {
-        profile.value[field] = e.target.value
-      })
-    }
+const onKeydown = (e, field) => {
+  setTimeout(() => {
+    profile.value[field] = e.target.value
+  })
+}
 
-    const image = {
-      upload: () => {
-        helpers.modal.custom({
-          component: 'ModalUploadImage',
-          options: {
-            noupload: true,
-            uploadDest: 'chat/profile',
-          },
-        }).then(url => {
-          if (!url) return
-
-          profile.value.image = url
-          update()
-        })
+const image = {
+  upload: () => {
+    helpers.modal.custom({
+      component: 'ModalUploadImage',
+      options: {
+        noupload: true,
+        uploadDest: 'chat/profile',
       },
-      delete: () => {
-        helpers.modal.confirm({
-          body: helpers.translate('MODAL_CONFIRM_DELETE_IMAGE'),
-        }).then(idx => {
-          if (idx === 1) {
-            profile.value.image = null
-            update()
-          }
-        })
-      },
-    }
+    }).then(url => {
+      if (!url) return
 
-    const update = async () => {
-      try {
-        await store.dispatch('setAccount', profile.value)
-        editing.value = false
-        if (store.getters.me) store.dispatch('loadMe')
-      } catch (e) {
-        helpers.toast.error(e.data.message)
-
-        if (!(profile.value.nickname || '').trim()) {
-          refInputNickname.value.focus()
-        }
-      }
-    }
-
-    const toggleEditProfile = async () => {
-      if (!editing.value) {
-        refInputNickname.value.select()
-        editing.value = true
-        return
-      }
-
+      profile.value.image = url
       update()
-    }
-
-    const togglePushPositionChange = async () => {
-      try {
-        const p = store.getters.chatUserSetting
-        if (!p.pushPositionChange) {
-          const result = await helpers.modal.confirm({
-            body: '브라우저에서 푸시 알림을 보낼 수 있도록 물어보는 창이 뜨면 허용해주세요<br>거절했더라도 나중에 브라우저 설정에서 다시 허용할 수 있습니다 🥰',
-          })
-          if (!result) return
-
-          loading.value = true
-          p.deviceToken = await initFirebase()
-        }
-        p.pushPositionChange = !p.pushPositionChange
-        updateUserSetting()
-      } catch (e) {
-        helpers.toast.error('푸시 알림이 거부되어 있어요 😢<br>사이트 설정에서 허용해주세요')
-      } finally {
-        loading.value = false
-      }
-    }
-
-    return {
-      refFixedNickname,
-      refChatDing,
-      refChatTransparent,
-      refChatSizeMax,
-      refChatOverlayNewMessage,
-      refInputNickname,
-      editing,
-      loading,
-      profile,
-      image,
-      onKeydown,
-      toggleEditProfile,
-      togglePushPositionChange,
-    }
+    })
   },
+  delete: () => {
+    helpers.modal.confirm({
+      body: helpers.translate('MODAL_CONFIRM_DELETE_IMAGE'),
+    }).then(idx => {
+      if (idx === 1) {
+        profile.value.image = null
+        update()
+      }
+    })
+  },
+}
+
+const update = async () => {
+  try {
+    await store.dispatch('setAccount', profile.value)
+    editing.value = false
+    if (store.getters.me) store.dispatch('loadMe')
+  } catch (e) {
+    helpers.toast.error(e.data.message)
+
+    if (!(profile.value.nickname || '').trim()) {
+      refInputNickname.value.focus()
+    }
+  }
+}
+
+const toggleEditProfile = async () => {
+  if (!editing.value) {
+    refInputNickname.value.select()
+    editing.value = true
+    return
+  }
+
+  update()
+}
+
+const togglePushPositionChange = async () => {
+  try {
+    const p = store.getters.chatUserSetting
+    if (!p.pushPositionChange) {
+      const result = await helpers.modal.confirm({
+        body: '브라우저에서 푸시 알림을 보낼 수 있도록 물어보는 창이 뜨면 허용해주세요<br>거절했더라도 나중에 브라우저 설정에서 다시 허용할 수 있습니다 🥰',
+      })
+      if (!result) return
+
+      loading.value = true
+      p.deviceToken = await initFirebase()
+    }
+    p.pushPositionChange = !p.pushPositionChange
+    updateUserSetting()
+  } catch (e) {
+    helpers.toast.error('푸시 알림이 거부되어 있어요 😢<br>사이트 설정에서 허용해주세요')
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

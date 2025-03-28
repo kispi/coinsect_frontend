@@ -1,7 +1,7 @@
 <template>
   <div class="modal-orderbook scrollable-body f-mono">
     <ModalHeader
-      :title="$translate('MODAL_ORDERBOOK')
+      :title="helpers.translate('MODAL_ORDERBOOK')
         .replace('%exchange', options.exchange)
         .replace('%market', options.market)
       "
@@ -25,24 +25,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: ['options'],
-  setup() {
-    const refBody = ref(null)
-
-    const scrollCenter = () => {
-      setTimeout(() => {
-        refBody.value.scrollTop = (refBody.value.scrollHeight - refBody.value.clientHeight) / 2
-      })
-    }
-
-    return {
-      refBody,
-      scrollCenter,
-    }
+defineProps({
+  options: {
+    type: Object,
+    required: true,
   },
+})
+
+const { helpers } = useGlobalHooks()
+
+const refBody = ref(null)
+
+const scrollCenter = () => {
+  setTimeout(() => {
+    refBody.value.scrollTop = (refBody.value.scrollHeight - refBody.value.clientHeight) / 2
+  })
 }
 </script>

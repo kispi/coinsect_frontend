@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="$store.getters.config"
+    v-if="store.getters.config"
     class="emoji-picker">
     <div class="closer center" @click="$emit('close')"><i class="c-white fal fa-times"/></div>
     <input
@@ -16,44 +16,35 @@
         class="emoji center"
         :key="emoji"
         v-for="emoji in emojis">
-        {{ ($store.getters.config.emojis[emoji] || {}).emoji }}
+        {{ (store.getters.config.emojis[emoji] || {}).emoji }}
       </div>
     </div>
     <div v-if="keyword && emojis.length === 0" class="c-white center p-24">
-      {{ $translate('NO_SEARCH_RESULT') }}
+      {{ helpers.translate('NO_SEARCH_RESULT') }}
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  emits: ['pick', 'close'],
-  setup() {
-    const { store } = useGlobalHooks()
+const emit = defineEmits(['pick', 'close'])
 
-    const onKeydown = e => {
-      setTimeout(() => {
-        if (e.target.value) keyword.value = e.target.value
-      })
-    }
+const { helpers, store } = useGlobalHooks()
 
-    const emojis = computed(() => {
-      const arr = Object.keys(store.getters.config.emojis || [])
-      return keyword.value ? arr.filter(emojiName => emojiName.includes(keyword.value.trim())) : arr
-    })
-
-    const keyword = ref(null)
-
-    return {
-      keyword,
-      emojis,
-      onKeydown,
-    }
-  },
+const onKeydown = e => {
+  setTimeout(() => {
+    if (e.target.value) keyword.value = e.target.value
+  })
 }
+
+const emojis = computed(() => {
+  const arr = Object.keys(store.getters.config.emojis || [])
+  return keyword.value ? arr.filter(emojiName => emojiName.includes(keyword.value.trim())) : arr
+})
+
+const keyword = ref(null)
 </script>
 
 <style lang="scss" scoped>

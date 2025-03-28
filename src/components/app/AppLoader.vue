@@ -6,26 +6,20 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 
-export default {
-  props: {
-    size: {
-      default: 64,
-    },
+const props = defineProps({
+  size: {
+    type: Number,
+    default: 64,
   },
-  setup(props) {
-    const style = computed(() => ({
-      width: `${props.size}px`,
-      height: `${props.size}px`,
-    }))
+})
 
-    return {
-      style,
-    }
-  },
-}
+const style = computed(() => ({
+  width: `${props.size}px`,
+  height: `${props.size}px`,
+}))
 </script>
 
 <style lang="scss" scoped>

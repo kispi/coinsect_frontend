@@ -1,80 +1,71 @@
 <template>
   <div
-    v-if="$store.getters.indices"
+    v-if="store.getters.indices"
     class="banner-market-indices">
     <AdaptiveLayout
       @click="onClickIndex(index)"
-      :gap="$store.getters.isMobile ? 0 : 8"
+      :gap="store.getters.isMobile ? 0 : 8"
       :class="{
-        'items-center': !$store.getters.isMobile,
+        'items-center': !store.getters.isMobile,
         'cursor-pointer': index.link,
       }"
       :key="index.key"
       v-for="index in indices"
     >
-      <div class="key" v-html="$translate(index.key)"/>
+      <div class="key" v-html="helpers.translate(index.key)"/>
       <div class="value f-mono" v-html="index.value"/>
     </AdaptiveLayout>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { helpers, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const interv = ref(null)
+const interv = ref(null)
 
-    const indices = computed(() => {
-      const o = store.getters.indices
-      if (!o) return
+const indices = computed(() => {
+  const o = store.getters.indices
+  if (!o) return
 
-      const usdKrw = store.getters.usdKrw
+  const usdKrw = store.getters.usdKrw
 
-      return [{
-        key: 'USD/KRW',
-        link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=USDKRW',
-        value: usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }),
-      }, {
-        key: 'BTC_DOMINANCE',
-        link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ABTC.D',
-        value: `${o.btcDominance}%`,
-      }, {
-        key: 'TOTAL_MARKET_CAP',
-        link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ATOTAL',
-        value: helpers.number.pretty.cap({ cap: o.totalMarketCap, baseCurrency: 'usd' }),
-      }]
-    })
+  return [{
+    key: 'USD/KRW',
+    link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=USDKRW',
+    value: usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }),
+  }, {
+    key: 'BTC_DOMINANCE',
+    link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ABTC.D',
+    value: `${o.btcDominance}%`,
+  }, {
+    key: 'TOTAL_MARKET_CAP',
+    link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ATOTAL',
+    value: helpers.number.pretty.cap({ cap: o.totalMarketCap, baseCurrency: 'usd' }),
+  }]
+})
 
-    const onClickIndex = index => {
-      if (!index.link) return
+const onClickIndex = index => {
+  if (!index.link) return
 
-      window.open(index.link, '_blank', 'noreferrer')
-    }
-
-    onMounted(() => {
-      store.dispatch('loadIndices')
-
-      if (store.getters.isSSR) return
-
-      interv.value = setInterval(() => store.dispatch('loadIndices'), 60 * 1000 * 5)
-    })
-
-    onUnmounted(() => {
-      if (store.getters.isSSR) return
-
-      clearInterval(interv.value)
-    })
-
-    return {
-      indices,
-      onClickIndex,
-    }
-  },
+  window.open(index.link, '_blank', 'noreferrer')
 }
+
+onMounted(() => {
+  store.dispatch('loadIndices')
+
+  if (store.getters.isSSR) return
+
+  interv.value = setInterval(() => store.dispatch('loadIndices'), 60 * 1000 * 5)
+})
+
+onUnmounted(() => {
+  if (store.getters.isSSR) return
+
+  clearInterval(interv.value)
+})
 </script>
 
 <style lang="scss">

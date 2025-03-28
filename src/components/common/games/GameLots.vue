@@ -20,7 +20,7 @@
           class="btn flex-wrap"
           :disabled="!lotName"
           @click="onEnter"
-          v-html="$translate('SUBMIT')"
+          v-html="helpers.translate('SUBMIT')"
         />
       </div>
       <div
@@ -74,103 +74,86 @@
         @click="shuffle(10)"
         class="btn btn-primary m-r-8"
         :disabled="lots.length === 0"
-        v-html="$translate('SHUFFLE')"
+        v-html="helpers.translate('SHUFFLE')"
       />
       <button
         @click="play"
         class="btn btn-primary"
-        v-html="$translate('OPEN')"
+        v-html="helpers.translate('OPEN')"
       />
     </div>
   </div>
 </template>
 
-<script>
-import { onMounted, ref, watch } from 'vue'
+<script setup>
+import { onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup(_, { emit }) {
-    const { helpers } = useGlobalHooks()
+const emit = defineEmits(['next-state'])
 
-    const refInputA = ref(null)
+const { helpers } = useGlobalHooks()
 
-    const refInputB = ref(null)
+const refInputA = ref(null)
 
-    const focus = ref({ a: null, b: null })
+const refInputB = ref(null)
 
-    const lots = ref([])
+const focus = ref({ a: null, b: null })
 
-    const lotName = ref(null)
+const lots = ref([])
 
-    const slotNumber = ref(1)
+const lotName = ref(null)
 
-    const shuffled = ref(null)
+const slotNumber = ref(1)
 
-    const remove = idx => {
-      lots.value.splice(idx, 1)
-      refInputA.value.focus()
-    }
-    
-    const onEnter = e => {
-      if (!lotName.value || e.isComposing) return
+const shuffled = ref(null)
 
-      setTimeout(() => {
-        lots.value.push({
-          id: lots.value.length + 1,
-          name: lotName.value,
-        })
-        lotName.value = null
-        emit('next-state')
-      })
-    }
-
-    const play = () => {
-      if (!shuffled.value) return shuffle()
-
-      lots.value.forEach(lot => lot.$$flipped = false)
-    }
-
-    const flip = lot => {
-      if (!shuffled.value) {
-        helpers.toast.error('먼저 적어도 1회 이상 덱을 섞어주세요')
-        return
-      }
-
-      lot.$$flipped = !lot.$$flipped
-    }
-
-    const shuffle = num => {
-      if (num <= 0) return
-
-      const p = parseInt(slotNumber.value)
-      if (isNaN(p) || p > lots.value.length || p < 1) return helpers.toast.error(`${lots.value.length} 이하의 올바른 당첨칸 번호를 적어주세요 🤔`)
-
-      lots.value.forEach(lot => lot.$$flipped = true)
-      lots.value = helpers.logic.shuffle(lots.value)
-      shuffled.value = true
-
-      setTimeout(() => shuffle(num - 1), 250)
-    }
-
-    onMounted(() => refInputA.value.focus())
-
-    return {
-      refInputA,
-      refInputB,
-      focus,
-      lotName,
-      slotNumber,
-      lots,
-      shuffled,
-      remove,
-      flip,
-      play,
-      shuffle,
-      onEnter,
-    }
-  },
+const remove = idx => {
+  lots.value.splice(idx, 1)
+  refInputA.value.focus()
 }
+
+const onEnter = e => {
+  if (!lotName.value || e.isComposing) return
+
+  setTimeout(() => {
+    lots.value.push({
+      id: lots.value.length + 1,
+      name: lotName.value,
+    })
+    lotName.value = null
+    emit('next-state')
+  })
+}
+
+const play = () => {
+  if (!shuffled.value) return shuffle()
+
+  lots.value.forEach(lot => lot.$$flipped = false)
+}
+
+const flip = lot => {
+  if (!shuffled.value) {
+    helpers.toast.error('먼저 적어도 1회 이상 덱을 섞어주세요')
+    return
+  }
+
+  lot.$$flipped = !lot.$$flipped
+}
+
+const shuffle = num => {
+  if (num <= 0) return
+
+  const p = parseInt(slotNumber.value)
+  if (isNaN(p) || p > lots.value.length || p < 1) return helpers.toast.error(`${lots.value.length} 이하의 올바른 당첨칸 번호를 적어주세요 🤔`)
+
+  lots.value.forEach(lot => lot.$$flipped = true)
+  lots.value = helpers.logic.shuffle(lots.value)
+  shuffled.value = true
+
+  setTimeout(() => shuffle(num - 1), 250)
+}
+
+onMounted(() => refInputA.value.focus())
 </script>
 
 <style lang="scss" scoped>

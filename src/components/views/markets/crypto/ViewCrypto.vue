@@ -5,12 +5,8 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import CryptoCoinmarketcap from './CryptoCoinmarketcap'
-
-export default {
-  components: { CryptoCoinmarketcap },
-}
 </script>
 
 <style lang="scss">

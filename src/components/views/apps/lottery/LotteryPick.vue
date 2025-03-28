@@ -20,27 +20,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 
-export default {
-  props: {
-    numbers: Array,
+defineProps({
+  numbers: {
+    type: Array,
+    default: () => [],
   },
-  setup() {
-    const focused = ref(null)
+})
 
-    const focus = () => {
-      for (let i = 1; i <= 10; i++) { // 짝수번 깜빡여야 최종 focused.value === false가 됨.
-        setTimeout(() => focused.value = i % 2 === 1, i * 100)
-      }
-    }
+const focused = ref(null)
 
-    return {
-      focus,
-      focused,
-    }
-  },
+const focus = () => {
+  for (let i = 1; i <= 10; i++) { // 짝수번 깜빡여야 최종 focused.value === false가 됨.
+    setTimeout(() => focused.value = i % 2 === 1, i * 100)
+  }
 }
 </script>
 

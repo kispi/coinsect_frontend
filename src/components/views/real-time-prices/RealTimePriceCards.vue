@@ -1,65 +1,63 @@
 <template>
   <div class="real-time-price-cards">
     <RealTimePriceCard
-      :tickerBinance="$store.getters.rawWebsocketInfo.binance[`${symbol}USDT`.toUpperCase()]"
-      :tickerUpbit="$store.getters.rawWebsocketInfo.upbit[`KRW-${symbol}`]"
-      :tickerBithumb="$store.getters.rawWebsocketInfo.bithumb[`${symbol}_KRW`.toUpperCase()]"
+      :tickerBinance="store.getters.rawWebsocketInfo.binance[`${symbol}USDT`.toUpperCase()]"
+      :tickerUpbit="store.getters.rawWebsocketInfo.upbit[`KRW-${symbol}`]"
+      :tickerBithumb="store.getters.rawWebsocketInfo.bithumb[`${symbol}_KRW`.toUpperCase()]"
       :key="symbol"
       v-for="symbol in symbols"
     />
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import useBinance from '@/hooks/websockets/binance'
 import useUpbit from '@/hooks/websockets/upbit'
+import useGlobalHooks from '@/hooks/global-hooks'
 import RealTimePriceCard from './RealTimePriceCard'
 
-export default {
-  components: { RealTimePriceCard },
-  props: {
-    symbols: Array,
+const props = defineProps({
+  symbols: {
+    type: Array,
+    required: true,
   },
-  setup(props) {
-    const { subscribe: subscribeBinance } = useBinance()
+})
 
-    const { subscribe: subscribeUpbit } = useUpbit()
+const { subscribe: subscribeBinance } = useBinance()
 
-    const connected = ref(null)
+const { subscribe: subscribeUpbit } = useUpbit()
 
-    const connection = ref({
-      binance: null,
-      upbit: null,
+const { store } = useGlobalHooks()
+
+const connected = ref(null)
+
+const connection = ref({
+  binance: null,
+  upbit: null,
+})
+
+const init = async () => {
+  try {
+    connection.value.binance = await subscribeBinance({
+      codes: props.symbols.map(symbol => `${symbol.toLowerCase()}usdt@miniTicker`),
+      $$raw: true,
     })
-
-    const init = async () => {
-      try {
-        connection.value.binance = await subscribeBinance({
-          codes: props.symbols.map(symbol => `${symbol.toLowerCase()}usdt@miniTicker`),
-          $$raw: true,
-        })
-        connection.value.upbit = await subscribeUpbit({
-          type: 'ticker',
-          codes: props.symbols.map(symbol => `KRW-${symbol}`),
-          $$raw: true,
-        })
-        connected.value = true
-      } catch (e) {}
-    }
-
-    onMounted(init)
-
-    onUnmounted(() => {
-      if (connection.value.binance) connection.value.binance.close()
-      if (connection.value.upbit) connection.value.upbit.close()
+    connection.value.upbit = await subscribeUpbit({
+      type: 'ticker',
+      codes: props.symbols.map(symbol => `KRW-${symbol}`),
+      $$raw: true,
     })
-
-    return {
-      connection,
-    }
-  },
+    connected.value = true
+  } catch (e) {}
 }
+
+onMounted(init)
+
+onUnmounted(() => {
+  if (connection.value.binance) connection.value.binance.close()
+  if (connection.value.upbit) connection.value.upbit.close()
+})
 </script>
 
 <style lang="scss" scoped>

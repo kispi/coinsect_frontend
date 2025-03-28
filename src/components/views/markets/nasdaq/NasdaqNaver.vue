@@ -1,6 +1,6 @@
 <template>
   <div 
-    v-if="$store.getters.nasdaq"
+    v-if="store.getters.nasdaq"
     class="nasdaq-naver">
     <table class="list table-stock">
       <thead>
@@ -17,10 +17,10 @@
               { column: 'symbolCode', title: 'STOCK' },
               { column: 'closePrice', title: 'PRICE' },
               { column: 'fluctuationsRatio', title: '24h %' },
-              { column: 'marketValueFull', title: 'MARKETCAPS', $$hide: $store.getters.windowInnerWidth < 480 },
-              { column: 'accumulatedTradingVolume', title: 'VOL_24_SHARE', $$hide: $store.getters.windowInnerWidth < 768 },
+              { column: 'marketValueFull', title: 'MARKETCAPS', $$hide: store.getters.windowInnerWidth < 480 },
+              { column: 'accumulatedTradingVolume', title: 'VOL_24_SHARE', $$hide: store.getters.windowInnerWidth < 768 },
             ].filter(o => !o.$$hide)">
-            {{ $translate(th.title) }}
+            {{ helpers.translate(th.title) }}
             <span
               v-if="th.column"
               class="sort-icons">
@@ -59,17 +59,17 @@
             <div
               v-else
               class="fluctuation"
-              :class="$helpers.template.priceColor(item.compareToPreviousClosePrice)">
+              :class="helpers.template.priceColor(item.compareToPreviousClosePrice)">
               {{ displayPrice(item.compareToPreviousClosePrice).price }}
             </div>
           </td>
-          <td class="percent-change-24h" :class="$helpers.template.priceColor(item.fluctuationsRatio)">
+          <td class="percent-change-24h" :class="helpers.template.priceColor(item.fluctuationsRatio)">
             {{ item.fluctuationsRatio }}%
           </td>
-          <td v-if="$store.getters.windowInnerWidth >= 480" class="market-cap">
+          <td v-if="store.getters.windowInnerWidth >= 480" class="market-cap">
             {{ displayPrice(item.marketValueFull).cap }}
           </td>
-          <td v-if="$store.getters.windowInnerWidth >= 768" class="vol-24h">
+          <td v-if="store.getters.windowInnerWidth >= 768" class="vol-24h">
             {{ displayPrice(item.accumulatedTradingVolume).cap }}주
           </td>
         </tr>
@@ -78,109 +78,96 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, onServerPrefetch, ref, computed, onUnmounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { helpers, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const payload = ref({
-      column: null,
-      direction: null,
-    })
+const payload = ref({
+  column: null,
+  direction: null,
+})
 
-    const displayPrice = value => {
-      const parsed = parseFloat((value || '').replace(/,/g, ''))
-      if (!parsed) return '?'
+const displayPrice = value => {
+  const parsed = parseFloat((value || '').replace(/,/g, ''))
+  if (!parsed) return '?'
 
-      const p = helpers.number.pretty
-      const baseCurrency = 'usd'
+  const p =helpers.number.pretty
+  const baseCurrency = 'usd'
 
-      return {
-        cap: p.cap({ cap: parsed, baseCurrency }),
-        price: p.price({ price: parsed, baseCurrency, fracs: store.getters.settings.currency === 'krw' ? 0 : 2 }),
-        parsed,
-      }
-    }
-
-    const sort = column => {
-      if (!column) return
-
-      if (column === payload.value.column) {
-        payload.value.direction = payload.value.direction === 'desc' ? 'asc' : 'desc'
-      } else {
-        payload.value.column = column
-        payload.value.direction = 'desc'
-      }
-    }
-
-    const rawSortColumns = ['symbolCode', '$$rank']
-
-    const displayedList = computed(() => {
-      const arr = []
-      store.getters.nasdaq.forEach(row => arr.push(row))
-      arr.sort((a, b) => {
-        let val1 = a[payload.value.column]
-        let val2 = b[payload.value.column]
-        const A = rawSortColumns.indexOf(payload.value.column) >= 0 ? val1 : displayPrice(val1).parsed
-        const B = rawSortColumns.indexOf(payload.value.column) >= 0 ? val2 : displayPrice(val2).parsed
-        if (payload.value.direction === 'asc') return A < B ? -1 : 1
-
-        if (payload.value.direction === 'desc') return A < B ? 1 : -1
-      })
-
-      return arr
-    })
-
-    const interv = ref(null)
-
-    const openModalTradingView = item => {
-      helpers.modal.custom({
-        component: 'ModalTradingView',
-        options: {
-          symbol: `NASDAQ:${item.symbolCode}`,
-          resizable: !store.getters.isMobile,
-          noBackdrop: true,
-          useMultiOpen: true,
-        },
-      })
-    }
-
-    const onClickStock = item => {
-      window.open(`https://m.stock.naver.com/worldstock/stock/${item.reutersCode}/total`, '_blank')
-    }
-
-    const callApi = async () => {
-      store.dispatch('loadNasdaq')
-
-      if (store.getters.isSSR) return
-
-      clearInterval(interv.value)
-      interv.value = setInterval(() => store.dispatch('loadNasdaq'), 1000 * 10)
-    }
-
-    onMounted(callApi)
-
-    onUnmounted(() => {
-      if (store.getters.isSSR) return
-
-      clearInterval(interv.value)
-    })
-
-    onServerPrefetch(() => store.dispatch('loadNasdaq'))
-
-    return {
-      payload,
-      sort,
-      displayedList,
-      onClickStock,
-      displayPrice,
-      openModalTradingView,
-    }
-  },
+  return {
+    cap: p.cap({ cap: parsed, baseCurrency }),
+    price: p.price({ price: parsed, baseCurrency, fracs: store.getters.settings.currency === 'krw' ? 0 : 2 }),
+    parsed,
+  }
 }
+
+const sort = column => {
+  if (!column) return
+
+  if (column === payload.value.column) {
+    payload.value.direction = payload.value.direction === 'desc' ? 'asc' : 'desc'
+  } else {
+    payload.value.column = column
+    payload.value.direction = 'desc'
+  }
+}
+
+const rawSortColumns = ['symbolCode', '$$rank']
+
+const displayedList = computed(() => {
+  const arr = []
+  store.getters.nasdaq.forEach(row => arr.push(row))
+  arr.sort((a, b) => {
+    let val1 = a[payload.value.column]
+    let val2 = b[payload.value.column]
+    const A = rawSortColumns.indexOf(payload.value.column) >= 0 ? val1 : displayPrice(val1).parsed
+    const B = rawSortColumns.indexOf(payload.value.column) >= 0 ? val2 : displayPrice(val2).parsed
+    if (payload.value.direction === 'asc') return A < B ? -1 : 1
+
+    if (payload.value.direction === 'desc') return A < B ? 1 : -1
+  })
+
+  return arr
+})
+
+const interv = ref(null)
+
+const openModalTradingView = item => {
+ helpers.modal.custom({
+    component: 'ModalTradingView',
+    options: {
+      symbol: `NASDAQ:${item.symbolCode}`,
+      resizable: !store.getters.isMobile,
+      noBackdrop: true,
+      useMultiOpen: true,
+    },
+  })
+}
+
+const onClickStock = item => {
+  window.open(`https://m.stock.naver.com/worldstock/stock/${item.reutersCode}/total`, '_blank')
+}
+
+const callApi = async () => {
+  store.dispatch('loadNasdaq')
+
+  if (store.getters.isSSR) return
+
+  clearInterval(interv.value)
+  interv.value = setInterval(() => store.dispatch('loadNasdaq'), 1000 * 10)
+}
+
+onMounted(callApi)
+
+onUnmounted(() => {
+  if (store.getters.isSSR) return
+
+  clearInterval(interv.value)
+})
+
+onServerPrefetch(() => store.dispatch('loadNasdaq'))
 </script>
 
 <style lang="scss" scoped>

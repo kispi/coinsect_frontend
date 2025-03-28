@@ -2,7 +2,7 @@
   <div class="app-ad">
     <template v-if="whereToShow">
       <ExchangeBanner
-        @click="$modal.custom({
+        @click="helpers.modal.custom({
           component: 'ModalReferral',
           options: { exchange },
         })"
@@ -17,10 +17,10 @@
 </template>
 
 <script setup>
-import { ref, computed, defineAsyncComponent } from 'vue'
+import { computed } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const { store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
 const whereToShow = computed(() => false)
 </script>

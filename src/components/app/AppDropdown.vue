@@ -9,7 +9,7 @@
       <div class="info">
         <i class="item-icon" v-if="(selectedItem || {}).icon" :class="(selectedItem || {}).icon"/>
         <img class="item-image" v-if="(selectedItem || {}).img" :src="(selectedItem || {}).img"/>
-        <div class="key" v-html="$translate((selectedItem || {}).name || (selectedItem || {}).key || 'SELECT')"/>
+        <div class="key" v-html="helpers.translate((selectedItem || {}).name || (selectedItem || {}).key || 'SELECT')"/>
       </div>
       <div class="chevrons">
         <i class="fa fa-chevron-down"/>
@@ -42,8 +42,8 @@
             v-for="item in filteredList"
             :class="{'selected': (selectedItem || {}).key === item.key}">
             <i class="item-icon" v-if="item.icon" :class="item.icon"/>
-            <img class="item-image" v-if="item.img" :src="item.img" :alt="$translate(item.name || item.key)"/>
-            <div class="key" v-html="$translate(item.name || item.key)"/>
+            <img class="item-image" v-if="item.img" :src="item.img" :alt="helpers.translate(item.name || item.key)"/>
+            <div class="key" v-html="helpers.translate(item.name || item.key)"/>
           </li>
         </ul>
         <div v-else class="empty" @click="initKeyword">
@@ -54,77 +54,82 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref, onMounted, watch } from 'vue'
 import WrapperDropdownOverlay from './WrapperDropdownOverlay'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  name: 'AppDropdown',
-  props: ['dropdownItems', 'align', 'useSearch', 'transparent'],
-  components: { WrapperDropdownOverlay },
-  setup(props, { emit }) {
-    const refInput = ref(null)
+const props = defineProps({
+  dropdownItems: {
+    type: Array,
+    default: () => [],
+  },
+  align: {
+    type: String,
+    default: 'left',
+  },
+  useSearch: {
+    type: Boolean,
+    default: false,
+  },
+  transparent: {
+    type: Boolean,
+    default: false,
+  },
+})
 
-    const keyword = ref(null)
+const emit = defineEmits(['select-dropdown-item'])
 
-    const selectedItem = computed(() => props.dropdownItems.find(item => item.$$selected))
+const { helpers } = useGlobalHooks()
 
-    const dropdownOpened = ref(null)
+const refInput = ref(null)
 
-    const dropdownButton = ref(null)
+const keyword = ref(null)
 
-    const filteredList = computed(() => props.dropdownItems.filter(o => keyword.value ? o.key.toLowerCase().includes(keyword.value.toLowerCase()) : true))
+const selectedItem = computed(() => props.dropdownItems.find(item => item.$$selected))
 
-    const initKeyword = () => {
-      keyword.value = null
-      refInput.value.focus()
-    }
+const dropdownOpened = ref(null)
 
-    const onKeydown = e => {
-      setTimeout(() => keyword.value = e.target.value)
-    }
+const dropdownButton = ref(null)
 
-    const onClickDropdownItem = clickedItem => {
-      props.dropdownItems.forEach(item => item.$$selected = clickedItem.key === item.key)
-      dropdownOpened.value = false
-      emit('select-dropdown-item', clickedItem)
-    }
+const filteredList = computed(() => props.dropdownItems.filter(o => keyword.value ? o.key.toLowerCase().includes(keyword.value.toLowerCase()) : true))
 
-    onMounted(() => {
-      if (selectedItem.value) onClickDropdownItem(selectedItem.value)
-    })
+const initKeyword = () => {
+  keyword.value = null
+  refInput.value.focus()
+}
 
-    watch(
-      () => props.dropdownItems,
-      newVal => {
-        if (!newVal || selectedItem.value) return // 이미 선택된 아이템이 있으면 첫째 항목을 선택하지 말고 그 아이템을 유지
+const onKeydown = e => {
+  setTimeout(() => keyword.value = e.target.value)
+}
 
-        onClickDropdownItem(newVal[0])
-      },
-    )
+const onClickDropdownItem = clickedItem => {
+  props.dropdownItems.forEach(item => item.$$selected = clickedItem.key === item.key)
+  dropdownOpened.value = false
+  emit('select-dropdown-item', clickedItem)
+}
 
-    watch(
-      () => dropdownOpened.value,
-      newVal => {
-        if (newVal && props.useSearch) {
-          setTimeout(() => refInput.value ? refInput.value.focus() : null, 200)
-        }
-      },
-    )
+onMounted(() => {
+  if (selectedItem.value) onClickDropdownItem(selectedItem.value)
+})
 
-    return {
-      refInput,
-      keyword,
-      selectedItem,
-      filteredList,
-      dropdownOpened,
-      dropdownButton,
-      initKeyword,
-      onClickDropdownItem,
-      onKeydown,
+watch(
+  () => props.dropdownItems,
+  newVal => {
+    if (!newVal || selectedItem.value) return // 이미 선택된 아이템이 있으면 첫째 항목을 선택하지 말고 그 아이템을 유지
+
+    onClickDropdownItem(newVal[0])
+  },
+)
+
+watch(
+  () => dropdownOpened.value,
+  newVal => {
+    if (newVal && props.useSearch) {
+      setTimeout(() => refInput.value ? refInput.value.focus() : null, 200)
     }
   },
-}
+)
 </script>
 
 <style lang="scss" scoped>

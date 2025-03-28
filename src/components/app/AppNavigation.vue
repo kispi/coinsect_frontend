@@ -1,9 +1,9 @@
 <template>
   <div
     class="app-navigation"
-    :class="{'folded': !$store.getters.showNavigation}"
+    :class="{'folded': !store.getters.showNavigation}"
     :style="{
-      height: $store.getters.stickyAppBodyHeight,
+      height: store.getters.stickyAppBodyHeight,
     }">
     <div class="left-panel pretty-scrollbar">
       <BannerBitcoinBlog class="p-16 m-b-8"/>
@@ -19,7 +19,7 @@
             <div class="title">
               <AppImg v-if="menuItem.img" :src="menuItem.img"/>
               <span class="emoji" v-if="menuItem.emoji">{{ menuItem.emoji }}</span>
-              {{ $translate(menuItem.title) }}
+              {{ helpers.translate(menuItem.title) }}
             </div>
             <i v-if="menuItem.subItems" class="far m-l-4 center f-10" :class="menuItem.$$expanded ? 'fa-chevron-up' : 'fa-chevron-down'"/>
           </a>
@@ -35,53 +35,43 @@
               <div class="title">
                 <AppImg v-if="subItem.img" :src="subItem.img"/>
                 <span class="emoji" v-if="subItem.emoji">{{ subItem.emoji }}</span>
-                {{ $translate(subItem.title) }}
+                {{ helpers.translate(subItem.title) }}
               </div>
             </a>
           </div>
         </div>
       </nav>
     </div>
-    <div class="dimmed-overlay" @click="$store.commit('setShowNavigation', false)"/>
+    <div class="dimmed-overlay" @click="store.commit('setShowNavigation', false)"/>
   </div>
 </template>
 
-<script>
+<script setup>
 import useGlobalHooks from '@/hooks/global-hooks'
 import useMenuItems from './app-header/menu-items'
 
-export default {
-  setup() {
-    const { helpers, store, router } = useGlobalHooks()
+const { helpers, store, router } = useGlobalHooks()
 
-    const { menuItems } = useMenuItems()
+const { menuItems } = useMenuItems()
 
-    const selected = menuItem => {
-      const { path } = router.currentRoute.value
-      return menuItem.path === '/community' ? path.startsWith('/community') : path === menuItem.path
-    }
+const selected = menuItem => {
+  const { path } = router.currentRoute.value
+  return menuItem.path === '/community' ? path.startsWith('/community') : path === menuItem.path
+}
 
-    const onClickMenuItem = menuItem => {
-      if (menuItem.link) {
-        helpers.openLink(menuItem.link)
-        return
-      }
+const onClickMenuItem = menuItem => {
+  if (menuItem.link) {
+    helpers.openLink(menuItem.link)
+    return
+  }
 
-      if (!menuItem.path) {
-        menuItem.$$expanded = !menuItem.$$expanded
-        return
-      }
+  if (!menuItem.path) {
+    menuItem.$$expanded = !menuItem.$$expanded
+    return
+  }
 
-      router.push(menuItem.path)
-      store.commit('setShowNavigation', false)
-    }
-
-    return {
-      menuItems,
-      selected,
-      onClickMenuItem,
-    }
-  },
+  router.push(menuItem.path)
+  store.commit('setShowNavigation', false)
 }
 </script>
 

@@ -4,12 +4,6 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import NewsUpbit from './NewsUpbit'
-
-export default {
-  components: {
-    NewsUpbit,
-  },
-}
 </script>

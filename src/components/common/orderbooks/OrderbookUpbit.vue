@@ -14,7 +14,7 @@
             priceColor({ price: order.price, type: t }),
             lastTradedPrice === order.price ? 'bordered' : '',
           ]">
-          <div class="value" v-html="$helpers.number.pretty.price({ price: order.price, baseCurrency: $store.getters.settings.baseExchangeMarket })"/>
+          <div class="value" v-html="helpers.number.pretty.price({ price: order.price, baseCurrency: store.getters.settings.baseExchangeMarket })"/>
           <div class="change" v-html="`${zeroOrPercent(order)}%`"/>
         </div>
         <div class="size">
@@ -33,85 +33,78 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import useUpbit from '@/hooks/websockets/upbit'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    market: String,
+const props = defineProps({
+  market: {
+    type: String,
+    required: true,
   },
-  setup(props, { emit }) {
-    const { helpers, store } = useGlobalHooks()
+})
 
-    const orderbook = computed(() => store.getters.orderbooks.upbit[props.market])
+const emit = defineEmits(['load-orderbook'])
 
-    const realTimeTicker = computed(() => {
-      if (!props.market) return
+const { helpers, store } = useGlobalHooks()
 
-      return store.getters.realTimeTickers[props.market.split(`${store.getters.settings.baseExchangeMarket.toUpperCase()}-`)[1]] || {}
-    })
+const orderbook = computed(() => store.getters.orderbooks.upbit[props.market])
 
-    const prevClosingPrice = computed(() => realTimeTicker.value.$$prevClosingPrice)
+const realTimeTicker = computed(() => {
+  if (!props.market) return
 
-    const lastTradedPrice = computed(() => realTimeTicker.value.$$tradePriceBase)
+  return store.getters.realTimeTickers[props.market.split(`${store.getters.settings.baseExchangeMarket.toUpperCase()}-`)[1]] || {}
+})
 
-    const relativeWidth = size => `${size * 100 / orderbook.value.$$biggestSize}%`
+const prevClosingPrice = computed(() => realTimeTicker.value.$$prevClosingPrice)
 
-    const priceColor = ({ price, type }) => {
-      if (store.getters.settings.theme === 'light') {
-        if (!prevClosingPrice.value || price === prevClosingPrice.value) return 'c-price-same-upbit'
-        return price > prevClosingPrice.value ? 'c-price-up' : 'c-price-down'
-      }
+const lastTradedPrice = computed(() => realTimeTicker.value.$$tradePriceBase)
 
-      return type === '$$asks' ? 'c-price-down' : 'c-price-up'
-    }
+const relativeWidth = size => `${size * 100 / orderbook.value.$$biggestSize}%`
 
-    const { subscribe } = useUpbit()
+const priceColor = ({ price, type }) => {
+  if (store.getters.settings.theme === 'light') {
+    if (!prevClosingPrice.value || price === prevClosingPrice.value) return 'c-price-same-upbit'
+    return price > prevClosingPrice.value ? 'c-price-up' : 'c-price-down'
+  }
 
-    const connection = ref(null)
-
-    const zeroOrPercent = order => {
-      const value = helpers.number.pretty.percent(Math.round((order.price - prevClosingPrice.value) / prevClosingPrice.value * 10000) / 100)
-      return isNaN(value) ? 0 : value
-    }
-
-    const init = () => {
-      subscribe({ type: 'orderbook', codes: [props.market] }).then(conn => connection.value = conn)
-    }
-
-    onMounted(init)
-
-    onUnmounted(() => {
-      store.commit('setOrderbook', {
-        exchange: 'upbit',
-        market: props.market,
-        orderbook: null,
-      })
-
-      connection.value.close()
-    })
-
-    watch(
-      () => orderbook.value,
-      newVal => {
-        if (newVal) {
-          emit('load-orderbook')
-        }
-      },
-    )
-
-    return {
-      orderbook,
-      prevClosingPrice,
-      lastTradedPrice,
-      relativeWidth,
-      priceColor,
-      zeroOrPercent,
-    }
-  },
+  return type === '$$asks' ? 'c-price-down' : 'c-price-up'
 }
+
+const { subscribe } = useUpbit()
+
+const connection = ref(null)
+
+const zeroOrPercent = order => {
+  const value = helpers.number.pretty.percent(Math.round((order.price - prevClosingPrice.value) / prevClosingPrice.value * 10000) / 100)
+  return isNaN(value) ? 0 : value
+}
+
+const init = () => {
+  subscribe({ type: 'orderbook', codes: [props.market] }).then(conn => connection.value = conn)
+}
+
+onMounted(init)
+
+onUnmounted(() => {
+  store.commit('setOrderbook', {
+    exchange: 'upbit',
+    market: props.market,
+    orderbook: null,
+  })
+
+  connection.value.close()
+})
+
+watch(
+  () => orderbook.value,
+  newVal => {
+    if (newVal) {
+      emit('load-orderbook')
+    }
+  },
+)
 </script>
 
 <style lang="scss" scoped>

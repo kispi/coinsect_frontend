@@ -9,46 +9,37 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, onServerPrefetch, onUnmounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import CPost from './CPost'
 
-export default {
-  components: { CPost },
-  setup() {
-    const { helpers, store, router } = useGlobalHooks()
+const { helpers, store, router } = useGlobalHooks()
 
-    const sharingKey = computed(() => router.currentRoute.value.params.sharingKey)
+const sharingKey = computed(() => router.currentRoute.value.params.sharingKey)
 
-    const post = computed(() => store.getters.post)
+const post = computed(() => store.getters.post)
 
-    const loadPost = async () => {
-      if (!sharingKey.value) return
+const loadPost = async () => {
+  if (!sharingKey.value) return
 
-      try {
-        if ((post.value || {}).sharingKey !== router.currentRoute.value.params.sharingKey) {
-          await store.dispatch('loadPost', sharingKey.value)
-        }
-        helpers.meta.setDocumentTitle(post.value.title)
-        helpers.meta.renderDescription(post.value.content)
-        const firstImage = (post.value.$$images || [])[0] || post.value.$$thumbnail
-        if (firstImage) helpers.meta.renderOgImage(firstImage)
-      } catch (e) {
-        helpers.toast.error('존재하지 않는 게시글입니다')
-        router.push('/community')
-      }
+  try {
+    if ((post.value || {}).sharingKey !== router.currentRoute.value.params.sharingKey) {
+      await store.dispatch('loadPost', sharingKey.value)
     }
-
-    onServerPrefetch(loadPost)
-
-    onMounted(loadPost)
-
-    onUnmounted(() => store.commit('setPost', null))
-
-    return {
-      post,
-    }
-  },
+    helpers.meta.setDocumentTitle(post.value.title)
+    helpers.meta.renderDescription(post.value.content)
+    const firstImage = (post.value.$$images || [])[0] || post.value.$$thumbnail
+    if (firstImage) helpers.meta.renderOgImage(firstImage)
+  } catch (e) {
+    helpers.toast.error('존재하지 않는 게시글입니다')
+    router.push('/community')
+  }
 }
+
+onServerPrefetch(loadPost)
+
+onMounted(loadPost)
+
+onUnmounted(() => store.commit('setPost', null))
 </script>

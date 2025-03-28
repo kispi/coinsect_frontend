@@ -7,22 +7,20 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import referrals from '@/assets/constants/referrals'
 import exchanges from '@/assets/constants/exchanges'
 
-export default {
-  props: {
-    exchange: String,
-    simple: Boolean,
+defineProps({
+  exchange: {
+    type: String,
+    required: true,
   },
-  setup() {
-    return {
-      referrals,
-      exchanges,
-    }
+  simple: {
+    type: Boolean,
+    default: false,
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

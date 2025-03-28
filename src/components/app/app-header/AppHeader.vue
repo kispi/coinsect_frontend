@@ -54,7 +54,7 @@
             @click="onClickMenuAccount"
             class="clickable-icon-wrapper">
             <i v-if="store.getters.me" class="fal fa-circle-user"/>
-            <div v-else class="f-10">{{ $translate('MODAL_SIGN_IN') }}</div>
+            <div v-else class="f-10">{{ helpers.translate('MODAL_SIGN_IN') }}</div>
           </div>
         </div>
         <WrapperDropdownOverlay
@@ -79,7 +79,7 @@
           <ul class="my-activity">
             <li @click="handleClickMyActivity(() => helpers.modal.custom({ component: 'ModalUserStats', options: { user: store.getters.me } }))">내 활동</li>
             <li @click="handleClickMyActivity(() => helpers.modal.custom({ component: store.getters.me ? 'ModalChatSettings' : 'ModalSignIn' }))">계정 설정</li>
-            <li @click="handleClickMyActivity(() => store.dispatch('signOut'))">{{ $translate('LOGOUT') }}</li>
+            <li @click="handleClickMyActivity(() => store.dispatch('signOut'))">{{ helpers.translate('LOGOUT') }}</li>
           </ul>
         </WrapperDropdownOverlay>
       </div>

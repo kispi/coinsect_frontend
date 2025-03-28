@@ -4,39 +4,30 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  components: {
-    ViewPortfolio: defineAsyncComponent(() => import('./ViewPortfolio')),
-    ViewGames: defineAsyncComponent(() => import('./ViewGames')),
-    ViewLottery: defineAsyncComponent(() => import('./lottery/ViewLottery')),
-    ViewSeo: defineAsyncComponent(() => import('./ViewSeo')),
-    ViewSalary: defineAsyncComponent(() => import('./ViewSalary')),
-    ViewVoiceRecorder: defineAsyncComponent(() => import('./ViewVoiceRecorder')),
-    ViewImageResizer: defineAsyncComponent(() => import('./ViewImageResizer')),
-    ViewImageModeration: defineAsyncComponent(() => import('./ViewImageModeration')),
-  },
-  setup() {
-    const { router } = useGlobalHooks()
+const ViewPortfolio = defineAsyncComponent(() => import('./ViewPortfolio'))
+const ViewGames = defineAsyncComponent(() => import('./ViewGames'))
+const ViewLottery = defineAsyncComponent(() => import('./lottery/ViewLottery'))
+const ViewSeo = defineAsyncComponent(() => import('./ViewSeo'))
+const ViewSalary = defineAsyncComponent(() => import('./ViewSalary'))
+const ViewVoiceRecorder = defineAsyncComponent(() => import('./ViewVoiceRecorder'))
+const ViewImageResizer = defineAsyncComponent(() => import('./ViewImageResizer'))
+const ViewImageModeration = defineAsyncComponent(() => import('./ViewImageModeration'))
 
-    const selectedComponent = computed(() => {
-      const p = router.currentRoute.value.path
-      if (p === '/apps/portfolio') return 'ViewPortfolio'
-      if (p === '/apps/salary') return 'ViewSalary'
-      if (p === '/apps/lottery') return 'ViewLottery'
-      if (p === '/apps/seo') return 'ViewSeo'
-      if (p === '/apps/games') return 'ViewGames'
-      if (p === '/apps/voice-recorder') return 'ViewVoiceRecorder'
-      if (p === '/apps/image-resizer') return 'ViewImageResizer'
-      if (p === '/apps/image-moderation') return 'ViewImageModeration'
-    })
+const { router } = useGlobalHooks()
 
-    return {
-      selectedComponent,
-    }
-  },
-}
+const selectedComponent = computed(() => {
+  const p = router.currentRoute.value.path
+  if (p === '/apps/portfolio') return ViewPortfolio
+  if (p === '/apps/salary') return ViewSalary
+  if (p === '/apps/lottery') return ViewLottery
+  if (p === '/apps/seo') return ViewSeo
+  if (p === '/apps/games') return ViewGames
+  if (p === '/apps/voice-recorder') return ViewVoiceRecorder
+  if (p === '/apps/image-resizer') return ViewImageResizer
+  if (p === '/apps/image-moderation') return ViewImageModeration
+})
 </script>

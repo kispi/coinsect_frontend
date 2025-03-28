@@ -35,7 +35,7 @@
           @click="helpers.onClickHTMLContent"
           class="content"
           :class="{'deleted': reply.deletedAt}"
-          v-html="reply.deletedAt ? $translate('DELETED_REPLY') : helpers.dom.linkify(reply.content)"
+          v-html="reply.deletedAt ? helpers.translate('DELETED_REPLY') : helpers.dom.linkify(reply.content)"
         />
         <div class="flex-row items-center flex-between">
           <div class="created-at" v-html="helpers.template.prettyTime(reply.createdAt, true)"/>
@@ -44,14 +44,14 @@
               <div
                 @click="onClickDelete(reply)"
                 class="reply-delete function">
-                {{ $translate('DELETE') }}
+                {{ helpers.translate('DELETE') }}
               </div>
               <div class="vr"/>
             </template>
             <div
               @click="reply.$$showReply = !reply.$$showReply"
               class="reply-reply function">
-              {{ $translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY') }}
+              {{ helpers.translate(reply.$$showReply ? 'CANCEL' : 'REPLY_REPLY') }}
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@
         v-if="reply.$$showReply"
         class="reply-write-container"
         :style="{'padding-left': `${depth * 24 + 24}px`}">
-        <ReplyWrite :post="$store.getters.post" :parent="reply" @cancel="reply.$$showReply = false"/>
+        <ReplyWrite :post="store.getters.post" :parent="reply" @cancel="reply.$$showReply = false"/>
       </div>
       <CReplies :replies="reply.replies" :depth="depth + 1"/>
     </div>

@@ -7,38 +7,31 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, computed } from 'vue'
 import useSeo from '@/hooks/seo'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  emits: ['scroll-to-bottom'],
-  props: {
-    message: null,
-  },
-  setup(props, { emit }) {
-    const { helpers, store } = useGlobalHooks()
+const props = defineProps({
+  message: null,
+})
 
-    const { meta, tryMetaTags } = useSeo()
+const emit = defineEmits(['scroll-to-bottom'])
 
-    const link = computed(() => helpers.logic.retrieveUrlFromString(props.message.text))
+const { helpers, store } = useGlobalHooks()
 
-    const init = async () => {
-      try {
-        await tryMetaTags(link.value)
-        setTimeout(() => store.getters.chat.autoScrollable ? emit('scroll-to-bottom') : null)
-      } catch (e) {}
-    }
+const { meta, tryMetaTags } = useSeo()
 
-    onMounted(init)
+const link = computed(() => helpers.logic.retrieveUrlFromString(props.message.text))
 
-    return {
-      meta,
-      link,
-    }
-  },
+const init = async () => {
+  try {
+    await tryMetaTags(link.value)
+    setTimeout(() => store.getters.chat.autoScrollable ? emit('scroll-to-bottom') : null)
+  } catch (e) {}
 }
+
+onMounted(init)
 </script>
 
 <style lang="scss" scoped>

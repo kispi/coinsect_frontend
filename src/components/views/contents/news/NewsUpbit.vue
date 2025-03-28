@@ -5,7 +5,7 @@
         class="news-section"
         :key="section.title"
         v-for="section in sections">
-        <div class="section-title" v-html="$translate(section.title)"/>
+        <div class="section-title" v-html="helpers.translate(section.title)"/>
         <div class="news-list-box">
           <a
             :href="news.url"
@@ -16,7 +16,7 @@
             v-for="news in section.list">
             <div class="news-header">
               <div class="news-company" v-html="news.company"/>
-              <div class="news-timestamp" v-html="$helpers.template.elapsedTime(news.created_at)"/>
+              <div class="news-timestamp" v-html="helpers.template.elapsedTime(news.created_at)"/>
             </div>
             <div class="news-title" v-html="news.title"/>
           </a>
@@ -27,39 +27,34 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted } from 'vue'
 import contentService from '@/services/content'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const upbitNews = ref(null)
+const { helpers } = useGlobalHooks()
 
-    const sections = computed(() => {
-      if (!upbitNews.value) return
+const upbitNews = ref(null)
 
-      return [{
-        title: 'FEATURED_NEWS',
-        list: upbitNews.value.data.featured_list,
-      }, {
-        title: 'NEWS',
-        list: upbitNews.value.data.list,
-      }]
-    })
+const sections = computed(() => {
+  if (!upbitNews.value) return
 
-    const loadNews = async () => {
-      try {
-        upbitNews.value = await contentService.news.upbit()
-      } catch (e) {}
-    }
+  return [{
+    title: 'FEATURED_NEWS',
+    list: upbitNews.value.data.featured_list,
+  }, {
+    title: 'NEWS',
+    list: upbitNews.value.data.list,
+  }]
+})
 
-    onMounted(loadNews)
-
-    return {
-      sections,
-    }
-  },
+const loadNews = async () => {
+  try {
+    upbitNews.value = await contentService.news.upbit()
+  } catch (e) {}
 }
+
+onMounted(loadNews)
 </script>
 
 <style lang="scss" scoped>

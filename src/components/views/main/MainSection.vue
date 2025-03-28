@@ -1,7 +1,7 @@
 <template>
   <div class="main-section">
     <div
-      @click.prevent="link ? $router.push(link) : null"
+      @click.prevent="link ? router.push(link) : null"
       class="section-header">
       <AppImg
         v-if="image"
@@ -11,20 +11,20 @@
         @click.prevent
         class="section-title"
         :href="link">
-        <span v-html="$translate(title)"/>
+        <span v-html="helpers.translate(title)"/>
         <i
           ref="refTooltip"
           v-if="tooltip"
           class="fal fa-question-circle cursor-pointer m-l-4"
-          @mouseover="$tooltip.show({
+          @mouseover="helpers.tooltip.show({
             id: tooltipId,
             showAbove: refTooltip,
             text: tooltip,
           })"
-          @mouseleave="$tooltip.hide(tooltipId)"
+          @mouseleave="helpers.tooltip.hide(tooltipId)"
         />
         <div class="m-l-a">
-          {{ $translate('SEE_MORE') }}<i class="fal fa-chevron-right m-l-4 f-10"/>
+          {{ helpers.translate('SEE_MORE') }}<i class="fal fa-chevron-right m-l-4 f-10"/>
         </div>
       </a>
     </div>
@@ -36,34 +36,38 @@
   </div>
 </template>
 
-<script>
-import useGlobalHooks from '@/hooks/global-hooks'
+<script setup>
 import { computed, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    title: String,
-    link: String,
-    image: String,
-    tooltip: String,
+const props = defineProps({
+  title: {
+    type: String,
+    default: '',
   },
-  setup(props) {
-    const { helpers } = useGlobalHooks()
-
-    const refTooltip = ref(null)
-
-    const tooltipId = computed(() => {
-      if (!props.tooltip) return
-
-      return helpers.logic.mustToken()
-    })
-
-    return {
-      refTooltip,
-      tooltipId,
-    }
+  link: {
+    type: String,
+    default: '',
   },
-}
+  image: {
+    type: String,
+    default: '',
+  },
+  tooltip: {
+    type: String,
+    default: '',
+  },
+})
+
+const { helpers, router } = useGlobalHooks()
+
+const refTooltip = ref(null)
+
+const tooltipId = computed(() => {
+  if (!props.tooltip) return
+
+  return helpers.logic.mustToken()
+})
 </script>
 
 <style lang="scss" scoped>

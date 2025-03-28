@@ -2,7 +2,7 @@
   <div
     class="modal-basic"
     :style="options.style">
-    <ModalHeader :title="$translate(title)" :titleClass="titleClass" @close="$emit('close')"/>
+    <ModalHeader :title="helpers.translate(title)" :titleClass="titleClass" @close="$emit('close')"/>
     <div
       class="body pre-line"
       :class="bodyClass"
@@ -17,29 +17,28 @@
           :key="idx"
           v-for="(btn, idx) in buttons"
           :class="btn.class">
-          {{ $translate(btn.text) }}
+          {{ helpers.translate(btn.text) }}
         </button>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  props: ['options'],
-  setup(props, { emit }) {
-    const buttons = props.options.buttons || []
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
 
-    return {
-      title: props.options.title,
-      titleClass: props.options.titleClass,
-      body: props.options.body,
-      bodyClass: props.options.bodyClass,
-      buttons,
-      onClickButton: btn => emit('close', buttons.indexOf(btn))
-    }
+const props = defineProps({
+  options: {
+    type: Object,
+    required: true,
   },
-}
+})
+
+const emit = defineEmits(['close'])
+
+const { helpers } = useGlobalHooks()
+
+const buttons = props.options.buttons || []
 </script>
 
 <style lang="scss" scoped>

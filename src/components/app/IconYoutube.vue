@@ -9,14 +9,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    size: {
-      default: 12,
-    },
+<script setup>
+defineProps({
+  size: {
+    type: Number,
+    default: 12,
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

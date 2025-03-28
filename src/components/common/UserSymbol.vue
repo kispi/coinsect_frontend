@@ -5,7 +5,7 @@
     <AppImg
       v-if="img"
       :src="img"
-      @click.stop.prevent="$modal.images({ images: [img] })"
+      @click.stop.prevent="helpers.modal.images({ images: [img] })"
     />
     <template v-else>
       <i
@@ -23,24 +23,22 @@
   </span>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  props: {
-    user: null,
+const props = defineProps({
+  user: {
+    type: Object,
+    default: () => ({}),
   },
-  setup(props) {
-    const img = computed(() => ((props.user || {}).profile || {}).image)
+})
 
-    const token = computed(() => (props.user || {}).token || '')
+const { helpers } = useGlobalHooks()
 
-    return {
-      img,
-      token,
-    }
-  },
-}
+const img = computed(() => ((props.user || {}).profile || {}).image)
+
+const token = computed(() => (props.user || {}).token || '')
 </script>
 
 <style lang="scss" scoped>

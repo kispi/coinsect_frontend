@@ -1,37 +1,29 @@
 <template>
   <div
     v-if="!noShow"
-    @click="$helpers.dom.scrollToTop"
+    @click="helpers.dom.scrollToTop"
     class="go-to-top"
-    :class="{'no-show': $store.getters.scrollTop <= 120}">
+    :class="{'no-show': store.getters.scrollTop <= 120}">
     <i class="fal fa-arrow-up"/>
-    {{ $router.currentRoute.value.routeGroup }}
+    {{ router.currentRoute.value.routeGroup }}
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { router } = useGlobalHooks()
+const { helpers, store, router } = useGlobalHooks()
 
-    const noShow = computed(() => {
-      const excludes = [
-        '/about',
-        '/apps/',
-        '/indicators/',
-      ]
+const noShow = computed(() => {
+  const excludes = [
+    '/about',
+    '/apps/',
+    '/indicators/',
+  ]
 
-      return excludes.some(path => router.currentRoute.value.path.includes(path))
-    })
-
-    return {
-      noShow,
-    }
-  },
-}
+  return excludes.some(path => router.currentRoute.value.path.includes(path))
+})
 </script>
 
 <style lang="scss" scoped>

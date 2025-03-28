@@ -6,14 +6,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    loading: {
-      type: Boolean
-    },
+<script setup>
+defineProps({
+  loading: {
+    type: Boolean,
+    default: false,
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

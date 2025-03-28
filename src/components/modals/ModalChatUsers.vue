@@ -2,7 +2,7 @@
   <div
     ref="refModalChatUsers"
     class="modal-chat-users scrollable-body">
-    <ModalHeader :title="`${$translate('MODAL_CHAT_USERS')} (${$store.getters.chatStats.numConnections})`" @close="$emit('close')"/>
+    <ModalHeader :title="`${helpers.translate('MODAL_CHAT_USERS')} (${store.getters.chatStats.numConnections})`" @close="$emit('close')"/>
     <div class="body">
       <div class="tabs">
         <div
@@ -11,7 +11,7 @@
           @click="selectedTab = key"
           :key="key"
           v-for="key in Object.keys(tabs)">
-          {{ $translate(key) }} ({{ tabs[key].length }})
+          {{ helpers.translate(key) }} ({{ tabs[key].length }})
         </div>
       </div>
       <div
@@ -19,8 +19,8 @@
         class="btn-container">
         <button
           class="btn btn-primary"
-          @click="$store.commit('setSettings', { blockedUsers: {} })"
-          v-html="$translate('UNBLOCK_ALL')"
+          @click="store.commit('setSettings', { blockedUsers: {} })"
+          v-html="helpers.translate('UNBLOCK_ALL')"
         />
       </div>
       <div
@@ -42,121 +42,109 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-export default {
-  setup() {
-    const { helpers, store } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-    const refModalChatUsers = ref(null)
+const refModalChatUsers = ref(null)
 
-    const centered = ref(null) // 모달이 로드된 직후 한번만 true로 설정하고 그 뒤로는 바뀔 일 없음
+const centered = ref(null) // 모달이 로드된 직후 한번만 true로 설정하고 그 뒤로는 바뀔 일 없음
 
-    const connection = computed(() => store.getters.chat.connection)
+const connection = computed(() => store.getters.chat.connection)
 
-    const users = computed(() => store.getters.chatUsers || [])
+const users = computed(() => store.getters.chatUsers || [])
 
-    const sorted = ref([])
+const sorted = ref([])
 
-    const loading = ref(true)
+const loading = ref(true)
 
-    const tabs = computed(() => {
-      const nonBlocked = []
-      const blocked = []
+const tabs = computed(() => {
+  const nonBlocked = []
+  const blocked = []
 
-      sorted.value.forEach(c => {
-        (store.getters.settings.blockedUsers[c.token] ? blocked : nonBlocked).push(c)
-      })
+  sorted.value.forEach(c => {
+    (store.getters.settings.blockedUsers[c.token] ? blocked : nonBlocked).push(c)
+  })
 
-      return {
-        'NON_BLOCKED': nonBlocked,
-        'BLOCKED': blocked,
-      }
-    })
+  return {
+    'NON_BLOCKED': nonBlocked,
+    'BLOCKED': blocked,
+  }
+})
 
-    const selectedTab = ref('NON_BLOCKED')
+const selectedTab = ref('NON_BLOCKED')
 
-    const interv = ref(null)
+const interv = ref(null)
 
-    const loadUsers = () => {
-      loading.value = true
-      connection.value.send(JSON.stringify({
-        type: 'users',
-        user: {
-          token: store.getters.chatUser.token,
-        },
-      }))
+const loadUsers = () => {
+  loading.value = true
+  connection.value.send(JSON.stringify({
+    type: 'users',
+    user: {
+      token: store.getters.chatUser.token,
+    },
+  }))
+}
+
+const init = () => {
+  loading.value = false
+  const arr = JSON.parse(JSON.stringify(users.value))
+  arr.sort((a, b) => {
+    if (a.profile.image && b.profile.image) {
+      return a.profile.nickname > b.profile.nickname ? 1 : -1
     }
 
-    const init = () => {
-      loading.value = false
-      const arr = JSON.parse(JSON.stringify(users.value))
-      arr.sort((a, b) => {
-        if (a.profile.image && b.profile.image) {
-          return a.profile.nickname > b.profile.nickname ? 1 : -1
-        }
+    if (a.profile.image) return -1
 
-        if (a.profile.image) return -1
+    if (b.profile.image) return 1
 
-        if (b.profile.image) return 1
+    return a.profile.nickname > b.profile.nickname ? 1 : -1
+  })
 
-        return a.profile.nickname > b.profile.nickname ? 1 : -1
-      })
+  sorted.value = arr
+}
 
-      sorted.value = arr
-    }
+onMounted(() => {
+  loadUsers()
+  interv.value = setInterval(loadUsers, 1000 * 60)
+})
 
-    onMounted(() => {
-      loadUsers()
-      interv.value = setInterval(loadUsers, 1000 * 60)
-    })
+onUnmounted(() => {
+  clearInterval(interv.value)
+})
 
-    onUnmounted(() => {
-      clearInterval(interv.value)
-    })
-
-    watch(
-      () => sorted.value,
-      () => {
-        if (!centered.value) {
-          helpers.modal.center(refModalChatUsers.value)
-          centered.value = true
-        }
-      },
-    )
-
-    watch(
-      () => selectedTab.value,
-      () => helpers.modal.center(refModalChatUsers.value),
-    )
-
-    watch([
-      () => store.getters.chatStats.numConnections,
-      () => store.getters.chatStats.numBulls,
-      () => store.getters.chatStats.numBears,
-    ],
-      () => {
-        loadUsers()
-        init()
-      },
-    )
-
-    watch(
-      () => store.getters.chatUsers,
-      init,
-    )
-
-    return {
-      refModalChatUsers,
-      selectedTab,
-      loading,
-      tabs,
-      users,
+watch(
+  () => sorted.value,
+  () => {
+    if (!centered.value) {
+      helpers.modal.center(refModalChatUsers.value)
+      centered.value = true
     }
   },
-}
+)
+
+watch(
+  () => selectedTab.value,
+  () => helpers.modal.center(refModalChatUsers.value),
+)
+
+watch([
+  () => store.getters.chatStats.numConnections,
+  () => store.getters.chatStats.numBulls,
+  () => store.getters.chatStats.numBears,
+],
+  () => {
+    loadUsers()
+    init()
+  },
+)
+
+watch(
+  () => store.getters.chatUsers,
+  init,
+)
 </script>
 
 <style lang="scss">

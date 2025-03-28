@@ -2,10 +2,16 @@
   <RouterLink
     :to="'/'"
     class="app-logo"
-    @click="$store.commit('setShowNavigation', false)">
+    @click="store.commit('setShowNavigation', false)">
     coinsect
   </RouterLink>
 </template>
+
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+const { store } = useGlobalHooks()
+</script>
 
 <style lang="scss" scoped>
 .app-logo {

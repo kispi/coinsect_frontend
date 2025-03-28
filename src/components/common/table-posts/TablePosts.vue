@@ -24,7 +24,7 @@
               <div
                 class="cell badge-post-type m-r-8"
                 :style="{ background: helpers.logic.hexToRgba(row.board.$$color, 0.25) }"
-                v-html="$translate(row.postType === 'notice' ? 'NOTICE' : row.board.description)"
+                v-html="helpers.translate(row.postType === 'notice' ? 'NOTICE' : row.board.description)"
               />
               <article class="cell title">
                 <PostImagePreview v-if="!store.getters.isMobile" :post="row" class="flex-wrap m-r-8"/>
@@ -33,7 +33,7 @@
                   <div>
                     <span>{{ row.title }}</span>
                     <span v-if="(row.replies || []).length > 0" class="num-replies m-l-4">[{{ (row.replies || []).length }}]</span>
-                    <span v-if="row.lastEdit" class="edited m-l-4">({{ $translate('EDITED') }})</span>
+                    <span v-if="row.lastEdit" class="edited m-l-4">({{ helpers.translate('EDITED') }})</span>
                   </div>
                 </div>
               </article>

@@ -25,7 +25,7 @@
               <div
                 class="m-t-4 c-text-stress lines-1">
                 <AppImg
-                  v-if="$helpers.isImageUrl(meta.replyTo.text)"
+                  v-if="helpers.isImageUrl(meta.replyTo.text)"
                   :src="meta.replyTo.text"
                 />
                 <div v-else class="lines-1">{{ meta.replyTo.text }}</div>
@@ -34,19 +34,19 @@
             <div
               @click.prevent="onClickMessage"
               class="o-hidden"
-              v-html="$helpers.dom.linkify(message.text)"
+              v-html="helpers.dom.linkify(message.text)"
             />
           </div>
         </template>
         <div v-else class="text hidden">
-          {{ $translate('DELETED_BY_ADMIN') }}
+          {{ helpers.translate('DELETED_BY_ADMIN') }}
         </div>
         <div class="additional">
           <div
             v-if="showTimestamp"
             class="timestamp f-mono"
             :class="message.isMine ? 'm-r-8' : 'm-l-8'"
-            v-html="$helpers.dayjs(message.timestamp).format('HH:mm')"
+            v-html="helpers.dayjs(message.timestamp).format('HH:mm')"
           />
           <div
             v-if="message.type !== 'alert'"
@@ -65,7 +65,7 @@
           :class="activated(key)"
           :key="key"
           v-for="key in Object.keys(summarizedMessageReactions)">
-          {{ ($store.getters.config.emojis[key] || {}).emoji }} {{ summarizedMessageReactions[key].length }}
+          {{ (store.getters.config.emojis[key] || {}).emoji }} {{ summarizedMessageReactions[key].length }}
         </div>
         <div
           @click="showEmojiSelector = !showEmojiSelector"
@@ -83,115 +83,110 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import communityService from '@/services/community'
 import EmojiPicker from './EmojiPicker'
 import ReactedUsers from './ReactedUsers'
 
-export default {
-  emits: ['click-write-reply', 'click-replied-message'],
-  props: ['prevMessage', 'message', 'nextMessage'],
-  components: { EmojiPicker, ReactedUsers },
-  setup(props) {
-    const { helpers, store, router } = useGlobalHooks()
+const emit = defineEmits(['click-write-reply', 'click-replied-message'])
 
-    const showEmojiSelector = ref(null)
-
-    const showReactedUsers = ref(null)
-
-    const summarizedMessageReactions = computed(() => {
-      if (!props.message) return
-
-      const o = {}
-      props.message.reactions.forEach(reaction => {
-        if (!o[reaction.type]) o[reaction.type] = [reaction]
-        else o[reaction.type].push(reaction)
-      })
-      return o
-    })
-
-    const d = ts => helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
-
-    const onClickImage = url => window.open(url, '_blank', 'noreferrer')
-
-    const onClickMessage = e => {
-      const link = (e.target.attributes['href'] || {}).value
-      if (!link) return
-
-      if (link.includes('coinsect.io')) {
-        const path = link.split('coinsect.io')[1]
-        if (path) router.push(path)
-        return
-      }
-
-      window.open(link, '_blank', 'noreferrer')
-    }
-
-    const activated = key => (summarizedMessageReactions.value[key] || [])
-      .find(r =>
-        // userId가 우선
-        store.getters.me && (r.userId === store.getters.me.id) ||
-        r.ip === store.getters.config.ip
-      ) ? 'activated' : ''
-
-    const onPickEmoji = async key => {
-      showEmojiSelector.value = false
-
-      try {
-        await communityService.toggleReaction.message({
-          messageId: props.message.id,
-          type: key,
-          nickname: store.getters.chatUser.profile.nickname,
-        })
-      } catch (e) {
-        helpers.toast.error(e.data.message)
-      }
-    }
-
-    const meta = computed(() => {
-      try {
-        const parsed = JSON.parse(props.message.meta)
-        return parsed
-      } catch (e) {}
-    })
-
-    const showProfile = computed(() => {
-      if (props.message.isMine) return
-
-      if (!props.message.user.profile) return
-
-      if (!props.prevMessage) return true
-
-      return props.prevMessage.user.token !== props.message.user.token ||
-        d(props.prevMessage.timestamp) !== d(props.message.timestamp)
-    })
-
-    const showTimestamp = computed(() => {
-      if (!props.nextMessage) return true
-
-      // 직전 메시지와 다음 메시지를 다른 유저가 보낸 경우
-      if (props.nextMessage.user.token !== props.message.user.token) return true
-
-      // 직전 메시지와 다음 메시지의 유저가 같으나 타임스탬프도 1분 이상 차이가 나는 경우
-      return d(props.nextMessage.timestamp) !== d(props.message.timestamp)
-    })
-
-    return {
-      meta,
-      showEmojiSelector,
-      showReactedUsers,
-      showProfile,
-      showTimestamp,
-      summarizedMessageReactions,
-      onClickMessage,
-      onClickImage,
-      onPickEmoji,
-      activated,
-    }
+const props = defineProps({
+  prevMessage: {
+    type: Object,
   },
+  message: {
+    type: Object,
+    required: true,
+  },
+  nextMessage: {
+    type: Object,
+  },
+})
+
+const { helpers, store, router } = useGlobalHooks()
+
+const showEmojiSelector = ref(null)
+
+const showReactedUsers = ref(null)
+
+const summarizedMessageReactions = computed(() => {
+  if (!props.message) return
+
+  const o = {}
+  props.message.reactions.forEach(reaction => {
+    if (!o[reaction.type]) o[reaction.type] = [reaction]
+    else o[reaction.type].push(reaction)
+  })
+  return o
+})
+
+const d = ts => helpers.dayjs(ts).format('YYYY-MM-DD HH:mm')
+
+const onClickImage = url => window.open(url, '_blank', 'noreferrer')
+
+const onClickMessage = e => {
+  const link = (e.target.attributes['href'] || {}).value
+  if (!link) return
+
+  if (link.includes('coinsect.io')) {
+    const path = link.split('coinsect.io')[1]
+    if (path) router.push(path)
+    return
+  }
+
+  window.open(link, '_blank', 'noreferrer')
 }
+
+const activated = key => (summarizedMessageReactions.value[key] || [])
+  .find(r =>
+    // userId가 우선
+    store.getters.me && (r.userId === store.getters.me.id) ||
+    r.ip === store.getters.config.ip
+  ) ? 'activated' : ''
+
+const onPickEmoji = async key => {
+  showEmojiSelector.value = false
+
+  try {
+    await communityService.toggleReaction.message({
+      messageId: props.message.id,
+      type: key,
+      nickname: store.getters.chatUser.profile.nickname,
+    })
+  } catch (e) {
+    helpers.toast.error(e.data.message)
+  }
+}
+
+const meta = computed(() => {
+  try {
+    const parsed = JSON.parse(props.message.meta)
+    return parsed
+  } catch (e) {}
+})
+
+const showProfile = computed(() => {
+  if (props.message.isMine) return
+
+  if (!props.message.user.profile) return
+
+  if (!props.prevMessage) return true
+
+  return props.prevMessage.user.token !== props.message.user.token ||
+    d(props.prevMessage.timestamp) !== d(props.message.timestamp)
+})
+
+const showTimestamp = computed(() => {
+  if (!props.nextMessage) return true
+
+  // 직전 메시지와 다음 메시지를 다른 유저가 보낸 경우
+  if (props.nextMessage.user.token !== props.message.user.token) return true
+
+  // 직전 메시지와 다음 메시지의 유저가 같으나 타임스탬프도 1분 이상 차이가 나는 경우
+  return d(props.nextMessage.timestamp) !== d(props.message.timestamp)
+})
 </script>
 
 <style lang="scss">

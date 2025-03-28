@@ -10,55 +10,42 @@
           class="fa-cog"
           :class="showPersonalSettings ? 'fa' : 'fal'"
         />
-        <div v-if="$store.getters.windowInnerWidth >= 480" class="m-l-4">{{ $translate('SETTINGS') }}</div>
+        <div v-if="store.getters.windowInnerWidth >= 480" class="m-l-4">{{ helpers.translate('SETTINGS') }}</div>
       </div>
     </div>
     <SettingsPanel
       v-if="showPersonalSettings"
       :indices="[5, 6]"
     />
-    <RealTimePrices v-if="prepared && !$store.getters.isSSR"/>
+    <RealTimePrices v-if="prepared && !store.getters.isSSR"/>
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import BaseAndTarget from './BaseAndTarget'
 import RealTimePrices from './RealTimePrices'
 
-export default {
-  components: {
-    BaseAndTarget,
-    RealTimePrices,
+const { helpers, store } = useGlobalHooks()
+
+const prepared = ref(null)
+
+const showPersonalSettings = ref(null)
+
+watch([
+  () => store.getters.settings.baseExchange,
+  () => store.getters.settings.baseExchangeMarket,
+],
+  () => {
+    prepared.value = false
+    setTimeout(() => prepared.value = true)
   },
-  setup() {
-    const { store } = useGlobalHooks()
+)
 
-    const prepared = ref(null)
-
-    const showPersonalSettings = ref(null)
-
-    watch([
-      () => store.getters.settings.baseExchange,
-      () => store.getters.settings.baseExchangeMarket,
-    ],
-      () => {
-        prepared.value = false
-        setTimeout(() => prepared.value = true)
-      },
-    )
-
-    onMounted(() => {
-      prepared.value = true
-    })
-
-    return {
-      showPersonalSettings,
-      prepared,
-    }
-  },
-}
+onMounted(() => {
+  prepared.value = true
+})
 </script>
 
 <style lang="scss" scoped>

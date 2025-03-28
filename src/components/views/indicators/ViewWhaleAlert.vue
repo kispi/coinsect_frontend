@@ -4,12 +4,6 @@
   </div>
 </template>
 
-<script>
-import { defineAsyncComponent } from 'vue'
-
-export default {
-  components: {
-    WhaleAlert: defineAsyncComponent(() => import('@/components/common/whale-alert/WhaleAlert')),
-  },
-}
+<script setup>
+import WhaleAlert from '@/components/common/whale-alert/WhaleAlert.vue'
 </script>

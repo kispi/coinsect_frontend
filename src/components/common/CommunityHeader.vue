@@ -1,28 +1,33 @@
 <template>
   <div class="community-header">
     <div class="top">
-      <RouterLink to="/community" class="button-community">{{ $translate('COMMUNITY') }}</RouterLink>
+      <RouterLink to="/community" class="button-community">{{ helpers.translate('COMMUNITY') }}</RouterLink>
       <button
         v-if="withWriteButton"
-        @click="$modal.custom({
+        @click="helpers.modal.custom({
           component: 'ModalPostEditor',
           options: {
             preventCloseOnClickBackdrop: true,
           },
         })"
         class="btn btn-brd"
-        v-html="$translate('WRITE')"
+        v-html="helpers.translate('WRITE')"
       />
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    withWriteButton: Boolean,
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+defineProps({
+  withWriteButton: {
+    type: Boolean,
+    default: false,
   },
-}
+})
+
+const { helpers } = useGlobalHooks()
 </script>
 
 <style lang="scss" scoped>

@@ -4,7 +4,7 @@
       v-if="useBackButton"
       class="far fa-chevron-left"
       @click="$emit('back')"/>
-    <div class="title" v-html="$translate(title)" :class="titleClass"/>
+    <div class="title" v-html="helpers.translate(title)" :class="titleClass"/>
     <div
       @click="$emit('close')"
       class="closer-container center">
@@ -13,16 +13,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    title: String,
-    titleClass: String,
-    useBackButton: {
-      default: false,
-    },
+<script setup>
+import useGlobalHooks from '@/hooks/global-hooks'
+
+defineProps({
+  title: {
+    type: String,
+    default: '',
   },
-}
+  titleClass: {
+    type: String,
+    default: '',
+  },
+  useBackButton: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const { helpers } = useGlobalHooks()
 </script>
 
 <style lang="scss" scoped>

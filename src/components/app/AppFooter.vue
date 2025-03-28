@@ -9,7 +9,7 @@
           <div class="section-title" v-html="helpers.translate(section.title)"/>
           <a
             class="cursor-pointer"
-            @click.prevent="page.path ? $router.push(page.path) : $helpers.openLink(page.link)"
+            @click.prevent="page.path ? router.push(page.path) : helpers.openLink(page.link)"
             :href="page.path"
             :key="page.path"
             v-for="page in section.subItems"
@@ -63,7 +63,7 @@ import useMenuItems from './app-header/menu-items'
 
 const { menuItems } = useMenuItems()
 
-const { helpers, store } = useGlobalHooks()
+const { helpers, store, router } = useGlobalHooks()
 
 const contacts = [{
   key: 'telegram',
