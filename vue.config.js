@@ -8,6 +8,13 @@ module.exports = {
   outputDir,
   productionSourceMap: process.env.NODE_ENV !== 'production',
   chainWebpack: webpackConfig => {
+    webpackConfig.plugin('define').tap(definitions => {
+      Object.assign(definitions[0], {
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
+      })
+      return definitions
+    })
+
     if (!process.env.VUE_APP_SSR) {
       webpackConfig.resolve.alias.set(
         'vue3-component-library/components',

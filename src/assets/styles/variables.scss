@@ -1,8 +1,9 @@
-@import 'colors';
+@use 'colors';
 
 :root {
   --app-header-height: 92px;
   --app-default-page-padding: 12px;
+  --app-font-mono: 'IBM Plex Sans KR', Arial, Helvetica, sans-serif;
 
   @media (max-width: 767px) {
     --app-default-page-padding: 8px;

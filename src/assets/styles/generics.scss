@@ -1,4 +1,5 @@
 // Using these classes means you are doing final stylization, so it must be !important.
+@use "sass:string";
 
 @mixin spaceLoop($className, $styleName, $offset) {
   $i: 0;
@@ -83,11 +84,11 @@ $colors:
   --gs-bb;
 
 @each $color in $colors {
-  .c-#{str-slice($color, 3)} {
+  .c-#{string.slice($color, 3)} {
     color: var($color) !important;
   }
 
-  .bg-#{str-slice($color, 3)} {
+  .bg-#{string.slice($color, 3)} {
     background: var($color) !important;
   }
 }

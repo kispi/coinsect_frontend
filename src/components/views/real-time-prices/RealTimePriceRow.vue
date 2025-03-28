@@ -177,8 +177,6 @@ const setSummaryOnDocumentTitle = () => {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/base.scss';
-
 .real-time-price-row {
   cursor: pointer;
 
@@ -281,8 +279,7 @@ const setSummaryOnDocumentTitle = () => {
 
     &:not(:first-child) {
       width: 120px; // 큰 화면에서 글리치를 없애기 위함
-
-      @extend .f-mono;
+      font-family: var(--app-font-mono);
     }
   }
 
