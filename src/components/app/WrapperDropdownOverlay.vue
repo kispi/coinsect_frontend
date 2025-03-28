@@ -31,7 +31,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 const props = defineProps({
   mountBelow: {
-    type: HTMLElement,
+    type: Object,
     default: null,
   },
   align: {
