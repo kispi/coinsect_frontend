@@ -138,7 +138,7 @@ const onClickMenuAccount = () => {
     return
   }
 
-  helpers.modal.custom({ component: ModalSignIn })
+  helpers.modal.custom({ component: 'ModalSignIn' })
 }
 
 watch(
