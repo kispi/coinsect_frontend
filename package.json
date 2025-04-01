@@ -1,22 +1,21 @@
 {
-  "author": "chris",
-  "email": "kispi@naver.com",
   "name": "coinsect_frontend",
   "version": "0.2.0",
   "private": true,
+  "author": "chris",
   "scripts": {
     "serve": "vue-cli-service serve --port 4000",
     "build": "vue-cli-service build",
-    "build-dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
-    "build:client": "vue-cli-service build --dest dist-temp/client",
-    "build:server": "cross-env VUE_APP_SSR=true vue-cli-service build --dest dist-temp/server",
-    "build:ssr": "npm run build:client && npm run build:server && rm -rf dist && mv dist-temp dist",
-    "serve:ssr": "cross-env NODE_ENV=production node was/server.js",
+    "build-dev": "vue-cli-service build --mode development",
     "build-dev:client": "vue-cli-service build --dest dist-dev-temp/client --mode development",
     "build-dev:server": "cross-env VUE_APP_SSR=true vue-cli-service build --dest dist-dev-temp/server --mode development",
     "build-dev:ssr": "npm run build-dev:client && npm run build-dev:server && rm -rf dist-dev && mv dist-dev-temp dist-dev",
-    "serve-dev:ssr": "cross-env NODE_ENV=development node was/server.js"
+    "build:client": "vue-cli-service build --dest dist-temp/client",
+    "build:server": "cross-env VUE_APP_SSR=true vue-cli-service build --dest dist-temp/server",
+    "build:ssr": "npm run build:client && npm run build:server && rm -rf dist && mv dist-temp dist",
+    "serve-dev:ssr": "cross-env NODE_ENV=development node was/server.js",
+    "serve:ssr": "cross-env NODE_ENV=production node was/server.js"
   },
   "dependencies": {
     "@vue/server-renderer": "^3.2.47",
@@ -32,15 +31,20 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "^5.0.8",
+    "@vue/eslint-config-typescript": "^9.1.0",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "sass": "^1.86.0",
-    "sass-loader": "^16.0.5"
+    "sass-loader": "^16.0.5",
+    "typescript": "~4.5.5"
   },
   "eslintConfig": {
     "root": true,
@@ -49,10 +53,11 @@
     },
     "extends": [
       "plugin:vue/vue3-essential",
-      "eslint:recommended"
+      "eslint:recommended",
+      "@vue/typescript"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@typescript-eslint/parser"
     },
     "rules": {
       "no-unused-vars": "off",
@@ -73,5 +78,6 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ]
+  ],
+  "email": "kispi@naver.com"
 }

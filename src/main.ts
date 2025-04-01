@@ -2,7 +2,9 @@ import { createApp, createSSRApp } from 'vue'
 import { store, newStore, setStore } from './store'
 import { router, newRouter, setRouter } from './router'
 import { createHttpClient, setHttpClient } from '@/modules/axios'
-import App from './App'
+import { Store } from 'vuex'
+import { Router } from 'vue-router'
+import App from './App.vue'
 import useLazyLoads from './lazy-loads'
 import useGlobalComponents from './global-components'
 
@@ -16,7 +18,7 @@ export default () => {
   setHttpClient(createHttpClient())
 
   const app = (isSSR ? createSSRApp : createApp)(App)
-  app.use(store).use(router)
+  app.use(store as Store<any>).use(router as Router)
   if (!isSSR) useLazyLoads().loadDefaults()
   useGlobalComponents(app)
 

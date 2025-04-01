@@ -56,7 +56,7 @@
   </footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import useMenuItems from './app-header/menu-items'
@@ -93,7 +93,7 @@ const info = computed(() => {
     },
   }
 
-  return html[store.getters.settings.locale]
+  return html[store.getters.settings.locale as 'kr' | 'en']
 })
 </script>
 

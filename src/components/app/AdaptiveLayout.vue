@@ -9,16 +9,13 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  boundaryWidth: {
-    type: Number,
-    default: 768, // 480, 768, 992, 1200 (0인 경우 항상 가로)
-  },
-  gap: {
-    type: Number,
-    default: 0, // 0, 4, 8, ... , 80
-  },
+<script setup lang="ts">
+withDefaults(defineProps<{
+  boundaryWidth?: number
+  gap?: number
+}>(), {
+  boundaryWidth: 768, // 480, 768, 992, 1200 (0인 경우 항상 가로)
+  gap: 0,
 })
 </script>
 

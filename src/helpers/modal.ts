@@ -1,9 +1,10 @@
+import { ModalOptions } from '@/types'
 import { store } from '@/store'
 import translate from './translate'
 
-const isOpened = component => store.getters.modals.find(modal => (modal || {}).component === component) ? true : false
+const isOpened = (component: any) => store.getters.modals.find((modal: any) => (modal || {}).component === component) ? true : false
 
-const initModal = (options, component) => new Promise(resolve => {
+const initModal = (component: string, options?: ModalOptions) => new Promise(resolve => {
   if (
     !(options || {}).useMultiOpen &&
     isOpened(component)
@@ -14,14 +15,16 @@ const initModal = (options, component) => new Promise(resolve => {
 
 const modal = {
   isOpened,
-  basic: options => initModal(options, 'ModalBasic'),
-  input: options => initModal(options, 'ModalInput'),
-  images: options => initModal(options, 'ModalImages'),
-  alert: body => modal.confirm({
+  basic: (options: ModalOptions) => initModal('ModalBasic', options),
+  input: (options: ModalOptions) => initModal('ModalInput', options),
+  images: (options: ModalOptions) => initModal('ModalImages', options),
+  alert: (body: string) => modal.confirm({
     body,
     buttons: [{ text: 'OK', class: 'btn-primary light' }],
   }),
-  confirm: arg => initModal((() => {
+  confirm: (arg: ModalOptions) => initModal(
+    'ModalBasic',
+    (() => {
     const options = arg || {}
     options.title = options.title || '알림'
     options.body = translate(options.body ? `<div class="text-center m-t-16 p-12">${options.body}</div>` : '')
@@ -30,10 +33,10 @@ const modal = {
       { text: 'CONFIRM', class: options.class ? `btn-${options.class}` : 'btn-primary' },
     ]
     return options
-  })(), 'ModalBasic'),
-  custom: ({ options, component }) => initModal(options, component),
+  })()),
+  custom: ({ options, component }: { options?: ModalOptions, component: any }) => initModal(component, options),
   // 다른 메소드들과 달리 모달을 띄우는게 아닌 띄워진 모달의 위치를 화면 가운데로 하는 메소드
-  center: dom => {
+  center: (dom: HTMLElement) => {
     setTimeout(() => {
       if (!dom) return
 
