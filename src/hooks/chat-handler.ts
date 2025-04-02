@@ -1,22 +1,23 @@
+import { DefaultServerError, Message, Profile } from '@/types'
 import { ref, onUnmounted, computed } from 'vue'
 import useGlobalHooks from './global-hooks'
 
 const useChatHandler = () => {
   const { helpers, store, router } = useGlobalHooks()
 
-  const messages = computed(() => store.getters.chat.messages)
+  const messages = computed<Message[]>(() => store.getters.chat.messages)
 
-  const filteredMessages = computed(() => messages.value.filter(m => !store.getters.settings.blockedUsers[m.user.token]))
+  const filteredMessages = computed<Message[]>(() => messages.value.filter(m => !store.getters.settings.blockedUsers[m.user.token]))
 
-  const connection = computed(() => store.getters.chat.connection)
+  const connection = computed<WebSocket>(() => store.getters.chat.connection)
 
-  const loadingMessages = ref(null)
+  const loadingMessages = ref(false)
 
-  const fullyLoaded = ref(null)
+  const fullyLoaded = ref(false)
 
   const token = ref(null)
 
-  const pingInterv = ref(null)
+  const pingInterv = ref<number | null>(null)
 
   const alertProfile = {
     image: 'https://coinsect.io/favicon/logo.png',
@@ -27,11 +28,11 @@ const useChatHandler = () => {
     return (messages.value || []).filter(message => {
       if (!store.getters.chat.lastReadMessage) return
 
-      return message.timestamp > store.getters.chat.lastReadMessage.timestamp
+      return message.timestamp > (store.getters.chat.lastReadMessage as Message).timestamp
     }).length
   })
 
-  const isMine = message => {
+  const isMine = (message: Message) => {
     if (!message.user) return
 
     if (store.getters.me && message.user.id) return store.getters.me.id === message.user.id
@@ -39,7 +40,7 @@ const useChatHandler = () => {
     return message.user.token === store.getters.chatUser.token
   }
 
-  const preparedMessage = message => ({
+  const preparedMessage = (message: Message): any => ({
     id: message.id,
     user: {
       id: (message.user || {}).id,
@@ -54,7 +55,7 @@ const useChatHandler = () => {
     reactions: message.reactions,
   })
 
-  const sendWebsocketMessage = message => {
+  const sendWebsocketMessage = (message: Message) => {
     message.user = { token: store.getters.chatUser.token } // 보낸 사람의 토큰만 채팅서버로 알려줌 (기존에는 프로필 다보냄)
     if ((store.getters.header || {}).token) message.user.jwt = store.getters.header.token
 
@@ -72,7 +73,7 @@ const useChatHandler = () => {
     connection.value.send(JSON.stringify(message))
   }
 
-  const updateSentiment = async (type, force) => {
+  const updateSentiment = async (type: string, force: boolean) => {
     const p = store.getters.chatUser.profile
     if ((p.sentiment || {}).type === type && !force) return
 
@@ -81,7 +82,7 @@ const useChatHandler = () => {
     helpers.toast.success('기분을 업데이트했습니다')
   }
 
-  const handleMessage = message => {
+  const handleMessage = (message: Message) => {
     store.commit('setChatStats', message.stats)
 
     switch (message.type) {
@@ -138,7 +139,7 @@ const useChatHandler = () => {
       }
       case 'updateReaction': {
         const arr = store.getters.chat.messages || []
-        const targetMessage = arr.find(m => m.id === (message.meta || {}).messageId) || {}
+        const targetMessage = arr.find((m: Message) => m.id === (message.meta || {}).messageId) || {}
         const newReactions = (message.meta || {}).updatedReactions
         if (!targetMessage) return
 
@@ -152,7 +153,7 @@ const useChatHandler = () => {
     }
   }
 
-  const setAccount = async profile => {
+  const setAccount = async (profile: Profile) => {
     try {
       const user = await helpers.http().put(`webchat/users/${store.getters.chatUser.token}`, {
         profile,
@@ -168,7 +169,7 @@ const useChatHandler = () => {
       const userSetting = await helpers.http().put(`webchat/user_settings/${store.getters.chatUser.token}`, store.getters.chatUserSetting)
       store.commit('setChatUserSetting', userSetting)
     } catch (e) {
-      helpers.toast.error(e.data.message)
+      helpers.toast.error((e as DefaultServerError).data.message)
     }
   }
 
@@ -206,7 +207,7 @@ const useChatHandler = () => {
 
     connection.value.onclose = () => {
       store.commit('setChat', { connected: false })
-      clearInterval(pingInterv.value)
+      if (pingInterv.value) clearInterval(pingInterv.value)
 
       if (!store.getters.chat.preventAutoReconnect) setTimeout(connect, 5000)
 
@@ -214,20 +215,20 @@ const useChatHandler = () => {
     }
   }
 
-  const loadMessages = async limit => {
+  const loadMessages = async (limit?: number) => {
     if (loadingMessages.value || fullyLoaded.value) return
 
     const firstMessageId = (messages.value[0] || {}).id
     try {
       loadingMessages.value = true
-      const data = await helpers.http().get('webchat/messages', { params: { firstMessageId, limit } })
+      const data = await helpers.http().get('webchat/messages', { params: { firstMessageId, limit } }) as Message[]
       if ((data || []).length === 0) {
         fullyLoaded.value = true
         return
       }
 
       // 새로 온 메시지들에 대해 $$showSeparator 계산. 매번 messages.value를 직접 바꾸지 않고 msgBuf를 둠으로 '메시지 개수'회 렌더링이 아닌 한번만 렌더링함.
-      const msgBuf = []
+      const msgBuf = [] as Message[]
       data.forEach(msg => msgBuf.unshift(preparedMessage(msg)))
       store.commit('setChat', { messages: msgBuf.concat(messages.value) })
 
@@ -246,7 +247,7 @@ const useChatHandler = () => {
   }
 
   onUnmounted(() => {
-    clearInterval(pingInterv.value)
+    if (pingInterv.value) clearInterval(pingInterv.value)
   })
 
   return {

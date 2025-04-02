@@ -1,7 +1,8 @@
+import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import helpers from '@/helpers'
 import { store } from '@/store'
 
-export default async (to, from, next) => {
+export default async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   if (typeof window === 'undefined') {
     next('/')
     return // SSR 환경에서는 auth-check 불필요

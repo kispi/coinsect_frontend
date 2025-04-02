@@ -6,13 +6,13 @@ const useBithumb = () => {
 
   const { tickDirection } = useWebsocketCommon()
 
-  const setAsBasePriceFromWebSocket = ({ symbol, json }) => {
+  const setAsBasePriceFromWebSocket = ({ symbol, json }: { symbol: string, json: any }) => {
     const $$tickDirection = tickDirection(symbol, json.closePrice)
     helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$tradePriceBase: json.closePrice,
       $$changePrice24H: json.chgAmt,
-      $$changeRate1D: (json.chgRate * 100) / 100,
+      $$changeRate1D: ((json.chgRate * 100) / 100).toString(),
       $$vol24HBase: json.tickType === '24H' ? json.value : 0,
       $$code: json.symbol,
       $$prevClosingPrice: json.prevClosePrice,
@@ -21,7 +21,7 @@ const useBithumb = () => {
   }
 
   // 엥간하면 웹소켓이랑 맞추지 빗썸놈들 ㅡㅡ
-  const setAsBasePriceFromRestAPI = ({ symbol, json }) => {
+  const setAsBasePriceFromRestAPI = ({ symbol, json }: { symbol: string, json: any }) => {
     helpers.dataSetter.setPriceRow({
       $$symbol: symbol,
       $$tradePriceBase: json.closing_price,
@@ -31,13 +31,13 @@ const useBithumb = () => {
     })
   }
 
-  const setOrderbook = json => {
-    const $$asks = []
-    const $$bids = []
+  const setOrderbook = (json: any) => {
+    const $$asks = [] as any[]
+    const $$bids = [] as any[]
     const units = json.obu
     let $$biggestSize = 0
 
-    units.forEach((unit, idx) => {
+    units.forEach((unit: any, idx: number) => {
       $$asks.push({
         price: units[units.length - idx - 1].ap,
         size: units[units.length - idx - 1].as,
@@ -66,7 +66,7 @@ const useBithumb = () => {
     })
   }
 
-  const subscribe = ({ type, symbols, $$raw }) => new Promise((resolve) => {
+  const subscribe = ({ type, symbols, $$raw }: { type: string, symbols: string[], $$raw?: boolean }) => new Promise<WebSocket>((resolve) => {
     if (!type || !symbols) return
 
     const connection = new WebSocket('wss://pubwss.bithumb.com/pub/ws')
@@ -81,7 +81,7 @@ const useBithumb = () => {
       resolve(connection)
     }
 
-    const handleTickerMessage = json => {
+    const handleTickerMessage = (json: any) => {
       if (!json) return
 
       const symbol = json.symbol.split('_KRW')[0]

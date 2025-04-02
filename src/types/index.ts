@@ -99,8 +99,9 @@ export type Profile = {
 }
 
 export type User = {
-  id: number
-  profile: Profile
+  id?: number
+  profile?: Profile
+  jwt?: string
   token: string
 }
 
@@ -217,7 +218,7 @@ export type Reaction = {
 
 export type Message = {
   id: number
-  meta: string
+  meta: any
   numConnections: number
   reactions: Reaction[]
   stats: {
@@ -229,6 +230,9 @@ export type Message = {
   ts: string
   type: string
   user: User
+  timestamp: number
+
+  $$hide?: boolean
 }
 
 export type Notification = {

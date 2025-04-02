@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { store } from '@/store'
 
 export default {
@@ -17,18 +19,18 @@ export default {
     $$tickDirection,
   }: {
     $$symbol: string
-    $$tradePriceBase: string
-    $$highest52WeekPrice: string
-    $$lowest52WeekPrice: string
-    $$changePrice24H: string
-    $$changeRate1D: string
-    $$changeRate52WH: string
-    $$changeRate52WL: string
+    $$tradePriceBase?: string
+    $$highest52WeekPrice?: string
+    $$lowest52WeekPrice?: string
+    $$changePrice24H?: string
+    $$changeRate1D?: string
+    $$changeRate52WH?: string
+    $$changeRate52WL?: string
     $$vol24HBase?: string
     $$code: string
     $$caution?: string
-    $$prevClosingPrice: string
-    $$tickDirection: string
+    $$prevClosingPrice?: string
+    $$tickDirection?: string
   }) => {
     if (!$$symbol) return
 

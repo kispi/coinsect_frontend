@@ -5,7 +5,7 @@ const useBybit = () => {
 
   let $$biggestSize = 0
 
-  const setOrderbook = (json, market) => {
+  const setOrderbook = (json: any, market: string) => {
     if (json.type === 'delta') {
       const splitted = (json.topic || '').split('.')
       if (splitted[splitted.length - 1] !== market) return
@@ -13,27 +13,27 @@ const useBybit = () => {
       const book = store.getters.orderbooks.bybit[market]
       if (!book) return
 
-      json.data.a.forEach(ask => {
-        const idx = book.$$asks.findIndex(o => o.price === ask[0])
+      json.data.a.forEach((ask: any) => {
+        const idx = book.$$asks.findIndex((o: any) => o.price === ask[0])
         const newAsk = { price: ask[0], size: ask[1] }
         if (idx >= 0) {
           if (parseFloat(newAsk.size) === 0) book.$$asks.splice(idx, 1)
           else book.$$asks[idx] = newAsk
         } else {
           book.$$asks.push(newAsk)
-          book.$$asks.sort((a, b) => b.price - a.price)
+          book.$$asks.sort((a: any, b: any) => b.price - a.price)
         }
       })
 
-      json.data.b.forEach(bid => {
-        const idx = book.$$bids.findIndex(o => o.price === bid[0])
+      json.data.b.forEach((bid: any) => {
+        const idx = book.$$bids.findIndex((o: any) => o.price === bid[0])
         const newBid = { price: bid[0], size: bid[1] }
         if (idx >= 0) {
           if (parseFloat(newBid.size) === 0) book.$$bids.splice(idx, 1)
           else book.$$bids[idx] = newBid
         } else {
           book.$$bids.push(newBid)
-          book.$$bids.sort((a, b) => b.price - a.price)
+          book.$$bids.sort((a: any, b: any) => b.price - a.price)
         }
       })
 
@@ -44,17 +44,17 @@ const useBybit = () => {
     if (json.data.s !== market) return
 
     // snapshot
-    const $$asks = json.data.a.map(ask => ({
+    const $$asks = json.data.a.map((ask: any) => ({
       price: ask[0],
       size: ask[1],
     })).reverse()
 
-    const $$bids = json.data.b.map(bid => ({
+    const $$bids = json.data.b.map((bid: any) => ({
       price: bid[0],
       size: bid[1],
     }))
 
-    $$asks.concat($$bids).forEach(o => {
+    $$asks.concat($$bids).forEach((o: any) => {
       if (o.size >= $$biggestSize) $$biggestSize = o.size
     })
 
@@ -70,7 +70,7 @@ const useBybit = () => {
     })
   }
 
-  const setInstrument = (json, market) => {
+  const setInstrument = (json: any, market: string) => {
     if (json.type === 'snapshot') {
       if (json.data.symbol !== market) return
 
@@ -90,7 +90,7 @@ const useBybit = () => {
     }
   }
 
-  const subscribe = ({ type, markets }) => new Promise((resolve) => {
+  const subscribe = ({ type, markets }: { type: string, markets: string[] }) => new Promise<WebSocket>((resolve) => {
     if (!markets || !type) return
 
     const connection = new WebSocket('wss://stream.bybit.com/v5/public/linear')

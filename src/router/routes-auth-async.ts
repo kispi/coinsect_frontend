@@ -1,6 +1,7 @@
+import { RouteRecordRaw } from 'vue-router'
 import authCheck from './auth-check'
 
-const etc = []
+const etc = [] as RouteRecordRaw[]
 
 const routes = [
   ...etc,
