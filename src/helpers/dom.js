@@ -4,7 +4,7 @@ const regex = {
   url: /\b(?:https?|ftp):\/\/[a-z0-9-+&@#/%?=~_|!:,.;]*[a-z0-9-+&@#/%=~_|]/gim,
   pseudoUrl: /(^|[^/])(www\.[\S]+(\b|$))/gim,
   email: /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim,
-  imgTag: /<img\b[^>]*>/gim
+  imgTag: /<img\b[^>]*>/gim,
 }
 
 // DOM을 직접 건드리는 함수들을 이쪽으로 분리

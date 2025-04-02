@@ -59,7 +59,7 @@ const availableSymbols = ref(
       symbol,
       $$selected: false,
       isStable: constants.stableCoins.includes(symbol),
-    }))
+    })),
 )
 
 const params = ref({

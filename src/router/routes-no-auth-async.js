@@ -45,7 +45,7 @@ const markets = [{
   component: () => import(/* webpackChunkName: 'view-markets' */ '@/components/views/markets/ViewMarkets'),
   meta: {
     title: '코스피 시총 - 코인충',
-    description: '삼성전자, SK에너지솔루션 등 코스피 종목들의 시총'
+    description: '삼성전자, SK에너지솔루션 등 코스피 종목들의 시총',
   },
 }, {
   path: '/markets/assets-including-metal',
@@ -75,7 +75,7 @@ const contents = [{
   component: () => import(/* webpackChunkName: 'view-contents' */ '@/components/views/contents/ViewContents'),
   meta: {
     title: '경제 캘린더 - 코인충',
-    description: 'FOMC, 금리 결정, 원유 재고 등 매매에 영향을 줄 수 있는 일정들을 모아둔 캘린더입니다.'
+    description: 'FOMC, 금리 결정, 원유 재고 등 매매에 영향을 줄 수 있는 일정들을 모아둔 캘린더입니다.',
   },
 }, {
   path: '/contents/twitter',
@@ -145,7 +145,7 @@ const apps = [{
   component: () => import(/* webpackChunkName: 'view-apps' */ '@/components/views/apps/ViewApps'),
   meta: {
     title: '브라우저 음성 API 테스트 - 코인충',
-    description: 'AudioContext / MediaRecorder / webkitSpeechRecognition API를 테스트 할 수 있는 페이지입니다.'
+    description: 'AudioContext / MediaRecorder / webkitSpeechRecognition API를 테스트 할 수 있는 페이지입니다.',
   },
 }]
 

@@ -25,7 +25,7 @@ export default [{
   date: '2023-02',
   jobsDone: [
     '뉴스/콘텐츠 > 비트코인 이해하기 추가',
-    '비트코인만을 전문적으로 다루는 <a href="https://btc.coinsect.io target="_blank">btc.coinsect.io</a> 추가'
+    '비트코인만을 전문적으로 다루는 <a href="https://btc.coinsect.io target="_blank">btc.coinsect.io</a> 추가',
   ],
 }, {
   date: '2023-01',

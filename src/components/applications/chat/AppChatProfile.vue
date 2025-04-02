@@ -74,7 +74,7 @@ const openModalBlockUser = () => {
 
   const blockedUsers = store.getters.settings.blockedUsers
   helpers.modal.confirm({
-    body: replacer($t(blockedUsers[props.user.token] ? 'UNBLOCK_USER' : 'BLOCK_USER'))
+    body: replacer($t(blockedUsers[props.user.token] ? 'UNBLOCK_USER' : 'BLOCK_USER')),
   }).then(idx => {
     if (idx !== 1) return
 

@@ -54,7 +54,7 @@ const getUrl = transaction => {
     bitcoin: 'https://www.blockchain.com/btc/tx/',
     ethereum: 'https://etherscan.io/tx/0x',
     tron: 'https://tronscan.org/#/transaction/',
-    ripple: 'https://xrpscan.com/tx/'
+    ripple: 'https://xrpscan.com/tx/',
   }
 
   const exploreUrl = urls[transaction.blockchain]

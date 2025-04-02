@@ -49,7 +49,7 @@ const tradingviewSymbols = ref([{
 }, {
   name: 'S&P 500',
   key: 'SPXUSD',
-  img: 'https://s3-symbol-logo.tradingview.com/indices/s-and-p-500.svg'
+  img: 'https://s3-symbol-logo.tradingview.com/indices/s-and-p-500.svg',
 }, {
   name: 'GOLD',
   key: 'GOLD',

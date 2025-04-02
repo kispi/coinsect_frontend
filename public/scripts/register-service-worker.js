@@ -14,7 +14,7 @@ const register = async () => {
 
       window.__A2HS__.deferredPrompt.prompt()
       window.__A2HS__.deferredPrompt = null
-    }
+    },
   }
 }
 

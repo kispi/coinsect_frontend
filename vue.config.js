@@ -18,12 +18,12 @@ module.exports = {
     if (!process.env.VUE_APP_SSR) {
       webpackConfig.resolve.alias.set(
         'vue3-component-library/components',
-        path.resolve(__dirname, 'node_modules/vue3-component-library/dist/esm')
+        path.resolve(__dirname, 'node_modules/vue3-component-library/dist/esm'),
       )
     } else {
       webpackConfig.resolve.alias.set(
         'vue3-component-library/components',
-        path.resolve(__dirname, 'node_modules/vue3-component-library/dist/cjs')
+        path.resolve(__dirname, 'node_modules/vue3-component-library/dist/cjs'),
       )
     }
     if (!process.env.VUE_APP_SSR) {
@@ -48,8 +48,8 @@ module.exports = {
   
     webpackConfig.externals(
       nodeExternals({
-        allowlist: [/\.(css|vue)$/]
-      })
+        allowlist: [/\.(css|vue)$/],
+      }),
     )
   
     webpackConfig.optimization.splitChunks(false).minimize(false)
@@ -61,8 +61,8 @@ module.exports = {
     webpackConfig.plugins.delete('friendly-errors')
     webpackConfig.plugin('limit').use(
       new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 1
-      })
+        maxChunks: 1,
+      }),
     )
   },
 }

@@ -52,7 +52,7 @@ const useMenuItems = () => {
     title: 'APPS',
     pathPrefix: '/apps/',
     subItems: [
-      { path: '/apps/portfolio', title: 'PORTFOLIO', },
+      { path: '/apps/portfolio', title: 'PORTFOLIO' },
       { path: '/apps/salary', title: 'SALARY' },
       { path: '/apps/lottery', title: 'LOTTERY' },
       { path: '/apps/seo', title: 'SEO' },

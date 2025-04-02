@@ -59,7 +59,7 @@ const props = defineProps({
   depth: {
     type: Number,
     default: 8,
-  }
+  },
 })
 
 const emit = defineEmits(['load-orderbook'])

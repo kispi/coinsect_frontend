@@ -143,7 +143,7 @@ const activated = key => (summarizedMessageReactions.value[key] || [])
   .find(r =>
     // userId가 우선
     store.getters.me && (r.userId === store.getters.me.id) ||
-    r.ip === store.getters.config.ip
+    r.ip === store.getters.config.ip,
   ) ? 'activated' : ''
 
 const onPickEmoji = async key => {

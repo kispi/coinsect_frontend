@@ -49,11 +49,11 @@ const inputValue = ref(null)
 const buttons = [{
   text: 'CANCEL',
   class: 'btn-default',
-  handler: () => emit('close')
+  handler: () => emit('close'),
 }, {
   text: 'CONFIRM',
   class: 'btn-primary',
-  handler: () => emit('close', inputValue.value)
+  handler: () => emit('close', inputValue.value),
 }]
 
 onMounted(() => {

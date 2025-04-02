@@ -31,7 +31,7 @@ const marketInfo = {
         const data = await helperService.proxy('https://api.upbit.com/v1/market/all')
         const upbit = data.filter(o => o.market.startsWith(`${bExMarket.toUpperCase()}-`)).map(o => ({
           ...o,
-          $$symbol: o.market.split('-')[1]
+          $$symbol: o.market.split('-')[1],
         }))
         cached.base[cacheKey] = upbit
         setTimeout(() => delete cached.base[cacheKey], cacheTime)
@@ -41,7 +41,7 @@ const marketInfo = {
         const data = await $httpNoAuth.get('https://api.bithumb.com/public/ticker/all_krw')
         const bithumb = Object.keys(data['data']).filter(symbol => symbol !== 'date').map($$symbol => ({
           $$symbol,
-          ...data['data'][$$symbol]
+          ...data['data'][$$symbol],
         }))
         cached.base[cacheKey] = bithumb
         setTimeout(() => delete cached.base[cacheKey], cacheTime)

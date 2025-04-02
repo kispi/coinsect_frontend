@@ -73,7 +73,7 @@ const onClickColorchip = color => {
   const numSameColors = colors.value.filter(c =>
     c.r === color.r &&
     c.g === color.g &&
-    c.b === color.b
+    c.b === color.b,
   ).length
 
   if (numSameColors === 1) {

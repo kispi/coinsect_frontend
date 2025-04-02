@@ -4,13 +4,13 @@
     :class="fit"
     :src="imageSource"
     :alt="alt"
-    @load="e => $emit('load', e)"
-    @error="e => (e.target as HTMLImageElement).src = fallbackImage"
+    @load="(e: Event) => $emit('load', e)"
+    @error="(e: Event) => (e.target as HTMLImageElement).src = fallbackImage"
   >
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 /**
  * background-image + background-size: cover 조합 대신 img 태그를 이용해 cover를 처리하는 컴포넌트.

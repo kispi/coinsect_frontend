@@ -2,7 +2,7 @@ const taxingStandardRanges = [12000000, 46000000, 88000000, 150000000, 300000000
 
 const incomeDeductionRanges = [5000000, 15000000, 45000000, 100000000]
 
-const f = v => v < 0 ? 0 : v
+const f = v => (v < 0 ? 0 : v)
 
 /**
  * @param {Number} y: 과세표준

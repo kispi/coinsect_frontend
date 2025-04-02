@@ -1,9 +1,9 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const useModalMedia = (medias, selectedIndex) => {
-  const chevronLeft = computed(() => currentIndex.value <= 0 ? 'o-0' : 'cursor-pointer')
+  const chevronLeft = computed(() => (currentIndex.value <= 0 ? 'o-0' : 'cursor-pointer'))
 
-  const chevronRight = computed(() => currentIndex.value >= medias.length - 1 ? 'o-0' : 'cursor-pointer')
+  const chevronRight = computed(() => (currentIndex.value >= medias.length - 1 ? 'o-0' : 'cursor-pointer'))
 
   const currentIndex = ref(0)
 
