@@ -54,56 +54,56 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref, onMounted, watch } from 'vue'
-import WrapperDropdownOverlay from './WrapperDropdownOverlay'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const props = defineProps({
-  dropdownItems: {
-    type: Array,
-    default: () => [],
-  },
-  align: {
-    type: String,
-    default: 'left',
-  },
-  useSearch: {
-    type: Boolean,
-    default: false,
-  },
-  transparent: {
-    type: Boolean,
-    default: false,
-  },
+type DropdownItem = {
+  key: string,
+  name?: string,
+  icon?: string,
+  img?: string,
+  $$selected?: boolean,
+}
+
+const props = withDefaults(defineProps<{
+  dropdownItems: DropdownItem[],
+  align: string,
+  useSearch: boolean,
+  transparent: boolean,
+}>(), {
+  dropdownItems: () => [],
+  align: 'left',
+  useSearch: false,
+  transparent: false,
 })
 
 const emit = defineEmits(['select-dropdown-item'])
 
 const { helpers } = useGlobalHooks()
 
-const refInput = ref(null)
+const refInput = ref<HTMLElement | null>(null)
 
-const keyword = ref(null)
+const keyword = ref('')
 
 const selectedItem = computed(() => props.dropdownItems.find(item => item.$$selected))
 
-const dropdownOpened = ref(null)
+const dropdownOpened = ref(false)
 
-const dropdownButton = ref(null)
+const dropdownButton = ref<HTMLElement | null>(null)
 
 const filteredList = computed(() => props.dropdownItems.filter(o => keyword.value ? o.key.toLowerCase().includes(keyword.value.toLowerCase()) : true))
 
 const initKeyword = () => {
-  keyword.value = null
-  refInput.value.focus()
+  keyword.value = ''
+  if (refInput.value) refInput.value.focus()
 }
 
-const onKeydown = e => {
-  setTimeout(() => keyword.value = e.target.value)
+const onKeydown = (e: KeyboardEvent) => {
+  setTimeout(() => keyword.value = (e.target as HTMLInputElement).value)
 }
 
-const onClickDropdownItem = clickedItem => {
+const onClickDropdownItem = (clickedItem: DropdownItem) => {
   props.dropdownItems.forEach(item => item.$$selected = clickedItem.key === item.key)
   dropdownOpened.value = false
   emit('select-dropdown-item', clickedItem)

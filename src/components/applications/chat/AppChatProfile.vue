@@ -49,20 +49,21 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { User } from '@/types'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const props = defineProps({
-  user: Object,
-  useBan: Boolean,
-  useSentiment: Boolean,
-})
+const props = defineProps<{
+  user: User,
+  useBan?: Boolean,
+  useSentiment?: Boolean,
+}>()
 
 const { helpers, store } = useGlobalHooks()
 
 const $t = helpers.translate
 
-const replacer = str => str.replace('%nickname', props.user.profile.nickname).replace('%token', (props.user.token || '').toUpperCase().slice(0, 3))
+const replacer = (str: string) => str.replace('%nickname', props.user.profile.nickname).replace('%token', (props.user.token || '').toUpperCase().slice(0, 3))
 
 const magnifyUserImage = () => helpers.modal.images({
   images: [(props.user.profile || {}).image],

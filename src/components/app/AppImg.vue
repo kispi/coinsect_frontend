@@ -2,36 +2,35 @@
   <img
     class="app-img"
     :class="fit"
-    :src="src"
+    :src="imageSource"
     :alt="alt"
     @load="e => $emit('load', e)"
-    @error="e => e.target.src = fallbackImage"
+    @error="e => (e.target as HTMLImageElement).src = fallbackImage"
   >
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { computed } from 'vue';
+
 /**
  * background-image + background-size: cover 조합 대신 img 태그를 이용해 cover를 처리하는 컴포넌트.
  * 
  * 사용법:)
  * <AppImg :src="소스"/>
  */
-import fallbackImage from '@/assets/images/no-image.png'
+const fallbackImage = require('@/assets/images/no-image.png')
 
-defineProps({
-  src: {
-    type: String,
-    default: fallbackImage,
-  },
-  fit: {
-    type: String,
-    default: 'cover',
-  },
-  alt: {
-    type: String,
-    default: '김치 프리미엄, 김프, 역프 및 암호화폐 실시간 시세 - 코인충',
-  },
+const props = withDefaults(defineProps<{
+  src: string,
+  fit?: string,
+  alt?: string,
+}>(), {
+  src: '',
+  fit: 'cover',
+  alt: '김치 프리미엄, 김프, 역프 및 암호화폐 실시간 시세 - 코인충',
 })
+
+const imageSource = computed(() => props.src || fallbackImage)
 </script>
 
 <style lang="scss" scoped>

@@ -7,7 +7,7 @@
       <div
         v-if="draggingContainer.style"
         class="dragging-element"
-        :src="draggingContainer.target.src"
+        :src="(draggingContainer.target as HTMLImageElement)?.src"
         :style="draggingContainer.style">
         <slot/>
       </div>
@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 /**
  * <slot/>으로 들어온 컴포넌트를 draggable하게 만들어주는 컴포넌트.
  *
@@ -31,36 +31,47 @@ const emit = defineEmits(['app-draggable-move'])
 
 const { store } = useGlobalHooks()
 
-const draggingContainer = ref({
+const draggingContainer = ref<{
+  target: HTMLElement | null,
+  style: { [key: string]: string } | null,
+  offset: { x: number, y: number } | null,
+  size: { width: number, height: number } | null,
+}>({
   target: null,
   style: null,
   offset: null,
   size: null,
 })
 
-const dragging = ref(null)
+const dragging = ref(false)
 
-const mousemove = e => {
+const mousemove = (e: MouseEvent) => {
   if (!store.getters.isMobile) e.preventDefault()
 
-  if (!dragging.value) return
+  if (!dragging.value || !draggingContainer.value) return
 
   const clientX = e.clientX
   const clientY = e.clientY
 
-  draggingContainer.value.style = {
-    left: `${clientX - draggingContainer.value.offset.x}px`,
-    top: `${clientY - draggingContainer.value.offset.y}px`,
-    width: `${draggingContainer.value.size.width}px`,
-    height: `${draggingContainer.value.size.height}px`,
+  if (draggingContainer.value.offset && draggingContainer.value.size) {
+    draggingContainer.value.style = {
+      left: `${clientX - draggingContainer.value.offset.x}px`,
+      top: `${clientY - draggingContainer.value.offset.y}px`,
+      width: `${draggingContainer.value.size.width}px`,
+      height: `${draggingContainer.value.size.height}px`,
+    }
   }
 
-  draggingContainer.value.target.classList.add('dragging')
+  if (draggingContainer.value.target) {
+    draggingContainer.value.target.classList.add('dragging')
+  }
 
   emit('app-draggable-move', e)
 }
 
 const mouseup = () => {
+  if (!draggingContainer.value.target) return
+
   dragging.value = false
   draggingContainer.value.target.classList.remove('dragging')
   draggingContainer.value.target = null
@@ -71,9 +82,11 @@ const mouseup = () => {
   document.removeEventListener('mouseup', mouseup)
 }
 
-const mousedown = e => {
+const mousedown = (e: MouseEvent) => {
+  if (!e.target) return
+
   dragging.value = true
-  const rect = e.target.getBoundingClientRect()
+  const rect = (e.target as HTMLElement).getBoundingClientRect()
   if (!rect) return
 
   draggingContainer.value.size = {
@@ -84,7 +97,7 @@ const mousedown = e => {
   const offsetX = e.offsetX
   const offsetY = e.offsetY
 
-  draggingContainer.value.target = e.target
+  draggingContainer.value.target = e.target as HTMLElement
   draggingContainer.value.offset = {
     x: offsetX,
     y: offsetY,

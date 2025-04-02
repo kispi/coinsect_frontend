@@ -32,3 +32,18 @@ export type DefaultServerError = {
   status: number
   data: { message: string }
 }
+
+export type Profile = {
+  image: string
+  nickname: string
+  sentiment?: {
+    expireAt: string
+    type: 'long' | 'short'
+  }
+}
+
+export type User = {
+  id: number
+  profile: Profile
+  token: string
+}

@@ -13,23 +13,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useGlobalHooks from '@/hooks/global-hooks'
 
-defineProps({
-  title: {
-    type: String,
-    default: '',
-  },
-  titleClass: {
-    type: String,
-    default: '',
-  },
-  useBackButton: {
-    type: Boolean,
-    default: false,
-  },
-})
+defineProps<{
+  title?: string,
+  titleClass?: string
+  useBackButton?: boolean,
+}>()
 
 const { helpers } = useGlobalHooks()
 </script>

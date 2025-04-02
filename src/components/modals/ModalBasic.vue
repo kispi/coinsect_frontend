@@ -2,18 +2,18 @@
   <div
     class="modal-basic"
     :style="options.style">
-    <ModalHeader :title="helpers.translate(title)" :titleClass="titleClass" @close="$emit('close')"/>
+    <ModalHeader :title="helpers.translate(options.title)" :titleClass="options.titleClass" @close="$emit('close')"/>
     <div
       class="body pre-line"
-      :class="bodyClass"
-      v-html="body"/>
+      :class="options.bodyClass"
+      v-html="options.body"/>
     <div
       v-if="buttons"
       class="buttons">
       <div class="flex-row">
         <button
           class="btn"
-          @click="onClickButton(btn)"
+          @click="$emit('close', idx)"
           :key="idx"
           v-for="(btn, idx) in buttons"
           :class="btn.class">
@@ -24,15 +24,22 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const props = defineProps({
+const props = defineProps<{
   options: {
-    type: Object,
-    required: true,
+    title: string,
+    body: string,
+    buttons?: Array<{
+      text: string,
+      class?: string,
+    }>,
+    style?: string,
+    bodyClass?: string,
+    titleClass?: string,
   },
-})
+}>()
 
 const emit = defineEmits(['close'])
 
