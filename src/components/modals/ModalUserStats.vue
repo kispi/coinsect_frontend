@@ -12,50 +12,47 @@
         <div class="nickname">{{ (options.user.profile || {}).nickname }}</div>
       </div>
       <div
-        v-if="data"
+        v-if="stats"
         class="stats m-t-16">
-        <div>채팅: {{ data.stats.numMessages }}</div>
+        <div>채팅: {{ stats.numMessages }}</div>
         <div class="slash">/</div>
-        <div>글: {{ data.stats.numPosts }}</div>
+        <div>글: {{ stats.numPosts }}</div>
         <div class="slash">/</div>
-        <div>댓글: {{ data.stats.numReplies }}</div>
+        <div>댓글: {{ stats.numReplies }}</div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { onMounted, ref } from 'vue'
-import userService from '@/services/user'
+<script setup lang="ts">
+import { AccountStats, User } from '@/types'
+import { computed, onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const props = defineProps({
-  options: {
-    type: Object,
-    required: true,
-  },
-})
+defineProps<{
+  options: { user: User }
+}>()
 
 const emit = defineEmits(['close'])
 
-const { helpers } = useGlobalHooks()
+const { helpers, store } = useGlobalHooks()
 
-const refModal = ref(null)
+const refModal = ref<HTMLElement | null>(null)
 
-const data = ref(null)
+const stats = computed<AccountStats>(() => store.getters.accountStats)
 
-const loading = ref(null)
+const loading = ref(false)
 
 const init = async () => {
   try {
     loading.value = true
-    data.value = await userService.userStats(props.options.user.id)
+    await store.dispatch('loadAccountStats')
   } catch (e) {
     helpers.toast.error('해당 유저의 활동 내역을 가져오는데 실패했습니다')
     emit('close')
   } finally {
     loading.value = false
-    helpers.modal.center(refModal.value)
+    if (refModal.value) helpers.modal.center(refModal.value)
   }
 }
 

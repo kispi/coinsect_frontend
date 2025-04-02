@@ -132,11 +132,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import useChatHandler from '@/hooks/chat-handler'
 import usePWA from '@/hooks/addons/pwa'
 import useGlobalHooks from '@/hooks/global-hooks'
+import { DefaultServerError } from '@/types'
 
 const refFixedNickname = ref(null)
 
@@ -148,7 +149,7 @@ const refChatSizeMax = ref(null)
 
 const refChatOverlayNewMessage = ref(null)
 
-const refInputNickname = ref(null)
+const refInputNickname = ref<HTMLInputElement | null>(null)
 
 const { helpers, store } = useGlobalHooks()
 
@@ -156,18 +157,18 @@ const { updateUserSetting } = useChatHandler()
 
 const { initFirebase } = usePWA()
 
-const editing = ref(null)
+const editing = ref(false)
 
-const loading = ref(null)
+const loading = ref(false)
 
 const profile = ref({
   nickname: store.getters.chatUser.profile.nickname,
   image: store.getters.chatUser.profile.image,
 })
 
-const onKeydown = (e, field) => {
+const onKeydown = (e: KeyboardEvent, field: keyof typeof profile.value) => {
   setTimeout(() => {
-    profile.value[field] = e.target.value
+    profile.value[field] = (e.target as HTMLInputElement).value
   })
 }
 
@@ -204,16 +205,16 @@ const update = async () => {
     editing.value = false
     if (store.getters.me) store.dispatch('loadMe')
   } catch (e) {
-    helpers.toast.error(e.data.message)
+    helpers.toast.error((e as DefaultServerError).data.message)
 
-    if (!(profile.value.nickname || '').trim()) {
+    if (refInputNickname.value && !(profile.value.nickname || '').trim()) {
       refInputNickname.value.focus()
     }
   }
 }
 
 const toggleEditProfile = async () => {
-  if (!editing.value) {
+  if (refInputNickname.value && !editing.value) {
     refInputNickname.value.select()
     editing.value = true
     return

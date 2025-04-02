@@ -27,7 +27,7 @@ const link = computed(() => helpers.logic.retrieveUrlFromString(props.message.te
 const init = async () => {
   try {
     await tryMetaTags(link.value)
-    setTimeout(() => store.getters.chat.autoScrollable ? emit('scroll-to-bottom') : null)
+    setTimeout(() => (store.getters.chat.autoScrollable ? emit('scroll-to-bottom') : null))
   } catch (e) {}
 }
 

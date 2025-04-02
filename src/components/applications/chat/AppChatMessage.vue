@@ -20,7 +20,7 @@
             <div
               v-if="(meta || {}).replyTo"
               class="meta-reply-to"
-              @click="$emit('click-replied-message', meta.replyTo)">
+              @click="emit('click-replied-message', meta.replyTo)">
               <div class="o-50">To: {{ meta.replyTo.nickname }}</div>
               <div
                 class="m-t-4 c-text-stress lines-1">
@@ -51,7 +51,7 @@
           <div
             v-if="message.type !== 'alert'"
             class="functions">
-            <i class="far fa-reply" @click="$emit('click-write-reply', message)"/>
+            <i class="far fa-reply" @click="emit('click-write-reply', message)"/>
             <IconAddEmoji @click="showEmojiSelector = !showEmojiSelector"/>
           </div>
         </div>
@@ -139,12 +139,12 @@ const onClickMessage = e => {
   window.open(link, '_blank', 'noreferrer')
 }
 
-const activated = key => (summarizedMessageReactions.value[key] || [])
+const activated = key => ((summarizedMessageReactions.value[key] || [])
   .find(r =>
     // userId가 우선
     store.getters.me && (r.userId === store.getters.me.id) ||
     r.ip === store.getters.config.ip,
-  ) ? 'activated' : ''
+  ) ? 'activated' : '')
 
 const onPickEmoji = async key => {
   showEmojiSelector.value = false

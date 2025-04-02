@@ -109,11 +109,11 @@ const exchanges = ref([
   { key: 'BingX', n: { m: 0.0002, t: 0.0005 }, d: { m: 0.00011, t: 0.000275 }, img: exImg('BINGX'), link: referrals.bingx.link },
 ])
 
-const onClickExchange = exchange => {
-  if (!exchange.link) return
+// const onClickExchange = exchange => {
+//   if (!exchange.link) return
 
-  window.open(exchange.link, '_blank')
-}
+//   window.open(exchange.link, '_blank')
+// }
 
 const payload = ref({
   exchange: exchanges.value.find(ex => ex.$$selected),

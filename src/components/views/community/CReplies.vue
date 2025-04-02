@@ -67,49 +67,49 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { DefaultServerError, Reply } from '@/types'
 import { computed } from 'vue'
 import communityService from '@/services/community'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const props = defineProps({
-  replies: Array,
-  depth: {
-    type: Number,
-    default: 0,
-  },
+const props = withDefaults(defineProps<{
+  replies: Reply[]
+  depth?: number
+}>(), {
+  depth: 0,
 })
 
 const { helpers, store, router } = useGlobalHooks()
 
 const repliesToDisplay = computed(() => (props.replies || []).filter(o => !o.deletedAt || hasNonDeletedChild(o)))
 
-const hasNonDeletedChild = reply => {
+const hasNonDeletedChild = (reply: Reply): boolean => {
   return (reply.replies || []).some(child => !child.deletedAt || hasNonDeletedChild(child))
 }
 
-const onConfirmDelete = async ({ id, password }) => {
+const onConfirmDelete = async ({ id, password }: { id: number, password?: string }) => {
   try {
     await communityService.remove.reply({ id, password })
     store.dispatch('loadPost', router.currentRoute.value.params.sharingKey)
     store.dispatch('loadPosts')
     helpers.toast.success('댓글을 삭제했습니다')
   } catch (e) {
-    helpers.toast.error(e.data.message)
+    helpers.toast.error((e as DefaultServerError).data.message)
   }
 }
 
-const onClickDelete = async reply => {
+const onClickDelete = async (reply: Reply) => {
   if (helpers.logic.writing.isMine(reply)) {
     const ok = await helpers.modal.confirm({ body: '내 댓글을 삭제하시겠습니까?' })
     if (ok) onConfirmDelete({ id: reply.id })
   } else {
-    const password = await helpers.modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+    const password = await helpers.modal.input({ title: '댓글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' }) as string
     if (password) onConfirmDelete({ id: reply.id, password })
   }
 }
 
-const toggleReaction = async (replyId, type) => {
+const toggleReaction = async (replyId: number, type: string) => {
   try {
     await communityService.toggleReaction.reply({
       replyId,

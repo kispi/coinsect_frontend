@@ -11,7 +11,6 @@
       <button
         @click="button.handler"
         class="btn btn-brd"
-        :class="button.class"
         v-html="helpers.translate(button.text)"
         :key="button.text"
         v-for="button in buttons"
@@ -20,7 +19,8 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { DefaultServerError } from '@/types'
 import { computed } from 'vue'
 import communityService from '@/services/community'
 import useGlobalHooks from '@/hooks/global-hooks'
@@ -32,13 +32,13 @@ const { checkPasswordAndAllowEdit } = usePost()
 
 const post = computed(() => store.getters.post)
 
-const onConfirmDelete = async ({ sharingKey, password }) => {
+const onConfirmDelete = async ({ sharingKey, password }: { sharingKey: string, password?: string }) => {
   try {
     await communityService.remove.post({ sharingKey, password })
     router.push('/community')
     helpers.toast.success('게시글을 삭제했습니다')
   } catch (e) {
-    helpers.toast.error(e.data.message)
+    helpers.toast.error((e as DefaultServerError).data.message)
   }
 }
 
@@ -55,7 +55,7 @@ const handlers = {
       const ok = await helpers.modal.confirm({ body: '내 게시글을 삭제할까요?' })
       if (ok) onConfirmDelete({ sharingKey: post.value.sharingKey })
     } else {
-      const password = await helpers.modal.input({ title: '게시글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' })
+      const password = await helpers.modal.input({ title: '게시글 비밀번호를 입력하세요', inputType: 'password', autocomplete: 'post-password' }) as string
       if (password) onConfirmDelete({ sharingKey: post.value.sharingKey, password })
     }
   },

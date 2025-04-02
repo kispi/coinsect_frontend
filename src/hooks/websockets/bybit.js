@@ -5,8 +5,6 @@ const useBybit = () => {
 
   let $$biggestSize = 0
 
-  let orderbookSize = 0
-
   const setOrderbook = (json, market) => {
     if (json.type === 'delta') {
       const splitted = (json.topic || '').split('.')
@@ -46,7 +44,6 @@ const useBybit = () => {
     if (json.data.s !== market) return
 
     // snapshot
-    orderbookSize = json.data.a.length
     const $$asks = json.data.a.map(ask => ({
       price: ask[0],
       size: ask[1],

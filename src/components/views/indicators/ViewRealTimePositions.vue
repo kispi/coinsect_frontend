@@ -30,11 +30,6 @@
     <div
       v-if="positions.nonEditable.length > 0"
       class="position-group m-t-40">
-      <RouterLink
-        to="/contents/public-treasury"
-        class="text-underline c-brand-primary display-block m-b-8">
-        {{ helpers.translate('BIG_ENTITIES') }}
-      </RouterLink>
       <div class="positions">
         <CPosition
           :position="position"

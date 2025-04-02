@@ -13,14 +13,24 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import DashboardsMain from './DashboardsMain'
+import DashboardsMain from './DashboardsMain.vue'
 import useLazyLoads from '@/lazy-loads'
 
 const { loadToastUIEditor } = useLazyLoads()
 
-const refDashboardsMain = ref(null)
+interface DashboardsMainRef {
+  refRealTimePriceCards?: {
+    connection?: {
+      binance?: WebSocket
+      upbit?: WebSocket
+    }
+  }
+  connectionRealTimePositions?: WebSocket
+}
+
+const refDashboardsMain = ref<DashboardsMainRef | null>(null)
 
 const prepared = ref(true)
 
@@ -49,7 +59,7 @@ const reload = () => {
 const checkConnection = () => {
   connected.value = ((connections.value || {}).binance || {}).readyState === 1 &&
     ((connections.value || {}).upbit || {}).readyState === 1 &&
-    (refDashboardsMain.value || {}).connectionRealTimePositions.readyState === 1
+    (refDashboardsMain.value || {}).connectionRealTimePositions?.readyState === 1
 }
 
 const onVisibilityChange = () => {

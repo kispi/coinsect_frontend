@@ -27,14 +27,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { UpbitNews } from '@/types'
 import { ref, computed, onMounted } from 'vue'
 import contentService from '@/services/content'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 const { helpers } = useGlobalHooks()
 
-const upbitNews = ref(null)
+const upbitNews = ref<{
+  data: {
+    featured_list: UpbitNews[]
+    list: UpbitNews[]
+  }
+} | null>(null)
 
 const sections = computed(() => {
   if (!upbitNews.value) return

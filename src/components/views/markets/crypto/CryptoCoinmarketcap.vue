@@ -26,7 +26,7 @@
             ]"
             :key="th.title"
             v-for="th in [
-              { column: 'rank' },
+              { column: 'rank', title: '' },
               { column: 'name', title: 'COIN' },
               { column: 'price', title: 'PRICE' },
               { column: 'percent_change_24h', title: '24h %', $$hide: store.getters.windowInnerWidth < 480 },
@@ -100,13 +100,19 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onServerPrefetch, ref, computed, onUnmounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
+type TagSlug = {
+  name: string
+  key: string
+  $$selected?: boolean
+}
+
 const { helpers, store } = useGlobalHooks()
 
-const tagSlugs = computed(() => [
+const tagSlugs = computed<TagSlug[]>(() => [
   { name: 'All', key: '' },
   { name: 'DeFi', key: 'defi' },
   { name: 'NFT', key: 'collectibles-nfts' },
@@ -128,13 +134,13 @@ const payload = ref({
   tagSlugs: '',
 })
 
-const onClickTagSlug = tagSlug => {
+const onClickTagSlug = (tagSlug: TagSlug) => {
   payload.value.tagSlugs = tagSlug.key
   payload.value.page = 1
   callApi()
 }
 
-const sort = column => {
+const sort = (column: string) => {
   if (!column) return
 
   if (column === payload.value.sortBy) {
@@ -146,9 +152,9 @@ const sort = column => {
   callApi()
 }
 
-const interv = ref(null)
+const interv = ref<number | null>(null)
 
-const onClickCrypto = item => {
+const onClickCrypto = (item: { slug: string }) => {
   window.open(`https://coinmarketcap.com/currencies/${item.slug}`, '_blank')
 }
 
@@ -157,11 +163,11 @@ const callApi = async () => {
 
   if (store.getters.isSSR) return
 
-  clearInterval(interv.value)
+  if (interv.value) clearInterval(interv.value)
   interv.value = setInterval(() => store.dispatch('loadCrypto', payload.value), 1000 * 60)
 }
 
-const onPage = async page => {
+const onPage = async (page: number) => {
   if (payload.value.page === page) return
 
   payload.value.page = page
@@ -174,7 +180,7 @@ onMounted(callApi)
 onUnmounted(() => {
   if (store.getters.isSSR) return
 
-  clearInterval(interv.value)
+  if (interv.value) clearInterval(interv.value)
 })
 
 onServerPrefetch(() => store.dispatch('loadCrypto', payload.value))

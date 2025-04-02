@@ -1,24 +1,24 @@
 import { createStore, Store } from 'vuex'
-import app from './app'
-import chat from './chat'
-import constant from './constant'
-import content from './content'
-import dashboard from './dashboard'
-import marketInfo from './market-info'
-import post from './post'
-import ssr from './ssr'
-import user from './user'
+import app, { VuexStateApp } from './app'
+import chat, { VuexStateChat } from './chat'
+import constant, { VuexStateConstant } from './constant'
+import content, { VuexStateContent } from './content'
+import dashboard, { VuexStateDashboard } from './dashboard'
+import marketInfo, { VuexStateMarketInfo } from './market-info'
+import post, { VuexStatePost } from './post'
+import ssr, { VuexStateSSR } from './ssr'
+import user, { VuexStateUser } from './user'
 
 export interface RootState {
-  app: any
-  chat: any
-  constant: any
-  content: any
-  dashboard: any
-  marketInfo: any
-  post: any
-  ssr: any
-  user: any
+  app: VuexStateApp
+  chat: VuexStateChat
+  constant: VuexStateConstant
+  content: VuexStateContent
+  dashboard: VuexStateDashboard
+  marketInfo: VuexStateMarketInfo
+  post: VuexStatePost
+  ssr: VuexStateSSR
+  user: VuexStateUser
 }
 
 const initialState = {
@@ -62,8 +62,10 @@ export const newStore = () => createStore({
   },
   actions: {
     initSettings({ commit }) {
-      commit('setSettings', initialState.app().settings)
-      commit('setCharts', initialState.app().charts)
+      if (initialState.app && typeof initialState.app == 'function') {
+        commit('setSettings', initialState.app().settings)
+        commit('setCharts', initialState.app().charts)
+      }
     },
   },
 })

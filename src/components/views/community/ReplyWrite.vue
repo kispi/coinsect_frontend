@@ -119,7 +119,7 @@ const onPaste = e => {
 
 const onClickDeleteImage = idx => {
   helpers.modal.confirm({ body: helpers.translate('MODAL_CONFIRM_DELETE_REPLY_IMAGE') })
-    .then(ok => ok ? images.value.splice(idx, 1) : null)
+    .then(ok => (ok ? images.value.splice(idx, 1) : null))
 }
 
 const onClickCreateReply = async () => {

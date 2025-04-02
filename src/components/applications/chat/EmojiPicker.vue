@@ -29,7 +29,7 @@
 import { computed, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const emit = defineEmits(['pick', 'close'])
+defineEmits(['pick', 'close'])
 
 const { helpers, store } = useGlobalHooks()
 

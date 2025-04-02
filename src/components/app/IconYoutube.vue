@@ -9,12 +9,11 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  size: {
-    type: Number,
-    default: 12,
-  },
+<script setup lang="ts">
+withDefaults(defineProps<{
+  size?: number
+}>(), {
+  size: 12,
 })
 </script>
 

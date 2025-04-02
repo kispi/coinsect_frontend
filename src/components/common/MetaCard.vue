@@ -28,7 +28,7 @@
 <script setup>
 import useSeo from '@/hooks/seo'
 
-const props = defineProps({
+defineProps({
   small: {
     type: Boolean,
     default: false,

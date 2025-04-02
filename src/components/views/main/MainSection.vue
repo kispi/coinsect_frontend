@@ -36,35 +36,23 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const props = defineProps({
-  title: {
-    type: String,
-    default: '',
-  },
-  link: {
-    type: String,
-    default: '',
-  },
-  image: {
-    type: String,
-    default: '',
-  },
-  tooltip: {
-    type: String,
-    default: '',
-  },
-})
+const props = defineProps<{
+  title: string
+  link?: string
+  image: string
+  tooltip?: string
+}>()
 
 const { helpers, router } = useGlobalHooks()
 
-const refTooltip = ref(null)
+const refTooltip = ref<HTMLElement | null>(null)
 
 const tooltipId = computed(() => {
-  if (!props.tooltip) return
+  if (!props.tooltip) return ''
 
   return helpers.logic.mustToken()
 })

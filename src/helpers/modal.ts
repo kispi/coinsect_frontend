@@ -2,7 +2,7 @@ import { ModalOptions } from '@/types'
 import { store } from '@/store'
 import translate from './translate'
 
-const isOpened = (component: any) => store.getters.modals.find((modal: any) => (modal || {}).component === component) ? true : false
+const isOpened = (component: any) => (store.getters.modals.find((modal: any) => (modal || {}).component === component) ? true : false)
 
 const initModal = (component: string, options?: ModalOptions) => new Promise(resolve => {
   if (

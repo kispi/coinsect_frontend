@@ -4,16 +4,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const ViewNews = defineAsyncComponent(() => import('./news/ViewNews'))
-const ViewEconomicCalendar = defineAsyncComponent(() => import('./ViewEconomicCalendar'))
-const ViewInfluencers = defineAsyncComponent(() => import('./influencers/ViewInfluencers'))
-const ViewInfluencerDetail = defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail'))
-const ViewPublicTreasury = defineAsyncComponent(() => import('./ViewPublicTreasury'))
-const ViewCryptoReferral = defineAsyncComponent(() => import('./ViewCryptoReferral'))
+const ViewNews = defineAsyncComponent(() => import('./news/ViewNews.vue'))
+const ViewEconomicCalendar = defineAsyncComponent(() => import('./ViewEconomicCalendar.vue'))
+const ViewInfluencers = defineAsyncComponent(() => import('./influencers/ViewInfluencers.vue'))
+const ViewInfluencerDetail = defineAsyncComponent(() => import('./influencers/ViewInfluencerDetail.vue'))
+const ViewCryptoReferral = defineAsyncComponent(() => import('./ViewCryptoReferral.vue'))
 
 const { router } = useGlobalHooks()
 
@@ -23,7 +22,6 @@ const selectedComponent = computed(() => {
   if (p === '/contents/economic-calendar') return ViewEconomicCalendar
   if (p === '/contents/influencers') return ViewInfluencers
   if (p.startsWith('/contents/influencers/')) return ViewInfluencerDetail
-  if (p === '/contents/public-treasury') return ViewPublicTreasury
   if (p === '/contents/crypto-referral') return ViewCryptoReferral
 })
 </script>

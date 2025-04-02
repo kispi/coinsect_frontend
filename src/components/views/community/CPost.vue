@@ -67,7 +67,7 @@
   </article>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import communityService from '@/services/community'
 import useGlobalHooks from '@/hooks/global-hooks'
@@ -76,7 +76,7 @@ const { helpers, store } = useGlobalHooks()
 
 const post = computed(() => store.getters.post)
 
-const toggleReaction = async type => {
+const toggleReaction = async (type: string) => {
   try {
     await communityService.toggleReaction.post({
       postId: post.value.id,

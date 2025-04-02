@@ -9,10 +9,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, onServerPrefetch, onUnmounted } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
-import CPost from './CPost'
+import CPost from './CPost.vue'
 
 const { helpers, store, router } = useGlobalHooks()
 

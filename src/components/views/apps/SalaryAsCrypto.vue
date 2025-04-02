@@ -46,7 +46,7 @@ const crypto = ref(store.getters.settings.salary.symbol)
 
 const populateMarkets = () => {
   sortedMarkets.value = JSON.parse(JSON.stringify(store.getters.markets.upbit.map(o => o.market)))
-    .sort((a, b) => a > b ? 1 : -1).map(market => ({ key: market.split('KRW-')[1] }))
+    .sort((a, b) => (a > b ? 1 : -1)).map(market => ({ key: market.split('KRW-')[1] }))
 
   sortedMarkets.value.forEach(o => {
     o.img = (store.getters.symbols[o.key] || {}).thumb

@@ -41,8 +41,6 @@ const props = defineProps<{
   },
 }>()
 
-const emit = defineEmits(['close'])
-
 const { helpers } = useGlobalHooks()
 
 const buttons = props.options.buttons || []

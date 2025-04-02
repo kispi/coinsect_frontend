@@ -17,13 +17,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { UpbitNews } from '@/types'
 import { computed } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 const { helpers, store } = useGlobalHooks()
 
-const news = computed(() => (store.getters.dashboardsMain || {}).news)
+const news = computed<UpbitNews[]>(() => (store.getters.dashboardsMain || {}).news)
 </script>
 
 <style lang="scss" scoped>

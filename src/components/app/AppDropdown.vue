@@ -92,7 +92,7 @@ const dropdownOpened = ref(false)
 
 const dropdownButton = ref<HTMLElement | null>(null)
 
-const filteredList = computed(() => props.dropdownItems.filter(o => keyword.value ? o.key.toLowerCase().includes(keyword.value.toLowerCase()) : true))
+const filteredList = computed(() => props.dropdownItems.filter(o => (keyword.value ? o.key.toLowerCase().includes(keyword.value.toLowerCase()) : true)))
 
 const initKeyword = () => {
   keyword.value = ''
@@ -126,7 +126,7 @@ watch(
   () => dropdownOpened.value,
   newVal => {
     if (newVal && props.useSearch) {
-      setTimeout(() => refInput.value ? refInput.value.focus() : null, 200)
+      setTimeout(() => (refInput.value ? refInput.value.focus() : null), 200)
     }
   },
 )

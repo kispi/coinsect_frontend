@@ -5,8 +5,8 @@
   </div>
 </template>
 
-<script setup>
-import CryptoCoinmarketcap from './CryptoCoinmarketcap'
+<script setup lang="ts">
+import CryptoCoinmarketcap from './CryptoCoinmarketcap.vue'
 </script>
 
 <style lang="scss">

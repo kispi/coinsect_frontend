@@ -1,0 +1,1 @@
+export default (key: string) => `${process.env.VUE_APP_CDN}/${key}`

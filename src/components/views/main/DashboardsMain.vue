@@ -81,7 +81,7 @@ import useRealTimePosition from '@/hooks/real-time-position'
 
 const { helpers, store } = useGlobalHooks()
 
-const { connection, openWebsocket, sorter } = useRealTimePosition()
+const { openWebsocket, sorter } = useRealTimePosition()
 
 const refRealTimePriceCards = ref(null)
 

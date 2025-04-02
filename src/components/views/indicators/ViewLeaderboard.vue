@@ -54,22 +54,23 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { BitmexLeaderboardItem } from '@/types'
 import { computed, onMounted, onServerPrefetch, onUnmounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 const { helpers, store } = useGlobalHooks()
 
-const timeout = ref(null)
+const timeout = ref<number | null>(null)
 
-const lastUpdate = ref(null)
+const lastUpdate = ref('')
 
 const sort = ref({
   column: 'rank',
   direction: 'asc',
 })
 
-const setSort = column => {
+const setSort = (column: string) => {
   if (sort.value.column !== column) {
     sort.value.column = column
     sort.value.direction = 'desc'
@@ -79,20 +80,26 @@ const setSort = column => {
   sort.value.direction = sort.value.direction === 'desc' ? 'asc' : 'desc'
 }
 
-const leaderboard = computed(() => store.getters.leaderboard)
+const leaderboard = computed<BitmexLeaderboardItem[]>(() => store.getters.leaderboard)
 
 const sorted = computed(() => {
   if (!leaderboard.value) return []
 
-  const copied = JSON.parse(JSON.stringify(leaderboard.value))
+  const copied = JSON.parse(JSON.stringify(leaderboard.value)) as BitmexLeaderboardItem[]
   return copied.sort((a, b) => {
-    if (a[sort.value.column] === undefined) return 1
+    if (a[sort.value.column as keyof BitmexLeaderboardItem] === undefined) return 1
 
-    if (b[sort.value.column] === undefined) return -1
+    if (b[sort.value.column as keyof BitmexLeaderboardItem] === undefined) return -1
 
-    if (sort.value.direction === 'asc') return a[sort.value.column] < b[sort.value.column] ? -1 : 1
+    if (sort.value.direction === 'asc') {
+      return a[sort.value.column as keyof BitmexLeaderboardItem] < b[sort.value.column as keyof BitmexLeaderboardItem] ? -1 : 1
+    }
 
-    if (sort.value.direction === 'desc') return a[sort.value.column] < b[sort.value.column] ? 1 : -1
+    if (sort.value.direction === 'desc') {
+      return a[sort.value.column as keyof BitmexLeaderboardItem] < b[sort.value.column as keyof BitmexLeaderboardItem] ? 1 : -1
+    }
+
+    return 0
   })
 })
 
@@ -100,7 +107,7 @@ const loadLeaderboard = async () => {
   try {
     await store.dispatch('loadLeaderboard')
     let minute = helpers.dayjs().format('mm')
-    minute = `${helpers.template.withLeadingZero(minute - minute % 5, 2)}`
+    minute = `${helpers.template.withLeadingZero(parseInt(minute) - parseInt(minute) % 5, 2)}`
     lastUpdate.value = helpers.dayjs().format('YYYY-MM-DD HH:') + minute
     timeout.value = setTimeout(loadLeaderboard, 1000 * 60)
   } catch (e) {}
@@ -108,7 +115,9 @@ const loadLeaderboard = async () => {
 
 onMounted(loadLeaderboard)
 
-onUnmounted(() => clearTimeout(timeout.value))
+onUnmounted(() => {
+  if (timeout.value) clearTimeout(timeout.value)
+})
 
 onServerPrefetch(async () => {
   try {

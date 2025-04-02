@@ -44,7 +44,8 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { WhaleAlertSymbol } from '@/types'
 import { onMounted, ref, watch } from 'vue'
 import constants from '@/assets/constants'
 import useGlobalHooks from '@/hooks/global-hooks'
@@ -53,7 +54,7 @@ const emit = defineEmits(['change-params'])
 
 const { helpers, store } = useGlobalHooks()
 
-const availableSymbols = ref(
+const availableSymbols = ref<WhaleAlertSymbol[]>(
   ['btc', 'eth', 'usdt', 'usdc', 'busd', 'pax', 'gusd', 'bnb', 'xrp', 'xlm', 'wbtc', 'sand', 'trx', 'mana', 'matic', 'chz', 'paxg', 'bat', 'ankr', 'qnt', 'aave']
     .map(symbol => ({
       symbol,
@@ -69,7 +70,7 @@ const params = ref({
   excludeBetweenSameExchange: true,
 })
 
-const onClickSymbol = symbol => {
+const onClickSymbol = (symbol: WhaleAlertSymbol) => {
   symbol.$$selected = !symbol.$$selected
   params.value.symbols = availableSymbols.value
 }

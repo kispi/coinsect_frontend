@@ -60,8 +60,8 @@ const disabled = computed(() => !payload.value.averagePurchasePrice || !payload.
 
 const populateMarkets = () => {
   const x = payload.value.exchange
-  sortedMarkets.value = JSON.parse(JSON.stringify(store.getters.markets[x].map(o => x === 'upbit' ? o.market : o)))
-    .sort((a, b) => a > b ? 1 : -1).map(key => ({ key }))
+  sortedMarkets.value = JSON.parse(JSON.stringify(store.getters.markets[x].map(o => (x === 'upbit' ? o.market : o))))
+    .sort((a, b) => (a > b ? 1 : -1)).map(key => ({ key }))
 }
 
 const payload = ref({

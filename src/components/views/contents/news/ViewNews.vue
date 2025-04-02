@@ -4,6 +4,6 @@
   </div>
 </template>
 
-<script setup>
-import NewsUpbit from './NewsUpbit'
+<script setup lang="ts">
+import NewsUpbit from './NewsUpbit.vue'
 </script>

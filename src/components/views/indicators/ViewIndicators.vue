@@ -4,13 +4,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const ViewLeaderboard = defineAsyncComponent(() => import('./ViewLeaderboard'))
-const ViewRealTimePositions = defineAsyncComponent(() => import('./ViewRealTimePositions'))
-const ViewWhaleAlert = defineAsyncComponent(() => import('./ViewWhaleAlert'))
+const ViewLeaderboard = defineAsyncComponent(() => import('./ViewLeaderboard.vue'))
+const ViewRealTimePositions = defineAsyncComponent(() => import('./ViewRealTimePositions.vue'))
+const ViewWhaleAlert = defineAsyncComponent(() => import('./ViewWhaleAlert.vue'))
 
 const { router } = useGlobalHooks()
 

@@ -55,23 +55,24 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { DefaultServerError, WhaleAlert, WhaleAlertSymbol } from '@/types'
 import { onUnmounted, ref, watch } from 'vue'
 import onchainService from '@/services/onchain'
-import WhaleAlertFilters from './WhaleAlertFilters'
+import WhaleAlertFilters from './WhaleAlertFilters.vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 const { helpers, store } = useGlobalHooks()
 
-const resp = ref(null)
+const resp = ref<{ total: number, data: WhaleAlert[] } | null>(null)
 
-const oneColumn = ref(null)
+const oneColumn = ref(false)
 
-const timeout = ref(null)
+const timeout = ref<number | null>(null)
 
-const loading = ref(null)
+const loading = ref(false)
 
-const showFilters = ref(null)
+const showFilters = ref(false)
 
 const params = ref()
 
@@ -80,18 +81,26 @@ const createQuery = () => {
   const conds = []
   if (params.value.amount) conds.push(`amount >= ${params.value.amount}`)
   if (params.value.amountUsd) conds.push(`amount_usd >= ${params.value.amountUsd}`)
-  if ((params.value.symbols || []).filter(s => s.$$selected).length > 0) conds.push(`symbol in (${params.value.symbols.filter(s => s.$$selected).map(s => `"${s.symbol}"`).join(', ')})`)
+  if ((params.value.symbols || []).filter((s: WhaleAlertSymbol) => s.$$selected).length > 0) conds.push(`symbol in (${params.value.symbols
+    .filter((s: WhaleAlertSymbol) => s.$$selected)
+    .map((s: WhaleAlertSymbol) => `"${s.symbol}"`)
+    .join(', ')})`,
+  )
   if (params.value.excludeBetweenSameExchange) conds.push('(from_owner_type != "unknown" XOR to_owner_type != "unknown")')
   if (conds.length > 0) o.where(conds.join(' AND '))
+
   return o
 }
 
 const search = async () => {
   try {
     loading.value = true
-    resp.value = await helpers.logic.crypto.decryptAPIResponse(await onchainService.whaleAlert(createQuery().build()))
+    resp.value = await helpers.logic.crypto.decryptAPIResponse(await onchainService.whaleAlert(createQuery().build())) as {
+      total: number
+      data: WhaleAlert[]
+    }
   } catch (e) {
-    helpers.toast.error(e.data.message)
+    helpers.toast.error((e as DefaultServerError).data.message)
   } finally {
     loading.value = false
   }
@@ -101,13 +110,13 @@ const search = async () => {
 onUnmounted(() => {
   if (store.getters.isSSR) return
 
-  clearTimeout(timeout.value)
+  if (timeout.value) clearTimeout(timeout.value)
 })
 
 watch(
   () => params.value,
   helpers.debounce(() => {
-    clearTimeout(timeout.value) // 조건이 초기화되었으므로 timeout을 다시걸어야함.
+    if (timeout.value) clearTimeout(timeout.value) // 조건이 초기화되었으므로 timeout을 다시걸어야함.
     search()
   }, 500),
   { deep: true },
