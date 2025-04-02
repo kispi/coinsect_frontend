@@ -68,9 +68,9 @@ type DropdownItem = {
 
 const props = withDefaults(defineProps<{
   dropdownItems: DropdownItem[],
-  align: string,
-  useSearch: boolean,
-  transparent: boolean,
+  align?: string,
+  useSearch?: boolean,
+  transparent?: boolean,
 }>(), {
   dropdownItems: () => [],
   align: 'left',
