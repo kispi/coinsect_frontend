@@ -44,41 +44,63 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
+import { PortfolioItem } from '@/types'
+
+type PortfolioExchange = {
+  key: string
+  img: string
+  $$selected?: boolean
+}
 
 const emit = defineEmits(['close'])
 
 const { helpers, store } = useGlobalHooks()
 
-const exchanges = ref([])
+const exchanges = ref<PortfolioExchange[]>([])
 
-const sortedMarkets = ref([])
+const sortedMarkets = ref<{ key: string, $$selected: boolean }[]>([])
 
 const disabled = computed(() => !payload.value.averagePurchasePrice || !payload.value.amount)
 
+// 업비트의 경우 KRW-BTC, KRW-ETH, 바이낸스의 경우 BTCUSDT, ETHUSDT를 맨 앞 순으로 정렬한다. 나머지는 알파벳 순으로 정렬한다.
 const populateMarkets = () => {
   const x = payload.value.exchange
-  sortedMarkets.value = JSON.parse(JSON.stringify(store.getters.markets[x].map(o => (x === 'upbit' ? o.market : o))))
-    .sort((a, b) => (a > b ? 1 : -1)).map(key => ({ key }))
+  sortedMarkets.value = JSON.parse(JSON.stringify(store.getters.markets[x].map((o: { market: string }) => (x === 'upbit' ? o.market : o))))
+    .sort((a: string, b: string) => {
+      if (x === 'upbit') {
+        if (a === 'KRW-BTC') return -1
+        if (b === 'KRW-BTC') return 1
+        if (a === 'KRW-ETH') return -1
+        if (b === 'KRW-ETH') return 1
+        return a.localeCompare(b)
+      } else {
+        if (a === 'BTCUSDT') return -1
+        if (b === 'BTCUSDT') return 1
+        if (a === 'ETHUSDT') return -1
+        if (b === 'ETHUSDT') return 1
+        return a.localeCompare(b)
+      }
+    }).map((key: string) => ({ key }))
 }
 
 const payload = ref({
-  averagePurchasePrice: null,
-  amount: null,
-  market: null,
+  averagePurchasePrice: null as number | null,
+  amount: null as number | null,
+  market: null as string | null,
   exchange: 'upbit',
 })
 
-const onSelectExchange = o => {
+const onSelectExchange = (o: PortfolioExchange) => {
   exchanges.value.forEach(x => {
     x.$$selected = x.key === o.key
     if (x.$$selected) payload.value.exchange = x.key
   })
 }
 
-const onSelectMarket = o => {
+const onSelectMarket = (o: PortfolioExchange) => {
   sortedMarkets.value.forEach(x => {
     x.$$selected = x.key === o.key
     if (x.$$selected) payload.value.market = x.key
@@ -91,13 +113,13 @@ const addPortfolioItem = () => {
   const portfolio = store.getters.settings.portfolio
   let found, errMsg
   if (payload.value.exchange === 'upbit') {
-    found = store.getters.markets.upbit.find(o => o.market === payload.value.market)
+    found = store.getters.markets.upbit.find((o: { market: string }) => o.market === payload.value.market)
     if (!found) errMsg = `마켓 '${payload.value.market}'는 업비트에 존재하지 않습니다`
   }
 
   if (payload.value.exchange === 'binance') {
-    found = store.getters.markets.binance.find(market => market === payload.value.market)
-    payload.value.averagePurchasePrice *= store.getters.usdKrw
+    found = store.getters.markets.binance.find((market: string) => market === payload.value.market)
+    if (payload.value.averagePurchasePrice) payload.value.averagePurchasePrice *= store.getters.usdKrw
     if (!found) errMsg = `마켓 '${payload.value.market}'는 바이낸스에 존재하지 않습니다`
   }
 
@@ -116,9 +138,9 @@ const addPortfolioItem = () => {
     return
   }
 
-  payload.value.market = payload.value.market.toUpperCase()
+  payload.value.market = (payload.value.market || '').toUpperCase()
   if (!portfolio[payload.value.exchange]) portfolio[payload.value.exchange] = []
-  const idx = portfolio[payload.value.exchange].findIndex(o => o.market === payload.value.market)
+  const idx = portfolio[payload.value.exchange].findIndex((o: PortfolioItem) => o.market === payload.value.market)
   if (idx >= 0) portfolio[payload.value.exchange][idx] = payload.value
   else portfolio[payload.value.exchange].push(payload.value)
 

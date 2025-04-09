@@ -10,7 +10,7 @@
         {{ helpers.translate('NET_PURCHASE') }}: {{ helpers.number.pretty.price({ price: netStat.purchase, baseCurrency: store.getters.settings.baseExchangeMarket })}}
       </div>
       <div>
-        {{ helpers.translate('PURCHASEMENT_WORTH') }}: {{ helpers.number.pretty.price({ price: netStat.worth, baseCurrency: store.getters.settings.baseExchangeMarket })}}
+        {{ helpers.translate('PURCHASEMENT_WORTH') }}: {{ helpers.number.pretty.price({ price: netStat.worth, baseCurrency: store.getters.settings.baseExchangeMarket })}} ({{ netStat.worthAsBTC }} BTC)
       </div>
       <div :class="{'c-price-up': netStat.unrealized > 0, 'c-price-down': netStat.unrealized < 0}">
         {{ helpers.translate('UNREALIZED') }}: {{ helpers.number.pretty.price({ price: netStat.unrealized, baseCurrency: store.getters.settings.baseExchangeMarket }) }}
@@ -23,7 +23,7 @@
         class="stable-money">
         <div class="flex-wrap">고정자산 (KRW, USDT...)</div>
         <div class="input-wrapper">
-          <input v-model="stable" type="number" @click="e => e.target.select()">
+          <input v-model="stable" type="number" @click="e => (e.target as HTMLInputElement).select()">
           <div class="remover-wrapper center" @click="stable = 0">
             <i class="fal fa-times"/>
           </div>
@@ -50,13 +50,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // 있는거 사용하려 하지 말고 새로 웹소켓 연결해서 쓰는게 나을듯
+import { PortfolioItem } from '@/types'
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 import useBinance from '@/hooks/websockets/binance'
 import useUpbit from '@/hooks/websockets/upbit'
-import CPortfolioItem from './CPortfolioItem'
+import CPortfolioItem from './CPortfolioItem.vue'
 
 const { helpers, store } = useGlobalHooks()
 
@@ -67,22 +68,29 @@ const { subscribe: sBinance } = useBinance()
 const supportedExchanges = ['upbit', 'binance']
 
 const connections = ref({
-  upbit: null,
-  binance: null,
+  upbit: null as WebSocket | null,
+  binance: null as WebSocket | null,
 })
 
 const stable = ref(0)
 
 const portfolio = computed(() => store.getters.settings.portfolio)
 
+const krwToBTC = (krw: number) => {
+  const btcKrw = store.getters.rawWebsocketInfo['upbit']['KRW-BTC']?.tp
+  if (!btcKrw) return 0
+
+  return Math.round(krw / btcKrw * 100000000) / 100000000
+}
+
 const netStat = computed(() => {
   const p = portfolio.value
   let sumWorth = 0
   let sumPurchase = 0
   supportedExchanges.forEach(x => {
-    (p[x] || []).forEach(item => {
-      sumWorth += item.$$worth
-      sumPurchase += Math.round(item.averagePurchasePrice * item.amount)
+    (p[x] || []).forEach((item: PortfolioItem) => {
+      sumWorth += (item.$$worth || 0)
+      sumPurchase += Math.round(item.averagePurchasePrice * parseFloat(item.amount))
     })
   })
 
@@ -97,44 +105,45 @@ const netStat = computed(() => {
     total,
     roi: Math.round(unrealized / purchase * 10000) / 100,
     unrealized,
+    worthAsBTC: krwToBTC(worth),
   }
 })
 
 watch(
   () => stable.value,
   newVal => {
-    stable.value = parseFloat(newVal)
+    stable.value = typeof newVal === 'string' ? parseFloat(newVal) : newVal
     portfolio.value.stable = stable.value
     store.commit('setSettings', { portfolio: portfolio.value })
   },
 )
 
-const unrealized = (exchange, item) => {
+const unrealized = (exchange: string, item: PortfolioItem) => {
   const info = (store.getters.rawWebsocketInfo[exchange] || {})[item.market]
   if (!info) return 0
 
-  if (exchange === 'upbit') return Math.round((info.tp - item.averagePurchasePrice) * item.amount)
-  if (exchange === 'binance') return Math.round((info.c * store.getters.usdKrw - item.averagePurchasePrice) * item.amount * 100) / 100
+  if (exchange === 'upbit') return Math.round((info.tp - item.averagePurchasePrice) * parseFloat(item.amount))
+  if (exchange === 'binance') return Math.round((info.c * store.getters.usdKrw - item.averagePurchasePrice) * parseFloat(item.amount) * 100) / 100
 }
 
-const worth = (exchange, item) => {
+const worth = (exchange: string, item: PortfolioItem) => {
   const info = (store.getters.rawWebsocketInfo[exchange] || {})[item.market]
   if (!info) return 0
 
-  if (exchange === 'upbit') return Math.round(info.tp * item.amount)
-  if (exchange === 'binance') return Math.round(info.c * item.amount * store.getters.usdKrw * 100) / 100
+  if (exchange === 'upbit') return Math.round(info.tp * parseFloat(item.amount))
+  if (exchange === 'binance') return Math.round(info.c * parseFloat(item.amount) * store.getters.usdKrw * 100) / 100
 }
 
 const displayedPortfolio = computed(() => {
-  const arr = []
+  const arr = [] as { exchange: string, items: any[] }[]
   supportedExchanges.forEach(exchange => {
     const items = portfolio.value[exchange]
     if (!items) return
 
-    items.forEach((item, idx) => {
+    items.forEach((item: PortfolioItem, idx: number) => {
       items[idx].$$unrealized = unrealized(exchange, item)
       items[idx].$$worth = worth(exchange, item)
-      items[idx].$$roi = Math.round(items[idx].$$unrealized / (item.averagePurchasePrice * item.amount) * 10000) / 100
+      items[idx].$$roi = Math.round(items[idx].$$unrealized / (item.averagePurchasePrice * parseFloat(item.amount)) * 10000) / 100
     })
     arr.push({ exchange, items })
   })
@@ -143,16 +152,19 @@ const displayedPortfolio = computed(() => {
 
 const connect = () => {
   if (portfolio.value.upbit) {
+    const codes = portfolio.value.upbit.map((o: PortfolioItem) => o.market) || []
+    if (!codes.includes('KRW-BTC')) codes.push('KRW-BTC')
+
     sUpbit({
       type: 'ticker',
-      codes: portfolio.value.upbit.map(o => o.market),
+      codes,
       $$raw: true,
     }).then(conn => connections.value.upbit = conn)
   }
 
   if (portfolio.value.binance) {
     sBinance({
-      codes: portfolio.value.binance.map(o => `${o.market.toLowerCase()}@miniTicker`),
+      codes: portfolio.value.binance.map((o: PortfolioItem) => `${o.market.toLowerCase()}@miniTicker`),
       $$raw: true,
     }).then(conn => connections.value.binance = conn)
   }

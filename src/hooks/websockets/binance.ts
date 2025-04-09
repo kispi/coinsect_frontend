@@ -7,7 +7,7 @@ const useBinance = () => {
 
   const { setTickerSummaryInTitle } = useWebsocketCommon()
 
-  const subscribe = ({ codes, $$raw }: { codes: string[], $$raw?: boolean }) => new Promise((resolve) => {
+  const subscribe = ({ codes, $$raw }: { codes: string[], $$raw?: boolean }) => new Promise<WebSocket>((resolve) => {
     const connection = new WebSocket('wss://stream.binance.com:9443/ws')
 
     connection.onopen = () => {

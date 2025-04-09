@@ -32,6 +32,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+import useGlobalHooks from '@/hooks/global-hooks'
 
 const props = defineProps({
   options: {
@@ -41,6 +42,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
+
+const { helpers } = useGlobalHooks()
 
 const refInput = ref(null)
 

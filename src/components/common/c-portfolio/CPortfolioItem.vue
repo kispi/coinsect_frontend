@@ -14,7 +14,7 @@
         initial: item.amount,
       })">
       <div class="key">항목</div>
-      <div class="value">{{ (parseFloat(item.amount) || 0).toFixed(8) }} / {{ item.market }}</div>
+      <div class="value">{{ item.amount }} / {{ item.market }}</div>
     </div>
     <div
       class="average-purchase-price"
@@ -29,48 +29,53 @@
     </div>
     <div class="current-worth">
       <div class="key">평가금액</div>
-      <div class="value">{{ displayedPrice(item.$$worth) }}</div>
+      <div class="value">{{ displayedPrice(item.$$worth || 0) }}</div>
     </div>
     <div
       class="roi"
       :class="{
-        'c-price-up': item.$$unrealized > 0,
-        'c-price-down': item.$$unrealized < 0,
+        'c-price-up': (item.$$unrealized || 0) > 0,
+        'c-price-down': (item.$$unrealized || 0) < 0,
       }">
       <div class="key">평가손익</div>
-      <div class="value">{{ displayedPrice(item.$$unrealized) }} ({{ item.$$roi.toFixed(2) }}%)</div>
+      <div class="value">{{ displayedPrice(item.$$unrealized || 0) }} ({{ (item.$$roi || 0).toFixed(2) }}%)</div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { PortfolioItem } from '@/types'
 import useGlobalHooks from '@/hooks/global-hooks'
 
-const props = defineProps({
-  item: {
-    type: Object,
-    required: true,
-  },
-  exchange: {
-    type: String,
-    required: true,
-  },
-})
+const props = defineProps<{
+  item: PortfolioItem
+  exchange: string
+}>()
 
 const { helpers, store } = useGlobalHooks()
 
 const removePortfolioItem = () => {
   const portfolio = store.getters.settings.portfolio
-  const idx = (portfolio[props.exchange] || []).findIndex(o => o.market === props.item.market)
+  const idx = (portfolio[props.exchange] || []).findIndex((o: PortfolioItem) => o.market === props.item.market)
   if (idx >= 0) portfolio[props.exchange].splice(idx, 1)
 
   if ((portfolio[props.exchange] || []).length === 0) delete portfolio[props.exchange]
   store.commit('setSettings', { portfolio })
 }
 
-const displayedPrice = price => helpers.number.pretty.price({ price, baseCurrency: 'krw' })
+const displayedPrice = (price: number) => helpers.number.pretty.price({ price, baseCurrency: 'krw' })
 
-const openModalInput = ({ type, exchange, market, initial }) => {
+const openModalInput = ({
+  type,
+  exchange,
+  market,
+  initial,
+}: {
+  type: 'amount' | 'averagePurchasePrice'
+  exchange: string
+  market: string
+  initial: number | string
+}) => {
   const portfolio = store.getters.settings.portfolio
 
   if (type === 'amount') {
@@ -78,9 +83,9 @@ const openModalInput = ({ type, exchange, market, initial }) => {
       .then(amount => {
         if (!amount) return
 
-        const idx = (portfolio[exchange] || []).findIndex(o => o.market === market)
+        const idx = (portfolio[exchange] || []).findIndex((o: PortfolioItem) => o.market === market)
         if (idx >= 0) {
-          const rounded = Math.round(amount * Math.pow(10, 8)) / Math.pow(10, 8)
+          const rounded = Math.round(parseFloat(amount as string) * Math.pow(10, 8)) / Math.pow(10, 8)
           portfolio[exchange][idx].amount = rounded
           store.commit('setSettings', { portfolio })
         }
@@ -93,9 +98,9 @@ const openModalInput = ({ type, exchange, market, initial }) => {
       .then(avg => {
         if (!avg) return
 
-        const idx = (portfolio[exchange] || []).findIndex(o => o.market === market) 
+        const idx = (portfolio[exchange] || []).findIndex((o: PortfolioItem) => o.market === market) 
         if (idx >= 0) {
-          portfolio[exchange][idx].averagePurchasePrice = Math.round(avg)
+          portfolio[exchange][idx].averagePurchasePrice = avg
           store.commit('setSettings', { portfolio })
         }
       })

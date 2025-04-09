@@ -71,6 +71,16 @@ export type DefaultServerError = {
   }
 }
 
+export type PortfolioItem = {
+  market: string
+  amount: string
+  averagePurchasePrice: number
+  $$unrealized?: number
+  $$worth?: number
+  $$roi?: number
+  $$unrealizedAsBTC?: number
+}
+
 export type AccountStats = {
   numMessages: number
   numMessagesReplyTo: number
