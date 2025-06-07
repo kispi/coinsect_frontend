@@ -5,6 +5,7 @@ import AdSense from '@/components/app/AdSense.vue'
 import AdaptiveLayout from '@/components/app/AdaptiveLayout.vue'
 import AppBanner from '@/components/app/AppBanner.vue'
 import AppCheckbox from '@/components/app/AppCheckbox.vue'
+import AppCoupang from './components/app/AppCoupang.vue'
 import AppDraggable from '@/components/app/AppDraggable.vue'
 import AppDropdown from '@/components/app/AppDropdown.vue'
 import AppImg from '@/components/app/AppImg.vue'
@@ -60,6 +61,7 @@ const useGlobalComponents = (app: App) => {
     .component('AdaptiveLayout', AdaptiveLayout)
     .component('AppBanner', AppBanner)
     .component('AppCheckbox', AppCheckbox)
+    .component('AppCoupang', AppCoupang)
     .component('AppDraggable', AppDraggable)
     .component('AppDropdown', AppDropdown)
     .component('AppImg', AppImg)

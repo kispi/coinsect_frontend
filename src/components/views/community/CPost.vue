@@ -48,7 +48,8 @@
       </div>
     </div>
     <div class="section-ad-sense center">
-      <AdSense
+      <AppCoupang :width="store.getters.isMobile ? '360px' : '768px'" :height="'80px'" />
+      <!-- <AdSense
         :dataAdSlot="'5803682678'"
         :style="store.getters.isMobile ? {
           width: '360px',
@@ -57,7 +58,7 @@
           width: '768px',
           height: '80px',
         }"
-      />
+      /> -->
     </div>
     <div class="post-section-replies">
       <div class="header">댓글 <span class="c-brand-primary f-700">[{{ post.summary.numReplies }}]</span></div>

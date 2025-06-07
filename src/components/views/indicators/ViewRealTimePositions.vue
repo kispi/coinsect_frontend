@@ -24,6 +24,7 @@
       class="btn btn-primary m-t-8 p-16 display-block">
       {{ helpers.translate('GO_TO_MAIN') }}
     </RouterLink>
+    <AppCoupang class="m-t-16" />
     <div class="description">
       <div :key="num" v-for="num in helpers.numArray(6)">* {{ helpers.translate(`RTP_DISCLAIMER_${num + 1}`)}}</div>
     </div>

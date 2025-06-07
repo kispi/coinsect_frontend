@@ -12,7 +12,8 @@
         v-for="exchange in ['bybit', 'bitget', 'bingx']"
       />
     </template>
-    <AdSense v-if="store.getters.windowInnerWidth >= 1200" :dataAdSlot="'3927887162'" :responsive="true"/>
+    <!-- <AdSense v-if="store.getters.windowInnerWidth >= 1200" :dataAdSlot="'3927887162'" :responsive="true"/> -->
+    <AppCoupang v-if="store.getters.windowInnerWidth >= 1200" :width="300" :height="800"/>
   </div>
 </template>
 
@@ -33,7 +34,8 @@ const whereToShow = computed(() => false)
   grid-template-columns: repeat(3, 1fr);
 
   --banner-width: 300px;
-  .ad-sense {
+  // .ad-sense {
+  .app-coupang {
     position: fixed;
     top: calc(var(--app-header-height) + var(--app-default-page-padding));
     right: calc((100vw - 1200px) / 2 - var(--banner-width) - 16px);

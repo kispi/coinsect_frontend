@@ -55,6 +55,7 @@
       <MainSection
         :title="'광고'"
         :image="'https://d1085v6s0hknp1.cloudfront.net/assets/logo.png'">
+        <!-- <AppCoupang :width="'100%'" /> -->
         <AdSense :dataAdSlot="'8789268236'" style="min-height: 280px;" :responsive="true" class="m-t-8"/>
       </MainSection>
     </div>
