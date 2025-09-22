@@ -13,7 +13,7 @@ const useBinance = () => {
     connection.onopen = () => {
       connection.send(JSON.stringify({
         method: 'SUBSCRIBE',
-        params: codes,
+        params: codes.slice(0, 350), // 바이낸스에서 동시 처리 가능한 티커 수를 제한중인 듯... 빗썸은 지금 상장된 코인이 415개인데 계속 연결이 끊기네
         id: 1,
       }))
 
