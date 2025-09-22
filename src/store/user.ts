@@ -1,4 +1,4 @@
-import { AccountStats, Profile, User } from '@/types'
+import { Profile, User } from '@/types'
 import { Dispatch, Module } from 'vuex'
 import { RootState } from '.'
 import { router } from '@/router'
@@ -38,7 +38,6 @@ export interface VuexStateUser {
   chatUser: User | null
   chatUserSetting: any | null
   header: Record<string, any> | null
-  accountStats: AccountStats | null
 }
 
 const user: Module<VuexStateUser, RootState> = {
@@ -47,14 +46,12 @@ const user: Module<VuexStateUser, RootState> = {
     chatUser: null,
     chatUserSetting: null,
     header: null,
-    accountStats: null,
   }),
   getters: {
     me: state => state.me,
     chatUser: state => state.chatUser,
     chatUserSetting: state => state.chatUserSetting,
     header: state => state.header,
-    accountStats: state => state.accountStats,
   },
   actions: {
     async loadAuthToken({ commit }) {
@@ -94,14 +91,6 @@ const user: Module<VuexStateUser, RootState> = {
         return Promise.reject(e)
       }
     },
-    async loadAccountStats({ commit }) {
-      try {
-        const { stats } = await userService.accountStats()
-        commit('setAccountStats', stats)
-      } catch (e) {
-        return Promise.reject(e)
-      }
-    },
     async signInKakao({ dispatch, getters }, { kakaoId, email }: { kakaoId: string, email: string }) {
       try {
         const { token } = await userService.signInKakao({ kakaoId, email })
@@ -128,9 +117,6 @@ const user: Module<VuexStateUser, RootState> = {
     },
     setHeader(state, payload) {
       state.header = payload
-    },
-    setAccountStats(state, stats) {
-      state.accountStats = stats
     },
   },
 }

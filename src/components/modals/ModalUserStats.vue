@@ -26,27 +26,29 @@
 
 <script setup lang="ts">
 import { AccountStats, User } from '@/types'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
+import userService from '@/services/user'
 
-defineProps<{
+const props = defineProps<{
   options: { user: User }
 }>()
 
 const emit = defineEmits(['close'])
 
-const { helpers, store } = useGlobalHooks()
+const { helpers } = useGlobalHooks()
 
 const refModal = ref<HTMLElement | null>(null)
 
-const stats = computed<AccountStats>(() => store.getters.accountStats)
+const stats = ref<AccountStats>()
 
 const loading = ref(false)
 
 const init = async () => {
   try {
     loading.value = true
-    await store.dispatch('loadAccountStats')
+    const data = await userService.userStats(props.options.user.id as number)
+    stats.value = data.stats
   } catch (e) {
     helpers.toast.error('해당 유저의 활동 내역을 가져오는데 실패했습니다')
     emit('close')
