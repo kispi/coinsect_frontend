@@ -2,7 +2,7 @@
   <div
     v-if="notices && posts"
     class="table-posts">
-    <ButtonBoards class="m-t-16"/>
+    <!-- <ButtonBoards class="m-t-16"/> -->
     <div class="table">
       <div
         :key="idx"
@@ -22,6 +22,7 @@
           <AdaptiveLayout :gap="4" class="flex-fill">
             <div class="id-title flex-fill">
               <div
+                v-if="row.postType === 'notice'"
                 class="cell badge-post-type m-r-8"
                 :style="{ background: helpers.logic.hexToRgba(row.board.$$color, 0.25) }"
                 v-html="helpers.translate(row.postType === 'notice' ? 'NOTICE' : row.board.description)"
@@ -102,7 +103,6 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, onServerPrefetch, watch } from 'vue'
-import ButtonBoards from './ButtonBoards'
 import PostImagePreview from './PostImagePreview'
 import useGlobalHooks from '@/hooks/global-hooks'
 

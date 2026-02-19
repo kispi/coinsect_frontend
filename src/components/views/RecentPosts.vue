@@ -11,11 +11,11 @@
         <div class="title flex-fill lines-1 m-r-32">
           <span class="title-text">
             <span class="elapsed-time f-mono">{{ helpers.template.elapsedTime(post.createdAt) }}</span>
-            <span
+            <!-- <span
               class="badge-board"
               :style="{ background: helpers.logic.hexToRgba(post.board.$$color, 0.25) }">
               {{ post.board.description }}
-            </span>
+            </span> -->
             <i v-if="(post.$$images || []).length > 0" class="fa fa-image"/>
             <IconYoutube v-if="post.$$thumbnail"/>
             <div class="post-title lines-1">{{ post.title }}</div>
