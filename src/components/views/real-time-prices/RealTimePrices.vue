@@ -138,13 +138,25 @@ const onKeydown = e => {
 }
 
 const sorter = (a, b) => {
-  if (helpers.isNil(a[settings.value.sort.column])) return 1
+  const col = settings.value.sort.column
 
-  if (helpers.isNil(b[settings.value.sort.column])) return -1
+  // 코인명(COIN) 정렬 시 한글/영문 등 화면에 표시되는 이름 기준으로 가나다순 정렬 처리
+  if (col === '$$symbol') {
+    const locale = store.getters.settings.locale || 'kr'
+    const nameA = (store.getters.symbols[a.$$symbol] && store.getters.symbols[a.$$symbol][locale]) || a.$$symbol
+    const nameB = (store.getters.symbols[b.$$symbol] && store.getters.symbols[b.$$symbol][locale]) || b.$$symbol
+    
+    if (settings.value.sort.direction === 'asc') return nameA.localeCompare(nameB)
+    return nameB.localeCompare(nameA)
+  }
 
-  if (settings.value.sort.direction === 'asc') return a[settings.value.sort.column] < b[settings.value.sort.column] ? -1 : 1
+  if (helpers.isNil(a[col])) return 1
+  if (helpers.isNil(b[col])) return -1
 
-  if (settings.value.sort.direction === 'desc') return a[settings.value.sort.column] < b[settings.value.sort.column] ? 1 : -1
+  if (a[col] === b[col]) return 0
+
+  if (settings.value.sort.direction === 'asc') return a[col] < b[col] ? -1 : 1
+  if (settings.value.sort.direction === 'desc') return a[col] < b[col] ? 1 : -1
 }
 
 const recalcDisplayedList = async () => {
@@ -240,7 +252,7 @@ const init = async () => {
     if (!connections.value[targetExchange.value] || connections.value[targetExchange.value].readyState !== 1) await subscriber[targetExchange.value]()
 
     // 웹소켓 구독을 먼저 해서 코인 실시간 시세들을 불러운 뒤에 recalc를 해야 현재 정렬상태가 반영됨.
-    recalcDisplayedList()
+    setTimeout(recalcDisplayedList, 1000) // 웹소켓 throttling이 1000ms라 이것보단 길어야 함.
     runRecalcInterv()
   } catch (e) {
     helpers.toast.error(`거래소(${baseExchange.value})의 정보를 불러오는데 실패했습니다. 다시 시도해주세요.`)

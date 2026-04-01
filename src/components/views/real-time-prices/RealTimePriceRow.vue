@@ -21,10 +21,7 @@
           @mouseleave="helpers.tooltip.hide('tooltipWallet')"
           class="badge-caution no-wallet"
           :key="w"
-          v-for="w in [
-            { v: (store.getters.walletStatus[store.getters.settings.baseExchange][ticker.$$symbol] || {}).d, text: '입', type: 'DEPOSIT' },
-            { v: (store.getters.walletStatus[store.getters.settings.baseExchange][ticker.$$symbol] || {}).w, text: '출', type: 'WITHDRAWL' },
-          ].filter(w => w.v === false)"
+          v-for="w in disabledWallets"
           v-html="w.text">
         </div>
         <i @click.stop="openModalTradingView" class="fal fa-chart-line"/>
@@ -45,9 +42,9 @@
           alt="upbit"
         >
         <img
-          v-if="bybitMarket(ticker.$$symbol)"
+          v-if="bybitMarketSymbol"
           class="exchange-logo bybit"
-          @click.stop="openModalOrderbook('bybit', bybitMarket(ticker.$$symbol))"
+          @click.stop="openModalOrderbook('bybit', bybitMarketSymbol)"
           src="@/assets/images/bybit.svg"
           alt="bybit"
         >
@@ -126,11 +123,20 @@ const symbol = computed(() => store.getters.symbols[props.ticker.$$symbol] || {}
 
 const { setTickerSummaryInTitle } = useWebsocketCommon()
 
-const bybitMarket = symbol => {
+const disabledWallets = computed(() => {
+  const status = store.getters.walletStatus[store.getters.settings.baseExchange]?.[props.ticker.$$symbol] || {}
+  return [
+    { v: status.d, text: '입', type: 'DEPOSIT' },
+    { v: status.w, text: '출', type: 'WITHDRAWL' },
+  ].filter(w => w.v === false)
+})
+
+const bybitMarketSymbol = computed(() => {
+  if (!store.getters.markets.bybit) return null
   const supportedMarkets = store.getters.markets.bybit.filter(o => o.endsWith('USDT')).map(market => market.split('USDT')[0])
-  const found = supportedMarkets.find(supported => supported === symbol)
+  const found = supportedMarkets.find(supported => supported === props.ticker.$$symbol)
   return found ? found + 'USDT' : null
-}
+})
 
 const openModalTradingView = () => {
   helpers.modal.custom({
