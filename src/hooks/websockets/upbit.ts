@@ -6,9 +6,14 @@ const useUpbit = () => {
 
   const { tickDirection } = useWebsocketCommon()
 
-  const dec = new TextDecoder('utf-8')
-
-  const eventAsJSON = (event: any) => JSON.parse(dec.decode(new Uint8Array(event.data)))
+  const eventAsJSON = (event: any) => {
+    if (typeof event.data === 'string') {
+      return JSON.parse(event.data)
+    }
+    // Fallback for arraybuffer if needed, but Go server will send text JSON
+    const dec = new TextDecoder('utf-8')
+    return JSON.parse(dec.decode(new Uint8Array(event.data)))
+  }
 
   const setAsBasePrice = ({ symbol, json }: { symbol: string, json: any }) => {
     const $$tickDirection = tickDirection(symbol, json.tp)
@@ -67,10 +72,8 @@ const useUpbit = () => {
   const subscribe = ({ type, codes, $$raw }: { type: string, codes: string[], $$raw: boolean }) => new Promise<WebSocket>((resolve) => {
     if (!type || !codes) return
 
-    // const endpoint = process.env.NODE_ENV === 'production' ? 'wss://api.coinsect.io/upbit' : 'wss://api.upbit.com/websocket/v1'
-    const endpoint = 'wss://api.upbit.com/websocket/v1'
+    const endpoint = process.env.NODE_ENV === 'production' ? 'wss://api.coinsect.io/upbit' : 'ws://localhost:8080/ws'
     const connection = new WebSocket(endpoint)
-    connection.binaryType = 'arraybuffer'
 
     connection.onopen = () => {
       connection.send(JSON.stringify([{
@@ -92,16 +95,20 @@ const useUpbit = () => {
 
     connection.onmessage = event => {
       try {
-        const json = eventAsJSON(event)
-        if (type === 'ticker') {
-          if ($$raw) {
-            store.commit('setRawWebsocketInfo', { exchange: 'upbit', market: json.cd, json })
-            return
-          }
+        const jsonOrArray = eventAsJSON(event)
+        const items = Array.isArray(jsonOrArray) ? jsonOrArray : [jsonOrArray]
 
-          handleTickerMessage(json)
-        }
-        if (type === 'orderbook') setOrderbook(json)
+        items.forEach((json) => {
+          if (type === 'ticker') {
+            if ($$raw) {
+              store.commit('setRawWebsocketInfo', { exchange: 'upbit', market: json.cd, json })
+              return
+            }
+
+            handleTickerMessage(json)
+          }
+          if (type === 'orderbook') setOrderbook(json)
+        })
       } catch (e) {}
     }
   })
