@@ -2,89 +2,81 @@
 
 이 저장소는 암호화폐 마켓 데이터 플랫폼인 [coinsect.io](https://coinsect.io)의 프론트엔드 코드베이스입니다. 
 
-Nuxt가 안정화되기 이전 시기에 구현되었으며, 실 서비스의 까다로운 요구사항을 충족하기 위해 **Vue 3와 Express를 결합한 커스텀 SSR(Server Side Rendering) 아키텍처**를 직접 설계하고 구축했습니다. AI 에이전트나 자동화 도구의 도움 없이 순수 엔지니어링 역량으로 구현된 프로덕션급 코드베이스로, 복잡한 상태 관리와 검색 엔진 최적화(SEO), 그리고 실시간 데이터 처리 패턴을 담고 있습니다.
+Nuxt가 안정화되기 이전 시기에 구현되었으며, 실 서비스의 까다로운 요구사항을 충족하기 위해 **Vue 3와 Express를 결합한 커스텀 SSR(Server Side Rendering) 아키텍처**를 직접 설계하고 구축했습니다. 단순 아키텍처를 넘어, 초당 수천 개의 데이터 패킷이 발생하는 환경에서의 **렌더링 최적화**와 **복잡한 도메인 로직**을 해결한 흔적을 담고 있습니다.
 
-## 🚀 Key Highlights
+## 🚀 Technical Highlights
 
-- **Custom SSR Engine**: Nuxt와 같은 프레임워크에 의존하지 않고, Vue 3의 `@vue/server-renderer`와 Express를 활용하여 독자적인 Server Side Rendering 환경을 구축했습니다.
-- **SSR-Safe State Management**: SSR 환경에서 흔히 발생하는 싱글톤 오염 문제를 방지하기 위해 Vuex 4를 팩토리 패턴(`newStore`)으로 구현하여 요청별 독립적인 상태를 보장합니다.
-- **Production-Grade SEO**: 검색 엔진 최적화를 위해 서버 사이드에서 메타데이터를 주입하고, 기존 경로의 변경에 대응하는 301 리다이렉트 및 404 핸들링 로직을 WAS 레이어에서 구현했습니다.
-- **Modular Architecture**: 관심사 분리(SoC)를 위해 API 레이어, 서비스 로직, 공통 모듈, Composition API 기반의 Hooks를 엄격하게 구분하여 관리합니다.
+### 1. High-Performance Real-time Rendering
+대용량 실시간 시세 데이터 처리를 위해 React의 `useMemo`나 `useCallback`과 같은 수동적인 최적화 대신, 데이터 흐름 자체를 제어하는 **Batching & Throttling** 전략을 사용했습니다.
+- **Interval-based Recalculation**: 웹소켓 패킷이 발생할 때마다 리스트를 재정렬하는 대신, 사용자가 설정한 `sortInterval`(예: 1000ms) 주기로만 정렬 및 필터링(`recalcDisplayedList`)을 수행하여 브라우저의 메인 스레드 부하를 최소화했습니다. (`RealTimePrices.vue`) 이는 너무 잦은 실시간 수준의 정렬이 오히려 사용자 경험을 방해하기 때문이기도 합니다.
+- **Reactive Sorter**: 다국어 지원, 초성 검색, 즐겨찾기 상태가 결합된 복잡한 정렬 기준을 가진 커스텀 소터를 구현했습니다.
+- **CSS-driven Visual Feedback**: 가격 변동 시 발생하는 시각적 플래싱 효과를 JS 연산이 아닌 CSS 애니메이션(`price-flashing-up/down`)으로 처리하여 렌더링 성능을 확보했습니다.
+
+### 2. Complex State Management & WebSocket
+거래소별로 상이한 데이터 구조와 실시간 상태 변화를 안정적으로 관리합니다.
+- **Bybit Orderbook Delta Sync**: Bybit V5 API의 Snapshot/Delta 구조를 수동으로 머징하는 로직(`bybit.ts`)을 구현했습니다. 특히 빈번한 호가 변화에도 데이터 무결성을 유지하며 효율적으로 Store 상태를 업데이트합니다.
+- **Real-time PnL Engine**: 웹소켓 시세 변화(`instruments.bybit`)를 감시하여 사용자의 모든 포지션 수익률(PnL)을 실시간으로 자동 계산하는 반응형 엔진을 구축했습니다. (`real-time-position.ts`)
+
+### 3. Production-Ready UI Assets
+실제 상용 서비스 수준의 완성도를 위해 구현된 고급 인터랙션 및 기능들입니다.
+- **Draggable Multi-Modal System**: 싱글톤 모달의 한계를 넘어, 여러 개의 트레이딩 뷰나 오더북 창을 동시에 띄우고 자유롭게 드래그할 수 있는 모달 시스템을 구축했습니다. (`AppModal.vue`, `useModalDraggable`)
+- **Chat SEO & Link Preview**: 채팅창의 URL을 실시간 감지하여 메타데이터를 크롤링하고 리치한 프리뷰 카드를 생성하는 로직을 포함합니다. (`seo.ts`) 동시에 여러 사람이 API를 호출해도 중복 크롤링이 일어나지 않도록, 서버는 유니크한 URL에 대해 최초의 요청에 대해서만 크롤링을 수행하고 그 이후의 응답들에는 "크롤링 중" 또는 크롤된 결과물만 반환하도록 구현했습니다. 이 결과들은 Redis에 저장됩니다.
+- **WYSIWYG & Media Integration**: `ToastUIEditor`를 커스터마이징하여 연동했으며, **AWS S3**의 Presigned URL을 통한 이미지 업로드 기능을 구현했습니다. 또한 클립보드 이미지를 붙여넣어 업로드하는 것도 가능하도록 구현했습니다. (`helpers/logic.ts` => `onPasteClipboardImage`)
 
 ## 🛠 Tech Stack
 
 - **Framework**: Vue 3 (Composition API)
-- **State Management**: Vuex 4
+- **State Management**: Vuex 4 (Factory Pattern implementation)
 - **Routing**: Vue Router 4
 - **Language**: TypeScript
-- **Server**: Node.js / Express (for SSR & WAS)
-- **Build Tool**: Vue CLI (Custom Webpack Config)
-- **HTTP Client**: Axios (with SSR Proxy Header Support)
+- **Server**: Node.js / Express (Custom SSR Engine)
+- **Monitoring & Log**: Custom Logger with SSR Support
+- **Media**: AWS S3 Integration
 
 ## 🏗 Architecture Details
 
 ### 1. Custom SSR Build & Run Pipeline
-단순한 정적 빌드가 아닌, 클라이언트용 번들과 서버용 번들을 각각 빌드하여 노드 서버에서 렌더링하는 구조입니다.
-- **Entry Points**: `src/entry-client.ts`와 `src/entry-server.ts`를 통해 환경별로 다른 초기화 절차를 수행합니다.
-- **Hydration**: 서버에서 렌더링된 HTML과 데이터를 클라이언트에서 자연스럽게 연결(Hydrate)하여 초기 로딩 속도와 사용자 경험을 극대화합니다.
+- **Entry Points**: `src/entry-client.ts`와 `src/entry-server.ts` 분리.
+- **SSR-Safe Store**: 각 요청마다 `newStore()`를 호출하여 요청 간 상태가 오염되지 않도록 보장합니다.
 
 ### 2. WAS (Web Application Server) - `was/`
-SSR을 수행하는 전용 서버 레이어입니다.
-- **HTML Renderer**: `renderToString`을 호출하여 가상 DOM을 HTML 문자열로 변환합니다.
-- **Controller & Router**: 요청된 URL에 맞는 Vue 컴포넌트를 매칭하고, 필요한 데이터를 서버 사이드에서 미리 Prefetch합니다.
-- **Proxy Headers**: 클라이언트의 IP와 User-Agent를 정확하게 전달하기 위해 Axios 헤더 프록시 로직을 포함하고 있습니다.
-
-### 3. Store Management Strategy
-서버 환경에서의 인스턴스 공유 문제를 해결하기 위해 다음과 같은 패턴을 사용합니다.
-```typescript
-// src/store/index.ts (Example Pattern)
-export const newStore = () => {
-  return createStore({
-    // modules, state, mutations, actions
-  })
-}
-```
-각 요청마다 새로운 Store 인스턴스를 생성하여 데이터 충돌을 원천 차단합니다.
+- **Controller & Router**: 요청 URL에 따른 Vue 컴포넌트 매칭 및 404/301 처리.
+- **Proxy Headers**: SSR 환경에서도 클라이언트의 정확한 IP를 유지하기 위한 프록시 헤더 처리 로직.
 
 ## 📂 Project Structure
 
 ```text
 .
-├── was/                # SSR 전용 Express 서버 및 렌더링 로직
-│   ├── ssr.js          # SSR 설정 및 미들웨어
-│   ├── html-renderer.js # Vue SSR 렌더링 엔진
-│   └── controllers.js  # 라우트 매칭 및 응답 처리
-├── src/                # Vue 3 프론트엔드 소스
-│   ├── api/            # 외부 API 정의
-│   ├── components/     # UI 컴포넌트 (Atomic Design 지향)
-│   ├── hooks/          # 재사용 가능한 Composition API logic
-│   ├── modules/        # 공통 모듈 (Axios 인스턴스 등)
-│   ├── services/       # 비즈니스 로직 서비스 레이어
-│   ├── store/          # Vuex 4 상태 관리
-│   └── main.ts         # 앱 엔트리 (SSR/Client 공용)
-├── vue.config.js       # SSR 빌드를 위한 커스텀 Webpack 설정
-└── deploy.sh           # PM2 기반 배포 스크립트
+├── was/                # Custom SSR Server (Express)
+├── src/
+│   ├── components/
+│   │   ├── app/        # AppModal, ToastUIEditor 등 공통 앱 컴포넌트
+│   │   ├── common/     # 도메인 공통 컴포넌트
+│   │   └── views/      # 주요 기능별 뷰 (RealTimePrices, Board 등)
+│   ├── hooks/
+│   │   ├── websockets/ # 거래소별 웹소켓 핸들러 (upbit, bybit, etc.)
+│   │   ├── modal/      # 드래그 가능 모달 등 UI 인터랙션 훅
+│   │   └── seo.ts      # 채팅 SEO 파싱 훅
+│   ├── services/       # S3 연동, API 통신 등 공통 서비스
+│   └── store/          # Vuex 4 상태 관리 (SSR-safe)
+└── deploy.sh           # Deployment Script (PM2)
 ```
 
 ## ⚙️ Running Locally
 
-### Development
 ```bash
-# Frontend serving (CSR Mode)
-npm run serve
-
-# SSR Mode serving (WAS Server)
-npm run serve-dev:ssr
-```
-
-### Production Build
-```bash
-# SSR Full Build (Client + Server bundles)
+# SSR Mode (Recommended for testing production features)
 npm run build:ssr
-
-# Start Production Server
 npm run serve:ssr
+
+# CSR Mode (Development)
+npm run serve
 ```
 
 ## 📄 License
 This project was developed for the [coinsect.io](https://coinsect.io) service and is shared for technical review purposes.
+
+---
+> 대부분의 commit history를 보면 알 수 있듯이, AI agent 시대보다 까마득히 이전, 심지어 최초의 LLM인 ChatGPT가 등장하기 훨씬 이전에 모든 것이 구현된 코드베이스입니다. 물론 ~~지금은 낡았네요~~ 이제는 Vue보다는 현실적 이유로 Nextjs나 Sveltekit을 사용합니다. [Vue를 쓰더라도 Nuxt를 사용하지요.](https://blog.coinsect.io/posts/just-use-nuxt-for-vue-projects)
+
+백엔드, 프론트엔드를 총괄한 전체적인 스펙은 [Notion](https://six-slope-e73.notion.site/coinsect-io-e3de1e20efe040b6ac0fb68a5802e568)에 정리되어 있습니다.
