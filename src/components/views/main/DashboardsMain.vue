@@ -5,7 +5,7 @@
       v-if="dashboards"
       class="grid main">
       <MainSection
-        :title="`${store.getters.boards[0].description} (비로그인 글쓰기 가능)`"
+        :title="`${(store.getters.boards[0] || {}).description} (비로그인 글쓰기 가능)`"
         :link="'/community'"
         :image="'https://cdn-icons-png.flaticon.com/512/1946/1946355.png'">
         <RecentPosts v-if="dashboardPosts[0]" :postItems="dashboardPosts[0].data" :board="store.getters.boards[0]"/>
@@ -75,8 +75,6 @@ import useRealTimePosition from '@/hooks/real-time-position'
 const { helpers, store } = useGlobalHooks()
 
 const { openWebsocket, sorter } = useRealTimePosition()
-
-const refRealTimePriceCards = ref(null)
 
 const interval = ref(null)
 

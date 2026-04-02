@@ -6,20 +6,18 @@
     <ModalHeader :title="helpers.translate('MODAL_DONATION')" @close="$emit('close')"/>
     <div class="body pre-line">
       <div class="description m-b-16">
-        <div class="m-b-8">- 리플은 데스티네이션 태그가 없어도 송금이 가능합니다.</div>
-        <div>- 비트코인 출금 수수료는 사실 업비트에서나 비쌀 뿐, 개인지갑에서 보내는 경우 전혀 비싸지 않습니다. (심지어 불과 몇백원의 수수료만으로도 송금 가능)</div>
+        <div class="m-b-8">코인충의 서버 운영 및 개발에 큰 힘이 됩니다. 감사합니다 🙏</div>
       </div>
-      <div
-        v-if="wallets"
-        class="sendable-tickers pretty-scrollbar">
+      <div class="sendable-tickers">
         <div
           @click="selectWallet(wallet)"
           class="sendable-ticker"
-          :class="{'selected': (selectedWallet || {}).id === (wallet || {}).id}"
+          :class="{'selected': selectedWallet?.id === wallet.id}"
           :key="wallet.id"
-          v-for="wallet in wallets.data">
-          <AppImg :src="wallet.blockchain.icon"/>
-          <div class="symbol" v-html="wallet.blockchain.symbol"/>
+          v-for="wallet in wallets">
+          <span v-if="wallet.emoji" class="wallet-emoji">{{ wallet.emoji }}</span>
+          <i v-else :class="wallet.icon" class="wallet-icon"/>
+          <div class="symbol" v-html="wallet.symbol"/>
         </div>
       </div>
       <div class="selected-wallet f-mono">
@@ -30,7 +28,7 @@
           class="address"
           :class="{'o-0': !selectedWallet}">
           <i class="fal fa-copy f-16 m-r-8" @click="copyToClipboard"/>
-          <div class="value" @click="openBlockExplore">{{ (selectedWallet || {}).address || 'PLACEHOLDER' }}</div>
+          <div class="value" @click="copyToClipboard">{{ selectedWallet?.address || 'PLACEHOLDER' }}</div>
         </div>
       </div>
     </div>
@@ -38,7 +36,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import useGlobalHooks from '@/hooks/global-hooks'
 
 defineProps({
@@ -52,25 +50,33 @@ const emit = defineEmits(['close'])
 
 const refModalDonation = ref(null)
 
-const { helpers, store } = useGlobalHooks()
+const { helpers } = useGlobalHooks()
 
 const drawing = ref(null)
 
-const wallets = computed(() => store.getters.wallets)
+const wallets = [
+  {
+    id: 'lightning',
+    symbol: 'LIGHTNING',
+    emoji: '⚡',
+    address: process.env.VUE_APP_BTC_LIGHTNING || '',
+  },
+  {
+    id: 'onchain',
+    symbol: 'ONCHAIN',
+    icon: 'fab fa-bitcoin c-bitcoin',
+    address: process.env.VUE_APP_BTC_ONCHAIN || '',
+  },
+]
 
 const selectedWallet = ref(null)
 
 const qrcode = ref(null)
 
 const copyToClipboard = () => {
+  if (!selectedWallet.value) return
   helpers.dom.copyToClipboard(selectedWallet.value.address)
-  helpers.toast.success(`코인충 운영자의 ${selectedWallet.value.blockchain.symbol}주소를 클립보드로 복사했습니다`)
-}
-
-const openBlockExplore = () => {
-  if (!selectedWallet.value.blockchain.exploreUrl) return
-
-  window.open(`${selectedWallet.value.blockchain.exploreUrl}${selectedWallet.value.address}`, '_blank', 'noreferrer')
+  helpers.toast.success(`비트코인 ${selectedWallet.value.symbol} 주소를 클립보드로 복사했습니다`)
 }
 
 const selectWallet = async wallet => {
@@ -78,6 +84,7 @@ const selectWallet = async wallet => {
   await helpers.sleep(100)
   drawing.value = false
   selectedWallet.value = wallet
+
   if (typeof QRCode === 'undefined') return
 
   if (qrcode.value) {
@@ -102,10 +109,7 @@ const selectWallet = async wallet => {
 
 const init = async () => {
   try {
-    await Promise.all([
-      helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' }),
-      store.dispatch('loadWallets'),
-    ])
+    await helpers.dom.loadScript({ url: '/scripts/qrcode.min.js' })
 
     // 왜인지는 모르겠으나 이 찌꺼기가 남아있는 경우가 있음
     const dom = document.getElementById('modal-donation-qr-code')
@@ -115,7 +119,7 @@ const init = async () => {
     const img = dom.getElementsByTagName('img')[0]
     if (img) img.remove()
 
-    selectWallet(wallets.value.data[0])
+    selectWallet(wallets[0])
   } catch (e) {}
 }
 
@@ -146,17 +150,23 @@ onMounted(init)
     overflow: auto;
 
     .sendable-ticker {
-      padding: 4px 8px;
+      padding: 8px;
       flex: 1 1 0;
       user-select: none;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 4px;
 
-      img {
-        width: 24px;
-        height: 24px;
+      .wallet-emoji {
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .wallet-icon {
+        font-size: 24px;
+        color: var(--text-stress);
       }
 
       .symbol {
@@ -166,13 +176,12 @@ onMounted(init)
         font-size: 12px;
       }
 
-      &:hover {
-        text-decoration: underline;
-        cursor: pointer;
-      }
-
       &.selected {
         background: var(--brand-primary);
+
+        .wallet-icon {
+          color: var(--white);
+        }
 
         .symbol {
           color: var(--white);

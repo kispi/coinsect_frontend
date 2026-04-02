@@ -6,6 +6,11 @@
         @click="helpers.modal.custom({ component: 'ModalChatSettings' })">
         <i class="fal fa-cog"/>
       </div>
+      <div
+        class="clickable-icon-wrapper"
+        @click="helpers.modal.custom({ component: 'ModalDonation' })">
+        <i class="fal fa-heart"/>
+      </div>
     </div>
     <div
       v-if="store.getters.chatUser"
