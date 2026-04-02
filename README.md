@@ -1,53 +1,90 @@
-# Coinsect Frontend
+# Coinsect Frontend (Vue 3 + Custom SSR)
 
-## Project setup
+이 저장소는 암호화폐 마켓 데이터 플랫폼인 [coinsect.io](https://coinsect.io)의 프론트엔드 코드베이스입니다. 
+
+Nuxt가 안정화되기 이전 시기에 구현되었으며, 실 서비스의 까다로운 요구사항을 충족하기 위해 **Vue 3와 Express를 결합한 커스텀 SSR(Server Side Rendering) 아키텍처**를 직접 설계하고 구축했습니다. AI 에이전트나 자동화 도구의 도움 없이 순수 엔지니어링 역량으로 구현된 프로덕션급 코드베이스로, 복잡한 상태 관리와 검색 엔진 최적화(SEO), 그리고 실시간 데이터 처리 패턴을 담고 있습니다.
+
+## 🚀 Key Highlights
+
+- **Custom SSR Engine**: Nuxt와 같은 프레임워크에 의존하지 않고, Vue 3의 `@vue/server-renderer`와 Express를 활용하여 독자적인 Server Side Rendering 환경을 구축했습니다.
+- **SSR-Safe State Management**: SSR 환경에서 흔히 발생하는 싱글톤 오염 문제를 방지하기 위해 Vuex 4를 팩토리 패턴(`newStore`)으로 구현하여 요청별 독립적인 상태를 보장합니다.
+- **Production-Grade SEO**: 검색 엔진 최적화를 위해 서버 사이드에서 메타데이터를 주입하고, 기존 경로의 변경에 대응하는 301 리다이렉트 및 404 핸들링 로직을 WAS 레이어에서 구현했습니다.
+- **Modular Architecture**: 관심사 분리(SoC)를 위해 API 레이어, 서비스 로직, 공통 모듈, Composition API 기반의 Hooks를 엄격하게 구분하여 관리합니다.
+
+## 🛠 Tech Stack
+
+- **Framework**: Vue 3 (Composition API)
+- **State Management**: Vuex 4
+- **Routing**: Vue Router 4
+- **Language**: TypeScript
+- **Server**: Node.js / Express (for SSR & WAS)
+- **Build Tool**: Vue CLI (Custom Webpack Config)
+- **HTTP Client**: Axios (with SSR Proxy Header Support)
+
+## 🏗 Architecture Details
+
+### 1. Custom SSR Build & Run Pipeline
+단순한 정적 빌드가 아닌, 클라이언트용 번들과 서버용 번들을 각각 빌드하여 노드 서버에서 렌더링하는 구조입니다.
+- **Entry Points**: `src/entry-client.ts`와 `src/entry-server.ts`를 통해 환경별로 다른 초기화 절차를 수행합니다.
+- **Hydration**: 서버에서 렌더링된 HTML과 데이터를 클라이언트에서 자연스럽게 연결(Hydrate)하여 초기 로딩 속도와 사용자 경험을 극대화합니다.
+
+### 2. WAS (Web Application Server) - `was/`
+SSR을 수행하는 전용 서버 레이어입니다.
+- **HTML Renderer**: `renderToString`을 호출하여 가상 DOM을 HTML 문자열로 변환합니다.
+- **Controller & Router**: 요청된 URL에 맞는 Vue 컴포넌트를 매칭하고, 필요한 데이터를 서버 사이드에서 미리 Prefetch합니다.
+- **Proxy Headers**: 클라이언트의 IP와 User-Agent를 정확하게 전달하기 위해 Axios 헤더 프록시 로직을 포함하고 있습니다.
+
+### 3. Store Management Strategy
+서버 환경에서의 인스턴스 공유 문제를 해결하기 위해 다음과 같은 패턴을 사용합니다.
+```typescript
+// src/store/index.ts (Example Pattern)
+export const newStore = () => {
+  return createStore({
+    // modules, state, mutations, actions
+  })
+}
 ```
-npm install
+각 요청마다 새로운 Store 인스턴스를 생성하여 데이터 충돌을 원천 차단합니다.
+
+## 📂 Project Structure
+
+```text
+.
+├── was/                # SSR 전용 Express 서버 및 렌더링 로직
+│   ├── ssr.js          # SSR 설정 및 미들웨어
+│   ├── html-renderer.js # Vue SSR 렌더링 엔진
+│   └── controllers.js  # 라우트 매칭 및 응답 처리
+├── src/                # Vue 3 프론트엔드 소스
+│   ├── api/            # 외부 API 정의
+│   ├── components/     # UI 컴포넌트 (Atomic Design 지향)
+│   ├── hooks/          # 재사용 가능한 Composition API logic
+│   ├── modules/        # 공통 모듈 (Axios 인스턴스 등)
+│   ├── services/       # 비즈니스 로직 서비스 레이어
+│   ├── store/          # Vuex 4 상태 관리
+│   └── main.ts         # 앱 엔트리 (SSR/Client 공용)
+├── vue.config.js       # SSR 빌드를 위한 커스텀 Webpack 설정
+└── deploy.sh           # PM2 기반 배포 스크립트
 ```
 
-### Compiles and hot-reloads for development
-```
+## ⚙️ Running Locally
+
+### Development
+```bash
+# Frontend serving (CSR Mode)
 npm run serve
+
+# SSR Mode serving (WAS Server)
+npm run serve-dev:ssr
 ```
 
-### Compiles and minifies for production
+### Production Build
+```bash
+# SSR Full Build (Client + Server bundles)
+npm run build:ssr
+
+# Start Production Server
+npm run serve:ssr
 ```
-npm run build
-```
 
-### Conventions (꼭 읽어주세요: 수정 제안 환영합니다!)
-- [모든 컴포넌트명은 가능하다면 반드시 2단어 이상으로 짓는다.](https://vuejs.org/v2/style-guide/#Multi-word-component-names-essential)
-- [id는 섹션으로의 바로가기 기능이나 프로젝트 전체를 통틀어 단 한 번 밖에 사용되지 않을게 확실한 등의 특수한 경우 아니면 가급적 쓰지 않는다.](https://dev.to/clairecodes/reasons-not-to-use-ids-in-css-4ni4)
-- 가급적 scss 변수($)가 아닌 네이티브 css 변수를 활용한다.(런타임시 변경 가능하다는 장점이 있고(테마 구현 용이), vue 파일 내에서도 별도의 variables.scss 임포트 없이 사용 가능함)
-- 라우트는 'View'라고 칭하기로 하고, 라우트에 해당하는 컴포넌트들은 이름 앞에 'View'라는 prefix를 붙여준다.
-- vue 파일명은 프로젝트 전체에서 파일명을 검색해보고 없는 것으로 짓고,(중복되면 스타일링 혼란) CamelCase로 한다.
-- vue 파일의 root element는 반드시 파일명에 대한 dash case로 클래스명을 준다.<br>
-(예: ImportFeeSalesTax.vue => import-fee-sales-tax)
-- 각 vue 파일 하단의 `<style>`태그를 최대한 활용하기로 하며 (단, 다른 곳에 영향을 주지 않기 위해 scoped로 사용하거나, 자식에게 공통으로 상속하고 싶은게 있을 경우라면 scoped를 빼더라도 템플릿 루트 엘리먼트의 클래스명으로 감싸는 등으로 최대한 격리), 별도의 scss 파일로 빼서 관리하고 싶다면 @/assets/styles/ 안의 적절한 위치를 찾아 최대한 컴포넌트의 위치와 일치하게 작성한다.<br>
-- [BEM은 사용하지 않는다.](https://medium.com/@jescalan/bem-is-terrible-f421495d093a)
-- eslint & prettier: [AirBNB](https://github.com/airbnb/javascript) + no-semicolon (노세미는 제 취향인데 무조건 찍는 쪽으로 하자고 해도 됩니다)
-- [defineAsyncComponent를 잘 활용하자. (code-split)](https://blog.logrocket.com/how-async-components-can-optimize-performance-in-vue-apps/)
-- 되도록이면 기존의 options API 대신 composition API를 사용한다.
-- 디자인에 반복적인 요소가 보인다면 템플릿보다는 최대한 스크립트쪽을 활용한다.
-- [모든 단위는 px만 사용한다. (em, rem, pt... (X))](https://stackoverflow.com/questions/11799236/should-i-use-px-or-rem-value-units-in-my-css/11803273)
-- 크기, 여백 등에 사용하는 px은 가능하다면 최대한 4의 배수, 내지는 짝수만 사용하도록 한다. (border등은 무관)
-- .m-, .f- 등의 dom에 직접 클래스를 붙여 스타일링하는 경우는 그 방식이 요긴한 상황이 아니라면 가급적 피한다.
-- String은 가급적 single quote(')를 사용한다. (템플릿에서는 String을 위해 '를 쓰는게 강제되는 상황이 많아서 프로젝트 전체적으로 통일하기 위함)
-- 링크 이동은 가급적 <RouterLink>를 활용하거나, <a :href="값" @click.prevent="router.push(path)">를 활용하여 실제 <a href>로 렌더링될 수 있도록 한다. (SEO)
-- 컴포넌트는 반드시 `<script setup lang="ts">` 으로 선언하고, 플러그인은 사용하지 않으며 전부 명시적 import를 통해 자동완성이 잘 될 수 있게 한다.
-
-### etc
-- components/app => 앱의 기능적인 특성들(Modal, Toast 등...)에 관련된 전역 컴포넌트들로, 비즈니스 로직(db)과 무관.
-- components/common => 비즈니스 로직이나, 여러 화면들에 공통으로 사용되는 레이아웃 등이 해당되는 공통 컴포넌트들. 사실 이 중에는 app에 들어가야 하는지 common에 들어가야 하는지 모호한 것들도 있을 듯 하다.
-- 디자이너의 요구 사항을 최대한 반영하되, 변수의 추가는 최소한으로 한다. 이를테면 색이 대표적인데, rgba(122, 112, 195, 0.25);가 코드상에 존재하는데 zeplin에는 rgba(122, 112, 195, 0.32);가 있고 이건 우리가 기존에 가지고 있지 않던 변수라면, 이것을 새로 추가해서 사용하기보다는 기존의 0.25 변수를 사용하는 것으로 합의를 시도(?)해보고, 디자이너나 기획자가 구체적 근거를 들어 반드시 추가되어야 한다고 할 경우에만 추가한다.
-- fontawesome.scss에서 기본적으로 모든 값은 주석처리하고, 사용할 것만 풀어서 사용하여 번들 사이즈를 줄인다.
-- props는 가급적 []보다는 {}로 사용하고, 최소한 각 항목의 type 정도는 표기하여 사용하도록 한다. 받을 수 있는 값이 한정된 케이스라면 validator를 사용한다.
-- scss에서 hierarchy를 깊게 사용하면 가독성에는 도움이 될 수 있으나 중복이 많아져 생성되는 번들의 크기가 증가하므로, 부모 안에 넣지 않아도 고유하게 select가 가능한 항목들은 적절히 밖으로 꺼내서 적는 것도 무방하다.
-- @media 구분 기준들은 현재 768, 992, 1200, 1400의 4개이며, min-width는 그대로, max-width는 이 값들에서 - 1을 하여 사용한다.
-- 가급적 함수 이름 자체가 주석이 될 수 있도록 코드를 작성하고, 나중에 본인이 다시 봐도 잘 모르겠다 싶을 정도로 구현이 복잡한 경우에만 '어떤 기능을 하는 함수인가?' 정도만 적어둔다.
-- store에서 '단수' 상태명은 detail (models/:id)의 response에 매칭되며, '복수' 상태명은 all (models)의 response와 매칭된다.
-
-### recommended vscode extensions
-- Vetur
-- GitLens
-- Vue Peek (jsconfig.json에서 `"@/*": ["src/*"]` 이걸 알려줘도 vue파일은 import시에 끝에 .vue를 붙이지 않으면 찾지 못하는데, 이 문제를 해결해준다.)
+## 📄 License
+This project was developed for the [coinsect.io](https://coinsect.io) service and is shared for technical review purposes.
