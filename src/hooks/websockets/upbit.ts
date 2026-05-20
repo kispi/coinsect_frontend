@@ -73,7 +73,7 @@ const useUpbit = () => {
     if (!type || !codes) return
 
     // const endpoint = process.env.NODE_ENV === 'production' ? 'wss://api.coinsect.io/upbit' : 'ws://localhost:8080/ws'
-    const endpoint = 'wss://api.coinsect.io/upbit'
+    const endpoint = 'wss://cheap.coinsect.io'
     const connection = new WebSocket(endpoint)
 
     connection.onopen = () => {
