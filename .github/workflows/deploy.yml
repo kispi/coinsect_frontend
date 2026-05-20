@@ -56,5 +56,5 @@ jobs:
             tar xzf deploy.tar.gz
             rm deploy.tar.gz
             npm install --omit=dev
-            pm2 restart coinsect_frontend || pm2 start npm --name "coinsect_frontend" -- run serve:ssr
+            NODE_ENV=production pm2 restart coinsect_frontend || NODE_ENV=production pm2 start was/server.js --name "coinsect_frontend"
           ENDSSH
