@@ -49,9 +49,12 @@ jobs:
 
           # 3. EC2에서 압축 해제 및 재시작
           ${SSH_CMD} << 'ENDSSH'
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+
             cd ~/web/coinsect_frontend
             tar xzf deploy.tar.gz
             rm deploy.tar.gz
             npm install --omit=dev
-            pm2 restart coinsect_frontend
+            pm2 restart coinsect_frontend || pm2 start npm --name "coinsect_frontend" -- run serve:ssr
           ENDSSH
